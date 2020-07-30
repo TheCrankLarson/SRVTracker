@@ -20,8 +20,8 @@ namespace DataCollator
         private List<HttpListenerResponse> _responses = new List<HttpListenerResponse>();
         private List<string> _registeredNotificationUrls = new List<string>();
         private static HttpClient _httpClient = new HttpClient();
-        private List<String> _notifications = new List<string>(); // List of all notifications, pruned as each client gets up to date
-        private Dictionary<IPEndPoint, int> _clientNotificationPointer = new Dictionary<IPEndPoint, int>(); // Pointer into the notification table for each client
+        private List<String> _notifications = new List<string>(10000); // List of all notifications, pruned as each client gets up to date
+        private Dictionary<string, int> _clientNotificationPointer = new Dictionary<string, int>(); // Pointer into the notification table for each client
         private readonly object _notificationLock = new object();
         private int _pruneCounter = 0;
 
@@ -152,14 +152,14 @@ namespace DataCollator
             {
                 // No WebHook, so we just return a data feed (base it on IP now, but could use cookies or headers in future)
                 Context.Response.KeepAlive = true;
-                if (_clientNotificationPointer.ContainsKey( Context.Request.RemoteEndPoint))
+                if (_clientNotificationPointer.ContainsKey( Context.Request.RemoteEndPoint.ToString()))
                 {
                     // This is a repeat GET from a known client, so return any new data we have
-                    _clientNotificationPointer[Context.Request.RemoteEndPoint] = SendNotificationsToResponse(Context.Response, _clientNotificationPointer[Context.Request.RemoteEndPoint]);
+                    _clientNotificationPointer[Context.Request.RemoteEndPoint.ToString()] = SendNotificationsToResponse(Context.Response, _clientNotificationPointer[Context.Request.RemoteEndPoint.ToString()]);
                  }
                 else
                     // This is a new request from a client, so return all notifications we have and set up our pointer
-                    _clientNotificationPointer.Add(Context.Request.RemoteEndPoint, SendNotificationsToResponse(Context.Response, 0));
+                    _clientNotificationPointer.Add(Context.Request.RemoteEndPoint.ToString(), SendNotificationsToResponse(Context.Response, 0));
             }
         }
 
@@ -192,15 +192,32 @@ namespace DataCollator
             if (_clientNotificationPointer.Count == 0)
             {
                 // No clients, so don't keep anything
-                _notifications = new List<string>();
+                _notifications.Clear();
                 return;
             }
 
             // We obtain the lowest available index and remove anything before that
             int deleteBefore = _clientNotificationPointer.Values.Min();
+            if (_clientNotificationPointer.Count>9000)
+            {
+                // We want to limit the maximum size we keep
+                if (deleteBefore < 1000)
+                {
+                    deleteBefore = 1000;
+
+                }
+            }
             lock (_notificationLock)
             {
                 _notifications.RemoveRange(0, deleteBefore);
+                // Adjust indexes
+                foreach (string client in _clientNotificationPointer.Keys)
+                {
+                    if (_clientNotificationPointer[client] - deleteBefore > 0)
+                        _clientNotificationPointer[client] = _clientNotificationPointer[client] - deleteBefore;
+                    else
+                        _clientNotificationPointer[client] = 0;
+                }
             }
         }
 
