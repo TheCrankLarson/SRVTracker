@@ -16,6 +16,7 @@ namespace SRVTracker
     {
         UdpClient _udpClient = null;
         const string ClientIdFile = "client.id";
+        private string _lastUpdateTime = "";
 
         public FormTracker()
         {
@@ -32,7 +33,7 @@ namespace SRVTracker
             try
             {
                 // Read the file
-                clientId = System.IO.File.ReadAllText(ClientIdFile);
+                clientId = File.ReadAllText(ClientIdFile);
             }
             catch {}
 
@@ -47,7 +48,7 @@ namespace SRVTracker
             textBoxClientId.Text = Guid.NewGuid().ToString();
             try
             {
-                System.IO.File.WriteAllText(ClientIdFile, textBoxClientId.Text);
+                File.WriteAllText(ClientIdFile, textBoxClientId.Text);
                 AddLog($"Saved client Id to file: {ClientIdFile}");
             }
             catch (Exception ex)
@@ -59,7 +60,7 @@ namespace SRVTracker
         public void InitStatusLocation()
         {
             string path = $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\\Saved Games\\Frontier Developments\\Elite Dangerous";
-            if (System.IO.File.Exists($"{path}\\status.json"))
+            if (File.Exists($"{path}\\status.json"))
             {
                 textBoxStatusFile.Text = path;
                 return;
@@ -178,7 +179,7 @@ namespace SRVTracker
 
             try
             {
-                System.IO.File.AppendAllText("status.log", status);
+                File.AppendAllText("status.log", status);
                 AddLog("Status written to local log");
             }
             catch (Exception ex)
@@ -232,7 +233,17 @@ namespace SRVTracker
 
             // Update the UI with the event data
             Action action;
-            action = new Action(() => { labelLastUpdateTime.Text = edEvent.TimeStamp.ToString("HH:MM:ss"); });
+            if (!_lastUpdateTime.Equals(edEvent.TimeStamp.ToString("HH:MM:ss")))
+            {
+                _lastUpdateTime = edEvent.TimeStamp.ToString("HH:MM:ss");
+                action = new Action(() => { labelLastUpdateTime.Text = _lastUpdateTime; });
+                if (labelLastUpdateTime.InvokeRequired)
+                    labelLastUpdateTime.Invoke(action);
+                else
+                    action();
+            }
+
+            action = new Action(() => { labelLastUpdateTime.Text = DateTime.Now.ToString("HH:mm:ss"); });
             if (labelLastUpdateTime.InvokeRequired)
                 labelLastUpdateTime.Invoke(action);
             else
@@ -360,9 +371,11 @@ namespace SRVTracker
 
         private void textBoxClientId_TextChanged(object sender, EventArgs e)
         {
+            if (textBoxClientId.Text.Contains(','))
+                textBoxClientId.Text = textBoxClientId.Text.Replace(",","");
             try
             {
-                System.IO.File.WriteAllText(ClientIdFile, textBoxClientId.Text);
+                File.WriteAllText(ClientIdFile, textBoxClientId.Text);
                 //AddLog($"Saved client Id to file: {ClientIdFile}"); // Too noisy, as it writes after every change! Too lazy to optimise this
             }
             catch (Exception ex)

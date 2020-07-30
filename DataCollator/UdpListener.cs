@@ -41,7 +41,6 @@ namespace DataCollator
             s.u = new UdpClient();
             s.u.Client.ExclusiveAddressUse = false;
             s.u.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
-            s.u.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReceiveTimeout, 1000);
             s.u.Client.Bind(new IPEndPoint(IPAddress.Any, ListenPort));
 
             Debug.WriteLine($"Listening for messages on port {ListenPort}");

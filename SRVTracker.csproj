@@ -38,6 +38,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Device" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -50,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EDEvent.cs" />
+    <Compile Include="EDEventFactory.cs" />
     <Compile Include="Flags.cs" />
     <Compile Include="FormTracker.cs">
       <SubType>Form</SubType>

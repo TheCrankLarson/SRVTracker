@@ -5,10 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.Reflection;
+using System.Device.Location;
+
 
 namespace SRVTracker
 {
-    class EDEvent
+    public class EDEvent
     {
         // { "timestamp":"2020-07-28T17:46:47Z", "event":"Status", "Flags":16777229, "Pips":[4,8,0], "FireGroup":0, "GuiFocus":0, "Fuel":{ "FuelMain":16.000000, "FuelReservoir":0.430376 }, "Cargo":4.000000, "LegalState":"Clean" }
         //{ "timestamp":"2020-07-28T17:52:25Z", "event":"Status", "Flags":341852424, "Pips":[4,8,0], "FireGroup":0, "GuiFocus":0, "Fuel":{ "FuelMain":0.000000, "FuelReservoir":0.444637 }, "Cargo":0.000000, "LegalState":"Clean", "Latitude":-14.055647, "Longitude":-31.176170, "Heading":24, "Altitude":0, "BodyName":"Synuefe DJ-G b44-3 A 5", "PlanetRadius":1311227.875000 }
@@ -60,6 +62,16 @@ namespace SRVTracker
             }
         }
 
+        public EDEvent(double latitude, double longitude, double altitude, int heading, double planetRadius, long flags)
+        {
+            Latitude = latitude;
+            Longitude = longitude;
+            Altitude = altitude;
+            Heading = heading;
+            PlanetRadius = planetRadius;
+            this.Flags = flags;
+        }
+
         public string RawData { get; } = "";
 
         public double Latitude { get; } = 0;
@@ -70,6 +82,19 @@ namespace SRVTracker
         public string BodyName { get; } = "";
         public double PlanetRadius { get; } = 0;
         public double Altitude { get; } = 0;
+
+        public GeoCoordinate Location
+        {
+            get
+            {
+                if (HasCoordinates)
+                    if (Altitude>0)
+                        return new GeoCoordinate(Latitude, Longitude, Altitude);
+                    else
+                        return new GeoCoordinate(Latitude, Longitude);
+                return null;
+            }
+        }
 
         public bool isInSRV
         {
@@ -106,8 +131,8 @@ namespace SRVTracker
         {
             get
             {
-                // Tracking info is: timestamp,vehicle,latitude,longitude,heading,altitude,planet radius
-                return $"{this.TimeStamp.Ticks},{this.Vehicle},{this.Latitude},{this.Longitude},{this.Heading},{this.Altitude},{this.PlanetRadius}";
+                // Tracking info is: timestamp,latitude,longitude,altitude,heading,planet radius,flags
+                return $"{this.TimeStamp.Ticks},{this.Latitude},{this.Longitude},{this.Altitude},{this.Heading},{this.PlanetRadius},{this.Flags}";
             }
         }
     }

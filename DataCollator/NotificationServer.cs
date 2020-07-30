@@ -88,8 +88,8 @@ namespace DataCollator
             lock (_notificationLock)
             {
                 _notifications.Add(message);
-                _pruneCounter++;
             }
+            _pruneCounter++;
             if (_pruneCounter>500)
                 PruneNotifications();
 
@@ -116,9 +116,7 @@ namespace DataCollator
                 string sRequest = "";
 
                 using (StreamReader reader = new StreamReader(request.InputStream))
-                {
                     sRequest = reader.ReadToEnd();
-                }
 
                 Action action = (() => {
                     DetermineResponse(sRequest, context);
@@ -137,7 +135,7 @@ namespace DataCollator
 
             if (isValidClientRegistration(Request, out responseText))
             {
-                // Client has registered a webhook.  We just respond with confirmation
+                // Client has registered a listener Url.  We just respond with confirmation
                 byte[] buffer = System.Text.Encoding.UTF8.GetBytes(responseText);
                 Context.Response.ContentLength64 = buffer.Length;
                 Context.Response.StatusCode = (int)HttpStatusCode.OK;
@@ -202,23 +200,28 @@ namespace DataCollator
             {
                 // We want to limit the maximum size we keep
                 if (deleteBefore < 1000)
-                {
                     deleteBefore = 1000;
+            }
 
-                }
-            }
-            lock (_notificationLock)
+            try
             {
-                _notifications.RemoveRange(0, deleteBefore);
-                // Adjust indexes
-                foreach (string client in _clientNotificationPointer.Keys)
+                lock (_notificationLock)
                 {
-                    if (_clientNotificationPointer[client] > deleteBefore)
-                        _clientNotificationPointer[client] = _clientNotificationPointer[client] - deleteBefore;
+                    if (deleteBefore > _notifications.Count)
+                        _notifications.Clear();
                     else
-                        _clientNotificationPointer[client] = 0;
+                        _notifications.RemoveRange(0, deleteBefore);
+                    // Adjust indexes
+                    foreach (string client in _clientNotificationPointer.Keys)
+                    {
+                        if (_clientNotificationPointer[client] > deleteBefore)
+                            _clientNotificationPointer[client] = _clientNotificationPointer[client] - deleteBefore;
+                        else
+                            _clientNotificationPointer[client] = 0;
+                    }
                 }
             }
+            catch { }
         }
 
         private bool isValidClientRegistration(string registrationData, out string responseText)

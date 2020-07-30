@@ -313,11 +313,11 @@
             // checkBoxShowLive
             // 
             this.checkBoxShowLive.AutoSize = true;
-            this.checkBoxShowLive.Location = new System.Drawing.Point(391, 44);
+            this.checkBoxShowLive.Location = new System.Drawing.Point(398, 44);
             this.checkBoxShowLive.Name = "checkBoxShowLive";
-            this.checkBoxShowLive.Size = new System.Drawing.Size(96, 17);
+            this.checkBoxShowLive.Size = new System.Drawing.Size(89, 17);
             this.checkBoxShowLive.TabIndex = 6;
-            this.checkBoxShowLive.Text = "Show data live";
+            this.checkBoxShowLive.Text = "Show live log";
             this.checkBoxShowLive.UseVisualStyleBackColor = true;
             // 
             // label8

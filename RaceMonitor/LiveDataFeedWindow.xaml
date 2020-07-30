@@ -7,6 +7,7 @@
         mc:Ignorable="d"
         Title="LiveDataFeedWindow" Height="450" Width="800">
     <Grid>
-        
+        <ListBox x:Name="listBoxEvents"/>
+
     </Grid>
 </Window>

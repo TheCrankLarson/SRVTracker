@@ -5,11 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RaceMonitor"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="769" SizeToContent="WidthAndHeight">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="47*"/>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="30*"/>
+        </Grid.ColumnDefinitions>
         <TextBox x:Name="textBoxRaceName" HorizontalAlignment="Left" Margin="86,14,0,0" Text="SRV Race 1" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
         <Label x:Name="label" Content="Race name:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
-        <GroupBox x:Name="groupBox" Header="Locations" HorizontalAlignment="Left" Height="203" Margin="230,14,0,0" VerticalAlignment="Top" Width="529">
+        <GroupBox x:Name="groupBox" Header="Race Locations/Waypoints" HorizontalAlignment="Left" Height="203" Margin="230,14,0,0" VerticalAlignment="Top" Width="529" Grid.ColumnSpan="3">
             <Grid>
                 <TextBox x:Name="textBoxLongitude" HorizontalAlignment="Left" Margin="387,152,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
                 <ListBox x:Name="listBoxLocations" Margin="10,10,10,43"/>
@@ -18,7 +23,12 @@
                 <Label x:Name="label2" Content="Latitude:" HorizontalAlignment="Left" Margin="140,148,0,0" VerticalAlignment="Top"/>
             </Grid>
         </GroupBox>
-        <GroupBox x:Name="groupBox1" Header="Racers" HorizontalAlignment="Left" Height="176" Margin="10,41,0,0" VerticalAlignment="Top" Width="215"/>
+        <GroupBox x:Name="groupBox1" Header="Racers" HorizontalAlignment="Left" Height="176" Margin="10,41,0,0" VerticalAlignment="Top" Width="215">
+            <ListBox x:Name="listBox" HorizontalAlignment="Left" Height="153" VerticalAlignment="Center" Width="205"/>
+        </GroupBox>
+        <GroupBox x:Name="groupBox2" Header="Leaderboard" HorizontalAlignment="Left" Height="202" Margin="10,222,0,0" VerticalAlignment="Top" Width="749" Grid.ColumnSpan="3">
+            <DataGrid x:Name="dataGridLeaderBoard" HorizontalAlignment="Center" Height="172" Width="741"/>
+        </GroupBox>
 
     </Grid>
 </Window>
