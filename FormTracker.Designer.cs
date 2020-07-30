@@ -52,14 +52,14 @@
             this.label7 = new System.Windows.Forms.Label();
             this.labelLastUpdateTime = new System.Windows.Forms.Label();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.checkBoxSendLocationOnly = new System.Windows.Forms.CheckBox();
+            this.checkBoxShowLive = new System.Windows.Forms.CheckBox();
             this.label8 = new System.Windows.Forms.Label();
             this.textBoxClientId = new System.Windows.Forms.TextBox();
             this.textBoxSaveFile = new System.Windows.Forms.TextBox();
             this.checkBoxSaveToFile = new System.Windows.Forms.CheckBox();
             this.textBoxUploadServer = new System.Windows.Forms.TextBox();
             this.checkBoxUpload = new System.Windows.Forms.CheckBox();
-            this.checkBoxShowLive = new System.Windows.Forms.CheckBox();
-            this.checkBoxSendLocationOnly = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.statusFileWatcher)).BeginInit();
             this.groupBox2.SuspendLayout();
@@ -290,6 +290,28 @@
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Data Collection";
             // 
+            // checkBoxSendLocationOnly
+            // 
+            this.checkBoxSendLocationOnly.AutoSize = true;
+            this.checkBoxSendLocationOnly.Checked = true;
+            this.checkBoxSendLocationOnly.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxSendLocationOnly.Location = new System.Drawing.Point(257, 44);
+            this.checkBoxSendLocationOnly.Name = "checkBoxSendLocationOnly";
+            this.checkBoxSendLocationOnly.Size = new System.Drawing.Size(117, 17);
+            this.checkBoxSendLocationOnly.TabIndex = 7;
+            this.checkBoxSendLocationOnly.Text = "Location Data Only";
+            this.checkBoxSendLocationOnly.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxShowLive
+            // 
+            this.checkBoxShowLive.AutoSize = true;
+            this.checkBoxShowLive.Location = new System.Drawing.Point(472, 44);
+            this.checkBoxShowLive.Name = "checkBoxShowLive";
+            this.checkBoxShowLive.Size = new System.Drawing.Size(96, 17);
+            this.checkBoxShowLive.TabIndex = 6;
+            this.checkBoxShowLive.Text = "Show data live";
+            this.checkBoxShowLive.UseVisualStyleBackColor = true;
+            // 
             // label8
             // 
             this.label8.AutoSize = true;
@@ -345,26 +367,6 @@
             this.checkBoxUpload.TabIndex = 0;
             this.checkBoxUpload.Text = "Send to server:";
             this.checkBoxUpload.UseVisualStyleBackColor = true;
-            // 
-            // checkBoxShowLive
-            // 
-            this.checkBoxShowLive.AutoSize = true;
-            this.checkBoxShowLive.Location = new System.Drawing.Point(472, 44);
-            this.checkBoxShowLive.Name = "checkBoxShowLive";
-            this.checkBoxShowLive.Size = new System.Drawing.Size(96, 17);
-            this.checkBoxShowLive.TabIndex = 6;
-            this.checkBoxShowLive.Text = "Show data live";
-            this.checkBoxShowLive.UseVisualStyleBackColor = true;
-            // 
-            // checkBoxSendLocationOnly
-            // 
-            this.checkBoxSendLocationOnly.AutoSize = true;
-            this.checkBoxSendLocationOnly.Location = new System.Drawing.Point(257, 44);
-            this.checkBoxSendLocationOnly.Name = "checkBoxSendLocationOnly";
-            this.checkBoxSendLocationOnly.Size = new System.Drawing.Size(117, 17);
-            this.checkBoxSendLocationOnly.TabIndex = 7;
-            this.checkBoxSendLocationOnly.Text = "Location Data Only";
-            this.checkBoxSendLocationOnly.UseVisualStyleBackColor = true;
             // 
             // FormTracker
             // 
