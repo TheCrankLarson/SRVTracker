@@ -22,6 +22,7 @@ namespace SRVTracker
             InitializeComponent();
             InitClientId();
             InitStatusLocation();
+            buttonTest.Visible = System.Diagnostics.Debugger.IsAttached;
         }
 
         private void InitClientId()
@@ -111,6 +112,12 @@ namespace SRVTracker
 
             // Stop tracking
             statusFileWatcher.EnableRaisingEvents = false;
+            try
+            {
+                _udpClient.Close();
+            }
+            catch { }
+            _udpClient = null;
             buttonTrack.Text = "Track";
             AddLog("Status tracking stopped");
         }
@@ -120,9 +127,19 @@ namespace SRVTracker
             log = $"{DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")}  {log}";
             Action addLogAction = new Action(() => {
                 listBoxLog.BeginUpdate();
-                listBoxLog.Items.Add(log);
+                listBoxLog.Items.Add(log);                
                 if (listBoxLog.Items.Count > 200)
+                {
+                    int topOffset = listBoxLog.Items.Count - listBoxLog.TopIndex;
                     listBoxLog.Items.RemoveAt(0);
+
+                    if ( !checkBoxAutoScroll.Checked && (listBoxLog.Items.Count - topOffset >= 0) )
+                        listBoxLog.TopIndex = listBoxLog.Items.Count - topOffset;
+                }
+                if (checkBoxAutoScroll.Checked)
+                {
+                    listBoxLog.TopIndex = listBoxLog.Items.Count-1;
+                }
                 listBoxLog.EndUpdate();
             });
             if (listBoxLog.InvokeRequired)
@@ -143,9 +160,7 @@ namespace SRVTracker
                 using (FileStream fs = new FileStream(statusFile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                 {
                     using (StreamReader sr = new StreamReader(fs))
-                    {
                         status = sr.ReadToEnd();
-                    }
                     fs.Close();
                 }
             }
@@ -278,6 +293,8 @@ namespace SRVTracker
         {
             try
             {
+                // This is very inefficient, save to file should only be enabled for debugging
+                // I may revisit this at some point if more features are added for local tracking
                 System.IO.File.AppendAllText(textBoxSaveFile.Text, edEvent.TrackingInfo);
             }
             catch (Exception ex)
@@ -301,7 +318,7 @@ namespace SRVTracker
                 if (checkBoxSendLocationOnly.Checked)
                     eventData = $"{textBoxClientId.Text},{edEvent.TrackingInfo}";
                 else
-                    eventData = $"{textBoxClientId.Text}:{edEvent.RawData}";
+                    eventData = $"{textBoxClientId.Text}:{edEvent.RawData.Trim()}";
                 Byte[] sendBytes = Encoding.ASCII.GetBytes(eventData);
                 try
                 {
@@ -313,8 +330,6 @@ namespace SRVTracker
                 {
                     AddLog($"Failed to send UDP update: {e.Message}");
                 }
-                //if (!AsynchronousClient.SendMessage(textBoxUploadServer.Text, edEvent.TrackingInfo))
-                 //   AddLog("Failed to upload data to server");
             }
             catch (Exception ex)
             {

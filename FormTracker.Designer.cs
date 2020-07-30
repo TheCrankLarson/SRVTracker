@@ -60,6 +60,7 @@
             this.checkBoxSaveToFile = new System.Windows.Forms.CheckBox();
             this.textBoxUploadServer = new System.Windows.Forms.TextBox();
             this.checkBoxUpload = new System.Windows.Forms.CheckBox();
+            this.checkBoxAutoScroll = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.statusFileWatcher)).BeginInit();
             this.groupBox2.SuspendLayout();
@@ -275,6 +276,7 @@
             // 
             // groupBox4
             // 
+            this.groupBox4.Controls.Add(this.checkBoxAutoScroll);
             this.groupBox4.Controls.Add(this.checkBoxSendLocationOnly);
             this.groupBox4.Controls.Add(this.checkBoxShowLive);
             this.groupBox4.Controls.Add(this.label8);
@@ -305,7 +307,7 @@
             // checkBoxShowLive
             // 
             this.checkBoxShowLive.AutoSize = true;
-            this.checkBoxShowLive.Location = new System.Drawing.Point(472, 44);
+            this.checkBoxShowLive.Location = new System.Drawing.Point(391, 44);
             this.checkBoxShowLive.Name = "checkBoxShowLive";
             this.checkBoxShowLive.Size = new System.Drawing.Size(96, 17);
             this.checkBoxShowLive.TabIndex = 6;
@@ -367,6 +369,16 @@
             this.checkBoxUpload.TabIndex = 0;
             this.checkBoxUpload.Text = "Send to server:";
             this.checkBoxUpload.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxAutoScroll
+            // 
+            this.checkBoxAutoScroll.AutoSize = true;
+            this.checkBoxAutoScroll.Location = new System.Drawing.Point(493, 44);
+            this.checkBoxAutoScroll.Name = "checkBoxAutoScroll";
+            this.checkBoxAutoScroll.Size = new System.Drawing.Size(75, 17);
+            this.checkBoxAutoScroll.TabIndex = 8;
+            this.checkBoxAutoScroll.Text = "Auto-scroll";
+            this.checkBoxAutoScroll.UseVisualStyleBackColor = true;
             // 
             // FormTracker
             // 
@@ -435,6 +447,7 @@
         private System.Windows.Forms.TextBox textBoxClientId;
         private System.Windows.Forms.CheckBox checkBoxShowLive;
         private System.Windows.Forms.CheckBox checkBoxSendLocationOnly;
+        private System.Windows.Forms.CheckBox checkBoxAutoScroll;
     }
 }
 
