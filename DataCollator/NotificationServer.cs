@@ -96,8 +96,7 @@ namespace DataCollator
             // Send the notification to any listening Urls
             if (_registeredNotificationUrls.Count > 0)
             {
-                byte[] buffer = System.Text.Encoding.UTF8.GetBytes(message);
-                ByteArrayContent notificationContent = new ByteArrayContent(buffer);
+                StringContent notificationContent = new StringContent(message);
                 foreach (string listenerUrl in _registeredNotificationUrls)
                 {
                     _httpClient.PostAsync(listenerUrl, notificationContent); // Async, we don't want to wait
@@ -139,11 +138,11 @@ namespace DataCollator
                 byte[] buffer = System.Text.Encoding.UTF8.GetBytes(responseText);
                 Context.Response.ContentLength64 = buffer.Length;
                 Context.Response.StatusCode = (int)HttpStatusCode.OK;
+
                 using (Stream output = Context.Response.OutputStream)
-                {
                     output.Write(buffer, 0, buffer.Length);
-                }
                 Context.Response.OutputStream.Flush();
+
                 Context.Response.Close();
             }
             else
@@ -227,22 +226,24 @@ namespace DataCollator
         private bool isValidClientRegistration(string registrationData, out string responseText)
         {
             responseText = "";
-            if (registrationData.ToLower().StartsWith("Subscribe:"))
+            if (registrationData.ToLower().StartsWith("subscribe:"))
             {
                 // This is a subscription request (for us to send notifications to the specified URL)
                 string notificationUrl = registrationData.Substring(10).Trim();
-                //string responseText = "";
-                if (!_registeredNotificationUrls.Contains(notificationUrl))
+
+                if (notificationUrl.ToLower().StartsWith("http")) // Only accept http/s URLs
                 {
-                    _registeredNotificationUrls.Add(notificationUrl);
-                    responseText = $"Successfully registered Url: {notificationUrl}";
-                    return true;
+                    if (!_registeredNotificationUrls.Contains(notificationUrl))
+                    {
+                        _registeredNotificationUrls.Add(notificationUrl);
+                        responseText = $"Successfully registered Url: {notificationUrl}";
+                    }
+                    else
+                        responseText = $"Url already registered: {notificationUrl}";
                 }
                 else
-                {
-                    responseText = $"Url already registered: {notificationUrl}";
-                    return true;
-                }
+                    responseText = $"Invalid Url: {notificationUrl}";
+                return true;
             }
             return false;
         }
