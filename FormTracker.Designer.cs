@@ -139,6 +139,7 @@
             // textBoxSRVHeading
             // 
             this.textBoxSRVHeading.Location = new System.Drawing.Point(394, 19);
+            this.textBoxSRVHeading.MaxLength = 20;
             this.textBoxSRVHeading.Name = "textBoxSRVHeading";
             this.textBoxSRVHeading.Size = new System.Drawing.Size(100, 20);
             this.textBoxSRVHeading.TabIndex = 4;
@@ -164,6 +165,7 @@
             // textBoxSRVLatitude
             // 
             this.textBoxSRVLatitude.Location = new System.Drawing.Point(232, 19);
+            this.textBoxSRVLatitude.MaxLength = 20;
             this.textBoxSRVLatitude.Name = "textBoxSRVLatitude";
             this.textBoxSRVLatitude.Size = new System.Drawing.Size(100, 20);
             this.textBoxSRVLatitude.TabIndex = 1;
@@ -171,6 +173,7 @@
             // textBoxSRVLongitude
             // 
             this.textBoxSRVLongitude.Location = new System.Drawing.Point(69, 19);
+            this.textBoxSRVLongitude.MaxLength = 20;
             this.textBoxSRVLongitude.Name = "textBoxSRVLongitude";
             this.textBoxSRVLongitude.Size = new System.Drawing.Size(100, 20);
             this.textBoxSRVLongitude.TabIndex = 0;
@@ -202,6 +205,7 @@
             // textBoxShipHeading
             // 
             this.textBoxShipHeading.Location = new System.Drawing.Point(393, 19);
+            this.textBoxShipHeading.MaxLength = 20;
             this.textBoxShipHeading.Name = "textBoxShipHeading";
             this.textBoxShipHeading.Size = new System.Drawing.Size(100, 20);
             this.textBoxShipHeading.TabIndex = 8;
@@ -227,6 +231,7 @@
             // textBoxShipLatitude
             // 
             this.textBoxShipLatitude.Location = new System.Drawing.Point(232, 19);
+            this.textBoxShipLatitude.MaxLength = 20;
             this.textBoxShipLatitude.Name = "textBoxShipLatitude";
             this.textBoxShipLatitude.Size = new System.Drawing.Size(100, 20);
             this.textBoxShipLatitude.TabIndex = 5;
@@ -234,6 +239,7 @@
             // textBoxShipLongitude
             // 
             this.textBoxShipLongitude.Location = new System.Drawing.Point(69, 19);
+            this.textBoxShipLongitude.MaxLength = 20;
             this.textBoxShipLongitude.Name = "textBoxShipLongitude";
             this.textBoxShipLongitude.Size = new System.Drawing.Size(100, 20);
             this.textBoxShipLongitude.TabIndex = 4;
@@ -326,6 +332,7 @@
             // textBoxClientId
             // 
             this.textBoxClientId.Location = new System.Drawing.Point(80, 42);
+            this.textBoxClientId.MaxLength = 25;
             this.textBoxClientId.Name = "textBoxClientId";
             this.textBoxClientId.Size = new System.Drawing.Size(171, 20);
             this.textBoxClientId.TabIndex = 4;
@@ -352,6 +359,7 @@
             // textBoxUploadServer
             // 
             this.textBoxUploadServer.Location = new System.Drawing.Point(110, 16);
+            this.textBoxUploadServer.MaxLength = 100;
             this.textBoxUploadServer.Name = "textBoxUploadServer";
             this.textBoxUploadServer.Size = new System.Drawing.Size(171, 20);
             this.textBoxUploadServer.TabIndex = 1;

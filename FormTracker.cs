@@ -47,7 +47,7 @@ namespace SRVTracker
             textBoxClientId.Text = Guid.NewGuid().ToString();
             try
             {
-                System.IO.File.AppendAllText(ClientIdFile, textBoxClientId.Text);
+                System.IO.File.WriteAllText(ClientIdFile, textBoxClientId.Text);
                 AddLog($"Saved client Id to file: {ClientIdFile}");
             }
             catch (Exception ex)
@@ -362,7 +362,7 @@ namespace SRVTracker
         {
             try
             {
-                System.IO.File.AppendAllText(ClientIdFile, textBoxClientId.Text);
+                System.IO.File.WriteAllText(ClientIdFile, textBoxClientId.Text);
                 //AddLog($"Saved client Id to file: {ClientIdFile}"); // Too noisy, as it writes after every change! Too lazy to optimise this
             }
             catch (Exception ex)
