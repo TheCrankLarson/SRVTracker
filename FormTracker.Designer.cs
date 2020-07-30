@@ -329,6 +329,7 @@
             this.textBoxClientId.Name = "textBoxClientId";
             this.textBoxClientId.Size = new System.Drawing.Size(171, 20);
             this.textBoxClientId.TabIndex = 4;
+            this.textBoxClientId.TextChanged += new System.EventHandler(this.textBoxClientId_TextChanged);
             // 
             // textBoxSaveFile
             // 
@@ -341,8 +342,6 @@
             // checkBoxSaveToFile
             // 
             this.checkBoxSaveToFile.AutoSize = true;
-            this.checkBoxSaveToFile.Checked = true;
-            this.checkBoxSaveToFile.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxSaveToFile.Location = new System.Drawing.Point(287, 18);
             this.checkBoxSaveToFile.Name = "checkBoxSaveToFile";
             this.checkBoxSaveToFile.Size = new System.Drawing.Size(82, 17);

@@ -213,7 +213,7 @@ namespace DataCollator
                 // Adjust indexes
                 foreach (string client in _clientNotificationPointer.Keys)
                 {
-                    if (_clientNotificationPointer[client] - deleteBefore > 0)
+                    if (_clientNotificationPointer[client] > deleteBefore)
                         _clientNotificationPointer[client] = _clientNotificationPointer[client] - deleteBefore;
                     else
                         _clientNotificationPointer[client] = 0;

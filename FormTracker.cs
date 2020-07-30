@@ -357,5 +357,18 @@ namespace SRVTracker
                 }
             }
         }
+
+        private void textBoxClientId_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                System.IO.File.AppendAllText(ClientIdFile, textBoxClientId.Text);
+                //AddLog($"Saved client Id to file: {ClientIdFile}"); // Too noisy, as it writes after every change! Too lazy to optimise this
+            }
+            catch (Exception ex)
+            {
+                AddLog($"Error saving client Id to file: {ex.Message}");
+            }
+        }
     }
 }
