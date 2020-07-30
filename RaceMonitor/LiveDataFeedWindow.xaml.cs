@@ -68,7 +68,16 @@ namespace RaceMonitor
                 {
                     foreach (string ev in events.Split('\n'))
                     {
-
+                        if (ev.Substring(ev.IndexOf(',')+1,1)=="{")
+                        {
+                            // We've received a full event
+                        }
+                        else
+                        {
+                            // This is location data only
+                            string[] locationData = ev.Split(',');
+                            // Tracking info is: clientid,timestamp,latitude,longitude,altitude,heading,planet radius,flags
+                        }
                     }
                 }
             }

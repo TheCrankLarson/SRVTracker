@@ -206,7 +206,7 @@ namespace DataCollator
             {
                 lock (_notificationLock)
                 {
-                    if (deleteBefore > _notifications.Count)
+                    if (deleteBefore >= _notifications.Count)
                         _notifications.Clear();
                     else
                         _notifications.RemoveRange(0, deleteBefore);

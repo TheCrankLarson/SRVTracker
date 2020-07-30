@@ -33,9 +33,7 @@ namespace DataCollator
             {
                 UDPListener.StartListening((int)numericUpDown1.Value);
                 buttonStart.Text = "Stop";
-
                 notificationServer = new NotificationServer(textBoxWebhookUrl.Text);
-
                 return;
             }
             
