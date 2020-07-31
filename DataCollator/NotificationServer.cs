@@ -10,6 +10,7 @@ using System.Net;
 using System.Net.Http;
 using System.IO;
 using System.Threading.Tasks;
+using System.Device.Location;
 
 namespace DataCollator
 {
@@ -23,6 +24,7 @@ namespace DataCollator
         private List<String> _notifications = new List<string>(10000); // List of all notifications, pruned as each client gets up to date
         private Dictionary<string, int> _clientNotificationPointer = new Dictionary<string, int>(); // Pointer into the notification table for each client
         private Dictionary<string, DateTime> _clientLastRequestTime = new Dictionary<string, DateTime>();
+        private Dictionary<string, GeoCoordinate> _playerLocations = new Dictionary<string, GeoCoordinate>(); //  Store the current position of commanders
         private readonly object _notificationLock = new object();
         private int _pruneCounter = 0;
         private Stream _logStream = null;
@@ -308,6 +310,11 @@ namespace DataCollator
                     Log($"Subscription Url invalid: {notificationUrl}");
                 }
                 return true;
+            }
+            if (registrationData.Equals("LOCATIONS"))
+            {
+                // This is a request for all known current locations
+
             }
             return false;
         }

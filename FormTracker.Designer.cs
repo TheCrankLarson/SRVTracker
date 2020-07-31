@@ -51,28 +51,37 @@
             this.buttonTest = new System.Windows.Forms.Button();
             this.label7 = new System.Windows.Forms.Label();
             this.labelLastUpdateTime = new System.Windows.Forms.Label();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.checkBoxAutoScroll = new System.Windows.Forms.CheckBox();
             this.checkBoxSendLocationOnly = new System.Windows.Forms.CheckBox();
             this.checkBoxShowLive = new System.Windows.Forms.CheckBox();
-            this.label8 = new System.Windows.Forms.Label();
             this.textBoxClientId = new System.Windows.Forms.TextBox();
             this.textBoxSaveFile = new System.Windows.Forms.TextBox();
             this.checkBoxSaveToFile = new System.Windows.Forms.CheckBox();
             this.textBoxUploadServer = new System.Windows.Forms.TextBox();
             this.checkBoxUpload = new System.Windows.Forms.CheckBox();
-            this.checkBoxAutoScroll = new System.Windows.Forms.CheckBox();
+            this.buttonLocator = new System.Windows.Forms.Button();
+            this.buttonRoutePlanner = new System.Windows.Forms.Button();
+            this.buttonExit = new System.Windows.Forms.Button();
+            this.buttonShowConfig = new System.Windows.Forms.Button();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.groupBox8 = new System.Windows.Forms.GroupBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.statusFileWatcher)).BeginInit();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
-            this.groupBox4.SuspendLayout();
+            this.groupBox5.SuspendLayout();
+            this.groupBox6.SuspendLayout();
+            this.groupBox7.SuspendLayout();
+            this.groupBox8.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.buttonBrowseStatusFile);
             this.groupBox1.Controls.Add(this.textBoxStatusFile);
-            this.groupBox1.Location = new System.Drawing.Point(12, 10);
+            this.groupBox1.Location = new System.Drawing.Point(281, 12);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(431, 48);
             this.groupBox1.TabIndex = 0;
@@ -104,7 +113,7 @@
             // 
             // buttonTrack
             // 
-            this.buttonTrack.Location = new System.Drawing.Point(510, 12);
+            this.buttonTrack.Location = new System.Drawing.Point(200, 144);
             this.buttonTrack.Name = "buttonTrack";
             this.buttonTrack.Size = new System.Drawing.Size(75, 23);
             this.buttonTrack.TabIndex = 1;
@@ -120,9 +129,9 @@
             this.groupBox2.Controls.Add(this.label1);
             this.groupBox2.Controls.Add(this.textBoxSRVLatitude);
             this.groupBox2.Controls.Add(this.textBoxSRVLongitude);
-            this.groupBox2.Location = new System.Drawing.Point(12, 143);
+            this.groupBox2.Location = new System.Drawing.Point(12, 12);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(574, 52);
+            this.groupBox2.Size = new System.Drawing.Size(263, 60);
             this.groupBox2.TabIndex = 2;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "SRV Status";
@@ -130,7 +139,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(338, 22);
+            this.label5.Location = new System.Drawing.Point(174, 16);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(50, 13);
             this.label5.TabIndex = 5;
@@ -138,16 +147,16 @@
             // 
             // textBoxSRVHeading
             // 
-            this.textBoxSRVHeading.Location = new System.Drawing.Point(394, 19);
+            this.textBoxSRVHeading.Location = new System.Drawing.Point(177, 32);
             this.textBoxSRVHeading.MaxLength = 20;
             this.textBoxSRVHeading.Name = "textBoxSRVHeading";
-            this.textBoxSRVHeading.Size = new System.Drawing.Size(100, 20);
+            this.textBoxSRVHeading.Size = new System.Drawing.Size(78, 20);
             this.textBoxSRVHeading.TabIndex = 4;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(175, 22);
+            this.label2.Location = new System.Drawing.Point(90, 16);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(48, 13);
             this.label2.TabIndex = 3;
@@ -156,7 +165,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 22);
+            this.label1.Location = new System.Drawing.Point(6, 16);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(57, 13);
             this.label1.TabIndex = 2;
@@ -164,18 +173,18 @@
             // 
             // textBoxSRVLatitude
             // 
-            this.textBoxSRVLatitude.Location = new System.Drawing.Point(232, 19);
+            this.textBoxSRVLatitude.Location = new System.Drawing.Point(93, 32);
             this.textBoxSRVLatitude.MaxLength = 20;
             this.textBoxSRVLatitude.Name = "textBoxSRVLatitude";
-            this.textBoxSRVLatitude.Size = new System.Drawing.Size(100, 20);
+            this.textBoxSRVLatitude.Size = new System.Drawing.Size(78, 20);
             this.textBoxSRVLatitude.TabIndex = 1;
             // 
             // textBoxSRVLongitude
             // 
-            this.textBoxSRVLongitude.Location = new System.Drawing.Point(69, 19);
+            this.textBoxSRVLongitude.Location = new System.Drawing.Point(9, 32);
             this.textBoxSRVLongitude.MaxLength = 20;
             this.textBoxSRVLongitude.Name = "textBoxSRVLongitude";
-            this.textBoxSRVLongitude.Size = new System.Drawing.Size(100, 20);
+            this.textBoxSRVLongitude.Size = new System.Drawing.Size(78, 20);
             this.textBoxSRVLongitude.TabIndex = 0;
             // 
             // groupBox3
@@ -186,9 +195,9 @@
             this.groupBox3.Controls.Add(this.label4);
             this.groupBox3.Controls.Add(this.textBoxShipLatitude);
             this.groupBox3.Controls.Add(this.textBoxShipLongitude);
-            this.groupBox3.Location = new System.Drawing.Point(12, 201);
+            this.groupBox3.Location = new System.Drawing.Point(12, 78);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(574, 51);
+            this.groupBox3.Size = new System.Drawing.Size(263, 60);
             this.groupBox3.TabIndex = 3;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Ship Status";
@@ -196,7 +205,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(338, 22);
+            this.label6.Location = new System.Drawing.Point(174, 16);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(50, 13);
             this.label6.TabIndex = 9;
@@ -204,16 +213,16 @@
             // 
             // textBoxShipHeading
             // 
-            this.textBoxShipHeading.Location = new System.Drawing.Point(393, 19);
+            this.textBoxShipHeading.Location = new System.Drawing.Point(174, 32);
             this.textBoxShipHeading.MaxLength = 20;
             this.textBoxShipHeading.Name = "textBoxShipHeading";
-            this.textBoxShipHeading.Size = new System.Drawing.Size(100, 20);
+            this.textBoxShipHeading.Size = new System.Drawing.Size(78, 20);
             this.textBoxShipHeading.TabIndex = 8;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(175, 22);
+            this.label3.Location = new System.Drawing.Point(87, 16);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(48, 13);
             this.label3.TabIndex = 7;
@@ -222,7 +231,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(6, 22);
+            this.label4.Location = new System.Drawing.Point(6, 16);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(57, 13);
             this.label4.TabIndex = 6;
@@ -230,31 +239,31 @@
             // 
             // textBoxShipLatitude
             // 
-            this.textBoxShipLatitude.Location = new System.Drawing.Point(232, 19);
+            this.textBoxShipLatitude.Location = new System.Drawing.Point(90, 32);
             this.textBoxShipLatitude.MaxLength = 20;
             this.textBoxShipLatitude.Name = "textBoxShipLatitude";
-            this.textBoxShipLatitude.Size = new System.Drawing.Size(100, 20);
+            this.textBoxShipLatitude.Size = new System.Drawing.Size(78, 20);
             this.textBoxShipLatitude.TabIndex = 5;
             // 
             // textBoxShipLongitude
             // 
-            this.textBoxShipLongitude.Location = new System.Drawing.Point(69, 19);
+            this.textBoxShipLongitude.Location = new System.Drawing.Point(6, 32);
             this.textBoxShipLongitude.MaxLength = 20;
             this.textBoxShipLongitude.Name = "textBoxShipLongitude";
-            this.textBoxShipLongitude.Size = new System.Drawing.Size(100, 20);
+            this.textBoxShipLongitude.Size = new System.Drawing.Size(78, 20);
             this.textBoxShipLongitude.TabIndex = 4;
             // 
             // listBoxLog
             // 
             this.listBoxLog.FormattingEnabled = true;
-            this.listBoxLog.Location = new System.Drawing.Point(12, 263);
+            this.listBoxLog.Location = new System.Drawing.Point(12, 221);
             this.listBoxLog.Name = "listBoxLog";
-            this.listBoxLog.Size = new System.Drawing.Size(573, 147);
+            this.listBoxLog.Size = new System.Drawing.Size(700, 147);
             this.listBoxLog.TabIndex = 4;
             // 
             // buttonTest
             // 
-            this.buttonTest.Location = new System.Drawing.Point(450, 12);
+            this.buttonTest.Location = new System.Drawing.Point(140, 173);
             this.buttonTest.Name = "buttonTest";
             this.buttonTest.Size = new System.Drawing.Size(54, 23);
             this.buttonTest.TabIndex = 5;
@@ -265,7 +274,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(464, 48);
+            this.label7.Location = new System.Drawing.Point(154, 199);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(66, 13);
             this.label7.TabIndex = 6;
@@ -274,64 +283,47 @@
             // labelLastUpdateTime
             // 
             this.labelLastUpdateTime.AutoSize = true;
-            this.labelLastUpdateTime.Location = new System.Drawing.Point(536, 48);
+            this.labelLastUpdateTime.Location = new System.Drawing.Point(226, 199);
             this.labelLastUpdateTime.Name = "labelLastUpdateTime";
             this.labelLastUpdateTime.Size = new System.Drawing.Size(49, 13);
             this.labelLastUpdateTime.TabIndex = 7;
             this.labelLastUpdateTime.Text = "00:00:00";
             // 
-            // groupBox4
+            // checkBoxAutoScroll
             // 
-            this.groupBox4.Controls.Add(this.checkBoxAutoScroll);
-            this.groupBox4.Controls.Add(this.checkBoxSendLocationOnly);
-            this.groupBox4.Controls.Add(this.checkBoxShowLive);
-            this.groupBox4.Controls.Add(this.label8);
-            this.groupBox4.Controls.Add(this.textBoxClientId);
-            this.groupBox4.Controls.Add(this.textBoxSaveFile);
-            this.groupBox4.Controls.Add(this.checkBoxSaveToFile);
-            this.groupBox4.Controls.Add(this.textBoxUploadServer);
-            this.groupBox4.Controls.Add(this.checkBoxUpload);
-            this.groupBox4.Location = new System.Drawing.Point(12, 64);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(574, 73);
-            this.groupBox4.TabIndex = 8;
-            this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Data Collection";
+            this.checkBoxAutoScroll.AutoSize = true;
+            this.checkBoxAutoScroll.Location = new System.Drawing.Point(542, 202);
+            this.checkBoxAutoScroll.Name = "checkBoxAutoScroll";
+            this.checkBoxAutoScroll.Size = new System.Drawing.Size(75, 17);
+            this.checkBoxAutoScroll.TabIndex = 8;
+            this.checkBoxAutoScroll.Text = "Auto-scroll";
+            this.checkBoxAutoScroll.UseVisualStyleBackColor = true;
             // 
             // checkBoxSendLocationOnly
             // 
             this.checkBoxSendLocationOnly.AutoSize = true;
             this.checkBoxSendLocationOnly.Checked = true;
             this.checkBoxSendLocationOnly.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxSendLocationOnly.Location = new System.Drawing.Point(257, 44);
+            this.checkBoxSendLocationOnly.Location = new System.Drawing.Point(6, 19);
             this.checkBoxSendLocationOnly.Name = "checkBoxSendLocationOnly";
-            this.checkBoxSendLocationOnly.Size = new System.Drawing.Size(117, 17);
+            this.checkBoxSendLocationOnly.Size = new System.Drawing.Size(160, 17);
             this.checkBoxSendLocationOnly.TabIndex = 7;
-            this.checkBoxSendLocationOnly.Text = "Location Data Only";
+            this.checkBoxSendLocationOnly.Text = "Log/send location data Only";
             this.checkBoxSendLocationOnly.UseVisualStyleBackColor = true;
             // 
             // checkBoxShowLive
             // 
             this.checkBoxShowLive.AutoSize = true;
-            this.checkBoxShowLive.Location = new System.Drawing.Point(398, 44);
+            this.checkBoxShowLive.Location = new System.Drawing.Point(623, 202);
             this.checkBoxShowLive.Name = "checkBoxShowLive";
             this.checkBoxShowLive.Size = new System.Drawing.Size(89, 17);
             this.checkBoxShowLive.TabIndex = 6;
             this.checkBoxShowLive.Text = "Show live log";
             this.checkBoxShowLive.UseVisualStyleBackColor = true;
             // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(26, 45);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(48, 13);
-            this.label8.TabIndex = 5;
-            this.label8.Text = "Client Id:";
-            // 
             // textBoxClientId
             // 
-            this.textBoxClientId.Location = new System.Drawing.Point(80, 42);
+            this.textBoxClientId.Location = new System.Drawing.Point(6, 19);
             this.textBoxClientId.MaxLength = 25;
             this.textBoxClientId.Name = "textBoxClientId";
             this.textBoxClientId.Size = new System.Drawing.Size(171, 20);
@@ -340,16 +332,16 @@
             // 
             // textBoxSaveFile
             // 
-            this.textBoxSaveFile.Location = new System.Drawing.Point(375, 16);
+            this.textBoxSaveFile.Location = new System.Drawing.Point(94, 19);
             this.textBoxSaveFile.Name = "textBoxSaveFile";
-            this.textBoxSaveFile.Size = new System.Drawing.Size(193, 20);
+            this.textBoxSaveFile.Size = new System.Drawing.Size(142, 20);
             this.textBoxSaveFile.TabIndex = 3;
             this.textBoxSaveFile.Text = "tracking.log";
             // 
             // checkBoxSaveToFile
             // 
             this.checkBoxSaveToFile.AutoSize = true;
-            this.checkBoxSaveToFile.Location = new System.Drawing.Point(287, 18);
+            this.checkBoxSaveToFile.Location = new System.Drawing.Point(6, 21);
             this.checkBoxSaveToFile.Name = "checkBoxSaveToFile";
             this.checkBoxSaveToFile.Size = new System.Drawing.Size(82, 17);
             this.checkBoxSaveToFile.TabIndex = 2;
@@ -358,10 +350,10 @@
             // 
             // textBoxUploadServer
             // 
-            this.textBoxUploadServer.Location = new System.Drawing.Point(110, 16);
+            this.textBoxUploadServer.Location = new System.Drawing.Point(6, 42);
             this.textBoxUploadServer.MaxLength = 100;
             this.textBoxUploadServer.Name = "textBoxUploadServer";
-            this.textBoxUploadServer.Size = new System.Drawing.Size(171, 20);
+            this.textBoxUploadServer.Size = new System.Drawing.Size(186, 20);
             this.textBoxUploadServer.TabIndex = 1;
             this.textBoxUploadServer.Text = "srvtracker.darkbytes.co.uk";
             // 
@@ -377,22 +369,103 @@
             this.checkBoxUpload.Text = "Send to server:";
             this.checkBoxUpload.UseVisualStyleBackColor = true;
             // 
-            // checkBoxAutoScroll
+            // buttonLocator
             // 
-            this.checkBoxAutoScroll.AutoSize = true;
-            this.checkBoxAutoScroll.Location = new System.Drawing.Point(493, 44);
-            this.checkBoxAutoScroll.Name = "checkBoxAutoScroll";
-            this.checkBoxAutoScroll.Size = new System.Drawing.Size(75, 17);
-            this.checkBoxAutoScroll.TabIndex = 8;
-            this.checkBoxAutoScroll.Text = "Auto-scroll";
-            this.checkBoxAutoScroll.UseVisualStyleBackColor = true;
+            this.buttonLocator.Location = new System.Drawing.Point(119, 144);
+            this.buttonLocator.Name = "buttonLocator";
+            this.buttonLocator.Size = new System.Drawing.Size(75, 23);
+            this.buttonLocator.TabIndex = 9;
+            this.buttonLocator.Text = "Locator...";
+            this.buttonLocator.UseVisualStyleBackColor = true;
+            this.buttonLocator.Click += new System.EventHandler(this.buttonLocator_Click);
+            // 
+            // buttonRoutePlanner
+            // 
+            this.buttonRoutePlanner.Enabled = false;
+            this.buttonRoutePlanner.Location = new System.Drawing.Point(12, 144);
+            this.buttonRoutePlanner.Name = "buttonRoutePlanner";
+            this.buttonRoutePlanner.Size = new System.Drawing.Size(101, 23);
+            this.buttonRoutePlanner.TabIndex = 10;
+            this.buttonRoutePlanner.Text = "Route Planner";
+            this.buttonRoutePlanner.UseVisualStyleBackColor = true;
+            // 
+            // buttonExit
+            // 
+            this.buttonExit.Location = new System.Drawing.Point(200, 173);
+            this.buttonExit.Name = "buttonExit";
+            this.buttonExit.Size = new System.Drawing.Size(75, 23);
+            this.buttonExit.TabIndex = 11;
+            this.buttonExit.Text = "Exit";
+            this.buttonExit.UseVisualStyleBackColor = true;
+            this.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
+            // 
+            // buttonShowConfig
+            // 
+            this.buttonShowConfig.Location = new System.Drawing.Point(12, 173);
+            this.buttonShowConfig.Name = "buttonShowConfig";
+            this.buttonShowConfig.Size = new System.Drawing.Size(75, 23);
+            this.buttonShowConfig.TabIndex = 12;
+            this.buttonShowConfig.Text = "Show Config";
+            this.buttonShowConfig.UseVisualStyleBackColor = true;
+            this.buttonShowConfig.Click += new System.EventHandler(this.buttonShowConfig_Click);
+            // 
+            // groupBox5
+            // 
+            this.groupBox5.Controls.Add(this.textBoxClientId);
+            this.groupBox5.Location = new System.Drawing.Point(281, 66);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(183, 50);
+            this.groupBox5.TabIndex = 13;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "Client Id";
+            // 
+            // groupBox6
+            // 
+            this.groupBox6.Controls.Add(this.checkBoxSaveToFile);
+            this.groupBox6.Controls.Add(this.textBoxSaveFile);
+            this.groupBox6.Location = new System.Drawing.Point(470, 66);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(242, 50);
+            this.groupBox6.TabIndex = 14;
+            this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "Local Log";
+            // 
+            // groupBox7
+            // 
+            this.groupBox7.Controls.Add(this.checkBoxUpload);
+            this.groupBox7.Controls.Add(this.textBoxUploadServer);
+            this.groupBox7.Location = new System.Drawing.Point(281, 122);
+            this.groupBox7.Name = "groupBox7";
+            this.groupBox7.Size = new System.Drawing.Size(198, 74);
+            this.groupBox7.TabIndex = 15;
+            this.groupBox7.TabStop = false;
+            this.groupBox7.Text = "Server Upload";
+            // 
+            // groupBox8
+            // 
+            this.groupBox8.Controls.Add(this.checkBoxSendLocationOnly);
+            this.groupBox8.Location = new System.Drawing.Point(485, 122);
+            this.groupBox8.Name = "groupBox8";
+            this.groupBox8.Size = new System.Drawing.Size(227, 74);
+            this.groupBox8.TabIndex = 16;
+            this.groupBox8.TabStop = false;
+            this.groupBox8.Text = "Data Settings";
             // 
             // FormTracker
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(598, 425);
-            this.Controls.Add(this.groupBox4);
+            this.ClientSize = new System.Drawing.Size(280, 219);
+            this.Controls.Add(this.checkBoxAutoScroll);
+            this.Controls.Add(this.groupBox8);
+            this.Controls.Add(this.checkBoxShowLive);
+            this.Controls.Add(this.groupBox7);
+            this.Controls.Add(this.groupBox6);
+            this.Controls.Add(this.groupBox5);
+            this.Controls.Add(this.buttonShowConfig);
+            this.Controls.Add(this.buttonExit);
+            this.Controls.Add(this.buttonRoutePlanner);
+            this.Controls.Add(this.buttonLocator);
             this.Controls.Add(this.labelLastUpdateTime);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.buttonTest);
@@ -403,7 +476,6 @@
             this.Controls.Add(this.groupBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
-            this.MinimizeBox = false;
             this.Name = "FormTracker";
             this.Text = "Vehicle Tracker";
             this.groupBox1.ResumeLayout(false);
@@ -413,8 +485,14 @@
             this.groupBox2.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
-            this.groupBox4.ResumeLayout(false);
-            this.groupBox4.PerformLayout();
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox5.PerformLayout();
+            this.groupBox6.ResumeLayout(false);
+            this.groupBox6.PerformLayout();
+            this.groupBox7.ResumeLayout(false);
+            this.groupBox7.PerformLayout();
+            this.groupBox8.ResumeLayout(false);
+            this.groupBox8.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -445,16 +523,22 @@
         private System.Windows.Forms.TextBox textBoxSRVHeading;
         private System.Windows.Forms.Label labelLastUpdateTime;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.TextBox textBoxSaveFile;
         private System.Windows.Forms.CheckBox checkBoxSaveToFile;
         private System.Windows.Forms.TextBox textBoxUploadServer;
         private System.Windows.Forms.CheckBox checkBoxUpload;
-        private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox textBoxClientId;
         private System.Windows.Forms.CheckBox checkBoxShowLive;
         private System.Windows.Forms.CheckBox checkBoxSendLocationOnly;
         private System.Windows.Forms.CheckBox checkBoxAutoScroll;
+        private System.Windows.Forms.GroupBox groupBox8;
+        private System.Windows.Forms.GroupBox groupBox7;
+        private System.Windows.Forms.GroupBox groupBox6;
+        private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.Button buttonShowConfig;
+        private System.Windows.Forms.Button buttonExit;
+        private System.Windows.Forms.Button buttonRoutePlanner;
+        private System.Windows.Forms.Button buttonLocator;
     }
 }
 

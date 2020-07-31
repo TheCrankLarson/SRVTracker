@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Net.Sockets;
 using System.IO;
+using System.Device.Location;
 
 namespace SRVTracker
 {
@@ -17,6 +18,7 @@ namespace SRVTracker
         UdpClient _udpClient = null;
         const string ClientIdFile = "client.id";
         private string _lastUpdateTime = "";
+        private FormLocator _formLocator = null;
 
         public FormTracker()
         {
@@ -24,6 +26,7 @@ namespace SRVTracker
             InitClientId();
             InitStatusLocation();
             buttonTest.Visible = System.Diagnostics.Debugger.IsAttached;
+            _formLocator = new FormLocator();
         }
 
         private void InitClientId()
@@ -231,6 +234,10 @@ namespace SRVTracker
             if (checkBoxUpload.Checked)
                 UploadToServer(edEvent);
 
+            if (edEvent.PlanetRadius > 0) 
+                if (FormLocator.PlanetaryRadius != edEvent.PlanetRadius)
+                    FormLocator.PlanetaryRadius = edEvent.PlanetRadius;
+
             // Update the UI with the event data
             Action action;
             if (!_lastUpdateTime.Equals(edEvent.TimeStamp.ToString("HH:MM:ss")))
@@ -242,6 +249,14 @@ namespace SRVTracker
                 else
                     action();
             }
+
+            if (edEvent.HasCoordinates)
+                if (_formLocator != null)
+                    if (_formLocator.Visible)
+                    {
+                        action = new Action(() => { _formLocator.UpdateLocation(edEvent.Location); });
+                        Task.Run(action);
+                    }
 
             action = new Action(() => { labelLastUpdateTime.Text = DateTime.Now.ToString("HH:mm:ss"); });
             if (labelLastUpdateTime.InvokeRequired)
@@ -382,6 +397,36 @@ namespace SRVTracker
             {
                 AddLog($"Error saving client Id to file: {ex.Message}");
             }
+        }
+
+        private void buttonShowConfig_Click(object sender, EventArgs e)
+        {
+            if (buttonShowConfig.Text.Equals("Show Config"))
+            {
+                buttonShowConfig.Text = "Hide Config";
+                this.Width = 743;
+                this.Height = 420;
+                this.Refresh();
+                return;
+            }
+
+            buttonShowConfig.Text = "Show Config";
+            this.Width = 296;
+            this.Height = 258;
+            this.Refresh();
+        }
+
+        private void buttonExit_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void buttonLocator_Click(object sender, EventArgs e)
+        {
+            if (_formLocator == null)
+                _formLocator = new FormLocator();
+            if (!_formLocator.Visible)
+                _formLocator.Show();
         }
     }
 }
