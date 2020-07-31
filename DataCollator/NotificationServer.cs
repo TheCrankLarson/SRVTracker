@@ -147,17 +147,18 @@ namespace DataCollator
                     sRequest = reader.ReadToEnd();
 
                 Action action;
-                if (request.RawUrl.ToLower().EndsWith("/locations"))
+                if (request.RawUrl.ToLower().EndsWith("/status"))
                 {
                     // This is a request for all known locations/statuses of clients
-                    Log("Request for player locations received");
+                    Log("Request for player status received");
                     action = (() => {
                         SendLocations(context);
                     });
                 }
-                action = (() => {
-                    DetermineResponse(sRequest, context);
-                });
+                else
+                    action = (() => {
+                        DetermineResponse(sRequest, context);
+                    });
                 Task.Run(action);
                 _Listener.BeginGetContext(new AsyncCallback(ListenerCallback), _Listener);               
             }
