@@ -83,6 +83,7 @@
     <Compile Include="FormTracker.Designer.cs">
       <DependentUpon>FormTracker.cs</DependentUpon>
     </Compile>
+    <Compile Include="Location.cs" />
     <Compile Include="LocationManager.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -91,12 +92,6 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WPFLocationManager.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="WPFLocationManager.Designer.cs">
-      <DependentUpon>WPFLocationManager.cs</DependentUpon>
-    </Compile>
     <EmbeddedResource Include="FormAddLocation.resx">
       <DependentUpon>FormAddLocation.cs</DependentUpon>
     </EmbeddedResource>
@@ -121,9 +116,6 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="WPFLocationManager.resx">
-      <DependentUpon>WPFLocationManager.cs</DependentUpon>
-    </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

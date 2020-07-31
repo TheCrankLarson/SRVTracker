@@ -177,9 +177,7 @@ namespace DataCollator
             string clientId = "";
             try
             {
-                clientId = Context.Request.RawUrl.Substring("/DataCollator/status/".Length).ToLower();
-                
-
+                clientId = System.Web.HttpUtility.UrlDecode(Context.Request.RawUrl).Substring("/DataCollator/status/".Length).ToLower();
             }
             catch { }
             if (String.IsNullOrEmpty(clientId))
