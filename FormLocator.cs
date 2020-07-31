@@ -13,15 +13,20 @@ namespace SRVTracker
 {
     public partial class FormLocator : Form
     {
-        private GeoCoordinate _currentPosition = null;
+        private static GeoCoordinate _currentPosition = null;
         private GeoCoordinate _targetPosition = null;
 
         public FormLocator()
         {
             InitializeComponent();
+            buttonUseCurrentLocation.Enabled = false;  // We'll enable it when we have a location
         }
 
         public static double PlanetaryRadius { get; set; } = 0;
+        public static GeoCoordinate CurrentLocation
+        {
+            get { return _currentPosition; }
+        }
 
         public void UpdateLocation(GeoCoordinate CurrentLocation)
         {
@@ -37,7 +42,7 @@ namespace SRVTracker
                 if (distance>1000000)
                 {
                     distance = distance / 1000000;
-                    distanceUnit = "mm";
+                    distanceUnit = "MThanks m";
                 }
                 else if (distance>1000)
                 {
@@ -65,6 +70,11 @@ namespace SRVTracker
                     else
                         action();
                 }
+                action = new Action(() => { buttonUseCurrentLocation.Enabled = false; });
+                if (buttonUseCurrentLocation.InvokeRequired)
+                    buttonUseCurrentLocation.Invoke(action);
+                else
+                    action();
             }
             catch { }
         }
@@ -145,6 +155,27 @@ namespace SRVTracker
             catch { }
             _targetPosition = null;
             groupBoxDestination.BackColor = System.Drawing.SystemColors.Control;
+        }
+
+        private void buttonShowHideTarget_Click(object sender, EventArgs e)
+        {
+            if (this.Height == 228)
+            {
+                // We are expanded, so shrink
+                this.Height = 126;
+            }
+            else
+                this.Height = 228;
+        }
+
+        private void buttonUseCurrentLocation_Click(object sender, EventArgs e)
+        {
+            if (_currentPosition == null)
+                return;
+            _targetPosition = _currentPosition;
+            textBoxLongitude.Text = _targetPosition.Longitude.ToString() ;
+            textBoxLatitude.Text = _targetPosition.Latitude.ToString();
+
         }
     }
 }

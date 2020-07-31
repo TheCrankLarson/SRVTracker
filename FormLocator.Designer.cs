@@ -36,8 +36,12 @@
             this.label1 = new System.Windows.Forms.Label();
             this.textBoxLongitude = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.buttonShowHideTarget = new System.Windows.Forms.Button();
             this.labelDistance = new System.Windows.Forms.Label();
             this.labelHeading = new System.Windows.Forms.Label();
+            this.buttonUseCurrentLocation = new System.Windows.Forms.Button();
+            this.buttonLocations = new System.Windows.Forms.Button();
+            this.buttonPlayers = new System.Windows.Forms.Button();
             this.groupBoxDestination.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -51,17 +55,17 @@
             this.groupBoxDestination.Controls.Add(this.textBoxLatitude);
             this.groupBoxDestination.Controls.Add(this.label1);
             this.groupBoxDestination.Controls.Add(this.textBoxLongitude);
-            this.groupBoxDestination.Location = new System.Drawing.Point(12, 9);
+            this.groupBoxDestination.Location = new System.Drawing.Point(12, 87);
             this.groupBoxDestination.Name = "groupBoxDestination";
-            this.groupBoxDestination.Size = new System.Drawing.Size(332, 64);
+            this.groupBoxDestination.Size = new System.Drawing.Size(331, 64);
             this.groupBoxDestination.TabIndex = 0;
             this.groupBoxDestination.TabStop = false;
-            this.groupBoxDestination.Text = "Destination";
+            this.groupBoxDestination.Text = "Target";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(218, 16);
+            this.label3.Location = new System.Drawing.Point(220, 16);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(42, 13);
             this.label3.TabIndex = 5;
@@ -78,9 +82,9 @@
             // 
             // textBoxAltitude
             // 
-            this.textBoxAltitude.Location = new System.Drawing.Point(221, 32);
+            this.textBoxAltitude.Location = new System.Drawing.Point(223, 32);
             this.textBoxAltitude.Name = "textBoxAltitude";
-            this.textBoxAltitude.Size = new System.Drawing.Size(100, 20);
+            this.textBoxAltitude.Size = new System.Drawing.Size(102, 20);
             this.textBoxAltitude.TabIndex = 3;
             this.textBoxAltitude.TextChanged += new System.EventHandler(this.textBoxAltitude_TextChanged);
             // 
@@ -111,14 +115,24 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.buttonShowHideTarget);
             this.groupBox2.Controls.Add(this.labelDistance);
             this.groupBox2.Controls.Add(this.labelHeading);
-            this.groupBox2.Location = new System.Drawing.Point(12, 79);
+            this.groupBox2.Location = new System.Drawing.Point(12, 12);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(331, 65);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Locator";
+            this.groupBox2.Text = "Bearing";
+            // 
+            // buttonShowHideTarget
+            // 
+            this.buttonShowHideTarget.Location = new System.Drawing.Point(312, 46);
+            this.buttonShowHideTarget.Name = "buttonShowHideTarget";
+            this.buttonShowHideTarget.Size = new System.Drawing.Size(13, 13);
+            this.buttonShowHideTarget.TabIndex = 2;
+            this.buttonShowHideTarget.UseVisualStyleBackColor = true;
+            this.buttonShowHideTarget.Click += new System.EventHandler(this.buttonShowHideTarget_Click);
             // 
             // labelDistance
             // 
@@ -140,12 +154,45 @@
             this.labelHeading.TabIndex = 0;
             this.labelHeading.Text = "0°";
             // 
+            // buttonUseCurrentLocation
+            // 
+            this.buttonUseCurrentLocation.Location = new System.Drawing.Point(12, 157);
+            this.buttonUseCurrentLocation.Name = "buttonUseCurrentLocation";
+            this.buttonUseCurrentLocation.Size = new System.Drawing.Size(117, 23);
+            this.buttonUseCurrentLocation.TabIndex = 6;
+            this.buttonUseCurrentLocation.Text = "Use current location";
+            this.buttonUseCurrentLocation.UseVisualStyleBackColor = true;
+            this.buttonUseCurrentLocation.Click += new System.EventHandler(this.buttonUseCurrentLocation_Click);
+            // 
+            // buttonLocations
+            // 
+            this.buttonLocations.Enabled = false;
+            this.buttonLocations.Location = new System.Drawing.Point(135, 157);
+            this.buttonLocations.Name = "buttonLocations";
+            this.buttonLocations.Size = new System.Drawing.Size(75, 23);
+            this.buttonLocations.TabIndex = 7;
+            this.buttonLocations.Text = "Locations...";
+            this.buttonLocations.UseVisualStyleBackColor = true;
+            // 
+            // buttonPlayers
+            // 
+            this.buttonPlayers.Enabled = false;
+            this.buttonPlayers.Location = new System.Drawing.Point(216, 157);
+            this.buttonPlayers.Name = "buttonPlayers";
+            this.buttonPlayers.Size = new System.Drawing.Size(75, 23);
+            this.buttonPlayers.TabIndex = 8;
+            this.buttonPlayers.Text = "Players...";
+            this.buttonPlayers.UseVisualStyleBackColor = true;
+            // 
             // FormLocator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(355, 156);
+            this.ClientSize = new System.Drawing.Size(354, 189);
+            this.Controls.Add(this.buttonPlayers);
+            this.Controls.Add(this.buttonLocations);
             this.Controls.Add(this.groupBox2);
+            this.Controls.Add(this.buttonUseCurrentLocation);
             this.Controls.Add(this.groupBoxDestination);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "FormLocator";
@@ -170,5 +217,9 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Label labelDistance;
         private System.Windows.Forms.Label labelHeading;
+        private System.Windows.Forms.Button buttonShowHideTarget;
+        private System.Windows.Forms.Button buttonUseCurrentLocation;
+        private System.Windows.Forms.Button buttonLocations;
+        private System.Windows.Forms.Button buttonPlayers;
     }
 }

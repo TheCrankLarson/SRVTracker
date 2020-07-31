@@ -24,10 +24,10 @@ namespace DataCollator
         private List<String> _notifications = new List<string>(10000); // List of all notifications, pruned as each client gets up to date
         private Dictionary<string, int> _clientNotificationPointer = new Dictionary<string, int>(); // Pointer into the notification table for each client
         private Dictionary<string, DateTime> _clientLastRequestTime = new Dictionary<string, DateTime>();
-        private Dictionary<string, GeoCoordinate> _playerLocations = new Dictionary<string, GeoCoordinate>(); //  Store the current position of commanders
+        private Dictionary<string, string> _playerStatus = new Dictionary<string, string>(); //  Store last known status (with coordinates) of client
         private readonly object _notificationLock = new object();
         private int _pruneCounter = 0;
-        private Stream _logStream = null;
+        private FileStream _logStream = null;
 
         public NotificationServer(string ListenURL, bool EnableDebug = false)
         {
@@ -102,9 +102,20 @@ namespace DataCollator
         public void SendNotification(string message)
         {
             // Log the notification for retrieval by clients that are polling
+            string clientId = null;
+            try
+            {
+                clientId = message.Substring(message.IndexOf(','));
+            }
+            catch { }
             lock (_notificationLock)
             {
                 _notifications.Add(message);
+                if (!String.IsNullOrEmpty(clientId))
+                    if (_playerStatus.ContainsKey(clientId))
+                        _playerStatus[clientId] = message;
+                    else
+                        _playerStatus.Add(clientId, message);
             }
             _pruneCounter++;
             if (_pruneCounter>500)
@@ -117,7 +128,7 @@ namespace DataCollator
                 StringContent notificationContent = new StringContent(message);
                 foreach (string listenerUrl in _registeredNotificationUrls)
                 {
-                    _httpClient.PostAsync(listenerUrl, notificationContent); // Async, we don't want to wait
+                    _httpClient.PostAsync(listenerUrl, notificationContent); // Async, we don't want to wait (otherwise one unavailable host could affect others)
                 }
             }
         }
@@ -135,11 +146,45 @@ namespace DataCollator
                 using (StreamReader reader = new StreamReader(request.InputStream))
                     sRequest = reader.ReadToEnd();
 
-                Action action = (() => {
+                Action action;
+                if (request.RawUrl.ToLower().EndsWith("/locations"))
+                {
+                    // This is a request for all known locations/statuses of clients
+                    Log("Request for player locations received");
+                    action = (() => {
+                        SendLocations(context);
+                    });
+                }
+                action = (() => {
                     DetermineResponse(sRequest, context);
                 });
                 Task.Run(action);
                 _Listener.BeginGetContext(new AsyncCallback(ListenerCallback), _Listener);               
+            }
+            catch { }
+        }
+
+        private void SendLocations(HttpListenerContext Context)
+        {
+            // Send all known client locations
+            // Tracking info is: Client Id,timestamp,latitude,longitude,altitude,heading,planet radius,flags
+
+            StringBuilder currentLocations = new StringBuilder();
+            currentLocations.AppendLine("Client Id,timestamp(ticks),latitude,longitude,altitude,heading,planet radius,flags");
+            foreach (string clientId in _playerStatus.Keys)
+                currentLocations.AppendLine(_playerStatus[clientId]);
+
+            try
+            {
+                byte[] buffer = System.Text.Encoding.UTF8.GetBytes(currentLocations.ToString());
+                Context.Response.ContentLength64 = buffer.Length;
+                Context.Response.StatusCode = (int)HttpStatusCode.OK;
+
+                using (Stream output = Context.Response.OutputStream)
+                    output.Write(buffer, 0, buffer.Length);
+                Context.Response.OutputStream.Flush();
+                Context.Response.KeepAlive = true;
+                Context.Response.Close();
             }
             catch { }
         }
@@ -328,11 +373,9 @@ namespace DataCollator
 
             try
             {
-                using (StreamWriter writer = new StreamWriter(_logStream))
-                {
-                    writer.WriteLine(log);
-                    writer.Flush();
-                }
+                byte[] buffer = System.Text.Encoding.UTF8.GetBytes($"{log}\n");
+                _logStream.Write(buffer, 0, buffer.Length);
+                _logStream.Flush();
             }
             catch { }
         }
