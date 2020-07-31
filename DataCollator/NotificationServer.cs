@@ -105,7 +105,8 @@ namespace DataCollator
             string clientId = null;
             try
             {
-                clientId = message.Substring(message.IndexOf(','));
+                // We store clientId in lower case (for case insensitive matching), but return the original (as we store it in the status)
+                clientId = message.Substring(0, message.IndexOf(',')).ToLower();
             }
             catch { }
             lock (_notificationLock)
@@ -147,12 +148,11 @@ namespace DataCollator
                     sRequest = reader.ReadToEnd();
 
                 Action action;
-                if (request.RawUrl.ToLower().EndsWith("/status"))
+                if (request.RawUrl.ToLower().StartsWith("/datacollator/status"))
                 {
-                    // This is a request for all known locations/statuses of clients
-                    Log("Request for player status received");
+                    // This is a request for all known locations/statuses of clients 
                     action = (() => {
-                        SendLocations(context);
+                        SendStatus(context);
                     });
                 }
                 else
@@ -165,19 +165,40 @@ namespace DataCollator
             catch { }
         }
 
-        private void SendLocations(HttpListenerContext Context)
+        private void SendStatus(HttpListenerContext Context)
         {
             // Send all known client locations
             // Tracking info is: Client Id,timestamp,latitude,longitude,altitude,heading,planet radius,flags
 
-            StringBuilder currentLocations = new StringBuilder();
-            currentLocations.AppendLine("Client Id,timestamp(ticks),latitude,longitude,altitude,heading,planet radius,flags");
-            foreach (string clientId in _playerStatus.Keys)
-                currentLocations.AppendLine(_playerStatus[clientId]);
+            StringBuilder status = new StringBuilder();
+            status.AppendLine("Client Id,timestamp(ticks),latitude,longitude,altitude,heading,planet radius,flags");
+
+            // Check if a client Id was specified
+            string clientId = "";
+            try
+            {
+                clientId = Context.Request.RawUrl.Substring("/DataCollator/status/".Length).ToLower();
+                
+
+            }
+            catch { }
+            if (String.IsNullOrEmpty(clientId))
+            {
+                Log("All player status requested");
+                foreach (string id in _playerStatus.Keys)
+                    status.AppendLine(_playerStatus[id]);
+            }
+            else if (_playerStatus.ContainsKey(clientId))
+            {
+                Log($"Player status requested: {clientId}");
+                status.AppendLine(_playerStatus[clientId]);
+            }
+            else
+                Log($"Status requested for invalid client: {clientId}");
 
             try
             {
-                byte[] buffer = System.Text.Encoding.UTF8.GetBytes(currentLocations.ToString());
+                byte[] buffer = System.Text.Encoding.UTF8.GetBytes(status.ToString());
                 Context.Response.ContentLength64 = buffer.Length;
                 Context.Response.StatusCode = (int)HttpStatusCode.OK;
 
