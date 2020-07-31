@@ -22,11 +22,15 @@ namespace DataCollator
         private static HttpClient _httpClient = new HttpClient();
         private List<String> _notifications = new List<string>(10000); // List of all notifications, pruned as each client gets up to date
         private Dictionary<string, int> _clientNotificationPointer = new Dictionary<string, int>(); // Pointer into the notification table for each client
+        private Dictionary<string, DateTime> _clientLastRequestTime = new Dictionary<string, DateTime>();
         private readonly object _notificationLock = new object();
         private int _pruneCounter = 0;
+        private Stream _logStream = null;
 
-        public NotificationServer(string ListenURL)
+        public NotificationServer(string ListenURL, bool EnableDebug = false)
         {
+            if (EnableDebug)
+                _logStream = File.Open("stream.log", FileMode.OpenOrCreate, FileAccess.Write, FileShare.Read);
             URi = ListenURL;
             _Listener = new HttpListener();
 
@@ -36,6 +40,15 @@ namespace DataCollator
         ~NotificationServer()
         {
             Stop();
+            if (_logStream!=null)
+            {
+                try
+                {
+                    _logStream.Close();
+                }
+                catch { }
+                _logStream = null;
+            }
         }
 
         public void Start()
@@ -46,6 +59,7 @@ namespace DataCollator
             {
                 _Listener.Start();
                 _Listener.BeginGetContext(new AsyncCallback(ListenerCallback), _Listener);
+                Log($"Started listening on: {URi}");
             }
             catch
             {
@@ -63,6 +77,7 @@ namespace DataCollator
                 _Listener.Close();
             }
             catch { }
+            Log("Stopped listening");
         }
 
         public int Port
@@ -96,6 +111,7 @@ namespace DataCollator
             // Send the notification to any listening Urls
             if (_registeredNotificationUrls.Count > 0)
             {
+                Log($"Sending notification to {_registeredNotificationUrls.Count} clients");
                 StringContent notificationContent = new StringContent(message);
                 foreach (string listenerUrl in _registeredNotificationUrls)
                 {
@@ -149,35 +165,65 @@ namespace DataCollator
             {
                 // No WebHook, so we just return a data feed (base it on IP now, but could use cookies or headers in future)
                 Context.Response.KeepAlive = true;
-                if (_clientNotificationPointer.ContainsKey( Context.Request.RemoteEndPoint.ToString()))
-                {
-                    // This is a repeat GET from a known client, so return any new data we have
-                    _clientNotificationPointer[Context.Request.RemoteEndPoint.ToString()] = SendNotificationsToResponse(Context.Response, _clientNotificationPointer[Context.Request.RemoteEndPoint.ToString()]);
-                 }
-                else
-                    // This is a new request from a client, so return all notifications we have and set up our pointer
-                    _clientNotificationPointer.Add(Context.Request.RemoteEndPoint.ToString(), SendNotificationsToResponse(Context.Response, 0));
+                SendNotificationsToResponse(Context.Response, Context.Request.RemoteEndPoint.ToString());
             }
         }
 
-        private int SendNotificationsToResponse(HttpListenerResponse Response, int NotificationIndex)
+        private void SendNotificationsToResponse(HttpListenerResponse Response, string ClientId)
         {
+            // Build string of all events that we need to transmit
+            if (!_clientNotificationPointer.ContainsKey(ClientId))
+            {
+                _clientNotificationPointer.Add(ClientId, 0); // New client, set index to 0
+                Log($"New streaming client detected: {ClientId}");
+            }
+
+            if (!_clientLastRequestTime.ContainsKey(ClientId))
+                _clientLastRequestTime.Add(ClientId, DateTime.Now);
+            else
+                _clientLastRequestTime[ClientId] = DateTime.Now;
+
             int newIndex = _notifications.Count;
             string notifications = "";
-            if (newIndex>NotificationIndex)
-                notifications = String.Join("", _notifications.GetRange(NotificationIndex, newIndex - NotificationIndex));
-
-            byte[] buffer = System.Text.Encoding.UTF8.GetBytes(notifications);
-            Response.ContentLength64 = buffer.Length;
-            Response.StatusCode = (int)HttpStatusCode.OK;
-            using (Response.OutputStream)
+            if (newIndex > _clientNotificationPointer[ClientId])
             {
-                if (buffer.Length>0)
-                    Response.OutputStream.Write(buffer, 0, buffer.Length);
-                Response.OutputStream.Flush();
+                notifications = String.Join("", _notifications.GetRange(_clientNotificationPointer[ClientId], newIndex - _clientNotificationPointer[ClientId]));
+                Log($"{ClientId} - Sending notifications range {_clientNotificationPointer[ClientId]} to {newIndex}");
             }
-            Response.Close();
-            return newIndex;
+            _clientNotificationPointer[ClientId] = newIndex; // Set the client index pointer
+            
+
+            // Send the events to the response stream
+            try
+            {
+                byte[] buffer = System.Text.Encoding.UTF8.GetBytes(notifications);
+                Response.ContentLength64 = buffer.Length;
+                Response.StatusCode = (int)HttpStatusCode.OK;
+                using (Response.OutputStream)
+                {
+                    if (buffer.Length > 0)
+                        Response.OutputStream.Write(buffer, 0, buffer.Length);
+                    Response.OutputStream.Flush();
+                }
+                Response.Close();
+            }
+            catch { }            
+        }
+
+        private void PruneClients()
+        {
+            // Process our client list and get rid of any that haven't requested data in the last 60 minutes
+
+            if (_clientNotificationPointer.Count == 0)
+                return;
+
+            DateTime removeBefore = DateTime.Now.Subtract(new TimeSpan(1, 0, 0));
+            lock (_notificationLock)
+            {
+                foreach (string clientId in _clientLastRequestTime.Keys)
+                    if (_clientLastRequestTime[clientId] < removeBefore)
+                        _clientNotificationPointer.Remove(clientId);
+            }
         }
 
         private void PruneNotifications()
@@ -189,28 +235,41 @@ namespace DataCollator
             if (_clientNotificationPointer.Count == 0)
             {
                 // No clients, so don't keep anything
+                Log("No active clients, clearing notifications cache");
                 _notifications.Clear();
                 return;
             }
+            PruneClients();
 
             // We obtain the lowest available index and remove anything before that
             int deleteBefore = _clientNotificationPointer.Values.Min();
+            Log($"Minimum client index is {deleteBefore}");
             if (_clientNotificationPointer.Count>9000)
             {
                 // We want to limit the maximum size we keep
                 if (deleteBefore < 1000)
                     deleteBefore = 1000;
             }
+            Log($"Will delete all notifications below index {deleteBefore}");
 
             try
             {
                 lock (_notificationLock)
                 {
-                    if (deleteBefore >= _notifications.Count)
-                        _notifications.Clear();
-                    else
-                        _notifications.RemoveRange(0, deleteBefore);
+                    try
+                    {
+                        if (deleteBefore >= _notifications.Count)
+                            _notifications.Clear();
+                        else
+                            _notifications.RemoveRange(0, deleteBefore);
+                    }
+                    catch (Exception ex)
+                    {
+                        Log($"Error clearing notifications cache: {ex.Message}");
+                        return; // No need to adjust indexes if we couldn't clear the cache
+                    }
                     // Adjust indexes
+                    Log($"Reducing client indexes by {deleteBefore}");
                     foreach (string client in _clientNotificationPointer.Keys)
                     {
                         if (_clientNotificationPointer[client] > deleteBefore)
@@ -237,12 +296,17 @@ namespace DataCollator
                     {
                         _registeredNotificationUrls.Add(notificationUrl);
                         responseText = $"Successfully registered Url: {notificationUrl}";
+                        Log($"Subscription Url registered: {notificationUrl}");
                     }
                     else
                         responseText = $"Url already registered: {notificationUrl}";
+                    Log($"Subscription Url already registered: {notificationUrl}");
                 }
                 else
+                {
                     responseText = $"Invalid Url: {notificationUrl}";
+                    Log($"Subscription Url invalid: {notificationUrl}");
+                }
                 return true;
             }
             return false;
@@ -250,9 +314,20 @@ namespace DataCollator
 
 
 
-        private void Log(string Details, string Description = "")
+        private void Log(string log)
         {
+            if (_logStream == null)
+                return;
 
+            try
+            {
+                using (StreamWriter writer = new StreamWriter(_logStream))
+                {
+                    writer.WriteLine(log);
+                    writer.Flush();
+                }
+            }
+            catch { }
         }
     }
 }
