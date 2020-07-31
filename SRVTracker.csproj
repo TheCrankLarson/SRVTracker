@@ -59,6 +59,12 @@
     <Compile Include="FormLocator.Designer.cs">
       <DependentUpon>FormLocator.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormRoutePlanner.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormRoutePlanner.Designer.cs">
+      <DependentUpon>FormRoutePlanner.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormTracker.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -69,6 +75,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="FormLocator.resx">
       <DependentUpon>FormLocator.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormRoutePlanner.resx">
+      <DependentUpon>FormRoutePlanner.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormTracker.resx">
       <DependentUpon>FormTracker.cs</DependentUpon>

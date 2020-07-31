@@ -32,9 +32,20 @@ namespace SRVTracker
             _currentPosition = CurrentLocation;
             try
             {
+                string distanceUnit = "m";
                 double distance = HaversineDistance(_currentPosition, _targetPosition);
+                if (distance>1000000)
+                {
+                    distance = distance / 1000000;
+                    distanceUnit = "mm";
+                }
+                else if (distance>1000)
+                {
+                    distance = distance / 1000;
+                    distanceUnit = "km";
+                }
                 double bearing = DegreeBearing(_currentPosition, _targetPosition);
-                string d = $"{distance.ToString("#.0")}km";
+                string d = $"{distance.ToString("#.0")}{distanceUnit}";
                 string b = $"{Convert.ToInt32(bearing).ToString()}°";
 
                 Action action;
