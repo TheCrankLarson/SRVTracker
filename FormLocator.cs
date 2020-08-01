@@ -19,6 +19,7 @@ namespace SRVTracker
         public FormLocator()
         {
             InitializeComponent();
+            this.Width = 370;
             buttonUseCurrentLocation.Enabled = false;  // We'll enable it when we have a location
         }
 
@@ -42,7 +43,7 @@ namespace SRVTracker
                 if (distance>1000000)
                 {
                     distance = distance / 1000000;
-                    distanceUnit = "MThanks m";
+                    distanceUnit = "Mm";
                 }
                 else if (distance>1000)
                 {
@@ -50,7 +51,7 @@ namespace SRVTracker
                     distanceUnit = "km";
                 }
                 double bearing = DegreeBearing(_currentPosition, _targetPosition);
-                string d = $"{distance.ToString("#.0")}{distanceUnit}";
+                string d = $"{distance.ToString("0.0")}{distanceUnit}";
                 string b = $"{Convert.ToInt32(bearing).ToString()}°";
 
                 Action action;
@@ -163,6 +164,7 @@ namespace SRVTracker
             {
                 // We are expanded, so shrink
                 this.Height = 126;
+                this.Width = 370;
             }
             else
                 this.Height = 228;
@@ -176,6 +178,29 @@ namespace SRVTracker
             textBoxLongitude.Text = _targetPosition.Longitude.ToString() ;
             textBoxLatitude.Text = _targetPosition.Latitude.ToString();
 
+        }
+
+        private void buttonPlayers_Click(object sender, EventArgs e)
+        {
+            if (this.Width == 370)
+            {
+                this.Width = 575;
+                Task.Run(new Action(() => { UpdateAvailableCommanders(); }));
+            }
+            else
+                this.Width = 370;
+        }
+
+        private void UpdateAvailableCommanders()
+        {
+            // Connect to the server and retrieve the list of any currently live commanders
+
+
+        }
+
+        private void listBoxCommanders_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            buttonTrackCommander.Enabled = listBoxCommanders.SelectedIndex >= 0;
         }
     }
 }
