@@ -35,7 +35,7 @@ namespace SRVTracker
             try
             {
                 if (status.Contains(":{"))
-                    return CreateEventFromJSON(status.Substring(status.IndexOf(':')));
+                    return CreateEventFromJSON(status.Substring(status.IndexOf(':')+1));
                 else
                     return CreateEventFromLocation(status);
             }

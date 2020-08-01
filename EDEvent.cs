@@ -78,7 +78,7 @@ namespace SRVTracker
         public double Latitude { get; } = 0;
         public double Longitude { get; } = 0;
         public int Heading { get; } = -1;
-        public long Flags { get; } = 0;
+        public long Flags { get; } = -1;
         public DateTime TimeStamp { get; } = DateTime.MinValue;
         public string BodyName { get; } = "";
         public double PlanetRadius { get; } = 0;

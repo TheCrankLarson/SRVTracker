@@ -47,8 +47,12 @@ namespace SRVTracker
                 return;
             }
 
-            AddLog("New client Id generated");
-            textBoxClientId.Text = Guid.NewGuid().ToString();
+            clientId = ReadCommanderNameFromJournal();
+            if (String.IsNullOrEmpty(clientId))
+            {
+                AddLog("New client Id generated");
+                textBoxClientId.Text = Guid.NewGuid().ToString();
+            }
             try
             {
                 File.WriteAllText(ClientIdFile, textBoxClientId.Text);
@@ -60,14 +64,32 @@ namespace SRVTracker
             }
         }
 
+        private string ReadCommanderNameFromJournal()
+        {
+            // E: D writes the commander name to the journal.  We locate the most recent journal and attempt to read it from there.
+            string path = EDJournalPath();
+            if (!String.IsNullOrEmpty(path))
+            {
+
+            }
+            return null; // Not currently implemented
+        }
+
         public void InitStatusLocation()
         {
-            string path = $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\\Saved Games\\Frontier Developments\\Elite Dangerous";
-            if (File.Exists($"{path}\\status.json"))
+            if (File.Exists($"{EDJournalPath()}\\status.json"))
             {
-                textBoxStatusFile.Text = path;
+                textBoxStatusFile.Text = EDJournalPath();
                 return;
             }
+        }
+
+        private string EDJournalPath()
+        {
+            string path = $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\\Saved Games\\Frontier Developments\\Elite Dangerous";
+            if (Directory.Exists(path))
+                return path;
+            return "";
         }
 
         private void statusFileWatcher_Changed(object sender, System.IO.FileSystemEventArgs e)
@@ -312,7 +334,7 @@ namespace SRVTracker
                         action();
                 }
 
-                action = new Action(() => { textBoxSRVHeading.Text = edEvent.Heading.ToString(); });
+                action = new Action(() => { textBoxShipHeading.Text = edEvent.Heading.ToString(); });
                 if (textBoxShipHeading.InvokeRequired)
                     textBoxShipHeading.Invoke(action);
                 else

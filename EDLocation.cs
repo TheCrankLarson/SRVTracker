@@ -38,6 +38,16 @@ namespace SRVTracker
             PlanetName = planetName;
         }
 
+        public override string ToString()
+        {
+            return base.ToString();
+        }
+
+        public static EDLocation FromString()
+        {
+            return null;
+        }
+
         private static double ConvertToRadians(double angle)
         {
             return (Math.PI / 180) * angle;
