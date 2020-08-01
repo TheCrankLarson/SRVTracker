@@ -173,8 +173,6 @@ namespace SRVTracker
             if (String.IsNullOrEmpty(status))
                 return;
 
-           // AddLog("Updated status file read");
-
             try
             {
                 UpdateUI(new EDEvent(status));
@@ -183,12 +181,17 @@ namespace SRVTracker
 
             try
             {
-                File.AppendAllText("status.log", status);
-                AddLog("Status written to local log");
+                if (checkBoxSaveToFile.Checked)
+                    File.AppendAllText(textBoxSaveFile.Text, status);
             }
             catch (Exception ex)
             {
-                AddLog(ex.Message);
+                AddLog($"Failed to save to local log file: {ex.Message}");
+                Action action = new Action(() => { checkBoxSaveToFile.Checked = false; });
+                if (checkBoxSaveToFile.InvokeRequired)
+                    checkBoxSaveToFile.Invoke(action);
+                else
+                    action();
             }
         }
 
@@ -252,12 +255,15 @@ namespace SRVTracker
             }
 
             if (edEvent.HasCoordinates)
+            {
                 if (_formLocator != null)
                     if (_formLocator.Visible)
                     {
+
                         action = new Action(() => { _formLocator.UpdateTracking(edEvent.Location); });
                         Task.Run(action);
                     }
+            }
 
             action = new Action(() => { labelLastUpdateTime.Text = DateTime.Now.ToString("HH:mm:ss"); });
             if (labelLastUpdateTime.InvokeRequired)

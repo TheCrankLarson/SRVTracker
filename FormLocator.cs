@@ -39,13 +39,24 @@ namespace SRVTracker
         public void UpdateTracking(GeoCoordinate CurrentLocation=null)
         {
             // Update our position
-            if (_targetPosition == null)
-                return;
+            Action action;
 
-            if (CurrentLocation!=null)
-                _currentPosition = CurrentLocation;
+            if (CurrentLocation != null)
+                    _currentPosition = CurrentLocation;
 
             if (_currentPosition == null)
+                return;
+
+            if (!buttonUseCurrentLocation.Enabled)
+            {
+                action = new Action(() => { buttonUseCurrentLocation.Enabled = true; });
+                if (buttonUseCurrentLocation.InvokeRequired)
+                    buttonUseCurrentLocation.Invoke(action);
+                else
+                    action();
+            }
+
+            if (_targetPosition == null)
                 return;
 
             try
@@ -66,7 +77,6 @@ namespace SRVTracker
                 string d = $"{distance.ToString("0.0")}{distanceUnit}";
                 string b = $"{Convert.ToInt32(bearing).ToString()}°";
 
-                Action action;
                 if (!labelDistance.Text.Equals(d))
                 {
                     action = new Action(() => { labelDistance.Text = d; });
@@ -83,11 +93,7 @@ namespace SRVTracker
                     else
                         action();
                 }
-                action = new Action(() => { buttonUseCurrentLocation.Enabled = true; });
-                if (buttonUseCurrentLocation.InvokeRequired)
-                    buttonUseCurrentLocation.Invoke(action);
-                else
-                    action();
+
             }
             catch { }
         }
@@ -166,7 +172,6 @@ namespace SRVTracker
                 return;
             }
             catch { }
-            _targetPosition = null;
             groupBoxDestination.BackColor = System.Drawing.SystemColors.Control;
         }
 
@@ -199,9 +204,12 @@ namespace SRVTracker
             if (_currentPosition == null)
                 return;
             _targetPosition = _currentPosition;
-            textBoxLongitude.Text = _targetPosition.Longitude.ToString() ;
-            textBoxLatitude.Text = _targetPosition.Latitude.ToString();
-
+            try
+            {
+                textBoxLongitude.Text = _targetPosition.Longitude.ToString();
+                textBoxLatitude.Text = _targetPosition.Latitude.ToString();
+            }
+            catch { }
         }
 
         private void buttonPlayers_Click(object sender, EventArgs e)
@@ -383,7 +391,9 @@ namespace SRVTracker
 
         private void timerTracker_Tick(object sender, EventArgs e)
         {
+            timerTracker.Stop();
             UpdateTargetLocation();
+            timerTracker.Start();
         }
     }
 }
