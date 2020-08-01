@@ -292,6 +292,8 @@
             // checkBoxAutoScroll
             // 
             this.checkBoxAutoScroll.AutoSize = true;
+            this.checkBoxAutoScroll.Checked = true;
+            this.checkBoxAutoScroll.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxAutoScroll.Location = new System.Drawing.Point(542, 202);
             this.checkBoxAutoScroll.Name = "checkBoxAutoScroll";
             this.checkBoxAutoScroll.Size = new System.Drawing.Size(75, 17);
@@ -356,6 +358,7 @@
             this.textBoxUploadServer.Size = new System.Drawing.Size(186, 20);
             this.textBoxUploadServer.TabIndex = 1;
             this.textBoxUploadServer.Text = "srvtracker.darkbytes.co.uk";
+            this.textBoxUploadServer.TextChanged += new System.EventHandler(this.textBoxUploadServer_TextChanged);
             // 
             // checkBoxUpload
             // 

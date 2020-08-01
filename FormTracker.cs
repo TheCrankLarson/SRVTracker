@@ -26,6 +26,7 @@ namespace SRVTracker
             InitClientId();
             InitStatusLocation();
             buttonTest.Visible = System.Diagnostics.Debugger.IsAttached;
+            FormLocator.ServerAddress = textBoxUploadServer.Text;
             _formLocator = new FormLocator();
         }
 
@@ -254,7 +255,7 @@ namespace SRVTracker
                 if (_formLocator != null)
                     if (_formLocator.Visible)
                     {
-                        action = new Action(() => { _formLocator.UpdateLocation(edEvent.Location); });
+                        action = new Action(() => { _formLocator.UpdateTracking(edEvent.Location); });
                         Task.Run(action);
                     }
 
@@ -427,6 +428,11 @@ namespace SRVTracker
                 _formLocator = new FormLocator();
             if (!_formLocator.Visible)
                 _formLocator.Show();
+        }
+
+        private void textBoxUploadServer_TextChanged(object sender, EventArgs e)
+        {
+            FormLocator.ServerAddress = textBoxUploadServer.Text;
         }
     }
 }

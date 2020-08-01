@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.groupBoxDestination = new System.Windows.Forms.GroupBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -43,8 +44,9 @@
             this.buttonLocations = new System.Windows.Forms.Button();
             this.buttonPlayers = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.buttonTrackCommander = new System.Windows.Forms.Button();
             this.listBoxCommanders = new System.Windows.Forms.ListBox();
+            this.buttonTrackCommander = new System.Windows.Forms.Button();
+            this.timerTracker = new System.Windows.Forms.Timer(this.components);
             this.groupBoxDestination.SuspendLayout();
             this.groupBoxBearing.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -199,6 +201,15 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Other Commanders";
             // 
+            // listBoxCommanders
+            // 
+            this.listBoxCommanders.FormattingEnabled = true;
+            this.listBoxCommanders.Location = new System.Drawing.Point(6, 19);
+            this.listBoxCommanders.Name = "listBoxCommanders";
+            this.listBoxCommanders.Size = new System.Drawing.Size(188, 108);
+            this.listBoxCommanders.TabIndex = 1;
+            this.listBoxCommanders.SelectedIndexChanged += new System.EventHandler(this.listBoxCommanders_SelectedIndexChanged);
+            // 
             // buttonTrackCommander
             // 
             this.buttonTrackCommander.Enabled = false;
@@ -208,15 +219,12 @@
             this.buttonTrackCommander.TabIndex = 0;
             this.buttonTrackCommander.Text = "Track";
             this.buttonTrackCommander.UseVisualStyleBackColor = true;
+            this.buttonTrackCommander.Click += new System.EventHandler(this.buttonTrackCommander_Click);
             // 
-            // listBoxCommanders
+            // timerTracker
             // 
-            this.listBoxCommanders.FormattingEnabled = true;
-            this.listBoxCommanders.Location = new System.Drawing.Point(6, 19);
-            this.listBoxCommanders.Name = "listBoxCommanders";
-            this.listBoxCommanders.Size = new System.Drawing.Size(188, 108);
-            this.listBoxCommanders.TabIndex = 1;
-            this.listBoxCommanders.SelectedIndexChanged += new System.EventHandler(this.listBoxCommanders_SelectedIndexChanged);
+            this.timerTracker.Interval = 250;
+            this.timerTracker.Tick += new System.EventHandler(this.timerTracker_Tick);
             // 
             // FormLocator
             // 
@@ -232,6 +240,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "FormLocator";
             this.Text = "Waypoint Locator";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormLocator_FormClosing);
             this.groupBoxDestination.ResumeLayout(false);
             this.groupBoxDestination.PerformLayout();
             this.groupBoxBearing.ResumeLayout(false);
@@ -260,5 +269,6 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.ListBox listBoxCommanders;
         private System.Windows.Forms.Button buttonTrackCommander;
+        private System.Windows.Forms.Timer timerTracker;
     }
 }
