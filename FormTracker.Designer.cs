@@ -66,6 +66,8 @@
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.radioButtonUseCustomServer = new System.Windows.Forms.RadioButton();
+            this.radioButtonUseDefaultServer = new System.Windows.Forms.RadioButton();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.statusFileWatcher)).BeginInit();
@@ -334,6 +336,7 @@
             // 
             // textBoxSaveFile
             // 
+            this.textBoxSaveFile.Enabled = false;
             this.textBoxSaveFile.Location = new System.Drawing.Point(94, 19);
             this.textBoxSaveFile.Name = "textBoxSaveFile";
             this.textBoxSaveFile.Size = new System.Drawing.Size(142, 20);
@@ -349,15 +352,16 @@
             this.checkBoxSaveToFile.TabIndex = 2;
             this.checkBoxSaveToFile.Text = "Save to file:";
             this.checkBoxSaveToFile.UseVisualStyleBackColor = true;
+            this.checkBoxSaveToFile.CheckedChanged += new System.EventHandler(this.checkBoxSaveToFile_CheckedChanged);
             // 
             // textBoxUploadServer
             // 
-            this.textBoxUploadServer.Location = new System.Drawing.Point(6, 42);
+            this.textBoxUploadServer.Enabled = false;
+            this.textBoxUploadServer.Location = new System.Drawing.Point(140, 41);
             this.textBoxUploadServer.MaxLength = 100;
             this.textBoxUploadServer.Name = "textBoxUploadServer";
-            this.textBoxUploadServer.Size = new System.Drawing.Size(186, 20);
+            this.textBoxUploadServer.Size = new System.Drawing.Size(109, 20);
             this.textBoxUploadServer.TabIndex = 1;
-            this.textBoxUploadServer.Text = "srvtracker.darkbytes.co.uk";
             this.textBoxUploadServer.TextChanged += new System.EventHandler(this.textBoxUploadServer_TextChanged);
             // 
             // checkBoxUpload
@@ -371,6 +375,7 @@
             this.checkBoxUpload.TabIndex = 0;
             this.checkBoxUpload.Text = "Send to server:";
             this.checkBoxUpload.UseVisualStyleBackColor = true;
+            this.checkBoxUpload.CheckedChanged += new System.EventHandler(this.checkBoxUpload_CheckedChanged);
             // 
             // buttonLocator
             // 
@@ -384,13 +389,13 @@
             // 
             // buttonRoutePlanner
             // 
-            this.buttonRoutePlanner.Enabled = false;
             this.buttonRoutePlanner.Location = new System.Drawing.Point(12, 144);
             this.buttonRoutePlanner.Name = "buttonRoutePlanner";
             this.buttonRoutePlanner.Size = new System.Drawing.Size(101, 23);
             this.buttonRoutePlanner.TabIndex = 10;
             this.buttonRoutePlanner.Text = "Route Planner";
             this.buttonRoutePlanner.UseVisualStyleBackColor = true;
+            this.buttonRoutePlanner.Click += new System.EventHandler(this.buttonRoutePlanner_Click);
             // 
             // buttonExit
             // 
@@ -435,21 +440,48 @@
             // 
             // groupBox7
             // 
+            this.groupBox7.Controls.Add(this.radioButtonUseCustomServer);
+            this.groupBox7.Controls.Add(this.radioButtonUseDefaultServer);
             this.groupBox7.Controls.Add(this.checkBoxUpload);
             this.groupBox7.Controls.Add(this.textBoxUploadServer);
             this.groupBox7.Location = new System.Drawing.Point(281, 122);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(198, 74);
+            this.groupBox7.Size = new System.Drawing.Size(255, 74);
             this.groupBox7.TabIndex = 15;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "Server Upload";
             // 
+            // radioButtonUseCustomServer
+            // 
+            this.radioButtonUseCustomServer.AutoSize = true;
+            this.radioButtonUseCustomServer.Location = new System.Drawing.Point(71, 42);
+            this.radioButtonUseCustomServer.Name = "radioButtonUseCustomServer";
+            this.radioButtonUseCustomServer.Size = new System.Drawing.Size(63, 17);
+            this.radioButtonUseCustomServer.TabIndex = 3;
+            this.radioButtonUseCustomServer.Text = "Custom:";
+            this.radioButtonUseCustomServer.UseVisualStyleBackColor = true;
+            this.radioButtonUseCustomServer.CheckedChanged += new System.EventHandler(this.radioButtonUseCustomServer_CheckedChanged);
+            // 
+            // radioButtonUseDefaultServer
+            // 
+            this.radioButtonUseDefaultServer.AutoSize = true;
+            this.radioButtonUseDefaultServer.Checked = true;
+            this.radioButtonUseDefaultServer.Location = new System.Drawing.Point(6, 42);
+            this.radioButtonUseDefaultServer.Name = "radioButtonUseDefaultServer";
+            this.radioButtonUseDefaultServer.Size = new System.Drawing.Size(59, 17);
+            this.radioButtonUseDefaultServer.TabIndex = 2;
+            this.radioButtonUseDefaultServer.TabStop = true;
+            this.radioButtonUseDefaultServer.Tag = "srvtracker.darkbytes.co.uk";
+            this.radioButtonUseDefaultServer.Text = "Default";
+            this.radioButtonUseDefaultServer.UseVisualStyleBackColor = true;
+            this.radioButtonUseDefaultServer.CheckedChanged += new System.EventHandler(this.radioButtonUseDefaultServer_CheckedChanged);
+            // 
             // groupBox8
             // 
             this.groupBox8.Controls.Add(this.checkBoxSendLocationOnly);
-            this.groupBox8.Location = new System.Drawing.Point(485, 122);
+            this.groupBox8.Location = new System.Drawing.Point(542, 122);
             this.groupBox8.Name = "groupBox8";
-            this.groupBox8.Size = new System.Drawing.Size(227, 74);
+            this.groupBox8.Size = new System.Drawing.Size(170, 74);
             this.groupBox8.TabIndex = 16;
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "Data Settings";
@@ -542,6 +574,8 @@
         private System.Windows.Forms.Button buttonExit;
         private System.Windows.Forms.Button buttonRoutePlanner;
         private System.Windows.Forms.Button buttonLocator;
+        private System.Windows.Forms.RadioButton radioButtonUseCustomServer;
+        private System.Windows.Forms.RadioButton radioButtonUseDefaultServer;
     }
 }
 

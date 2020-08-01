@@ -16,6 +16,10 @@ namespace SRVTracker
         public string PlanetName { get; set; } = "";
         public string SystemName { get; set; } = "";
 
+        public EDLocation()
+        {
+        }
+
         public EDLocation(double latitude, double longitude, double altitude = 0)
         {
             Latitude = latitude;
@@ -32,19 +36,28 @@ namespace SRVTracker
             PlanetaryRadius = planetaryRadius;
         }
 
-        public EDLocation(string name, double latitude, double longitude, double planetaryRadius, string systemName, string planetName): this(name, latitude,longitude, planetaryRadius)
+        public EDLocation(string name, string systemName, string planetName, double latitude, double longitude, double altitude, double planetaryRadius):
+            this(name, latitude,longitude, planetaryRadius)
         {
             SystemName = systemName;
             PlanetName = planetName;
+            Altitude = altitude;
         }
 
         public override string ToString()
         {
-            return base.ToString();
+            return $"{Name}║{SystemName}║{PlanetName}║{Latitude}║{Longitude}║{Altitude}║{PlanetaryRadius}";
         }
 
-        public static EDLocation FromString()
-        {
+        public static EDLocation FromString(string location)
+        { 
+            try
+            {
+                string[] locationInfo = location.Split('║');
+                return new EDLocation(locationInfo[0], locationInfo[1], locationInfo[2], Convert.ToDouble(locationInfo[3]),
+                    Convert.ToDouble(locationInfo[4]), Convert.ToDouble(locationInfo[5]), Convert.ToDouble(locationInfo[6]));
+            }
+            catch { }
             return null;
         }
 

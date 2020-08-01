@@ -47,6 +47,7 @@
             this.listBoxCommanders = new System.Windows.Forms.ListBox();
             this.buttonTrackCommander = new System.Windows.Forms.Button();
             this.timerTracker = new System.Windows.Forms.Timer(this.components);
+            this.timerCommanderRefresh = new System.Windows.Forms.Timer(this.components);
             this.groupBoxDestination.SuspendLayout();
             this.groupBoxBearing.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -226,6 +227,11 @@
             this.timerTracker.Interval = 250;
             this.timerTracker.Tick += new System.EventHandler(this.timerTracker_Tick);
             // 
+            // timerCommanderRefresh
+            // 
+            this.timerCommanderRefresh.Interval = 5000;
+            this.timerCommanderRefresh.Tick += new System.EventHandler(this.timerCommanderRefresh_Tick);
+            // 
             // FormLocator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -270,5 +276,6 @@
         private System.Windows.Forms.ListBox listBoxCommanders;
         private System.Windows.Forms.Button buttonTrackCommander;
         private System.Windows.Forms.Timer timerTracker;
+        private System.Windows.Forms.Timer timerCommanderRefresh;
     }
 }

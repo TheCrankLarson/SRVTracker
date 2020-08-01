@@ -57,6 +57,8 @@
   <ItemGroup>
     <Compile Include="EDEvent.cs" />
     <Compile Include="EDEventFactory.cs" />
+    <Compile Include="EDRace.cs" />
+    <Compile Include="EDWaypoint.cs" />
     <Compile Include="Flags.cs" />
     <Compile Include="FormAddLocation.cs">
       <SubType>Form</SubType>
@@ -114,6 +116,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -128,6 +131,30 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Add_16x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Remove_color_16x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Edit_16x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\OpenFile_16x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Save_16x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CollapseUp_lg_16x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ExpandDown_lg_16x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Target_16x.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

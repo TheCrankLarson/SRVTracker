@@ -18,6 +18,7 @@ namespace SRVTracker
         const string ClientIdFile = "client.id";
         private string _lastUpdateTime = "";
         private FormLocator _formLocator = null;
+        private FileStream _statusFileStream = null;
 
         public FormTracker()
         {
@@ -70,14 +71,14 @@ namespace SRVTracker
             string path = EDJournalPath();
             if (!String.IsNullOrEmpty(path))
             {
-
+                string[] files = Directory.GetFiles(path, "Journal*.cache",SearchOption.TopDirectoryOnly);
             }
             return null; // Not currently implemented
         }
 
         public void InitStatusLocation()
         {
-            if (File.Exists($"{EDJournalPath()}\\status.json"))
+            if (File.Exists($"{EDJournalPath()}\\Status.json"))
             {
                 textBoxStatusFile.Text = EDJournalPath();
                 return;
@@ -110,6 +111,7 @@ namespace SRVTracker
                 try
                 {
                     statusFileWatcher.Path = textBoxStatusFile.Text;
+                    statusFileWatcher.Filter = "Status.json";
                     statusFileWatcher.NotifyFilter = System.IO.NotifyFilters.LastWrite;
                     statusFileWatcher.EnableRaisingEvents = true;
                 }
@@ -123,7 +125,10 @@ namespace SRVTracker
                     // Create the UDP client for sending tracking data
                     try
                     {
-                        _udpClient = new UdpClient(textBoxUploadServer.Text, 11938);
+                        string serverUrl = (string)radioButtonUseDefaultServer.Tag;
+                        if (radioButtonUseCustomServer.Checked)
+                            serverUrl = textBoxUploadServer.Text;
+                        _udpClient = new UdpClient(serverUrl, 11938);
                     }
                     catch (Exception ex)
                     {
@@ -183,11 +188,18 @@ namespace SRVTracker
             try
             {
                 // Read the file - we open in file share mode as E: D will be constantly writing to this file
-                using (FileStream fs = new FileStream(statusFile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                if (_statusFileStream == null )
+                    _statusFileStream = new FileStream(statusFile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                _statusFileStream.Seek(0, SeekOrigin.Begin);
+
+                using (StreamReader sr = new StreamReader(_statusFileStream, Encoding.Default, true, 1000, true))
+                    status = sr.ReadToEnd();
+
+                if (!_statusFileStream.CanSeek)
                 {
-                    using (StreamReader sr = new StreamReader(fs))
-                        status = sr.ReadToEnd();
-                    fs.Close();
+                    // We only close the file if we can't seek (no point in continuously reopening)
+                    _statusFileStream.Close();
+                    _statusFileStream = null;
                 }
             }
             catch  {}
@@ -460,6 +472,39 @@ namespace SRVTracker
         private void textBoxUploadServer_TextChanged(object sender, EventArgs e)
         {
             FormLocator.ServerAddress = textBoxUploadServer.Text;
+        }
+
+        private void checkBoxUpload_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateServerSettings();
+        }
+
+        private void UpdateServerSettings()
+        {
+            radioButtonUseCustomServer.Enabled = checkBoxUpload.Checked;
+            radioButtonUseDefaultServer.Enabled = checkBoxUpload.Checked;
+            textBoxUploadServer.Enabled = checkBoxUpload.Checked && radioButtonUseCustomServer.Checked;
+        }
+
+        private void checkBoxSaveToFile_CheckedChanged(object sender, EventArgs e)
+        {
+            textBoxSaveFile.Enabled = checkBoxSaveToFile.Checked;
+        }
+
+        private void radioButtonUseDefaultServer_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateServerSettings();
+        }
+
+        private void radioButtonUseCustomServer_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateServerSettings();
+        }
+
+        private void buttonRoutePlanner_Click(object sender, EventArgs e)
+        {
+            FormRoutePlanner formRoutePlanner = new FormRoutePlanner();
+            formRoutePlanner.Show();
         }
     }
 }

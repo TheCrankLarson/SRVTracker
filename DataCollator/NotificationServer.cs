@@ -190,7 +190,8 @@ namespace DataCollator
             {
                 Log("All player status requested");
                 foreach (string id in _playerStatus.Keys)
-                    status.AppendLine(_playerStatus[id]);
+                    if (!String.IsNullOrEmpty(_playerStatus[id]))
+                        status.AppendLine(_playerStatus[id]);
             }
             else if (_playerStatus.ContainsKey(clientId))
             {

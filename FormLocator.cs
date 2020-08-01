@@ -103,7 +103,7 @@ namespace SRVTracker
         }
 
         private void textBoxLatitude_TextChanged(object sender, EventArgs e)
-        {
+        {          
             TrySetDestination();
         }
 
@@ -125,11 +125,11 @@ namespace SRVTracker
                     _targetPosition = new EDLocation(latitude, longitude, Convert.ToDouble(textBoxAltitude.Text));
                 else
                     _targetPosition = new EDLocation(latitude, longitude);
-                groupBoxDestination.BackColor = Color.Lime;
+                //groupBoxDestination.BackColor = Color.Lime;
                 return;
             }
             catch { }
-            groupBoxDestination.BackColor = System.Drawing.SystemColors.Control;
+            //groupBoxDestination.BackColor = System.Drawing.SystemColors.Control;
         }
 
         private void buttonShowHideTarget_Click(object sender, EventArgs e)
@@ -160,9 +160,11 @@ namespace SRVTracker
         {
             if (_currentPosition == null)
                 return;
+            timerTracker.Stop();
             _targetPosition = _currentPosition;
             try
             {
+                UpdateTrackingTarget($"{_targetPosition.Longitude.ToString()} , {_targetPosition.Latitude.ToString()}", false);
                 textBoxLongitude.Text = _targetPosition.Longitude.ToString();
                 textBoxLatitude.Text = _targetPosition.Latitude.ToString();
             }
@@ -175,12 +177,14 @@ namespace SRVTracker
             {
                 this.Width = 575;
                 _commanderListShowing = true;
+                timerCommanderRefresh.Start();
                 Task.Run(new Action(() => { UpdateAvailableCommanders(); }));
             }
             else
             {
                 this.Width = _normalView.Width;
                 _commanderListShowing = false;
+                timerCommanderRefresh.Stop();
             }
         }
 
@@ -251,6 +255,14 @@ namespace SRVTracker
         private void listBoxCommanders_SelectedIndexChanged(object sender, EventArgs e)
         {
             buttonTrackCommander.Enabled = listBoxCommanders.SelectedIndex >= 0;
+            try
+            {
+                if (((string)listBoxCommanders.SelectedItem).Equals(_trackingTarget))
+                    buttonTrackCommander.Text = "Stop";
+                else
+                    buttonTrackCommander.Text = "Track";
+            }
+            catch { }
         }
 
         private void FormLocator_FormClosing(object sender, FormClosingEventArgs e)
@@ -263,12 +275,29 @@ namespace SRVTracker
             }
         }
 
-        private void UpdateTrackingTarget(string target)
+        private void UpdateTrackingTarget(string target, bool isTrackedTarget = true)
         {
             Action action;
+            if (isTrackedTarget)
+                _trackingTarget = target;
+            else
+                _trackingTarget = "";
+
             string bearingInfo = $"Bearing (tracking {target})";
             if (String.IsNullOrEmpty(target))
                 bearingInfo = "Bearing (target not set)";
+
+            if (String.IsNullOrEmpty(_trackingTarget))
+            {
+                if (buttonTrackCommander.Text.Equals("Stop"))
+                {
+                    action = new Action(() => { buttonTrackCommander.Text = "Track"; });
+                    if (buttonTrackCommander.InvokeRequired)
+                        buttonTrackCommander.Invoke(action);
+                    else
+                        action();
+                }
+            }
             if (!groupBoxBearing.Text.Equals(bearingInfo))
             {
                 action = new Action(() => { groupBoxBearing.Text = bearingInfo; });
@@ -276,8 +305,7 @@ namespace SRVTracker
                     groupBoxBearing.Invoke(action);
                 else
                     action();
-            }
-            _trackingTarget = target;
+            }           
         }
 
         private bool UpdateTargetLocation(string newTarget = "")
@@ -306,6 +334,29 @@ namespace SRVTracker
                 if (commanderLocation.HasCoordinates)
                 {
                     _targetPosition = commanderLocation.Location;
+
+                    try
+                    {
+                        Action action;
+                        if (!_targetPosition.Latitude.ToString().Equals(textBoxLatitude.Text))
+                        {
+                            action = new Action(() => { textBoxLatitude.Text = _targetPosition.Latitude.ToString(); });
+                            if (textBoxLatitude.InvokeRequired)
+                                textBoxLatitude.Invoke(action);
+                            else
+                                action();
+                        }
+                        if (!_targetPosition.Longitude.ToString().Equals(textBoxLongitude.Text))
+                        {
+                            action = new Action(() => { textBoxLongitude.Text = _targetPosition.Longitude.ToString(); });
+                            if (textBoxLongitude.InvokeRequired)
+                                textBoxLongitude.Invoke(action);
+                            else
+                                action();
+                        }
+                    }
+                    catch { }
+
                     UpdateTracking();
                 }
                 return true;
@@ -316,6 +367,7 @@ namespace SRVTracker
 
         private void buttonTrackCommander_Click(object sender, EventArgs e)
         {
+            timerTracker.Stop();
             //  If we have a valid commander to track, we start a timer to query their position every 250ms
             if (buttonTrackCommander.Text.Equals("Track"))
             {
@@ -332,17 +384,14 @@ namespace SRVTracker
                 if (UpdateTargetLocation(target))
                 {
                     // Tracking working, so start the timer
-                    timerTracker.Interval = 250;
                     timerTracker.Start();
                     buttonTrackCommander.Text = "Stop";
                 }
             }
             else
             {
-                // Stop tracking
-                timerTracker.Stop();
+                // Stop tracking               
                 UpdateTrackingTarget("");
-                buttonTrackCommander.Text = "Track";
             }
         }
 
@@ -351,6 +400,15 @@ namespace SRVTracker
             timerTracker.Stop();
             UpdateTargetLocation();
             timerTracker.Start();
+        }
+
+        private void timerCommanderRefresh_Tick(object sender, EventArgs e)
+        {
+            // We refresh the commander list every five seconds (when it is displayed)
+            timerCommanderRefresh.Stop();
+            UpdateAvailableCommanders();
+            if (_commanderListShowing)
+                timerCommanderRefresh.Start();
         }
     }
 }

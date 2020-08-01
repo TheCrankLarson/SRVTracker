@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Globalization;
 
 namespace SRVTracker
 {
     public class EDEventFactory
     {
+        private static CultureInfo _enGB = new CultureInfo("en-GB");
+        
         public static EDEvent CreateEventFromJSON(string json)
         {
             // Create the event from JSON (as dumped to Status.json)
@@ -22,8 +25,8 @@ namespace SRVTracker
             try
             {
                 string[] tracking = location.Split(',');
-                return new EDEvent(Convert.ToDouble(tracking[2]), Convert.ToDouble(tracking[3]), Convert.ToDouble(tracking[4]), Convert.ToInt32(tracking[5]),
-                    Convert.ToDouble(tracking[6]), Convert.ToInt64(tracking[7]));
+                return new EDEvent(Convert.ToDouble(tracking[2], _enGB), Convert.ToDouble(tracking[3], _enGB), Convert.ToDouble(tracking[4], _enGB),
+                    Convert.ToInt32(tracking[5], _enGB), Convert.ToDouble(tracking[6], _enGB), Convert.ToInt64(tracking[7], _enGB));
             }
             catch { }
             return null;
