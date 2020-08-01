@@ -173,7 +173,7 @@ namespace DataCollator
 
         private void SendStatus(HttpListenerContext Context)
         {
-            // Send all known client locations
+            // Send Commander status
             // Tracking info is: Client Id,timestamp,latitude,longitude,altitude,heading,planet radius,flags
 
             StringBuilder status = new StringBuilder();

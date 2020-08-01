@@ -40,7 +40,6 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Device" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -83,7 +82,7 @@
     <Compile Include="FormTracker.Designer.cs">
       <DependentUpon>FormTracker.cs</DependentUpon>
     </Compile>
-    <Compile Include="Location.cs" />
+    <Compile Include="EDLocation.cs" />
     <Compile Include="LocationManager.cs">
       <SubType>UserControl</SubType>
     </Compile>

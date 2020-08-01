@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.Reflection;
-using System.Device.Location;
 using System.Globalization;
 
 namespace SRVTracker
@@ -85,15 +84,12 @@ namespace SRVTracker
         public double PlanetRadius { get; } = 0;
         public double Altitude { get; } = 0;
 
-        public GeoCoordinate Location
+        public EDLocation Location
         {
             get
             {
                 if (HasCoordinates)
-                    if (Altitude>0)
-                        return new GeoCoordinate(Latitude, Longitude, Altitude);
-                    else
-                        return new GeoCoordinate(Latitude, Longitude);
+                        return new EDLocation(Latitude, Longitude, Altitude);
                 return null;
             }
         }
@@ -134,7 +130,7 @@ namespace SRVTracker
             get
             {
                 // Tracking info is: timestamp,latitude,longitude,altitude,heading,planet radius,flags
-                
+                // We force culture to en-GB so that all the numbers get uploaded in the same format (and because we can't have commas in them)
                 return $"{this.TimeStamp.Ticks},{this.Latitude.ToString(_enGB)},{this.Longitude.ToString( _enGB)},{this.Altitude.ToString(_enGB)},{this.Heading},{this.PlanetRadius.ToString(_enGB)},{this.Flags}";
             }
         }

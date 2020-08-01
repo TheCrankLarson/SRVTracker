@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Net.Sockets;
 using System.IO;
-using System.Device.Location;
 
 namespace SRVTracker
 {

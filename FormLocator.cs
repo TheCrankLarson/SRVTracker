@@ -7,7 +7,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Device.Location;
 using System.Net;
 using System.IO;
 
@@ -15,8 +14,8 @@ namespace SRVTracker
 {
     public partial class FormLocator : Form
     {
-        private static GeoCoordinate _currentPosition = null;
-        private GeoCoordinate _targetPosition = null;
+        private static EDLocation _currentPosition = null;
+        private EDLocation _targetPosition = null;
         private WebClient _webClient = new WebClient();
         private string _trackingTarget = "";
         private bool _commanderListShowing = false;
@@ -31,12 +30,12 @@ namespace SRVTracker
 
         public static double PlanetaryRadius { get; set; } = 0;
         public static string ServerAddress { get; set; } = null;
-        public static GeoCoordinate CurrentLocation
+        public static EDLocation CurrentLocation
         {
             get { return _currentPosition; }
         }
 
-        public void UpdateTracking(GeoCoordinate CurrentLocation=null)
+        public void UpdateTracking(EDLocation CurrentLocation =null)
         {
             // Update our position
             Action action;
@@ -62,7 +61,7 @@ namespace SRVTracker
             try
             {
                 string distanceUnit = "m";
-                double distance = HaversineDistance(_currentPosition, _targetPosition);
+                double distance = EDLocation.DistanceBetween(_currentPosition, _targetPosition);
                 if (distance>1000000)
                 {
                     distance = distance / 1000000;
@@ -73,7 +72,7 @@ namespace SRVTracker
                     distance = distance / 1000;
                     distanceUnit = "km";
                 }
-                double bearing = DegreeBearing(_currentPosition, _targetPosition);
+                double bearing = EDLocation.BearingToLocation(_currentPosition, _targetPosition);
                 string d = $"{distance.ToString("0.0")}{distanceUnit}";
                 string b = $"{Convert.ToInt32(bearing).ToString()}°";
 
@@ -97,48 +96,6 @@ namespace SRVTracker
             }
             catch { }
         }
-        private static double ConvertToRadians(double angle)
-        {
-            return (Math.PI / 180) * angle;
-        }
-
-        public static double HaversineDistance(GeoCoordinate pos1, GeoCoordinate pos2, DistanceUnit unit = DistanceUnit.Kilometers)
-        {
-            // For R, we can take the average of the two altitudes (if we have them)
-            if (PlanetaryRadius == 0)
-                return 0;
-            double R = (unit == DistanceUnit.Miles) ? (PlanetaryRadius / 1.609344) : PlanetaryRadius;
-            var lat = ConvertToRadians(pos2.Latitude - pos1.Latitude);
-            var lng = ConvertToRadians(pos2.Longitude - pos1.Longitude);
-            var h1 = Math.Sin(lat / 2) * Math.Sin(lat / 2) +
-                          Math.Cos(ConvertToRadians(pos1.Latitude)) * Math.Cos(ConvertToRadians(pos2.Latitude)) *
-                          Math.Sin(lng / 2) * Math.Sin(lng / 2);
-            var h2 = 2 * Math.Asin(Math.Min(1, Math.Sqrt(h1)));
-            return R * h2;
-        }
-
-        public static double DegreeBearing(GeoCoordinate pos1, GeoCoordinate pos2)
-        {
-            var dLon = ConvertToRadians(pos2.Longitude - pos1.Longitude);
-            var dPhi = Math.Log(
-                Math.Tan(ConvertToRadians(pos2.Latitude) / 2 + Math.PI / 4) / Math.Tan(ConvertToRadians(pos1.Latitude) / 2 + Math.PI / 4));
-            if (Math.Abs(dLon) > Math.PI)
-                dLon = dLon > 0 ? -(2 * Math.PI - dLon) : (2 * Math.PI + dLon);
-            return ConvertToBearing(Math.Atan2(dLon, dPhi));
-        }
-
-        public static double ConvertToDegrees(double radians)
-        {
-            return radians * 180 / Math.PI;
-        }
-
-        public static double ConvertToBearing(double radians)
-        {
-            // convert radians to degrees (as bearing: 0...360)
-            return (ConvertToDegrees(radians) + 360) % 360;
-        }
-
-        public enum DistanceUnit { Miles, Kilometers };
 
         private void textBoxLongitude_TextChanged(object sender, EventArgs e)
         {
@@ -165,9 +122,9 @@ namespace SRVTracker
                 double latitude = Convert.ToDouble(textBoxLatitude.Text);
                 double longitude = Convert.ToDouble(textBoxLongitude.Text);
                 if (!String.IsNullOrEmpty(textBoxAltitude.Text))
-                    _targetPosition = new GeoCoordinate(latitude, longitude, Convert.ToDouble(textBoxAltitude.Text));
+                    _targetPosition = new EDLocation(latitude, longitude, Convert.ToDouble(textBoxAltitude.Text));
                 else
-                    _targetPosition = new GeoCoordinate(latitude, longitude);
+                    _targetPosition = new EDLocation(latitude, longitude);
                 groupBoxDestination.BackColor = Color.Lime;
                 return;
             }
