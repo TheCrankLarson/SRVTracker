@@ -135,7 +135,7 @@ namespace SRVTracker
             {
                 // Tracking info is: timestamp,latitude,longitude,altitude,heading,planet radius,flags
                 
-                return $"{this.TimeStamp.Ticks},{this.Latitude.ToString("0.0",_enGB)},{this.Longitude.ToString("0.0", _enGB)},{this.Altitude.ToString("0.0", _enGB)},{this.Heading},{this.PlanetRadius.ToString("0.0", _enGB)},{this.Flags}";
+                return $"{this.TimeStamp.Ticks},{this.Latitude.ToString(_enGB)},{this.Longitude.ToString( _enGB)},{this.Altitude.ToString(_enGB)},{this.Heading},{this.PlanetRadius.ToString(_enGB)},{this.Flags}";
             }
         }
     }
