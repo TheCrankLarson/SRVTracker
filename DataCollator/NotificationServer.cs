@@ -106,17 +106,23 @@ namespace DataCollator
             try
             {
                 // We store clientId in lower case (for case insensitive matching), but return the original (as we store it in the status)
-                clientId = message.Substring(0, message.IndexOf(',')).ToLower();
+                if (message.Contains('{'))
+                    clientId = message.Substring(0, message.IndexOf(':')).ToLower().Trim();
+                else
+                    clientId = message.Substring(0, message.IndexOf(',')).ToLower().Trim();
             }
             catch { }
             lock (_notificationLock)
             {
                 _notifications.Add(message);
                 if (!String.IsNullOrEmpty(clientId))
+                {
                     if (_playerStatus.ContainsKey(clientId))
                         _playerStatus[clientId] = message;
                     else
                         _playerStatus.Add(clientId, message);
+                   //Log($"Updated location status for {clientId}");
+                }
             }
             _pruneCounter++;
             if (_pruneCounter>500)
