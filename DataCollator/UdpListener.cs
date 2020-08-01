@@ -26,10 +26,13 @@ namespace DataCollator
         {
             UdpState s = (UdpState)(ar.AsyncState);
 
-            byte[] receiveBytes = s.u.EndReceive(ar, ref s.e);
-            string receiveString = Encoding.ASCII.GetString(receiveBytes);
-
-            DataReceived?.Invoke(null, receiveString);
+            try
+            {
+                byte[] receiveBytes = s.u.EndReceive(ar, ref s.e);
+                string receiveString = Encoding.ASCII.GetString(receiveBytes);
+                DataReceived?.Invoke(null, receiveString.Trim());
+            }
+            catch { }
             s.u.BeginReceive(new AsyncCallback(ReceiveCallback), s);
         }
 
