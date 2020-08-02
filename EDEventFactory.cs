@@ -11,10 +11,10 @@ namespace SRVTracker
     {
         private static CultureInfo _enGB = new CultureInfo("en-GB");
         
-        public static EDEvent CreateEventFromJSON(string json)
+        public static EDEvent CreateEventFromJSON(string json, string commander = "")
         {
             // Create the event from JSON (as dumped to Status.json)
-            return new EDEvent(json);
+            return new EDEvent(json, commander);
         }
 
         public static EDEvent CreateEventFromLocation(string location)
@@ -25,8 +25,8 @@ namespace SRVTracker
             try
             {
                 string[] tracking = location.Split(',');
-                return new EDEvent(Convert.ToDouble(tracking[2], _enGB), Convert.ToDouble(tracking[3], _enGB), Convert.ToDouble(tracking[4], _enGB),
-                    Convert.ToInt32(tracking[5], _enGB), Convert.ToDouble(tracking[6], _enGB), Convert.ToInt64(tracking[7], _enGB));
+                return new EDEvent(tracking[0], Convert.ToInt64(tracking[1]), Convert.ToDouble(tracking[2], _enGB), Convert.ToDouble(tracking[3], _enGB),
+                    Convert.ToDouble(tracking[4], _enGB), Convert.ToInt32(tracking[5], _enGB), Convert.ToDouble(tracking[6], _enGB), Convert.ToInt64(tracking[7], _enGB));
             }
             catch { }
             return null;
@@ -37,8 +37,11 @@ namespace SRVTracker
             // Recreate the event from a saved status
             try
             {
-                if (status.Contains(":{"))
-                    return CreateEventFromJSON(status.Substring(status.IndexOf(':')+1));
+                int cmdrNamePos = status.IndexOf(":{");
+                if (cmdrNamePos>0)
+                {
+                    return CreateEventFromJSON(status.Substring(cmdrNamePos + 1), status.Substring(0, cmdrNamePos));
+                }
                 else
                     return CreateEventFromLocation(status);
             }

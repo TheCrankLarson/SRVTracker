@@ -15,6 +15,7 @@ namespace SRVTracker
     {
         private string _saveFilename = "";
         private FormLocator _locatorForm = null;
+        private EDRoute _route = null;
 
         public FormRoutePlanner(FormLocator formLocator = null)
         {
@@ -24,6 +25,7 @@ namespace SRVTracker
                 buttonSetAsTarget.Enabled = false;
             UpdateButtons();
             locationManager.SelectionChanged += LocationManager_SelectionChanged;
+            _route = new EDRoute("");
         }
 
         private void LocationManager_SelectionChanged(object sender, EventArgs e)
@@ -36,7 +38,12 @@ namespace SRVTracker
             try
             {
                 if (locationManager.SelectedLocation != null)
-                    listBoxWaypoints.Items.Add(new EDWaypoint(locationManager.SelectedLocation));
+                {
+                    EDWaypoint waypoint = new EDWaypoint(locationManager.SelectedLocation);
+                    listBoxWaypoints.Items.Add(waypoint);
+                    _route.Waypoints.Add(waypoint);
+                }
+                    
             }
             catch { }
         }
@@ -44,7 +51,13 @@ namespace SRVTracker
         private void buttonDelete_Click(object sender, EventArgs e)
         {
             if (listBoxWaypoints.SelectedIndex > -1)
-                listBoxWaypoints.Items.RemoveAt(listBoxWaypoints.SelectedIndex);
+            {
+                int selIndex = listBoxWaypoints.SelectedIndex;
+                _route.Waypoints.RemoveAt(listBoxWaypoints.SelectedIndex);
+                DisplayRoute();
+                if (selIndex < listBoxWaypoints.Items.Count)
+                    listBoxWaypoints.SelectedIndex = selIndex;
+            }
         }
 
         private void buttonMoveWaypointUp_Click(object sender, EventArgs e)
@@ -54,9 +67,12 @@ namespace SRVTracker
 
             try
             {
-                EDLocation locationAbove = (EDLocation)listBoxWaypoints.Items[listBoxWaypoints.SelectedIndex - 1];
-                listBoxWaypoints.Items[listBoxWaypoints.SelectedIndex - 1] = listBoxWaypoints.Items[listBoxWaypoints.SelectedIndex];
-                listBoxWaypoints.Items[listBoxWaypoints.SelectedIndex] = locationAbove;
+                int newSelectedIndex = listBoxWaypoints.SelectedIndex - 1;
+                EDWaypoint waypointAbove = _route.Waypoints[listBoxWaypoints.SelectedIndex - 1];
+                _route.Waypoints[listBoxWaypoints.SelectedIndex - 1] = _route.Waypoints[listBoxWaypoints.SelectedIndex];
+                _route.Waypoints[listBoxWaypoints.SelectedIndex] = waypointAbove;
+                DisplayRoute();
+                listBoxWaypoints.SelectedIndex = newSelectedIndex;
             }
             catch { }
         }
@@ -68,9 +84,12 @@ namespace SRVTracker
 
             try
             {
-                EDLocation locationAbove = (EDLocation)listBoxWaypoints.Items[listBoxWaypoints.SelectedIndex + 1];
-                listBoxWaypoints.Items[listBoxWaypoints.SelectedIndex + 1] = listBoxWaypoints.Items[listBoxWaypoints.SelectedIndex];
-                listBoxWaypoints.Items[listBoxWaypoints.SelectedIndex] = locationAbove;
+                int newSelectedIndex = listBoxWaypoints.SelectedIndex + 1;
+                EDWaypoint waypointBelow = _route.Waypoints[listBoxWaypoints.SelectedIndex + 1];
+                _route.Waypoints[listBoxWaypoints.SelectedIndex + 1] = _route.Waypoints[listBoxWaypoints.SelectedIndex];
+                _route.Waypoints[listBoxWaypoints.SelectedIndex] = waypointBelow;
+                DisplayRoute();
+                listBoxWaypoints.SelectedIndex = newSelectedIndex;
             }
             catch { }
         }
@@ -94,7 +113,7 @@ namespace SRVTracker
                 {
                     try
                     {
-                        Task.Run(new Action(() => { SaveRouteToFile(saveFileDialog.FileName); }));
+                        _route.SaveToFile(saveFileDialog.FileName);
                     }
                     catch { }
                 }
@@ -114,78 +133,15 @@ namespace SRVTracker
                 {
                     try
                     {
-                        Task.Run(new Action(() => { LoadRouteFromFile(openFileDialog.FileName); }));
+                        _route = EDRoute.LoadFromFile(openFileDialog.FileName);
+                        textBoxRouteName.Text = _route.Name;
+                        DisplayRoute();
                     }
                     catch { }
                 }
             }
         }
 
-        private void SaveRouteToFile(string filename)
-        {
-            try
-            {
-                StringBuilder waypoints = new StringBuilder();
-                waypoints.AppendLine(textBoxRouteName.Text);
-                foreach (EDWaypoint waypoint in listBoxWaypoints.Items)
-                    waypoints.AppendLine(waypoint.ToString());
-                File.WriteAllText(filename, waypoints.ToString());
-                _saveFilename = filename;
-            }
-            catch { }
-        }
-
-        private void LoadRouteFromFile(string filename)
-        {
-            Action action = new Action(() => { listBoxWaypoints.Items.Clear(); });
-            if (listBoxWaypoints.InvokeRequired)
-                listBoxWaypoints.Invoke(action);
-            else
-                action();
-
-            try
-            {
-                Stream statusStream = File.OpenRead(filename);
-                
-                action = new Action(() => { listBoxWaypoints.BeginUpdate(); });
-                if (listBoxWaypoints.InvokeRequired)
-                    listBoxWaypoints.Invoke(action);
-                else
-                    action();
-                using (StreamReader reader = new StreamReader(statusStream))
-                {
-                    action = new Action(() => { textBoxRouteName.Text = reader.ReadLine(); });
-                    if (textBoxRouteName.InvokeRequired)
-                        textBoxRouteName.Invoke(action);
-                    else
-                        action();
-
-                    while (!reader.EndOfStream)
-                    {
-                        try
-                        {
-                            EDWaypoint waypoint= EDWaypoint.FromString(reader.ReadLine());
-                            action = new Action(() => { listBoxWaypoints.Items.Add(waypoint); });
-                            if (listBoxWaypoints.InvokeRequired)
-                                listBoxWaypoints.Invoke(action);
-                            else
-                                action();
-                        }
-                        catch { }
-                    }
-                    reader.Close();
-                }
-            }
-            catch { }
-            finally
-            {
-                action = new Action(() => { listBoxWaypoints.EndUpdate(); });
-                if (listBoxWaypoints.InvokeRequired)
-                    listBoxWaypoints.Invoke(action);
-                else
-                    action();
-            }
-        }
 
         private void buttonSetAsTarget_Click(object sender, EventArgs e)
         {
@@ -208,11 +164,24 @@ namespace SRVTracker
         private void textBoxRouteName_TextChanged(object sender, EventArgs e)
         {
             buttonSaveRoute.Enabled = !String.IsNullOrEmpty(textBoxRouteName.Text);
+            _route.Name = textBoxRouteName.Text;
         }
 
         private void listBoxWaypoints_SelectedIndexChanged(object sender, EventArgs e)
         {
             UpdateButtons();
+        }
+
+        private void DisplayRoute()
+        {
+            if (_route.Waypoints.Count == 0)
+                return;
+
+            listBoxWaypoints.BeginUpdate();
+            listBoxWaypoints.Items.Clear();
+            foreach (EDWaypoint waypoint in _route.Waypoints)
+                listBoxWaypoints.Items.Add(waypoint.Name);
+            listBoxWaypoints.EndUpdate();
         }
     }
 }

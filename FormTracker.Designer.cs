@@ -32,7 +32,6 @@
             this.buttonBrowseStatusFile = new System.Windows.Forms.Button();
             this.textBoxStatusFile = new System.Windows.Forms.TextBox();
             this.statusFileWatcher = new System.IO.FileSystemWatcher();
-            this.buttonTrack = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.label5 = new System.Windows.Forms.Label();
             this.textBoxSRVHeading = new System.Windows.Forms.TextBox();
@@ -69,6 +68,8 @@
             this.radioButtonUseCustomServer = new System.Windows.Forms.RadioButton();
             this.radioButtonUseDefaultServer = new System.Windows.Forms.RadioButton();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
+            this.buttonRaceTracker = new System.Windows.Forms.Button();
+            this.checkBoxTrack = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.statusFileWatcher)).BeginInit();
             this.groupBox2.SuspendLayout();
@@ -112,16 +113,6 @@
             this.statusFileWatcher.EnableRaisingEvents = true;
             this.statusFileWatcher.SynchronizingObject = this;
             this.statusFileWatcher.Changed += new System.IO.FileSystemEventHandler(this.statusFileWatcher_Changed);
-            // 
-            // buttonTrack
-            // 
-            this.buttonTrack.Location = new System.Drawing.Point(200, 144);
-            this.buttonTrack.Name = "buttonTrack";
-            this.buttonTrack.Size = new System.Drawing.Size(75, 23);
-            this.buttonTrack.TabIndex = 1;
-            this.buttonTrack.Text = "Track";
-            this.buttonTrack.UseVisualStyleBackColor = true;
-            this.buttonTrack.Click += new System.EventHandler(this.buttonTrack_Click);
             // 
             // groupBox2
             // 
@@ -379,11 +370,11 @@
             // 
             // buttonLocator
             // 
-            this.buttonLocator.Location = new System.Drawing.Point(119, 144);
+            this.buttonLocator.Location = new System.Drawing.Point(134, 144);
             this.buttonLocator.Name = "buttonLocator";
-            this.buttonLocator.Size = new System.Drawing.Size(75, 23);
+            this.buttonLocator.Size = new System.Drawing.Size(55, 23);
             this.buttonLocator.TabIndex = 9;
-            this.buttonLocator.Text = "Locator...";
+            this.buttonLocator.Text = "Locate";
             this.buttonLocator.UseVisualStyleBackColor = true;
             this.buttonLocator.Click += new System.EventHandler(this.buttonLocator_Click);
             // 
@@ -391,9 +382,9 @@
             // 
             this.buttonRoutePlanner.Location = new System.Drawing.Point(12, 144);
             this.buttonRoutePlanner.Name = "buttonRoutePlanner";
-            this.buttonRoutePlanner.Size = new System.Drawing.Size(101, 23);
+            this.buttonRoutePlanner.Size = new System.Drawing.Size(55, 23);
             this.buttonRoutePlanner.TabIndex = 10;
-            this.buttonRoutePlanner.Text = "Route Planner";
+            this.buttonRoutePlanner.Text = "Route";
             this.buttonRoutePlanner.UseVisualStyleBackColor = true;
             this.buttonRoutePlanner.Click += new System.EventHandler(this.buttonRoutePlanner_Click);
             // 
@@ -486,11 +477,34 @@
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "Data Settings";
             // 
+            // buttonRaceTracker
+            // 
+            this.buttonRaceTracker.Location = new System.Drawing.Point(73, 144);
+            this.buttonRaceTracker.Name = "buttonRaceTracker";
+            this.buttonRaceTracker.Size = new System.Drawing.Size(55, 23);
+            this.buttonRaceTracker.TabIndex = 17;
+            this.buttonRaceTracker.Text = "Race";
+            this.buttonRaceTracker.UseVisualStyleBackColor = true;
+            this.buttonRaceTracker.Click += new System.EventHandler(this.buttonRaceTracker_Click);
+            // 
+            // checkBoxTrack
+            // 
+            this.checkBoxTrack.AutoSize = true;
+            this.checkBoxTrack.Location = new System.Drawing.Point(221, 148);
+            this.checkBoxTrack.Name = "checkBoxTrack";
+            this.checkBoxTrack.Size = new System.Drawing.Size(54, 17);
+            this.checkBoxTrack.TabIndex = 18;
+            this.checkBoxTrack.Text = "Track";
+            this.checkBoxTrack.UseVisualStyleBackColor = true;
+            this.checkBoxTrack.CheckedChanged += new System.EventHandler(this.checkBoxTrack_CheckedChanged);
+            // 
             // FormTracker
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(280, 219);
+            this.Controls.Add(this.checkBoxTrack);
+            this.Controls.Add(this.buttonRaceTracker);
             this.Controls.Add(this.checkBoxAutoScroll);
             this.Controls.Add(this.groupBox8);
             this.Controls.Add(this.checkBoxShowLive);
@@ -507,7 +521,6 @@
             this.Controls.Add(this.listBoxLog);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.buttonTrack);
             this.Controls.Add(this.groupBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
@@ -539,7 +552,6 @@
         private System.Windows.Forms.Button buttonBrowseStatusFile;
         private System.Windows.Forms.TextBox textBoxStatusFile;
         private System.IO.FileSystemWatcher statusFileWatcher;
-        private System.Windows.Forms.Button buttonTrack;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
@@ -576,6 +588,8 @@
         private System.Windows.Forms.Button buttonLocator;
         private System.Windows.Forms.RadioButton radioButtonUseCustomServer;
         private System.Windows.Forms.RadioButton radioButtonUseDefaultServer;
+        private System.Windows.Forms.Button buttonRaceTracker;
+        private System.Windows.Forms.CheckBox checkBoxTrack;
     }
 }
 

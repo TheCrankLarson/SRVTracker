@@ -55,9 +55,11 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommanderWatcher.cs" />
     <Compile Include="EDEvent.cs" />
     <Compile Include="EDEventFactory.cs" />
     <Compile Include="EDRace.cs" />
+    <Compile Include="EDRoute.cs" />
     <Compile Include="EDWaypoint.cs" />
     <Compile Include="Flags.cs" />
     <Compile Include="FormAddLocation.cs">
@@ -71,6 +73,12 @@
     </Compile>
     <Compile Include="FormLocator.Designer.cs">
       <DependentUpon>FormLocator.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormRaceMonitor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormRaceMonitor.Designer.cs">
+      <DependentUpon>FormRaceMonitor.cs</DependentUpon>
     </Compile>
     <Compile Include="FormRoutePlanner.cs">
       <SubType>Form</SubType>
@@ -98,6 +106,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormLocator.resx">
       <DependentUpon>FormLocator.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormRaceMonitor.resx">
+      <DependentUpon>FormRaceMonitor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormRoutePlanner.resx">
       <DependentUpon>FormRoutePlanner.cs</DependentUpon>

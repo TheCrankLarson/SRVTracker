@@ -26,7 +26,7 @@ namespace SRVTracker
             InitClientId();
             InitStatusLocation();
             buttonTest.Visible = System.Diagnostics.Debugger.IsAttached;
-            FormLocator.ServerAddress = textBoxUploadServer.Text;
+            FormLocator.ServerAddress = (string)radioButtonUseDefaultServer.Tag;
             _formLocator = new FormLocator();
         }
 
@@ -100,57 +100,6 @@ namespace SRVTracker
                 // Create a task to process the status (we return as quickly as possible from the event procedure
                 Task.Factory.StartNew(() => ProcessStatusFileUpdate(e.FullPath));
             }
-        }
-
-        private void buttonTrack_Click(object sender, EventArgs e)
-        {
-            // We set up a watch on the status file to check for when it is written to
-
-            if (buttonTrack.Text.Equals("Track"))
-            {
-                try
-                {
-                    statusFileWatcher.Path = textBoxStatusFile.Text;
-                    statusFileWatcher.Filter = "Status.json";
-                    statusFileWatcher.NotifyFilter = System.IO.NotifyFilters.LastWrite;
-                    statusFileWatcher.EnableRaisingEvents = true;
-                }
-                catch (Exception ex)
-                {
-                    AddLog($"Error initiating file watcher: {ex.Message}");
-                    return;
-                }
-                if (checkBoxUpload.Checked)
-                {
-                    // Create the UDP client for sending tracking data
-                    try
-                    {
-                        string serverUrl = (string)radioButtonUseDefaultServer.Tag;
-                        if (radioButtonUseCustomServer.Checked)
-                            serverUrl = textBoxUploadServer.Text;
-                        _udpClient = new UdpClient(serverUrl, 11938);
-                    }
-                    catch (Exception ex)
-                    {
-                        AddLog($"Error creating UDP client: {ex.Message}");
-                        checkBoxUpload.Checked = false;
-                    }
-                }
-                AddLog("Status tracking started");
-                buttonTrack.Text = "Stop";
-                return;
-            }
-
-            // Stop tracking
-            statusFileWatcher.EnableRaisingEvents = false;
-            try
-            {
-                _udpClient.Close();
-            }
-            catch { }
-            _udpClient = null;
-            buttonTrack.Text = "Track";
-            AddLog("Status tracking stopped");
         }
 
         private void AddLog(string log)
@@ -484,6 +433,10 @@ namespace SRVTracker
             radioButtonUseCustomServer.Enabled = checkBoxUpload.Checked;
             radioButtonUseDefaultServer.Enabled = checkBoxUpload.Checked;
             textBoxUploadServer.Enabled = checkBoxUpload.Checked && radioButtonUseCustomServer.Checked;
+            if (radioButtonUseDefaultServer.Checked)
+                FormLocator.ServerAddress = (string)radioButtonUseDefaultServer.Tag;
+            else
+                FormLocator.ServerAddress = textBoxUploadServer.Text;
         }
 
         private void checkBoxSaveToFile_CheckedChanged(object sender, EventArgs e)
@@ -505,6 +458,59 @@ namespace SRVTracker
         {
             FormRoutePlanner formRoutePlanner = new FormRoutePlanner(_formLocator);
             formRoutePlanner.Show();
+        }
+
+        private void checkBoxTrack_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBoxTrack.Checked)
+            {
+                try
+                {
+                    statusFileWatcher.Path = textBoxStatusFile.Text;
+                    statusFileWatcher.Filter = "Status.json";
+                    statusFileWatcher.NotifyFilter = System.IO.NotifyFilters.LastWrite;
+                    statusFileWatcher.EnableRaisingEvents = true;
+                }
+                catch (Exception ex)
+                {
+                    AddLog($"Error initiating file watcher: {ex.Message}");
+                    return;
+                }
+                if (checkBoxUpload.Checked)
+                {
+                    // Create the UDP client for sending tracking data
+                    try
+                    {
+                        string serverUrl = (string)radioButtonUseDefaultServer.Tag;
+                        if (radioButtonUseCustomServer.Checked)
+                            serverUrl = textBoxUploadServer.Text;
+                        _udpClient = new UdpClient(serverUrl, 11938);
+                    }
+                    catch (Exception ex)
+                    {
+                        AddLog($"Error creating UDP client: {ex.Message}");
+                        checkBoxUpload.Checked = false;
+                    }
+                }
+                AddLog("Status tracking started");
+                return;
+            }
+
+            // Stop tracking
+            statusFileWatcher.EnableRaisingEvents = false;
+            try
+            {
+                _udpClient.Close();
+            }
+            catch { }
+            _udpClient = null;
+            AddLog("Status tracking stopped");
+        }
+
+        private void buttonRaceTracker_Click(object sender, EventArgs e)
+        {
+            FormRaceMonitor formRaceMonitor = new FormRaceMonitor();
+            formRaceMonitor.Show();
         }
     }
 }

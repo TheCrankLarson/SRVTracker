@@ -26,6 +26,20 @@ namespace SRVTracker
             InitializeComponent();
             this.Width = _normalView.Width;
             buttonUseCurrentLocation.Enabled = false;  // We'll enable it when we have a location
+            CommanderWatcher.UpdateReceived += CommanderWatcher_UpdateReceived;
+        }
+
+        private void CommanderWatcher_UpdateReceived(object sender, EDEvent edEvent)
+        {
+            if (!_trackingTarget.Equals(edEvent.Commander))
+                return;
+
+            if (edEvent.HasCoordinates)
+            {
+                _targetPosition = edEvent.Location;
+                DisplayTarget();
+                UpdateTracking();
+            }
         }
 
         public static double PlanetaryRadius { get; set; } = 0;
@@ -41,6 +55,7 @@ namespace SRVTracker
             _targetPosition = targetLocation;
             UpdateTrackingTarget(targetLocation.Name, false);
             DisplayTarget();
+            UpdateTracking();
         }
 
         private void DisplayTarget()
@@ -48,23 +63,34 @@ namespace SRVTracker
             if (_targetPosition == null)
                 return;
 
-            Action action = new Action(() => { textBoxLatitude.Text = _targetPosition.Latitude.ToString(); });
-            if (textBoxLatitude.InvokeRequired)
-                textBoxLatitude.Invoke(action);
-            else
-                action();
+            Action action;
 
-            action = new Action(() => { textBoxAltitude.Text = _targetPosition.Altitude.ToString(); });
-            if (textBoxAltitude.InvokeRequired)
-                textBoxAltitude.Invoke(action);
-            else
-                action();
+            if (textBoxLatitude.Text != _targetPosition.Latitude.ToString())
+            {
+                action = new Action(() => { textBoxLatitude.Text = _targetPosition.Latitude.ToString(); });
+                if (textBoxLatitude.InvokeRequired)
+                    textBoxLatitude.Invoke(action);
+                else
+                    action();
+            }
 
-            action = new Action(() => { textBoxLongitude.Text = _targetPosition.Longitude.ToString(); });
-            if (textBoxLongitude.InvokeRequired)
-                textBoxLongitude.Invoke(action);
-            else
-                action();
+            if (textBoxLongitude.Text != _targetPosition.Longitude.ToString())
+            {
+                action = new Action(() => { textBoxLongitude.Text = _targetPosition.Longitude.ToString(); });
+                if (textBoxLongitude.InvokeRequired)
+                    textBoxLongitude.Invoke(action);
+                else
+                    action();
+            }
+
+            if (textBoxAltitude.Text != _targetPosition.Altitude.ToString())
+            {
+                action = new Action(() => { textBoxAltitude.Text = _targetPosition.Altitude.ToString(); });
+                if (textBoxAltitude.InvokeRequired)
+                    textBoxAltitude.Invoke(action);
+                else
+                    action();
+            }
         }
 
         public void UpdateTracking(EDLocation CurrentLocation =null)
@@ -192,11 +218,11 @@ namespace SRVTracker
         {
             if (_currentPosition == null)
                 return;
-            timerTracker.Stop();
-            _targetPosition = _currentPosition;
+          
             try
             {
                 UpdateTrackingTarget($"{_targetPosition.Longitude.ToString()} , {_targetPosition.Latitude.ToString()}", false);
+                _targetPosition = _currentPosition;
                 DisplayTarget();
             }
             catch { }
@@ -208,36 +234,21 @@ namespace SRVTracker
             {
                 this.Width = 575;
                 _commanderListShowing = true;
-                timerCommanderRefresh.Start();
-                Task.Run(new Action(() => { UpdateAvailableCommanders(); }));
+                CommanderWatcher.Start();
+                UpdateAvailableCommanders();;
+                CommanderWatcher.OnlineCountChanged += CommanderWatcher_OnlineCountChanged;
             }
             else
             {
                 this.Width = _normalView.Width;
                 _commanderListShowing = false;
-                timerCommanderRefresh.Stop();
+                CommanderWatcher.OnlineCountChanged -= CommanderWatcher_OnlineCountChanged;
             }
         }
-
-        private string ExtractCommanderNameFromStatus(string status)
-        {
-            // Return the commander name
-            string clientId = null;
-            try
-            {
-                if (status.Contains('{'))
-                    clientId = status.Substring(0, status.IndexOf(':')).Trim();
-                else
-                    clientId = status.Substring(0, status.IndexOf(',')).Trim();
-            }
-            catch { }
-            return clientId;
-        }
-
 
         private void UpdateAvailableCommanders()
         {
-            // Connect to the server and retrieve the list of any currently live commanders
+            // Show the list of online commanders (those available for tracking)
 
             string info = "No commanders found";
             Action action = new Action(() => {
@@ -249,38 +260,30 @@ namespace SRVTracker
                 info = "Invalid server address";
             else
             {
-                string commanderStatus = "";
-                try
-                {
-                    Stream statusStream = _webClient.OpenRead($"http://{ServerAddress}:11938/DataCollator/status");
-                    using (StreamReader reader = new StreamReader(statusStream))
-                        commanderStatus = reader.ReadToEnd().Trim();
-                    statusStream.Close();
-                }
-                catch { }
-                if (!String.IsNullOrEmpty(commanderStatus))
-                {
-                    // We have something to process.  The first line is headers for the location feed, but after that is the Commander list
-                    string[] commanders = commanderStatus.Split('\n');
-                    if (commanders.Length > 1)
+                if (CommanderWatcher.OnlineCommanderCount>0)
+                    action = new Action(() =>
                     {
-                        for (int i = 1; i < commanders.Length; i++)
-                            commanders[i] = ExtractCommanderNameFromStatus(commanders[i]);
-                        action = new Action(() =>
-                        {
-                            listBoxCommanders.Items.Clear();
-                            for (int i = 1; i < commanders.Length; i++)
-                                if (!String.IsNullOrEmpty(commanders[i]))
-                                    listBoxCommanders.Items.Add(commanders[i]);
-                        });
-                    }
-                }
+                        listBoxCommanders.BeginUpdate();
+                        int selectedIndex = listBoxCommanders.SelectedIndex;
+                        listBoxCommanders.Items.Clear();
+                        foreach (string commander in CommanderWatcher.GetCommanders())
+                            listBoxCommanders.Items.Add(commander);
+                        if (selectedIndex >= 0 && selectedIndex < listBoxCommanders.Items.Count)
+                            listBoxCommanders.SelectedIndex = selectedIndex;
+                        listBoxCommanders.EndUpdate();
+                    });
             }
 
             if (listBoxCommanders.InvokeRequired)
                 listBoxCommanders.Invoke(action);
             else
                 action();
+            
+        }
+
+        private void CommanderWatcher_OnlineCountChanged(object sender, EventArgs e)
+        {
+            UpdateAvailableCommanders();
         }
 
         private void listBoxCommanders_SelectedIndexChanged(object sender, EventArgs e)
@@ -339,66 +342,8 @@ namespace SRVTracker
             }           
         }
 
-        private bool UpdateTargetLocation(string newTarget = "")
-        {
-            // Read the status of the currently tracked target, returning true if successful
-            if (String.IsNullOrEmpty(ServerAddress))
-                return false;
-
-            if (!String.IsNullOrEmpty(newTarget))
-                UpdateTrackingTarget(newTarget);
-
-            string commanderStatus = "";
-            try
-            {
-                Stream statusStream = _webClient.OpenRead($"http://{ServerAddress}:11938/DataCollator/status/{_trackingTarget}");
-                using (StreamReader reader = new StreamReader(statusStream))
-                {
-                    reader.ReadLine();
-                    commanderStatus = reader.ReadLine();
-                }
-                statusStream.Close();
-                EDEvent commanderLocation = EDEventFactory.CreateEventFromStatus(commanderStatus);
-                if (commanderLocation == null)
-                    return false;
-
-                if (commanderLocation.HasCoordinates)
-                {
-                    _targetPosition = commanderLocation.Location;
-
-                    try
-                    {
-                        Action action;
-                        if (!_targetPosition.Latitude.ToString().Equals(textBoxLatitude.Text))
-                        {
-                            action = new Action(() => { textBoxLatitude.Text = _targetPosition.Latitude.ToString(); });
-                            if (textBoxLatitude.InvokeRequired)
-                                textBoxLatitude.Invoke(action);
-                            else
-                                action();
-                        }
-                        if (!_targetPosition.Longitude.ToString().Equals(textBoxLongitude.Text))
-                        {
-                            action = new Action(() => { textBoxLongitude.Text = _targetPosition.Longitude.ToString(); });
-                            if (textBoxLongitude.InvokeRequired)
-                                textBoxLongitude.Invoke(action);
-                            else
-                                action();
-                        }
-                    }
-                    catch { }
-
-                    UpdateTracking();
-                }
-                return true;
-            }
-            catch { }
-            return false;
-        }
-
         private void buttonTrackCommander_Click(object sender, EventArgs e)
         {
-            timerTracker.Stop();
             //  If we have a valid commander to track, we start a timer to query their position every 250ms
             if (buttonTrackCommander.Text.Equals("Track"))
             {
@@ -412,34 +357,13 @@ namespace SRVTracker
                 if (String.IsNullOrEmpty(target) || target.Equals("No commanders found"))
                     return;
 
-                if (UpdateTargetLocation(target))
-                {
-                    // Tracking working, so start the timer
-                    timerTracker.Start();
-                    buttonTrackCommander.Text = "Stop";
-                }
+                UpdateTrackingTarget(target);
             }
             else
             {
                 // Stop tracking               
                 UpdateTrackingTarget("");
             }
-        }
-
-        private void timerTracker_Tick(object sender, EventArgs e)
-        {
-            timerTracker.Stop();
-            UpdateTargetLocation();
-            timerTracker.Start();
-        }
-
-        private void timerCommanderRefresh_Tick(object sender, EventArgs e)
-        {
-            // We refresh the commander list every five seconds (when it is displayed)
-            timerCommanderRefresh.Stop();
-            UpdateAvailableCommanders();
-            if (_commanderListShowing)
-                timerCommanderRefresh.Start();
         }
     }
 }

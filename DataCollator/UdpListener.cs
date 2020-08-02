@@ -30,7 +30,7 @@ namespace DataCollator
             {
                 byte[] receiveBytes = s.u.EndReceive(ar, ref s.e);
                 string receiveString = Encoding.ASCII.GetString(receiveBytes);
-                DataReceived?.Invoke(null, receiveString.Trim());
+                DataReceived?.Invoke(null, receiveString);
             }
             catch { }
             s.u.BeginReceive(new AsyncCallback(ReceiveCallback), s);

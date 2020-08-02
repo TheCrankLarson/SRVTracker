@@ -16,7 +16,7 @@ namespace SRVTracker
         //
         private static CultureInfo _enGB = new CultureInfo("en-GB");
 
-        public EDEvent(string json)
+        public EDEvent(string json, string commander = "")
         {
             this.RawData = json;
             Newtonsoft.Json.Linq.JObject obj = (Newtonsoft.Json.Linq.JObject)JsonConvert.DeserializeObject(json);
@@ -61,15 +61,18 @@ namespace SRVTracker
                         break;
                 }
             }
+            Commander = commander;
         }
 
-        public EDEvent(double latitude, double longitude, double altitude, int heading, double planetRadius, long flags)
+        public EDEvent(string commander, long timestamp, double latitude, double longitude, double altitude, int heading, double planetRadius, long flags)
         {
+            Commander = commander;
             Latitude = latitude;
             Longitude = longitude;
             Altitude = altitude;
             Heading = heading;
             PlanetRadius = planetRadius;
+            TimeStamp = new DateTime(timestamp);
             this.Flags = flags;
         }
 
@@ -83,6 +86,7 @@ namespace SRVTracker
         public string BodyName { get; } = "";
         public double PlanetRadius { get; } = 0;
         public double Altitude { get; } = 0;
+        public string Commander { get; } = "";
 
         public EDLocation Location
         {
