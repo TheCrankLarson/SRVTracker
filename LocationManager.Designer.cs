@@ -29,17 +29,19 @@
         private void InitializeComponent()
         {
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.listBoxLocations = new System.Windows.Forms.ListBox();
+            this.buttonSaveAs = new System.Windows.Forms.Button();
             this.buttonEditLocation = new System.Windows.Forms.Button();
             this.buttonAddLocation = new System.Windows.Forms.Button();
             this.buttonDeleteLocation = new System.Windows.Forms.Button();
             this.buttonLoadLocations = new System.Windows.Forms.Button();
             this.buttonSaveLocations = new System.Windows.Forms.Button();
+            this.listBoxLocations = new System.Windows.Forms.ListBox();
             this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.buttonSaveAs);
             this.groupBox3.Controls.Add(this.buttonEditLocation);
             this.groupBox3.Controls.Add(this.buttonAddLocation);
             this.groupBox3.Controls.Add(this.buttonDeleteLocation);
@@ -54,18 +56,16 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Known Locations";
             // 
-            // listBoxLocations
+            // buttonSaveAs
             // 
-            this.listBoxLocations.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.listBoxLocations.DisplayMember = "Name";
-            this.listBoxLocations.FormattingEnabled = true;
-            this.listBoxLocations.Location = new System.Drawing.Point(6, 16);
-            this.listBoxLocations.Name = "listBoxLocations";
-            this.listBoxLocations.Size = new System.Drawing.Size(269, 238);
-            this.listBoxLocations.TabIndex = 0;
-            this.listBoxLocations.ValueMember = "Name";
+            this.buttonSaveAs.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonSaveAs.Image = global::SRVTracker.Properties.Resources.SaveAs_16x;
+            this.buttonSaveAs.Location = new System.Drawing.Point(235, 258);
+            this.buttonSaveAs.Name = "buttonSaveAs";
+            this.buttonSaveAs.Size = new System.Drawing.Size(40, 23);
+            this.buttonSaveAs.TabIndex = 6;
+            this.buttonSaveAs.UseVisualStyleBackColor = true;
+            this.buttonSaveAs.Click += new System.EventHandler(this.buttonSaveAs_Click);
             // 
             // buttonEditLocation
             // 
@@ -103,9 +103,9 @@
             // 
             this.buttonLoadLocations.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonLoadLocations.Image = global::SRVTracker.Properties.Resources.OpenFile_16x;
-            this.buttonLoadLocations.Location = new System.Drawing.Point(163, 258);
+            this.buttonLoadLocations.Location = new System.Drawing.Point(143, 258);
             this.buttonLoadLocations.Name = "buttonLoadLocations";
-            this.buttonLoadLocations.Size = new System.Drawing.Size(53, 23);
+            this.buttonLoadLocations.Size = new System.Drawing.Size(40, 23);
             this.buttonLoadLocations.TabIndex = 2;
             this.buttonLoadLocations.UseVisualStyleBackColor = true;
             this.buttonLoadLocations.Click += new System.EventHandler(this.buttonLoadLocations_Click);
@@ -114,12 +114,26 @@
             // 
             this.buttonSaveLocations.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonSaveLocations.Image = global::SRVTracker.Properties.Resources.Save_16x;
-            this.buttonSaveLocations.Location = new System.Drawing.Point(222, 258);
+            this.buttonSaveLocations.Location = new System.Drawing.Point(189, 258);
             this.buttonSaveLocations.Name = "buttonSaveLocations";
-            this.buttonSaveLocations.Size = new System.Drawing.Size(53, 23);
+            this.buttonSaveLocations.Size = new System.Drawing.Size(40, 23);
             this.buttonSaveLocations.TabIndex = 1;
             this.buttonSaveLocations.UseVisualStyleBackColor = true;
             this.buttonSaveLocations.Click += new System.EventHandler(this.buttonSaveLocations_Click);
+            // 
+            // listBoxLocations
+            // 
+            this.listBoxLocations.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.listBoxLocations.DisplayMember = "Name";
+            this.listBoxLocations.FormattingEnabled = true;
+            this.listBoxLocations.Location = new System.Drawing.Point(6, 16);
+            this.listBoxLocations.Name = "listBoxLocations";
+            this.listBoxLocations.Size = new System.Drawing.Size(269, 238);
+            this.listBoxLocations.TabIndex = 0;
+            this.listBoxLocations.ValueMember = "Name";
+            this.listBoxLocations.SelectedIndexChanged += new System.EventHandler(this.listBoxLocations_SelectedIndexChanged);
             // 
             // LocationManager
             // 
@@ -142,5 +156,6 @@
         private System.Windows.Forms.Button buttonSaveLocations;
         private System.Windows.Forms.ListBox listBoxLocations;
         private System.Windows.Forms.Button buttonEditLocation;
+        private System.Windows.Forms.Button buttonSaveAs;
     }
 }

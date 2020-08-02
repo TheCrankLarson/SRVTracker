@@ -35,6 +35,38 @@ namespace SRVTracker
             get { return _currentPosition; }
         }
 
+        public void SetTarget(EDLocation targetLocation)
+        {
+            // Sets the tracking target
+            _targetPosition = targetLocation;
+            UpdateTrackingTarget(targetLocation.Name, false);
+            DisplayTarget();
+        }
+
+        private void DisplayTarget()
+        {
+            if (_targetPosition == null)
+                return;
+
+            Action action = new Action(() => { textBoxLatitude.Text = _targetPosition.Latitude.ToString(); });
+            if (textBoxLatitude.InvokeRequired)
+                textBoxLatitude.Invoke(action);
+            else
+                action();
+
+            action = new Action(() => { textBoxAltitude.Text = _targetPosition.Altitude.ToString(); });
+            if (textBoxAltitude.InvokeRequired)
+                textBoxAltitude.Invoke(action);
+            else
+                action();
+
+            action = new Action(() => { textBoxLongitude.Text = _targetPosition.Longitude.ToString(); });
+            if (textBoxLongitude.InvokeRequired)
+                textBoxLongitude.Invoke(action);
+            else
+                action();
+        }
+
         public void UpdateTracking(EDLocation CurrentLocation =null)
         {
             // Update our position
@@ -165,8 +197,7 @@ namespace SRVTracker
             try
             {
                 UpdateTrackingTarget($"{_targetPosition.Longitude.ToString()} , {_targetPosition.Latitude.ToString()}", false);
-                textBoxLongitude.Text = _targetPosition.Longitude.ToString();
-                textBoxLatitude.Text = _targetPosition.Latitude.ToString();
+                DisplayTarget();
             }
             catch { }
         }

@@ -13,11 +13,26 @@ namespace SRVTracker
 {
     public partial class LocationManager : UserControl
     {
-        private string _saveFilename = "";
+        private string _saveFilename = "default.edlocations";
+        public event EventHandler SelectionChanged;
 
         public LocationManager()
         {
             InitializeComponent();
+            LoadLocationsFromFile(_saveFilename);
+        }
+
+        public LocationManager(string restoreFromFile = "")
+        {
+            InitializeComponent();
+            if (!String.IsNullOrEmpty(restoreFromFile))
+                _saveFilename = restoreFromFile;
+            LoadLocationsFromFile(_saveFilename);
+        }
+
+        protected virtual void OnSelectionChanged(EventArgs e)
+        {
+            SelectionChanged?.Invoke(this, e);
         }
 
         public EDLocation SelectedLocation
@@ -55,22 +70,7 @@ namespace SRVTracker
 
         private void buttonSaveLocations_Click(object sender, EventArgs e)
         {
-            using (SaveFileDialog saveFileDialog = new SaveFileDialog())
-            {
-                saveFileDialog.InitialDirectory = _saveFilename;
-                saveFileDialog.Filter = "edlocations files (*.edlocations)|*.edlocations|All files (*.*)|*.*";
-                saveFileDialog.FilterIndex = 1;
-                saveFileDialog.RestoreDirectory = true;
-                saveFileDialog.FileName = _saveFilename;
-                if (saveFileDialog.ShowDialog() == DialogResult.OK)
-                {
-                    try
-                    {
-                        Task.Run(new Action(() => { SaveLocationsToFile(saveFileDialog.FileName); }));
-                    }
-                    catch { }
-                }
-            }
+            SaveLocationsToFile(_saveFilename);
         }
 
         public void LoadLocationsFromFile(string filename)
@@ -116,6 +116,7 @@ namespace SRVTracker
                 else
                     action();
             }
+            UpdateButtons();
         }
 
         public void SaveLocationsToFile(string filename)
@@ -159,6 +160,38 @@ namespace SRVTracker
                 formAddLocation.EditLocation((EDLocation)listBoxLocations.SelectedItem, this);
             }
             catch { }
+        }
+
+        private void buttonSaveAs_Click(object sender, EventArgs e)
+        {
+            using (SaveFileDialog saveFileDialog = new SaveFileDialog())
+            {
+                saveFileDialog.InitialDirectory = _saveFilename;
+                saveFileDialog.Filter = "edlocations files (*.edlocations)|*.edlocations|All files (*.*)|*.*";
+                saveFileDialog.FilterIndex = 1;
+                saveFileDialog.RestoreDirectory = true;
+                saveFileDialog.FileName = _saveFilename;
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        Task.Run(new Action(() => { SaveLocationsToFile(saveFileDialog.FileName); }));
+                    }
+                    catch { }
+                }
+            }
+        }
+
+        private void UpdateButtons()
+        {
+            buttonDeleteLocation.Enabled = listBoxLocations.SelectedIndex >= 0;
+            buttonEditLocation.Enabled = listBoxLocations.SelectedIndex >= 0;
+        }
+
+        private void listBoxLocations_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            UpdateButtons();
+            OnSelectionChanged(e);
         }
     }
 }

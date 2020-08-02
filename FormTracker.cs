@@ -503,7 +503,7 @@ namespace SRVTracker
 
         private void buttonRoutePlanner_Click(object sender, EventArgs e)
         {
-            FormRoutePlanner formRoutePlanner = new FormRoutePlanner();
+            FormRoutePlanner formRoutePlanner = new FormRoutePlanner(_formLocator);
             formRoutePlanner.Show();
         }
     }
