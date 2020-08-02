@@ -42,15 +42,24 @@ namespace SRVTracker
             textBoxSystem.Text = _location.SystemName;
         }
 
-        public EDLocation GetDisplayedLocation()
+        public EDLocation GetDisplayedLocation(EDLocation updateLocation = null)
         {
             // Return EDLocation with given data
 
             try
             {
-                return new EDLocation(textBoxLocationName.Text, textBoxSystem.Text, textBoxPlanet.Text,
-                    Convert.ToDouble(textBoxLatitude.Text), Convert.ToDouble(textBoxLongitude.Text), Convert.ToDouble(textBoxAltitude.Text),
-                    Convert.ToDouble(textBoxPlanetaryRadius.Text));
+                if (updateLocation==null)
+                    return new EDLocation(textBoxLocationName.Text, textBoxSystem.Text, textBoxPlanet.Text,
+                        Convert.ToDouble(textBoxLatitude.Text), Convert.ToDouble(textBoxLongitude.Text), Convert.ToDouble(textBoxAltitude.Text),
+                        Convert.ToDouble(textBoxPlanetaryRadius.Text));
+
+                updateLocation.Name = textBoxLocationName.Text;
+                updateLocation.SystemName = textBoxSystem.Text;
+                updateLocation.PlanetName = textBoxPlanet.Text;
+                updateLocation.Latitude = Convert.ToDouble(textBoxLatitude.Text);
+                updateLocation.Longitude = Convert.ToDouble(textBoxLongitude.Text);
+                updateLocation.Altitude = Convert.ToDouble(textBoxAltitude.Text);
+                updateLocation.PlanetaryRadius = Convert.ToDouble(textBoxPlanetaryRadius.Text);
             }
             catch { }
             return null;
@@ -60,6 +69,14 @@ namespace SRVTracker
         {
             _locationListBox = locationListBox;
             DisplayLocation();
+            this.Show(owner);
+        }
+
+        public void EditLocation(EDLocation location, IWin32Window owner = null)
+        {
+            _location = location;
+            DisplayLocation();
+            buttonAdd.Text = "Update";
             this.Show(owner);
         }
 
@@ -76,9 +93,16 @@ namespace SRVTracker
 
             if (_locationListBox != null)
             {
+                // We're adding this location
                 _locationListBox.Items.Add(location);
                 this.Close();
             }
+
+            // This was an edit
+            if (_location == null)
+                return;
+            GetDisplayedLocation(_location);
+            this.Close();
         }
 
         private void buttonCancel_Click(object sender, EventArgs e)

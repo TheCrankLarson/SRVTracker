@@ -240,6 +240,7 @@
             this.Controls.Add(this.groupBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "FormAddLocation";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Add Location";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

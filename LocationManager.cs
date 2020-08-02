@@ -139,12 +139,26 @@ namespace SRVTracker
 
         private void buttonDeleteLocation_Click(object sender, EventArgs e)
         {
-
+            if (listBoxLocations.SelectedIndex < 0)
+                return;
+            try
+            {
+                listBoxLocations.Items.RemoveAt(listBoxLocations.SelectedIndex);
+            }
+            catch { }
         }
 
         private void buttonEditLocation_Click(object sender, EventArgs e)
         {
+            if (listBoxLocations.SelectedIndex < 0)
+                return;
 
+            try
+            {
+                FormAddLocation formAddLocation = new FormAddLocation();
+                formAddLocation.EditLocation((EDLocation)listBoxLocations.SelectedItem, this);
+            }
+            catch { }
         }
     }
 }
