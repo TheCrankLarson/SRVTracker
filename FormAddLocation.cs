@@ -60,6 +60,7 @@ namespace SRVTracker
                 updateLocation.Longitude = Convert.ToDouble(textBoxLongitude.Text);
                 updateLocation.Altitude = Convert.ToDouble(textBoxAltitude.Text);
                 updateLocation.PlanetaryRadius = Convert.ToDouble(textBoxPlanetaryRadius.Text);
+                return updateLocation;
             }
             catch { }
             return null;
@@ -87,7 +88,7 @@ namespace SRVTracker
                 textBoxLocationName.Focus();
                 return;
             }
-            EDLocation location = GetDisplayedLocation();
+            EDLocation location = GetDisplayedLocation(_location);
             if (location == null)
                 return;
 
@@ -95,13 +96,8 @@ namespace SRVTracker
             {
                 // We're adding this location
                 _locationListBox.Items.Add(location);
-                this.Close();
             }
 
-            // This was an edit
-            if (_location == null)
-                return;
-            GetDisplayedLocation(_location);
             this.Close();
         }
 
