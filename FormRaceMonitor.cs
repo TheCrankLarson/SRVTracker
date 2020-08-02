@@ -19,6 +19,7 @@ namespace SRVTracker
         {
             InitializeComponent();
             _race = new EDRace("", new EDRoute(""));
+            CommanderWatcher.Start();
         }
 
         private void buttonLoadRoute_Click(object sender, EventArgs e)
@@ -51,11 +52,29 @@ namespace SRVTracker
             if (_race.Route.Waypoints.Count < 1)
                 return;
 
-            listViewWaypoints.BeginUpdate();
-            listViewWaypoints.Items.Clear();
+            listBoxWaypoints.BeginUpdate();
+            listBoxWaypoints.Items.Clear();
             foreach (EDWaypoint waypoint in _race.Route.Waypoints)
-                listViewWaypoints.Items.Add(waypoint.Name);
-            listViewWaypoints.EndUpdate();
+                listBoxWaypoints.Items.Add(waypoint.Name);
+            listBoxWaypoints.EndUpdate();
+        }
+
+        private void buttonAddAllOnline_Click(object sender, EventArgs e)
+        {
+            if (CommanderWatcher.OnlineCommanderCount == 0)
+                return;
+
+            listViewParticipants.BeginUpdate();
+            listViewParticipants.Items.Clear();
+            foreach (string commander in CommanderWatcher.GetCommanders())
+            {
+                ListViewItem item = new ListViewItem("-");
+                item.SubItems.Add(commander);
+                item.SubItems.Add("Unknown");
+                item.SubItems.Add("0m");
+                listViewParticipants.Items.Add(item);
+            }
+            listViewParticipants.EndUpdate();
         }
     }
 }

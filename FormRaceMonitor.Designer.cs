@@ -29,8 +29,6 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.listViewWaypoints = new System.Windows.Forms.ListView();
-            this.buttonLoadRoute = new System.Windows.Forms.Button();
             this.textBoxRouteName = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.label4 = new System.Windows.Forms.Label();
@@ -42,9 +40,6 @@
             this.textBoxPlanet = new System.Windows.Forms.TextBox();
             this.textBoxSystem = new System.Windows.Forms.TextBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.buttonTrackParticipant = new System.Windows.Forms.Button();
-            this.buttonRemoveParticipant = new System.Windows.Forms.Button();
-            this.buttonAddParticipant = new System.Windows.Forms.Button();
             this.listViewParticipants = new System.Windows.Forms.ListView();
             this.columnHeaderPosition = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeaderName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -53,6 +48,12 @@
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.checkBoxExportLeaderboard = new System.Windows.Forms.CheckBox();
             this.checkBoxEliminationOnDestruction = new System.Windows.Forms.CheckBox();
+            this.listBoxWaypoints = new System.Windows.Forms.ListBox();
+            this.buttonAddAllOnline = new System.Windows.Forms.Button();
+            this.buttonTrackParticipant = new System.Windows.Forms.Button();
+            this.buttonRemoveParticipant = new System.Windows.Forms.Button();
+            this.buttonAddParticipant = new System.Windows.Forms.Button();
+            this.buttonLoadRoute = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -61,7 +62,7 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.listViewWaypoints);
+            this.groupBox1.Controls.Add(this.listBoxWaypoints);
             this.groupBox1.Controls.Add(this.buttonLoadRoute);
             this.groupBox1.Controls.Add(this.textBoxRouteName);
             this.groupBox1.Location = new System.Drawing.Point(12, 91);
@@ -70,27 +71,6 @@
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Route";
-            // 
-            // listViewWaypoints
-            // 
-            this.listViewWaypoints.GridLines = true;
-            this.listViewWaypoints.HideSelection = false;
-            this.listViewWaypoints.Location = new System.Drawing.Point(6, 45);
-            this.listViewWaypoints.Name = "listViewWaypoints";
-            this.listViewWaypoints.Size = new System.Drawing.Size(288, 132);
-            this.listViewWaypoints.TabIndex = 2;
-            this.listViewWaypoints.UseCompatibleStateImageBehavior = false;
-            this.listViewWaypoints.View = System.Windows.Forms.View.Details;
-            // 
-            // buttonLoadRoute
-            // 
-            this.buttonLoadRoute.Image = global::SRVTracker.Properties.Resources.OpenFile_16x;
-            this.buttonLoadRoute.Location = new System.Drawing.Point(256, 17);
-            this.buttonLoadRoute.Name = "buttonLoadRoute";
-            this.buttonLoadRoute.Size = new System.Drawing.Size(38, 23);
-            this.buttonLoadRoute.TabIndex = 1;
-            this.buttonLoadRoute.UseVisualStyleBackColor = true;
-            this.buttonLoadRoute.Click += new System.EventHandler(this.buttonLoadRoute_Click);
             // 
             // textBoxRouteName
             // 
@@ -185,6 +165,7 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.buttonAddAllOnline);
             this.groupBox3.Controls.Add(this.buttonTrackParticipant);
             this.groupBox3.Controls.Add(this.buttonRemoveParticipant);
             this.groupBox3.Controls.Add(this.buttonAddParticipant);
@@ -196,33 +177,6 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Participants";
             // 
-            // buttonTrackParticipant
-            // 
-            this.buttonTrackParticipant.Image = global::SRVTracker.Properties.Resources.Target_16x;
-            this.buttonTrackParticipant.Location = new System.Drawing.Point(361, 74);
-            this.buttonTrackParticipant.Name = "buttonTrackParticipant";
-            this.buttonTrackParticipant.Size = new System.Drawing.Size(29, 23);
-            this.buttonTrackParticipant.TabIndex = 3;
-            this.buttonTrackParticipant.UseVisualStyleBackColor = true;
-            // 
-            // buttonRemoveParticipant
-            // 
-            this.buttonRemoveParticipant.Image = global::SRVTracker.Properties.Resources.Remove_color_16x;
-            this.buttonRemoveParticipant.Location = new System.Drawing.Point(361, 45);
-            this.buttonRemoveParticipant.Name = "buttonRemoveParticipant";
-            this.buttonRemoveParticipant.Size = new System.Drawing.Size(29, 23);
-            this.buttonRemoveParticipant.TabIndex = 2;
-            this.buttonRemoveParticipant.UseVisualStyleBackColor = true;
-            // 
-            // buttonAddParticipant
-            // 
-            this.buttonAddParticipant.Image = global::SRVTracker.Properties.Resources.Add_16x;
-            this.buttonAddParticipant.Location = new System.Drawing.Point(361, 19);
-            this.buttonAddParticipant.Name = "buttonAddParticipant";
-            this.buttonAddParticipant.Size = new System.Drawing.Size(29, 23);
-            this.buttonAddParticipant.TabIndex = 1;
-            this.buttonAddParticipant.UseVisualStyleBackColor = true;
-            // 
             // listViewParticipants
             // 
             this.listViewParticipants.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
@@ -230,9 +184,13 @@
             this.columnHeaderName,
             this.columnHeaderStatus,
             this.columnHeaderDistanceToWaypoint});
+            this.listViewParticipants.FullRowSelect = true;
             this.listViewParticipants.GridLines = true;
+            this.listViewParticipants.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.listViewParticipants.HideSelection = false;
+            this.listViewParticipants.LabelWrap = false;
             this.listViewParticipants.Location = new System.Drawing.Point(6, 19);
+            this.listViewParticipants.MultiSelect = false;
             this.listViewParticipants.Name = "listViewParticipants";
             this.listViewParticipants.Size = new System.Drawing.Size(349, 322);
             this.listViewParticipants.TabIndex = 0;
@@ -247,12 +205,12 @@
             // columnHeaderName
             // 
             this.columnHeaderName.Text = "Commander";
-            this.columnHeaderName.Width = 80;
+            this.columnHeaderName.Width = 100;
             // 
             // columnHeaderStatus
             // 
             this.columnHeaderStatus.Text = "Status";
-            this.columnHeaderStatus.Width = 160;
+            this.columnHeaderStatus.Width = 150;
             // 
             // columnHeaderDistanceToWaypoint
             // 
@@ -289,6 +247,61 @@
             this.checkBoxEliminationOnDestruction.Text = "Elimination on vehicle destruction";
             this.checkBoxEliminationOnDestruction.UseVisualStyleBackColor = true;
             // 
+            // listBoxWaypoints
+            // 
+            this.listBoxWaypoints.FormattingEnabled = true;
+            this.listBoxWaypoints.Location = new System.Drawing.Point(6, 45);
+            this.listBoxWaypoints.Name = "listBoxWaypoints";
+            this.listBoxWaypoints.Size = new System.Drawing.Size(288, 134);
+            this.listBoxWaypoints.TabIndex = 2;
+            // 
+            // buttonAddAllOnline
+            // 
+            this.buttonAddAllOnline.Image = global::SRVTracker.Properties.Resources.Refresh_16x;
+            this.buttonAddAllOnline.Location = new System.Drawing.Point(361, 19);
+            this.buttonAddAllOnline.Name = "buttonAddAllOnline";
+            this.buttonAddAllOnline.Size = new System.Drawing.Size(29, 23);
+            this.buttonAddAllOnline.TabIndex = 4;
+            this.buttonAddAllOnline.UseVisualStyleBackColor = true;
+            this.buttonAddAllOnline.Click += new System.EventHandler(this.buttonAddAllOnline_Click);
+            // 
+            // buttonTrackParticipant
+            // 
+            this.buttonTrackParticipant.Image = global::SRVTracker.Properties.Resources.Target_16x;
+            this.buttonTrackParticipant.Location = new System.Drawing.Point(361, 100);
+            this.buttonTrackParticipant.Name = "buttonTrackParticipant";
+            this.buttonTrackParticipant.Size = new System.Drawing.Size(29, 23);
+            this.buttonTrackParticipant.TabIndex = 3;
+            this.buttonTrackParticipant.UseVisualStyleBackColor = true;
+            // 
+            // buttonRemoveParticipant
+            // 
+            this.buttonRemoveParticipant.Image = global::SRVTracker.Properties.Resources.Remove_color_16x;
+            this.buttonRemoveParticipant.Location = new System.Drawing.Point(361, 71);
+            this.buttonRemoveParticipant.Name = "buttonRemoveParticipant";
+            this.buttonRemoveParticipant.Size = new System.Drawing.Size(29, 23);
+            this.buttonRemoveParticipant.TabIndex = 2;
+            this.buttonRemoveParticipant.UseVisualStyleBackColor = true;
+            // 
+            // buttonAddParticipant
+            // 
+            this.buttonAddParticipant.Image = global::SRVTracker.Properties.Resources.Add_16x;
+            this.buttonAddParticipant.Location = new System.Drawing.Point(361, 45);
+            this.buttonAddParticipant.Name = "buttonAddParticipant";
+            this.buttonAddParticipant.Size = new System.Drawing.Size(29, 23);
+            this.buttonAddParticipant.TabIndex = 1;
+            this.buttonAddParticipant.UseVisualStyleBackColor = true;
+            // 
+            // buttonLoadRoute
+            // 
+            this.buttonLoadRoute.Image = global::SRVTracker.Properties.Resources.OpenFile_16x;
+            this.buttonLoadRoute.Location = new System.Drawing.Point(256, 17);
+            this.buttonLoadRoute.Name = "buttonLoadRoute";
+            this.buttonLoadRoute.Size = new System.Drawing.Size(38, 23);
+            this.buttonLoadRoute.TabIndex = 1;
+            this.buttonLoadRoute.UseVisualStyleBackColor = true;
+            this.buttonLoadRoute.Click += new System.EventHandler(this.buttonLoadRoute_Click);
+            // 
             // FormRaceMonitor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -317,7 +330,6 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button buttonLoadRoute;
         private System.Windows.Forms.TextBox textBoxRouteName;
-        private System.Windows.Forms.ListView listViewWaypoints;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.DateTimePicker dateTimePickerStart;
@@ -339,5 +351,7 @@
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.CheckBox checkBoxExportLeaderboard;
         private System.Windows.Forms.CheckBox checkBoxEliminationOnDestruction;
+        private System.Windows.Forms.ListBox listBoxWaypoints;
+        private System.Windows.Forms.Button buttonAddAllOnline;
     }
 }
