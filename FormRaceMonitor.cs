@@ -14,12 +14,25 @@ namespace SRVTracker
     {
         private string _routeFile = "";
         private EDRace _race = null;
+        private Dictionary<string, ListViewItem> _racers = null;
+        private EDWaypoint _nextWaypoint = null;
 
         public FormRaceMonitor()
         {
             InitializeComponent();
             _race = new EDRace("", new EDRoute(""));
             CommanderWatcher.Start();
+            CommanderWatcher.UpdateReceived += CommanderWatcher_UpdateReceived;
+            _racers = new Dictionary<string, ListViewItem>();
+        }
+
+        private void CommanderWatcher_UpdateReceived(object sender, EDEvent edEvent)
+        {
+            if (!_racers.ContainsKey(edEvent.Commander))
+                return;
+
+            // We've received an event for a listed racer
+            Task.Run(new Action(() => { UpdateStatus(edEvent); }));
         }
 
         private void buttonLoadRoute_Click(object sender, EventArgs e)
@@ -39,6 +52,10 @@ namespace SRVTracker
                         _race.Route = route;
                         textBoxRouteName.Text = route.Name;
                         DisplayRoute();
+                        if (_race.Route.Waypoints.Count > 0)
+                            _nextWaypoint = _race.Route.Waypoints[0];
+                        else
+                            _nextWaypoint = null;
                     }
                     catch { }
                 }
@@ -65,16 +82,36 @@ namespace SRVTracker
                 return;
 
             listViewParticipants.BeginUpdate();
-            listViewParticipants.Items.Clear();
             foreach (string commander in CommanderWatcher.GetCommanders())
             {
-                ListViewItem item = new ListViewItem("-");
-                item.SubItems.Add(commander);
-                item.SubItems.Add("Unknown");
-                item.SubItems.Add("0m");
-                listViewParticipants.Items.Add(item);
+                if (!_racers.ContainsKey(commander))
+                {
+                    ListViewItem item = new ListViewItem("-");
+                    item.SubItems.Add(commander);
+                    item.SubItems.Add("Unknown");
+                    item.SubItems.Add("0m");
+                    listViewParticipants.Items.Add(item);
+                    _racers.Add(commander, item);
+                }
             }
             listViewParticipants.EndUpdate();
+        }
+
+        private void UpdateStatus(EDEvent edEvent)
+        {
+            // Update the status table
+
+            if (edEvent.HasCoordinates)
+            {
+                if (_nextWaypoint != null)
+                {
+                    double distanceToWaypoint = EDLocation.DistanceBetween(edEvent.Location, _nextWaypoint.Location);
+                    if (distanceToWaypoint>2500)
+                        _racers[edEvent.Commander].SubItems[2].Text = $"{(distanceToWaypoint / 1000).ToString()}km";
+                    else
+                        _racers[edEvent.Commander].SubItems[2].Text = $"{distanceToWaypoint.ToString()}m";
+                }
+            }
         }
     }
 }
