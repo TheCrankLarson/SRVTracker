@@ -14,7 +14,6 @@ namespace SRVTracker
 {
     public partial class FormLocator : Form
     {
-        private static EDLocation _currentPosition = null;
         private EDLocation _targetPosition = null;
         private WebClient _webClient = new WebClient();
         private string _trackingTarget = "";
@@ -44,10 +43,7 @@ namespace SRVTracker
 
         public static double PlanetaryRadius { get; set; } = 0;
         public static string ServerAddress { get; set; } = null;
-        public static EDLocation CurrentLocation
-        {
-            get { return _currentPosition; }
-        }
+        
 
         public void SetTarget(EDLocation targetLocation)
         {
@@ -56,6 +52,13 @@ namespace SRVTracker
             UpdateTrackingTarget(targetLocation.Name, false);
             DisplayTarget();
             UpdateTracking();
+        }
+
+        public void SetTarget(string commander)
+        {
+            // Sets the tracking target to the specified commander
+
+            UpdateTrackingTarget(commander, true);
         }
 
         private void DisplayTarget()
@@ -98,10 +101,7 @@ namespace SRVTracker
             // Update our position
             Action action;
 
-            if (CurrentLocation != null)
-                    _currentPosition = CurrentLocation;
-
-            if (_currentPosition == null)
+            if (FormTracker.CurrentLocation == null)
                 return;
 
             if (!buttonUseCurrentLocation.Enabled)
@@ -119,7 +119,7 @@ namespace SRVTracker
             try
             {
                 string distanceUnit = "m";
-                double distance = EDLocation.DistanceBetween(_currentPosition, _targetPosition);
+                double distance = EDLocation.DistanceBetween(FormTracker.CurrentLocation, _targetPosition);
                 if (distance>1000000)
                 {
                     distance = distance / 1000000;
@@ -130,7 +130,7 @@ namespace SRVTracker
                     distance = distance / 1000;
                     distanceUnit = "km";
                 }
-                double bearing = EDLocation.BearingToLocation(_currentPosition, _targetPosition);
+                double bearing = EDLocation.BearingToLocation(FormTracker.CurrentLocation, _targetPosition);
                 string d = $"{distance.ToString("0.0")}{distanceUnit}";
                 string b = $"{Convert.ToInt32(bearing).ToString()}°";
 
@@ -216,13 +216,13 @@ namespace SRVTracker
 
         private void buttonUseCurrentLocation_Click(object sender, EventArgs e)
         {
-            if (_currentPosition == null)
+            if (FormTracker.CurrentLocation == null)
                 return;
           
             try
             {
+                _targetPosition = FormTracker.CurrentLocation;
                 UpdateTrackingTarget($"{_targetPosition.Longitude.ToString()} , {_targetPosition.Latitude.ToString()}", false);
-                _targetPosition = _currentPosition;
                 DisplayTarget();
             }
             catch { }

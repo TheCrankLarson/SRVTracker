@@ -25,11 +25,10 @@ namespace DataCollator
         public static void ReceiveCallback(IAsyncResult ar)
         {
             UdpState s = (UdpState)(ar.AsyncState);
-
             try
             {
                 byte[] receiveBytes = s.u.EndReceive(ar, ref s.e);
-                string receiveString = Encoding.ASCII.GetString(receiveBytes);
+                string receiveString = Encoding.UTF8.GetString(receiveBytes);
                 DataReceived?.Invoke(null, receiveString);
             }
             catch { }

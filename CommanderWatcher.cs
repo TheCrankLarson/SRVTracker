@@ -97,12 +97,12 @@ namespace SRVTracker
 
             if (!String.IsNullOrEmpty(commanderStatus))
             {
-                // We have something to process.  The first line is headers for the location feed, but after that is the Commander list
-                string[] commanders = commanderStatus.Split('\n');
+                // We have something to process (hopefully a list of commander statuses)
+                string[] commanders = commanderStatus.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
 
-                if (commanders.Length > 1)
+                if (commanders.Length > 0)
                 {
-                    for (int i = 1; i < commanders.Length; i++)
+                    for (int i = 0; i < commanders.Length; i++)
                     {
                         EDEvent edEvent = EDEventFactory.CreateEventFromStatus(commanders[i]);
                         if (edEvent!= null && !String.IsNullOrEmpty(edEvent.Commander))
@@ -111,21 +111,17 @@ namespace SRVTracker
                             {
                                 if (_commanderStatuses.ContainsKey(edEvent.Commander))
                                 {
-                                    if (edEvent.TimeStamp != _commanderStatuses[edEvent.Commander].TimeStamp)
+                                    if (edEvent.TimeStamp > _commanderStatuses[edEvent.Commander].TimeStamp)
                                     {
                                         lock (_lock)
-                                        {
                                             _commanderStatuses[edEvent.Commander] = edEvent;
-                                        }
                                         UpdateReceived?.Invoke(null, edEvent);
                                     }
                                 }
                                 else
                                 {
                                     lock (_lock)
-                                    {
                                         _commanderStatuses.Add(edEvent.Commander, edEvent);
-                                    }
                                     countChanged = true;
                                     UpdateReceived?.Invoke(null, edEvent);
                                 }                               

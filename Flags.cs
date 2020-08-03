@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace SRVTracker
 {
     [Flags]
-    public enum StatusFlags
+    public enum StatusFlags: long
     {
         Docked_on_a_landing_pad = 1,
         Landed_on_planet_surface = 2,
@@ -35,6 +35,11 @@ namespace SRVTracker
         Being_Interdicted = 8388608,
         In_MainShip = 16777216,
         In_Fighter = 33554432,
-        In_SRV = 67108864
+        In_SRV = 67108864,
+        Analysis_Mode_Active = 134217728,
+        Night_Vision_Active = 268435456,
+        Altitude_From_Average_Radius = 536870912,
+        fsdJump = 1073741824,
+        srvHighBeam = 2147483648
     }
 }

@@ -16,11 +16,13 @@ namespace SRVTracker
         private EDRace _race = null;
         private Dictionary<string, ListViewItem> _racers = null;
         private EDWaypoint _nextWaypoint = null;
+        private FormLocator _locatorForm = null;
 
-        public FormRaceMonitor()
+        public FormRaceMonitor(FormLocator locatorForm = null)
         {
             InitializeComponent();
             _race = new EDRace("", new EDRoute(""));
+            _locatorForm = locatorForm;
             CommanderWatcher.Start();
             CommanderWatcher.UpdateReceived += CommanderWatcher_UpdateReceived;
             _racers = new Dictionary<string, ListViewItem>();
@@ -52,8 +54,8 @@ namespace SRVTracker
                         _race.Route = route;
                         textBoxRouteName.Text = route.Name;
                         DisplayRoute();
-                        if (_race.Route.Waypoints.Count > 0)
-                            _nextWaypoint = _race.Route.Waypoints[0];
+                        if (_race.Route.Waypoints.Count > 1)
+                            _nextWaypoint = _race.Route.Waypoints[1];
                         else
                             _nextWaypoint = null;
                     }
@@ -106,12 +108,36 @@ namespace SRVTracker
                 if (_nextWaypoint != null)
                 {
                     double distanceToWaypoint = EDLocation.DistanceBetween(edEvent.Location, _nextWaypoint.Location);
-                    if (distanceToWaypoint>2500)
-                        _racers[edEvent.Commander].SubItems[2].Text = $"{(distanceToWaypoint / 1000).ToString()}km";
+                    _racers[edEvent.Commander].SubItems[2].Tag = distanceToWaypoint; // Store in m for comparison
+                    Action action;
+                    if (distanceToWaypoint > 2500)
+                        action = new Action(() => { _racers[edEvent.Commander].SubItems[3].Text = $"{(distanceToWaypoint / 1000).ToString("#.0")}km"; });
                     else
-                        _racers[edEvent.Commander].SubItems[2].Text = $"{distanceToWaypoint.ToString()}m";
+                        action = new Action(() => { _racers[edEvent.Commander].SubItems[3].Text = $"{distanceToWaypoint.ToString("#.0")}m";});
+                    if (listViewParticipants.InvokeRequired)
+                        listViewParticipants.Invoke(action);
+                    else
+                        action();
                 }
             }
+        }
+
+        private void buttonRemoveParticipant_Click(object sender, EventArgs e)
+        {
+            if (listViewParticipants.SelectedItems.Count != 1)
+                return;
+
+            if (_racers.ContainsKey(listViewParticipants.SelectedItems[0].SubItems[1].Text))
+                _racers.Remove(listViewParticipants.SelectedItems[0].SubItems[1].Text);
+            listViewParticipants.SelectedItems[0].Remove();
+        }
+
+        private void buttonTrackParticipant_Click(object sender, EventArgs e)
+        {
+            if (listViewParticipants.SelectedItems.Count != 1)
+                return;
+
+            _locatorForm?.SetTarget(listViewParticipants.SelectedItems[0].SubItems[1].Text);
         }
     }
 }

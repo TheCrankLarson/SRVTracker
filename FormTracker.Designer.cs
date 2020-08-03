@@ -297,8 +297,6 @@
             // checkBoxSendLocationOnly
             // 
             this.checkBoxSendLocationOnly.AutoSize = true;
-            this.checkBoxSendLocationOnly.Checked = true;
-            this.checkBoxSendLocationOnly.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxSendLocationOnly.Location = new System.Drawing.Point(6, 19);
             this.checkBoxSendLocationOnly.Name = "checkBoxSendLocationOnly";
             this.checkBoxSendLocationOnly.Size = new System.Drawing.Size(160, 17);

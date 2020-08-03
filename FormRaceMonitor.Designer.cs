@@ -273,6 +273,7 @@
             this.buttonTrackParticipant.Size = new System.Drawing.Size(29, 23);
             this.buttonTrackParticipant.TabIndex = 3;
             this.buttonTrackParticipant.UseVisualStyleBackColor = true;
+            this.buttonTrackParticipant.Click += new System.EventHandler(this.buttonTrackParticipant_Click);
             // 
             // buttonRemoveParticipant
             // 
@@ -282,6 +283,7 @@
             this.buttonRemoveParticipant.Size = new System.Drawing.Size(29, 23);
             this.buttonRemoveParticipant.TabIndex = 2;
             this.buttonRemoveParticipant.UseVisualStyleBackColor = true;
+            this.buttonRemoveParticipant.Click += new System.EventHandler(this.buttonRemoveParticipant_Click);
             // 
             // buttonAddParticipant
             // 

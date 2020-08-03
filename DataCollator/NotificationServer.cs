@@ -177,29 +177,35 @@ namespace DataCollator
             // Tracking info is: Client Id,timestamp,latitude,longitude,altitude,heading,planet radius,flags
 
             StringBuilder status = new StringBuilder();
-            status.AppendLine("Client Id,timestamp(ticks),latitude,longitude,altitude,heading,planet radius,flags");
 
             // Check if a client Id was specified
-            string clientId = "";
-            try
+            if (Context.Request.RawUrl.Equals("/DataCollator/status/fields", StringComparison.CurrentCultureIgnoreCase))
             {
-                clientId = System.Web.HttpUtility.UrlDecode(Context.Request.RawUrl).Substring("/DataCollator/status/".Length).ToLower();
-            }
-            catch { }
-            if (String.IsNullOrEmpty(clientId))
-            {
-                Log("All player status requested");
-                foreach (string id in _playerStatus.Keys)
-                    if (!String.IsNullOrEmpty(_playerStatus[id]))
-                        status.AppendLine(_playerStatus[id]);
-            }
-            else if (_playerStatus.ContainsKey(clientId))
-            {
-                Log($"Player status requested: {clientId}");
-                status.AppendLine(_playerStatus[clientId]);
+                status.AppendLine("Client Id,timestamp(ticks),latitude,longitude,altitude,heading,planet radius,flags");
             }
             else
-                Log($"Status requested for invalid client: {clientId}");
+            {
+                string clientId = "";
+                try
+                {
+                    clientId = System.Web.HttpUtility.UrlDecode(Context.Request.RawUrl).Substring("/DataCollator/status/".Length).ToLower();
+                }
+                catch { }
+                if (String.IsNullOrEmpty(clientId))
+                {
+                    Log("All player status requested");
+                    foreach (string id in _playerStatus.Keys)
+                        if (!String.IsNullOrEmpty(_playerStatus[id]))
+                            status.AppendLine(_playerStatus[id]);
+                }
+                else if (_playerStatus.ContainsKey(clientId))
+                {
+                    Log($"Player status requested: {clientId}");
+                    status.AppendLine(_playerStatus[clientId]);
+                }
+                else
+                    Log($"Status requested for invalid client: {clientId}");
+            }
 
             try
             {

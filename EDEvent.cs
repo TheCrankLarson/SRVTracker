@@ -19,7 +19,10 @@ namespace SRVTracker
         public EDEvent(string json, string commander = "")
         {
             this.RawData = json;
+            Commander = commander;
             Newtonsoft.Json.Linq.JObject obj = (Newtonsoft.Json.Linq.JObject)JsonConvert.DeserializeObject(json);
+            if (obj == null)
+                return;
 
             foreach (Newtonsoft.Json.Linq.JProperty prop in obj.Properties())
             {
@@ -61,7 +64,7 @@ namespace SRVTracker
                         break;
                 }
             }
-            Commander = commander;
+            
         }
 
         public EDEvent(string commander, long timestamp, double latitude, double longitude, double altitude, int heading, double planetRadius, long flags)

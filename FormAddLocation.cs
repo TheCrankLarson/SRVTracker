@@ -25,9 +25,19 @@ namespace SRVTracker
 
         private void buttonCurrentLocation_Click(object sender, EventArgs e)
         {
-            if (FormLocator.CurrentLocation == null)
+            if (FormTracker.CurrentLocation == null)
                 return;
-            _location = FormLocator.CurrentLocation;
+
+            _location.Latitude = FormTracker.CurrentLocation.Latitude;
+            _location.Longitude = FormTracker.CurrentLocation.Longitude;
+            _location.Altitude = FormTracker.CurrentLocation.Altitude;
+            // Only overwrite properties if they are set
+            if (FormTracker.CurrentLocation.PlanetaryRadius>0)
+                _location.PlanetaryRadius = FormTracker.CurrentLocation.PlanetaryRadius;
+            if (!String.IsNullOrEmpty(FormTracker.CurrentLocation.PlanetName))
+                _location.PlanetName = FormTracker.CurrentLocation.PlanetName;
+            if (!String.IsNullOrEmpty(FormTracker.CurrentLocation.SystemName))
+                _location.SystemName = FormTracker.CurrentLocation.SystemName;
             DisplayLocation();
         }
 

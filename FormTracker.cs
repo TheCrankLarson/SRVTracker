@@ -20,6 +20,8 @@ namespace SRVTracker
         private FormLocator _formLocator = null;
         private FileStream _statusFileStream = null;
 
+        public static EDLocation CurrentLocation { get; private set; } = null;
+
         public FormTracker()
         {
             InitializeComponent();
@@ -238,6 +240,7 @@ namespace SRVTracker
 
             if (edEvent.HasCoordinates)
             {
+                CurrentLocation = edEvent.Location;
                 if (_formLocator != null)
                     if (_formLocator.Visible)
                     {
@@ -321,20 +324,14 @@ namespace SRVTracker
 
         private void UploadToServer(EDEvent edEvent)
         {
-            if (String.IsNullOrEmpty(textBoxClientId.Text))
-            {
-                AddLog($"Client Id cannot be empty");
-                checkBoxUpload.Checked = false;
-                return;
-            }
             try
             {
                 string eventData = "";
                 if (checkBoxSendLocationOnly.Checked)
                     eventData = $"{textBoxClientId.Text},{edEvent.TrackingInfo}";
                 else
-                    eventData = $"{textBoxClientId.Text}:{edEvent.RawData.Trim()}";
-                Byte[] sendBytes = Encoding.ASCII.GetBytes(eventData);
+                    eventData = $"{textBoxClientId.Text}:{edEvent.RawData}";
+                Byte[] sendBytes = Encoding.UTF8.GetBytes(eventData);
                 try
                 {
                     _udpClient.Send(sendBytes, sendBytes.Length);
@@ -464,6 +461,12 @@ namespace SRVTracker
         {
             if (checkBoxTrack.Checked)
             {
+                if (String.IsNullOrEmpty(textBoxClientId.Text))
+                {
+                    AddLog($"Client Id cannot be empty for server upload");
+                    checkBoxUpload.Checked = false;
+                    return;
+                }
                 try
                 {
                     statusFileWatcher.Path = textBoxStatusFile.Text;
@@ -509,7 +512,7 @@ namespace SRVTracker
 
         private void buttonRaceTracker_Click(object sender, EventArgs e)
         {
-            FormRaceMonitor formRaceMonitor = new FormRaceMonitor();
+            FormRaceMonitor formRaceMonitor = new FormRaceMonitor(_formLocator);
             formRaceMonitor.Show();
         }
     }
