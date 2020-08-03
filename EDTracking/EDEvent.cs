@@ -106,6 +106,11 @@ namespace EDTracking
             get { return (this.Flags & (long)StatusFlags.In_SRV) == (long)StatusFlags.In_SRV; }
         }
 
+        public bool srvIsUnderShip
+        {
+            get { return (this.Flags & (long)StatusFlags.Srv_UnderShip) == (long)StatusFlags.Srv_UnderShip; }
+        }
+
         public bool isInMainShip
         {
             get { return (this.Flags & (long)StatusFlags.In_MainShip) == (long)StatusFlags.In_MainShip; }

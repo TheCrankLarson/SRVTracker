@@ -10,7 +10,7 @@ namespace EDTracking
     public class EDWaypoint
     {
         public EDLocation Location { get; set; } = null;
-        public double Radius { get; set; } = 1000;
+        public double Radius { get; set; } = 5000;
         public int Direction { get; set; } = -1;
 
         public EDWaypoint(EDLocation location)

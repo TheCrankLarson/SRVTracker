@@ -12,7 +12,7 @@ namespace EDTracking
         private string _saveFilename = "";
         public string Name { get; set; } = null;
         public EDRoute Route { get; set; } = null;
-        public List<string> Contestants = null;
+        public List<string> Contestants = new List<string>();
         public DateTime Start;
 
         public EDRace(string name,EDRoute route)

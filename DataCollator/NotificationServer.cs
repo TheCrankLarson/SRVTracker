@@ -11,6 +11,7 @@ using System.Net.Http;
 using System.IO;
 using System.Threading.Tasks;
 using System.Device.Location;
+using EDTracking;
 
 namespace DataCollator
 {
@@ -25,6 +26,7 @@ namespace DataCollator
         private Dictionary<string, int> _clientNotificationPointer = new Dictionary<string, int>(); // Pointer into the notification table for each client
         private Dictionary<string, DateTime> _clientLastRequestTime = new Dictionary<string, DateTime>();
         private Dictionary<string, string> _playerStatus = new Dictionary<string, string>(); //  Store last known status (with coordinates) of client
+        private Dictionary<string, EDStatus> _commanderStatus = new Dictionary<string, EDStatus>();
         private readonly object _notificationLock = new object();
         private int _pruneCounter = 0;
         private FileStream _logStream = null;
@@ -101,7 +103,27 @@ namespace DataCollator
 
         private void UpdateCommanderStatus(string commander, string status)
         {
+            EDEvent updateEvent = EDEventFactory.CreateEventFromStatus(status);
+            if (!_commanderStatus.ContainsKey(commander))
+            {
+                lock (_notificationLock)
+                    _commanderStatus.Add(commander, new EDStatus(updateEvent));
+                return;
+            }
 
+            if (_commanderStatus[commander].TimeStamp > updateEvent.TimeStamp)
+                return;
+
+            lock (_notificationLock)
+            {
+                if (updateEvent.HasCoordinates)
+                {
+                    _commanderStatus[commander].Location.Longitude = updateEvent.Longitude;
+                    _commanderStatus[commander].Location.Latitude = updateEvent.Latitude;
+                    _commanderStatus[commander].Location.Altitude = updateEvent.Altitude;
+                    _commanderStatus[commander].Heading = updateEvent.Heading;
+                }
+            }
         }
 
         public void SendNotification(string message)
@@ -115,6 +137,8 @@ namespace DataCollator
                     clientId = message.Substring(0, message.IndexOf(':')).ToLower().Trim();
                 else
                     clientId = message.Substring(0, message.IndexOf(',')).ToLower().Trim();
+                if (!String.IsNullOrEmpty(clientId))
+                    UpdateCommanderStatus(clientId, message);
             }
             catch { }
             lock (_notificationLock)
@@ -129,6 +153,8 @@ namespace DataCollator
                    //Log($"Updated location status for {clientId}");
                 }
             }
+
+
             _pruneCounter++;
             if (_pruneCounter>500)
                 PruneNotifications();

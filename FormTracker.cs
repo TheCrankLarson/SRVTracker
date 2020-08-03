@@ -314,7 +314,12 @@ namespace SRVTracker
             {
                 // This is very inefficient, save to file should only be enabled for debugging
                 // I may revisit this at some point if more features are added for local tracking
-                System.IO.File.AppendAllText(textBoxSaveFile.Text, edEvent.TrackingInfo);
+                string eventData = "";
+                if (checkBoxSendLocationOnly.Checked || String.IsNullOrEmpty(edEvent.RawData))
+                    eventData = $"{textBoxClientId.Text},{edEvent.TrackingInfo}";
+                else
+                    eventData = $"{textBoxClientId.Text}:{edEvent.RawData}";
+                System.IO.File.AppendAllText(textBoxSaveFile.Text, eventData);
             }
             catch (Exception ex)
             {
@@ -328,7 +333,7 @@ namespace SRVTracker
             try
             {
                 string eventData = "";
-                if (checkBoxSendLocationOnly.Checked)
+                if (checkBoxSendLocationOnly.Checked || String.IsNullOrEmpty(edEvent.RawData))
                     eventData = $"{textBoxClientId.Text},{edEvent.TrackingInfo}";
                 else
                     eventData = $"{textBoxClientId.Text}:{edEvent.RawData}";
