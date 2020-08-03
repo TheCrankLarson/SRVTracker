@@ -99,6 +99,11 @@ namespace DataCollator
 
         public string URi { get; } = "";
 
+        private void UpdateCommanderStatus(string commander, string status)
+        {
+
+        }
+
         public void SendNotification(string message)
         {
             // Log the notification for retrieval by clients that are polling

@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 using System.Reflection;
 using System.Globalization;
 
-namespace SRVTracker
+namespace EDTracking
 {
     public class EDEvent
     {

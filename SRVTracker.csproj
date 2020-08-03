@@ -56,12 +56,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommanderWatcher.cs" />
-    <Compile Include="EDEvent.cs" />
-    <Compile Include="EDEventFactory.cs" />
-    <Compile Include="EDRace.cs" />
-    <Compile Include="EDRoute.cs" />
-    <Compile Include="EDWaypoint.cs" />
-    <Compile Include="Flags.cs" />
     <Compile Include="FormAddLocation.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -92,7 +86,6 @@
     <Compile Include="FormTracker.Designer.cs">
       <DependentUpon>FormTracker.cs</DependentUpon>
     </Compile>
-    <Compile Include="EDLocation.cs" />
     <Compile Include="LocationManager.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -172,6 +165,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Refresh_16x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="EDTracking\EDTracking.csproj">
+      <Project>{d36c1dc6-c1d4-4750-894c-54666389c630}</Project>
+      <Name>EDTracking</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

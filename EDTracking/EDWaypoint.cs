@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SRVTracker
+namespace EDTracking
 {
 
-    class EDWaypoint
+    public class EDWaypoint
     {
         public EDLocation Location { get; set; } = null;
         public double Radius { get; set; } = 1000;

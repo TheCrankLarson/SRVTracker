@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace SRVTracker
+namespace EDTracking
 {
-    class EDRace
+    public class EDRace
     {
         private string _saveFilename = "";
         public string Name { get; set; } = null;

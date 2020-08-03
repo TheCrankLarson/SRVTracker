@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using EDTracking;
 
 namespace SRVTracker
 {
@@ -92,6 +93,7 @@ namespace SRVTracker
                     item.SubItems.Add(commander);
                     item.SubItems.Add("Unknown");
                     item.SubItems.Add("0m");
+                    item.SubItems[3].Tag = (double)0;
                     listViewParticipants.Items.Add(item);
                     _racers.Add(commander, item);
                 }
@@ -108,12 +110,39 @@ namespace SRVTracker
                 if (_nextWaypoint != null)
                 {
                     double distanceToWaypoint = EDLocation.DistanceBetween(edEvent.Location, _nextWaypoint.Location);
-                    _racers[edEvent.Commander].SubItems[2].Tag = distanceToWaypoint; // Store in m for comparison
+                    _racers[edEvent.Commander].SubItems[3].Tag = distanceToWaypoint; // Store in m for comparison
                     Action action;
                     if (distanceToWaypoint > 2500)
                         action = new Action(() => { _racers[edEvent.Commander].SubItems[3].Text = $"{(distanceToWaypoint / 1000).ToString("#.0")}km"; });
                     else
                         action = new Action(() => { _racers[edEvent.Commander].SubItems[3].Text = $"{distanceToWaypoint.ToString("#.0")}m";});
+                    if (listViewParticipants.InvokeRequired)
+                        listViewParticipants.Invoke(action);
+                    else
+                        action();
+
+                    List<double> distancesToWaypoint = new List<double>();
+                    foreach (ListViewItem item in _racers.Values)
+                        distancesToWaypoint.Add((double)item.SubItems[3].Tag);
+                    distancesToWaypoint.Sort();
+
+                    action = new Action(() =>
+                    {
+                        foreach (ListViewItem item in _racers.Values)
+                        {
+                            int i = 0;
+                            while (i < distancesToWaypoint.Count && distancesToWaypoint[i] != (double)item.SubItems[3].Tag)
+                                i++;
+                            if (i < distancesToWaypoint.Count)
+                            {
+                                // We have the position
+                                if (!item.Text.Equals(i.ToString()))
+                                    item.Text = (i+1).ToString();
+                            }
+                            else
+                                item.Text = "-";
+                        }
+                    });
                     if (listViewParticipants.InvokeRequired)
                         listViewParticipants.Invoke(action);
                     else

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SRVTracker
+namespace EDTracking
 {
     public class EDLocation
     {
@@ -15,6 +15,7 @@ namespace SRVTracker
         public string Name { get; set; } = "";
         public string PlanetName { get; set; } = "";
         public string SystemName { get; set; } = "";
+        public static double DefaultPlanetaryRadius = 0;
 
         public EDLocation()
         {
@@ -25,7 +26,7 @@ namespace SRVTracker
             Latitude = latitude;
             Longitude = longitude;
             Altitude = altitude;
-            PlanetaryRadius = FormLocator.PlanetaryRadius;
+            PlanetaryRadius = DefaultPlanetaryRadius;
         }
 
         public EDLocation(string name, double latitude, double longitude, double planetaryRadius)

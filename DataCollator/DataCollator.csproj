@@ -138,5 +138,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EDTracking\EDTracking.csproj">
+      <Project>{d36c1dc6-c1d4-4750-894c-54666389c630}</Project>
+      <Name>EDTracking</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace SRVTracker
+namespace EDTracking
 {
-    class EDRoute
+    public class EDRoute
     {
         private List<EDWaypoint> _waypoints = null;
         public string Name { get; set; } = null;
