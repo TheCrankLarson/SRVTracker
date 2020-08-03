@@ -250,7 +250,6 @@
             this.listViewParticipants.MultiSelect = false;
             this.listViewParticipants.Name = "listViewParticipants";
             this.listViewParticipants.Size = new System.Drawing.Size(349, 322);
-            this.listViewParticipants.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.listViewParticipants.TabIndex = 0;
             this.listViewParticipants.UseCompatibleStateImageBehavior = false;
             this.listViewParticipants.View = System.Windows.Forms.View.Details;
