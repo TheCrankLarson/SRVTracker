@@ -29,7 +29,7 @@ namespace EDTracking
         {
             StringBuilder routeSerialised = new StringBuilder(Name);
             foreach (EDWaypoint waypoint in _waypoints)
-                routeSerialised.Append($"└{waypoint.ToString()}");
+                _ = routeSerialised.Append($"└{waypoint.ToString()}");
             return routeSerialised.ToString();
         }
 

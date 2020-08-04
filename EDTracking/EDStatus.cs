@@ -16,7 +16,7 @@ namespace EDTracking
         public EDLocation Location { get; internal set; } = null;
         public int WaypointIndex { get; internal set; } = 0;
         public EDRoute Route { get; set; } = null;
-        public bool Started { get; internal set; } = false;
+        public bool Started { get; internal set; } = true;
 
         public string Commander { get; } = "";
         public static bool EliminateOnDestruction { get; set; } = true;
@@ -37,10 +37,12 @@ namespace EDTracking
             Commander = baseEvent.Commander;
         }
 
-        public EDStatus(string commander, EDRoute route)
+        public EDStatus(string commander, EDRoute route, bool immediateStart = true)
         {
             Commander = commander;
             Route = route;
+            if (immediateStart)
+                StartRace();
         }
 
         public override string ToString()
@@ -55,8 +57,6 @@ namespace EDTracking
 
             if (Started)
                 status.Append($"-> {Route.Waypoints[WaypointIndex].Name}");
-            else
-                status.Append("Ready");
 
             if (_lowFuel)
                 status.Append(" (low fuel)");
@@ -95,6 +95,9 @@ namespace EDTracking
 
             if (isFlagSet(StatusFlags.Srv_DriveAssist))
                 status.Append(" DA");
+
+            if (isFlagSet(StatusFlags.Night_Vision_Active))
+                status.Append(" NV");
             return status.ToString().Trim();
         }
 
@@ -113,7 +116,7 @@ namespace EDTracking
                 string detailedStatus = DetailedStatus();
                 if (detailedStatus.Equals(_lastStatus))
                     return;
-                StatusChanged?.Invoke(null, Commander, detailedStatus);
+                StatusChanged?.Invoke(null, Commander, $"{this.ToString()} {detailedStatus}");
                 return;
             }
 

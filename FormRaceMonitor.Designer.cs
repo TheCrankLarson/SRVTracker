@@ -65,6 +65,7 @@
             this.buttonSaveRace = new System.Windows.Forms.Button();
             this.buttonLoadRoute = new System.Windows.Forms.Button();
             this.comboBoxAddCommander = new System.Windows.Forms.ComboBox();
+            this.checkBoxShowDetailedStatus = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -234,6 +235,7 @@
             // 
             // groupBox4
             // 
+            this.groupBox4.Controls.Add(this.checkBoxShowDetailedStatus);
             this.groupBox4.Controls.Add(this.checkBoxAutoAddCommanders);
             this.groupBox4.Controls.Add(this.numericUpDownPaddingChars);
             this.groupBox4.Controls.Add(this.label5);
@@ -449,6 +451,19 @@
             this.comboBoxAddCommander.TabIndex = 9;
             this.comboBoxAddCommander.Leave += new System.EventHandler(this.comboBoxAddCommander_Leave);
             // 
+            // checkBoxShowDetailedStatus
+            // 
+            this.checkBoxShowDetailedStatus.AutoSize = true;
+            this.checkBoxShowDetailedStatus.Checked = true;
+            this.checkBoxShowDetailedStatus.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxShowDetailedStatus.Location = new System.Drawing.Point(6, 88);
+            this.checkBoxShowDetailedStatus.Name = "checkBoxShowDetailedStatus";
+            this.checkBoxShowDetailedStatus.Size = new System.Drawing.Size(128, 17);
+            this.checkBoxShowDetailedStatus.TabIndex = 5;
+            this.checkBoxShowDetailedStatus.Text = "Show Detailed Status";
+            this.checkBoxShowDetailedStatus.UseVisualStyleBackColor = true;
+            this.checkBoxShowDetailedStatus.CheckedChanged += new System.EventHandler(this.checkBoxShowDetailedStatus_CheckedChanged);
+            // 
             // FormRaceMonitor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -517,5 +532,6 @@
         private System.Windows.Forms.GroupBox groupBoxAddCommander;
         private System.Windows.Forms.Button buttonAddCommander;
         private System.Windows.Forms.ComboBox comboBoxAddCommander;
+        private System.Windows.Forms.CheckBox checkBoxShowDetailedStatus;
     }
 }

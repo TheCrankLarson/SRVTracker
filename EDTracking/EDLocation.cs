@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Globalization;
 
 namespace EDTracking
 {
     public class EDLocation
     {
+        private static CultureInfo _enGB = new CultureInfo("en-GB");
         public double Latitude { get; set; } = 0;
         public double Longitude { get; set; } = 0;
         public double Altitude { get; set; } = 0;
@@ -47,7 +49,7 @@ namespace EDTracking
 
         public override string ToString()
         {
-            return $"{Name}║{SystemName}║{PlanetName}║{Latitude}║{Longitude}║{Altitude}║{PlanetaryRadius}";
+            return $"{Name}║{SystemName}║{PlanetName}║{Latitude.ToString(_enGB)}║{Longitude.ToString(_enGB)}║{Altitude.ToString(_enGB)}║{PlanetaryRadius.ToString(_enGB)}";
         }
 
         public static EDLocation FromString(string location)
@@ -55,8 +57,8 @@ namespace EDTracking
             try
             {
                 string[] locationInfo = location.Split('║');
-                return new EDLocation(locationInfo[0], locationInfo[1], locationInfo[2], Convert.ToDouble(locationInfo[3]),
-                    Convert.ToDouble(locationInfo[4]), Convert.ToDouble(locationInfo[5]), Convert.ToDouble(locationInfo[6]));
+                return new EDLocation(locationInfo[0], locationInfo[1], locationInfo[2], Convert.ToDouble(locationInfo[3], _enGB),
+                    Convert.ToDouble(locationInfo[4], _enGB), Convert.ToDouble(locationInfo[5],_enGB), Convert.ToDouble(locationInfo[6], _enGB));
             }
             catch { }
             return null;

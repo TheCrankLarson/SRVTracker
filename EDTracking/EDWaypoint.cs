@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Globalization;
 
 namespace EDTracking
 {
 
     public class EDWaypoint
     {
+        private static CultureInfo _enGB = new CultureInfo("en-GB");
         public EDLocation Location { get; set; } = null;
         public double Radius { get; set; } = 5000;
         public int Direction { get; set; } = -1;
@@ -36,7 +38,7 @@ namespace EDTracking
 
         public override string ToString()
         {
-            return $"{Location.ToString()}╫{Radius}╫{Direction}";
+            return $"{Location.ToString()}╫{Radius.ToString(_enGB)}╫{Direction}";
         }
 
         public static EDWaypoint FromString(string location)
@@ -44,7 +46,7 @@ namespace EDTracking
             try
             {
                 string[] locationInfo = location.Split('╫');
-                return new EDWaypoint(EDLocation.FromString(locationInfo[0]), Convert.ToDouble(locationInfo[1]), Convert.ToInt32(locationInfo[2]));
+                return new EDWaypoint(EDLocation.FromString(locationInfo[0]), Convert.ToDouble(locationInfo[1],_enGB), Convert.ToInt32(locationInfo[2]));
             }
             catch { }
             return null;

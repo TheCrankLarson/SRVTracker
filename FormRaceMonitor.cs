@@ -188,80 +188,82 @@ namespace SRVTracker
         {
             // Update the status table
 
-            if (!_racers.ContainsKey(edEvent.Commander))
-                return; // We're not tracking this commander
+
             if (_raceStarted)
             {
+                if (!_racersStatus.ContainsKey(edEvent.Commander))
+                    return; // We're not tracking this commander
                 _racersStatus[edEvent.Commander].UpdateStatus(edEvent);
             }
 
-            if (edEvent.HasCoordinates)
+            if (!edEvent.HasCoordinates)
+                return;
+
+            if (!_raceStarted)
             {
-                if (!_raceStarted)
-                {
-                    if (checkBoxAutoAddCommanders.Checked)
-                        if (_race.Route.Waypoints.Count > 0)
-                            if (_race.Route.Waypoints[0].LocationIsWithinWaypoint(edEvent.Location))
-                                AddTrackedCommander(edEvent.Commander);
-                }
+                if (checkBoxAutoAddCommanders.Checked)
+                    if (_race.Route.Waypoints.Count > 0)
+                        if (_race.Route.Waypoints[0].LocationIsWithinWaypoint(edEvent.Location))
+                            AddTrackedCommander(edEvent.Commander);
+                return;
+            }
 
-                if (_nextWaypoint != null)
-                {
-                    double distanceToWaypoint = EDLocation.DistanceBetween(edEvent.Location, _nextWaypoint.Location) - _nextWaypoint.Radius;
-                    _racers[edEvent.Commander].SubItems[3].Tag = distanceToWaypoint; // Store in m for comparison
-                    Action action;
-                    string distanceToShow = "0";
+            if (_nextWaypoint != null)
+            {
+                double distanceToWaypoint = EDLocation.DistanceBetween(edEvent.Location, _nextWaypoint.Location) - _nextWaypoint.Radius;
+                _racers[edEvent.Commander].SubItems[3].Tag = distanceToWaypoint; // Store in m for comparison
+                Action action;
+                string distanceToShow = "0";
                         
-                    if (distanceToWaypoint > 2500)
-                        distanceToShow = $"{(distanceToWaypoint / 1000).ToString("#.0")}km";
-                    else
-                        distanceToShow = $"{distanceToWaypoint.ToString("#.0")}m";
-                    if (!distanceToShow.Equals(_racers[edEvent.Commander].SubItems[3].Text))
-                    {
-                        // Needs updating
-                        action = new Action(() => { _racers[edEvent.Commander].SubItems[3].Text = distanceToShow; });
-                        if (listViewParticipants.InvokeRequired)
-                            listViewParticipants.Invoke(action);
-                        else
-                            action();
-                    }
-
-
-                    List<double> distancesToWaypoint = new List<double>();
-                    foreach (System.Windows.Forms.ListViewItem item in _racers.Values)
-                        distancesToWaypoint.Add((double)item.SubItems[3].Tag);
-                    distancesToWaypoint.Sort();
-
-                    action = new Action(() =>
-                    {
-                        listViewParticipants.BeginUpdate();
-                        foreach (System.Windows.Forms.ListViewItem item in _racers.Values)
-                        {
-                            int i = 0;
-                            while (i < distancesToWaypoint.Count && distancesToWaypoint[i] != (double)item.SubItems[3].Tag)
-                                i++;
-                            if (i < distancesToWaypoint.Count)
-                            {
-                                // We have the position
-                                i++;
-                                if (!item.Text.Equals(i.ToString()))
-                                    item.Text = (i).ToString();
-                            }
-                            else
-                                item.Text = "-";
-                        }
-
-                        // listViewParticipants.ListViewItemSorter = new ListViewItemComparer();
-                        listViewParticipants.Sort();
-                        listViewParticipants.EndUpdate();
-                        if (checkBoxExportLeaderboard.Checked)
-                            ExportLeaderboard();
-                    });
+                if (distanceToWaypoint > 2500)
+                    distanceToShow = $"{(distanceToWaypoint / 1000).ToString("#.0")}km";
+                else
+                    distanceToShow = $"{distanceToWaypoint.ToString("#.0")}m";
+                if (!distanceToShow.Equals(_racers[edEvent.Commander].SubItems[3].Text))
+                {
+                    // Needs updating
+                    action = new Action(() => { _racers[edEvent.Commander].SubItems[3].Text = distanceToShow; });
                     if (listViewParticipants.InvokeRequired)
                         listViewParticipants.Invoke(action);
                     else
                         action();
                 }
+
+
+                List<double> distancesToWaypoint = new List<double>();
+                foreach (System.Windows.Forms.ListViewItem item in _racers.Values)
+                    distancesToWaypoint.Add((double)item.SubItems[3].Tag);
+                distancesToWaypoint.Sort();
+
+                action = new Action(() =>
+                {
+                    listViewParticipants.BeginUpdate();
+                    foreach (System.Windows.Forms.ListViewItem item in _racers.Values)
+                    {
+                        int i = 0;
+                        while (i < distancesToWaypoint.Count && distancesToWaypoint[i] != (double)item.SubItems[3].Tag)
+                            i++;
+                        if (i < distancesToWaypoint.Count)
+                        {
+                            // We have the position
+                            i++;
+                            if (!item.Text.Equals(i.ToString()))
+                                item.Text = (i).ToString();
+                        }
+                        else
+                            item.Text = "-";
+                    }
+
+                    // listViewParticipants.ListViewItemSorter = new ListViewItemComparer();
+                    listViewParticipants.Sort();
+                    listViewParticipants.EndUpdate();
+                    if (checkBoxExportLeaderboard.Checked)
+                        ExportLeaderboard();
+                });
+                if (listViewParticipants.InvokeRequired)
+                    listViewParticipants.Invoke(action);
+                else
+                    action();
             }
         }
 
@@ -275,7 +277,7 @@ namespace SRVTracker
                 try
                 {
                     int commanderPosition = Convert.ToInt32(listViewParticipants.Items[i].Text)-1;
-                    if (commanderPosition == 0) // Not a number, so add to bottom of leaderboard
+                    if (commanderPosition < 0) // Not a number, so add to bottom of leaderboard
                     {
                         commanderPosition = leaderboard.Length - 2;
                         while (!String.IsNullOrEmpty(leaderboard[commanderPosition]))
@@ -493,6 +495,11 @@ namespace SRVTracker
         private void checkBoxAutoAddCommanders_CheckedChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void checkBoxShowDetailedStatus_CheckedChanged(object sender, EventArgs e)
+        {
+            EDStatus.ShowDetailedStatus = checkBoxShowDetailedStatus.Checked;
         }
     }
 

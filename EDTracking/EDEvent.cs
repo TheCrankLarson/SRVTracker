@@ -29,11 +29,11 @@ namespace EDTracking
                 switch (prop.Name)
                 {
                     case "Latitude":
-                        this.Latitude = (double)prop.Value;
+                        this.Latitude = Convert.ToDouble(prop.Value);
                         break;
 
                     case "Longitude":
-                        this.Longitude = (double)prop.Value;
+                        this.Longitude = Convert.ToDouble(prop.Value);
                         break;
 
                     case "Heading":
@@ -53,11 +53,11 @@ namespace EDTracking
                         break;
 
                     case "PlanetRadius":
-                        this.PlanetRadius = (double)prop.Value;
+                        this.PlanetRadius = Convert.ToDouble(prop.Value);
                         break;
 
                     case "Altitude":
-                        this.Altitude = (double)prop.Value;
+                        this.Altitude = Convert.ToDouble(prop.Value);
                         break;
 
                     default:
