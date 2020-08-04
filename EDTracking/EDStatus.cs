@@ -61,6 +61,50 @@ namespace EDTracking
             if (_lowFuel)
                 status.Append(" (low fuel)");
 
+            if (ShowDetailedStatus)
+            {
+                if (isFlagSet(StatusFlags.In_SRV))
+                {
+                    // SRV only flags
+                    if (isFlagSet(StatusFlags.LightsOn))
+                    {
+                        status.Append(" L");
+                        if (isFlagSet(StatusFlags.srvHighBeam))
+                            status.Append("H");
+                        else
+                            status.Append("L");
+                    }
+
+                    if (isFlagSet(StatusFlags.Srv_Handbrake))
+                        status.Append(" HB");
+
+                    if (isFlagSet(StatusFlags.Srv_DriveAssist))
+                        status.Append(" DA");
+                }
+                else if (isFlagSet(StatusFlags.In_MainShip))
+                {
+                    // Ship only flags
+                    if (isFlagSet(StatusFlags.Landing_Gear_Down))
+                        status.Append(" LG");
+
+                    if (!isFlagSet(StatusFlags.FlightAssist_Off))
+                        status.Append(" FA");
+
+                    if (isFlagSet(StatusFlags.Silent_Running))
+                        status.Append(" SR");
+
+                    if (isFlagSet(StatusFlags.Cargo_Scoop_Deployed))
+                        status.Append(" C");
+
+                    if (isFlagSet(StatusFlags.Being_Interdicted))
+                        status.Append(" I");
+                }
+
+                // Flags that apply to all vehicles
+                if (isFlagSet(StatusFlags.Night_Vision_Active))
+                    status.Append(" NV");
+            }
+
             return status.ToString();
         }
 
@@ -75,54 +119,6 @@ namespace EDTracking
         private bool isFlagSet(StatusFlags flag)
         {
             return ((Flags & (long)flag) == (long)flag);
-        }
-
-        public string DetailedStatus()
-        {
-            StringBuilder status = new StringBuilder();
-
-            if (isFlagSet(StatusFlags.In_SRV))
-            {
-                // SRV only flags
-                if (isFlagSet(StatusFlags.LightsOn))
-                {
-                    status.Append("L");
-                    if (isFlagSet(StatusFlags.srvHighBeam))
-                        status.Append("H");
-                    else
-                        status.Append("L");
-                }
-
-                if (isFlagSet(StatusFlags.Srv_Handbrake))
-                    status.Append(" HB");
-
-                if (isFlagSet(StatusFlags.Srv_DriveAssist))
-                    status.Append(" DA");
-            }
-            else if (isFlagSet(StatusFlags.In_MainShip))
-            {
-                // Ship only flags
-                if (isFlagSet(StatusFlags.Landing_Gear_Down))
-                    status.Append(" LG");
-
-                if (!isFlagSet(StatusFlags.FlightAssist_Off))
-                    status.Append(" FA");
-
-                if (isFlagSet(StatusFlags.Silent_Running))
-                    status.Append(" SR");
-
-                if (isFlagSet(StatusFlags.Cargo_Scoop_Deployed))
-                    status.Append(" C");
-
-                if (isFlagSet(StatusFlags.Being_Interdicted))
-                    status.Append(" I");
-            }
-
-            // Flags that apply to all vehicles
-            if (isFlagSet(StatusFlags.Night_Vision_Active))
-                status.Append(" NV");
-
-            return status.ToString().Trim();
         }
 
         public void UpdateStatus(EDEvent updateEvent)
@@ -145,12 +141,12 @@ namespace EDTracking
 
             _lowFuel = isFlagSet(StatusFlags.Low_Fuel);
 
-            StringBuilder currentStatus = new StringBuilder(ToString());
-            if (ShowDetailedStatus)
-                currentStatus.Append($" {DetailedStatus()}");
+            String currentStatus = ToString();
             if (currentStatus.Equals(_lastStatus))
                 return;
 
+            _lastStatus = currentStatus;
+            StatusChanged?.Invoke(null, Commander, currentStatus);
         }
     }
 }
