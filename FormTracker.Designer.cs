@@ -70,6 +70,9 @@
             this.groupBox8 = new System.Windows.Forms.GroupBox();
             this.buttonRaceTracker = new System.Windows.Forms.Button();
             this.checkBoxTrack = new System.Windows.Forms.CheckBox();
+            this.radioButtonUseTimer = new System.Windows.Forms.RadioButton();
+            this.radioButtonWatchStatusFile = new System.Windows.Forms.RadioButton();
+            this.label8 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.statusFileWatcher)).BeginInit();
             this.groupBox2.SuspendLayout();
@@ -467,6 +470,9 @@
             // 
             // groupBox8
             // 
+            this.groupBox8.Controls.Add(this.label8);
+            this.groupBox8.Controls.Add(this.radioButtonWatchStatusFile);
+            this.groupBox8.Controls.Add(this.radioButtonUseTimer);
             this.groupBox8.Controls.Add(this.checkBoxSendLocationOnly);
             this.groupBox8.Location = new System.Drawing.Point(542, 122);
             this.groupBox8.Name = "groupBox8";
@@ -496,11 +502,42 @@
             this.checkBoxTrack.UseVisualStyleBackColor = true;
             this.checkBoxTrack.CheckedChanged += new System.EventHandler(this.checkBoxTrack_CheckedChanged);
             // 
+            // radioButtonUseTimer
+            // 
+            this.radioButtonUseTimer.AutoSize = true;
+            this.radioButtonUseTimer.Location = new System.Drawing.Point(113, 42);
+            this.radioButtonUseTimer.Name = "radioButtonUseTimer";
+            this.radioButtonUseTimer.Size = new System.Drawing.Size(51, 17);
+            this.radioButtonUseTimer.TabIndex = 8;
+            this.radioButtonUseTimer.Text = "Timer";
+            this.radioButtonUseTimer.UseVisualStyleBackColor = true;
+            // 
+            // radioButtonWatchStatusFile
+            // 
+            this.radioButtonWatchStatusFile.AutoSize = true;
+            this.radioButtonWatchStatusFile.Checked = true;
+            this.radioButtonWatchStatusFile.Location = new System.Drawing.Point(54, 42);
+            this.radioButtonWatchStatusFile.Name = "radioButtonWatchStatusFile";
+            this.radioButtonWatchStatusFile.Size = new System.Drawing.Size(53, 17);
+            this.radioButtonWatchStatusFile.TabIndex = 9;
+            this.radioButtonWatchStatusFile.TabStop = true;
+            this.radioButtonWatchStatusFile.Text = "Event";
+            this.radioButtonWatchStatusFile.UseVisualStyleBackColor = true;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(6, 44);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(37, 13);
+            this.label8.TabIndex = 10;
+            this.label8.Text = "Mode:";
+            // 
             // FormTracker
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(280, 219);
+            this.ClientSize = new System.Drawing.Size(725, 383);
             this.Controls.Add(this.checkBoxTrack);
             this.Controls.Add(this.buttonRaceTracker);
             this.Controls.Add(this.checkBoxAutoScroll);
@@ -588,6 +625,9 @@
         private System.Windows.Forms.RadioButton radioButtonUseDefaultServer;
         private System.Windows.Forms.Button buttonRaceTracker;
         private System.Windows.Forms.CheckBox checkBoxTrack;
+        private System.Windows.Forms.RadioButton radioButtonWatchStatusFile;
+        private System.Windows.Forms.RadioButton radioButtonUseTimer;
+        private System.Windows.Forms.Label label8;
     }
 }
 

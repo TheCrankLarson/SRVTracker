@@ -115,15 +115,7 @@ namespace DataCollator
                 return;
 
             lock (_notificationLock)
-            {
-                if (updateEvent.HasCoordinates)
-                {
-                    _commanderStatus[commander].Location.Longitude = updateEvent.Longitude;
-                    _commanderStatus[commander].Location.Latitude = updateEvent.Latitude;
-                    _commanderStatus[commander].Location.Altitude = updateEvent.Altitude;
-                    _commanderStatus[commander].Heading = updateEvent.Heading;
-                }
-            }
+                _commanderStatus[commander].UpdateStatus(updateEvent);
         }
 
         public void SendNotification(string message)

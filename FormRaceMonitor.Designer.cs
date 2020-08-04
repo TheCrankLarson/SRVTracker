@@ -32,11 +32,11 @@
             this.listBoxWaypoints = new System.Windows.Forms.ListBox();
             this.textBoxRouteName = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.textBoxRaceName = new System.Windows.Forms.TextBox();
             this.dateTimePickerStart = new System.Windows.Forms.DateTimePicker();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.textBoxRaceName = new System.Windows.Forms.TextBox();
             this.textBoxPlanet = new System.Windows.Forms.TextBox();
             this.textBoxSystem = new System.Windows.Forms.TextBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
@@ -46,28 +46,32 @@
             this.columnHeaderStatus = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeaderDistanceToWaypoint = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.checkBoxAutoAddCommanders = new System.Windows.Forms.CheckBox();
+            this.numericUpDownPaddingChars = new System.Windows.Forms.NumericUpDown();
+            this.label5 = new System.Windows.Forms.Label();
             this.checkBoxExportLeaderboard = new System.Windows.Forms.CheckBox();
             this.checkBoxEliminationOnDestruction = new System.Windows.Forms.CheckBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.numericUpDownPaddingChars = new System.Windows.Forms.NumericUpDown();
-            this.checkBoxAutoAddCommanders = new System.Windows.Forms.CheckBox();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.dateTimePickerStartTime = new System.Windows.Forms.DateTimePicker();
+            this.groupBoxAddCommander = new System.Windows.Forms.GroupBox();
+            this.buttonAddCommander = new System.Windows.Forms.Button();
             this.buttonStopRace = new System.Windows.Forms.Button();
             this.buttonStartRace = new System.Windows.Forms.Button();
             this.buttonTrackParticipant = new System.Windows.Forms.Button();
             this.buttonRemoveParticipant = new System.Windows.Forms.Button();
             this.buttonAddParticipant = new System.Windows.Forms.Button();
-            this.buttonLoadRoute = new System.Windows.Forms.Button();
-            this.buttonSaveRace = new System.Windows.Forms.Button();
-            this.buttonSaveRaceAs = new System.Windows.Forms.Button();
-            this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.dateTimePickerStartTime = new System.Windows.Forms.DateTimePicker();
             this.buttonLoadRace = new System.Windows.Forms.Button();
+            this.buttonSaveRaceAs = new System.Windows.Forms.Button();
+            this.buttonSaveRace = new System.Windows.Forms.Button();
+            this.buttonLoadRoute = new System.Windows.Forms.Button();
+            this.comboBoxAddCommander = new System.Windows.Forms.ComboBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownPaddingChars)).BeginInit();
             this.groupBox5.SuspendLayout();
+            this.groupBoxAddCommander.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -84,11 +88,13 @@
             // 
             // listBoxWaypoints
             // 
+            this.listBoxWaypoints.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.listBoxWaypoints.FormattingEnabled = true;
             this.listBoxWaypoints.Location = new System.Drawing.Point(6, 45);
             this.listBoxWaypoints.Name = "listBoxWaypoints";
             this.listBoxWaypoints.Size = new System.Drawing.Size(288, 134);
             this.listBoxWaypoints.TabIndex = 2;
+            this.listBoxWaypoints.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.listBoxWaypoints_DrawItem);
             // 
             // textBoxRouteName
             // 
@@ -111,6 +117,22 @@
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Event";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(6, 22);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(38, 13);
+            this.label1.TabIndex = 3;
+            this.label1.Text = "Name:";
+            // 
+            // textBoxRaceName
+            // 
+            this.textBoxRaceName.Location = new System.Drawing.Point(9, 38);
+            this.textBoxRaceName.Name = "textBoxRaceName";
+            this.textBoxRaceName.Size = new System.Drawing.Size(215, 20);
+            this.textBoxRaceName.TabIndex = 2;
             // 
             // dateTimePickerStart
             // 
@@ -138,22 +160,6 @@
             this.label2.TabIndex = 4;
             this.label2.Text = "System:";
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 22);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(38, 13);
-            this.label1.TabIndex = 3;
-            this.label1.Text = "Name:";
-            // 
-            // textBoxRaceName
-            // 
-            this.textBoxRaceName.Location = new System.Drawing.Point(9, 38);
-            this.textBoxRaceName.Name = "textBoxRaceName";
-            this.textBoxRaceName.Size = new System.Drawing.Size(215, 20);
-            this.textBoxRaceName.TabIndex = 2;
-            // 
             // textBoxPlanet
             // 
             this.textBoxPlanet.Location = new System.Drawing.Point(56, 45);
@@ -172,6 +178,7 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.groupBoxAddCommander);
             this.groupBox3.Controls.Add(this.buttonStopRace);
             this.groupBox3.Controls.Add(this.buttonStartRace);
             this.groupBox3.Controls.Add(this.buttonTrackParticipant);
@@ -239,6 +246,40 @@
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Race Management";
             // 
+            // checkBoxAutoAddCommanders
+            // 
+            this.checkBoxAutoAddCommanders.AutoSize = true;
+            this.checkBoxAutoAddCommanders.Checked = true;
+            this.checkBoxAutoAddCommanders.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxAutoAddCommanders.Location = new System.Drawing.Point(6, 65);
+            this.checkBoxAutoAddCommanders.Name = "checkBoxAutoAddCommanders";
+            this.checkBoxAutoAddCommanders.Size = new System.Drawing.Size(287, 17);
+            this.checkBoxAutoAddCommanders.TabIndex = 4;
+            this.checkBoxAutoAddCommanders.Text = "Automatically add commanders that are at first waypoint";
+            this.checkBoxAutoAddCommanders.UseVisualStyleBackColor = true;
+            this.checkBoxAutoAddCommanders.CheckedChanged += new System.EventHandler(this.checkBoxAutoAddCommanders_CheckedChanged);
+            // 
+            // numericUpDownPaddingChars
+            // 
+            this.numericUpDownPaddingChars.Location = new System.Drawing.Point(121, 41);
+            this.numericUpDownPaddingChars.Name = "numericUpDownPaddingChars";
+            this.numericUpDownPaddingChars.Size = new System.Drawing.Size(50, 20);
+            this.numericUpDownPaddingChars.TabIndex = 3;
+            this.numericUpDownPaddingChars.Value = new decimal(new int[] {
+            38,
+            0,
+            0,
+            0});
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(177, 43);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(98, 13);
+            this.label5.TabIndex = 2;
+            this.label5.Text = "padding characters";
+            // 
             // checkBoxExportLeaderboard
             // 
             this.checkBoxExportLeaderboard.AutoSize = true;
@@ -259,38 +300,53 @@
             this.checkBoxEliminationOnDestruction.Text = "Elimination on vehicle destruction";
             this.checkBoxEliminationOnDestruction.UseVisualStyleBackColor = true;
             // 
-            // label5
+            // groupBox5
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(177, 43);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(98, 13);
-            this.label5.TabIndex = 2;
-            this.label5.Text = "padding characters";
+            this.groupBox5.Controls.Add(this.dateTimePickerStartTime);
+            this.groupBox5.Controls.Add(this.label2);
+            this.groupBox5.Controls.Add(this.label3);
+            this.groupBox5.Controls.Add(this.dateTimePickerStart);
+            this.groupBox5.Controls.Add(this.textBoxSystem);
+            this.groupBox5.Controls.Add(this.textBoxPlanet);
+            this.groupBox5.Location = new System.Drawing.Point(353, 12);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(361, 73);
+            this.groupBox5.TabIndex = 4;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "Time and Place";
             // 
-            // numericUpDownPaddingChars
+            // dateTimePickerStartTime
             // 
-            this.numericUpDownPaddingChars.Location = new System.Drawing.Point(121, 41);
-            this.numericUpDownPaddingChars.Name = "numericUpDownPaddingChars";
-            this.numericUpDownPaddingChars.Size = new System.Drawing.Size(50, 20);
-            this.numericUpDownPaddingChars.TabIndex = 3;
-            this.numericUpDownPaddingChars.Value = new decimal(new int[] {
-            38,
-            0,
-            0,
-            0});
+            this.dateTimePickerStartTime.CustomFormat = "HH:mm";
+            this.dateTimePickerStartTime.Format = System.Windows.Forms.DateTimePickerFormat.Time;
+            this.dateTimePickerStartTime.Location = new System.Drawing.Point(220, 45);
+            this.dateTimePickerStartTime.Name = "dateTimePickerStartTime";
+            this.dateTimePickerStartTime.ShowUpDown = true;
+            this.dateTimePickerStartTime.Size = new System.Drawing.Size(135, 20);
+            this.dateTimePickerStartTime.TabIndex = 7;
+            this.dateTimePickerStartTime.ValueChanged += new System.EventHandler(this.dateTimePickerStartTime_ValueChanged);
             // 
-            // checkBoxAutoAddCommanders
+            // groupBoxAddCommander
             // 
-            this.checkBoxAutoAddCommanders.AutoSize = true;
-            this.checkBoxAutoAddCommanders.Checked = true;
-            this.checkBoxAutoAddCommanders.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxAutoAddCommanders.Location = new System.Drawing.Point(6, 65);
-            this.checkBoxAutoAddCommanders.Name = "checkBoxAutoAddCommanders";
-            this.checkBoxAutoAddCommanders.Size = new System.Drawing.Size(287, 17);
-            this.checkBoxAutoAddCommanders.TabIndex = 4;
-            this.checkBoxAutoAddCommanders.Text = "Automatically add commanders that are at first waypoint";
-            this.checkBoxAutoAddCommanders.UseVisualStyleBackColor = true;
+            this.groupBoxAddCommander.Controls.Add(this.comboBoxAddCommander);
+            this.groupBoxAddCommander.Controls.Add(this.buttonAddCommander);
+            this.groupBoxAddCommander.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.groupBoxAddCommander.Location = new System.Drawing.Point(106, 45);
+            this.groupBoxAddCommander.Name = "groupBoxAddCommander";
+            this.groupBoxAddCommander.Size = new System.Drawing.Size(284, 51);
+            this.groupBoxAddCommander.TabIndex = 5;
+            this.groupBoxAddCommander.TabStop = false;
+            this.groupBoxAddCommander.Text = "Add Commander";
+            // 
+            // buttonAddCommander
+            // 
+            this.buttonAddCommander.Image = global::SRVTracker.Properties.Resources.Return_16x;
+            this.buttonAddCommander.Location = new System.Drawing.Point(249, 16);
+            this.buttonAddCommander.Name = "buttonAddCommander";
+            this.buttonAddCommander.Size = new System.Drawing.Size(29, 23);
+            this.buttonAddCommander.TabIndex = 8;
+            this.buttonAddCommander.UseVisualStyleBackColor = true;
+            this.buttonAddCommander.Click += new System.EventHandler(this.buttonAddCommander_Click);
             // 
             // buttonStopRace
             // 
@@ -301,15 +357,18 @@
             this.buttonStopRace.Size = new System.Drawing.Size(29, 23);
             this.buttonStopRace.TabIndex = 6;
             this.buttonStopRace.UseVisualStyleBackColor = true;
+            this.buttonStopRace.Click += new System.EventHandler(this.buttonStopRace_Click);
             // 
             // buttonStartRace
             // 
+            this.buttonStartRace.Enabled = false;
             this.buttonStartRace.Image = global::SRVTracker.Properties.Resources.Run_16x;
             this.buttonStartRace.Location = new System.Drawing.Point(361, 289);
             this.buttonStartRace.Name = "buttonStartRace";
             this.buttonStartRace.Size = new System.Drawing.Size(29, 23);
             this.buttonStartRace.TabIndex = 5;
             this.buttonStartRace.UseVisualStyleBackColor = true;
+            this.buttonStartRace.Click += new System.EventHandler(this.buttonStartRace_Click);
             // 
             // buttonTrackParticipant
             // 
@@ -339,26 +398,17 @@
             this.buttonAddParticipant.Size = new System.Drawing.Size(29, 23);
             this.buttonAddParticipant.TabIndex = 1;
             this.buttonAddParticipant.UseVisualStyleBackColor = true;
+            this.buttonAddParticipant.Click += new System.EventHandler(this.buttonAddParticipant_Click);
             // 
-            // buttonLoadRoute
+            // buttonLoadRace
             // 
-            this.buttonLoadRoute.Image = global::SRVTracker.Properties.Resources.OpenFile_16x;
-            this.buttonLoadRoute.Location = new System.Drawing.Point(256, 17);
-            this.buttonLoadRoute.Name = "buttonLoadRoute";
-            this.buttonLoadRoute.Size = new System.Drawing.Size(38, 23);
-            this.buttonLoadRoute.TabIndex = 1;
-            this.buttonLoadRoute.UseVisualStyleBackColor = true;
-            this.buttonLoadRoute.Click += new System.EventHandler(this.buttonLoadRoute_Click);
-            // 
-            // buttonSaveRace
-            // 
-            this.buttonSaveRace.Image = global::SRVTracker.Properties.Resources.Save_16x;
-            this.buttonSaveRace.Location = new System.Drawing.Point(300, 36);
-            this.buttonSaveRace.Name = "buttonSaveRace";
-            this.buttonSaveRace.Size = new System.Drawing.Size(29, 23);
-            this.buttonSaveRace.TabIndex = 8;
-            this.buttonSaveRace.UseVisualStyleBackColor = true;
-            this.buttonSaveRace.Click += new System.EventHandler(this.buttonSaveRace_Click);
+            this.buttonLoadRace.Image = global::SRVTracker.Properties.Resources.OpenFile_16x;
+            this.buttonLoadRace.Location = new System.Drawing.Point(230, 36);
+            this.buttonLoadRace.Name = "buttonLoadRace";
+            this.buttonLoadRace.Size = new System.Drawing.Size(29, 23);
+            this.buttonLoadRace.TabIndex = 10;
+            this.buttonLoadRace.UseVisualStyleBackColor = true;
+            this.buttonLoadRace.Click += new System.EventHandler(this.buttonLoadRace_Click);
             // 
             // buttonSaveRaceAs
             // 
@@ -370,41 +420,34 @@
             this.buttonSaveRaceAs.UseVisualStyleBackColor = true;
             this.buttonSaveRaceAs.Click += new System.EventHandler(this.buttonSaveRaceAs_Click);
             // 
-            // groupBox5
+            // buttonSaveRace
             // 
-            this.groupBox5.Controls.Add(this.dateTimePickerStartTime);
-            this.groupBox5.Controls.Add(this.label2);
-            this.groupBox5.Controls.Add(this.label3);
-            this.groupBox5.Controls.Add(this.dateTimePickerStart);
-            this.groupBox5.Controls.Add(this.textBoxSystem);
-            this.groupBox5.Controls.Add(this.textBoxPlanet);
-            this.groupBox5.Location = new System.Drawing.Point(353, 12);
-            this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(361, 73);
-            this.groupBox5.TabIndex = 4;
-            this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "Time and Place";
+            this.buttonSaveRace.Image = global::SRVTracker.Properties.Resources.Save_16x;
+            this.buttonSaveRace.Location = new System.Drawing.Point(300, 36);
+            this.buttonSaveRace.Name = "buttonSaveRace";
+            this.buttonSaveRace.Size = new System.Drawing.Size(29, 23);
+            this.buttonSaveRace.TabIndex = 8;
+            this.buttonSaveRace.UseVisualStyleBackColor = true;
+            this.buttonSaveRace.Click += new System.EventHandler(this.buttonSaveRace_Click);
             // 
-            // dateTimePickerStartTime
+            // buttonLoadRoute
             // 
-            this.dateTimePickerStartTime.CustomFormat = "HH:mm";
-            this.dateTimePickerStartTime.Format = System.Windows.Forms.DateTimePickerFormat.Time;
-            this.dateTimePickerStartTime.Location = new System.Drawing.Point(220, 45);
-            this.dateTimePickerStartTime.Name = "dateTimePickerStartTime";
-            this.dateTimePickerStartTime.ShowUpDown = true;
-            this.dateTimePickerStartTime.Size = new System.Drawing.Size(135, 20);
-            this.dateTimePickerStartTime.TabIndex = 7;
-            this.dateTimePickerStartTime.ValueChanged += new System.EventHandler(this.dateTimePickerStartTime_ValueChanged);
+            this.buttonLoadRoute.Image = global::SRVTracker.Properties.Resources.OpenFile_16x;
+            this.buttonLoadRoute.Location = new System.Drawing.Point(256, 17);
+            this.buttonLoadRoute.Name = "buttonLoadRoute";
+            this.buttonLoadRoute.Size = new System.Drawing.Size(38, 23);
+            this.buttonLoadRoute.TabIndex = 1;
+            this.buttonLoadRoute.UseVisualStyleBackColor = true;
+            this.buttonLoadRoute.Click += new System.EventHandler(this.buttonLoadRoute_Click);
             // 
-            // buttonLoadRace
+            // comboBoxAddCommander
             // 
-            this.buttonLoadRace.Image = global::SRVTracker.Properties.Resources.OpenFile_16x;
-            this.buttonLoadRace.Location = new System.Drawing.Point(230, 36);
-            this.buttonLoadRace.Name = "buttonLoadRace";
-            this.buttonLoadRace.Size = new System.Drawing.Size(29, 23);
-            this.buttonLoadRace.TabIndex = 10;
-            this.buttonLoadRace.UseVisualStyleBackColor = true;
-            this.buttonLoadRace.Click += new System.EventHandler(this.buttonLoadRace_Click);
+            this.comboBoxAddCommander.FormattingEnabled = true;
+            this.comboBoxAddCommander.Location = new System.Drawing.Point(6, 18);
+            this.comboBoxAddCommander.Name = "comboBoxAddCommander";
+            this.comboBoxAddCommander.Size = new System.Drawing.Size(237, 21);
+            this.comboBoxAddCommander.TabIndex = 9;
+            this.comboBoxAddCommander.Leave += new System.EventHandler(this.comboBoxAddCommander_Leave);
             // 
             // FormRaceMonitor
             // 
@@ -419,6 +462,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "FormRaceMonitor";
             this.Text = "Race Monitor";
+            this.Deactivate += new System.EventHandler(this.FormRaceMonitor_Deactivate);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
@@ -429,6 +473,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownPaddingChars)).EndInit();
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
+            this.groupBoxAddCommander.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -469,5 +514,8 @@
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.DateTimePicker dateTimePickerStartTime;
         private System.Windows.Forms.Button buttonLoadRace;
+        private System.Windows.Forms.GroupBox groupBoxAddCommander;
+        private System.Windows.Forms.Button buttonAddCommander;
+        private System.Windows.Forms.ComboBox comboBoxAddCommander;
     }
 }

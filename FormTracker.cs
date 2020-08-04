@@ -20,17 +20,39 @@ namespace SRVTracker
         private string _lastUpdateTime = "";
         private FormLocator _formLocator = null;
         private FileStream _statusFileStream = null;
+        private System.Timers.Timer _statusTimer = null;
+        private string _statusFile = "";
+        private DateTime _lastFileWrite = DateTime.MinValue;
+        private Size _configShowing = new Size(743, 420);
+        private Size _configHidden = new Size(296, 258);
 
         public static EDLocation CurrentLocation { get; private set; } = null;
 
         public FormTracker()
-        {
+        {            
             InitializeComponent();
             InitClientId();
             InitStatusLocation();
             buttonTest.Visible = System.Diagnostics.Debugger.IsAttached;
             FormLocator.ServerAddress = (string)radioButtonUseDefaultServer.Tag;
             _formLocator = new FormLocator();
+            _statusTimer = new System.Timers.Timer(250);
+            _statusTimer.Elapsed += _statusTimer_Elapsed;
+            this.Size = _configHidden;
+        }
+
+        private void _statusTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            _statusTimer.Stop();
+
+            // If the file has been written, then process it
+            DateTime lastWriteTime = File.GetLastWriteTime(_statusFile);
+            if (lastWriteTime != _lastFileWrite)
+            {
+                ProcessStatusFileUpdate(_statusFile);
+                _lastFileWrite = lastWriteTime;
+            }
+            _statusTimer.Start();
         }
 
         private void InitClientId()
@@ -396,15 +418,13 @@ namespace SRVTracker
             if (buttonShowConfig.Text.Equals("Show Config"))
             {
                 buttonShowConfig.Text = "Hide Config";
-                this.Width = 743;
-                this.Height = 420;
+                this.Size = _configShowing;
                 this.Refresh();
                 return;
             }
 
             buttonShowConfig.Text = "Show Config";
-            this.Width = 296;
-            this.Height = 258;
+            this.Size = _configHidden;
             this.Refresh();
         }
 
@@ -462,17 +482,11 @@ namespace SRVTracker
             FormRoutePlanner formRoutePlanner = new FormRoutePlanner(_formLocator);
             formRoutePlanner.Show();
         }
-
-        private void checkBoxTrack_CheckedChanged(object sender, EventArgs e)
+        
+        private void StartTracking()
         {
-            if (checkBoxTrack.Checked)
+            if (radioButtonWatchStatusFile.Checked)
             {
-                if (String.IsNullOrEmpty(textBoxClientId.Text))
-                {
-                    AddLog($"Client Id cannot be empty for server upload");
-                    checkBoxUpload.Checked = false;
-                    return;
-                }
                 try
                 {
                     statusFileWatcher.Path = textBoxStatusFile.Text;
@@ -485,8 +499,52 @@ namespace SRVTracker
                     AddLog($"Error initiating file watcher: {ex.Message}");
                     return;
                 }
+            }
+            else
+            {
+                _statusFile = $"{textBoxStatusFile.Text}\\Status.json";
+                if (File.Exists(_statusFile))
+                {
+                    _statusTimer.Interval = 250;
+                    _statusTimer.Start();
+                }
+                else
+                {
+                    AddLog($"Unable to find status file: {_statusFile}");
+                    _statusFile = "";
+                    checkBoxTrack.Checked = false;
+                    return;
+                }
+            }
+            AddLog("Status tracking started");
+        }
+
+        private void StopTracking()
+        {
+            // Stop tracking
+            statusFileWatcher.EnableRaisingEvents = false;
+            _statusTimer.Stop();
+            try
+            {
+                _udpClient?.Close();
+            }
+            catch { }
+            _udpClient = null;
+            AddLog("Status tracking stopped");
+        }
+
+        private void checkBoxTrack_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBoxTrack.Checked)
+            {
                 if (checkBoxUpload.Checked)
                 {
+                    if (String.IsNullOrEmpty(textBoxClientId.Text))
+                        {
+                            AddLog($"Client Id cannot be empty for server upload");
+                            checkBoxUpload.Checked = false;
+                            return;
+                        }
                     // Create the UDP client for sending tracking data
                     try
                     {
@@ -501,19 +559,11 @@ namespace SRVTracker
                         checkBoxUpload.Checked = false;
                     }
                 }
-                AddLog("Status tracking started");
+                StartTracking();
                 return;
             }
 
-            // Stop tracking
-            statusFileWatcher.EnableRaisingEvents = false;
-            try
-            {
-                _udpClient.Close();
-            }
-            catch { }
-            _udpClient = null;
-            AddLog("Status tracking stopped");
+            StopTracking();
         }
 
         private void buttonRaceTracker_Click(object sender, EventArgs e)

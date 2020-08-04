@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Forms;
 using EDTracking;
 
@@ -17,7 +18,9 @@ namespace SRVTracker
     {
         private string _routeFile = "";
         private EDRace _race = null;
-        private Dictionary<string, ListViewItem> _racers = null;
+        private Dictionary<string, System.Windows.Forms.ListViewItem> _racers = null;
+        private Dictionary<string, EDStatus> _racersStatus = null;
+        private List<string> _eliminatedRacers = null;
         private EDWaypoint _nextWaypoint = null;
         private FormLocator _locatorForm = null;
         private string _lastLeaderboardExport = "";
@@ -29,19 +32,25 @@ namespace SRVTracker
         public FormRaceMonitor(FormLocator locatorForm = null)
         {
             InitializeComponent();
+            groupBoxAddCommander.Visible = false;
             _race = new EDRace("", new EDRoute(""));
             _locatorForm = locatorForm;
             
             CommanderWatcher.Start();
             CommanderWatcher.UpdateReceived += CommanderWatcher_UpdateReceived;
-            _racers = new Dictionary<string, ListViewItem>();
+            EDStatus.StatusChanged += EDStatus_StatusChanged;
+            _racers = new Dictionary<string, System.Windows.Forms.ListViewItem>();
             AddTrackedCommanders();
+        }
+
+        private void EDStatus_StatusChanged(object sender, string commander, string status)
+        {
+            if (_racers.ContainsKey(commander))
+                UpdateStatus(commander, status);
         }
 
         private void CommanderWatcher_UpdateReceived(object sender, EDEvent edEvent)
         {
-            if (!_racers.ContainsKey(edEvent.Commander))
-                return;
 
             // We've received an event for a listed racer
             Task.Run(new Action(() => { UpdateStatus(edEvent); }));
@@ -76,18 +85,21 @@ namespace SRVTracker
             if (_race.Route.Waypoints.Count < 1)
                 return;
 
+            if (_race.Route.Waypoints.Count > 0)
+                _nextWaypoint = _race.Route.Waypoints[0];
+            else
+                _nextWaypoint = null;
+
             listBoxWaypoints.BeginUpdate();
             listBoxWaypoints.Items.Clear();
             foreach (EDWaypoint waypoint in _race.Route.Waypoints)
                 listBoxWaypoints.Items.Add(waypoint.Name);
             listBoxWaypoints.EndUpdate();
 
-            if (_race.Route.Waypoints.Count > 1)
-                _nextWaypoint = _race.Route.Waypoints[1];
-            else
-                _nextWaypoint = null;
+
             if (_race.Route.Waypoints.Count > 0)
             {
+                buttonStartRace.Enabled = true;
                 textBoxPlanet.Text = _race.Route.Waypoints[0].Location.PlanetName;
                 textBoxSystem.Text = _race.Route.Waypoints[0].Location.SystemName;
             }
@@ -115,7 +127,7 @@ namespace SRVTracker
                         catch { }
                         if (!checkBoxAutoAddCommanders.Checked || status.Equals("Ready"))
                         {
-                            ListViewItem item = new ListViewItem("-");
+                            System.Windows.Forms.ListViewItem item = new System.Windows.Forms.ListViewItem("-");
                             item.SubItems.Add(commander);
                             item.SubItems.Add(status);
                             item.SubItems.Add("NA");
@@ -134,7 +146,7 @@ namespace SRVTracker
                 action();
         }
 
-        private void AddTrackedCommander(string commander)
+        private void AddTrackedCommander(string commander, string status = "Ready")
         {
             if (_racers.ContainsKey(commander))
                 return;
@@ -143,9 +155,9 @@ namespace SRVTracker
             {
                 listViewParticipants.BeginUpdate();
 
-                ListViewItem item = new ListViewItem("-");
+                System.Windows.Forms.ListViewItem item = new System.Windows.Forms.ListViewItem("-");
                 item.SubItems.Add(commander);
-                item.SubItems.Add("Ready");
+                item.SubItems.Add(status);
                 item.SubItems.Add("NA");
                 item.SubItems[3].Tag = double.MaxValue;
                 listViewParticipants.Items.Add(item);
@@ -160,20 +172,38 @@ namespace SRVTracker
                 action();
         }
 
+        private void UpdateStatus(string commander, string status)
+        {
+            Action action = new Action(() =>
+           {
+               _racers[commander].SubItems[2].Text = status;
+           });
+            if (listViewParticipants.InvokeRequired)
+                listViewParticipants.Invoke(action);
+            else
+                action();
+        }
+
         private void UpdateStatus(EDEvent edEvent)
         {
             // Update the status table
 
+            if (!_racers.ContainsKey(edEvent.Commander))
+                return; // We're not tracking this commander
+            if (_raceStarted)
+            {
+                _racersStatus[edEvent.Commander].UpdateStatus(edEvent);
+            }
+
             if (edEvent.HasCoordinates)
             {
-                if (!_raceStarted && _race.Route.Waypoints.Count > 0)
+                if (!_raceStarted)
                 {
-                    if (_race.Route.Waypoints[0].LocationIsWithinWaypoint(edEvent.Location))
-                        AddTrackedCommander(edEvent.Commander);
+                    if (checkBoxAutoAddCommanders.Checked)
+                        if (_race.Route.Waypoints.Count > 0)
+                            if (_race.Route.Waypoints[0].LocationIsWithinWaypoint(edEvent.Location))
+                                AddTrackedCommander(edEvent.Commander);
                 }
-
-                if (!_racers.ContainsKey(edEvent.Commander))
-                    return; // We're not tracking this commander
 
                 if (_nextWaypoint != null)
                 {
@@ -198,14 +228,14 @@ namespace SRVTracker
 
 
                     List<double> distancesToWaypoint = new List<double>();
-                    foreach (ListViewItem item in _racers.Values)
+                    foreach (System.Windows.Forms.ListViewItem item in _racers.Values)
                         distancesToWaypoint.Add((double)item.SubItems[3].Tag);
                     distancesToWaypoint.Sort();
 
                     action = new Action(() =>
                     {
                         listViewParticipants.BeginUpdate();
-                        foreach (ListViewItem item in _racers.Values)
+                        foreach (System.Windows.Forms.ListViewItem item in _racers.Values)
                         {
                             int i = 0;
                             while (i < distancesToWaypoint.Count && distancesToWaypoint[i] != (double)item.SubItems[3].Tag)
@@ -233,38 +263,42 @@ namespace SRVTracker
                         action();
                 }
             }
-
-
-                //Task.Run(new Action(() => { ExportLeaderboard(); }));
         }
 
         private void ExportLeaderboard()
         {
             // Export the current leaderboard
-            StringBuilder participants = new StringBuilder();
             StringBuilder status = new StringBuilder();
-
+            string[] leaderboard = new string[listViewParticipants.Items.Count+1];
             for (int i = 0; i < listViewParticipants.Items.Count; i++)
             {
                 try
                 {
-                    participants.AppendLine(listViewParticipants.Items[i].SubItems[1].Text);
+                    int commanderPosition = Convert.ToInt32(listViewParticipants.Items[i].Text)-1;
+                    if (commanderPosition == 0) // Not a number, so add to bottom of leaderboard
+                    {
+                        commanderPosition = leaderboard.Length - 2;
+                        while (!String.IsNullOrEmpty(leaderboard[commanderPosition]))
+                            commanderPosition--; // Could potentially happen in the event of a tie
+                    }
+                    leaderboard[commanderPosition] = listViewParticipants.Items[i].SubItems[1].Text;
                     status.AppendLine(listViewParticipants.Items[i].SubItems[2].Text);
                 }
                 catch { }
             }
             if (numericUpDownPaddingChars.Value > 0)
             {
-                participants.AppendLine(new string(' ', (int)numericUpDownPaddingChars.Value));
+                leaderboard[leaderboard.Length-1] = new string(' ', (int)numericUpDownPaddingChars.Value);
                 status.AppendLine(new string(' ', (int)numericUpDownPaddingChars.Value));
             }
 
-            if (!_lastLeaderboardExport.Equals(participants.ToString()))
+            string participants = String.Join(Environment.NewLine, leaderboard);
+            if (!_lastLeaderboardExport.Equals(participants))
             {
                 try
                 {
-                    File.WriteAllText("Timing-Names.txt", participants.ToString());
-                    _lastLeaderboardExport = participants.ToString();
+                    File.WriteAllText("Timing-Names.txt", participants);
+                    _lastLeaderboardExport = participants;
                 }
                 catch { }
             }
@@ -377,6 +411,89 @@ namespace SRVTracker
             }
             catch { }
         }
+
+        private void buttonAddParticipant_Click(object sender, EventArgs e)
+        {
+            comboBoxAddCommander.Items.Clear();
+            foreach (string commander in CommanderWatcher.GetCommanders())
+                comboBoxAddCommander.Items.Add(commander);
+            groupBoxAddCommander.Visible = true;
+            comboBoxAddCommander.Focus();
+        }
+
+        private void textBoxAddCommander_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Check for <ENTER>
+
+            if (e.KeyChar == (char)Keys.Return)
+                buttonAddCommander_Click(sender, null);
+        }
+
+        private void buttonAddCommander_Click(object sender, EventArgs e)
+        {
+            // Add the commander and hide the data entry groupbox
+            groupBoxAddCommander.Visible = false;
+            if (!String.IsNullOrEmpty(comboBoxAddCommander.Text))
+                AddTrackedCommander(comboBoxAddCommander.Text, "Unknown");
+            comboBoxAddCommander.Text = "";
+        }
+
+        private void FormRaceMonitor_Deactivate(object sender, EventArgs e)
+        {
+            groupBoxAddCommander.Visible = false;
+        }
+
+        private void buttonStartRace_Click(object sender, EventArgs e)
+        {
+            if (_race.Route.Waypoints.Count<2)
+            {
+                MessageBox.Show(this, "At least two waypoints are required to start a race", "Invalid Route", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            _eliminatedRacers = new List<string>();
+            _racersStatus = new Dictionary<string, EDStatus>();
+            foreach (string commander in _racers.Keys)
+                _racersStatus.Add(commander, new EDStatus(commander, _race.Route));
+            _nextWaypoint = _race.Route.Waypoints[1];
+            listBoxWaypoints.Refresh();
+            _raceStarted = true;
+            buttonStartRace.Enabled = false;
+            buttonStopRace.Enabled = true;
+        }
+
+        private void buttonStopRace_Click(object sender, EventArgs e)
+        {
+            _raceFinished = true;
+            buttonStopRace.Enabled = false;
+        }
+
+        private void comboBoxAddCommander_Leave(object sender, EventArgs e)
+        {
+            if (this.ActiveControl != buttonAddCommander)
+                groupBoxAddCommander.Visible = false;
+        }
+
+        private void listBoxWaypoints_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            Brush brush = Brushes.Black;
+            Font font = e.Font;
+            e.Graphics.FillRectangle(new SolidBrush(((System.Windows.Forms.ListBox)sender).BackColor), e.Bounds);
+
+            if (_nextWaypoint != null)
+                if (_nextWaypoint.Name == ((System.Windows.Forms.ListBox)sender).Items[e.Index].ToString())
+                {
+                    font = new Font(e.Font, FontStyle.Bold);
+                    brush = Brushes.LimeGreen;
+                }
+
+            e.Graphics.DrawString(((System.Windows.Forms.ListBox)sender).Items[e.Index].ToString(), font, brush, e.Bounds, StringFormat.GenericDefault);
+            e.DrawFocusRectangle();
+        }
+
+        private void checkBoxAutoAddCommanders_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 
     class ListViewItemComparer : IComparer
@@ -388,7 +505,7 @@ namespace SRVTracker
         {
             try
             {
-                return Convert.ToInt32(((ListViewItem)x).SubItems[0].Text) - Convert.ToInt32(((ListViewItem)y).SubItems[0].Text);
+                return Convert.ToInt32(((System.Windows.Forms.ListViewItem)x).SubItems[0].Text) - Convert.ToInt32(((System.Windows.Forms.ListViewItem)y).SubItems[0].Text);
             }
             catch { }
             return 1;
