@@ -188,7 +188,6 @@ namespace SRVTracker
         {
             // Update the status table
 
-
             if (_raceStarted)
             {
                 if (!_racersStatus.ContainsKey(edEvent.Commander))
@@ -205,7 +204,6 @@ namespace SRVTracker
                     if (_race.Route.Waypoints.Count > 0)
                         if (_race.Route.Waypoints[0].LocationIsWithinWaypoint(edEvent.Location))
                             AddTrackedCommander(edEvent.Commander);
-                return;
             }
 
             if (_nextWaypoint != null)
@@ -492,14 +490,15 @@ namespace SRVTracker
             e.DrawFocusRectangle();
         }
 
-        private void checkBoxAutoAddCommanders_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void checkBoxShowDetailedStatus_CheckedChanged(object sender, EventArgs e)
         {
             EDStatus.ShowDetailedStatus = checkBoxShowDetailedStatus.Checked;
+        }
+
+        private void comboBoxAddCommander_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            buttonAddCommander_Click(null, null);
+            comboBoxAddCommander.SelectedIndex = -1;
         }
     }
 

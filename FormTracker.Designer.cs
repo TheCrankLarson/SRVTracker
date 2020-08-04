@@ -419,7 +419,7 @@
             this.groupBox5.Size = new System.Drawing.Size(183, 50);
             this.groupBox5.TabIndex = 13;
             this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "Client Id";
+            this.groupBox5.Text = "Client Id (or commander name)";
             // 
             // groupBox6
             // 
@@ -539,7 +539,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(725, 383);
+            this.ClientSize = new System.Drawing.Size(724, 383);
             this.Controls.Add(this.checkBoxTrack);
             this.Controls.Add(this.buttonRaceTracker);
             this.Controls.Add(this.checkBoxAutoScroll);

@@ -81,23 +81,47 @@ namespace EDTracking
         {
             StringBuilder status = new StringBuilder();
 
-            if (isFlagSet(StatusFlags.LightsOn))
+            if (isFlagSet(StatusFlags.In_SRV))
             {
-                status.Append("L");
-                if (isFlagSet(StatusFlags.srvHighBeam))
-                    status.Append("H");
-                else
+                // SRV only flags
+                if (isFlagSet(StatusFlags.LightsOn))
+                {
                     status.Append("L");
+                    if (isFlagSet(StatusFlags.srvHighBeam))
+                        status.Append("H");
+                    else
+                        status.Append("L");
+                }
+
+                if (isFlagSet(StatusFlags.Srv_Handbrake))
+                    status.Append(" HB");
+
+                if (isFlagSet(StatusFlags.Srv_DriveAssist))
+                    status.Append(" DA");
+            }
+            else if (isFlagSet(StatusFlags.In_MainShip))
+            {
+                // Ship only flags
+                if (isFlagSet(StatusFlags.Landing_Gear_Down))
+                    status.Append(" LG");
+
+                if (!isFlagSet(StatusFlags.FlightAssist_Off))
+                    status.Append(" FA");
+
+                if (isFlagSet(StatusFlags.Silent_Running))
+                    status.Append(" SR");
+
+                if (isFlagSet(StatusFlags.Cargo_Scoop_Deployed))
+                    status.Append(" C");
+
+                if (isFlagSet(StatusFlags.Being_Interdicted))
+                    status.Append(" I");
             }
 
-            if (isFlagSet(StatusFlags.Srv_Handbrake))
-                status.Append(" B");
-
-            if (isFlagSet(StatusFlags.Srv_DriveAssist))
-                status.Append(" DA");
-
+            // Flags that apply to all vehicles
             if (isFlagSet(StatusFlags.Night_Vision_Active))
                 status.Append(" NV");
+
             return status.ToString().Trim();
         }
 
@@ -111,61 +135,22 @@ namespace EDTracking
             if (updateEvent.HasCoordinates)
                 Location = updateEvent.Location;
 
-            if (ShowDetailedStatus)
-            {
-                string detailedStatus = DetailedStatus();
-                if (detailedStatus.Equals(_lastStatus))
-                    return;
-                StatusChanged?.Invoke(null, Commander, $"{this.ToString()} {detailedStatus}");
-                return;
-            }
-
-            bool statusChanged = false;
-
             if (Eliminated)
                 return;
 
             if (!isFlagSet(StatusFlags.In_SRV) && !_inPits)
-            {
                 Eliminated = true;
-                statusChanged = true;
-            }
             else if (isFlagSet(StatusFlags.In_SRV))
-            {
-                if (isFlagSet(StatusFlags.Srv_UnderShip))
-                {
-                    if (!_inPits)
-                    {
-                        _inPits = true;
-                        statusChanged = true;
-                    }
-                }
-                else
-                {
-                    if (_inPits)
-                    {
-                        _inPits = false;
-                        statusChanged = true;
-                    }
-                }
-            }                 
+                _inPits = isFlagSet(StatusFlags.Srv_UnderShip);
 
-            if (isFlagSet(StatusFlags.Low_Fuel))
-            {
-                if (!_lowFuel)
-                {
-                    _lowFuel = true;
-                    statusChanged = true;
-                }
-            }
-            else if (_lowFuel)
-            {
-                _lowFuel = false;
-                statusChanged = true;
-            }
+            _lowFuel = isFlagSet(StatusFlags.Low_Fuel);
 
-            if (statusChanged)
-                StatusChanged?.Invoke(null, Commander, this.ToString());
+            StringBuilder currentStatus = new StringBuilder(ToString());
+            if (ShowDetailedStatus)
+                currentStatus.Append($" {DetailedStatus()}");
+            if (currentStatus.Equals(_lastStatus))
+                return;
+
         }
     }
 }

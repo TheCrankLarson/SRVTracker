@@ -259,7 +259,6 @@
             this.checkBoxAutoAddCommanders.TabIndex = 4;
             this.checkBoxAutoAddCommanders.Text = "Automatically add commanders that are at first waypoint";
             this.checkBoxAutoAddCommanders.UseVisualStyleBackColor = true;
-            this.checkBoxAutoAddCommanders.CheckedChanged += new System.EventHandler(this.checkBoxAutoAddCommanders_CheckedChanged);
             // 
             // numericUpDownPaddingChars
             // 
@@ -449,6 +448,7 @@
             this.comboBoxAddCommander.Name = "comboBoxAddCommander";
             this.comboBoxAddCommander.Size = new System.Drawing.Size(237, 21);
             this.comboBoxAddCommander.TabIndex = 9;
+            this.comboBoxAddCommander.SelectedIndexChanged += new System.EventHandler(this.comboBoxAddCommander_SelectedIndexChanged);
             this.comboBoxAddCommander.Leave += new System.EventHandler(this.comboBoxAddCommander_Leave);
             // 
             // checkBoxShowDetailedStatus
