@@ -381,6 +381,12 @@ namespace SRVTracker
 
         private void checkBoxEnableVRLocator_CheckedChanged(object sender, EventArgs e)
         {
+            if (!Valve.VR.OpenVR.IsHmdPresent())
+            {
+                checkBoxEnableVRLocator.Checked = false;
+                checkBoxEnableVRLocator.Enabled = false;
+                return;
+            }
             if (checkBoxEnableVRLocator.Checked)
             {
                 if (!ShowVRLocator())
@@ -453,18 +459,39 @@ namespace SRVTracker
         private static void InitVRMatrix()
         {
             _vrMatrix = new HmdMatrix34_t();
-            _vrMatrix.m0 = 1.0F;
-            _vrMatrix.m1 = 0.0F;
-            _vrMatrix.m2 = 0.0F;
+            _vrMatrix.m0 = 1.0F; // row 0 col 0
+            _vrMatrix.m1 = 0.0F; // row 0 col 1
+            _vrMatrix.m2 = 0.0F; 
             _vrMatrix.m3 = 0.0F;
+
             _vrMatrix.m4 = 0.0F;
             _vrMatrix.m5 = 1.0F;
             _vrMatrix.m6 = 0.0F;
             _vrMatrix.m7 = 1.0F;
+
+            _vrMatrix.m8 = 0.0F; 
+            _vrMatrix.m9 = 0.0F;
+            _vrMatrix.m10 = 1.0F;
+            _vrMatrix.m11 = 0.0F; 
+
+            /*
+             *            
+            _vrMatrix.m0 = 1.0F;
+            _vrMatrix.m1 = 0.0F;
+            _vrMatrix.m2 = 0.0F;
+
+            _vrMatrix.m3 = 0.0F;
+            _vrMatrix.m4 = 0.0F;
+            _vrMatrix.m5 = 1.0F;
+
+            _vrMatrix.m6 = 0.0F;
+            _vrMatrix.m7 = 1.0F;
             _vrMatrix.m8 = 0.0F;
+
             _vrMatrix.m9 = 0.0F;
             _vrMatrix.m10 = 1.0F;
             _vrMatrix.m11 = -2.0F;
+             * */
         }
 
         private bool ShowVRLocator()
@@ -506,6 +533,7 @@ namespace SRVTracker
             _vrOverlayHandle = 0;
             if (_intPtrOverlayImage != null)
                 Marshal.FreeHGlobal((IntPtr)_intPtrOverlayImage);
+            _intPtrOverlayImage = null;
         }
 
 

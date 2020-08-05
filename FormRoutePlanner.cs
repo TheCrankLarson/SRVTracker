@@ -22,6 +22,7 @@ namespace SRVTracker
         {
             InitializeComponent();
             _locatorForm = formLocator;
+            locationManager.LocatorForm = _locatorForm;
             if (_locatorForm == null)
                 buttonSetAsTarget.Enabled = false;
             UpdateButtons();

@@ -16,6 +16,7 @@ namespace SRVTracker
     {
         private string _saveFilename = "default.edlocations";
         public event EventHandler SelectionChanged;
+        public FormLocator LocatorForm { get; set; } = null;
 
         public LocationManager()
         {
@@ -187,12 +188,23 @@ namespace SRVTracker
         {
             buttonDeleteLocation.Enabled = listBoxLocations.SelectedIndex >= 0;
             buttonEditLocation.Enabled = listBoxLocations.SelectedIndex >= 0;
+            buttonTrackLocation.Enabled = listBoxLocations.SelectedIndex >= 0;
         }
 
         private void listBoxLocations_SelectedIndexChanged(object sender, EventArgs e)
         {
             UpdateButtons();
             OnSelectionChanged(e);
+        }
+
+        private void buttonTrackLocation_Click(object sender, EventArgs e)
+        {
+            if (listBoxLocations.SelectedIndex < 0)
+                return;
+
+            if (LocatorForm == null)
+                return;
+            LocatorForm.SetTarget((EDLocation)listBoxLocations.SelectedItem);
         }
     }
 }

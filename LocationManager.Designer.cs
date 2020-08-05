@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.buttonTrackLocation = new System.Windows.Forms.Button();
             this.buttonSaveAs = new System.Windows.Forms.Button();
             this.buttonEditLocation = new System.Windows.Forms.Button();
             this.buttonAddLocation = new System.Windows.Forms.Button();
@@ -41,6 +42,7 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.buttonTrackLocation);
             this.groupBox3.Controls.Add(this.buttonSaveAs);
             this.groupBox3.Controls.Add(this.buttonEditLocation);
             this.groupBox3.Controls.Add(this.buttonAddLocation);
@@ -55,6 +57,16 @@
             this.groupBox3.TabIndex = 3;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Known Locations";
+            // 
+            // buttonTrackLocation
+            // 
+            this.buttonTrackLocation.Image = global::SRVTracker.Properties.Resources.Target_16x;
+            this.buttonTrackLocation.Location = new System.Drawing.Point(93, 258);
+            this.buttonTrackLocation.Name = "buttonTrackLocation";
+            this.buttonTrackLocation.Size = new System.Drawing.Size(23, 23);
+            this.buttonTrackLocation.TabIndex = 7;
+            this.buttonTrackLocation.UseVisualStyleBackColor = true;
+            this.buttonTrackLocation.Click += new System.EventHandler(this.buttonTrackLocation_Click);
             // 
             // buttonSaveAs
             // 
@@ -157,5 +169,6 @@
         private System.Windows.Forms.ListBox listBoxLocations;
         private System.Windows.Forms.Button buttonEditLocation;
         private System.Windows.Forms.Button buttonSaveAs;
+        private System.Windows.Forms.Button buttonTrackLocation;
     }
 }
