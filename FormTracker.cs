@@ -10,6 +10,8 @@ using System.Windows.Forms;
 using System.Net.Sockets;
 using System.IO;
 using EDTracking;
+using OpenVR = Valve.VR.OpenVR;
+using Valve.VR;
 
 namespace SRVTracker
 {
@@ -25,6 +27,8 @@ namespace SRVTracker
         private DateTime _lastFileWrite = DateTime.MinValue;
         private Size _configShowing = new Size(743, 420);
         private Size _configHidden = new Size(296, 258);
+        public static CVRSystem VRSystem = null;
+        private static FormFlagsWatcher _formFlagsWatcher = null;
 
         public static EDLocation CurrentLocation { get; private set; } = null;
 
@@ -182,7 +186,7 @@ namespace SRVTracker
 
             try
             {
-                UpdateUI(new EDEvent(status));
+                UpdateUI(new EDEvent(status,textBoxClientId.Text));
             }
             catch { }
 
@@ -203,6 +207,64 @@ namespace SRVTracker
         }
 
         private void buttonTest_Click(object sender, EventArgs e)
+        {
+            //SendTestEvents();
+            TestVROverlay();
+            return;
+            if (_formFlagsWatcher != null)
+                return;
+            _formFlagsWatcher = new FormFlagsWatcher();
+            _formFlagsWatcher.Show();
+        }
+
+        public static bool InitVR()
+        {
+            if (VRSystem == null)
+            {
+                var initError = EVRInitError.None;
+                try
+                {
+                    VRSystem = OpenVR.Init(ref initError, EVRApplicationType.VRApplication_Overlay);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(null, $"Failed to initialise VR: {ex.Message}\r\nInit error: {initError}", "VR Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        private void TestVROverlay()
+        {
+            if (!InitVR()) return;
+
+            var overlay = OpenVR.Overlay;
+            ulong overlayHandle = 0;
+
+            overlay.CreateOverlay("overlaySRVTracker", "SRV Tracking", ref overlayHandle);
+            overlay.SetOverlayWidthInMeters(overlayHandle, 2.5f);
+            overlay.SetOverlayFromFile(overlayHandle, "c:\\temp\\Crank VR.png");
+            //overlay.SetOverlayRaw()
+            var error = overlay.ShowOverlay(overlayHandle);
+            Valve.VR.HmdMatrix34_t hmdMatrix = new HmdMatrix34_t();
+            hmdMatrix.m0 = 1.0F;
+            hmdMatrix.m1 = 0.0F;
+            hmdMatrix.m2 = 0.0F;
+            hmdMatrix.m3 = 0.0F;
+            hmdMatrix.m4 = 0.0F;
+            hmdMatrix.m5 = 1.0F;
+            hmdMatrix.m6 = 0.0F;
+            hmdMatrix.m7 = 1.0F;
+            hmdMatrix.m8 = 0.0F;
+            hmdMatrix.m9 = 0.0F;
+            hmdMatrix.m10 = 1.0F;
+            hmdMatrix.m11 = -2.0F;
+
+            overlay.SetOverlayTransformAbsolute(overlayHandle, Valve.VR.ETrackingUniverseOrigin.TrackingUniverseStanding, ref hmdMatrix);
+        }
+
+        private void SendTestEvents()
         {
             EDEvent edEvent;
             //"{ \"timestamp\":\"2020 - 07 - 28T17: 46:47Z\", \"event\":\"Status\", \"Flags\":16777229, \"Pips\":[4,8,0], \"FireGroup\":0, \"GuiFocus\":0, \"Fuel\":{ \"FuelMain\":16.000000, \"FuelReservoir\":0.430376 }, \"Cargo\":4.000000, \"LegalState\":\"Clean\" }");
@@ -245,6 +307,9 @@ namespace SRVTracker
             if (checkBoxUpload.Checked)
                 UploadToServer(edEvent);
 
+            if (_formFlagsWatcher != null)
+                _formFlagsWatcher.UpdateFlags(edEvent.Flags);
+
             if (edEvent.PlanetRadius > 0) 
                 if (FormLocator.PlanetaryRadius != edEvent.PlanetRadius)
                     FormLocator.PlanetaryRadius = edEvent.PlanetRadius;
@@ -279,55 +344,42 @@ namespace SRVTracker
             else
                 action();
 
-            if (edEvent.isInSRV)
+            if (edEvent.HasCoordinates)
             {
-                // In SRV
-                if (edEvent.HasCoordinates)
-                {
-                    action = new Action(() => { textBoxSRVLatitude.Text = edEvent.Latitude.ToString(); });
-                    if (textBoxSRVLatitude.InvokeRequired)
-                        textBoxSRVLatitude.Invoke(action);
-                    else
-                        action();
-
-                    action = new Action(() => { textBoxSRVLongitude.Text = edEvent.Longitude.ToString(); });
-                    if (textBoxSRVLongitude.InvokeRequired)
-                        textBoxSRVLongitude.Invoke(action);
-                    else
-                        action();
-                }
-
-                action = new Action(() => { textBoxSRVHeading.Text = edEvent.Heading.ToString(); });
-                if (textBoxSRVHeading.InvokeRequired)
-                    textBoxSRVHeading.Invoke(action);
+                action = new Action(() => { textBoxLatitude.Text = edEvent.Latitude.ToString(); });
+                if (textBoxLatitude.InvokeRequired)
+                    textBoxLatitude.Invoke(action);
                 else
                     action();
-            }
-            else if (edEvent.isInMainShip)
-            {
-                // In ship
-                if (edEvent.HasCoordinates)
-                {
-                    action = new Action(() => { textBoxShipLatitude.Text = edEvent.Latitude.ToString(); });
-                    if (textBoxShipLatitude.InvokeRequired)
-                        textBoxShipLatitude.Invoke(action);
-                    else
-                        action();
 
-                    action = new Action(() => { textBoxShipLongitude.Text = edEvent.Longitude.ToString(); });
-                    if (textBoxShipLongitude.InvokeRequired)
-                        textBoxShipLongitude.Invoke(action);
-                    else
-                        action();
-                }
+                action = new Action(() => { textBoxLongitude.Text = edEvent.Longitude.ToString(); });
+                if (textBoxLongitude.InvokeRequired)
+                    textBoxLongitude.Invoke(action);
+                else
+                    action();
 
-                action = new Action(() => { textBoxShipHeading.Text = edEvent.Heading.ToString(); });
-                if (textBoxShipHeading.InvokeRequired)
-                    textBoxShipHeading.Invoke(action);
+                action = new Action(() => { textBoxAltitude.Text = edEvent.Altitude.ToString(); });
+                if (textBoxAltitude.InvokeRequired)
+                    textBoxAltitude.Invoke(action);
                 else
                     action();
             }
 
+            if (edEvent.PlanetRadius>0)
+                if (!edEvent.PlanetRadius.ToString().Equals(textBoxPlanetRadius.Text))
+                {
+                    action = new Action(() => { textBoxPlanetRadius.Text = edEvent.PlanetRadius.ToString(); });
+                    if (textBoxPlanetRadius.InvokeRequired)
+                        textBoxPlanetRadius.Invoke(action);
+                    else
+                        action();
+                }
+
+            action = new Action(() => { textBoxHeading.Text = edEvent.Heading.ToString(); });
+            if (textBoxHeading.InvokeRequired)
+                textBoxHeading.Invoke(action);
+            else
+                action();
         }
 
         private void SaveToFile(EDEvent edEvent)

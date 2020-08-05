@@ -96,7 +96,7 @@ namespace EDTracking
             get
             {
                 if (HasCoordinates)
-                        return new EDLocation(Latitude, Longitude, Altitude);
+                        return new EDLocation(Latitude, Longitude, Altitude, PlanetRadius);
                 return null;
             }
         }

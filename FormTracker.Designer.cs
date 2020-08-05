@@ -32,20 +32,14 @@
             this.buttonBrowseStatusFile = new System.Windows.Forms.Button();
             this.textBoxStatusFile = new System.Windows.Forms.TextBox();
             this.statusFileWatcher = new System.IO.FileSystemWatcher();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.label5 = new System.Windows.Forms.Label();
-            this.textBoxSRVHeading = new System.Windows.Forms.TextBox();
+            this.textBoxAltitude = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.textBoxSRVLatitude = new System.Windows.Forms.TextBox();
-            this.textBoxSRVLongitude = new System.Windows.Forms.TextBox();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.textBoxShipHeading = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
+            this.textBoxLatitude = new System.Windows.Forms.TextBox();
+            this.textBoxLongitude = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.textBoxShipLatitude = new System.Windows.Forms.TextBox();
-            this.textBoxShipLongitude = new System.Windows.Forms.TextBox();
+            this.textBoxHeading = new System.Windows.Forms.TextBox();
             this.listBoxLog = new System.Windows.Forms.ListBox();
             this.buttonTest = new System.Windows.Forms.Button();
             this.label7 = new System.Windows.Forms.Label();
@@ -73,14 +67,16 @@
             this.radioButtonUseTimer = new System.Windows.Forms.RadioButton();
             this.buttonRaceTracker = new System.Windows.Forms.Button();
             this.checkBoxTrack = new System.Windows.Forms.CheckBox();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.textBoxPlanetRadius = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.statusFileWatcher)).BeginInit();
-            this.groupBox2.SuspendLayout();
-            this.groupBox3.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.groupBox6.SuspendLayout();
             this.groupBox7.SuspendLayout();
             this.groupBox8.SuspendLayout();
+            this.groupBox4.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -117,37 +113,22 @@
             this.statusFileWatcher.SynchronizingObject = this;
             this.statusFileWatcher.Changed += new System.IO.FileSystemEventHandler(this.statusFileWatcher_Changed);
             // 
-            // groupBox2
-            // 
-            this.groupBox2.Controls.Add(this.label5);
-            this.groupBox2.Controls.Add(this.textBoxSRVHeading);
-            this.groupBox2.Controls.Add(this.label2);
-            this.groupBox2.Controls.Add(this.label1);
-            this.groupBox2.Controls.Add(this.textBoxSRVLatitude);
-            this.groupBox2.Controls.Add(this.textBoxSRVLongitude);
-            this.groupBox2.Location = new System.Drawing.Point(12, 12);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(263, 60);
-            this.groupBox2.TabIndex = 2;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "SRV Status";
-            // 
             // label5
             // 
             this.label5.AutoSize = true;
             this.label5.Location = new System.Drawing.Point(174, 16);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(50, 13);
+            this.label5.Size = new System.Drawing.Size(45, 13);
             this.label5.TabIndex = 5;
-            this.label5.Text = "Heading:";
+            this.label5.Text = "Altitude:";
             // 
-            // textBoxSRVHeading
+            // textBoxAltitude
             // 
-            this.textBoxSRVHeading.Location = new System.Drawing.Point(177, 32);
-            this.textBoxSRVHeading.MaxLength = 20;
-            this.textBoxSRVHeading.Name = "textBoxSRVHeading";
-            this.textBoxSRVHeading.Size = new System.Drawing.Size(78, 20);
-            this.textBoxSRVHeading.TabIndex = 4;
+            this.textBoxAltitude.Location = new System.Drawing.Point(177, 32);
+            this.textBoxAltitude.MaxLength = 20;
+            this.textBoxAltitude.Name = "textBoxAltitude";
+            this.textBoxAltitude.Size = new System.Drawing.Size(78, 20);
+            this.textBoxAltitude.TabIndex = 4;
             // 
             // label2
             // 
@@ -167,87 +148,38 @@
             this.label1.TabIndex = 2;
             this.label1.Text = "Longitude:";
             // 
-            // textBoxSRVLatitude
+            // textBoxLatitude
             // 
-            this.textBoxSRVLatitude.Location = new System.Drawing.Point(93, 32);
-            this.textBoxSRVLatitude.MaxLength = 20;
-            this.textBoxSRVLatitude.Name = "textBoxSRVLatitude";
-            this.textBoxSRVLatitude.Size = new System.Drawing.Size(78, 20);
-            this.textBoxSRVLatitude.TabIndex = 1;
+            this.textBoxLatitude.Location = new System.Drawing.Point(93, 32);
+            this.textBoxLatitude.MaxLength = 20;
+            this.textBoxLatitude.Name = "textBoxLatitude";
+            this.textBoxLatitude.Size = new System.Drawing.Size(78, 20);
+            this.textBoxLatitude.TabIndex = 1;
             // 
-            // textBoxSRVLongitude
+            // textBoxLongitude
             // 
-            this.textBoxSRVLongitude.Location = new System.Drawing.Point(9, 32);
-            this.textBoxSRVLongitude.MaxLength = 20;
-            this.textBoxSRVLongitude.Name = "textBoxSRVLongitude";
-            this.textBoxSRVLongitude.Size = new System.Drawing.Size(78, 20);
-            this.textBoxSRVLongitude.TabIndex = 0;
-            // 
-            // groupBox3
-            // 
-            this.groupBox3.Controls.Add(this.label6);
-            this.groupBox3.Controls.Add(this.textBoxShipHeading);
-            this.groupBox3.Controls.Add(this.label3);
-            this.groupBox3.Controls.Add(this.label4);
-            this.groupBox3.Controls.Add(this.textBoxShipLatitude);
-            this.groupBox3.Controls.Add(this.textBoxShipLongitude);
-            this.groupBox3.Location = new System.Drawing.Point(12, 78);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(263, 60);
-            this.groupBox3.TabIndex = 3;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Ship Status";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(174, 16);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(50, 13);
-            this.label6.TabIndex = 9;
-            this.label6.Text = "Heading:";
-            // 
-            // textBoxShipHeading
-            // 
-            this.textBoxShipHeading.Location = new System.Drawing.Point(174, 32);
-            this.textBoxShipHeading.MaxLength = 20;
-            this.textBoxShipHeading.Name = "textBoxShipHeading";
-            this.textBoxShipHeading.Size = new System.Drawing.Size(78, 20);
-            this.textBoxShipHeading.TabIndex = 8;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(87, 16);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(48, 13);
-            this.label3.TabIndex = 7;
-            this.label3.Text = "Latitude:";
+            this.textBoxLongitude.Location = new System.Drawing.Point(9, 32);
+            this.textBoxLongitude.MaxLength = 20;
+            this.textBoxLongitude.Name = "textBoxLongitude";
+            this.textBoxLongitude.Size = new System.Drawing.Size(78, 20);
+            this.textBoxLongitude.TabIndex = 0;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(6, 16);
+            this.label4.Location = new System.Drawing.Point(9, 60);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(57, 13);
+            this.label4.Size = new System.Drawing.Size(50, 13);
             this.label4.TabIndex = 6;
-            this.label4.Text = "Longitude:";
+            this.label4.Text = "Heading:";
             // 
-            // textBoxShipLatitude
+            // textBoxHeading
             // 
-            this.textBoxShipLatitude.Location = new System.Drawing.Point(90, 32);
-            this.textBoxShipLatitude.MaxLength = 20;
-            this.textBoxShipLatitude.Name = "textBoxShipLatitude";
-            this.textBoxShipLatitude.Size = new System.Drawing.Size(78, 20);
-            this.textBoxShipLatitude.TabIndex = 5;
-            // 
-            // textBoxShipLongitude
-            // 
-            this.textBoxShipLongitude.Location = new System.Drawing.Point(6, 32);
-            this.textBoxShipLongitude.MaxLength = 20;
-            this.textBoxShipLongitude.Name = "textBoxShipLongitude";
-            this.textBoxShipLongitude.Size = new System.Drawing.Size(78, 20);
-            this.textBoxShipLongitude.TabIndex = 4;
+            this.textBoxHeading.Location = new System.Drawing.Point(9, 76);
+            this.textBoxHeading.MaxLength = 20;
+            this.textBoxHeading.Name = "textBoxHeading";
+            this.textBoxHeading.Size = new System.Drawing.Size(78, 20);
+            this.textBoxHeading.TabIndex = 4;
             // 
             // listBoxLog
             // 
@@ -535,11 +467,47 @@
             this.checkBoxTrack.UseVisualStyleBackColor = true;
             this.checkBoxTrack.CheckedChanged += new System.EventHandler(this.checkBoxTrack_CheckedChanged);
             // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.label3);
+            this.groupBox4.Controls.Add(this.textBoxPlanetRadius);
+            this.groupBox4.Controls.Add(this.label5);
+            this.groupBox4.Controls.Add(this.textBoxLatitude);
+            this.groupBox4.Controls.Add(this.textBoxAltitude);
+            this.groupBox4.Controls.Add(this.label4);
+            this.groupBox4.Controls.Add(this.textBoxLongitude);
+            this.groupBox4.Controls.Add(this.label2);
+            this.groupBox4.Controls.Add(this.textBoxHeading);
+            this.groupBox4.Controls.Add(this.label1);
+            this.groupBox4.Location = new System.Drawing.Point(12, 11);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(263, 105);
+            this.groupBox4.TabIndex = 19;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Location";
+            // 
+            // textBoxPlanetRadius
+            // 
+            this.textBoxPlanetRadius.Location = new System.Drawing.Point(93, 76);
+            this.textBoxPlanetRadius.Name = "textBoxPlanetRadius";
+            this.textBoxPlanetRadius.Size = new System.Drawing.Size(78, 20);
+            this.textBoxPlanetRadius.TabIndex = 7;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(93, 60);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(71, 13);
+            this.label3.TabIndex = 8;
+            this.label3.Text = "Planet radius:";
+            // 
             // FormTracker
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(724, 383);
+            this.ClientSize = new System.Drawing.Size(971, 400);
+            this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.checkBoxTrack);
             this.Controls.Add(this.buttonRaceTracker);
             this.Controls.Add(this.checkBoxAutoScroll);
@@ -556,8 +524,6 @@
             this.Controls.Add(this.label7);
             this.Controls.Add(this.buttonTest);
             this.Controls.Add(this.listBoxLog);
-            this.Controls.Add(this.groupBox3);
-            this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
@@ -566,10 +532,6 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.statusFileWatcher)).EndInit();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
-            this.groupBox3.ResumeLayout(false);
-            this.groupBox3.PerformLayout();
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
             this.groupBox6.ResumeLayout(false);
@@ -578,6 +540,8 @@
             this.groupBox7.PerformLayout();
             this.groupBox8.ResumeLayout(false);
             this.groupBox8.PerformLayout();
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -589,22 +553,16 @@
         private System.Windows.Forms.Button buttonBrowseStatusFile;
         private System.Windows.Forms.TextBox textBoxStatusFile;
         private System.IO.FileSystemWatcher statusFileWatcher;
-        private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox textBoxShipLatitude;
-        private System.Windows.Forms.TextBox textBoxShipLongitude;
-        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.TextBox textBoxHeading;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox textBoxSRVLatitude;
-        private System.Windows.Forms.TextBox textBoxSRVLongitude;
+        private System.Windows.Forms.TextBox textBoxLatitude;
+        private System.Windows.Forms.TextBox textBoxLongitude;
         private System.Windows.Forms.ListBox listBoxLog;
         private System.Windows.Forms.Button buttonTest;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.TextBox textBoxShipHeading;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TextBox textBoxSRVHeading;
+        private System.Windows.Forms.TextBox textBoxAltitude;
         private System.Windows.Forms.Label labelLastUpdateTime;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox textBoxSaveFile;
@@ -630,6 +588,9 @@
         private System.Windows.Forms.RadioButton radioButtonWatchStatusFile;
         private System.Windows.Forms.RadioButton radioButtonUseTimer;
         private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox textBoxPlanetRadius;
     }
 }
 

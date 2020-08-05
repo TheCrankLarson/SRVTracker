@@ -10,6 +10,11 @@ using System.Windows.Forms;
 using System.Net;
 using System.IO;
 using EDTracking;
+using Valve.VR;
+using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
+using System.Drawing.Text;
+using System.Runtime.InteropServices;
 
 namespace SRVTracker
 {
@@ -20,6 +25,9 @@ namespace SRVTracker
         private string _trackingTarget = "";
         private bool _commanderListShowing = false;
         private static Size _normalView = new Size(364, 228);
+        private static ulong _vrOverlayHandle = 0;
+        private static HmdMatrix34_t _vrMatrix;
+        private static IntPtr? _intPtrOverlayImage = null;
 
         public FormLocator()
         {
@@ -27,6 +35,7 @@ namespace SRVTracker
             this.Width = _normalView.Width;
             buttonUseCurrentLocation.Enabled = false;  // We'll enable it when we have a location
             CommanderWatcher.UpdateReceived += CommanderWatcher_UpdateReceived;
+            InitVRMatrix();
         }
 
         private void CommanderWatcher_UpdateReceived(object sender, EDEvent edEvent)
@@ -154,6 +163,8 @@ namespace SRVTracker
 
             }
             catch { }
+            if (checkBoxEnableVRLocator.Checked)
+                UpdateVRLocatorImage();
         }
 
         private void textBoxLongitude_TextChanged(object sender, EventArgs e)
@@ -181,14 +192,12 @@ namespace SRVTracker
                 double latitude = Convert.ToDouble(textBoxLatitude.Text);
                 double longitude = Convert.ToDouble(textBoxLongitude.Text);
                 if (!String.IsNullOrEmpty(textBoxAltitude.Text))
-                    _targetPosition = new EDLocation(latitude, longitude, Convert.ToDouble(textBoxAltitude.Text));
+                    _targetPosition = new EDLocation(latitude, longitude, Convert.ToDouble(textBoxAltitude.Text), PlanetaryRadius);
                 else
-                    _targetPosition = new EDLocation(latitude, longitude);
-                //groupBoxDestination.BackColor = Color.Lime;
+                    _targetPosition = new EDLocation(latitude, longitude, 0, PlanetaryRadius);
                 return;
             }
             catch { }
-            //groupBoxDestination.BackColor = System.Drawing.SystemColors.Control;
         }
 
         private void buttonShowHideTarget_Click(object sender, EventArgs e)
@@ -308,6 +317,9 @@ namespace SRVTracker
                 e.Cancel = true;
                 this.Hide();
             }
+
+            if (_intPtrOverlayImage != null)
+                HideVRLocator();
         }
 
         private void UpdateTrackingTarget(string target, bool isTrackedTarget = true)
@@ -366,5 +378,136 @@ namespace SRVTracker
                 UpdateTrackingTarget("");
             }
         }
+
+        private void checkBoxEnableVRLocator_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBoxEnableVRLocator.Checked)
+            {
+                if (!ShowVRLocator())
+                    checkBoxEnableVRLocator.Checked = false;
+                return;
+            }
+            
+            HideVRLocator();
+        }
+
+        public static byte[] BitmapToByte(Bitmap bitmap)
+        {
+            using (MemoryStream ms = new MemoryStream())
+            {
+                bitmap.Save(ms, ImageFormat.Bmp);
+                return ms.ToArray();
+            }
+        }
+
+        private Bitmap LocatorBitmap()
+        {
+            // Generate and return a bitmap to be used as overlay
+
+            Size bitmapSize = new Size(200, 80);
+            Bitmap bitmap = new Bitmap(bitmapSize.Width, bitmapSize.Height);
+            
+            using (Graphics graphics = Graphics.FromImage(bitmap))
+            {
+                graphics.CompositingQuality = CompositingQuality.HighQuality;
+                graphics.InterpolationMode = InterpolationMode.HighQualityBilinear;
+                graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
+                graphics.SmoothingMode = SmoothingMode.HighQuality;
+                graphics.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
+
+                // Black background
+                graphics.FillRectangle(new SolidBrush(Color.Black), graphics.ClipBounds);
+
+                // Tracking target
+                Brush whiteBrush = new SolidBrush(Color.White);
+                Brush orangeBrush = new SolidBrush(Color.Orange);
+                Font font = new Font("Arial", 12);
+                graphics.DrawString(_trackingTarget, font, orangeBrush, new PointF(0,0));
+
+                // Bearing
+                font = new Font("Arial", 24);
+                //SizeF textSize = graphics.MeasureString(labelHeading.Text, font);
+                graphics.DrawString(labelHeading.Text, font, whiteBrush, new PointF(20, 30));
+
+                // Distance
+                graphics.DrawString(labelDistance.Text, font, whiteBrush, new PointF(80, 30));
+
+                graphics.Save();
+            }
+            return bitmap;
+        }
+
+        private void UpdateVRLocatorImage()
+        {
+            using (Bitmap bitmap = LocatorBitmap())
+            {
+                byte[] imgBytes = BitmapToByte(bitmap);
+                if (_intPtrOverlayImage==null)
+                    _intPtrOverlayImage = Marshal.AllocHGlobal(imgBytes.Length);
+                Marshal.Copy(imgBytes, 0, _intPtrOverlayImage.Value, imgBytes.Length);
+
+                OpenVR.Overlay.SetOverlayRaw(_vrOverlayHandle, _intPtrOverlayImage.Value, 200, 80, 4);
+            }
+        }
+
+        private static void InitVRMatrix()
+        {
+            _vrMatrix = new HmdMatrix34_t();
+            _vrMatrix.m0 = 1.0F;
+            _vrMatrix.m1 = 0.0F;
+            _vrMatrix.m2 = 0.0F;
+            _vrMatrix.m3 = 0.0F;
+            _vrMatrix.m4 = 0.0F;
+            _vrMatrix.m5 = 1.0F;
+            _vrMatrix.m6 = 0.0F;
+            _vrMatrix.m7 = 1.0F;
+            _vrMatrix.m8 = 0.0F;
+            _vrMatrix.m9 = 0.0F;
+            _vrMatrix.m10 = 1.0F;
+            _vrMatrix.m11 = -2.0F;
+        }
+
+        private bool ShowVRLocator()
+        {
+            try
+            {
+                if (!FormTracker.InitVR() || (_vrOverlayHandle > 0))
+                    return false;
+            }
+            catch
+            {
+                return false;
+            }
+
+            try
+            {
+                OpenVR.Overlay.CreateOverlay("overlaySRVTracker", "SRV Tracking", ref _vrOverlayHandle);
+            }
+            catch
+            {
+                return false;
+            }
+            OpenVR.Overlay.SetOverlayWidthInMeters(_vrOverlayHandle, 1.0f);
+            UpdateVRLocatorImage();
+            var error = OpenVR.Overlay.ShowOverlay(_vrOverlayHandle);
+
+            OpenVR.Overlay.SetOverlayTransformAbsolute(_vrOverlayHandle, Valve.VR.ETrackingUniverseOrigin.TrackingUniverseStanding, ref _vrMatrix);
+
+            return true;
+        }
+
+        private void HideVRLocator()
+        {
+            try
+            {
+                OpenVR.Overlay.DestroyOverlay(_vrOverlayHandle);
+            }
+            catch { }
+            _vrOverlayHandle = 0;
+            if (_intPtrOverlayImage != null)
+                Marshal.FreeHGlobal((IntPtr)_intPtrOverlayImage);
+        }
+
+
     }
 }

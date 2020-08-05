@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace EDTracking
 {
@@ -28,6 +29,7 @@ namespace EDTracking
         private long _lastFlags = 0;
         private bool _inPits = false;
         private bool _lowFuel = false;
+        private bool _completed = false;
 
         public EDStatus(EDEvent baseEvent)
         {
@@ -47,19 +49,21 @@ namespace EDTracking
 
         public override string ToString()
         {
-            if (Eliminated)
-                return "Eliminated";
-
-            if (_inPits)
-                return "Pitstop";
-
             StringBuilder status = new StringBuilder();
+            if (Eliminated)
+                status.Append("Eliminated");
+            else if (_completed)
+                status.Append("Completed");
+            else if (_inPits)
+                status.Append("Pitstop");
+            else
+            {
+                if (Started)
+                    status.Append($"-> {Route.Waypoints[WaypointIndex].Name}");
 
-            if (Started)
-                status.Append($"-> {Route.Waypoints[WaypointIndex].Name}");
-
-            if (_lowFuel)
-                status.Append(" (low fuel)");
+                if (_lowFuel)
+                    status.Append(" (low fuel)");
+            }
 
             if (ShowDetailedStatus)
             {
@@ -129,19 +133,34 @@ namespace EDTracking
             Flags = updateEvent.Flags;
 
             if (updateEvent.HasCoordinates)
+            {
                 Location = updateEvent.Location;
+                if (WaypointIndex>0)
+                    if (Route.Waypoints[WaypointIndex].LocationIsWithinWaypoint(updateEvent.Location))
+                    {
+                        // Commander has reached the target waypoint
+                        WaypointIndex++;
+                        if (WaypointIndex >= Route.Waypoints.Count)
+                        {
+                            _completed = true;
+                            WaypointIndex = 0;
+                        }
+                    }
+            }
 
             if (Eliminated)
                 return;
 
-            if (!isFlagSet(StatusFlags.In_SRV) && !_inPits)
+            if ( !isFlagSet(StatusFlags.In_SRV) && (!_inPits || !isFlagSet(StatusFlags.Landed_on_planet_surface)) )
                 Eliminated = true;
-            else if (isFlagSet(StatusFlags.In_SRV))
+
+            if (isFlagSet(StatusFlags.In_SRV))
                 _inPits = isFlagSet(StatusFlags.Srv_UnderShip);
 
             _lowFuel = isFlagSet(StatusFlags.Low_Fuel);
 
             String currentStatus = ToString();
+            Debug.WriteLine($"{updateEvent.Commander}: {currentStatus}");
             if (currentStatus.Equals(_lastStatus))
                 return;
 

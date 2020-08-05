@@ -45,6 +45,7 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.listBoxCommanders = new System.Windows.Forms.ListBox();
             this.buttonTrackCommander = new System.Windows.Forms.Button();
+            this.checkBoxEnableVRLocator = new System.Windows.Forms.CheckBox();
             this.groupBoxDestination.SuspendLayout();
             this.groupBoxBearing.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -219,11 +220,23 @@
             this.buttonTrackCommander.UseVisualStyleBackColor = true;
             this.buttonTrackCommander.Click += new System.EventHandler(this.buttonTrackCommander_Click);
             // 
+            // checkBoxEnableVRLocator
+            // 
+            this.checkBoxEnableVRLocator.AutoSize = true;
+            this.checkBoxEnableVRLocator.Location = new System.Drawing.Point(138, 161);
+            this.checkBoxEnableVRLocator.Name = "checkBoxEnableVRLocator";
+            this.checkBoxEnableVRLocator.Size = new System.Drawing.Size(41, 17);
+            this.checkBoxEnableVRLocator.TabIndex = 10;
+            this.checkBoxEnableVRLocator.Text = "VR";
+            this.checkBoxEnableVRLocator.UseVisualStyleBackColor = true;
+            this.checkBoxEnableVRLocator.CheckedChanged += new System.EventHandler(this.checkBoxEnableVRLocator_CheckedChanged);
+            // 
             // FormLocator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(559, 189);
+            this.Controls.Add(this.checkBoxEnableVRLocator);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.buttonPlayers);
             this.Controls.Add(this.buttonLocations);
@@ -240,6 +253,7 @@
             this.groupBoxBearing.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -262,5 +276,6 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.ListBox listBoxCommanders;
         private System.Windows.Forms.Button buttonTrackCommander;
+        private System.Windows.Forms.CheckBox checkBoxEnableVRLocator;
     }
 }

@@ -17,6 +17,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RaceMonitor", "RaceMonitor\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EDTracking", "EDTracking\EDTracking.csproj", "{D36C1DC6-C1D4-4750-894C-54666389C630}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenVRApiModule", "..\..\..\..\..\..\Development Projects\OpenVR\OpenVRApiModule\OpenVRApiModule.csproj", "{516E5BE7-28B7-4DEE-B2FE-1E0D089C21DC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{D36C1DC6-C1D4-4750-894C-54666389C630}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D36C1DC6-C1D4-4750-894C-54666389C630}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D36C1DC6-C1D4-4750-894C-54666389C630}.Release|Any CPU.Build.0 = Release|Any CPU
+		{516E5BE7-28B7-4DEE-B2FE-1E0D089C21DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{516E5BE7-28B7-4DEE-B2FE-1E0D089C21DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{516E5BE7-28B7-4DEE-B2FE-1E0D089C21DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{516E5BE7-28B7-4DEE-B2FE-1E0D089C21DC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

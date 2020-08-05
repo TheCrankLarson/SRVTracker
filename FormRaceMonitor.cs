@@ -206,6 +206,9 @@ namespace SRVTracker
                             AddTrackedCommander(edEvent.Commander);
             }
 
+            if (!_racers.ContainsKey(edEvent.Commander))
+                return;
+
             if (_nextWaypoint != null)
             {
                 double distanceToWaypoint = EDLocation.DistanceBetween(edEvent.Location, _nextWaypoint.Location) - _nextWaypoint.Radius;

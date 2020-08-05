@@ -23,12 +23,12 @@ namespace EDTracking
         {
         }
 
-        public EDLocation(double latitude, double longitude, double altitude = 0)
+        public EDLocation(double latitude, double longitude, double altitude, double planetaryRadius)
         {
             Latitude = latitude;
             Longitude = longitude;
             Altitude = altitude;
-            PlanetaryRadius = DefaultPlanetaryRadius;
+            PlanetaryRadius = planetaryRadius;
         }
 
         public EDLocation(string name, double latitude, double longitude, double planetaryRadius)
