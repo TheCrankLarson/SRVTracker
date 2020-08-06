@@ -19,15 +19,13 @@ namespace SRVTracker
         private string _routeFile = "";
         private EDRace _race = null;
         private Dictionary<string, System.Windows.Forms.ListViewItem> _racers = null;
-        private Dictionary<string, EDStatus> _racersStatus = null;
+        private Dictionary<string, EDRaceStatus> _racersStatus = null;
         private List<string> _eliminatedRacers = null;
         private EDWaypoint _nextWaypoint = null;
         private FormLocator _locatorForm = null;
         private string _lastLeaderboardExport = "";
         private string _lastStatusExport = "";
         private string _saveFilename = "";
-        private bool _raceStarted = false;
-        private bool _raceFinished = false;
 
         public FormRaceMonitor(FormLocator locatorForm = null)
         {
@@ -38,9 +36,12 @@ namespace SRVTracker
             
             CommanderWatcher.Start();
             CommanderWatcher.UpdateReceived += CommanderWatcher_UpdateReceived;
-            EDStatus.StatusChanged += EDStatus_StatusChanged;
+            EDRaceStatus.StatusChanged += EDStatus_StatusChanged;
             _racers = new Dictionary<string, System.Windows.Forms.ListViewItem>();
             AddTrackedCommanders();
+            checkBoxSRVRace.Checked = EDRaceStatus.EliminateOnShipFlight;
+            checkBoxAllowPitstops.Checked = EDRaceStatus.AllowPitStops;
+            checkBoxEliminationOnDestruction.Checked = EDRaceStatus.EliminateOnShipFlight;
         }
 
         private void EDStatus_StatusChanged(object sender, string commander, string status)
@@ -108,7 +109,7 @@ namespace SRVTracker
 
         private void AddTrackedCommanders()
         {
-            if (CommanderWatcher.OnlineCommanderCount == 0 || _raceStarted)
+            if (CommanderWatcher.OnlineCommanderCount == 0 || EDRaceStatus.Started)
                 return;
 
             Action action = new Action(() =>
@@ -188,7 +189,7 @@ namespace SRVTracker
         {
             // Update the status table
 
-            if (_raceStarted)
+            if (EDRaceStatus.Started)
             {
                 if (!_racersStatus.ContainsKey(edEvent.Commander))
                     return; // We're not tracking this commander
@@ -198,7 +199,7 @@ namespace SRVTracker
             if (!edEvent.HasCoordinates)
                 return;
 
-            if (!_raceStarted)
+            if (!EDRaceStatus.Started)
             {
                 if (checkBoxAutoAddCommanders.Checked)
                     if (_race.Route.Waypoints.Count > 0)
@@ -211,7 +212,7 @@ namespace SRVTracker
 
             if (_nextWaypoint != null)
             {
-                double distanceToWaypoint = EDLocation.DistanceBetween(edEvent.Location, _nextWaypoint.Location) - _nextWaypoint.Radius;
+                double distanceToWaypoint = EDLocation.DistanceBetween(edEvent.Location, _nextWaypoint.Location);
                 _racers[edEvent.Commander].SubItems[3].Tag = distanceToWaypoint; // Store in m for comparison
                 Action action;
                 string distanceToShow = "0";
@@ -285,7 +286,13 @@ namespace SRVTracker
                             commanderPosition--; // Could potentially happen in the event of a tie
                     }
                     leaderboard[commanderPosition] = listViewParticipants.Items[i].SubItems[1].Text;
-                    status.AppendLine(listViewParticipants.Items[i].SubItems[2].Text);
+                    if (listViewParticipants.Items[i].SubItems[2].Text.StartsWith("=>"))
+                        if (checkBoxExportDistance.Checked)
+                            status.AppendLine(listViewParticipants.Items[i].SubItems[3].Text);
+                        else
+                            status.AppendLine(listViewParticipants.Items[i].SubItems[2].Text);
+                    else
+                        status.AppendLine(listViewParticipants.Items[i].SubItems[2].Text);
                 }
                 catch { }
             }
@@ -454,19 +461,22 @@ namespace SRVTracker
                 return;
             }
             _eliminatedRacers = new List<string>();
-            _racersStatus = new Dictionary<string, EDStatus>();
+            _racersStatus = new Dictionary<string, EDRaceStatus>();
             foreach (string commander in _racers.Keys)
-                _racersStatus.Add(commander, new EDStatus(commander, _race.Route));
+                _racersStatus.Add(commander, new EDRaceStatus(commander, _race.Route));
             _nextWaypoint = _race.Route.Waypoints[1];
             listBoxWaypoints.Refresh();
-            _raceStarted = true;
+            EDRaceStatus.EliminateOnDestruction = checkBoxEliminationOnDestruction.Checked;
+            EDRaceStatus.AllowPitStops = checkBoxAllowPitstops.Checked;
+            EDRaceStatus.EliminateOnShipFlight = checkBoxSRVRace.Checked;
+            EDRaceStatus.Started = true;
             buttonStartRace.Enabled = false;
             buttonStopRace.Enabled = true;
         }
 
         private void buttonStopRace_Click(object sender, EventArgs e)
         {
-            _raceFinished = true;
+            EDRaceStatus.Finished = true;
             buttonStopRace.Enabled = false;
         }
 
@@ -495,13 +505,38 @@ namespace SRVTracker
 
         private void checkBoxShowDetailedStatus_CheckedChanged(object sender, EventArgs e)
         {
-            EDStatus.ShowDetailedStatus = checkBoxShowDetailedStatus.Checked;
+            EDRaceStatus.ShowDetailedStatus = checkBoxShowDetailedStatus.Checked;
         }
 
         private void comboBoxAddCommander_SelectedIndexChanged(object sender, EventArgs e)
         {
             buttonAddCommander_Click(null, null);
             comboBoxAddCommander.SelectedIndex = -1;
+        }
+
+        private void checkBoxEliminationOnDestruction_CheckedChanged(object sender, EventArgs e)
+        {
+            EDRaceStatus.EliminateOnDestruction = checkBoxEliminationOnDestruction.Checked;
+        }
+
+        private void checkBoxSRVRace_CheckedChanged(object sender, EventArgs e)
+        {
+            EDRaceStatus.EliminateOnShipFlight = checkBoxSRVRace.Checked;
+            checkBoxAllowPitstops.Enabled = checkBoxSRVRace.Checked;
+        }
+
+        private void checkBoxAllowPitstops_CheckedChanged(object sender, EventArgs e)
+        {
+            EDRaceStatus.AllowPitStops = checkBoxAllowPitstops.Checked;
+        }
+
+        private void buttonEditStatusMessages_Click(object sender, EventArgs e)
+        {
+            using (FormStatusMessages formStatusMessages = new FormStatusMessages())
+            {
+                if (formStatusMessages.ShowDialog(this) == DialogResult.OK)
+                    EDRaceStatus.StatusMessages = formStatusMessages.StatusMessages();
+            }
         }
     }
 

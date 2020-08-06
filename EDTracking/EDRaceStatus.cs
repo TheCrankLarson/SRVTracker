@@ -8,7 +8,7 @@ using System.Diagnostics;
 
 namespace EDTracking
 {
-    public class EDStatus
+    public class EDRaceStatus
     {        
         public int Heading { get; internal set; } = -1;
         public long Flags { get; internal set; } = -1;
@@ -17,11 +17,20 @@ namespace EDTracking
         public EDLocation Location { get; internal set; } = null;
         public int WaypointIndex { get; internal set; } = 0;
         public EDRoute Route { get; set; } = null;
-        public bool Started { get; internal set; } = true;
+        public static bool Started { get; set; } = false;
+        public static bool Finished { get; set; } = false;
 
         public string Commander { get; } = "";
         public static bool EliminateOnDestruction { get; set; } = true;
+        public static bool EliminateOnShipFlight { get; set; } = true;
+        public static bool AllowPitStops { get; set; } = true;
         public static bool ShowDetailedStatus { get; set; } = true;
+        public static Dictionary<string,string> StatusMessages { get; set; } = new Dictionary<string, string>()
+                {
+                    { "Eliminated", "Eliminated" },
+                    { "Completed", "Completed" },
+                    { "Pitstop", "Pitstop" }
+                };
 
         public string _lastStatus = "";
         public delegate void StatusChangedEventHandler(object sender, string commander, string status);
@@ -31,15 +40,16 @@ namespace EDTracking
         private bool _lowFuel = false;
         private bool _completed = false;
 
-        public EDStatus(EDEvent baseEvent)
+        public EDRaceStatus(EDEvent baseEvent)
         {
+            // This constructor should only ever be called by the server
             Flags = baseEvent.Flags;
             Heading = baseEvent.Heading;
             TimeStamp = baseEvent.TimeStamp;
             Commander = baseEvent.Commander;
         }
 
-        public EDStatus(string commander, EDRoute route, bool immediateStart = true)
+        public EDRaceStatus(string commander, EDRoute route, bool immediateStart = true)
         {
             Commander = commander;
             Route = route;
@@ -51,11 +61,11 @@ namespace EDTracking
         {
             StringBuilder status = new StringBuilder();
             if (Eliminated)
-                status.Append("Eliminated");
+                status.Append(StatusMessages["Eliminated"]);
             else if (_completed)
-                status.Append("Completed");
+                status.Append(StatusMessages["Completed"]);
             else if (_inPits)
-                status.Append("Pitstop");
+                status.Append(StatusMessages["Pitstop"]);
             else
             {
                 if (Started)
@@ -152,10 +162,10 @@ namespace EDTracking
                 return;
 
             if ( !isFlagSet(StatusFlags.In_SRV) && (!_inPits || !isFlagSet(StatusFlags.Landed_on_planet_surface)) )
-                Eliminated = true;
+                Eliminated = EliminateOnShipFlight;
 
             if (isFlagSet(StatusFlags.In_SRV))
-                _inPits = isFlagSet(StatusFlags.Srv_UnderShip);
+                _inPits = isFlagSet(StatusFlags.Srv_UnderShip) && AllowPitStops;
 
             _lowFuel = isFlagSet(StatusFlags.Low_Fuel);
 

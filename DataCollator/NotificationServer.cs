@@ -26,7 +26,7 @@ namespace DataCollator
         private Dictionary<string, int> _clientNotificationPointer = new Dictionary<string, int>(); // Pointer into the notification table for each client
         private Dictionary<string, DateTime> _clientLastRequestTime = new Dictionary<string, DateTime>();
         private Dictionary<string, string> _playerStatus = new Dictionary<string, string>(); //  Store last known status (with coordinates) of client
-        private Dictionary<string, EDStatus> _commanderStatus = new Dictionary<string, EDStatus>();
+        private Dictionary<string, EDRaceStatus> _commanderStatus = new Dictionary<string, EDRaceStatus>();
         private readonly object _notificationLock = new object();
         private int _pruneCounter = 0;
         private FileStream _logStream = null;
@@ -107,7 +107,7 @@ namespace DataCollator
             if (!_commanderStatus.ContainsKey(commander))
             {
                 lock (_notificationLock)
-                    _commanderStatus.Add(commander, new EDStatus(updateEvent));
+                    _commanderStatus.Add(commander, new EDRaceStatus(updateEvent));
                 return;
             }
 

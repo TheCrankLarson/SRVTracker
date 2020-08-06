@@ -458,6 +458,7 @@ namespace SRVTracker
 
         private static void InitVRMatrix()
         {
+            /*
             _vrMatrix = new HmdMatrix34_t();
             _vrMatrix.m0 = 1.0F; // row 0 col 0
             _vrMatrix.m1 = 0.0F; // row 0 col 1
@@ -472,9 +473,31 @@ namespace SRVTracker
             _vrMatrix.m8 = 0.0F; 
             _vrMatrix.m9 = 0.0F;
             _vrMatrix.m10 = 1.0F;
-            _vrMatrix.m11 = 0.0F; 
+            _vrMatrix.m11 = 0.0F;*/
+
+            _vrMatrix = new HmdMatrix34_t();
+            _vrMatrix.m0 = 1.0F; // row 0 col 0
+            _vrMatrix.m1 = 0.0F; // row 0 col 1
+            _vrMatrix.m2 = 0.0F;
+            _vrMatrix.m3 = 0.12F;
+
+            _vrMatrix.m4 = 0.0F;
+            _vrMatrix.m5 = 1.0F;
+            _vrMatrix.m6 = 0.0F;
+            _vrMatrix.m7 = 0.08F;
+
+            _vrMatrix.m8 = 0.0F;
+            _vrMatrix.m9 = 0.0F;
+            _vrMatrix.m10 = 1.0F;
+            _vrMatrix.m11 = -0.3F;
 
             /*
+            transform.{
+                    1.0f, 0.0f, 0.0f, 0.12f,
+                    0.0f, 1.0f, 0.0f, 0.08f,
+                    0.0f, 0.0f, 1.0f, -0.3f
+                };
+            
              *            
             _vrMatrix.m0 = 1.0F;
             _vrMatrix.m1 = 0.0F;

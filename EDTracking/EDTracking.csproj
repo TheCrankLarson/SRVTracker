@@ -49,7 +49,7 @@
     <Compile Include="EDLocation.cs" />
     <Compile Include="EDRace.cs" />
     <Compile Include="EDRoute.cs" />
-    <Compile Include="EDStatus.cs" />
+    <Compile Include="EDRaceStatus.cs" />
     <Compile Include="EDWaypoint.cs" />
     <Compile Include="Flags.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

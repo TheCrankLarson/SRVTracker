@@ -62,6 +62,12 @@
     <Compile Include="FormAddLocation.Designer.cs">
       <DependentUpon>FormAddLocation.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormFirstRun.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormFirstRun.Designer.cs">
+      <DependentUpon>FormFirstRun.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormFlagsWatcher.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -86,6 +92,12 @@
     <Compile Include="FormRoutePlanner.Designer.cs">
       <DependentUpon>FormRoutePlanner.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormStatusMessages.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormStatusMessages.Designer.cs">
+      <DependentUpon>FormStatusMessages.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormTracker.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -103,6 +115,9 @@
     <EmbeddedResource Include="FormAddLocation.resx">
       <DependentUpon>FormAddLocation.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FormFirstRun.resx">
+      <DependentUpon>FormFirstRun.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormFlagsWatcher.resx">
       <DependentUpon>FormFlagsWatcher.cs</DependentUpon>
     </EmbeddedResource>
@@ -114,6 +129,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormRoutePlanner.resx">
       <DependentUpon>FormRoutePlanner.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormStatusMessages.resx">
+      <DependentUpon>FormStatusMessages.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormTracker.resx">
       <DependentUpon>FormTracker.cs</DependentUpon>
@@ -193,6 +211,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Return_16x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ReleaseNotes.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="Resources\Text_16x.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

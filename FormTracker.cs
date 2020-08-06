@@ -26,7 +26,7 @@ namespace SRVTracker
         private string _statusFile = "";
         private DateTime _lastFileWrite = DateTime.MinValue;
         private Size _configShowing = new Size(743, 420);
-        private Size _configHidden = new Size(296, 258);
+        private Size _configHidden = new Size(296, 235);
         public static CVRSystem VRSystem = null;
         private static FormFlagsWatcher _formFlagsWatcher = null;
 
@@ -63,12 +63,24 @@ namespace SRVTracker
         {
             // Check if we have an Id saved, and if not, generate one
             string clientId = "";
-            try
+            if (!File.Exists(ClientIdFile))
             {
-                // Read the file
-                clientId = File.ReadAllText(ClientIdFile);
+                // First run, so show splash and prompt for commander name
+                using (FormFirstRun formFirstRun = new FormFirstRun())
+                {
+                    formFirstRun.ShowDialog(this);
+                    clientId = formFirstRun.textBoxCommanderName.Text;
+                }
             }
-            catch {}
+            else
+            {
+                try
+                {
+                    // Read the file
+                    clientId = File.ReadAllText(ClientIdFile);
+                }
+                catch { }
+            }
 
             if (!String.IsNullOrEmpty(clientId))
             {

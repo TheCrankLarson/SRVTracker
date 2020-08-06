@@ -68,8 +68,8 @@
             this.buttonRaceTracker = new System.Windows.Forms.Button();
             this.checkBoxTrack = new System.Windows.Forms.CheckBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.textBoxPlanetRadius = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.textBoxPlanetRadius = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.statusFileWatcher)).BeginInit();
             this.groupBox5.SuspendLayout();
@@ -191,7 +191,7 @@
             // 
             // buttonTest
             // 
-            this.buttonTest.Location = new System.Drawing.Point(140, 173);
+            this.buttonTest.Location = new System.Drawing.Point(139, 151);
             this.buttonTest.Name = "buttonTest";
             this.buttonTest.Size = new System.Drawing.Size(54, 23);
             this.buttonTest.TabIndex = 5;
@@ -202,7 +202,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(154, 199);
+            this.label7.Location = new System.Drawing.Point(153, 177);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(66, 13);
             this.label7.TabIndex = 6;
@@ -211,7 +211,7 @@
             // labelLastUpdateTime
             // 
             this.labelLastUpdateTime.AutoSize = true;
-            this.labelLastUpdateTime.Location = new System.Drawing.Point(226, 199);
+            this.labelLastUpdateTime.Location = new System.Drawing.Point(225, 177);
             this.labelLastUpdateTime.Name = "labelLastUpdateTime";
             this.labelLastUpdateTime.Size = new System.Drawing.Size(49, 13);
             this.labelLastUpdateTime.TabIndex = 7;
@@ -305,7 +305,7 @@
             // 
             // buttonLocator
             // 
-            this.buttonLocator.Location = new System.Drawing.Point(134, 144);
+            this.buttonLocator.Location = new System.Drawing.Point(133, 122);
             this.buttonLocator.Name = "buttonLocator";
             this.buttonLocator.Size = new System.Drawing.Size(55, 23);
             this.buttonLocator.TabIndex = 9;
@@ -315,7 +315,7 @@
             // 
             // buttonRoutePlanner
             // 
-            this.buttonRoutePlanner.Location = new System.Drawing.Point(12, 144);
+            this.buttonRoutePlanner.Location = new System.Drawing.Point(11, 122);
             this.buttonRoutePlanner.Name = "buttonRoutePlanner";
             this.buttonRoutePlanner.Size = new System.Drawing.Size(55, 23);
             this.buttonRoutePlanner.TabIndex = 10;
@@ -325,7 +325,7 @@
             // 
             // buttonExit
             // 
-            this.buttonExit.Location = new System.Drawing.Point(200, 173);
+            this.buttonExit.Location = new System.Drawing.Point(199, 151);
             this.buttonExit.Name = "buttonExit";
             this.buttonExit.Size = new System.Drawing.Size(75, 23);
             this.buttonExit.TabIndex = 11;
@@ -335,7 +335,7 @@
             // 
             // buttonShowConfig
             // 
-            this.buttonShowConfig.Location = new System.Drawing.Point(12, 173);
+            this.buttonShowConfig.Location = new System.Drawing.Point(11, 151);
             this.buttonShowConfig.Name = "buttonShowConfig";
             this.buttonShowConfig.Size = new System.Drawing.Size(75, 23);
             this.buttonShowConfig.TabIndex = 12;
@@ -448,7 +448,7 @@
             // 
             // buttonRaceTracker
             // 
-            this.buttonRaceTracker.Location = new System.Drawing.Point(73, 144);
+            this.buttonRaceTracker.Location = new System.Drawing.Point(72, 122);
             this.buttonRaceTracker.Name = "buttonRaceTracker";
             this.buttonRaceTracker.Size = new System.Drawing.Size(55, 23);
             this.buttonRaceTracker.TabIndex = 17;
@@ -459,7 +459,7 @@
             // checkBoxTrack
             // 
             this.checkBoxTrack.AutoSize = true;
-            this.checkBoxTrack.Location = new System.Drawing.Point(221, 148);
+            this.checkBoxTrack.Location = new System.Drawing.Point(220, 126);
             this.checkBoxTrack.Name = "checkBoxTrack";
             this.checkBoxTrack.Size = new System.Drawing.Size(54, 17);
             this.checkBoxTrack.TabIndex = 18;
@@ -486,13 +486,6 @@
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Location";
             // 
-            // textBoxPlanetRadius
-            // 
-            this.textBoxPlanetRadius.Location = new System.Drawing.Point(93, 76);
-            this.textBoxPlanetRadius.Name = "textBoxPlanetRadius";
-            this.textBoxPlanetRadius.Size = new System.Drawing.Size(78, 20);
-            this.textBoxPlanetRadius.TabIndex = 7;
-            // 
             // label3
             // 
             this.label3.AutoSize = true;
@@ -502,11 +495,18 @@
             this.label3.TabIndex = 8;
             this.label3.Text = "Planet radius:";
             // 
+            // textBoxPlanetRadius
+            // 
+            this.textBoxPlanetRadius.Location = new System.Drawing.Point(93, 76);
+            this.textBoxPlanetRadius.Name = "textBoxPlanetRadius";
+            this.textBoxPlanetRadius.Size = new System.Drawing.Size(78, 20);
+            this.textBoxPlanetRadius.TabIndex = 7;
+            // 
             // FormTracker
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(971, 400);
+            this.ClientSize = new System.Drawing.Size(280, 196);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.checkBoxTrack);
             this.Controls.Add(this.buttonRaceTracker);
