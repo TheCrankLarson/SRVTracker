@@ -24,14 +24,6 @@ namespace SRVTracker
             LoadLocationsFromFile(_saveFilename);
         }
 
-        public LocationManager(string restoreFromFile = "")
-        {
-            InitializeComponent();
-            if (!String.IsNullOrEmpty(restoreFromFile))
-                _saveFilename = restoreFromFile;
-            LoadLocationsFromFile(_saveFilename);
-        }
-
         protected virtual void OnSelectionChanged(EventArgs e)
         {
             SelectionChanged?.Invoke(this, e);

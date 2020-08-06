@@ -29,11 +29,11 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.buttonOk = new System.Windows.Forms.Button();
-            this.buttonCancel = new System.Windows.Forms.Button();
             this.dataGridViewStatusMessages = new System.Windows.Forms.DataGridView();
             this.EventName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.EventStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.buttonOk = new System.Windows.Forms.Button();
+            this.buttonCancel = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewStatusMessages)).BeginInit();
             this.SuspendLayout();
@@ -47,6 +47,35 @@
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Status messages";
+            // 
+            // dataGridViewStatusMessages
+            // 
+            this.dataGridViewStatusMessages.AllowUserToAddRows = false;
+            this.dataGridViewStatusMessages.AllowUserToDeleteRows = false;
+            this.dataGridViewStatusMessages.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewStatusMessages.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.EventName,
+            this.EventStatus});
+            this.dataGridViewStatusMessages.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridViewStatusMessages.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
+            this.dataGridViewStatusMessages.Location = new System.Drawing.Point(3, 16);
+            this.dataGridViewStatusMessages.Name = "dataGridViewStatusMessages";
+            this.dataGridViewStatusMessages.RowHeadersVisible = false;
+            this.dataGridViewStatusMessages.Size = new System.Drawing.Size(408, 210);
+            this.dataGridViewStatusMessages.TabIndex = 0;
+            // 
+            // EventName
+            // 
+            this.EventName.HeaderText = "Event";
+            this.EventName.Name = "EventName";
+            this.EventName.ReadOnly = true;
+            this.EventName.Width = 150;
+            // 
+            // EventStatus
+            // 
+            this.EventStatus.HeaderText = "Status";
+            this.EventStatus.Name = "EventStatus";
+            this.EventStatus.Width = 250;
             // 
             // buttonOk
             // 
@@ -67,34 +96,6 @@
             this.buttonCancel.TabIndex = 2;
             this.buttonCancel.Text = "Cancel";
             this.buttonCancel.UseVisualStyleBackColor = true;
-            // 
-            // dataGridViewStatusMessages
-            // 
-            this.dataGridViewStatusMessages.AllowUserToAddRows = false;
-            this.dataGridViewStatusMessages.AllowUserToDeleteRows = false;
-            this.dataGridViewStatusMessages.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewStatusMessages.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.EventName,
-            this.EventStatus});
-            this.dataGridViewStatusMessages.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridViewStatusMessages.Location = new System.Drawing.Point(3, 16);
-            this.dataGridViewStatusMessages.Name = "dataGridViewStatusMessages";
-            this.dataGridViewStatusMessages.RowHeadersVisible = false;
-            this.dataGridViewStatusMessages.Size = new System.Drawing.Size(408, 210);
-            this.dataGridViewStatusMessages.TabIndex = 0;
-            // 
-            // EventName
-            // 
-            this.EventName.HeaderText = "Event";
-            this.EventName.Name = "EventName";
-            this.EventName.ReadOnly = true;
-            this.EventName.Width = 150;
-            // 
-            // EventStatus
-            // 
-            this.EventStatus.HeaderText = "Status";
-            this.EventStatus.Name = "EventStatus";
-            this.EventStatus.Width = 250;
             // 
             // FormStatusMessages
             // 

@@ -293,8 +293,6 @@
             // checkBoxUpload
             // 
             this.checkBoxUpload.AutoSize = true;
-            this.checkBoxUpload.Checked = true;
-            this.checkBoxUpload.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxUpload.Location = new System.Drawing.Point(6, 19);
             this.checkBoxUpload.Name = "checkBoxUpload";
             this.checkBoxUpload.Size = new System.Drawing.Size(98, 17);

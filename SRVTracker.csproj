@@ -104,6 +104,12 @@
     <Compile Include="FormTracker.Designer.cs">
       <DependentUpon>FormTracker.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormVRMatrixTest.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormVRMatrixTest.Designer.cs">
+      <DependentUpon>FormVRMatrixTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="LocationManager.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -135,6 +141,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormTracker.resx">
       <DependentUpon>FormTracker.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormVRMatrixTest.resx">
+      <DependentUpon>FormVRMatrixTest.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="LocationManager.resx">
       <DependentUpon>LocationManager.cs</DependentUpon>

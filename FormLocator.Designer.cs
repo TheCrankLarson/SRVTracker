@@ -65,7 +65,7 @@
             this.groupBoxDestination.Size = new System.Drawing.Size(331, 64);
             this.groupBoxDestination.TabIndex = 0;
             this.groupBoxDestination.TabStop = false;
-            this.groupBoxDestination.Text = "Target";
+            this.groupBoxDestination.Text = "Target location";
             // 
             // label3
             // 
@@ -89,17 +89,17 @@
             // 
             this.textBoxAltitude.Location = new System.Drawing.Point(223, 32);
             this.textBoxAltitude.Name = "textBoxAltitude";
+            this.textBoxAltitude.ReadOnly = true;
             this.textBoxAltitude.Size = new System.Drawing.Size(102, 20);
             this.textBoxAltitude.TabIndex = 3;
-            this.textBoxAltitude.TextChanged += new System.EventHandler(this.textBoxAltitude_TextChanged);
             // 
             // textBoxLatitude
             // 
             this.textBoxLatitude.Location = new System.Drawing.Point(115, 32);
             this.textBoxLatitude.Name = "textBoxLatitude";
+            this.textBoxLatitude.ReadOnly = true;
             this.textBoxLatitude.Size = new System.Drawing.Size(100, 20);
             this.textBoxLatitude.TabIndex = 2;
-            this.textBoxLatitude.TextChanged += new System.EventHandler(this.textBoxLatitude_TextChanged);
             // 
             // label1
             // 
@@ -114,9 +114,9 @@
             // 
             this.textBoxLongitude.Location = new System.Drawing.Point(9, 32);
             this.textBoxLongitude.Name = "textBoxLongitude";
+            this.textBoxLongitude.ReadOnly = true;
             this.textBoxLongitude.Size = new System.Drawing.Size(100, 20);
             this.textBoxLongitude.TabIndex = 0;
-            this.textBoxLongitude.TextChanged += new System.EventHandler(this.textBoxLongitude_TextChanged);
             // 
             // groupBoxBearing
             // 

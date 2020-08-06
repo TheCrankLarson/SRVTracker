@@ -150,7 +150,11 @@ namespace SRVTracker
             // Set the selected waypoint as the current target
             if ( _locatorForm == null || listBoxWaypoints.SelectedItem == null)
                 return;
-            _locatorForm.SetTarget(((EDWaypoint)listBoxWaypoints.SelectedItem).Location);
+            try
+            {
+                _locatorForm.SetTarget(_route.Waypoints[listBoxWaypoints.SelectedIndex].Location);
+            }
+            catch { }
         }
 
         private void UpdateButtons()

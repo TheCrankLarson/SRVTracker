@@ -167,21 +167,6 @@ namespace SRVTracker
                 UpdateVRLocatorImage();
         }
 
-        private void textBoxLongitude_TextChanged(object sender, EventArgs e)
-        {
-            TrySetDestination();
-        }
-
-        private void textBoxLatitude_TextChanged(object sender, EventArgs e)
-        {          
-            TrySetDestination();
-        }
-
-        private void textBoxAltitude_TextChanged(object sender, EventArgs e)
-        {
-            TrySetDestination();
-        }
-
         private void TrySetDestination()
         {
             // This shouldn't ever be called cross-thread, so no need to check for invoke
@@ -425,18 +410,18 @@ namespace SRVTracker
                 graphics.FillRectangle(new SolidBrush(Color.Black), graphics.ClipBounds);
 
                 // Tracking target
-                Brush whiteBrush = new SolidBrush(Color.White);
-                Brush orangeBrush = new SolidBrush(Color.Orange);
+                Brush directionBrush = new SolidBrush(Color.White);
+                Brush targetBrush = new SolidBrush(Color.Orange);
                 Font font = new Font("Arial", 12);
-                graphics.DrawString(_trackingTarget, font, orangeBrush, new PointF(0,0));
+                graphics.DrawString(_trackingTarget, font, targetBrush, new PointF(0,0));
 
                 // Bearing
-                font = new Font("Arial", 24);
+                font = new Font("Arial", 14);
                 //SizeF textSize = graphics.MeasureString(labelHeading.Text, font);
-                graphics.DrawString(labelHeading.Text, font, whiteBrush, new PointF(20, 30));
+                graphics.DrawString(labelHeading.Text, font, directionBrush, new PointF(20, 30));
 
                 // Distance
-                graphics.DrawString(labelDistance.Text, font, whiteBrush, new PointF(80, 30));
+                graphics.DrawString(labelDistance.Text, font, directionBrush, new PointF(80, 30));
 
                 graphics.Save();
             }
@@ -458,63 +443,19 @@ namespace SRVTracker
 
         private static void InitVRMatrix()
         {
-            /*
             _vrMatrix = new HmdMatrix34_t();
-            _vrMatrix.m0 = 1.0F; // row 0 col 0
-            _vrMatrix.m1 = 0.0F; // row 0 col 1
-            _vrMatrix.m2 = 0.0F; 
-            _vrMatrix.m3 = 0.0F;
-
-            _vrMatrix.m4 = 0.0F;
-            _vrMatrix.m5 = 1.0F;
-            _vrMatrix.m6 = 0.0F;
-            _vrMatrix.m7 = 1.0F;
-
-            _vrMatrix.m8 = 0.0F; 
-            _vrMatrix.m9 = 0.0F;
-            _vrMatrix.m10 = 1.0F;
-            _vrMatrix.m11 = 0.0F;*/
-
-            _vrMatrix = new HmdMatrix34_t();
-            _vrMatrix.m0 = 1.0F; // row 0 col 0
-            _vrMatrix.m1 = 0.0F; // row 0 col 1
-            _vrMatrix.m2 = 0.0F;
-            _vrMatrix.m3 = 0.12F;
-
-            _vrMatrix.m4 = 0.0F;
-            _vrMatrix.m5 = 1.0F;
-            _vrMatrix.m6 = 0.0F;
-            _vrMatrix.m7 = 0.08F;
-
-            _vrMatrix.m8 = 0.0F;
-            _vrMatrix.m9 = 0.0F;
-            _vrMatrix.m10 = 1.0F;
-            _vrMatrix.m11 = -0.3F;
-
-            /*
-            transform.{
-                    1.0f, 0.0f, 0.0f, 0.12f,
-                    0.0f, 1.0f, 0.0f, 0.08f,
-                    0.0f, 0.0f, 1.0f, -0.3f
-                };
-            
-             *            
-            _vrMatrix.m0 = 1.0F;
+            _vrMatrix.m0 = 1F;
             _vrMatrix.m1 = 0.0F;
             _vrMatrix.m2 = 0.0F;
-
-            _vrMatrix.m3 = 0.0F;
-            _vrMatrix.m4 = 0.0F;
-            _vrMatrix.m5 = 1.0F;
-
-            _vrMatrix.m6 = 0.0F;
-            _vrMatrix.m7 = 1.0F;
-            _vrMatrix.m8 = 0.0F;
-
-            _vrMatrix.m9 = 0.0F;
+            _vrMatrix.m3 = 0.32F;
+            _vrMatrix.m4 = 0F;
+            _vrMatrix.m5 = -0.2F;
+            _vrMatrix.m6 = 0F;
+            _vrMatrix.m7 = 0.78F;
+            _vrMatrix.m8 = 0F;
+            _vrMatrix.m9 = 0.5F;
             _vrMatrix.m10 = 1.0F;
-            _vrMatrix.m11 = -2.0F;
-             * */
+            _vrMatrix.m11 = -0.2F;
         }
 
         private bool ShowVRLocator()
@@ -542,7 +483,10 @@ namespace SRVTracker
             var error = OpenVR.Overlay.ShowOverlay(_vrOverlayHandle);
 
             OpenVR.Overlay.SetOverlayTransformAbsolute(_vrOverlayHandle, Valve.VR.ETrackingUniverseOrigin.TrackingUniverseStanding, ref _vrMatrix);
-
+            /*
+            FormVRMatrixTest formVRMatrixTest = new FormVRMatrixTest(_vrOverlayHandle);
+            formVRMatrixTest.SetMatrix(ref _vrMatrix);
+            formVRMatrixTest.Show();*/
             return true;
         }
 
