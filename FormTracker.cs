@@ -220,13 +220,13 @@ namespace SRVTracker
 
         private void buttonTest_Click(object sender, EventArgs e)
         {
-            //SendTestEvents();
-            TestVROverlay();
-            return;
-            if (_formFlagsWatcher != null)
-                return;
-            _formFlagsWatcher = new FormFlagsWatcher();
-            _formFlagsWatcher.Show();
+            SendTestEvents();
+            //TestVROverlay();
+            //return;
+            //if (_formFlagsWatcher != null)
+            //    return;
+            //_formFlagsWatcher = new FormFlagsWatcher();
+            //_formFlagsWatcher.Show();
         }
 
         public static bool InitVR()

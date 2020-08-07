@@ -96,7 +96,7 @@ namespace SRVTracker
             catch { }
         }
 
-        private void buttonSaveRoute_Click(object sender, EventArgs e)
+        private void buttonSaveRouteAs_Click(object sender, EventArgs e)
         {
             if (String.IsNullOrEmpty(textBoxRouteName.Text))
             {
@@ -116,8 +116,13 @@ namespace SRVTracker
                     try
                     {
                         _route.SaveToFile(saveFileDialog.FileName);
+                        _saveFilename = saveFileDialog.FileName;
+                        buttonSaveRoute.Enabled = true;
                     }
-                    catch { }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(this, $"Error saving file: {ex.Message}", "File not saved", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
             }
         }
@@ -164,18 +169,27 @@ namespace SRVTracker
             buttonMoveWaypointUp.Enabled = listBoxWaypoints.SelectedIndex > 0;
             buttonMoveWaypointDown.Enabled = listBoxWaypoints.SelectedIndex < listBoxWaypoints.Items.Count - 1;
             buttonSetAsTarget.Enabled = listBoxWaypoints.SelectedIndex >= 0;
-            buttonSaveRoute.Enabled = !String.IsNullOrEmpty(textBoxRouteName.Text);
+            buttonSaveRouteAs.Enabled = !String.IsNullOrEmpty(textBoxRouteName.Text);
         }
 
         private void textBoxRouteName_TextChanged(object sender, EventArgs e)
         {
-            buttonSaveRoute.Enabled = !String.IsNullOrEmpty(textBoxRouteName.Text);
+            buttonSaveRouteAs.Enabled = !String.IsNullOrEmpty(textBoxRouteName.Text);
+            buttonSaveRoute.Enabled = !String.IsNullOrEmpty(_saveFilename) && !String.IsNullOrEmpty(textBoxRouteName.Text);
             _route.Name = textBoxRouteName.Text;
         }
 
         private void listBoxWaypoints_SelectedIndexChanged(object sender, EventArgs e)
         {
             UpdateButtons();
+            if (listBoxWaypoints.SelectedIndex >= 0)
+            {
+                numericUpDownRadius.Value = (decimal)_route.Waypoints[listBoxWaypoints.SelectedIndex].Radius;
+                if (!numericUpDownRadius.Enabled)
+                    numericUpDownRadius.Enabled = true;
+            }
+            else
+                numericUpDownRadius.Enabled = false;
         }
 
         private void DisplayRoute()
@@ -188,6 +202,24 @@ namespace SRVTracker
             foreach (EDWaypoint waypoint in _route.Waypoints)
                 listBoxWaypoints.Items.Add(waypoint.Name);
             listBoxWaypoints.EndUpdate();
+        }
+
+        private void numericUpDownRadius_ValueChanged(object sender, EventArgs e)
+        {
+            if (listBoxWaypoints.SelectedIndex > -1)
+                _route.Waypoints[listBoxWaypoints.SelectedIndex].Radius = (double)numericUpDownRadius.Value;
+        }
+
+        private void buttonSaveRoute_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                _route.SaveToFile(_saveFilename);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, $"Error saving file: {ex.Message}", "File not saved", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }

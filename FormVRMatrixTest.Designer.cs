@@ -75,7 +75,7 @@
             this.groupBox1.Controls.Add(this.numericUpDownm0);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(266, 104);
+            this.groupBox1.Size = new System.Drawing.Size(198, 128);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Transform matrix";
@@ -157,7 +157,7 @@
             0,
             0,
             65536});
-            this.numericUpDownm3.Location = new System.Drawing.Point(195, 19);
+            this.numericUpDownm3.Location = new System.Drawing.Point(6, 45);
             this.numericUpDownm3.Maximum = new decimal(new int[] {
             2,
             0,
@@ -180,7 +180,7 @@
             0,
             0,
             65536});
-            this.numericUpDownm4.Location = new System.Drawing.Point(6, 45);
+            this.numericUpDownm4.Location = new System.Drawing.Point(69, 45);
             this.numericUpDownm4.Maximum = new decimal(new int[] {
             2,
             0,
@@ -203,7 +203,7 @@
             0,
             0,
             65536});
-            this.numericUpDownm5.Location = new System.Drawing.Point(69, 45);
+            this.numericUpDownm5.Location = new System.Drawing.Point(132, 45);
             this.numericUpDownm5.Maximum = new decimal(new int[] {
             2,
             0,
@@ -226,7 +226,7 @@
             0,
             0,
             65536});
-            this.numericUpDownm6.Location = new System.Drawing.Point(132, 45);
+            this.numericUpDownm6.Location = new System.Drawing.Point(6, 71);
             this.numericUpDownm6.Maximum = new decimal(new int[] {
             2,
             0,
@@ -249,7 +249,7 @@
             0,
             0,
             65536});
-            this.numericUpDownm7.Location = new System.Drawing.Point(195, 45);
+            this.numericUpDownm7.Location = new System.Drawing.Point(69, 71);
             this.numericUpDownm7.Maximum = new decimal(new int[] {
             2,
             0,
@@ -272,7 +272,7 @@
             0,
             0,
             65536});
-            this.numericUpDownm8.Location = new System.Drawing.Point(6, 71);
+            this.numericUpDownm8.Location = new System.Drawing.Point(132, 71);
             this.numericUpDownm8.Maximum = new decimal(new int[] {
             2,
             0,
@@ -295,7 +295,7 @@
             0,
             0,
             65536});
-            this.numericUpDownm9.Location = new System.Drawing.Point(69, 71);
+            this.numericUpDownm9.Location = new System.Drawing.Point(6, 97);
             this.numericUpDownm9.Maximum = new decimal(new int[] {
             2,
             0,
@@ -318,7 +318,7 @@
             0,
             0,
             65536});
-            this.numericUpDownm10.Location = new System.Drawing.Point(132, 71);
+            this.numericUpDownm10.Location = new System.Drawing.Point(69, 97);
             this.numericUpDownm10.Maximum = new decimal(new int[] {
             2,
             0,
@@ -341,7 +341,7 @@
             0,
             0,
             65536});
-            this.numericUpDownm11.Location = new System.Drawing.Point(195, 71);
+            this.numericUpDownm11.Location = new System.Drawing.Point(132, 97);
             this.numericUpDownm11.Maximum = new decimal(new int[] {
             2,
             0,
@@ -358,7 +358,7 @@
             // 
             // buttonApply
             // 
-            this.buttonApply.Location = new System.Drawing.Point(203, 122);
+            this.buttonApply.Location = new System.Drawing.Point(135, 146);
             this.buttonApply.Name = "buttonApply";
             this.buttonApply.Size = new System.Drawing.Size(75, 23);
             this.buttonApply.TabIndex = 1;
@@ -368,9 +368,9 @@
             // 
             // buttonClose
             // 
-            this.buttonClose.Location = new System.Drawing.Point(12, 122);
+            this.buttonClose.Location = new System.Drawing.Point(12, 146);
             this.buttonClose.Name = "buttonClose";
-            this.buttonClose.Size = new System.Drawing.Size(75, 23);
+            this.buttonClose.Size = new System.Drawing.Size(52, 23);
             this.buttonClose.TabIndex = 2;
             this.buttonClose.Text = "Close";
             this.buttonClose.UseVisualStyleBackColor = true;
@@ -378,9 +378,9 @@
             // 
             // buttonExport
             // 
-            this.buttonExport.Location = new System.Drawing.Point(108, 122);
+            this.buttonExport.Location = new System.Drawing.Point(70, 146);
             this.buttonExport.Name = "buttonExport";
-            this.buttonExport.Size = new System.Drawing.Size(75, 23);
+            this.buttonExport.Size = new System.Drawing.Size(53, 23);
             this.buttonExport.TabIndex = 3;
             this.buttonExport.Text = "Export";
             this.buttonExport.UseVisualStyleBackColor = true;
@@ -390,7 +390,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(293, 156);
+            this.ClientSize = new System.Drawing.Size(223, 184);
             this.ControlBox = false;
             this.Controls.Add(this.buttonExport);
             this.Controls.Add(this.buttonClose);

@@ -22,7 +22,6 @@ namespace SRVTracker
     {
         private EDLocation _targetPosition = null;
         private WebClient _webClient = new WebClient();
-        private string _trackingTarget = "";
         private bool _commanderListShowing = false;
         private static Size _normalView = new Size(364, 228);
         private static ulong _vrOverlayHandle = 0;
@@ -42,7 +41,7 @@ namespace SRVTracker
 
         private void CommanderWatcher_UpdateReceived(object sender, EDEvent edEvent)
         {
-            if (!_trackingTarget.Equals(edEvent.Commander))
+            if (!TrackingTarget.Equals(edEvent.Commander))
                 return;
 
             if (edEvent.HasCoordinates)
@@ -55,7 +54,9 @@ namespace SRVTracker
 
         public static double PlanetaryRadius { get; set; } = 0;
         public static string ServerAddress { get; set; } = null;
-        
+
+        public string TrackingTarget { get; private set; } = "";
+
 
         public void SetTarget(EDLocation targetLocation)
         {
@@ -291,7 +292,7 @@ namespace SRVTracker
             buttonTrackCommander.Enabled = listBoxCommanders.SelectedIndex >= 0;
             try
             {
-                if (((string)listBoxCommanders.SelectedItem).Equals(_trackingTarget))
+                if (((string)listBoxCommanders.SelectedItem).Equals(TrackingTarget))
                     buttonTrackCommander.Text = "Stop";
                 else
                     buttonTrackCommander.Text = "Track";
@@ -315,14 +316,14 @@ namespace SRVTracker
         private void UpdateTrackingTarget(string target)
         {
             Action action;
-            _trackingTarget = target;
+            TrackingTarget = target;
 
 
             string bearingInfo = $"Bearing (tracking {target})";
             if (String.IsNullOrEmpty(target))
                 bearingInfo = "Bearing (target not set)";
 
-            if (String.IsNullOrEmpty(_trackingTarget))
+            if (String.IsNullOrEmpty(TrackingTarget))
             {
                 if (buttonTrackCommander.Text.Equals("Stop"))
                 {
@@ -422,7 +423,7 @@ namespace SRVTracker
             Brush directionBrush = new SolidBrush(Color.White);
             Brush targetBrush = new SolidBrush(Color.Green);
             Font font = new Font("Arial", 24);
-            _vrgraphics.DrawString(_trackingTarget, font, targetBrush, new PointF(0, 80));
+            _vrgraphics.DrawString(TrackingTarget, font, targetBrush, new PointF(0, 80));
 
             // Bearing
             font = new Font("Arial", 56);

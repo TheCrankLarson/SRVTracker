@@ -25,6 +25,7 @@ namespace SRVTracker
         private FormLocator _locatorForm = null;
         private string _lastLeaderboardExport = "";
         private string _lastStatusExport = "";
+        private string _lastTrackingTarget = "";
         private string _saveFilename = "";
 
         public FormRaceMonitor(FormLocator locatorForm = null)
@@ -274,6 +275,8 @@ namespace SRVTracker
             // Export the current leaderboard
             StringBuilder status = new StringBuilder();
             string[] leaderboard = new string[listViewParticipants.Items.Count+1];
+            StringBuilder trackingTarget = new StringBuilder();
+
             for (int i = 0; i < listViewParticipants.Items.Count; i++)
             {
                 try
@@ -281,12 +284,12 @@ namespace SRVTracker
                     int commanderPosition = Convert.ToInt32(listViewParticipants.Items[i].Text)-1;
                     if (commanderPosition < 0) // Not a number, so add to bottom of leaderboard
                     {
-                        commanderPosition = leaderboard.Length - 2;
+                        commanderPosition = leaderboard.Length - 2; // Bottom row is padding (or empty)
                         while (!String.IsNullOrEmpty(leaderboard[commanderPosition]))
                             commanderPosition--; // Could potentially happen in the event of a tie
                     }
                     leaderboard[commanderPosition] = listViewParticipants.Items[i].SubItems[1].Text;
-                    if (listViewParticipants.Items[i].SubItems[2].Text.StartsWith("=>"))
+                    if (listViewParticipants.Items[i].SubItems[2].Text.StartsWith("->"))
                         if (checkBoxExportDistance.Checked)
                             status.AppendLine(listViewParticipants.Items[i].SubItems[3].Text);
                         else
@@ -296,28 +299,40 @@ namespace SRVTracker
                 }
                 catch { }
             }
-            if (numericUpDownPaddingChars.Value > 0)
+            trackingTarget.AppendLine(_locatorForm.TrackingTarget);
+
+            if (checkBoxPaddingCharacters.Checked)
             {
-                leaderboard[leaderboard.Length-1] = new string(' ', (int)numericUpDownPaddingChars.Value);
-                status.AppendLine(new string(' ', (int)numericUpDownPaddingChars.Value));
+                leaderboard[leaderboard.Length-1] = new string(textBoxPaddingChar.Text[0], (int)numericUpDownLeaderboardPadding.Value);
+                status.AppendLine(new string(textBoxPaddingChar.Text[0], (int)numericUpDownStatusPadding.Value));
+                trackingTarget.AppendLine(new string(textBoxPaddingChar.Text[0], (int)numericUpDownTargetPadding.Value));
             }
 
             string participants = String.Join(Environment.NewLine, leaderboard);
-            if (!_lastLeaderboardExport.Equals(participants))
+            if (checkBoxExportLeaderboard.Checked && !_lastLeaderboardExport.Equals(participants))
+                {
+                    try
+                    {
+                        File.WriteAllText(textBoxExportLeaderboardFile.Text, participants);
+                        _lastLeaderboardExport = participants;
+                    }
+                    catch { }
+                }
+            if (checkBoxExportStatus.Checked && !_lastStatusExport.Equals(status.ToString()))
             {
                 try
                 {
-                    File.WriteAllText("Timing-Names.txt", participants);
-                    _lastLeaderboardExport = participants;
+                    File.WriteAllText(textBoxExportStatusFile.Text, status.ToString());
+                    _lastStatusExport = status.ToString();
                 }
                 catch { }
             }
-            if (!_lastStatusExport.Equals(status.ToString()))
+            if (checkBoxExportTarget.Checked && !_lastTrackingTarget.Equals(trackingTarget.ToString()))
             {
                 try
                 {
-                    File.WriteAllText("Timing-Stats.txt", status.ToString());
-                    _lastStatusExport = status.ToString();
+                    File.WriteAllText(textBoxExportTargetFile.Text, trackingTarget.ToString());
+                    _lastTrackingTarget = trackingTarget.ToString();
                 }
                 catch { }
             }

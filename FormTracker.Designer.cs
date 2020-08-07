@@ -42,7 +42,6 @@
             this.textBoxHeading = new System.Windows.Forms.TextBox();
             this.listBoxLog = new System.Windows.Forms.ListBox();
             this.buttonTest = new System.Windows.Forms.Button();
-            this.label7 = new System.Windows.Forms.Label();
             this.labelLastUpdateTime = new System.Windows.Forms.Label();
             this.checkBoxAutoScroll = new System.Windows.Forms.CheckBox();
             this.checkBoxSendLocationOnly = new System.Windows.Forms.CheckBox();
@@ -191,7 +190,7 @@
             // 
             // buttonTest
             // 
-            this.buttonTest.Location = new System.Drawing.Point(139, 151);
+            this.buttonTest.Location = new System.Drawing.Point(72, 151);
             this.buttonTest.Name = "buttonTest";
             this.buttonTest.Size = new System.Drawing.Size(54, 23);
             this.buttonTest.TabIndex = 5;
@@ -199,19 +198,10 @@
             this.buttonTest.UseVisualStyleBackColor = true;
             this.buttonTest.Click += new System.EventHandler(this.buttonTest_Click);
             // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(153, 177);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(66, 13);
-            this.label7.TabIndex = 6;
-            this.label7.Text = "Last update:";
-            // 
             // labelLastUpdateTime
             // 
             this.labelLastUpdateTime.AutoSize = true;
-            this.labelLastUpdateTime.Location = new System.Drawing.Point(225, 177);
+            this.labelLastUpdateTime.Location = new System.Drawing.Point(206, 83);
             this.labelLastUpdateTime.Name = "labelLastUpdateTime";
             this.labelLastUpdateTime.Size = new System.Drawing.Size(49, 13);
             this.labelLastUpdateTime.TabIndex = 7;
@@ -283,7 +273,7 @@
             // textBoxUploadServer
             // 
             this.textBoxUploadServer.Enabled = false;
-            this.textBoxUploadServer.Location = new System.Drawing.Point(140, 41);
+            this.textBoxUploadServer.Location = new System.Drawing.Point(140, 19);
             this.textBoxUploadServer.MaxLength = 100;
             this.textBoxUploadServer.Name = "textBoxUploadServer";
             this.textBoxUploadServer.Size = new System.Drawing.Size(109, 20);
@@ -293,17 +283,17 @@
             // checkBoxUpload
             // 
             this.checkBoxUpload.AutoSize = true;
-            this.checkBoxUpload.Location = new System.Drawing.Point(6, 19);
+            this.checkBoxUpload.Location = new System.Drawing.Point(133, 155);
             this.checkBoxUpload.Name = "checkBoxUpload";
-            this.checkBoxUpload.Size = new System.Drawing.Size(98, 17);
+            this.checkBoxUpload.Size = new System.Drawing.Size(60, 17);
             this.checkBoxUpload.TabIndex = 0;
-            this.checkBoxUpload.Text = "Send to server:";
+            this.checkBoxUpload.Text = "Upload";
             this.checkBoxUpload.UseVisualStyleBackColor = true;
             this.checkBoxUpload.CheckedChanged += new System.EventHandler(this.checkBoxUpload_CheckedChanged);
             // 
             // buttonLocator
             // 
-            this.buttonLocator.Location = new System.Drawing.Point(133, 122);
+            this.buttonLocator.Location = new System.Drawing.Point(72, 122);
             this.buttonLocator.Name = "buttonLocator";
             this.buttonLocator.Size = new System.Drawing.Size(55, 23);
             this.buttonLocator.TabIndex = 9;
@@ -333,7 +323,7 @@
             // 
             // buttonShowConfig
             // 
-            this.buttonShowConfig.Location = new System.Drawing.Point(11, 151);
+            this.buttonShowConfig.Location = new System.Drawing.Point(199, 122);
             this.buttonShowConfig.Name = "buttonShowConfig";
             this.buttonShowConfig.Size = new System.Drawing.Size(75, 23);
             this.buttonShowConfig.TabIndex = 12;
@@ -366,19 +356,18 @@
             // 
             this.groupBox7.Controls.Add(this.radioButtonUseCustomServer);
             this.groupBox7.Controls.Add(this.radioButtonUseDefaultServer);
-            this.groupBox7.Controls.Add(this.checkBoxUpload);
             this.groupBox7.Controls.Add(this.textBoxUploadServer);
             this.groupBox7.Location = new System.Drawing.Point(281, 122);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(255, 74);
+            this.groupBox7.Size = new System.Drawing.Size(255, 52);
             this.groupBox7.TabIndex = 15;
             this.groupBox7.TabStop = false;
-            this.groupBox7.Text = "Server Upload";
+            this.groupBox7.Text = "Server";
             // 
             // radioButtonUseCustomServer
             // 
             this.radioButtonUseCustomServer.AutoSize = true;
-            this.radioButtonUseCustomServer.Location = new System.Drawing.Point(71, 42);
+            this.radioButtonUseCustomServer.Location = new System.Drawing.Point(71, 20);
             this.radioButtonUseCustomServer.Name = "radioButtonUseCustomServer";
             this.radioButtonUseCustomServer.Size = new System.Drawing.Size(63, 17);
             this.radioButtonUseCustomServer.TabIndex = 3;
@@ -390,7 +379,7 @@
             // 
             this.radioButtonUseDefaultServer.AutoSize = true;
             this.radioButtonUseDefaultServer.Checked = true;
-            this.radioButtonUseDefaultServer.Location = new System.Drawing.Point(6, 42);
+            this.radioButtonUseDefaultServer.Location = new System.Drawing.Point(6, 20);
             this.radioButtonUseDefaultServer.Name = "radioButtonUseDefaultServer";
             this.radioButtonUseDefaultServer.Size = new System.Drawing.Size(59, 17);
             this.radioButtonUseDefaultServer.TabIndex = 2;
@@ -446,7 +435,7 @@
             // 
             // buttonRaceTracker
             // 
-            this.buttonRaceTracker.Location = new System.Drawing.Point(72, 122);
+            this.buttonRaceTracker.Location = new System.Drawing.Point(11, 151);
             this.buttonRaceTracker.Name = "buttonRaceTracker";
             this.buttonRaceTracker.Size = new System.Drawing.Size(55, 23);
             this.buttonRaceTracker.TabIndex = 17;
@@ -457,7 +446,7 @@
             // checkBoxTrack
             // 
             this.checkBoxTrack.AutoSize = true;
-            this.checkBoxTrack.Location = new System.Drawing.Point(220, 126);
+            this.checkBoxTrack.Location = new System.Drawing.Point(133, 126);
             this.checkBoxTrack.Name = "checkBoxTrack";
             this.checkBoxTrack.Size = new System.Drawing.Size(54, 17);
             this.checkBoxTrack.TabIndex = 18;
@@ -477,6 +466,7 @@
             this.groupBox4.Controls.Add(this.label2);
             this.groupBox4.Controls.Add(this.textBoxHeading);
             this.groupBox4.Controls.Add(this.label1);
+            this.groupBox4.Controls.Add(this.labelLastUpdateTime);
             this.groupBox4.Location = new System.Drawing.Point(12, 11);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(263, 105);
@@ -504,9 +494,11 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(280, 196);
+            this.ClientSize = new System.Drawing.Size(281, 184);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.checkBoxTrack);
+            this.Controls.Add(this.checkBoxUpload);
+            this.Controls.Add(this.buttonShowConfig);
             this.Controls.Add(this.buttonRaceTracker);
             this.Controls.Add(this.checkBoxAutoScroll);
             this.Controls.Add(this.groupBox8);
@@ -514,12 +506,9 @@
             this.Controls.Add(this.groupBox7);
             this.Controls.Add(this.groupBox6);
             this.Controls.Add(this.groupBox5);
-            this.Controls.Add(this.buttonShowConfig);
             this.Controls.Add(this.buttonExit);
             this.Controls.Add(this.buttonRoutePlanner);
             this.Controls.Add(this.buttonLocator);
-            this.Controls.Add(this.labelLastUpdateTime);
-            this.Controls.Add(this.label7);
             this.Controls.Add(this.buttonTest);
             this.Controls.Add(this.listBoxLog);
             this.Controls.Add(this.groupBox1);
@@ -562,7 +551,6 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox textBoxAltitude;
         private System.Windows.Forms.Label labelLastUpdateTime;
-        private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox textBoxSaveFile;
         private System.Windows.Forms.CheckBox checkBoxSaveToFile;
         private System.Windows.Forms.TextBox textBoxUploadServer;
