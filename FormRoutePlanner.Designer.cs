@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.buttonSaveRoute = new System.Windows.Forms.Button();
             this.buttonLoadRoute = new System.Windows.Forms.Button();
@@ -45,6 +46,7 @@
             this.buttonAddWaypoint = new System.Windows.Forms.Button();
             this.listBoxWaypoints = new System.Windows.Forms.ListBox();
             this.locationManager = new SRVTracker.LocationManager();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -73,6 +75,7 @@
             this.buttonSaveRoute.Name = "buttonSaveRoute";
             this.buttonSaveRoute.Size = new System.Drawing.Size(39, 23);
             this.buttonSaveRoute.TabIndex = 5;
+            this.toolTip1.SetToolTip(this.buttonSaveRoute, "Save this route (overwrite existing file)");
             this.buttonSaveRoute.UseVisualStyleBackColor = true;
             this.buttonSaveRoute.Click += new System.EventHandler(this.buttonSaveRoute_Click);
             // 
@@ -84,6 +87,7 @@
             this.buttonLoadRoute.Size = new System.Drawing.Size(40, 23);
             this.buttonLoadRoute.TabIndex = 4;
             this.buttonLoadRoute.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.toolTip1.SetToolTip(this.buttonLoadRoute, "Load route file");
             this.buttonLoadRoute.UseVisualStyleBackColor = true;
             this.buttonLoadRoute.Click += new System.EventHandler(this.buttonLoadRoute_Click);
             // 
@@ -94,6 +98,7 @@
             this.buttonSaveRouteAs.Name = "buttonSaveRouteAs";
             this.buttonSaveRouteAs.Size = new System.Drawing.Size(39, 23);
             this.buttonSaveRouteAs.TabIndex = 3;
+            this.toolTip1.SetToolTip(this.buttonSaveRouteAs, "Save this route as a file");
             this.buttonSaveRouteAs.UseVisualStyleBackColor = true;
             this.buttonSaveRouteAs.Click += new System.EventHandler(this.buttonSaveRouteAs_Click);
             // 
@@ -112,6 +117,7 @@
             this.textBoxRouteName.Name = "textBoxRouteName";
             this.textBoxRouteName.Size = new System.Drawing.Size(286, 20);
             this.textBoxRouteName.TabIndex = 0;
+            this.toolTip1.SetToolTip(this.textBoxRouteName, "Name of the route");
             this.textBoxRouteName.TextChanged += new System.EventHandler(this.textBoxRouteName_TextChanged);
             // 
             // groupBox2
@@ -158,6 +164,8 @@
             this.numericUpDownRadius.Name = "numericUpDownRadius";
             this.numericUpDownRadius.Size = new System.Drawing.Size(59, 20);
             this.numericUpDownRadius.TabIndex = 1;
+            this.toolTip1.SetToolTip(this.numericUpDownRadius, "Radius in meters of the circle that marks the waypoint boundary\r\n(the waypoint is" +
+        " the centre)");
             this.numericUpDownRadius.Value = new decimal(new int[] {
             1000,
             0,
@@ -176,6 +184,8 @@
             this.checkBoxRadius.Size = new System.Drawing.Size(79, 17);
             this.checkBoxRadius.TabIndex = 0;
             this.checkBoxRadius.Text = "Radius (m):";
+            this.toolTip1.SetToolTip(this.checkBoxRadius, "Whether radius is taken into consideration when\r\ndeterming if a location is withi" +
+        "n a waypoint");
             this.checkBoxRadius.UseVisualStyleBackColor = true;
             // 
             // buttonSetAsTarget
@@ -185,6 +195,7 @@
             this.buttonSetAsTarget.Name = "buttonSetAsTarget";
             this.buttonSetAsTarget.Size = new System.Drawing.Size(32, 23);
             this.buttonSetAsTarget.TabIndex = 5;
+            this.toolTip1.SetToolTip(this.buttonSetAsTarget, "Track (locate) the current selecte waypoint.\r\nThe Locator must already be open.");
             this.buttonSetAsTarget.UseVisualStyleBackColor = true;
             this.buttonSetAsTarget.Click += new System.EventHandler(this.buttonSetAsTarget_Click);
             // 
@@ -195,6 +206,7 @@
             this.buttonMoveWaypointDown.Name = "buttonMoveWaypointDown";
             this.buttonMoveWaypointDown.Size = new System.Drawing.Size(34, 23);
             this.buttonMoveWaypointDown.TabIndex = 4;
+            this.toolTip1.SetToolTip(this.buttonMoveWaypointDown, "Move the waypoint down the list");
             this.buttonMoveWaypointDown.UseVisualStyleBackColor = true;
             this.buttonMoveWaypointDown.Click += new System.EventHandler(this.buttonMoveWaypointDown_Click);
             // 
@@ -205,6 +217,7 @@
             this.buttonMoveWaypointUp.Name = "buttonMoveWaypointUp";
             this.buttonMoveWaypointUp.Size = new System.Drawing.Size(34, 23);
             this.buttonMoveWaypointUp.TabIndex = 3;
+            this.toolTip1.SetToolTip(this.buttonMoveWaypointUp, "Move the waypoint up the list");
             this.buttonMoveWaypointUp.UseVisualStyleBackColor = true;
             this.buttonMoveWaypointUp.Click += new System.EventHandler(this.buttonMoveWaypointUp_Click);
             // 
@@ -215,6 +228,7 @@
             this.buttonDeleteWaypoint.Name = "buttonDeleteWaypoint";
             this.buttonDeleteWaypoint.Size = new System.Drawing.Size(34, 23);
             this.buttonDeleteWaypoint.TabIndex = 2;
+            this.toolTip1.SetToolTip(this.buttonDeleteWaypoint, "Delete the currently selected waypoint");
             this.buttonDeleteWaypoint.UseVisualStyleBackColor = true;
             this.buttonDeleteWaypoint.Click += new System.EventHandler(this.buttonDelete_Click);
             // 
@@ -225,6 +239,7 @@
             this.buttonAddWaypoint.Name = "buttonAddWaypoint";
             this.buttonAddWaypoint.Size = new System.Drawing.Size(34, 23);
             this.buttonAddWaypoint.TabIndex = 1;
+            this.toolTip1.SetToolTip(this.buttonAddWaypoint, "Add the currently selected location as a waypoint");
             this.buttonAddWaypoint.UseVisualStyleBackColor = true;
             this.buttonAddWaypoint.Click += new System.EventHandler(this.buttonAddWaypoint_Click);
             // 
@@ -236,6 +251,7 @@
             this.listBoxWaypoints.Name = "listBoxWaypoints";
             this.listBoxWaypoints.Size = new System.Drawing.Size(374, 134);
             this.listBoxWaypoints.TabIndex = 0;
+            this.toolTip1.SetToolTip(this.listBoxWaypoints, "Waypoints that make up this route");
             this.listBoxWaypoints.ValueMember = "Name";
             this.listBoxWaypoints.SelectedIndexChanged += new System.EventHandler(this.listBoxWaypoints_SelectedIndexChanged);
             // 
@@ -287,5 +303,6 @@
         private System.Windows.Forms.NumericUpDown numericUpDownRadius;
         private System.Windows.Forms.CheckBox checkBoxRadius;
         private System.Windows.Forms.Button buttonSaveRoute;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }

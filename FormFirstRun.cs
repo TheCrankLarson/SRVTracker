@@ -25,7 +25,21 @@ namespace SRVTracker
 
         private void buttonClose_Click(object sender, EventArgs e)
         {
+            this.Hide();
+        }
 
+        private void textBoxCommanderName_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            e.IsInputKey = (e.KeyCode == Keys.Return) || (e.KeyCode == Keys.Enter);
+        }
+
+        private void textBoxCommanderName_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode==Keys.Return || e.KeyCode==Keys.Enter)
+            {
+                e.Handled = true;
+                this.Hide();
+            }
         }
     }
 }

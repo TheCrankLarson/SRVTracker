@@ -51,6 +51,8 @@
             this.textBoxCommanderName.Name = "textBoxCommanderName";
             this.textBoxCommanderName.Size = new System.Drawing.Size(398, 20);
             this.textBoxCommanderName.TabIndex = 0;
+            this.textBoxCommanderName.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBoxCommanderName_KeyDown);
+            this.textBoxCommanderName.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.textBoxCommanderName_PreviewKeyDown);
             // 
             // textBoxReleaseNotes
             // 

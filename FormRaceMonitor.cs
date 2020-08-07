@@ -43,6 +43,8 @@ namespace SRVTracker
             checkBoxSRVRace.Checked = EDRaceStatus.EliminateOnShipFlight;
             checkBoxAllowPitstops.Checked = EDRaceStatus.AllowPitStops;
             checkBoxEliminationOnDestruction.Checked = EDRaceStatus.EliminateOnShipFlight;
+            UpdateButtons();
+            ShowHideStreamingOptions();
         }
 
         private void EDStatus_StatusChanged(object sender, string commander, string status)
@@ -419,24 +421,6 @@ namespace SRVTracker
             }
         }
 
-        private void dateTimePickerStart_ValueChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                _race.Start = dateTimePickerStart.Value.Date.Add(dateTimePickerStartTime.Value.TimeOfDay);
-            }
-            catch { }
-        }
-
-        private void dateTimePickerStartTime_ValueChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                _race.Start = dateTimePickerStart.Value.Date.Add(dateTimePickerStartTime.Value.TimeOfDay);
-            }
-            catch { }
-        }
-
         private void buttonAddParticipant_Click(object sender, EventArgs e)
         {
             comboBoxAddCommander.Items.Clear();
@@ -475,6 +459,7 @@ namespace SRVTracker
                 MessageBox.Show(this, "At least two waypoints are required to start a race", "Invalid Route", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+            checkBoxAutoAddCommanders.Checked = false;
             _eliminatedRacers = new List<string>();
             _racersStatus = new Dictionary<string, EDRaceStatus>();
             foreach (string commander in _racers.Keys)
@@ -493,6 +478,7 @@ namespace SRVTracker
         {
             EDRaceStatus.Finished = true;
             buttonStopRace.Enabled = false;
+            buttonReset.Enabled = true;
         }
 
         private void comboBoxAddCommander_Leave(object sender, EventArgs e)
@@ -552,6 +538,160 @@ namespace SRVTracker
                 if (formStatusMessages.ShowDialog(this) == DialogResult.OK)
                     EDRaceStatus.StatusMessages = formStatusMessages.StatusMessages();
             }
+        }
+        private void UpdateButtons()
+        {
+            bool participantSelected = listViewParticipants.SelectedIndices.Count > 0;
+            if (!buttonRemoveParticipant.Enabled && participantSelected)
+            {
+                buttonRemoveParticipant.Enabled = true;
+                buttonTrackParticipant.Enabled = true;
+            }
+            else if (buttonRemoveParticipant.Enabled && !participantSelected)
+            {
+                buttonRemoveParticipant.Enabled = false;
+                buttonTrackParticipant.Enabled = false;
+            }
+
+            if (String.IsNullOrEmpty(_race.Name))
+            {
+                if (buttonSaveRaceAs.Enabled)
+                {
+                    buttonSaveRace.Enabled = false;
+                    buttonSaveRaceAs.Enabled = false;
+                }
+            }
+            else
+            {
+                if (!buttonSaveRaceAs.Enabled)
+                    buttonSaveRaceAs.Enabled = true;
+                if (!buttonSaveRace.Enabled && !String.IsNullOrEmpty(_saveFilename))
+                    buttonSaveRace.Enabled = true;                   
+            }
+
+            if (!checkBoxPaddingCharacters.Checked)
+            {
+                if (numericUpDownLeaderboardPadding.Enabled)
+                        numericUpDownLeaderboardPadding.Enabled = false;
+                if (numericUpDownStatusPadding.Enabled)
+                        numericUpDownStatusPadding.Enabled = false;
+                if (numericUpDownTargetPadding.Enabled)
+                        numericUpDownTargetPadding.Enabled = false;
+                textBoxPaddingChar.Enabled = false;
+            }
+            else
+            {
+                if (!numericUpDownLeaderboardPadding.Enabled)
+                    if (checkBoxExportLeaderboard.Checked)
+                        numericUpDownLeaderboardPadding.Enabled = true;
+                if (!numericUpDownStatusPadding.Enabled)
+                    if (checkBoxExportStatus.Checked)
+                        numericUpDownStatusPadding.Enabled = true;
+
+                if (!numericUpDownTargetPadding.Enabled)
+                    if (checkBoxExportTarget.Checked)
+                        numericUpDownTargetPadding.Enabled = true;
+                textBoxPaddingChar.Enabled = true;
+                
+            }
+
+            if (checkBoxExportLeaderboard.Checked)
+            {
+                if (!textBoxExportLeaderboardFile.Enabled)
+                    textBoxExportLeaderboardFile.Enabled = true;
+            }
+            else
+            {
+                if (textBoxExportLeaderboardFile.Enabled)
+                    textBoxExportLeaderboardFile.Enabled = false;
+                if (numericUpDownLeaderboardPadding.Enabled)
+                    numericUpDownLeaderboardPadding.Enabled = false;
+            }
+
+            if (checkBoxExportStatus.Checked)
+            {
+                if (!textBoxExportStatusFile.Enabled)
+                    textBoxExportStatusFile.Enabled = true;
+            }
+            else
+            {
+                if (textBoxExportStatusFile.Enabled)
+                    textBoxExportStatusFile.Enabled = false;
+                if (numericUpDownStatusPadding.Enabled)
+                    numericUpDownStatusPadding.Enabled = false;
+            }
+
+            if (checkBoxExportTarget.Checked)
+            {
+                if (!textBoxExportTargetFile.Enabled)
+                    textBoxExportTargetFile.Enabled = true;
+            }
+            else
+            {
+                if (textBoxExportTargetFile.Enabled)
+                    textBoxExportTargetFile.Enabled = false;
+                if (numericUpDownTargetPadding.Enabled)
+                    numericUpDownTargetPadding.Enabled = false;
+            }
+        }
+
+        private void listViewParticipants_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            UpdateButtons();   
+        }
+
+        private void checkBoxPaddingCharacters_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateButtons();
+        }
+
+        private void checkBoxExportTarget_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateButtons();
+        }
+
+        private void checkBoxExportStatus_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateButtons();
+        }
+
+        private void checkBoxExportLeaderboard_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateButtons();
+        }
+
+        private void buttonReset_Click(object sender, EventArgs e)
+        {
+            EDRaceStatus.Started = false;
+            EDRaceStatus.Finished = false;
+            _eliminatedRacers = null;
+            _racersStatus = null;
+            if (_race.Route.Waypoints.Count > 0)
+                _nextWaypoint = _race.Route.Waypoints[0];
+            listBoxWaypoints.Refresh();
+            buttonStartRace.Enabled = true;
+            buttonReset.Enabled = false;
+        }
+
+        private void ShowHideStreamingOptions()
+        {
+            Size showStreamingOptions = new Size(998, 464);
+            Size hideStreamingOptions = new Size(742, 464);
+            if (checkBoxStreamInfo.Checked)
+            {
+                if (!this.Size.Equals(showStreamingOptions))
+                    this.Size = showStreamingOptions;
+            }
+            else
+            {
+                if (!this.Size.Equals(hideStreamingOptions))
+                    this.Size = hideStreamingOptions;
+            }
+        }
+
+        private void checkBoxStreamInfo_CheckedChanged(object sender, EventArgs e)
+        {
+            ShowHideStreamingOptions();
         }
     }
 

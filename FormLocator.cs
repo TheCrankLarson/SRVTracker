@@ -37,6 +37,7 @@ namespace SRVTracker
             buttonUseCurrentLocation.Enabled = false;  // We'll enable it when we have a location
             CommanderWatcher.UpdateReceived += CommanderWatcher_UpdateReceived;
             InitVRMatrix();
+            InitLocationCombo();
         }
 
         private void CommanderWatcher_UpdateReceived(object sender, EDEvent edEvent)
@@ -524,6 +525,31 @@ namespace SRVTracker
             _intPtrOverlayImage = null;
         }
 
+        private void comboBoxLocation_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (comboBoxLocation.SelectedIndex < 0)
+                return;
 
+            LocationManager locationManager = new LocationManager();
+            if (locationManager.Locations.Count>0)
+                foreach (EDLocation location in locationManager.Locations)
+                    if (location.Name.Equals(comboBoxLocation.SelectedItem.ToString()))
+                    {
+                        _targetPosition = location;
+                        UpdateTrackingTarget(location.Name);
+                        break;
+                    }
+            locationManager.Dispose();
+        }
+
+        private void InitLocationCombo()
+        {
+            comboBoxLocation.Items.Clear();
+            LocationManager locationManager = new LocationManager();
+            if (locationManager.Locations.Count > 0)
+                foreach (EDLocation location in locationManager.Locations)
+                    comboBoxLocation.Items.Add(location.Name);
+            locationManager.Dispose();
+        }
     }
 }

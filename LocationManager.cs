@@ -42,6 +42,18 @@ namespace SRVTracker
             }
         }
 
+        public List<EDLocation> Locations
+        {
+            get
+            {
+                List<EDLocation> locations = new List<EDLocation>();
+                if (listBoxLocations.Items.Count>0)
+                    foreach (EDLocation location in listBoxLocations.Items)
+                        locations.Add(location);
+                return locations;
+            }
+        }
+
         private void buttonLoadLocations_Click(object sender, EventArgs e)
         {
             using (OpenFileDialog openFileDialog = new OpenFileDialog())

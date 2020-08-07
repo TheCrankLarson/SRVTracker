@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.groupBoxDestination = new System.Windows.Forms.GroupBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -39,13 +40,14 @@
             this.buttonShowHideTarget = new System.Windows.Forms.Button();
             this.labelDistance = new System.Windows.Forms.Label();
             this.labelHeading = new System.Windows.Forms.Label();
-            this.buttonUseCurrentLocation = new System.Windows.Forms.Button();
-            this.buttonLocations = new System.Windows.Forms.Button();
             this.buttonPlayers = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.listBoxCommanders = new System.Windows.Forms.ListBox();
             this.buttonTrackCommander = new System.Windows.Forms.Button();
             this.checkBoxEnableVRLocator = new System.Windows.Forms.CheckBox();
+            this.comboBoxLocation = new System.Windows.Forms.ComboBox();
+            this.buttonUseCurrentLocation = new System.Windows.Forms.Button();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.groupBoxDestination.SuspendLayout();
             this.groupBoxBearing.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -92,6 +94,7 @@
             this.textBoxAltitude.ReadOnly = true;
             this.textBoxAltitude.Size = new System.Drawing.Size(102, 20);
             this.textBoxAltitude.TabIndex = 3;
+            this.toolTip1.SetToolTip(this.textBoxAltitude, "The target\'s altitude");
             // 
             // textBoxLatitude
             // 
@@ -100,6 +103,7 @@
             this.textBoxLatitude.ReadOnly = true;
             this.textBoxLatitude.Size = new System.Drawing.Size(100, 20);
             this.textBoxLatitude.TabIndex = 2;
+            this.toolTip1.SetToolTip(this.textBoxLatitude, "The target\'s latitude");
             // 
             // label1
             // 
@@ -117,6 +121,7 @@
             this.textBoxLongitude.ReadOnly = true;
             this.textBoxLongitude.Size = new System.Drawing.Size(100, 20);
             this.textBoxLongitude.TabIndex = 0;
+            this.toolTip1.SetToolTip(this.textBoxLongitude, "The target\'s longitude");
             // 
             // groupBoxBearing
             // 
@@ -136,6 +141,7 @@
             this.buttonShowHideTarget.Name = "buttonShowHideTarget";
             this.buttonShowHideTarget.Size = new System.Drawing.Size(13, 13);
             this.buttonShowHideTarget.TabIndex = 2;
+            this.toolTip1.SetToolTip(this.buttonShowHideTarget, "Shrink/expand the window");
             this.buttonShowHideTarget.UseVisualStyleBackColor = true;
             this.buttonShowHideTarget.Click += new System.EventHandler(this.buttonShowHideTarget_Click);
             // 
@@ -148,6 +154,7 @@
             this.labelDistance.Size = new System.Drawing.Size(110, 37);
             this.labelDistance.TabIndex = 1;
             this.labelDistance.Text = "0.0km";
+            this.toolTip1.SetToolTip(this.labelDistance, "Distance to the target");
             // 
             // labelHeading
             // 
@@ -158,26 +165,7 @@
             this.labelHeading.Size = new System.Drawing.Size(48, 37);
             this.labelHeading.TabIndex = 0;
             this.labelHeading.Text = "0°";
-            // 
-            // buttonUseCurrentLocation
-            // 
-            this.buttonUseCurrentLocation.Location = new System.Drawing.Point(12, 157);
-            this.buttonUseCurrentLocation.Name = "buttonUseCurrentLocation";
-            this.buttonUseCurrentLocation.Size = new System.Drawing.Size(117, 23);
-            this.buttonUseCurrentLocation.TabIndex = 6;
-            this.buttonUseCurrentLocation.Text = "Use current location";
-            this.buttonUseCurrentLocation.UseVisualStyleBackColor = true;
-            this.buttonUseCurrentLocation.Click += new System.EventHandler(this.buttonUseCurrentLocation_Click);
-            // 
-            // buttonLocations
-            // 
-            this.buttonLocations.Enabled = false;
-            this.buttonLocations.Location = new System.Drawing.Point(187, 157);
-            this.buttonLocations.Name = "buttonLocations";
-            this.buttonLocations.Size = new System.Drawing.Size(75, 23);
-            this.buttonLocations.TabIndex = 7;
-            this.buttonLocations.Text = "Location...";
-            this.buttonLocations.UseVisualStyleBackColor = true;
+            this.toolTip1.SetToolTip(this.labelHeading, "The direction you must travel to reach the target");
             // 
             // buttonPlayers
             // 
@@ -186,6 +174,7 @@
             this.buttonPlayers.Size = new System.Drawing.Size(75, 23);
             this.buttonPlayers.TabIndex = 8;
             this.buttonPlayers.Text = "Commander";
+            this.toolTip1.SetToolTip(this.buttonPlayers, "Track other commander (other commander must be uploading status)");
             this.buttonPlayers.UseVisualStyleBackColor = true;
             this.buttonPlayers.Click += new System.EventHandler(this.buttonPlayers_Click);
             // 
@@ -217,29 +206,53 @@
             this.buttonTrackCommander.Size = new System.Drawing.Size(75, 23);
             this.buttonTrackCommander.TabIndex = 0;
             this.buttonTrackCommander.Text = "Track";
+            this.toolTip1.SetToolTip(this.buttonTrackCommander, "Start tracking the selected commander");
             this.buttonTrackCommander.UseVisualStyleBackColor = true;
             this.buttonTrackCommander.Click += new System.EventHandler(this.buttonTrackCommander_Click);
             // 
             // checkBoxEnableVRLocator
             // 
             this.checkBoxEnableVRLocator.AutoSize = true;
-            this.checkBoxEnableVRLocator.Location = new System.Drawing.Point(138, 161);
+            this.checkBoxEnableVRLocator.Location = new System.Drawing.Point(53, 161);
             this.checkBoxEnableVRLocator.Name = "checkBoxEnableVRLocator";
             this.checkBoxEnableVRLocator.Size = new System.Drawing.Size(41, 17);
             this.checkBoxEnableVRLocator.TabIndex = 10;
             this.checkBoxEnableVRLocator.Text = "VR";
+            this.toolTip1.SetToolTip(this.checkBoxEnableVRLocator, "Enable/disable the VR bearing/distance display");
             this.checkBoxEnableVRLocator.UseVisualStyleBackColor = true;
             this.checkBoxEnableVRLocator.CheckedChanged += new System.EventHandler(this.checkBoxEnableVRLocator_CheckedChanged);
+            // 
+            // comboBoxLocation
+            // 
+            this.comboBoxLocation.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxLocation.FormattingEnabled = true;
+            this.comboBoxLocation.Location = new System.Drawing.Point(100, 159);
+            this.comboBoxLocation.Name = "comboBoxLocation";
+            this.comboBoxLocation.Size = new System.Drawing.Size(162, 21);
+            this.comboBoxLocation.TabIndex = 11;
+            this.toolTip1.SetToolTip(this.comboBoxLocation, "Select a location to target (add locations in the Route Planner)");
+            this.comboBoxLocation.SelectedIndexChanged += new System.EventHandler(this.comboBoxLocation_SelectedIndexChanged);
+            // 
+            // buttonUseCurrentLocation
+            // 
+            this.buttonUseCurrentLocation.Image = global::SRVTracker.Properties.Resources.Home_16x;
+            this.buttonUseCurrentLocation.Location = new System.Drawing.Point(12, 157);
+            this.buttonUseCurrentLocation.Name = "buttonUseCurrentLocation";
+            this.buttonUseCurrentLocation.Size = new System.Drawing.Size(35, 23);
+            this.buttonUseCurrentLocation.TabIndex = 6;
+            this.toolTip1.SetToolTip(this.buttonUseCurrentLocation, "Set as home (track current location)");
+            this.buttonUseCurrentLocation.UseVisualStyleBackColor = true;
+            this.buttonUseCurrentLocation.Click += new System.EventHandler(this.buttonUseCurrentLocation_Click);
             // 
             // FormLocator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(559, 189);
+            this.Controls.Add(this.comboBoxLocation);
             this.Controls.Add(this.checkBoxEnableVRLocator);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.buttonPlayers);
-            this.Controls.Add(this.buttonLocations);
             this.Controls.Add(this.groupBoxBearing);
             this.Controls.Add(this.buttonUseCurrentLocation);
             this.Controls.Add(this.groupBoxDestination);
@@ -271,11 +284,12 @@
         private System.Windows.Forms.Label labelHeading;
         private System.Windows.Forms.Button buttonShowHideTarget;
         private System.Windows.Forms.Button buttonUseCurrentLocation;
-        private System.Windows.Forms.Button buttonLocations;
         private System.Windows.Forms.Button buttonPlayers;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.ListBox listBoxCommanders;
         private System.Windows.Forms.Button buttonTrackCommander;
         private System.Windows.Forms.CheckBox checkBoxEnableVRLocator;
+        private System.Windows.Forms.ComboBox comboBoxLocation;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }

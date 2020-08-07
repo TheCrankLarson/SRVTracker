@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.buttonBrowseStatusFile = new System.Windows.Forms.Button();
             this.textBoxStatusFile = new System.Windows.Forms.TextBox();
@@ -69,6 +70,7 @@
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.label3 = new System.Windows.Forms.Label();
             this.textBoxPlanetRadius = new System.Windows.Forms.TextBox();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.statusFileWatcher)).BeginInit();
             this.groupBox5.SuspendLayout();
@@ -105,6 +107,8 @@
             this.textBoxStatusFile.Name = "textBoxStatusFile";
             this.textBoxStatusFile.Size = new System.Drawing.Size(359, 20);
             this.textBoxStatusFile.TabIndex = 0;
+            this.toolTip1.SetToolTip(this.textBoxStatusFile, "Location of the Status.json file of Elite: Dangerous.\r\nThis should be automatical" +
+        "ly located.");
             // 
             // statusFileWatcher
             // 
@@ -128,6 +132,7 @@
             this.textBoxAltitude.Name = "textBoxAltitude";
             this.textBoxAltitude.Size = new System.Drawing.Size(78, 20);
             this.textBoxAltitude.TabIndex = 4;
+            this.toolTip1.SetToolTip(this.textBoxAltitude, "Your last reported altitude");
             // 
             // label2
             // 
@@ -154,6 +159,7 @@
             this.textBoxLatitude.Name = "textBoxLatitude";
             this.textBoxLatitude.Size = new System.Drawing.Size(78, 20);
             this.textBoxLatitude.TabIndex = 1;
+            this.toolTip1.SetToolTip(this.textBoxLatitude, "Your last reported latitude");
             // 
             // textBoxLongitude
             // 
@@ -162,6 +168,7 @@
             this.textBoxLongitude.Name = "textBoxLongitude";
             this.textBoxLongitude.Size = new System.Drawing.Size(78, 20);
             this.textBoxLongitude.TabIndex = 0;
+            this.toolTip1.SetToolTip(this.textBoxLongitude, "Your last reported longitude");
             // 
             // label4
             // 
@@ -179,6 +186,7 @@
             this.textBoxHeading.Name = "textBoxHeading";
             this.textBoxHeading.Size = new System.Drawing.Size(78, 20);
             this.textBoxHeading.TabIndex = 4;
+            this.toolTip1.SetToolTip(this.textBoxHeading, "Your last reported heading");
             // 
             // listBoxLog
             // 
@@ -206,6 +214,7 @@
             this.labelLastUpdateTime.Size = new System.Drawing.Size(49, 13);
             this.labelLastUpdateTime.TabIndex = 7;
             this.labelLastUpdateTime.Text = "00:00:00";
+            this.toolTip1.SetToolTip(this.labelLastUpdateTime, "Time last status update was received");
             // 
             // checkBoxAutoScroll
             // 
@@ -217,6 +226,7 @@
             this.checkBoxAutoScroll.Size = new System.Drawing.Size(75, 17);
             this.checkBoxAutoScroll.TabIndex = 8;
             this.checkBoxAutoScroll.Text = "Auto-scroll";
+            this.toolTip1.SetToolTip(this.checkBoxAutoScroll, "Automatically scroll to the most recent event");
             this.checkBoxAutoScroll.UseVisualStyleBackColor = true;
             // 
             // checkBoxSendLocationOnly
@@ -229,6 +239,9 @@
             this.checkBoxSendLocationOnly.Size = new System.Drawing.Size(160, 17);
             this.checkBoxSendLocationOnly.TabIndex = 7;
             this.checkBoxSendLocationOnly.Text = "Log/send location data Only";
+            this.toolTip1.SetToolTip(this.checkBoxSendLocationOnly, "If enabled, only location data and status flags are tracked.\r\nIf disabled, the co" +
+        "mplete status.json file is captured and\r\nlogged/uploaded as is.  Either works fo" +
+        "r tracking.");
             this.checkBoxSendLocationOnly.UseVisualStyleBackColor = true;
             // 
             // checkBoxShowLive
@@ -239,6 +252,8 @@
             this.checkBoxShowLive.Size = new System.Drawing.Size(89, 17);
             this.checkBoxShowLive.TabIndex = 6;
             this.checkBoxShowLive.Text = "Show live log";
+            this.toolTip1.SetToolTip(this.checkBoxShowLive, "Show data being tracked. Primarily for toubleshooting purposes.\r\nNot recommended " +
+        "to enable during general use.");
             this.checkBoxShowLive.UseVisualStyleBackColor = true;
             // 
             // textBoxClientId
@@ -248,6 +263,7 @@
             this.textBoxClientId.Name = "textBoxClientId";
             this.textBoxClientId.Size = new System.Drawing.Size(171, 20);
             this.textBoxClientId.TabIndex = 4;
+            this.toolTip1.SetToolTip(this.textBoxClientId, "Client Id (usually commander name) sent with status updates");
             this.textBoxClientId.TextChanged += new System.EventHandler(this.textBoxClientId_TextChanged);
             // 
             // textBoxSaveFile
@@ -258,6 +274,7 @@
             this.textBoxSaveFile.Size = new System.Drawing.Size(142, 20);
             this.textBoxSaveFile.TabIndex = 3;
             this.textBoxSaveFile.Text = "tracking.log";
+            this.toolTip1.SetToolTip(this.textBoxSaveFile, "The file to which status updates will be saved");
             // 
             // checkBoxSaveToFile
             // 
@@ -267,6 +284,7 @@
             this.checkBoxSaveToFile.Size = new System.Drawing.Size(82, 17);
             this.checkBoxSaveToFile.TabIndex = 2;
             this.checkBoxSaveToFile.Text = "Save to file:";
+            this.toolTip1.SetToolTip(this.checkBoxSaveToFile, "If enabled, all status updates will be logged to the specified file");
             this.checkBoxSaveToFile.UseVisualStyleBackColor = true;
             this.checkBoxSaveToFile.CheckedChanged += new System.EventHandler(this.checkBoxSaveToFile_CheckedChanged);
             // 
@@ -278,6 +296,7 @@
             this.textBoxUploadServer.Name = "textBoxUploadServer";
             this.textBoxUploadServer.Size = new System.Drawing.Size(109, 20);
             this.textBoxUploadServer.TabIndex = 1;
+            this.toolTip1.SetToolTip(this.textBoxUploadServer, "The server to send the status updates to");
             this.textBoxUploadServer.TextChanged += new System.EventHandler(this.textBoxUploadServer_TextChanged);
             // 
             // checkBoxUpload
@@ -288,6 +307,9 @@
             this.checkBoxUpload.Size = new System.Drawing.Size(60, 17);
             this.checkBoxUpload.TabIndex = 0;
             this.checkBoxUpload.Text = "Upload";
+            this.toolTip1.SetToolTip(this.checkBoxUpload, "Upload all tracked status updates to the server.\r\nThis is required for race manag" +
+        "ement and to\r\nallow other commanders to locate you.\r\nIt is NOT required for loca" +
+        "l tracking or route\r\nplanning.");
             this.checkBoxUpload.UseVisualStyleBackColor = true;
             this.checkBoxUpload.CheckedChanged += new System.EventHandler(this.checkBoxUpload_CheckedChanged);
             // 
@@ -298,6 +320,7 @@
             this.buttonLocator.Size = new System.Drawing.Size(55, 23);
             this.buttonLocator.TabIndex = 9;
             this.buttonLocator.Text = "Locate";
+            this.toolTip1.SetToolTip(this.buttonLocator, "Open the Locator (to track other\r\ncommanders and locations)");
             this.buttonLocator.UseVisualStyleBackColor = true;
             this.buttonLocator.Click += new System.EventHandler(this.buttonLocator_Click);
             // 
@@ -308,6 +331,7 @@
             this.buttonRoutePlanner.Size = new System.Drawing.Size(55, 23);
             this.buttonRoutePlanner.TabIndex = 10;
             this.buttonRoutePlanner.Text = "Route";
+            this.toolTip1.SetToolTip(this.buttonRoutePlanner, "Open the Route Planner");
             this.buttonRoutePlanner.UseVisualStyleBackColor = true;
             this.buttonRoutePlanner.Click += new System.EventHandler(this.buttonRoutePlanner_Click);
             // 
@@ -318,6 +342,7 @@
             this.buttonExit.Size = new System.Drawing.Size(75, 23);
             this.buttonExit.TabIndex = 11;
             this.buttonExit.Text = "Exit";
+            this.toolTip1.SetToolTip(this.buttonExit, "Close the program");
             this.buttonExit.UseVisualStyleBackColor = true;
             this.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
             // 
@@ -328,6 +353,7 @@
             this.buttonShowConfig.Size = new System.Drawing.Size(75, 23);
             this.buttonShowConfig.TabIndex = 12;
             this.buttonShowConfig.Text = "Show Config";
+            this.toolTip1.SetToolTip(this.buttonShowConfig, "Show Settings");
             this.buttonShowConfig.UseVisualStyleBackColor = true;
             this.buttonShowConfig.Click += new System.EventHandler(this.buttonShowConfig_Click);
             // 
@@ -372,6 +398,7 @@
             this.radioButtonUseCustomServer.Size = new System.Drawing.Size(63, 17);
             this.radioButtonUseCustomServer.TabIndex = 3;
             this.radioButtonUseCustomServer.Text = "Custom:";
+            this.toolTip1.SetToolTip(this.radioButtonUseCustomServer, "Select to upload to a custom server");
             this.radioButtonUseCustomServer.UseVisualStyleBackColor = true;
             this.radioButtonUseCustomServer.CheckedChanged += new System.EventHandler(this.radioButtonUseCustomServer_CheckedChanged);
             // 
@@ -386,6 +413,7 @@
             this.radioButtonUseDefaultServer.TabStop = true;
             this.radioButtonUseDefaultServer.Tag = "srvtracker.darkbytes.co.uk";
             this.radioButtonUseDefaultServer.Text = "Default";
+            this.toolTip1.SetToolTip(this.radioButtonUseDefaultServer, "Select to upload to the default server");
             this.radioButtonUseDefaultServer.UseVisualStyleBackColor = true;
             this.radioButtonUseDefaultServer.CheckedChanged += new System.EventHandler(this.radioButtonUseDefaultServer_CheckedChanged);
             // 
@@ -419,6 +447,9 @@
             this.radioButtonWatchStatusFile.Size = new System.Drawing.Size(53, 17);
             this.radioButtonWatchStatusFile.TabIndex = 9;
             this.radioButtonWatchStatusFile.Text = "Event";
+            this.toolTip1.SetToolTip(this.radioButtonWatchStatusFile, "This method of monitoring the status.json file registers for\r\nnotifications of ch" +
+        "anges to the file, and when it receives\r\nsuch a notification will read the updat" +
+        "ed information.");
             this.radioButtonWatchStatusFile.UseVisualStyleBackColor = true;
             // 
             // radioButtonUseTimer
@@ -431,6 +462,8 @@
             this.radioButtonUseTimer.TabIndex = 8;
             this.radioButtonUseTimer.TabStop = true;
             this.radioButtonUseTimer.Text = "Timer";
+            this.toolTip1.SetToolTip(this.radioButtonUseTimer, "This method of Status.json monitoring simply checks whether the\r\nfile has been up" +
+        "dated every 250ms.  If it has, it reads and processes\r\nit.");
             this.radioButtonUseTimer.UseVisualStyleBackColor = true;
             // 
             // buttonRaceTracker
@@ -440,6 +473,7 @@
             this.buttonRaceTracker.Size = new System.Drawing.Size(55, 23);
             this.buttonRaceTracker.TabIndex = 17;
             this.buttonRaceTracker.Text = "Race";
+            this.toolTip1.SetToolTip(this.buttonRaceTracker, "Open the Race Manager");
             this.buttonRaceTracker.UseVisualStyleBackColor = true;
             this.buttonRaceTracker.Click += new System.EventHandler(this.buttonRaceTracker_Click);
             // 
@@ -451,6 +485,7 @@
             this.checkBoxTrack.Size = new System.Drawing.Size(54, 17);
             this.checkBoxTrack.TabIndex = 18;
             this.checkBoxTrack.Text = "Track";
+            this.toolTip1.SetToolTip(this.checkBoxTrack, "Start tracking for status updates");
             this.checkBoxTrack.UseVisualStyleBackColor = true;
             this.checkBoxTrack.CheckedChanged += new System.EventHandler(this.checkBoxTrack_CheckedChanged);
             // 
@@ -489,6 +524,13 @@
             this.textBoxPlanetRadius.Name = "textBoxPlanetRadius";
             this.textBoxPlanetRadius.Size = new System.Drawing.Size(78, 20);
             this.textBoxPlanetRadius.TabIndex = 7;
+            this.toolTip1.SetToolTip(this.textBoxPlanetRadius, "Planet radius (in meters)");
+            // 
+            // toolTip1
+            // 
+            this.toolTip1.AutoPopDelay = 8000;
+            this.toolTip1.InitialDelay = 500;
+            this.toolTip1.ReshowDelay = 100;
             // 
             // FormTracker
             // 
@@ -577,6 +619,7 @@
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox textBoxPlanetRadius;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }
 
