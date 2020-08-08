@@ -513,6 +513,24 @@ namespace SRVTracker
         private void checkBoxUpload_CheckedChanged(object sender, EventArgs e)
         {
             UpdateServerSettings();
+            if (checkBoxUpload.Checked)
+            {
+                // Create the UDP client for sending tracking data
+                try
+                {
+                    string serverUrl = (string)radioButtonUseDefaultServer.Tag;
+                    if (radioButtonUseCustomServer.Checked)
+                        serverUrl = textBoxUploadServer.Text;
+                    _udpClient = new UdpClient(serverUrl, 11938);
+                }
+                catch (Exception ex)
+                {
+                    AddLog($"Error creating UDP client: {ex.Message}");
+                    checkBoxUpload.Checked = false;
+                }
+            }
+            else
+                _udpClient.Dispose();
         }
 
         private void UpdateServerSettings()
@@ -609,19 +627,7 @@ namespace SRVTracker
                             checkBoxUpload.Checked = false;
                             return;
                         }
-                    // Create the UDP client for sending tracking data
-                    try
-                    {
-                        string serverUrl = (string)radioButtonUseDefaultServer.Tag;
-                        if (radioButtonUseCustomServer.Checked)
-                            serverUrl = textBoxUploadServer.Text;
-                        _udpClient = new UdpClient(serverUrl, 11938);
-                    }
-                    catch (Exception ex)
-                    {
-                        AddLog($"Error creating UDP client: {ex.Message}");
-                        checkBoxUpload.Checked = false;
-                    }
+
                 }
                 StartTracking();
                 return;

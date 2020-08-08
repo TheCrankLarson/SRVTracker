@@ -48,6 +48,7 @@
             this.comboBoxLocation = new System.Windows.Forms.ComboBox();
             this.buttonUseCurrentLocation = new System.Windows.Forms.Button();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.checkBoxTrackClosest = new System.Windows.Forms.CheckBox();
             this.groupBoxDestination.SuspendLayout();
             this.groupBoxBearing.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -180,6 +181,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.checkBoxTrackClosest);
             this.groupBox1.Controls.Add(this.listBoxCommanders);
             this.groupBox1.Controls.Add(this.buttonTrackCommander);
             this.groupBox1.Location = new System.Drawing.Point(349, 12);
@@ -244,6 +246,16 @@
             this.buttonUseCurrentLocation.UseVisualStyleBackColor = true;
             this.buttonUseCurrentLocation.Click += new System.EventHandler(this.buttonUseCurrentLocation_Click);
             // 
+            // checkBoxTrackClosest
+            // 
+            this.checkBoxTrackClosest.AutoSize = true;
+            this.checkBoxTrackClosest.Location = new System.Drawing.Point(6, 143);
+            this.checkBoxTrackClosest.Name = "checkBoxTrackClosest";
+            this.checkBoxTrackClosest.Size = new System.Drawing.Size(90, 17);
+            this.checkBoxTrackClosest.TabIndex = 2;
+            this.checkBoxTrackClosest.Text = "Track closest";
+            this.checkBoxTrackClosest.UseVisualStyleBackColor = true;
+            // 
             // FormLocator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -265,6 +277,7 @@
             this.groupBoxBearing.ResumeLayout(false);
             this.groupBoxBearing.PerformLayout();
             this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -291,5 +304,6 @@
         private System.Windows.Forms.CheckBox checkBoxEnableVRLocator;
         private System.Windows.Forms.ComboBox comboBoxLocation;
         private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.CheckBox checkBoxTrackClosest;
     }
 }
