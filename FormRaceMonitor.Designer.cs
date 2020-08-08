@@ -68,6 +68,8 @@
             this.numericUpDownTargetPadding = new System.Windows.Forms.NumericUpDown();
             this.textBoxPaddingChar = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.checkBoxStreamInfo = new System.Windows.Forms.CheckBox();
             this.buttonReset = new System.Windows.Forms.Button();
             this.buttonEditStatusMessages = new System.Windows.Forms.Button();
             this.buttonAddCommander = new System.Windows.Forms.Button();
@@ -80,8 +82,6 @@
             this.buttonSaveRaceAs = new System.Windows.Forms.Button();
             this.buttonSaveRace = new System.Windows.Forms.Button();
             this.buttonLoadRoute = new System.Windows.Forms.Button();
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.checkBoxStreamInfo = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -144,6 +144,7 @@
             this.textBoxRaceName.Name = "textBoxRaceName";
             this.textBoxRaceName.Size = new System.Drawing.Size(279, 20);
             this.textBoxRaceName.TabIndex = 2;
+            this.textBoxRaceName.TextChanged += new System.EventHandler(this.textBoxRaceName_TextChanged);
             // 
             // label3
             // 
@@ -517,6 +518,17 @@
             this.label4.TabIndex = 17;
             this.label4.Text = "Padding";
             // 
+            // checkBoxStreamInfo
+            // 
+            this.checkBoxStreamInfo.AutoSize = true;
+            this.checkBoxStreamInfo.Location = new System.Drawing.Point(198, 19);
+            this.checkBoxStreamInfo.Name = "checkBoxStreamInfo";
+            this.checkBoxStreamInfo.Size = new System.Drawing.Size(79, 17);
+            this.checkBoxStreamInfo.TabIndex = 3;
+            this.checkBoxStreamInfo.Text = "Stream info";
+            this.checkBoxStreamInfo.UseVisualStyleBackColor = true;
+            this.checkBoxStreamInfo.CheckedChanged += new System.EventHandler(this.checkBoxStreamInfo_CheckedChanged);
+            // 
             // buttonReset
             // 
             this.buttonReset.Enabled = false;
@@ -650,17 +662,6 @@
             this.toolTip1.SetToolTip(this.buttonLoadRoute, "Load route from file");
             this.buttonLoadRoute.UseVisualStyleBackColor = true;
             this.buttonLoadRoute.Click += new System.EventHandler(this.buttonLoadRoute_Click);
-            // 
-            // checkBoxStreamInfo
-            // 
-            this.checkBoxStreamInfo.AutoSize = true;
-            this.checkBoxStreamInfo.Location = new System.Drawing.Point(198, 19);
-            this.checkBoxStreamInfo.Name = "checkBoxStreamInfo";
-            this.checkBoxStreamInfo.Size = new System.Drawing.Size(79, 17);
-            this.checkBoxStreamInfo.TabIndex = 3;
-            this.checkBoxStreamInfo.Text = "Stream info";
-            this.checkBoxStreamInfo.UseVisualStyleBackColor = true;
-            this.checkBoxStreamInfo.CheckedChanged += new System.EventHandler(this.checkBoxStreamInfo_CheckedChanged);
             // 
             // FormRaceMonitor
             // 

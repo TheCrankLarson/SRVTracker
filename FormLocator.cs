@@ -29,6 +29,7 @@ namespace SRVTracker
         private static IntPtr? _intPtrOverlayImage = null;
         private static Bitmap _vrbitmap = null;
         private static Graphics _vrgraphics = null;
+        private double _trackedTargetDistance = double.MaxValue;
 
         public FormLocator()
         {
@@ -42,15 +43,30 @@ namespace SRVTracker
 
         private void CommanderWatcher_UpdateReceived(object sender, EDEvent edEvent)
         {
+            if (!edEvent.HasCoordinates || edEvent.Commander.Equals(FormTracker.ClientId))
+                return;
+
+            if (checkBoxTrackClosest.Checked)
+            {
+                // We are tracking the closest commander to us, so we need to check all updates and change our tracking target as necessary
+                // We just check if the distance from this commander is closer than our currently tracked target
+
+                double distanceToCommnader = EDLocation.DistanceBetween(FormTracker.CurrentLocation, edEvent.Location);
+                if (distanceToCommnader<_trackedTargetDistance)
+                {
+                    // Switch tracking to this target
+                    _targetPosition = edEvent.Location;
+                    SetTarget(edEvent.Commander);
+                    return;
+                }
+            }
+
             if (!TrackingTarget.Equals(edEvent.Commander))
                 return;
 
-            if (edEvent.HasCoordinates)
-            {
-                _targetPosition = edEvent.Location;
-                DisplayTarget();
-                UpdateTracking();
-            }
+            _targetPosition = edEvent.Location;
+            DisplayTarget();
+            UpdateTracking();
         }
 
         public static double PlanetaryRadius { get; set; } = 0;
@@ -110,14 +126,13 @@ namespace SRVTracker
             }
         }
 
-        public void UpdateTracking(EDLocation CurrentLocation =null)
+        public void UpdateTracking()
         {
             // Update our position
-            Action action;
-
             if (FormTracker.CurrentLocation == null)
                 return;
 
+            Action action;
             if (!buttonUseCurrentLocation.Enabled)
             {
                 action = new Action(() => { buttonUseCurrentLocation.Enabled = true; });
@@ -133,20 +148,19 @@ namespace SRVTracker
             bool displayChanged = false;
             try
             {
-                string distanceUnit = "m";
+                string d;
                 double distance = EDLocation.DistanceBetween(FormTracker.CurrentLocation, _targetPosition);
                 if (distance>1000000)
                 {
-                    distance = distance / 1000000;
-                    distanceUnit = "Mm";
+                    d = $"({(distance / 1000000).ToString("0.0")}Mm";
                 }
                 else if (distance>1000)
                 {
-                    distance = distance / 1000;
-                    distanceUnit = "km";
+                    d = $"{(distance / 1000).ToString("0.0")}km";
                 }
+                else
+                    d = $"{distance.ToString("0.0")}m";
                 double bearing = EDLocation.BearingToLocation(FormTracker.CurrentLocation, _targetPosition);
-                string d = $"{distance.ToString("0.0")}{distanceUnit}";
                 string b = $"{Convert.ToInt32(bearing).ToString()}°";
                 
                 if (!labelDistance.Text.Equals(d))
@@ -168,28 +182,12 @@ namespace SRVTracker
                         action();
                 }
 
+                if (checkBoxTrackClosest.Checked)
+                    _trackedTargetDistance = distance;
             }
             catch { }
             if (displayChanged && checkBoxEnableVRLocator.Checked)
                 UpdateVRLocatorImage();
-        }
-
-        private void TrySetDestination()
-        {
-            // This shouldn't ever be called cross-thread, so no need to check for invoke
-            // If an error occurs while trying to create the coordinate, then we invalidate it
-            // Once we have valid location, we change colour to signify that
-            try
-            {
-                double latitude = Convert.ToDouble(textBoxLatitude.Text);
-                double longitude = Convert.ToDouble(textBoxLongitude.Text);
-                if (!String.IsNullOrEmpty(textBoxAltitude.Text))
-                    _targetPosition = new EDLocation(latitude, longitude, Convert.ToDouble(textBoxAltitude.Text), PlanetaryRadius);
-                else
-                    _targetPosition = new EDLocation(latitude, longitude, 0, PlanetaryRadius);
-                return;
-            }
-            catch { }
         }
 
         private void buttonShowHideTarget_Click(object sender, EventArgs e)
@@ -360,6 +358,8 @@ namespace SRVTracker
                 if (String.IsNullOrEmpty(target) || target.Equals("No commanders found"))
                     return;
 
+                if (checkBoxTrackClosest.Checked)
+                    checkBoxTrackClosest.Checked = false;
                 UpdateTrackingTarget(target);
             }
             else
@@ -371,12 +371,22 @@ namespace SRVTracker
 
         private void checkBoxEnableVRLocator_CheckedChanged(object sender, EventArgs e)
         {
-            if (!Valve.VR.OpenVR.IsHmdPresent())
+            try
+            {
+                if (!Valve.VR.OpenVR.IsHmdPresent())
+                {
+                    checkBoxEnableVRLocator.Checked = false;
+                    checkBoxEnableVRLocator.Enabled = false;
+                    return;
+                }
+            }
+            catch
             {
                 checkBoxEnableVRLocator.Checked = false;
                 checkBoxEnableVRLocator.Enabled = false;
                 return;
             }
+
             if (checkBoxEnableVRLocator.Checked)
             {
                 if (!ShowVRLocator())
@@ -453,17 +463,17 @@ namespace SRVTracker
         private static void InitVRMatrix()
         {
             _vrMatrix = new HmdMatrix34_t();
-            _vrMatrix.m0 = 0.8F;
-            _vrMatrix.m1 = -0.1F;
+            _vrMatrix.m0 = 0.7F;
+            _vrMatrix.m1 = 0.0F;
             _vrMatrix.m2 = 0.0F;
             _vrMatrix.m3 = 0.42F;
             _vrMatrix.m4 = 0.0F;
-            _vrMatrix.m5 = -0.9F;
+            _vrMatrix.m5 = -1.0F;
             _vrMatrix.m6 = 0.0F;
             _vrMatrix.m7 = 0.78F;
-            _vrMatrix.m8 = 0.0F;
-            _vrMatrix.m9 = 0.3F;
-            _vrMatrix.m10 = 0.9F;
+            _vrMatrix.m8 = 0F;
+            _vrMatrix.m9 = 0.0F;
+            _vrMatrix.m10 = 0.0F;
             _vrMatrix.m11 = -0.1F;
         }
 
@@ -492,12 +502,13 @@ namespace SRVTracker
 
             var error = OpenVR.Overlay.ShowOverlay(_vrOverlayHandle);
 
-            OpenVR.Overlay.SetOverlayTransformAbsolute(_vrOverlayHandle, Valve.VR.ETrackingUniverseOrigin.TrackingUniverseSeated, ref _vrMatrix);
+            OpenVR.Overlay.SetOverlayTransformAbsolute(_vrOverlayHandle, Valve.VR.ETrackingUniverseOrigin.TrackingUniverseStanding, ref _vrMatrix);
             
+            /*
             FormVRMatrixTest formVRMatrixTest = new FormVRMatrixTest(_vrOverlayHandle);
             formVRMatrixTest.SetMatrix(ref _vrMatrix);
             formVRMatrixTest.Show();
-            
+            */
             return true;
         }
 

@@ -29,6 +29,7 @@ namespace SRVTracker
         private Size _configHidden = new Size(298, 222);
         public static CVRSystem VRSystem = null;
         private static FormFlagsWatcher _formFlagsWatcher = null;
+        private static string _clientId = null;
 
         public static EDLocation CurrentLocation { get; private set; } = null;
 
@@ -62,14 +63,13 @@ namespace SRVTracker
         private void InitClientId()
         {
             // Check if we have an Id saved, and if not, generate one
-            string clientId = "";
             if (!File.Exists(ClientIdFile))
             {
                 // First run, so show splash and prompt for commander name
                 using (FormFirstRun formFirstRun = new FormFirstRun())
                 {
                     formFirstRun.ShowDialog(this);
-                    clientId = formFirstRun.textBoxCommanderName.Text;
+                    _clientId = formFirstRun.textBoxCommanderName.Text;
                 }
             }
             else
@@ -77,32 +77,41 @@ namespace SRVTracker
                 try
                 {
                     // Read the file
-                    clientId = File.ReadAllText(ClientIdFile);
+                    _clientId = File.ReadAllText(ClientIdFile);
                 }
                 catch { }
             }
 
-            if (!String.IsNullOrEmpty(clientId))
+            if (String.IsNullOrEmpty(_clientId))
             {
-                textBoxClientId.Text = clientId;
+                _clientId = ReadCommanderNameFromJournal();
+                if (String.IsNullOrEmpty(_clientId))
+                {
+                    AddLog("New client Id generated");
+                    _clientId = Guid.NewGuid().ToString();
+                }
+                try
+                {
+                    File.WriteAllText(ClientIdFile, _clientId);
+                    AddLog($"Saved client Id to file: {ClientIdFile}");
+                }
+                catch (Exception ex)
+                {
+                    AddLog($"Error saving client Id to file: {ex.Message}");
+                }
+            }
+            else
                 AddLog("Restored client Id");
-                return;
-            }
 
-            clientId = ReadCommanderNameFromJournal();
-            if (String.IsNullOrEmpty(clientId))
+            if (!String.IsNullOrEmpty(_clientId))
+                textBoxClientId.Text = _clientId;
+        }
+
+        public static string ClientId
+        {
+            get
             {
-                AddLog("New client Id generated");
-                textBoxClientId.Text = Guid.NewGuid().ToString();
-            }
-            try
-            {
-                File.WriteAllText(ClientIdFile, textBoxClientId.Text);
-                AddLog($"Saved client Id to file: {ClientIdFile}");
-            }
-            catch (Exception ex)
-            {
-                AddLog($"Error saving client Id to file: {ex.Message}");
+                return _clientId;
             }
         }
 
@@ -345,7 +354,7 @@ namespace SRVTracker
                     if (_formLocator.Visible)
                     {
 
-                        action = new Action(() => { _formLocator.UpdateTracking(edEvent.Location); });
+                        action = new Action(() => { _formLocator.UpdateTracking(); });
                         Task.Run(action);
                     }
             }
@@ -466,14 +475,18 @@ namespace SRVTracker
         {
             if (textBoxClientId.Text.Contains(','))
                 textBoxClientId.Text = textBoxClientId.Text.Replace(",","");
-            try
+            if (!textBoxClientId.Text.Equals(_clientId))
             {
-                File.WriteAllText(ClientIdFile, textBoxClientId.Text);
-                //AddLog($"Saved client Id to file: {ClientIdFile}"); // Too noisy, as it writes after every change! Too lazy to optimise this
-            }
-            catch (Exception ex)
-            {
-                AddLog($"Error saving client Id to file: {ex.Message}");
+                _clientId = textBoxClientId.Text;
+                try
+                {
+                    File.WriteAllText(ClientIdFile, textBoxClientId.Text);
+                    //AddLog($"Saved client Id to file: {ClientIdFile}"); // Too noisy, as it writes after every change! Too lazy to optimise this
+                }
+                catch (Exception ex)
+                {
+                    AddLog($"Error saving client Id to file: {ex.Message}");
+                }
             }
         }
 
@@ -529,8 +542,11 @@ namespace SRVTracker
                     checkBoxUpload.Checked = false;
                 }
             }
-            else
+            else  if (_udpClient != null)
+            { 
                 _udpClient.Dispose();
+                _udpClient = null;
+            }
         }
 
         private void UpdateServerSettings()

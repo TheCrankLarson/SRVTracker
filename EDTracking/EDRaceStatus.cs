@@ -5,6 +5,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using System.ComponentModel.Design;
 
 namespace EDTracking
 {
@@ -158,7 +159,7 @@ namespace EDTracking
                     }
             }
 
-            if (Eliminated)
+            if (!Started || Finished || _completed || Eliminated)
                 return;
 
             if ( !isFlagSet(StatusFlags.In_SRV) && (!_inPits || !isFlagSet(StatusFlags.Landed_on_planet_surface)) )
@@ -170,7 +171,6 @@ namespace EDTracking
             _lowFuel = isFlagSet(StatusFlags.Low_Fuel);
 
             String currentStatus = ToString();
-            Debug.WriteLine($"{updateEvent.Commander}: {currentStatus}");
             if (currentStatus.Equals(_lastStatus))
                 return;
 

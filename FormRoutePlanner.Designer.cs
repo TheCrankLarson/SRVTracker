@@ -149,7 +149,6 @@
             // 
             // numericUpDownRadius
             // 
-            this.numericUpDownRadius.Enabled = false;
             this.numericUpDownRadius.Increment = new decimal(new int[] {
             10,
             0,
@@ -187,6 +186,7 @@
             this.toolTip1.SetToolTip(this.checkBoxRadius, "Whether radius is taken into consideration when\r\ndeterming if a location is withi" +
         "n a waypoint");
             this.checkBoxRadius.UseVisualStyleBackColor = true;
+            this.checkBoxRadius.CheckedChanged += new System.EventHandler(this.checkBoxRadius_CheckedChanged);
             // 
             // buttonSetAsTarget
             // 

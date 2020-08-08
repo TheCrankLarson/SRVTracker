@@ -81,7 +81,7 @@ namespace SRVTracker
 
         private void buttonMoveWaypointDown_Click(object sender, EventArgs e)
         {
-            if (listBoxWaypoints.SelectedIndex > listBoxWaypoints.SelectedIndex - 2)
+            if (listBoxWaypoints.SelectedIndex == listBoxWaypoints.Items.Count-1)
                 return;
 
             try
@@ -142,6 +142,8 @@ namespace SRVTracker
                     {
                         _route = EDRoute.LoadFromFile(openFileDialog.FileName);
                         textBoxRouteName.Text = _route.Name;
+                        _saveFilename = openFileDialog.FileName;
+                        UpdateButtons();
                         DisplayRoute();
                     }
                     catch { }
@@ -170,6 +172,7 @@ namespace SRVTracker
             buttonMoveWaypointDown.Enabled = listBoxWaypoints.SelectedIndex < listBoxWaypoints.Items.Count - 1;
             buttonSetAsTarget.Enabled = listBoxWaypoints.SelectedIndex >= 0;
             buttonSaveRouteAs.Enabled = !String.IsNullOrEmpty(textBoxRouteName.Text);
+            buttonSaveRoute.Enabled = buttonSaveRouteAs.Enabled && !(String.IsNullOrEmpty(_saveFilename));
         }
 
         private void textBoxRouteName_TextChanged(object sender, EventArgs e)
@@ -220,6 +223,14 @@ namespace SRVTracker
             {
                 MessageBox.Show(this, $"Error saving file: {ex.Message}", "File not saved", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void checkBoxRadius_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBoxRadius.Checked && !numericUpDownRadius.Enabled)
+                numericUpDownRadius.Enabled = true;
+            else if (!checkBoxRadius.Checked && numericUpDownRadius.Enabled)
+                numericUpDownRadius.Enabled = false;
         }
     }
 }

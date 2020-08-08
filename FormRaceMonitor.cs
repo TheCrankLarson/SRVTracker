@@ -693,6 +693,12 @@ namespace SRVTracker
         {
             ShowHideStreamingOptions();
         }
+
+        private void textBoxRaceName_TextChanged(object sender, EventArgs e)
+        {
+            if (!buttonSaveRace.Enabled)
+                UpdateButtons();
+        }
     }
 
     class ListViewItemComparer : IComparer
