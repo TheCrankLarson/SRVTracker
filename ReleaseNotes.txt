@@ -1,6 +1,8 @@
-﻿SRV Tracker keeps track of your location while on planet surfaces and also uploads this information to a server for live race tracking purposes.  This includes writing current leaderboard and participant status to text files that can be used in streams.
+﻿SRV Tracker keeps track of your location while on planet surfaces and can also upload this information to a server for live race tracking purposes. 
 
-The only information that is accessed is that exposed in the status.json file that Elite Dangerous continuously updates while you are playing.  This file contains status information and in-game location only.  By default, server upload is NOT enabled.  If you only want to use SRVTracker for local route planning and tracking, it will work in that mode without needing the server.  Logs are stored on the server for a short time, but only in memory.  Currently, last known status of a commander is also maintained indefinitely, though this is likely to change.  Nothing other than commander name and the contents of the status.json file are shared.  The server does not log any additional information.
+The only information that is accessed is that exposed in the status.json file that Elite Dangerous continuously updates while you are playing.  This file contains status information and in-game location only.
+
+By default, server upload is NOT enabled.  If you only want to use SRVTracker for local route planning and tracking, it will work in that mode without needing the server (and will not send any data outside your computer).  Logs are stored on the server for a time, but only in memory (nothing is written to disk at all).  Currently, last known status of a commander is maintained indefinitely, though this is likely to change.  Nothing other than commander name and the contents of the status.json file are shared.  The server does not log any additional information (not even IP address).
 
 No warranties are provided with this software, nor guarantees of fitness for any purpose.  Use it at your own risk.
 

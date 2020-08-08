@@ -25,8 +25,8 @@ namespace SRVTracker
         private System.Timers.Timer _statusTimer = null;
         private string _statusFile = "";
         private DateTime _lastFileWrite = DateTime.MinValue;
-        private Size _configShowing = new Size(743, 420);
-        private Size _configHidden = new Size(296, 235);
+        private Size _configShowing = new Size(738, 400);
+        private Size _configHidden = new Size(298, 222);
         public static CVRSystem VRSystem = null;
         private static FormFlagsWatcher _formFlagsWatcher = null;
 

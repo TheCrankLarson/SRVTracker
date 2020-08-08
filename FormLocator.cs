@@ -492,13 +492,12 @@ namespace SRVTracker
 
             var error = OpenVR.Overlay.ShowOverlay(_vrOverlayHandle);
 
-            OpenVR.Overlay.SetOverlayTransformAbsolute(_vrOverlayHandle, Valve.VR.ETrackingUniverseOrigin.TrackingUniverseStanding, ref _vrMatrix);
+            OpenVR.Overlay.SetOverlayTransformAbsolute(_vrOverlayHandle, Valve.VR.ETrackingUniverseOrigin.TrackingUniverseSeated, ref _vrMatrix);
             
-            /*
             FormVRMatrixTest formVRMatrixTest = new FormVRMatrixTest(_vrOverlayHandle);
             formVRMatrixTest.SetMatrix(ref _vrMatrix);
             formVRMatrixTest.Show();
-            */
+            
             return true;
         }
 

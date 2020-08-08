@@ -191,7 +191,7 @@
             // listBoxLog
             // 
             this.listBoxLog.FormattingEnabled = true;
-            this.listBoxLog.Location = new System.Drawing.Point(12, 221);
+            this.listBoxLog.Location = new System.Drawing.Point(12, 203);
             this.listBoxLog.Name = "listBoxLog";
             this.listBoxLog.Size = new System.Drawing.Size(700, 147);
             this.listBoxLog.TabIndex = 4;
@@ -221,7 +221,7 @@
             this.checkBoxAutoScroll.AutoSize = true;
             this.checkBoxAutoScroll.Checked = true;
             this.checkBoxAutoScroll.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxAutoScroll.Location = new System.Drawing.Point(542, 202);
+            this.checkBoxAutoScroll.Location = new System.Drawing.Point(366, 180);
             this.checkBoxAutoScroll.Name = "checkBoxAutoScroll";
             this.checkBoxAutoScroll.Size = new System.Drawing.Size(75, 17);
             this.checkBoxAutoScroll.TabIndex = 8;
@@ -247,7 +247,7 @@
             // checkBoxShowLive
             // 
             this.checkBoxShowLive.AutoSize = true;
-            this.checkBoxShowLive.Location = new System.Drawing.Point(623, 202);
+            this.checkBoxShowLive.Location = new System.Drawing.Point(447, 180);
             this.checkBoxShowLive.Name = "checkBoxShowLive";
             this.checkBoxShowLive.Size = new System.Drawing.Size(89, 17);
             this.checkBoxShowLive.TabIndex = 6;
@@ -536,7 +536,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(281, 184);
+            this.ClientSize = new System.Drawing.Size(281, 183);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.checkBoxTrack);
             this.Controls.Add(this.checkBoxUpload);

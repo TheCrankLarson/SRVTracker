@@ -38,35 +38,37 @@
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.textBoxCommanderName);
-            this.groupBox1.Location = new System.Drawing.Point(12, 12);
+            this.groupBox1.Location = new System.Drawing.Point(147, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(410, 46);
+            this.groupBox1.Size = new System.Drawing.Size(512, 52);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Commander name";
             // 
             // textBoxCommanderName
             // 
+            this.textBoxCommanderName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBoxCommanderName.Location = new System.Drawing.Point(6, 19);
             this.textBoxCommanderName.Name = "textBoxCommanderName";
-            this.textBoxCommanderName.Size = new System.Drawing.Size(398, 20);
+            this.textBoxCommanderName.Size = new System.Drawing.Size(500, 22);
             this.textBoxCommanderName.TabIndex = 0;
             this.textBoxCommanderName.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBoxCommanderName_KeyDown);
             this.textBoxCommanderName.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.textBoxCommanderName_PreviewKeyDown);
             // 
             // textBoxReleaseNotes
             // 
-            this.textBoxReleaseNotes.Location = new System.Drawing.Point(12, 64);
+            this.textBoxReleaseNotes.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxReleaseNotes.Location = new System.Drawing.Point(12, 70);
             this.textBoxReleaseNotes.Multiline = true;
             this.textBoxReleaseNotes.Name = "textBoxReleaseNotes";
             this.textBoxReleaseNotes.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBoxReleaseNotes.Size = new System.Drawing.Size(410, 207);
+            this.textBoxReleaseNotes.Size = new System.Drawing.Size(783, 404);
             this.textBoxReleaseNotes.TabIndex = 1;
             // 
             // buttonClose
             // 
             this.buttonClose.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.buttonClose.Location = new System.Drawing.Point(185, 277);
+            this.buttonClose.Location = new System.Drawing.Point(366, 480);
             this.buttonClose.Name = "buttonClose";
             this.buttonClose.Size = new System.Drawing.Size(75, 23);
             this.buttonClose.TabIndex = 2;
@@ -78,7 +80,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(434, 307);
+            this.ClientSize = new System.Drawing.Size(807, 515);
             this.ControlBox = false;
             this.Controls.Add(this.buttonClose);
             this.Controls.Add(this.textBoxReleaseNotes);
