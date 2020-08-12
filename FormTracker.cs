@@ -480,8 +480,7 @@ namespace SRVTracker
                 _clientId = textBoxClientId.Text;
                 try
                 {
-                    File.WriteAllText(ClientIdFile, textBoxClientId.Text);
-                    //AddLog($"Saved client Id to file: {ClientIdFile}"); // Too noisy, as it writes after every change! Too lazy to optimise this
+                    File.WriteAllText(ClientIdFile, textBoxClientId.Text); // Too noisy, as it writes after every change! Too lazy to optimise this
                 }
                 catch (Exception ex)
                 {

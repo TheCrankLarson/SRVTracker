@@ -184,12 +184,40 @@ namespace DataCollator
                         SendStatus(context);
                     });
                 }
+                else if (request.RawUrl.ToLower().StartsWith("/datacollator/racestatus"))
+                {
+                    action = (() => {
+                        SendRaceStatus(context);
+                    });
+                }
                 else
                     action = (() => {
                         DetermineResponse(sRequest, context);
                     });
                 Task.Run(action);
                 _Listener.BeginGetContext(new AsyncCallback(ListenerCallback), _Listener);               
+            }
+            catch { }
+        }
+
+        private void SendRaceStatus(HttpListenerContext Context)
+        {
+            StringBuilder racersStatus = new StringBuilder();
+            if (_commanderStatus.Count>0)
+                foreach (EDRaceStatus raceStatus in _commanderStatus.Values)
+                    racersStatus.AppendLine(raceStatus.ToJson());
+
+            try
+            {
+                byte[] buffer = System.Text.Encoding.UTF8.GetBytes(racersStatus.ToString());
+                Context.Response.ContentLength64 = buffer.Length;
+                Context.Response.StatusCode = (int)HttpStatusCode.OK;
+
+                using (Stream output = Context.Response.OutputStream)
+                    output.Write(buffer, 0, buffer.Length);
+                Context.Response.OutputStream.Flush();
+                Context.Response.KeepAlive = true;
+                Context.Response.Close();
             }
             catch { }
         }

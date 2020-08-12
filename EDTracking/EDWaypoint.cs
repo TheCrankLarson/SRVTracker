@@ -14,6 +14,7 @@ namespace EDTracking
         public EDLocation Location { get; set; } = null;
         public double Radius { get; set; } = 5000;
         public int Direction { get; set; } = -1;
+        public DateTime TimeTracked { get; internal set; }  // To store the time the location was recorded when route recording
 
         public EDWaypoint(EDLocation location)
         {
@@ -24,6 +25,12 @@ namespace EDTracking
         {
             Radius = hitRadius;
             Direction = hitDirection;
+        }
+
+        public EDWaypoint(EDLocation location, DateTime timeTracked): this(location)
+        {
+            TimeTracked = timeTracked;
+            Radius = 1;
         }
 
         public string Name

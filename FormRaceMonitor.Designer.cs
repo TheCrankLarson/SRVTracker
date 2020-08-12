@@ -55,21 +55,23 @@
             this.checkBoxEliminationOnDestruction = new System.Windows.Forms.CheckBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.checkBoxStreamInfo = new System.Windows.Forms.CheckBox();
             this.checkBoxAllowPitstops = new System.Windows.Forms.CheckBox();
             this.checkBoxSRVRace = new System.Windows.Forms.CheckBox();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.numericUpDownTargetPadding = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDownStatusPadding = new System.Windows.Forms.NumericUpDown();
+            this.textBoxPaddingChar = new System.Windows.Forms.TextBox();
             this.checkBoxPaddingCharacters = new System.Windows.Forms.CheckBox();
             this.textBoxExportTargetFile = new System.Windows.Forms.TextBox();
             this.checkBoxExportTarget = new System.Windows.Forms.CheckBox();
             this.textBoxExportStatusFile = new System.Windows.Forms.TextBox();
             this.textBoxExportLeaderboardFile = new System.Windows.Forms.TextBox();
             this.checkBoxExportStatus = new System.Windows.Forms.CheckBox();
-            this.numericUpDownStatusPadding = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDownTargetPadding = new System.Windows.Forms.NumericUpDown();
-            this.textBoxPaddingChar = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.checkBoxStreamInfo = new System.Windows.Forms.CheckBox();
+            this.checkBoxClosestPlayerTarget = new System.Windows.Forms.CheckBox();
+            this.buttonRaceHistory = new System.Windows.Forms.Button();
             this.buttonReset = new System.Windows.Forms.Button();
             this.buttonEditStatusMessages = new System.Windows.Forms.Button();
             this.buttonAddCommander = new System.Windows.Forms.Button();
@@ -91,8 +93,8 @@
             this.groupBox5.SuspendLayout();
             this.groupBox6.SuspendLayout();
             this.groupBox7.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownStatusPadding)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTargetPadding)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownStatusPadding)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -182,6 +184,7 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.buttonRaceHistory);
             this.groupBox3.Controls.Add(this.buttonReset);
             this.groupBox3.Controls.Add(this.buttonEditStatusMessages);
             this.groupBox3.Controls.Add(this.groupBoxAddCommander);
@@ -371,6 +374,17 @@
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Race Settings";
             // 
+            // checkBoxStreamInfo
+            // 
+            this.checkBoxStreamInfo.AutoSize = true;
+            this.checkBoxStreamInfo.Location = new System.Drawing.Point(198, 19);
+            this.checkBoxStreamInfo.Name = "checkBoxStreamInfo";
+            this.checkBoxStreamInfo.Size = new System.Drawing.Size(79, 17);
+            this.checkBoxStreamInfo.TabIndex = 3;
+            this.checkBoxStreamInfo.Text = "Stream info";
+            this.checkBoxStreamInfo.UseVisualStyleBackColor = true;
+            this.checkBoxStreamInfo.CheckedChanged += new System.EventHandler(this.checkBoxStreamInfo_CheckedChanged);
+            // 
             // checkBoxAllowPitstops
             // 
             this.checkBoxAllowPitstops.AutoSize = true;
@@ -400,6 +414,7 @@
             // 
             // groupBox7
             // 
+            this.groupBox7.Controls.Add(this.checkBoxClosestPlayerTarget);
             this.groupBox7.Controls.Add(this.label4);
             this.groupBox7.Controls.Add(this.numericUpDownTargetPadding);
             this.groupBox7.Controls.Add(this.numericUpDownStatusPadding);
@@ -415,14 +430,57 @@
             this.groupBox7.Controls.Add(this.numericUpDownLeaderboardPadding);
             this.groupBox7.Location = new System.Drawing.Point(726, 12);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(245, 225);
+            this.groupBox7.Size = new System.Drawing.Size(245, 238);
             this.groupBox7.TabIndex = 6;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "Streaming Options";
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(176, 20);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(46, 13);
+            this.label4.TabIndex = 17;
+            this.label4.Text = "Padding";
+            // 
+            // numericUpDownTargetPadding
+            // 
+            this.numericUpDownTargetPadding.Location = new System.Drawing.Point(179, 139);
+            this.numericUpDownTargetPadding.Name = "numericUpDownTargetPadding";
+            this.numericUpDownTargetPadding.Size = new System.Drawing.Size(50, 20);
+            this.numericUpDownTargetPadding.TabIndex = 16;
+            this.numericUpDownTargetPadding.Value = new decimal(new int[] {
+            38,
+            0,
+            0,
+            0});
+            // 
+            // numericUpDownStatusPadding
+            // 
+            this.numericUpDownStatusPadding.Location = new System.Drawing.Point(179, 90);
+            this.numericUpDownStatusPadding.Name = "numericUpDownStatusPadding";
+            this.numericUpDownStatusPadding.Size = new System.Drawing.Size(50, 20);
+            this.numericUpDownStatusPadding.TabIndex = 15;
+            this.numericUpDownStatusPadding.Value = new decimal(new int[] {
+            38,
+            0,
+            0,
+            0});
+            // 
+            // textBoxPaddingChar
+            // 
+            this.textBoxPaddingChar.Location = new System.Drawing.Point(166, 187);
+            this.textBoxPaddingChar.Name = "textBoxPaddingChar";
+            this.textBoxPaddingChar.Size = new System.Drawing.Size(30, 20);
+            this.textBoxPaddingChar.TabIndex = 13;
+            this.textBoxPaddingChar.Text = " ";
+            // 
             // checkBoxPaddingCharacters
             // 
             this.checkBoxPaddingCharacters.AutoSize = true;
+            this.checkBoxPaddingCharacters.Checked = true;
+            this.checkBoxPaddingCharacters.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxPaddingCharacters.Location = new System.Drawing.Point(6, 189);
             this.checkBoxPaddingCharacters.Name = "checkBoxPaddingCharacters";
             this.checkBoxPaddingCharacters.Size = new System.Drawing.Size(154, 17);
@@ -477,57 +535,28 @@
             this.checkBoxExportStatus.UseVisualStyleBackColor = true;
             this.checkBoxExportStatus.CheckedChanged += new System.EventHandler(this.checkBoxExportStatus_CheckedChanged);
             // 
-            // numericUpDownStatusPadding
+            // checkBoxClosestPlayerTarget
             // 
-            this.numericUpDownStatusPadding.Location = new System.Drawing.Point(179, 90);
-            this.numericUpDownStatusPadding.Name = "numericUpDownStatusPadding";
-            this.numericUpDownStatusPadding.Size = new System.Drawing.Size(50, 20);
-            this.numericUpDownStatusPadding.TabIndex = 15;
-            this.numericUpDownStatusPadding.Value = new decimal(new int[] {
-            38,
-            0,
-            0,
-            0});
+            this.checkBoxClosestPlayerTarget.AutoSize = true;
+            this.checkBoxClosestPlayerTarget.Checked = true;
+            this.checkBoxClosestPlayerTarget.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxClosestPlayerTarget.Location = new System.Drawing.Point(6, 212);
+            this.checkBoxClosestPlayerTarget.Name = "checkBoxClosestPlayerTarget";
+            this.checkBoxClosestPlayerTarget.Size = new System.Drawing.Size(202, 17);
+            this.checkBoxClosestPlayerTarget.TabIndex = 18;
+            this.checkBoxClosestPlayerTarget.Text = "Always export closest player as target";
+            this.checkBoxClosestPlayerTarget.UseVisualStyleBackColor = true;
             // 
-            // numericUpDownTargetPadding
+            // buttonRaceHistory
             // 
-            this.numericUpDownTargetPadding.Location = new System.Drawing.Point(179, 139);
-            this.numericUpDownTargetPadding.Name = "numericUpDownTargetPadding";
-            this.numericUpDownTargetPadding.Size = new System.Drawing.Size(50, 20);
-            this.numericUpDownTargetPadding.TabIndex = 16;
-            this.numericUpDownTargetPadding.Value = new decimal(new int[] {
-            38,
-            0,
-            0,
-            0});
-            // 
-            // textBoxPaddingChar
-            // 
-            this.textBoxPaddingChar.Location = new System.Drawing.Point(166, 187);
-            this.textBoxPaddingChar.Name = "textBoxPaddingChar";
-            this.textBoxPaddingChar.Size = new System.Drawing.Size(30, 20);
-            this.textBoxPaddingChar.TabIndex = 13;
-            this.textBoxPaddingChar.Text = " ";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(176, 20);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(46, 13);
-            this.label4.TabIndex = 17;
-            this.label4.Text = "Padding";
-            // 
-            // checkBoxStreamInfo
-            // 
-            this.checkBoxStreamInfo.AutoSize = true;
-            this.checkBoxStreamInfo.Location = new System.Drawing.Point(198, 19);
-            this.checkBoxStreamInfo.Name = "checkBoxStreamInfo";
-            this.checkBoxStreamInfo.Size = new System.Drawing.Size(79, 17);
-            this.checkBoxStreamInfo.TabIndex = 3;
-            this.checkBoxStreamInfo.Text = "Stream info";
-            this.checkBoxStreamInfo.UseVisualStyleBackColor = true;
-            this.checkBoxStreamInfo.CheckedChanged += new System.EventHandler(this.checkBoxStreamInfo_CheckedChanged);
+            this.buttonRaceHistory.Enabled = false;
+            this.buttonRaceHistory.Image = global::SRVTracker.Properties.Resources.History_16x;
+            this.buttonRaceHistory.Location = new System.Drawing.Point(361, 202);
+            this.buttonRaceHistory.Name = "buttonRaceHistory";
+            this.buttonRaceHistory.Size = new System.Drawing.Size(29, 23);
+            this.buttonRaceHistory.TabIndex = 9;
+            this.buttonRaceHistory.UseVisualStyleBackColor = true;
+            this.buttonRaceHistory.Click += new System.EventHandler(this.buttonRaceHistory_Click);
             // 
             // buttonReset
             // 
@@ -667,7 +696,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(726, 425);
+            this.ClientSize = new System.Drawing.Size(723, 425);
             this.Controls.Add(this.groupBox7);
             this.Controls.Add(this.groupBox6);
             this.Controls.Add(this.groupBox5);
@@ -694,8 +723,8 @@
             this.groupBox6.PerformLayout();
             this.groupBox7.ResumeLayout(false);
             this.groupBox7.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownStatusPadding)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTargetPadding)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownStatusPadding)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -755,5 +784,7 @@
         private System.Windows.Forms.Button buttonReset;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.CheckBox checkBoxStreamInfo;
+        private System.Windows.Forms.CheckBox checkBoxClosestPlayerTarget;
+        private System.Windows.Forms.Button buttonRaceHistory;
     }
 }

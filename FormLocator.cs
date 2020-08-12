@@ -30,6 +30,8 @@ namespace SRVTracker
         private static Bitmap _vrbitmap = null;
         private static Graphics _vrgraphics = null;
         private double _trackedTargetDistance = double.MaxValue;
+        private static EDEvent _closestCommander = null;
+        private static double _closestCommanderDistance = double.MaxValue;
 
         public FormLocator()
         {
@@ -46,13 +48,22 @@ namespace SRVTracker
             if (!edEvent.HasCoordinates || edEvent.Commander.Equals(FormTracker.ClientId))
                 return;
 
-            if (checkBoxTrackClosest.Checked)
+            if (FormTracker.CurrentLocation != null)
             {
                 // We are tracking the closest commander to us, so we need to check all updates and change our tracking target as necessary
                 // We just check if the distance from this commander is closer than our currently tracked target
 
-                double distanceToCommnader = EDLocation.DistanceBetween(FormTracker.CurrentLocation, edEvent.Location);
-                if (distanceToCommnader<_trackedTargetDistance)
+                double distanceToCommander = EDLocation.DistanceBetween(FormTracker.CurrentLocation, edEvent.Location);
+                if (distanceToCommander == 0) // This is impossible, and just means we haven't got data on the tracked target
+                    distanceToCommander = double.MaxValue;
+                if (distanceToCommander < _closestCommanderDistance)
+                {
+                    _closestCommander = edEvent;
+                    _closestCommanderDistance = distanceToCommander;
+                }
+                else if (edEvent.Commander == _closestCommander.Commander)
+                    _closestCommanderDistance = distanceToCommander;
+                if (checkBoxTrackClosest.Checked)
                 {
                     // Switch tracking to this target
                     _targetPosition = edEvent.Location;
@@ -71,6 +82,14 @@ namespace SRVTracker
 
         public static double PlanetaryRadius { get; set; } = 0;
         public static string ServerAddress { get; set; } = null;
+        public static string ClosestCommander
+        {
+            get { 
+                if (_closestCommander!=null)
+                    return _closestCommander.Commander;
+                return null;
+            }
+        }
 
         public string TrackingTarget { get; private set; } = "";
 

@@ -38,6 +38,7 @@ namespace SRVTracker
             CommanderWatcher.Start();
             CommanderWatcher.UpdateReceived += CommanderWatcher_UpdateReceived;
             EDRaceStatus.StatusChanged += EDStatus_StatusChanged;
+            listViewParticipants.ListViewItemSorter = new ListViewItemComparer();
             _racers = new Dictionary<string, System.Windows.Forms.ListViewItem>();
             AddTrackedCommanders();
             checkBoxSRVRace.Checked = EDRaceStatus.EliminateOnShipFlight;
@@ -215,15 +216,23 @@ namespace SRVTracker
 
             if (_nextWaypoint != null)
             {
-                double distanceToWaypoint = EDLocation.DistanceBetween(edEvent.Location, _nextWaypoint.Location);
+                double distanceToWaypoint;
+                if (_racersStatus==null)
+                    distanceToWaypoint = EDLocation.DistanceBetween(edEvent.Location, _nextWaypoint.Location);
+                else
+                    distanceToWaypoint = _racersStatus[edEvent.Commander].DistanceToWaypoint;
                 _racers[edEvent.Commander].SubItems[3].Tag = distanceToWaypoint; // Store in m for comparison
                 Action action;
-                string distanceToShow = "0";
-                        
-                if (distanceToWaypoint > 2500)
-                    distanceToShow = $"{(distanceToWaypoint / 1000).ToString("#.0")}km";
-                else
-                    distanceToShow = $"{distanceToWaypoint.ToString("#.0")}m";
+                string distanceToShow = "NA";
+
+                if (distanceToWaypoint < double.MaxValue)
+                {
+                    if (distanceToWaypoint > 2500)
+                        distanceToShow = $"{(distanceToWaypoint / 1000):0.0)}km";
+                    else
+                        distanceToShow = $"{distanceToWaypoint:0.0}m";
+                }
+
                 if (!distanceToShow.Equals(_racers[edEvent.Commander].SubItems[3].Text))
                 {
                     // Needs updating
@@ -233,7 +242,6 @@ namespace SRVTracker
                     else
                         action();
                 }
-
 
                 List<double> distancesToWaypoint = new List<double>();
                 foreach (System.Windows.Forms.ListViewItem item in _racers.Values)
@@ -301,7 +309,11 @@ namespace SRVTracker
                 }
                 catch { }
             }
-            trackingTarget.AppendLine(_locatorForm.TrackingTarget);
+
+            if (checkBoxClosestPlayerTarget.Checked)
+                trackingTarget.AppendLine(FormLocator.ClosestCommander);
+            else
+                trackingTarget.AppendLine(_locatorForm.TrackingTarget);
 
             if (checkBoxPaddingCharacters.Checked)
             {
@@ -470,13 +482,16 @@ namespace SRVTracker
             EDRaceStatus.AllowPitStops = checkBoxAllowPitstops.Checked;
             EDRaceStatus.EliminateOnShipFlight = checkBoxSRVRace.Checked;
             EDRaceStatus.Started = true;
+            EDRaceStatus.StartTime = DateTime.Now;
             buttonStartRace.Enabled = false;
             buttonStopRace.Enabled = true;
+            buttonRaceHistory.Enabled = true;
         }
 
         private void buttonStopRace_Click(object sender, EventArgs e)
         {
-            EDRaceStatus.Finished = true;
+            foreach (EDRaceStatus status in _racersStatus.Values)
+                status.Finished = true;
             buttonStopRace.Enabled = false;
             buttonReset.Enabled = true;
         }
@@ -663,7 +678,7 @@ namespace SRVTracker
         private void buttonReset_Click(object sender, EventArgs e)
         {
             EDRaceStatus.Started = false;
-            EDRaceStatus.Finished = false;
+            _racersStatus = null;
             _eliminatedRacers = null;
             _racersStatus = null;
             if (_race.Route.Waypoints.Count > 0)
@@ -671,6 +686,7 @@ namespace SRVTracker
             listBoxWaypoints.Refresh();
             buttonStartRace.Enabled = true;
             buttonReset.Enabled = false;
+            buttonRaceHistory.Enabled = false;
         }
 
         private void ShowHideStreamingOptions()
@@ -696,8 +712,15 @@ namespace SRVTracker
 
         private void textBoxRaceName_TextChanged(object sender, EventArgs e)
         {
+            _race.Name = textBoxRaceName.Text;
             if (!buttonSaveRace.Enabled)
                 UpdateButtons();
+        }
+
+        private void buttonRaceHistory_Click(object sender, EventArgs e)
+        {
+            FormRaceHistory formRaceHistory = new FormRaceHistory(_racersStatus);
+            formRaceHistory.Show();
         }
     }
 
