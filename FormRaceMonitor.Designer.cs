@@ -278,13 +278,12 @@
             // checkBoxShowDetailedStatus
             // 
             this.checkBoxShowDetailedStatus.AutoSize = true;
-            this.checkBoxShowDetailedStatus.Checked = true;
-            this.checkBoxShowDetailedStatus.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxShowDetailedStatus.Location = new System.Drawing.Point(6, 42);
             this.checkBoxShowDetailedStatus.Name = "checkBoxShowDetailedStatus";
             this.checkBoxShowDetailedStatus.Size = new System.Drawing.Size(128, 17);
             this.checkBoxShowDetailedStatus.TabIndex = 5;
             this.checkBoxShowDetailedStatus.Text = "Show Detailed Status";
+            this.toolTip1.SetToolTip(this.checkBoxShowDetailedStatus, "Show info such as NV (night vision), LL (lights low)");
             this.checkBoxShowDetailedStatus.UseVisualStyleBackColor = true;
             this.checkBoxShowDetailedStatus.CheckedChanged += new System.EventHandler(this.checkBoxShowDetailedStatus_CheckedChanged);
             // 
@@ -345,6 +344,7 @@
             this.checkBoxEliminationOnDestruction.Size = new System.Drawing.Size(183, 17);
             this.checkBoxEliminationOnDestruction.TabIndex = 0;
             this.checkBoxEliminationOnDestruction.Text = "Elimination on vehicle destruction";
+            this.toolTip1.SetToolTip(this.checkBoxEliminationOnDestruction, "Vehicle destruction results in end of race for that commander");
             this.checkBoxEliminationOnDestruction.UseVisualStyleBackColor = true;
             this.checkBoxEliminationOnDestruction.CheckedChanged += new System.EventHandler(this.checkBoxEliminationOnDestruction_CheckedChanged);
             // 
@@ -395,6 +395,7 @@
             this.checkBoxAllowPitstops.Size = new System.Drawing.Size(90, 17);
             this.checkBoxAllowPitstops.TabIndex = 2;
             this.checkBoxAllowPitstops.Text = "Allow pitstops";
+            this.toolTip1.SetToolTip(this.checkBoxAllowPitstops, "Allows commanders to board their ship for repairs during the race");
             this.checkBoxAllowPitstops.UseVisualStyleBackColor = true;
             this.checkBoxAllowPitstops.CheckedChanged += new System.EventHandler(this.checkBoxAllowPitstops_CheckedChanged);
             // 
@@ -409,6 +410,7 @@
             this.checkBoxSRVRace.Size = new System.Drawing.Size(94, 17);
             this.checkBoxSRVRace.TabIndex = 1;
             this.checkBoxSRVRace.Text = "SRV only race";
+            this.toolTip1.SetToolTip(this.checkBoxSRVRace, "If enabled, competitors will be eliminated if they use their ship");
             this.checkBoxSRVRace.UseVisualStyleBackColor = true;
             this.checkBoxSRVRace.CheckedChanged += new System.EventHandler(this.checkBoxSRVRace_CheckedChanged);
             // 
@@ -555,6 +557,7 @@
             this.buttonRaceHistory.Name = "buttonRaceHistory";
             this.buttonRaceHistory.Size = new System.Drawing.Size(29, 23);
             this.buttonRaceHistory.TabIndex = 9;
+            this.toolTip1.SetToolTip(this.buttonRaceHistory, "Show race history");
             this.buttonRaceHistory.UseVisualStyleBackColor = true;
             this.buttonRaceHistory.Click += new System.EventHandler(this.buttonRaceHistory_Click);
             // 

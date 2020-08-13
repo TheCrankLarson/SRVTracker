@@ -46,7 +46,7 @@ namespace EDTracking
         private long _lastFlags = 0;
         private bool _inPits = false;
         private bool _lowFuel = false;
-        private StringBuilder _raceHistory = null;
+        private StringBuilder _raceHistory = new StringBuilder();
         private double _nextLogDistanceToWaypoint = double.MaxValue;
 
         public EDRaceStatus(EDEvent baseEvent)
@@ -56,8 +56,8 @@ namespace EDTracking
             Heading = baseEvent.Heading;
             TimeStamp = baseEvent.TimeStamp;
             Commander = baseEvent.Commander;
-            if (baseEvent.HasCoordinates)
-                Location = baseEvent.Location;
+            if (baseEvent.HasCoordinates())
+                Location = baseEvent.Location();
         }
 
         public EDRaceStatus(string commander, EDRoute route, bool immediateStart = true)
@@ -173,9 +173,9 @@ namespace EDTracking
             if (Finished || Eliminated)
                 return;
 
-            if (updateEvent.HasCoordinates)
+            if (updateEvent.HasCoordinates())
             {
-                Location = updateEvent.Location;
+                Location = updateEvent.Location();
                 if (WaypointIndex > 0)
                 {
                     DistanceToWaypoint = EDLocation.DistanceBetween(Location, Route.Waypoints[WaypointIndex].Location);

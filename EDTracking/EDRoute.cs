@@ -4,53 +4,59 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using System.Text.Json;
 
 namespace EDTracking
 {
     public class EDRoute
     {
-        private List<EDWaypoint> _waypoints = null;
         public string Name { get; set; } = null;
+        public List<EDWaypoint> Waypoints { get; set; } = null;
         private string _saveFilename = "";
+
+        public EDRoute() { }
 
         public EDRoute(string name)
         {
             Name = name;
-            _waypoints = new List<EDWaypoint>();
+            Waypoints = new List<EDWaypoint>();
         }
 
         public EDRoute(string name, List<EDWaypoint> waypoints)
         {
             Name = name;
-            _waypoints = waypoints;
+            Waypoints = waypoints;
         }
 
         public override string ToString()
         {
+            return JsonSerializer.Serialize(this);
+            /*
             StringBuilder routeSerialised = new StringBuilder(Name);
             foreach (EDWaypoint waypoint in _waypoints)
                 _ = routeSerialised.Append($"└{waypoint.ToString()}");
-            return routeSerialised.ToString();
+            return routeSerialised.ToString();*/
         }
 
         public static EDRoute FromString(string location)
         {
-            try
+            if (location.Contains('└'))
             {
-                string[] routeInfo = location.Split('└');
-                List<EDWaypoint> waypoints = new List<EDWaypoint>();
-                for (int i = 1; i < routeInfo.Length; i++)
-                    waypoints.Add(EDWaypoint.FromString(routeInfo[i]));
-                return new EDRoute(routeInfo[0], waypoints);
+                try
+                {
+                    string[] routeInfo = location.Split('└');
+                    List<EDWaypoint> waypoints = new List<EDWaypoint>();
+                    for (int i = 1; i < routeInfo.Length; i++)
+                        waypoints.Add(EDWaypoint.FromString(routeInfo[i]));
+                    return new EDRoute(routeInfo[0], waypoints);
+                }
+                catch { }
+                return null;
             }
-            catch { }
-            return null;
+            return (EDRoute)JsonSerializer.Deserialize(location, typeof(EDRoute));
         }
 
-        public List<EDWaypoint> Waypoints
-        {
-            get { return _waypoints; }
-        }
+
 
         public static EDRoute LoadFromFile(string filename)
         {

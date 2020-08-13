@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
+//using Newtonsoft.Json;
 using System.Reflection;
 using System.Globalization;
+using System.Text.Json;
+using System.Numerics;
 
 namespace EDTracking
 {
@@ -16,55 +18,64 @@ namespace EDTracking
         //
         private static CultureInfo _enGB = new CultureInfo("en-GB");
 
-        public EDEvent(string json, string commander = "")
+       // public string RawData { get; } = "";
+
+        public double Latitude { get; set; } = 0;
+        public double Longitude { get; set; } = 0;
+        public int Heading { get; set; } = -1;
+        public long Flags { get; set; } = -1;
+        public DateTime TimeStamp { get; set; } = DateTime.MinValue;
+        public string BodyName { get; set; } = "";
+        public double PlanetRadius { get;  set; } = 0;
+        public double Altitude { get; set; } = 0;
+        public string Commander { get; set; } = "";
+
+        public EDEvent() { }
+
+        public EDLocation Location()
         {
-            this.RawData = json;
-            Commander = commander;
-            Newtonsoft.Json.Linq.JObject obj = (Newtonsoft.Json.Linq.JObject)JsonConvert.DeserializeObject(json);
-            if (obj == null)
-                return;
+            if (HasCoordinates())
+                return new EDLocation(Latitude, Longitude, Altitude, PlanetRadius);
+            return null;
+        }
 
-            foreach (Newtonsoft.Json.Linq.JProperty prop in obj.Properties())
+        public static EDEvent FromJson(string json)
+        {
+            return (EDEvent)JsonSerializer.Deserialize(json, typeof(EDEvent));
+        }
+
+        public string ToJson()
+        {
+            return JsonSerializer.Serialize(this);
+        }
+
+        public EDEvent(string statusJson, string commander)
+        {
+            // Initialise from the ED JSON status file
+
+            using (JsonDocument jsonDoc = JsonDocument.Parse(statusJson))
             {
-                switch (prop.Name)
-                {
-                    case "Latitude":
-                        this.Latitude = Convert.ToDouble(prop.Value);
-                        break;
+                JsonElement root = jsonDoc.RootElement;
+                JsonElement property;
 
-                    case "Longitude":
-                        this.Longitude = Convert.ToDouble(prop.Value);
-                        break;
-
-                    case "Heading":
-                        this.Heading = (int)prop.Value;
-                        break;
-
-                    case "Flags":
-                        this.Flags = (long)prop.Value;
-                        break;
-
-                    case "timestamp":
-                        this.TimeStamp = (DateTime)prop.Value;
-                        break;
-
-                    case "BodyName":
-                        this.BodyName= (string)prop.Value;
-                        break;
-
-                    case "PlanetRadius":
-                        this.PlanetRadius = Convert.ToDouble(prop.Value);
-                        break;
-
-                    case "Altitude":
-                        this.Altitude = Convert.ToDouble(prop.Value);
-                        break;
-
-                    default:
-                        break;
-                }
+                if (root.TryGetProperty("timestamp", out property))
+                    TimeStamp = property.GetDateTime();
+                if (root.TryGetProperty("Flags", out property))
+                    Flags = property.GetInt64();
+                if (root.TryGetProperty("Latitude", out property))
+                    Latitude = property.GetDouble();
+                if (root.TryGetProperty("Longitude", out property))
+                    Longitude = property.GetDouble();
+                if (root.TryGetProperty("Altitude", out property))
+                    Altitude = property.GetDouble();
+                if (root.TryGetProperty("PlanetRadius", out property))
+                    PlanetRadius = property.GetDouble();
+                if (root.TryGetProperty("BodyName", out property))
+                    BodyName = property.GetString();
+                if (root.TryGetProperty("Heading", out property))
+                    Heading = property.GetInt16();
             }
-            
+            Commander = commander;
         }
 
         public EDEvent(string commander, long timestamp, double latitude, double longitude, double altitude, int heading, double planetRadius, long flags)
@@ -79,72 +90,40 @@ namespace EDTracking
             this.Flags = flags;
         }
 
-        public string RawData { get; } = "";
 
-        public double Latitude { get; } = 0;
-        public double Longitude { get; } = 0;
-        public int Heading { get; } = -1;
-        public long Flags { get; } = -1;
-        public DateTime TimeStamp { get; } = DateTime.MinValue;
-        public string BodyName { get; } = "";
-        public double PlanetRadius { get; } = 0;
-        public double Altitude { get; } = 0;
-        public string Commander { get; } = "";
 
-        public EDLocation Location
+        public bool isInSRV()
         {
-            get
-            {
-                if (HasCoordinates)
-                        return new EDLocation(Latitude, Longitude, Altitude, PlanetRadius);
-                return null;
-            }
+            return (this.Flags & (long)StatusFlags.In_SRV) == (long)StatusFlags.In_SRV;
         }
 
-        public bool isInSRV
+        public bool srvIsUnderShip()
         {
-            get { return (this.Flags & (long)StatusFlags.In_SRV) == (long)StatusFlags.In_SRV; }
+            return (this.Flags & (long)StatusFlags.Srv_UnderShip) == (long)StatusFlags.Srv_UnderShip;
         }
 
-        public bool srvIsUnderShip
+        public bool isInMainShip()
         {
-            get { return (this.Flags & (long)StatusFlags.Srv_UnderShip) == (long)StatusFlags.Srv_UnderShip; }
+            return (this.Flags & (long)StatusFlags.In_MainShip) == (long)StatusFlags.In_MainShip;
         }
 
-        public bool isInMainShip
+        public bool isInFighter()
         {
-            get { return (this.Flags & (long)StatusFlags.In_MainShip) == (long)StatusFlags.In_MainShip; }
+            return (this.Flags & (long)StatusFlags.In_Fighter) == (long)StatusFlags.In_Fighter;
         }
 
-        public bool isInFighter
+        public bool HasCoordinates()
         {
-            get { return (this.Flags & (long)StatusFlags.In_Fighter) == (long)StatusFlags.In_Fighter; }
+            return (this.Flags & (long)StatusFlags.Has_Lat_Long) == (long)StatusFlags.Has_Lat_Long;
         }
 
-        public bool HasCoordinates
+        public string Vehicle()
         {
-            get { return (this.Flags & (long)StatusFlags.Has_Lat_Long) == (long)StatusFlags.Has_Lat_Long; }
+            if (this.isInSRV()) return "SRV";
+            if (this.isInMainShip()) return "Ship";
+            if (this.isInFighter()) return "SLF";
+            return "Unknown";
         }
 
-        public string Vehicle
-        {
-            get
-            {
-                if (this.isInSRV) return "SRV";
-                if (this.isInMainShip) return "Ship";
-                if (this.isInFighter) return "SLF";
-                return "Unknown";
-            }
-        }
-
-        public string TrackingInfo
-        {
-            get
-            {
-                // Tracking info is: timestamp,latitude,longitude,altitude,heading,planet radius,flags
-                // We force culture to en-GB so that all the numbers get uploaded in the same format (and because we can't have commas in them)
-                return $"{this.TimeStamp.Ticks},{this.Latitude.ToString(_enGB)},{this.Longitude.ToString( _enGB)},{this.Altitude.ToString(_enGB)},{this.Heading},{this.PlanetRadius.ToString(_enGB)},{this.Flags}";
-            }
-        }
     }
 }

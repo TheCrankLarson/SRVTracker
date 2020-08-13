@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Globalization;
+using System.Text.Json;
 
 namespace EDTracking
 {
@@ -49,16 +50,20 @@ namespace EDTracking
 
         public override string ToString()
         {
-            return $"{Name}║{SystemName}║{PlanetName}║{Latitude.ToString(_enGB)}║{Longitude.ToString(_enGB)}║{Altitude.ToString(_enGB)}║{PlanetaryRadius.ToString(_enGB)}";
+            return JsonSerializer.Serialize(this);// $"{Name}║{SystemName}║{PlanetName}║{Latitude.ToString(_enGB)}║{Longitude.ToString(_enGB)}║{Altitude.ToString(_enGB)}║{PlanetaryRadius.ToString(_enGB)}";
         }
 
         public static EDLocation FromString(string location)
         { 
             try
             {
-                string[] locationInfo = location.Split('║');
-                return new EDLocation(locationInfo[0], locationInfo[1], locationInfo[2], Convert.ToDouble(locationInfo[3], _enGB),
-                    Convert.ToDouble(locationInfo[4], _enGB), Convert.ToDouble(locationInfo[5],_enGB), Convert.ToDouble(locationInfo[6], _enGB));
+                if (location.Contains('║'))
+                {
+                    string[] locationInfo = location.Split('║');
+                    return new EDLocation(locationInfo[0], locationInfo[1], locationInfo[2], Convert.ToDouble(locationInfo[3], _enGB),
+                        Convert.ToDouble(locationInfo[4], _enGB), Convert.ToDouble(locationInfo[5], _enGB), Convert.ToDouble(locationInfo[6], _enGB));
+                }
+                return (EDLocation)JsonSerializer.Deserialize(location, typeof(EDLocation));
             }
             catch { }
             return null;

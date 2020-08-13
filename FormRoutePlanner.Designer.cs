@@ -30,26 +30,32 @@
         {
             this.components = new System.ComponentModel.Container();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.buttonSaveRoute = new System.Windows.Forms.Button();
+            this.buttonLoadRoute = new System.Windows.Forms.Button();
+            this.buttonSaveRouteAs = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.textBoxRouteName = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.buttonStopRecording = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.numericUpDownRecordDistance = new System.Windows.Forms.NumericUpDown();
+            this.buttonStartRecording = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.numericUpDownRadius = new System.Windows.Forms.NumericUpDown();
             this.checkBoxRadius = new System.Windows.Forms.CheckBox();
-            this.listBoxWaypoints = new System.Windows.Forms.ListBox();
-            this.locationManager = new SRVTracker.LocationManager();
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.button1 = new System.Windows.Forms.Button();
             this.buttonSetAsTarget = new System.Windows.Forms.Button();
             this.buttonMoveWaypointDown = new System.Windows.Forms.Button();
             this.buttonMoveWaypointUp = new System.Windows.Forms.Button();
             this.buttonDeleteWaypoint = new System.Windows.Forms.Button();
             this.buttonAddWaypoint = new System.Windows.Forms.Button();
-            this.buttonSaveRoute = new System.Windows.Forms.Button();
-            this.buttonLoadRoute = new System.Windows.Forms.Button();
-            this.buttonSaveRouteAs = new System.Windows.Forms.Button();
+            this.listBoxWaypoints = new System.Windows.Forms.ListBox();
+            this.locationManager = new SRVTracker.LocationManager();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.groupBox4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRecordDistance)).BeginInit();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRadius)).BeginInit();
             this.SuspendLayout();
@@ -67,6 +73,41 @@
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Route Information";
+            // 
+            // buttonSaveRoute
+            // 
+            this.buttonSaveRoute.Enabled = false;
+            this.buttonSaveRoute.Image = global::SRVTracker.Properties.Resources.Save_16x;
+            this.buttonSaveRoute.Location = new System.Drawing.Point(384, 30);
+            this.buttonSaveRoute.Name = "buttonSaveRoute";
+            this.buttonSaveRoute.Size = new System.Drawing.Size(39, 23);
+            this.buttonSaveRoute.TabIndex = 5;
+            this.toolTip1.SetToolTip(this.buttonSaveRoute, "Save this route (overwrite existing file)");
+            this.buttonSaveRoute.UseVisualStyleBackColor = true;
+            this.buttonSaveRoute.Click += new System.EventHandler(this.buttonSaveRoute_Click);
+            // 
+            // buttonLoadRoute
+            // 
+            this.buttonLoadRoute.Image = global::SRVTracker.Properties.Resources.OpenFile_16x;
+            this.buttonLoadRoute.Location = new System.Drawing.Point(301, 30);
+            this.buttonLoadRoute.Name = "buttonLoadRoute";
+            this.buttonLoadRoute.Size = new System.Drawing.Size(40, 23);
+            this.buttonLoadRoute.TabIndex = 4;
+            this.buttonLoadRoute.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.toolTip1.SetToolTip(this.buttonLoadRoute, "Load route file");
+            this.buttonLoadRoute.UseVisualStyleBackColor = true;
+            this.buttonLoadRoute.Click += new System.EventHandler(this.buttonLoadRoute_Click);
+            // 
+            // buttonSaveRouteAs
+            // 
+            this.buttonSaveRouteAs.Image = global::SRVTracker.Properties.Resources.SaveAs_16x;
+            this.buttonSaveRouteAs.Location = new System.Drawing.Point(343, 30);
+            this.buttonSaveRouteAs.Name = "buttonSaveRouteAs";
+            this.buttonSaveRouteAs.Size = new System.Drawing.Size(39, 23);
+            this.buttonSaveRouteAs.TabIndex = 3;
+            this.toolTip1.SetToolTip(this.buttonSaveRouteAs, "Save this route as a file");
+            this.buttonSaveRouteAs.UseVisualStyleBackColor = true;
+            this.buttonSaveRouteAs.Click += new System.EventHandler(this.buttonSaveRouteAs_Click);
             // 
             // label1
             // 
@@ -88,7 +129,7 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.button1);
+            this.groupBox2.Controls.Add(this.groupBox4);
             this.groupBox2.Controls.Add(this.groupBox3);
             this.groupBox2.Controls.Add(this.buttonSetAsTarget);
             this.groupBox2.Controls.Add(this.buttonMoveWaypointDown);
@@ -102,6 +143,71 @@
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Waypoints";
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.buttonStopRecording);
+            this.groupBox4.Controls.Add(this.label2);
+            this.groupBox4.Controls.Add(this.numericUpDownRecordDistance);
+            this.groupBox4.Controls.Add(this.buttonStartRecording);
+            this.groupBox4.Location = new System.Drawing.Point(244, 159);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(179, 53);
+            this.groupBox4.TabIndex = 8;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Record every";
+            // 
+            // buttonStopRecording
+            // 
+            this.buttonStopRecording.Image = global::SRVTracker.Properties.Resources.Stop_16x;
+            this.buttonStopRecording.Location = new System.Drawing.Point(137, 18);
+            this.buttonStopRecording.Name = "buttonStopRecording";
+            this.buttonStopRecording.Size = new System.Drawing.Size(34, 23);
+            this.buttonStopRecording.TabIndex = 10;
+            this.buttonStopRecording.UseVisualStyleBackColor = true;
+            this.buttonStopRecording.Click += new System.EventHandler(this.buttonStopRecording_Click);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(76, 25);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(15, 13);
+            this.label2.TabIndex = 9;
+            this.label2.Text = "m";
+            // 
+            // numericUpDownRecordDistance
+            // 
+            this.numericUpDownRecordDistance.Increment = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            this.numericUpDownRecordDistance.Location = new System.Drawing.Point(6, 21);
+            this.numericUpDownRecordDistance.Maximum = new decimal(new int[] {
+            100000,
+            0,
+            0,
+            0});
+            this.numericUpDownRecordDistance.Name = "numericUpDownRecordDistance";
+            this.numericUpDownRecordDistance.Size = new System.Drawing.Size(64, 20);
+            this.numericUpDownRecordDistance.TabIndex = 8;
+            this.numericUpDownRecordDistance.Value = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            // 
+            // buttonStartRecording
+            // 
+            this.buttonStartRecording.Image = global::SRVTracker.Properties.Resources.RecordDot_16x;
+            this.buttonStartRecording.Location = new System.Drawing.Point(97, 18);
+            this.buttonStartRecording.Name = "buttonStartRecording";
+            this.buttonStartRecording.Size = new System.Drawing.Size(34, 23);
+            this.buttonStartRecording.TabIndex = 7;
+            this.toolTip1.SetToolTip(this.buttonStartRecording, "Start recording route");
+            this.buttonStartRecording.UseVisualStyleBackColor = true;
+            this.buttonStartRecording.Click += new System.EventHandler(this.buttonStartRecording_Click);
             // 
             // groupBox3
             // 
@@ -154,36 +260,6 @@
         "n a waypoint");
             this.checkBoxRadius.UseVisualStyleBackColor = true;
             this.checkBoxRadius.CheckedChanged += new System.EventHandler(this.checkBoxRadius_CheckedChanged);
-            // 
-            // listBoxWaypoints
-            // 
-            this.listBoxWaypoints.DisplayMember = "Name";
-            this.listBoxWaypoints.FormattingEnabled = true;
-            this.listBoxWaypoints.Location = new System.Drawing.Point(9, 19);
-            this.listBoxWaypoints.Name = "listBoxWaypoints";
-            this.listBoxWaypoints.Size = new System.Drawing.Size(374, 134);
-            this.listBoxWaypoints.TabIndex = 0;
-            this.toolTip1.SetToolTip(this.listBoxWaypoints, "Waypoints that make up this route");
-            this.listBoxWaypoints.ValueMember = "Name";
-            this.listBoxWaypoints.SelectedIndexChanged += new System.EventHandler(this.listBoxWaypoints_SelectedIndexChanged);
-            // 
-            // locationManager
-            // 
-            this.locationManager.Location = new System.Drawing.Point(447, 12);
-            this.locationManager.LocatorForm = null;
-            this.locationManager.Name = "locationManager";
-            this.locationManager.Size = new System.Drawing.Size(281, 287);
-            this.locationManager.TabIndex = 2;
-            // 
-            // button1
-            // 
-            this.button1.Image = global::SRVTracker.Properties.Resources.RecordDot_16x;
-            this.button1.Location = new System.Drawing.Point(389, 162);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(34, 23);
-            this.button1.TabIndex = 7;
-            this.toolTip1.SetToolTip(this.button1, "Start recording route");
-            this.button1.UseVisualStyleBackColor = true;
             // 
             // buttonSetAsTarget
             // 
@@ -240,40 +316,25 @@
             this.buttonAddWaypoint.UseVisualStyleBackColor = true;
             this.buttonAddWaypoint.Click += new System.EventHandler(this.buttonAddWaypoint_Click);
             // 
-            // buttonSaveRoute
+            // listBoxWaypoints
             // 
-            this.buttonSaveRoute.Enabled = false;
-            this.buttonSaveRoute.Image = global::SRVTracker.Properties.Resources.Save_16x;
-            this.buttonSaveRoute.Location = new System.Drawing.Point(384, 30);
-            this.buttonSaveRoute.Name = "buttonSaveRoute";
-            this.buttonSaveRoute.Size = new System.Drawing.Size(39, 23);
-            this.buttonSaveRoute.TabIndex = 5;
-            this.toolTip1.SetToolTip(this.buttonSaveRoute, "Save this route (overwrite existing file)");
-            this.buttonSaveRoute.UseVisualStyleBackColor = true;
-            this.buttonSaveRoute.Click += new System.EventHandler(this.buttonSaveRoute_Click);
+            this.listBoxWaypoints.DisplayMember = "Name";
+            this.listBoxWaypoints.FormattingEnabled = true;
+            this.listBoxWaypoints.Location = new System.Drawing.Point(9, 19);
+            this.listBoxWaypoints.Name = "listBoxWaypoints";
+            this.listBoxWaypoints.Size = new System.Drawing.Size(374, 134);
+            this.listBoxWaypoints.TabIndex = 0;
+            this.toolTip1.SetToolTip(this.listBoxWaypoints, "Waypoints that make up this route");
+            this.listBoxWaypoints.ValueMember = "Name";
+            this.listBoxWaypoints.SelectedIndexChanged += new System.EventHandler(this.listBoxWaypoints_SelectedIndexChanged);
             // 
-            // buttonLoadRoute
+            // locationManager
             // 
-            this.buttonLoadRoute.Image = global::SRVTracker.Properties.Resources.OpenFile_16x;
-            this.buttonLoadRoute.Location = new System.Drawing.Point(301, 30);
-            this.buttonLoadRoute.Name = "buttonLoadRoute";
-            this.buttonLoadRoute.Size = new System.Drawing.Size(40, 23);
-            this.buttonLoadRoute.TabIndex = 4;
-            this.buttonLoadRoute.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.toolTip1.SetToolTip(this.buttonLoadRoute, "Load route file");
-            this.buttonLoadRoute.UseVisualStyleBackColor = true;
-            this.buttonLoadRoute.Click += new System.EventHandler(this.buttonLoadRoute_Click);
-            // 
-            // buttonSaveRouteAs
-            // 
-            this.buttonSaveRouteAs.Image = global::SRVTracker.Properties.Resources.SaveAs_16x;
-            this.buttonSaveRouteAs.Location = new System.Drawing.Point(343, 30);
-            this.buttonSaveRouteAs.Name = "buttonSaveRouteAs";
-            this.buttonSaveRouteAs.Size = new System.Drawing.Size(39, 23);
-            this.buttonSaveRouteAs.TabIndex = 3;
-            this.toolTip1.SetToolTip(this.buttonSaveRouteAs, "Save this route as a file");
-            this.buttonSaveRouteAs.UseVisualStyleBackColor = true;
-            this.buttonSaveRouteAs.Click += new System.EventHandler(this.buttonSaveRouteAs_Click);
+            this.locationManager.Location = new System.Drawing.Point(447, 12);
+            this.locationManager.LocatorForm = null;
+            this.locationManager.Name = "locationManager";
+            this.locationManager.Size = new System.Drawing.Size(281, 287);
+            this.locationManager.TabIndex = 2;
             // 
             // FormRoutePlanner
             // 
@@ -289,6 +350,9 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRecordDistance)).EndInit();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRadius)).EndInit();
@@ -316,6 +380,10 @@
         private System.Windows.Forms.CheckBox checkBoxRadius;
         private System.Windows.Forms.Button buttonSaveRoute;
         private System.Windows.Forms.ToolTip toolTip1;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button buttonStartRecording;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.NumericUpDown numericUpDownRecordDistance;
+        private System.Windows.Forms.Button buttonStopRecording;
     }
 }

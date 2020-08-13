@@ -25,7 +25,7 @@ namespace DataCollator
         private List<String> _notifications = new List<string>(10000); // List of all notifications, pruned as each client gets up to date
         private Dictionary<string, int> _clientNotificationPointer = new Dictionary<string, int>(); // Pointer into the notification table for each client
         private Dictionary<string, DateTime> _clientLastRequestTime = new Dictionary<string, DateTime>();
-        private Dictionary<string, string> _playerStatus = new Dictionary<string, string>(); //  Store last known status (with coordinates) of client
+        private Dictionary<string, EDEvent> _playerStatus = new Dictionary<string, EDEvent>(); //  Store last known status (with coordinates) of client
         private Dictionary<string, EDRaceStatus> _commanderStatus = new Dictionary<string, EDRaceStatus>();
         private readonly object _notificationLock = new object();
         private int _pruneCounter = 0;
@@ -101,49 +101,44 @@ namespace DataCollator
 
         public string URi { get; } = "";
 
-        private void UpdateCommanderStatus(string commander, string status)
+        private void UpdateCommanderStatus(string status)
         {
-            EDEvent updateEvent = EDEventFactory.CreateEventFromStatus(status);
-            if (!_commanderStatus.ContainsKey(commander))
+            EDEvent updateEvent = EDEvent.FromJson(status);
+            if (String.IsNullOrEmpty(updateEvent.Commander))
+                return;
+            if (!_commanderStatus.ContainsKey(updateEvent.Commander))
             {
                 lock (_notificationLock)
-                    _commanderStatus.Add(commander, new EDRaceStatus(updateEvent));
+                    _commanderStatus.Add(updateEvent.Commander, new EDRaceStatus(updateEvent));
                 return;
             }
 
-            if (_commanderStatus[commander].TimeStamp > updateEvent.TimeStamp)
+            if (_commanderStatus[updateEvent.Commander].TimeStamp > updateEvent.TimeStamp)
                 return;
 
             lock (_notificationLock)
-                _commanderStatus[commander].UpdateStatus(updateEvent);
+            {
+                _commanderStatus[updateEvent.Commander].UpdateStatus(updateEvent);
+                if (_playerStatus.ContainsKey(updateEvent.Commander))
+                    _playerStatus[updateEvent.Commander] = updateEvent;
+                else
+                    _playerStatus.Add(updateEvent.Commander, updateEvent);
+            }
         }
 
         public void SendNotification(string message)
         {
             // Log the notification for retrieval by clients that are polling
-            string clientId = null;
             try
             {
                 // We store clientId in lower case (for case insensitive matching), but return the original (as we store it in the status)
-                if (message.Contains('{'))
-                    clientId = message.Substring(0, message.IndexOf(':')).ToLower().Trim();
-                else
-                    clientId = message.Substring(0, message.IndexOf(',')).ToLower().Trim();
-                if (!String.IsNullOrEmpty(clientId))
-                    UpdateCommanderStatus(clientId, message);
+                UpdateCommanderStatus(message);
             }
             catch { }
             lock (_notificationLock)
             {
                 _notifications.Add(message);
-                if (!String.IsNullOrEmpty(clientId))
-                {
-                    if (_playerStatus.ContainsKey(clientId))
-                        _playerStatus[clientId] = message;
-                    else
-                        _playerStatus.Add(clientId, message);
-                   //Log($"Updated location status for {clientId}");
-                }
+
             }
 
 
@@ -203,9 +198,16 @@ namespace DataCollator
         private void SendRaceStatus(HttpListenerContext Context)
         {
             StringBuilder racersStatus = new StringBuilder();
-            if (_commanderStatus.Count>0)
-                foreach (EDRaceStatus raceStatus in _commanderStatus.Values)
-                    racersStatus.AppendLine(raceStatus.ToJson());
+            try
+            {
+                if (_commanderStatus.Count > 0)
+                    foreach (EDRaceStatus raceStatus in _commanderStatus.Values)
+                        racersStatus.AppendLine(raceStatus.ToJson());
+            }
+            catch (Exception ex)
+            {
+                racersStatus.AppendLine(ex.ToString());
+            }
 
             try
             {
@@ -246,13 +248,13 @@ namespace DataCollator
                 {
                     Log("All player status requested");
                     foreach (string id in _playerStatus.Keys)
-                        if (!String.IsNullOrEmpty(_playerStatus[id]))
-                            status.AppendLine(_playerStatus[id]);
+                        status.AppendLine(_playerStatus[id].ToJson());
+                        
                 }
                 else if (_playerStatus.ContainsKey(clientId))
                 {
                     Log($"Player status requested: {clientId}");
-                    status.AppendLine(_playerStatus[clientId]);
+                    status.AppendLine(_playerStatus[clientId].ToJson());
                 }
                 else
                     Log($"Status requested for invalid client: {clientId}");

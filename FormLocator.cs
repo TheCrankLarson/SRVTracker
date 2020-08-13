@@ -45,15 +45,15 @@ namespace SRVTracker
 
         private void CommanderWatcher_UpdateReceived(object sender, EDEvent edEvent)
         {
-            if (!edEvent.HasCoordinates || edEvent.Commander.Equals(FormTracker.ClientId))
+            if (!edEvent.HasCoordinates() || edEvent.Commander.Equals(FormTracker.ClientId))
                 return;
 
             if (FormTracker.CurrentLocation != null)
             {
-                // We are tracking the closest commander to us, so we need to check all updates and change our tracking target as necessary
+                // If we are tracking the closest commander to us, we need to check all updates and change our tracking target as necessary
                 // We just check if the distance from this commander is closer than our currently tracked target
 
-                double distanceToCommander = EDLocation.DistanceBetween(FormTracker.CurrentLocation, edEvent.Location);
+                double distanceToCommander = EDLocation.DistanceBetween(FormTracker.CurrentLocation, edEvent.Location());
                 if (distanceToCommander == 0) // This is impossible, and just means we haven't got data on the tracked target
                     distanceToCommander = double.MaxValue;
                 if (distanceToCommander < _closestCommanderDistance)
@@ -66,7 +66,7 @@ namespace SRVTracker
                 if (checkBoxTrackClosest.Checked)
                 {
                     // Switch tracking to this target
-                    _targetPosition = edEvent.Location;
+                    _targetPosition = edEvent.Location();
                     SetTarget(edEvent.Commander);
                     return;
                 }
@@ -75,7 +75,7 @@ namespace SRVTracker
             if (!TrackingTarget.Equals(edEvent.Commander))
                 return;
 
-            _targetPosition = edEvent.Location;
+            _targetPosition = edEvent.Location();
             DisplayTarget();
             UpdateTracking();
         }
@@ -425,7 +425,7 @@ namespace SRVTracker
             }
         }
 
-        private Bitmap LocatorBitmap()
+        private void UpdateLocatorBitmap()
         {
             // Generate and return a bitmap to be used as overlay
 
@@ -456,21 +456,22 @@ namespace SRVTracker
             _vrgraphics.DrawString(TrackingTarget, font, targetBrush, new PointF(0, 80));
 
             // Bearing
+            font.Dispose();
             font = new Font("Arial", 56);
             //SizeF textSize = graphics.MeasureString(labelHeading.Text, font);
             _vrgraphics.DrawString(labelHeading.Text, font, directionBrush, new PointF(80, 120));
 
             // Distance
             _vrgraphics.DrawString(labelDistance.Text, font, directionBrush, new PointF(320, 120));
-
+            font.Dispose();
             _vrgraphics.Save();
-
-            return _vrbitmap;
+            directionBrush.Dispose();
+            targetBrush.Dispose();
         }
 
         private void UpdateVRLocatorImage()
         {
-            _vrbitmap = LocatorBitmap();
+            UpdateLocatorBitmap();
             byte[] imgBytes = BitmapToByte(_vrbitmap);
             if (_intPtrOverlayImage == null)
                 _intPtrOverlayImage = Marshal.AllocHGlobal(imgBytes.Length);

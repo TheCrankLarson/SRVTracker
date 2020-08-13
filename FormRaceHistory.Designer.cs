@@ -80,6 +80,7 @@
             this.textBoxRaceHistory.Location = new System.Drawing.Point(3, 16);
             this.textBoxRaceHistory.Multiline = true;
             this.textBoxRaceHistory.Name = "textBoxRaceHistory";
+            this.textBoxRaceHistory.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.textBoxRaceHistory.Size = new System.Drawing.Size(359, 186);
             this.textBoxRaceHistory.TabIndex = 0;
             // 

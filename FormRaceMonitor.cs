@@ -35,8 +35,8 @@ namespace SRVTracker
             _race = new EDRace("", new EDRoute(""));
             _locatorForm = locatorForm;
             
-            CommanderWatcher.Start();
             CommanderWatcher.UpdateReceived += CommanderWatcher_UpdateReceived;
+            CommanderWatcher.Start();
             EDRaceStatus.StatusChanged += EDStatus_StatusChanged;
             listViewParticipants.ListViewItemSorter = new ListViewItemComparer();
             _racers = new Dictionary<string, System.Windows.Forms.ListViewItem>();
@@ -126,7 +126,7 @@ namespace SRVTracker
                         string status = "Unknown";
                         try
                         {
-                            if (checkBoxAutoAddCommanders.Checked && _race.Route.Waypoints[0].LocationIsWithinWaypoint(CommanderWatcher.GetCommanderStatus(commander).Location))
+                            if (checkBoxAutoAddCommanders.Checked && _race.Route.Waypoints[0].LocationIsWithinWaypoint(CommanderWatcher.GetCommanderStatus(commander).Location()))
                                 status = "Ready";
                         }
                         catch { }
@@ -200,14 +200,14 @@ namespace SRVTracker
                 _racersStatus[edEvent.Commander].UpdateStatus(edEvent);
             }
 
-            if (!edEvent.HasCoordinates)
+            if (!edEvent.HasCoordinates())
                 return;
 
             if (!EDRaceStatus.Started)
             {
                 if (checkBoxAutoAddCommanders.Checked)
                     if (_race.Route.Waypoints.Count > 0)
-                        if (_race.Route.Waypoints[0].LocationIsWithinWaypoint(edEvent.Location))
+                        if (_race.Route.Waypoints[0].LocationIsWithinWaypoint(edEvent.Location()))
                             AddTrackedCommander(edEvent.Commander);
             }
 
@@ -218,7 +218,7 @@ namespace SRVTracker
             {
                 double distanceToWaypoint;
                 if (_racersStatus==null)
-                    distanceToWaypoint = EDLocation.DistanceBetween(edEvent.Location, _nextWaypoint.Location);
+                    distanceToWaypoint = EDLocation.DistanceBetween(edEvent.Location(), _nextWaypoint.Location);
                 else
                     distanceToWaypoint = _racersStatus[edEvent.Commander].DistanceToWaypoint;
                 _racers[edEvent.Commander].SubItems[3].Tag = distanceToWaypoint; // Store in m for comparison
@@ -228,7 +228,7 @@ namespace SRVTracker
                 if (distanceToWaypoint < double.MaxValue)
                 {
                     if (distanceToWaypoint > 2500)
-                        distanceToShow = $"{(distanceToWaypoint / 1000):0.0)}km";
+                        distanceToShow = $"{(distanceToWaypoint / 1000):0.0}km";
                     else
                         distanceToShow = $"{distanceToWaypoint:0.0}m";
                 }

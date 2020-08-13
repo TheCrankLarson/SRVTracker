@@ -73,7 +73,11 @@ namespace SRVTracker
         private static void _updateTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
             _updateTimer.Stop();
-            UpdateAvailableCommanders();
+            try
+            {
+                UpdateAvailableCommanders();
+            }
+            catch { }
             if (_enabled)
                 _updateTimer.Start();
         }
@@ -105,7 +109,7 @@ namespace SRVTracker
                 {
                     for (int i = 0; i < commanders.Length; i++)
                     {
-                        EDEvent edEvent = EDEventFactory.CreateEventFromStatus(commanders[i]);
+                        EDEvent edEvent = EDEvent.FromJson(commanders[i]);
                         if (edEvent!= null && !String.IsNullOrEmpty(edEvent.Commander))
                         {                           
                             if (edEvent != null)

@@ -17,6 +17,7 @@ namespace SRVTracker
         private string _saveFilename = "";
         private FormLocator _locatorForm = null;
         private EDRoute _route = null;
+        private EDLocation _lastRecordedLocation = null;
 
         public FormRoutePlanner(FormLocator formLocator = null)
         {
@@ -231,6 +232,47 @@ namespace SRVTracker
                 numericUpDownRadius.Enabled = true;
             else if (!checkBoxRadius.Checked && numericUpDownRadius.Enabled)
                 numericUpDownRadius.Enabled = false;
+        }
+
+        private void AddCurrentLocationAsWaypoint()
+        {
+            if (FormTracker.CurrentLocation == null)
+                return;
+
+            _lastRecordedLocation = FormTracker.CurrentLocation;
+            EDWaypoint waypoint = new EDWaypoint(_lastRecordedLocation, DateTime.Now, Convert.ToDouble(numericUpDownRadius.Value));
+            waypoint.Location.Name = $"{waypoint.Location.Latitude:0.000}  {waypoint.Location.Longitude:0.000}";
+            _route.Waypoints.Add(waypoint);
+            Action action = new Action(() =>
+            {
+                listBoxWaypoints.Items.Add(waypoint.Name);
+            });
+            if (listBoxWaypoints.InvokeRequired)
+                listBoxWaypoints.Invoke(action);
+            else
+                action();
+        }
+
+        private void buttonStartRecording_Click(object sender, EventArgs e)
+        {
+            buttonStartRecording.Enabled = false;
+            buttonStopRecording.Enabled = true;
+            AddCurrentLocationAsWaypoint();
+            FormTracker.CommanderLocationChanged += FormTracker_CommanderLocationChanged;
+        }
+
+        private void FormTracker_CommanderLocationChanged(object sender, EventArgs e)
+        {
+            if (EDLocation.DistanceBetween(FormTracker.CurrentLocation, _lastRecordedLocation)>=Convert.ToDouble(numericUpDownRecordDistance.Value))
+                AddCurrentLocationAsWaypoint();
+        }
+
+        private void buttonStopRecording_Click(object sender, EventArgs e)
+        {
+            FormTracker.CommanderLocationChanged -= FormTracker_CommanderLocationChanged;
+            AddCurrentLocationAsWaypoint();
+            buttonStartRecording.Enabled = true;
+            buttonStopRecording.Enabled = false;
         }
     }
 }

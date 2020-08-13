@@ -45,7 +45,6 @@
             this.buttonTest = new System.Windows.Forms.Button();
             this.labelLastUpdateTime = new System.Windows.Forms.Label();
             this.checkBoxAutoScroll = new System.Windows.Forms.CheckBox();
-            this.checkBoxSendLocationOnly = new System.Windows.Forms.CheckBox();
             this.checkBoxShowLive = new System.Windows.Forms.CheckBox();
             this.textBoxClientId = new System.Windows.Forms.TextBox();
             this.textBoxSaveFile = new System.Windows.Forms.TextBox();
@@ -62,7 +61,6 @@
             this.radioButtonUseCustomServer = new System.Windows.Forms.RadioButton();
             this.radioButtonUseDefaultServer = new System.Windows.Forms.RadioButton();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
-            this.label8 = new System.Windows.Forms.Label();
             this.radioButtonWatchStatusFile = new System.Windows.Forms.RadioButton();
             this.radioButtonUseTimer = new System.Windows.Forms.RadioButton();
             this.buttonRaceTracker = new System.Windows.Forms.Button();
@@ -191,7 +189,7 @@
             // listBoxLog
             // 
             this.listBoxLog.FormattingEnabled = true;
-            this.listBoxLog.Location = new System.Drawing.Point(12, 203);
+            this.listBoxLog.Location = new System.Drawing.Point(11, 195);
             this.listBoxLog.Name = "listBoxLog";
             this.listBoxLog.Size = new System.Drawing.Size(700, 147);
             this.listBoxLog.TabIndex = 4;
@@ -221,7 +219,7 @@
             this.checkBoxAutoScroll.AutoSize = true;
             this.checkBoxAutoScroll.Checked = true;
             this.checkBoxAutoScroll.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxAutoScroll.Location = new System.Drawing.Point(366, 180);
+            this.checkBoxAutoScroll.Location = new System.Drawing.Point(542, 172);
             this.checkBoxAutoScroll.Name = "checkBoxAutoScroll";
             this.checkBoxAutoScroll.Size = new System.Drawing.Size(75, 17);
             this.checkBoxAutoScroll.TabIndex = 8;
@@ -229,25 +227,10 @@
             this.toolTip1.SetToolTip(this.checkBoxAutoScroll, "Automatically scroll to the most recent event");
             this.checkBoxAutoScroll.UseVisualStyleBackColor = true;
             // 
-            // checkBoxSendLocationOnly
-            // 
-            this.checkBoxSendLocationOnly.AutoSize = true;
-            this.checkBoxSendLocationOnly.Checked = true;
-            this.checkBoxSendLocationOnly.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxSendLocationOnly.Location = new System.Drawing.Point(6, 19);
-            this.checkBoxSendLocationOnly.Name = "checkBoxSendLocationOnly";
-            this.checkBoxSendLocationOnly.Size = new System.Drawing.Size(160, 17);
-            this.checkBoxSendLocationOnly.TabIndex = 7;
-            this.checkBoxSendLocationOnly.Text = "Log/send location data Only";
-            this.toolTip1.SetToolTip(this.checkBoxSendLocationOnly, "If enabled, only location data and status flags are tracked.\r\nIf disabled, the co" +
-        "mplete status.json file is captured and\r\nlogged/uploaded as is.  Either works fo" +
-        "r tracking.");
-            this.checkBoxSendLocationOnly.UseVisualStyleBackColor = true;
-            // 
             // checkBoxShowLive
             // 
             this.checkBoxShowLive.AutoSize = true;
-            this.checkBoxShowLive.Location = new System.Drawing.Point(447, 180);
+            this.checkBoxShowLive.Location = new System.Drawing.Point(623, 172);
             this.checkBoxShowLive.Name = "checkBoxShowLive";
             this.checkBoxShowLive.Size = new System.Drawing.Size(89, 17);
             this.checkBoxShowLive.TabIndex = 6;
@@ -385,7 +368,7 @@
             this.groupBox7.Controls.Add(this.textBoxUploadServer);
             this.groupBox7.Location = new System.Drawing.Point(281, 122);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(255, 52);
+            this.groupBox7.Size = new System.Drawing.Size(255, 50);
             this.groupBox7.TabIndex = 15;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "Server";
@@ -419,30 +402,19 @@
             // 
             // groupBox8
             // 
-            this.groupBox8.Controls.Add(this.label8);
             this.groupBox8.Controls.Add(this.radioButtonWatchStatusFile);
             this.groupBox8.Controls.Add(this.radioButtonUseTimer);
-            this.groupBox8.Controls.Add(this.checkBoxSendLocationOnly);
             this.groupBox8.Location = new System.Drawing.Point(542, 122);
             this.groupBox8.Name = "groupBox8";
-            this.groupBox8.Size = new System.Drawing.Size(170, 74);
+            this.groupBox8.Size = new System.Drawing.Size(122, 44);
             this.groupBox8.TabIndex = 16;
             this.groupBox8.TabStop = false;
-            this.groupBox8.Text = "Data Settings";
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(6, 44);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(37, 13);
-            this.label8.TabIndex = 10;
-            this.label8.Text = "Mode:";
+            this.groupBox8.Text = "Monitor method";
             // 
             // radioButtonWatchStatusFile
             // 
             this.radioButtonWatchStatusFile.AutoSize = true;
-            this.radioButtonWatchStatusFile.Location = new System.Drawing.Point(54, 42);
+            this.radioButtonWatchStatusFile.Location = new System.Drawing.Point(6, 19);
             this.radioButtonWatchStatusFile.Name = "radioButtonWatchStatusFile";
             this.radioButtonWatchStatusFile.Size = new System.Drawing.Size(53, 17);
             this.radioButtonWatchStatusFile.TabIndex = 9;
@@ -456,7 +428,7 @@
             // 
             this.radioButtonUseTimer.AutoSize = true;
             this.radioButtonUseTimer.Checked = true;
-            this.radioButtonUseTimer.Location = new System.Drawing.Point(113, 42);
+            this.radioButtonUseTimer.Location = new System.Drawing.Point(65, 19);
             this.radioButtonUseTimer.Name = "radioButtonUseTimer";
             this.radioButtonUseTimer.Size = new System.Drawing.Size(51, 17);
             this.radioButtonUseTimer.TabIndex = 8;
@@ -536,7 +508,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(281, 183);
+            this.ClientSize = new System.Drawing.Size(724, 354);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.checkBoxTrack);
             this.Controls.Add(this.checkBoxUpload);
@@ -599,7 +571,6 @@
         private System.Windows.Forms.CheckBox checkBoxUpload;
         private System.Windows.Forms.TextBox textBoxClientId;
         private System.Windows.Forms.CheckBox checkBoxShowLive;
-        private System.Windows.Forms.CheckBox checkBoxSendLocationOnly;
         private System.Windows.Forms.CheckBox checkBoxAutoScroll;
         private System.Windows.Forms.GroupBox groupBox8;
         private System.Windows.Forms.GroupBox groupBox7;
@@ -615,7 +586,6 @@
         private System.Windows.Forms.CheckBox checkBoxTrack;
         private System.Windows.Forms.RadioButton radioButtonWatchStatusFile;
         private System.Windows.Forms.RadioButton radioButtonUseTimer;
-        private System.Windows.Forms.Label label8;
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox textBoxPlanetRadius;

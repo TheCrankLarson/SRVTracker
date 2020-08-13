@@ -73,7 +73,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EDEvent.cs" />
-    <Compile Include="EDEventFactory.cs" />
     <Compile Include="EDLocation.cs" />
     <Compile Include="EDRace.cs" />
     <Compile Include="EDRoute.cs" />

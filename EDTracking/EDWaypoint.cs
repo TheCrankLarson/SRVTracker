@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Globalization;
+using System.Text.Json;
 
 namespace EDTracking
 {
@@ -16,6 +17,9 @@ namespace EDTracking
         public int Direction { get; set; } = -1;
         public DateTime TimeTracked { get; internal set; }  // To store the time the location was recorded when route recording
 
+        public EDWaypoint()
+        { }
+
         public EDWaypoint(EDLocation location)
         {
             Location = location;
@@ -27,10 +31,10 @@ namespace EDTracking
             Direction = hitDirection;
         }
 
-        public EDWaypoint(EDLocation location, DateTime timeTracked): this(location)
+        public EDWaypoint(EDLocation location, DateTime timeTracked, double radius): this(location)
         {
             TimeTracked = timeTracked;
-            Radius = 1;
+            Radius = radius;
         }
 
         public string Name
@@ -45,18 +49,22 @@ namespace EDTracking
 
         public override string ToString()
         {
-            return $"{Location.ToString()}╫{Radius.ToString(_enGB)}╫{Direction}";
+            return JsonSerializer.Serialize(this);//$"{Location.ToString()}╫{Radius.ToString(_enGB)}╫{Direction}";
         }
 
         public static EDWaypoint FromString(string location)
         {
-            try
+            if (location.Contains('╫'))
             {
-                string[] locationInfo = location.Split('╫');
-                return new EDWaypoint(EDLocation.FromString(locationInfo[0]), Convert.ToDouble(locationInfo[1],_enGB), Convert.ToInt32(locationInfo[2]));
+                try
+                {
+                    string[] locationInfo = location.Split('╫');
+                    return new EDWaypoint(EDLocation.FromString(locationInfo[0]), Convert.ToDouble(locationInfo[1], _enGB), Convert.ToInt32(locationInfo[2]));
+                }
+                catch { }
+                return null;
             }
-            catch { }
-            return null;
+            return (EDWaypoint)JsonSerializer.Deserialize(location, typeof(EDWaypoint));
         }
     }
 }

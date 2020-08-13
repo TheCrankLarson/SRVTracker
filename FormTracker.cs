@@ -25,12 +25,13 @@ namespace SRVTracker
         private System.Timers.Timer _statusTimer = null;
         private string _statusFile = "";
         private DateTime _lastFileWrite = DateTime.MinValue;
-        private Size _configShowing = new Size(738, 400);
+        private Size _configShowing = new Size(738, 392);
         private Size _configHidden = new Size(298, 222);
         public static CVRSystem VRSystem = null;
         private static FormFlagsWatcher _formFlagsWatcher = null;
         private static string _clientId = null;
-
+        //public delegate void UpdateReceivedEventHandler(object sender, EDEvent edEvent);
+        public static event EventHandler CommanderLocationChanged;
         public static EDLocation CurrentLocation { get; private set; } = null;
 
         public FormTracker()
@@ -303,7 +304,7 @@ namespace SRVTracker
 
                 for (int i = 0; i < 200; i++)
                 {
-                    edEvent = new EDEvent($"{{\"timestamp\":\"2020-07-28T17:52:25Z\", \"event\":\"Status\", \"Flags\":341852424, \"Pips\":[4,8,0], \"FireGroup\":0, \"GuiFocus\":0, \"Fuel\":{{\"FuelMain\":0.000000, \"FuelReservoir\":0.444637 }}, \"Cargo\":0.000000, \"LegalState\":\"Clean\", \"Latitude\":{latitude}, \"Longitude\":{longitude}, \"Heading\":24, \"Altitude\":0, \"BodyName\":\"Synuefe DJ-G b44-3 A 5\", \"PlanetRadius\":1311227.875000}}");
+                    edEvent = new EDEvent($"{{\"timestamp\":\"2020-07-28T17:52:25Z\", \"event\":\"Status\", \"Flags\":341852424, \"Pips\":[4,8,0], \"FireGroup\":0, \"GuiFocus\":0, \"Fuel\":{{\"FuelMain\":0.000000, \"FuelReservoir\":0.444637 }}, \"Cargo\":0.000000, \"LegalState\":\"Clean\", \"Latitude\":{latitude}, \"Longitude\":{longitude}, \"Heading\":24, \"Altitude\":0, \"BodyName\":\"Synuefe DJ-G b44-3 A 5\", \"PlanetRadius\":1311227.875000}}",textBoxClientId.Text);
                     UpdateUI(edEvent);
                     System.Threading.Thread.Sleep(10);
                     if (rnd.Next(2) == 1)
@@ -347,16 +348,16 @@ namespace SRVTracker
                     action();
             }
 
-            if (edEvent.HasCoordinates)
+            if (edEvent.HasCoordinates())
             {
-                CurrentLocation = edEvent.Location;
+                CurrentLocation = edEvent.Location();
                 if (_formLocator != null)
                     if (_formLocator.Visible)
                     {
-
                         action = new Action(() => { _formLocator.UpdateTracking(); });
                         Task.Run(action);
                     }
+                CommanderLocationChanged?.Invoke(null, null);
             }
 
             action = new Action(() => { labelLastUpdateTime.Text = DateTime.Now.ToString("HH:mm:ss"); });
@@ -365,7 +366,7 @@ namespace SRVTracker
             else
                 action();
 
-            if (edEvent.HasCoordinates)
+            if (edEvent.HasCoordinates())
             {
                 action = new Action(() => { textBoxLatitude.Text = edEvent.Latitude.ToString(); });
                 if (textBoxLatitude.InvokeRequired)
@@ -409,11 +410,11 @@ namespace SRVTracker
             {
                 // This is very inefficient, save to file should only be enabled for debugging
                 // I may revisit this at some point if more features are added for local tracking
-                string eventData = "";
-                if (checkBoxSendLocationOnly.Checked || String.IsNullOrEmpty(edEvent.RawData))
-                    eventData = $"{textBoxClientId.Text},{edEvent.TrackingInfo}";
+                string eventData = eventData = $"{textBoxClientId.Text},{edEvent.ToJson()}";
+                /*if (checkBoxSendLocationOnly.Checked || String.IsNullOrEmpty(edEvent.RawData))
+                    eventData = $"{textBoxClientId.Text},{edEvent.ToJson()}";
                 else
-                    eventData = $"{textBoxClientId.Text}:{edEvent.RawData}";
+                    eventData = $"{textBoxClientId.Text}:{edEvent.RawData}";*/
                 System.IO.File.AppendAllText(textBoxSaveFile.Text, eventData);
             }
             catch (Exception ex)
@@ -427,11 +428,11 @@ namespace SRVTracker
         {
             try
             {
-                string eventData = "";
-                if (checkBoxSendLocationOnly.Checked || String.IsNullOrEmpty(edEvent.RawData))
-                    eventData = $"{textBoxClientId.Text},{edEvent.TrackingInfo}";
-                else
-                    eventData = $"{textBoxClientId.Text}:{edEvent.RawData}";
+                string eventData = $"{textBoxClientId.Text}:{edEvent.ToJson()}";
+                //if (checkBoxSendLocationOnly.Checked || String.IsNullOrEmpty(edEvent.RawData))
+                //    eventData = $"{textBoxClientId.Text},{edEvent.TrackingInfo}";
+                //else
+                //    eventData = $"{textBoxClientId.Text}:{edEvent.RawData}";
                 Byte[] sendBytes = Encoding.UTF8.GetBytes(eventData);
                 try
                 {
