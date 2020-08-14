@@ -13,8 +13,11 @@ namespace EDTracking
         private string _saveFilename = "";
         public string Name { get; set; } = null;
         public EDRoute Route { get; set; } = null;
-        public List<string> Contestants = new List<string>();
+        public List<string> Contestants { get; set; } = new List<string>();
         public DateTime Start;
+
+        public EDRace()
+        { }
 
         public EDRace(string name,EDRoute route)
         {
@@ -29,20 +32,26 @@ namespace EDTracking
 
         public override string ToString()
         {
+            return JsonSerializer.Serialize(this);
+            /*
             StringBuilder raceSerialised = new StringBuilder(Name);
             raceSerialised.Append($"┼{Route.ToString()}┼");
             foreach (string contestant in Contestants)
                 raceSerialised.Append($"Ⱶ{contestant}");
-            return raceSerialised.ToString();
+            return raceSerialised.ToString();*/
         }
 
         public static EDRace FromString(string location)
         {
             try
             {
-                string[] routeInfo = location.Split('┼');
-                EDRoute route = EDRoute.FromString(routeInfo[1]);
-                return new EDRace(routeInfo[0], route, routeInfo[2].Split('Ⱶ'));
+                if (location.Contains('┼'))
+                {
+                    string[] routeInfo = location.Split('┼');
+                    EDRoute route = EDRoute.FromString(routeInfo[1]);
+                    return new EDRace(routeInfo[0], route, routeInfo[2].Split('Ⱶ'));
+                }
+                return (EDRace)JsonSerializer.Deserialize(location, typeof(EDRace));
             }
             catch { }
             return null;
