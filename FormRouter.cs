@@ -341,5 +341,14 @@ namespace SRVTracker
             _formTracker.StartTracking();
             FormLocator.GetLocator().SetTarget(_route.Waypoints[_nextWaypoint].Location);
         }
+
+        private void buttonDeleteWaypoint_Click(object sender, EventArgs e)
+        {
+            if (listBoxWaypoints.SelectedIndex < 0)
+                return;
+
+            _route.Waypoints.RemoveAt(listBoxWaypoints.SelectedIndex);
+            listBoxWaypoints.Items.RemoveAt(listBoxWaypoints.SelectedIndex);
+        }
     }
 }

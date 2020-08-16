@@ -130,9 +130,11 @@
             this.buttonDeleteWaypoint.Size = new System.Drawing.Size(34, 23);
             this.buttonDeleteWaypoint.TabIndex = 2;
             this.buttonDeleteWaypoint.UseVisualStyleBackColor = true;
+            this.buttonDeleteWaypoint.Click += new System.EventHandler(this.buttonDeleteWaypoint_Click);
             // 
             // buttonAddWaypoint
             // 
+            this.buttonAddWaypoint.Enabled = false;
             this.buttonAddWaypoint.Image = global::SRVTracker.Properties.Resources.Add_16x;
             this.buttonAddWaypoint.Location = new System.Drawing.Point(9, 172);
             this.buttonAddWaypoint.Name = "buttonAddWaypoint";
