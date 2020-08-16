@@ -31,7 +31,7 @@ namespace EDTracking
         public static bool EliminateOnDestruction { get; set; } = true;
         public static bool EliminateOnShipFlight { get; set; } = true;
         public static bool AllowPitStops { get; set; } = true;
-        public static bool ShowDetailedStatus { get; set; } = true;
+        public static bool ShowDetailedStatus { get; set; } = false;
         public static Dictionary<string,string> StatusMessages { get; set; } = new Dictionary<string, string>()
                 {
                     { "Eliminated", "Eliminated" },

@@ -15,17 +15,14 @@ namespace SRVTracker
     public partial class FormRoutePlanner : Form
     {
         private string _saveFilename = "";
-        private FormLocator _locatorForm = null;
         private EDRoute _route = null;
         private EDLocation _lastRecordedLocation = null;
 
-        public FormRoutePlanner(FormLocator formLocator = null)
+        public FormRoutePlanner()
         {
             InitializeComponent();
-            _locatorForm = formLocator;
-            locationManager.LocatorForm = _locatorForm;
-            if (_locatorForm == null)
-                buttonSetAsTarget.Enabled = false;
+            locationManager.LocatorForm = FormLocator.GetLocator();
+            buttonSetAsTarget.Enabled = false;
             UpdateButtons();
             locationManager.SelectionChanged += LocationManager_SelectionChanged;
             _route = new EDRoute("");
@@ -156,11 +153,11 @@ namespace SRVTracker
         private void buttonSetAsTarget_Click(object sender, EventArgs e)
         {
             // Set the selected waypoint as the current target
-            if ( _locatorForm == null || listBoxWaypoints.SelectedItem == null)
+            if ( listBoxWaypoints.SelectedItem == null)
                 return;
             try
             {
-                _locatorForm.SetTarget(_route.Waypoints[listBoxWaypoints.SelectedIndex].Location);
+                FormLocator.GetLocator().SetTarget(_route.Waypoints[listBoxWaypoints.SelectedIndex].Location);
             }
             catch { }
         }

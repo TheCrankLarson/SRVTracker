@@ -32,6 +32,7 @@ namespace SRVTracker
         private double _trackedTargetDistance = double.MaxValue;
         private static EDEvent _closestCommander = null;
         private static double _closestCommanderDistance = double.MaxValue;
+        private static FormLocator _activeLocator = null;
 
         public FormLocator()
         {
@@ -39,8 +40,35 @@ namespace SRVTracker
             this.Width = _normalView.Width;
             buttonUseCurrentLocation.Enabled = false;  // We'll enable it when we have a location
             CommanderWatcher.UpdateReceived += CommanderWatcher_UpdateReceived;
+            FormTracker.CommanderLocationChanged += FormTracker_CommanderLocationChanged;
             InitVRMatrix();
             InitLocationCombo();
+        }
+
+        private void FormTracker_CommanderLocationChanged(object sender, EventArgs e)
+        {
+            UpdateTracking();
+        }
+
+        public static FormLocator GetLocator()
+        {
+            if (_activeLocator != null)
+            {
+                if (_activeLocator.Visible)
+                {
+                    _activeLocator.Focus();
+                    return _activeLocator;
+                }
+            }
+
+            try
+            {
+                _activeLocator?.Dispose();
+            }
+            catch { }
+            _activeLocator = new FormLocator();
+            _activeLocator.Show();
+            return _activeLocator;
         }
 
         private void CommanderWatcher_UpdateReceived(object sender, EDEvent edEvent)

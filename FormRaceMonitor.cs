@@ -22,18 +22,16 @@ namespace SRVTracker
         private Dictionary<string, EDRaceStatus> _racersStatus = null;
         private List<string> _eliminatedRacers = null;
         private EDWaypoint _nextWaypoint = null;
-        private FormLocator _locatorForm = null;
         private string _lastLeaderboardExport = "";
         private string _lastStatusExport = "";
         private string _lastTrackingTarget = "";
         private string _saveFilename = "";
 
-        public FormRaceMonitor(FormLocator locatorForm = null)
+        public FormRaceMonitor()
         {
             InitializeComponent();
             groupBoxAddCommander.Visible = false;
             _race = new EDRace("", new EDRoute(""));
-            _locatorForm = locatorForm;
             
             CommanderWatcher.UpdateReceived += CommanderWatcher_UpdateReceived;
             CommanderWatcher.Start();
@@ -313,7 +311,7 @@ namespace SRVTracker
             if (checkBoxClosestPlayerTarget.Checked)
                 trackingTarget.AppendLine(FormLocator.ClosestCommander);
             else
-                trackingTarget.AppendLine(_locatorForm.TrackingTarget);
+                trackingTarget.AppendLine(FormLocator.GetLocator().TrackingTarget);
 
             if (checkBoxPaddingCharacters.Checked)
             {
@@ -367,7 +365,7 @@ namespace SRVTracker
             if (listViewParticipants.SelectedItems.Count != 1)
                 return;
 
-            _locatorForm?.SetTarget(listViewParticipants.SelectedItems[0].SubItems[1].Text);
+            FormLocator.GetLocator().SetTarget(listViewParticipants.SelectedItems[0].SubItems[1].Text);
         }
 
         private void buttonLoadRace_Click(object sender, EventArgs e)
@@ -469,6 +467,11 @@ namespace SRVTracker
             if (_race.Route.Waypoints.Count<2)
             {
                 MessageBox.Show(this, "At least two waypoints are required to start a race", "Invalid Route", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            if (_racers.Count<1)
+            {
+                MessageBox.Show(this, "At least one commander is required to start a race", "No participants", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             checkBoxAutoAddCommanders.Checked = false;

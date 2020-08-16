@@ -20,7 +20,6 @@ namespace SRVTracker
         UdpClient _udpClient = null;
         const string ClientIdFile = "client.id";
         private string _lastUpdateTime = "";
-        private FormLocator _formLocator = null;
         private FileStream _statusFileStream = null;
         private System.Timers.Timer _statusTimer = null;
         private string _statusFile = "";
@@ -41,7 +40,6 @@ namespace SRVTracker
             InitStatusLocation();
             buttonTest.Visible = System.Diagnostics.Debugger.IsAttached;
             FormLocator.ServerAddress = (string)radioButtonUseDefaultServer.Tag;
-            _formLocator = new FormLocator();
             _statusTimer = new System.Timers.Timer(250);
             _statusTimer.Elapsed += _statusTimer_Elapsed;
             this.Size = _configHidden;
@@ -351,12 +349,6 @@ namespace SRVTracker
             if (edEvent.HasCoordinates())
             {
                 CurrentLocation = edEvent.Location();
-                if (_formLocator != null)
-                    if (_formLocator.Visible)
-                    {
-                        action = new Action(() => { _formLocator.UpdateTracking(); });
-                        Task.Run(action);
-                    }
                 CommanderLocationChanged?.Invoke(null, null);
             }
 
@@ -512,10 +504,7 @@ namespace SRVTracker
 
         private void buttonLocator_Click(object sender, EventArgs e)
         {
-            if (_formLocator == null)
-                _formLocator = new FormLocator();
-            if (!_formLocator.Visible)
-                _formLocator.Show();
+            FormLocator.GetLocator();
         }
 
         private void textBoxUploadServer_TextChanged(object sender, EventArgs e)
@@ -577,12 +566,19 @@ namespace SRVTracker
 
         private void buttonRoutePlanner_Click(object sender, EventArgs e)
         {
-            FormRoutePlanner formRoutePlanner = new FormRoutePlanner(_formLocator);
+            FormRouter formRouter = new FormRouter(this);
+            formRouter.Show();
+            /*
+            FormRoutePlanner formRoutePlanner = new FormRoutePlanner();
             formRoutePlanner.Show();
+            */
         }
         
-        private void StartTracking()
+        public void StartTracking()
         {
+            if (checkBoxTrack.Checked)
+                return; // Already tracking
+
             if (radioButtonWatchStatusFile.Checked)
             {
                 try
@@ -614,6 +610,8 @@ namespace SRVTracker
                     return;
                 }
             }
+            if (!checkBoxTrack.Checked)
+                checkBoxTrack.Checked = true;
             AddLog("Status tracking started");
         }
 
@@ -654,7 +652,7 @@ namespace SRVTracker
 
         private void buttonRaceTracker_Click(object sender, EventArgs e)
         {
-            FormRaceMonitor formRaceMonitor = new FormRaceMonitor(_formLocator);
+            FormRaceMonitor formRaceMonitor = new FormRaceMonitor();
             formRaceMonitor.Show();
         }
     }

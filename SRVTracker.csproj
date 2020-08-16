@@ -123,6 +123,12 @@
     <Compile Include="FormRoutePlanner.Designer.cs">
       <DependentUpon>FormRoutePlanner.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormRouter.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormRouter.Designer.cs">
+      <DependentUpon>FormRouter.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormStatusMessages.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -169,6 +175,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormRoutePlanner.resx">
       <DependentUpon>FormRoutePlanner.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormRouter.resx">
+      <DependentUpon>FormRouter.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormStatusMessages.resx">
       <DependentUpon>FormStatusMessages.cs</DependentUpon>
@@ -259,6 +268,9 @@
     <Content Include="ReleaseNotes.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\Settings_16x.png" />
+    <None Include="Resources\Run_16x1.png" />
+    <None Include="Resources\PlayVideo_16x.png" />
     <None Include="Resources\RecordDot_redNoHalo_16x.png" />
     <None Include="Resources\Record_16x.png" />
     <None Include="Resources\History_16x.png" />

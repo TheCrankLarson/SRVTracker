@@ -14,7 +14,11 @@ namespace EDTracking
         public List<EDWaypoint> Waypoints { get; set; } = null;
         private string _saveFilename = "";
 
-        public EDRoute() { }
+        public EDRoute()
+        {
+            Waypoints = new List<EDWaypoint>();
+            Name = "";
+        }
 
         public EDRoute(string name)
         {

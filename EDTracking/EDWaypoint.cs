@@ -14,8 +14,11 @@ namespace EDTracking
         private static CultureInfo _enGB = new CultureInfo("en-GB");
         public EDLocation Location { get; set; } = null;
         public double Radius { get; set; } = 5000;
+        public double Altitude { get; set; } = 0;
+        public sbyte AltitudeTest { get; set; } = 0; // -1, must be below, +1 must be above, 0 not checked
         public int Direction { get; set; } = -1;
         public DateTime TimeTracked { get; internal set; }  // To store the time the location was recorded when route recording
+        private static int _nextWaypointNumber = 1;
 
         public EDWaypoint()
         { }
@@ -39,7 +42,14 @@ namespace EDTracking
 
         public string Name
         {
-            get { return Location.Name; }
+            get {
+                if (!String.IsNullOrEmpty(Location.Name))
+                    return Location.Name;
+                Location.Name = $"Waypoint {_nextWaypointNumber:000}";
+                _nextWaypointNumber++;
+                return Location.Name;
+            }
+            set { Location.Name = value; }
         }
 
         public bool LocationIsWithinWaypoint(EDLocation location)

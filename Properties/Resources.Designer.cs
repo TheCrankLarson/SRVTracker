@@ -133,6 +133,16 @@ namespace SRVTracker.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap PlayVideo_16x {
+            get {
+                object obj = ResourceManager.GetObject("PlayVideo_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Record_16x {
             get {
                 object obj = ResourceManager.GetObject("Record_16x", resourceCulture);
@@ -213,6 +223,16 @@ namespace SRVTracker.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Run_16x1 {
+            get {
+                object obj = ResourceManager.GetObject("Run_16x1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Save_16x {
             get {
                 object obj = ResourceManager.GetObject("Save_16x", resourceCulture);
@@ -226,6 +246,16 @@ namespace SRVTracker.Properties {
         internal static System.Drawing.Bitmap SaveAs_16x {
             get {
                 object obj = ResourceManager.GetObject("SaveAs_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Settings_16x {
+            get {
+                object obj = ResourceManager.GetObject("Settings_16x", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

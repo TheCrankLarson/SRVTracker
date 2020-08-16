@@ -80,6 +80,7 @@
             this.textBoxRaceHistory.Location = new System.Drawing.Point(3, 16);
             this.textBoxRaceHistory.Multiline = true;
             this.textBoxRaceHistory.Name = "textBoxRaceHistory";
+            this.textBoxRaceHistory.ReadOnly = true;
             this.textBoxRaceHistory.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.textBoxRaceHistory.Size = new System.Drawing.Size(359, 186);
             this.textBoxRaceHistory.TabIndex = 0;
@@ -103,6 +104,7 @@
             this.buttonExport.TabIndex = 3;
             this.buttonExport.Text = "Export...";
             this.buttonExport.UseVisualStyleBackColor = true;
+            this.buttonExport.Click += new System.EventHandler(this.buttonExport_Click);
             // 
             // buttonExportAll
             // 
@@ -112,6 +114,7 @@
             this.buttonExportAll.TabIndex = 4;
             this.buttonExportAll.Text = "Export All...";
             this.buttonExportAll.UseVisualStyleBackColor = true;
+            this.buttonExportAll.Click += new System.EventHandler(this.buttonExportAll_Click);
             // 
             // FormRaceHistory
             // 
