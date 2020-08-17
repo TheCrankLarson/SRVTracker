@@ -51,10 +51,8 @@
             this.checkBoxSaveToFile = new System.Windows.Forms.CheckBox();
             this.textBoxUploadServer = new System.Windows.Forms.TextBox();
             this.checkBoxUpload = new System.Windows.Forms.CheckBox();
-            this.buttonLocator = new System.Windows.Forms.Button();
             this.buttonRoutePlanner = new System.Windows.Forms.Button();
             this.buttonExit = new System.Windows.Forms.Button();
-            this.buttonShowConfig = new System.Windows.Forms.Button();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
@@ -69,6 +67,9 @@
             this.label3 = new System.Windows.Forms.Label();
             this.textBoxPlanetRadius = new System.Windows.Forms.TextBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.buttonShowConfig = new System.Windows.Forms.Button();
+            this.buttonLocator = new System.Windows.Forms.Button();
+            this.trackerHUD1 = new SRVTracker.TrackerHUD();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.statusFileWatcher)).BeginInit();
             this.groupBox5.SuspendLayout();
@@ -157,15 +158,18 @@
             this.textBoxLatitude.Name = "textBoxLatitude";
             this.textBoxLatitude.Size = new System.Drawing.Size(78, 20);
             this.textBoxLatitude.TabIndex = 1;
+            this.textBoxLatitude.Text = "0.000000000";
             this.toolTip1.SetToolTip(this.textBoxLatitude, "Your last reported latitude");
             // 
             // textBoxLongitude
             // 
             this.textBoxLongitude.Location = new System.Drawing.Point(9, 32);
+            this.textBoxLongitude.Margin = new System.Windows.Forms.Padding(0);
             this.textBoxLongitude.MaxLength = 20;
             this.textBoxLongitude.Name = "textBoxLongitude";
             this.textBoxLongitude.Size = new System.Drawing.Size(78, 20);
             this.textBoxLongitude.TabIndex = 0;
+            this.textBoxLongitude.Text = "0.000000000";
             this.toolTip1.SetToolTip(this.textBoxLongitude, "Your last reported longitude");
             // 
             // label4
@@ -296,17 +300,6 @@
             this.checkBoxUpload.UseVisualStyleBackColor = true;
             this.checkBoxUpload.CheckedChanged += new System.EventHandler(this.checkBoxUpload_CheckedChanged);
             // 
-            // buttonLocator
-            // 
-            this.buttonLocator.Location = new System.Drawing.Point(72, 122);
-            this.buttonLocator.Name = "buttonLocator";
-            this.buttonLocator.Size = new System.Drawing.Size(55, 23);
-            this.buttonLocator.TabIndex = 9;
-            this.buttonLocator.Text = "Locate";
-            this.toolTip1.SetToolTip(this.buttonLocator, "Open the Locator (to track other\r\ncommanders and locations)");
-            this.buttonLocator.UseVisualStyleBackColor = true;
-            this.buttonLocator.Click += new System.EventHandler(this.buttonLocator_Click);
-            // 
             // buttonRoutePlanner
             // 
             this.buttonRoutePlanner.Location = new System.Drawing.Point(11, 122);
@@ -328,17 +321,6 @@
             this.toolTip1.SetToolTip(this.buttonExit, "Close the program");
             this.buttonExit.UseVisualStyleBackColor = true;
             this.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
-            // 
-            // buttonShowConfig
-            // 
-            this.buttonShowConfig.Location = new System.Drawing.Point(199, 122);
-            this.buttonShowConfig.Name = "buttonShowConfig";
-            this.buttonShowConfig.Size = new System.Drawing.Size(75, 23);
-            this.buttonShowConfig.TabIndex = 12;
-            this.buttonShowConfig.Text = "Show Config";
-            this.toolTip1.SetToolTip(this.buttonShowConfig, "Show Settings");
-            this.buttonShowConfig.UseVisualStyleBackColor = true;
-            this.buttonShowConfig.Click += new System.EventHandler(this.buttonShowConfig_Click);
             // 
             // groupBox5
             // 
@@ -474,7 +456,7 @@
             this.groupBox4.Controls.Add(this.textBoxHeading);
             this.groupBox4.Controls.Add(this.label1);
             this.groupBox4.Controls.Add(this.labelLastUpdateTime);
-            this.groupBox4.Location = new System.Drawing.Point(12, 11);
+            this.groupBox4.Location = new System.Drawing.Point(11, 11);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(263, 105);
             this.groupBox4.TabIndex = 19;
@@ -504,11 +486,43 @@
             this.toolTip1.InitialDelay = 500;
             this.toolTip1.ReshowDelay = 100;
             // 
+            // buttonShowConfig
+            // 
+            this.buttonShowConfig.Image = global::SRVTracker.Properties.Resources.Settings_16x;
+            this.buttonShowConfig.Location = new System.Drawing.Point(199, 122);
+            this.buttonShowConfig.Name = "buttonShowConfig";
+            this.buttonShowConfig.Size = new System.Drawing.Size(75, 23);
+            this.buttonShowConfig.TabIndex = 12;
+            this.toolTip1.SetToolTip(this.buttonShowConfig, "Show Settings");
+            this.buttonShowConfig.UseVisualStyleBackColor = true;
+            this.buttonShowConfig.Click += new System.EventHandler(this.buttonShowConfig_Click);
+            // 
+            // buttonLocator
+            // 
+            this.buttonLocator.Image = global::SRVTracker.Properties.Resources.Target_16x;
+            this.buttonLocator.Location = new System.Drawing.Point(72, 122);
+            this.buttonLocator.Name = "buttonLocator";
+            this.buttonLocator.Size = new System.Drawing.Size(55, 23);
+            this.buttonLocator.TabIndex = 9;
+            this.toolTip1.SetToolTip(this.buttonLocator, "Open the Locator (to track other\r\ncommanders and locations)");
+            this.buttonLocator.UseVisualStyleBackColor = true;
+            this.buttonLocator.Click += new System.EventHandler(this.buttonLocator_Click);
+            // 
+            // trackerHUD1
+            // 
+            this.trackerHUD1.BackColor = System.Drawing.Color.Black;
+            this.trackerHUD1.Location = new System.Drawing.Point(0, 0);
+            this.trackerHUD1.Name = "trackerHUD1";
+            this.trackerHUD1.Size = new System.Drawing.Size(260, 40);
+            this.trackerHUD1.TabIndex = 20;
+            this.trackerHUD1.Visible = false;
+            // 
             // FormTracker
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(724, 354);
+            this.ClientSize = new System.Drawing.Size(925, 481);
+            this.Controls.Add(this.trackerHUD1);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.checkBoxTrack);
             this.Controls.Add(this.checkBoxUpload);
@@ -590,6 +604,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox textBoxPlanetRadius;
         private System.Windows.Forms.ToolTip toolTip1;
+        private TrackerHUD trackerHUD1;
     }
 }
 

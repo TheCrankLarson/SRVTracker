@@ -15,6 +15,7 @@ namespace EDTracking
     public class EDRaceStatus
     {        
         public int Heading { get; internal set; } = -1;
+        public double SpeedInMS { get; internal set; } = -1;
         public long Flags { get; internal set; } = -1;
         public DateTime TimeStamp { get; internal set; } = DateTime.MinValue;
         public bool Eliminated { get; internal set; } = false;
@@ -47,6 +48,8 @@ namespace EDTracking
         private bool _lowFuel = false;
         private StringBuilder _raceHistory = new StringBuilder();
         private double _nextLogDistanceToWaypoint = double.MaxValue;
+        private EDLocation _speedCalculationLocation = null;
+        private DateTime _speedCalculationTimeStamp = DateTime.MinValue;
 
         public EDRaceStatus(EDEvent baseEvent)
         {
@@ -100,6 +103,9 @@ namespace EDTracking
                 if (_lowFuel)
                     status.Append(" (low fuel)");
             }
+
+            if (SpeedInMS >= 0)
+                status.Append($" {SpeedInMS:0.0}m/s");
 
             if (ShowDetailedStatus)
             {
@@ -174,6 +180,22 @@ namespace EDTracking
 
             if (updateEvent.HasCoordinates())
             {
+                TimeSpan timeBetweenLocations = updateEvent.TimeStamp.Subtract(_speedCalculationTimeStamp);
+                if (timeBetweenLocations.TotalSeconds > 1)
+                {
+                    // We take a speed calculation once per second
+                    if (_speedCalculationLocation==null)
+                    {
+                        // We don't have a previous timestamp/location yet
+                        _speedCalculationLocation = updateEvent.Location();
+                        _speedCalculationTimeStamp = updateEvent.TimeStamp;
+                    }
+                    else
+                    {
+                        double distanceBetweenLocations = EDLocation.DistanceBetween(_speedCalculationLocation, updateEvent.Location());
+                        SpeedInMS = distanceBetweenLocations * (1000 / timeBetweenLocations.TotalMilliseconds);
+                    }
+                }
                 Location = updateEvent.Location();
                 if (WaypointIndex > 0)
                 {

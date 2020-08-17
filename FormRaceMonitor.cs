@@ -285,25 +285,43 @@ namespace SRVTracker
             string[] leaderboard = new string[listViewParticipants.Items.Count+1];
             StringBuilder trackingTarget = new StringBuilder();
 
+            // Below is a quick fix to (hopefully) resolve missing entries in status and leaderboard.  This seems to be caused by the ListView being updated while
+            // this code is reading it.  The proper fix would probably be to use locks.
+            bool haveValidLeaderboard = true;  // Due to async updates, we don't always get a valid leaderboard.  Ensure we don't export any with missing info
+            bool haveValidStatus = true; // Same as for leaderboard, ensure we don't export status if we are missing any information
+
             for (int i = 0; i < listViewParticipants.Items.Count; i++)
             {
                 try
                 {
-                    int commanderPosition = Convert.ToInt32(listViewParticipants.Items[i].Text)-1;
-                    if (commanderPosition < 0) // Not a number, so add to bottom of leaderboard
+                    if (haveValidLeaderboard)
                     {
-                        commanderPosition = leaderboard.Length - 2; // Bottom row is padding (or empty)
-                        while (!String.IsNullOrEmpty(leaderboard[commanderPosition]))
-                            commanderPosition--; // Could potentially happen in the event of a tie
+                        int commanderPosition = Convert.ToInt32(listViewParticipants.Items[i].Text) - 1;
+                        if (commanderPosition < 0) // Not a number, so add to bottom of leaderboard
+                        {
+                            commanderPosition = leaderboard.Length - 2; // Bottom row is padding (or empty)
+                            while (!String.IsNullOrEmpty(leaderboard[commanderPosition]))
+                                commanderPosition--; // Could potentially happen in the event of a tie
+                        }
+                        leaderboard[commanderPosition] = listViewParticipants.Items[i].SubItems[1].Text;
+                        if (String.IsNullOrEmpty(leaderboard[commanderPosition]))
+                            haveValidLeaderboard = false;
                     }
-                    leaderboard[commanderPosition] = listViewParticipants.Items[i].SubItems[1].Text;
-                    if (listViewParticipants.Items[i].SubItems[2].Text.StartsWith("->"))
-                        if (checkBoxExportDistance.Checked)
-                            status.AppendLine(listViewParticipants.Items[i].SubItems[3].Text);
+                    if (haveValidStatus)
+                    {
+                        string commanderStatus;
+                        if (listViewParticipants.Items[i].SubItems[2].Text.StartsWith("->"))
+                            if (checkBoxExportDistance.Checked)
+                                commanderStatus = listViewParticipants.Items[i].SubItems[3].Text;
+                            else
+                                commanderStatus = listViewParticipants.Items[i].SubItems[2].Text;
                         else
-                            status.AppendLine(listViewParticipants.Items[i].SubItems[2].Text);
-                    else
-                        status.AppendLine(listViewParticipants.Items[i].SubItems[2].Text);
+                            commanderStatus = listViewParticipants.Items[i].SubItems[2].Text;
+                        if (!String.IsNullOrEmpty(commanderStatus))
+                            status.AppendLine(commanderStatus);
+                        else
+                            haveValidStatus = false;
+                    }
                 }
                 catch { }
             }
@@ -313,15 +331,12 @@ namespace SRVTracker
             else
                 trackingTarget.AppendLine(FormLocator.GetLocator().TrackingTarget);
 
-            if (checkBoxPaddingCharacters.Checked)
+            if (haveValidLeaderboard)
             {
-                leaderboard[leaderboard.Length-1] = new string(textBoxPaddingChar.Text[0], (int)numericUpDownLeaderboardPadding.Value);
-                status.AppendLine(new string(textBoxPaddingChar.Text[0], (int)numericUpDownStatusPadding.Value));
-                trackingTarget.AppendLine(new string(textBoxPaddingChar.Text[0], (int)numericUpDownTargetPadding.Value));
-            }
-
-            string participants = String.Join(Environment.NewLine, leaderboard);
-            if (checkBoxExportLeaderboard.Checked && !_lastLeaderboardExport.Equals(participants))
+                if (checkBoxPaddingCharacters.Checked)
+                    leaderboard[leaderboard.Length - 1] = new string(textBoxPaddingChar.Text[0], (int)numericUpDownLeaderboardPadding.Value);
+                string participants = String.Join(Environment.NewLine, leaderboard);
+                if (checkBoxExportLeaderboard.Checked && !_lastLeaderboardExport.Equals(participants))
                 {
                     try
                     {
@@ -330,17 +345,26 @@ namespace SRVTracker
                     }
                     catch { }
                 }
-            if (checkBoxExportStatus.Checked && !_lastStatusExport.Equals(status.ToString()))
+            }
+
+            if (haveValidStatus)
             {
-                try
+                if (checkBoxExportStatus.Checked && !_lastStatusExport.Equals(status.ToString()))
                 {
-                    File.WriteAllText(textBoxExportStatusFile.Text, status.ToString());
-                    _lastStatusExport = status.ToString();
+                    if (checkBoxPaddingCharacters.Checked)
+                        status.AppendLine(new string(textBoxPaddingChar.Text[0], (int)numericUpDownStatusPadding.Value));
+                    try
+                    {
+                        File.WriteAllText(textBoxExportStatusFile.Text, status.ToString());
+                        _lastStatusExport = status.ToString();
+                    }
+                    catch { }
                 }
-                catch { }
             }
             if (checkBoxExportTarget.Checked && !_lastTrackingTarget.Equals(trackingTarget.ToString()))
             {
+                if (checkBoxPaddingCharacters.Checked)
+                    trackingTarget.AppendLine(new string(textBoxPaddingChar.Text[0], (int)numericUpDownTargetPadding.Value));
                 try
                 {
                     File.WriteAllText(textBoxExportTargetFile.Text, trackingTarget.ToString());

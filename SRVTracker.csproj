@@ -153,8 +153,20 @@
     <Compile Include="LocationManager.Designer.cs">
       <DependentUpon>LocationManager.cs</DependentUpon>
     </Compile>
+    <Compile Include="LocatorHUD.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="LocatorHUD.Designer.cs">
+      <DependentUpon>LocatorHUD.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TrackerHUD.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="TrackerHUD.Designer.cs">
+      <DependentUpon>TrackerHUD.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="FormAddLocation.resx">
       <DependentUpon>FormAddLocation.cs</DependentUpon>
     </EmbeddedResource>
@@ -191,6 +203,9 @@
     <EmbeddedResource Include="LocationManager.resx">
       <DependentUpon>LocationManager.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="LocatorHUD.resx">
+      <DependentUpon>LocatorHUD.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -201,6 +216,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="TrackerHUD.resx">
+      <DependentUpon>TrackerHUD.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -268,6 +286,7 @@
     <Content Include="ReleaseNotes.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\arrow.bmp" />
     <None Include="Resources\Settings_16x.png" />
     <None Include="Resources\Run_16x1.png" />
     <None Include="Resources\PlayVideo_16x.png" />

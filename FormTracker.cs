@@ -32,6 +32,7 @@ namespace SRVTracker
         //public delegate void UpdateReceivedEventHandler(object sender, EDEvent edEvent);
         public static event EventHandler CommanderLocationChanged;
         public static EDLocation CurrentLocation { get; private set; } = null;
+        public static int CurrentHeading { get; private set; } = -1;
 
         public FormTracker()
         {            
@@ -350,6 +351,7 @@ namespace SRVTracker
             {
                 CurrentLocation = edEvent.Location();
                 CommanderLocationChanged?.Invoke(null, null);
+                CurrentHeading = edEvent.Heading;
             }
 
             action = new Action(() => { labelLastUpdateTime.Text = DateTime.Now.ToString("HH:mm:ss"); });
