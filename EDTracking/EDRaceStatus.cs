@@ -16,6 +16,7 @@ namespace EDTracking
     {        
         public int Heading { get; internal set; } = -1;
         public double SpeedInMS { get; internal set; } = -1;
+        public double MaxSpeedInMS { get; internal set; } = 0;
         public long Flags { get; internal set; } = -1;
         public DateTime TimeStamp { get; internal set; } = DateTime.MinValue;
         public bool Eliminated { get; internal set; } = false;
@@ -26,7 +27,7 @@ namespace EDTracking
         public static bool Started { get; set; } = false;
         public bool Finished { get; set; } = false;
         public static DateTime StartTime { get; set; } = DateTime.MinValue;
-        public static DateTime FinishTime { get; internal set; } = DateTime.MinValue;
+        public DateTime FinishTime { get; internal set; } = DateTime.MinValue;
 
         public string Commander { get; } = "";
         public static bool EliminateOnDestruction { get; set; } = true;
@@ -104,22 +105,28 @@ namespace EDTracking
                     status.Append(" (low fuel)");
             }
 
-            if (SpeedInMS >= 0)
-                status.Append($" {SpeedInMS:0.0}m/s");
+            //if (SpeedInMS >= 0)
+            //    status.Append($" {SpeedInMS:0.0}m/s");
+
+
 
             if (ShowDetailedStatus)
             {
+                // Flags that apply to all vehicles
+                if (isFlagSet(StatusFlags.Night_Vision_Active))
+                    status.Append(" NV");
+
+                if (isFlagSet(StatusFlags.LightsOn))
+                    status.Append(" L");
+
                 if (isFlagSet(StatusFlags.In_SRV))
                 {
                     // SRV only flags
-                    if (isFlagSet(StatusFlags.LightsOn))
-                    {
-                        status.Append(" L");
-                        if (isFlagSet(StatusFlags.srvHighBeam))
-                            status.Append("H");
-                        else
-                            status.Append("L");
-                    }
+
+                    if (isFlagSet(StatusFlags.srvHighBeam))
+                        status.Append("H");
+                    else
+                        status.Append("L");
 
                     if (isFlagSet(StatusFlags.Srv_Handbrake))
                         status.Append(" HB");
@@ -146,9 +153,7 @@ namespace EDTracking
                         status.Append(" I");
                 }
 
-                // Flags that apply to all vehicles
-                if (isFlagSet(StatusFlags.Night_Vision_Active))
-                    status.Append(" NV");
+
             }
 
             return status.ToString();
@@ -194,6 +199,8 @@ namespace EDTracking
                     {
                         double distanceBetweenLocations = EDLocation.DistanceBetween(_speedCalculationLocation, updateEvent.Location());
                         SpeedInMS = distanceBetweenLocations * (1000 / timeBetweenLocations.TotalMilliseconds);
+                        if (SpeedInMS > MaxSpeedInMS)
+                            MaxSpeedInMS = SpeedInMS;
                     }
                 }
                 Location = updateEvent.Location();

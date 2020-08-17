@@ -486,15 +486,13 @@ namespace SRVTracker
 
         private void buttonShowConfig_Click(object sender, EventArgs e)
         {
-            if (buttonShowConfig.Text.Equals("Show Config"))
+            if (this.Size == _configHidden)
             {
-                buttonShowConfig.Text = "Hide Config";
                 this.Size = _configShowing;
                 this.Refresh();
                 return;
             }
 
-            buttonShowConfig.Text = "Show Config";
             this.Size = _configHidden;
             this.Refresh();
         }
@@ -578,38 +576,42 @@ namespace SRVTracker
         
         public void StartTracking()
         {
-            if (checkBoxTrack.Checked)
-                return; // Already tracking
 
             if (radioButtonWatchStatusFile.Checked)
             {
-                try
+                if (!statusFileWatcher.EnableRaisingEvents)
                 {
-                    statusFileWatcher.Path = textBoxStatusFile.Text;
-                    statusFileWatcher.Filter = "Status.json";
-                    statusFileWatcher.NotifyFilter = System.IO.NotifyFilters.LastWrite;
-                    statusFileWatcher.EnableRaisingEvents = true;
-                }
-                catch (Exception ex)
-                {
-                    AddLog($"Error initiating file watcher: {ex.Message}");
-                    return;
+                    try
+                    {
+                        statusFileWatcher.Path = textBoxStatusFile.Text;
+                        statusFileWatcher.Filter = "Status.json";
+                        statusFileWatcher.NotifyFilter = System.IO.NotifyFilters.LastWrite;
+                        statusFileWatcher.EnableRaisingEvents = true;
+                    }
+                    catch (Exception ex)
+                    {
+                        AddLog($"Error initiating file watcher: {ex.Message}");
+                        return;
+                    }
                 }
             }
             else
             {
-                _statusFile = $"{textBoxStatusFile.Text}\\Status.json";
-                if (File.Exists(_statusFile))
+                if (!_statusTimer.Enabled)
                 {
-                    _statusTimer.Interval = 250;
-                    _statusTimer.Start();
-                }
-                else
-                {
-                    AddLog($"Unable to find status file: {_statusFile}");
-                    _statusFile = "";
-                    checkBoxTrack.Checked = false;
-                    return;
+                    _statusFile = $"{textBoxStatusFile.Text}\\Status.json";
+                    if (File.Exists(_statusFile))
+                    {
+                        _statusTimer.Interval = 250;
+                        _statusTimer.Start();
+                    }
+                    else
+                    {
+                        AddLog($"Unable to find status file: {_statusFile}");
+                        _statusFile = "";
+                        checkBoxTrack.Checked = false;
+                        return;
+                    }
                 }
             }
             if (!checkBoxTrack.Checked)

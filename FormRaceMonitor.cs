@@ -26,6 +26,7 @@ namespace SRVTracker
         private string _lastStatusExport = "";
         private string _lastTrackingTarget = "";
         private string _saveFilename = "";
+        private bool _generatingLeaderboard = false;
 
         public FormRaceMonitor()
         {
@@ -278,52 +279,71 @@ namespace SRVTracker
             }
         }
 
+        private List<string> RacePositions()
+        {
+            List<string> positions = new List<string>();
+            foreach (string racer in _racersStatus.Keys)
+            {
+                if (_racersStatus[racer].Finished)
+                {
+                    // If the racers are finished, then their position depends upon their time
+                    if (positions.Count < 1)
+                        positions.Add(racer);
+                    else
+                    {
+                        int i = 0;
+                        while (_racersStatus[positions[i]].Finished && (i < positions.Count) && (_racersStatus[racer].FinishTime > _racersStatus[positions[i]].FinishTime))
+                            i++;
+                        if (i < positions.Count)
+                            positions.Insert(i, racer);
+                        else
+                            positions.Add(racer);
+                    }
+                }
+                else if (_racersStatus[racer].Eliminated)
+                {
+                    // Eliminated racers have no position, we can just add them at the end
+                    positions.Add(racer);
+                }
+                else
+                {
+                    // All other positions are based on waypoint and distance from it (i.e. lowest waypoint number
+                    int i = 0;
+                    while (_racersStatus[positions[i]].WaypointIndex<_racersStatus[racer].WaypointIndex && (i < positions.Count))
+                        i++;
+                    if (i<positions.Count)
+                    {
+                        while ((_racersStatus[positions[i]].WaypointIndex == _racersStatus[racer].WaypointIndex) && (_racersStatus[positions[i]].DistanceToWaypoint < _racersStatus[racer].DistanceToWaypoint) && (i < positions.Count))
+                            i++;
+                    }
+                    if (i < positions.Count)
+                        positions.Insert(i, racer);
+                    else
+                        positions.Add(racer);
+                }
+            }
+            return positions;
+        }
+
         private void ExportLeaderboard()
         {
             // Export the current leaderboard
+
+            if (_generatingLeaderboard)
+                return;
+            _generatingLeaderboard = true;
+
             StringBuilder status = new StringBuilder();
-            string[] leaderboard = new string[listViewParticipants.Items.Count+1];
             StringBuilder trackingTarget = new StringBuilder();
+            List<string> leaderBoard = RacePositions();
 
-            // Below is a quick fix to (hopefully) resolve missing entries in status and leaderboard.  This seems to be caused by the ListView being updated while
-            // this code is reading it.  The proper fix would probably be to use locks.
-            bool haveValidLeaderboard = true;  // Due to async updates, we don't always get a valid leaderboard.  Ensure we don't export any with missing info
-            bool haveValidStatus = true; // Same as for leaderboard, ensure we don't export status if we are missing any information
-
-            for (int i = 0; i < listViewParticipants.Items.Count; i++)
+            // We have the leaderboard, so now we retrieve the status for each racer in order
+            for (int i=0; i<leaderBoard.Count; i++)
             {
-                try
-                {
-                    if (haveValidLeaderboard)
-                    {
-                        int commanderPosition = Convert.ToInt32(listViewParticipants.Items[i].Text) - 1;
-                        if (commanderPosition < 0) // Not a number, so add to bottom of leaderboard
-                        {
-                            commanderPosition = leaderboard.Length - 2; // Bottom row is padding (or empty)
-                            while (!String.IsNullOrEmpty(leaderboard[commanderPosition]))
-                                commanderPosition--; // Could potentially happen in the event of a tie
-                        }
-                        leaderboard[commanderPosition] = listViewParticipants.Items[i].SubItems[1].Text;
-                        if (String.IsNullOrEmpty(leaderboard[commanderPosition]))
-                            haveValidLeaderboard = false;
-                    }
-                    if (haveValidStatus)
-                    {
-                        string commanderStatus;
-                        if (listViewParticipants.Items[i].SubItems[2].Text.StartsWith("->"))
-                            if (checkBoxExportDistance.Checked)
-                                commanderStatus = listViewParticipants.Items[i].SubItems[3].Text;
-                            else
-                                commanderStatus = listViewParticipants.Items[i].SubItems[2].Text;
-                        else
-                            commanderStatus = listViewParticipants.Items[i].SubItems[2].Text;
-                        if (!String.IsNullOrEmpty(commanderStatus))
-                            status.AppendLine(commanderStatus);
-                        else
-                            haveValidStatus = false;
-                    }
-                }
-                catch { }
+                if (_racersStatus[leaderBoard[i]].Finished)
+                    status.AppendLine($"({_racersStatus[leaderBoard[i]].FinishTime.Subtract(EDRaceStatus.StartTime):hh\\:mm\\:ss})");
+                else
+                    status.AppendLine(_racersStatus[leaderBoard[i]].ToString());
             }
 
             if (checkBoxClosestPlayerTarget.Checked)
@@ -331,13 +351,13 @@ namespace SRVTracker
             else
                 trackingTarget.AppendLine(FormLocator.GetLocator().TrackingTarget);
 
-            if (haveValidLeaderboard)
+            if (checkBoxExportLeaderboard.Checked)
             {
                 if (checkBoxPaddingCharacters.Checked)
-                    leaderboard[leaderboard.Length - 1] = new string(textBoxPaddingChar.Text[0], (int)numericUpDownLeaderboardPadding.Value);
-                string participants = String.Join(Environment.NewLine, leaderboard);
-                if (checkBoxExportLeaderboard.Checked && !_lastLeaderboardExport.Equals(participants))
-                {
+                    leaderBoard.Add(new string(textBoxPaddingChar.Text[0], (int)numericUpDownLeaderboardPadding.Value));
+                string participants = String.Join(Environment.NewLine, leaderBoard);
+                if (!_lastLeaderboardExport.Equals(participants))
+                { 
                     try
                     {
                         File.WriteAllText(textBoxExportLeaderboardFile.Text, participants);
@@ -347,20 +367,18 @@ namespace SRVTracker
                 }
             }
 
-            if (haveValidStatus)
+            if (checkBoxExportStatus.Checked && !_lastStatusExport.Equals(status.ToString()))
             {
-                if (checkBoxExportStatus.Checked && !_lastStatusExport.Equals(status.ToString()))
+                if (checkBoxPaddingCharacters.Checked)
+                    status.AppendLine(new string(textBoxPaddingChar.Text[0], (int)numericUpDownStatusPadding.Value));
+                try
                 {
-                    if (checkBoxPaddingCharacters.Checked)
-                        status.AppendLine(new string(textBoxPaddingChar.Text[0], (int)numericUpDownStatusPadding.Value));
-                    try
-                    {
-                        File.WriteAllText(textBoxExportStatusFile.Text, status.ToString());
-                        _lastStatusExport = status.ToString();
-                    }
-                    catch { }
+                    File.WriteAllText(textBoxExportStatusFile.Text, status.ToString());
+                    _lastStatusExport = status.ToString();
                 }
+                catch { }
             }
+
             if (checkBoxExportTarget.Checked && !_lastTrackingTarget.Equals(trackingTarget.ToString()))
             {
                 if (checkBoxPaddingCharacters.Checked)
@@ -372,6 +390,7 @@ namespace SRVTracker
                 }
                 catch { }
             }
+            _generatingLeaderboard = false;
         }
 
         private void buttonRemoveParticipant_Click(object sender, EventArgs e)
@@ -759,7 +778,7 @@ namespace SRVTracker
         public int Compare(object x, object y)
         {
             try
-            {
+            {                
                 return Convert.ToInt32(((System.Windows.Forms.ListViewItem)x).SubItems[0].Text) - Convert.ToInt32(((System.Windows.Forms.ListViewItem)y).SubItems[0].Text);
             }
             catch { }
