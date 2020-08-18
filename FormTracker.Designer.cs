@@ -158,7 +158,6 @@
             this.textBoxLatitude.Name = "textBoxLatitude";
             this.textBoxLatitude.Size = new System.Drawing.Size(78, 20);
             this.textBoxLatitude.TabIndex = 1;
-            this.textBoxLatitude.Text = "0.000000000";
             this.toolTip1.SetToolTip(this.textBoxLatitude, "Your last reported latitude");
             // 
             // textBoxLongitude
@@ -169,7 +168,6 @@
             this.textBoxLongitude.Name = "textBoxLongitude";
             this.textBoxLongitude.Size = new System.Drawing.Size(78, 20);
             this.textBoxLongitude.TabIndex = 0;
-            this.textBoxLongitude.Text = "0.000000000";
             this.toolTip1.SetToolTip(this.textBoxLongitude, "Your last reported longitude");
             // 
             // label4

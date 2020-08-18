@@ -24,6 +24,7 @@ namespace SRVTracker
         private EDWaypoint _nextWaypoint = null;
         private string _lastLeaderboardExport = "";
         private string _lastStatusExport = "";
+        private string _lastSpeedExport = "";
         private string _lastTrackingTarget = "";
         private string _saveFilename = "";
         private bool _generatingLeaderboard = false;
@@ -281,22 +282,27 @@ namespace SRVTracker
         private List<string> RacePositions()
         {
             List<string> positions = new List<string>();
+            int finishedIndex = -1;
             foreach (string racer in _racersStatus.Keys)
             {
                 if (_racersStatus[racer].Finished)
                 {
                     // If the racers are finished, then their position depends upon their time
                     if (positions.Count < 1)
+                    {
                         positions.Add(racer);
+                        finishedIndex = 0;
+                    }
                     else
                     {
                         int i = 0;
-                        while (_racersStatus[positions[i]].Finished && (i < positions.Count) && (_racersStatus[racer].FinishTime > _racersStatus[positions[i]].FinishTime))
+                        while ((i < positions.Count) && _racersStatus[positions[i]].Finished && (_racersStatus[racer].FinishTime > _racersStatus[positions[i]].FinishTime))
                             i++;
                         if (i < positions.Count)
                             positions.Insert(i, racer);
                         else
                             positions.Add(racer);
+                        finishedIndex = i;
                     }
                 }
                 else if (_racersStatus[racer].Eliminated)
@@ -311,12 +317,12 @@ namespace SRVTracker
                         positions.Add(racer);
                     else
                     {
-                        int i = 0;
-                        while (_racersStatus[positions[i]].WaypointIndex < _racersStatus[racer].WaypointIndex && (i < positions.Count))
-                            i++;
+                        int i = finishedIndex+1;
                         if (i < positions.Count)
                         {
-                            while ((_racersStatus[positions[i]].WaypointIndex == _racersStatus[racer].WaypointIndex) && (_racersStatus[positions[i]].DistanceToWaypoint < _racersStatus[racer].DistanceToWaypoint) && (i < positions.Count))
+                            while ((i < positions.Count) && _racersStatus[positions[i]].WaypointIndex < _racersStatus[racer].WaypointIndex && (!_racersStatus[positions[i]].Eliminated))
+                                i++;
+                            while ((i < positions.Count) && (_racersStatus[positions[i]].WaypointIndex == _racersStatus[racer].WaypointIndex) && (_racersStatus[positions[i]].DistanceToWaypoint < _racersStatus[racer].DistanceToWaypoint) && (!_racersStatus[positions[i]].Eliminated))
                                 i++;
                         }
                         if (i < positions.Count)
@@ -336,13 +342,13 @@ namespace SRVTracker
             if (_generatingLeaderboard)
                 return;
             _generatingLeaderboard = true;
-
-            StringBuilder status = new StringBuilder();
+          
             List<string> leaderBoard = RacePositions();
 
             // We have the leaderboard, so now we retrieve the status for each racer in order
             if (checkBoxExportStatus.Checked)
             {
+                StringBuilder status = new StringBuilder();
                 for (int i = 0; i < leaderBoard.Count; i++)
                 {
                     if (_racersStatus[leaderBoard[i]].Finished)
@@ -395,6 +401,25 @@ namespace SRVTracker
                     {
                         File.WriteAllText(textBoxExportLeaderboardFile.Text, participants);
                         _lastLeaderboardExport = participants;
+                    }
+                    catch { }
+                }
+            }
+
+            if (checkBoxExportSpeed.Checked)
+            {
+                StringBuilder speeds = new StringBuilder();
+                for (int i = 0; i < leaderBoard.Count; i++)
+                    speeds.AppendLine($"{_racersStatus[leaderBoard[i]].SpeedInMS:0.0}m/s ({_racersStatus[leaderBoard[i]].MaxSpeedInMS}m/s)");
+
+                if (!_lastSpeedExport.Equals(speeds.ToString()))
+                {
+                    if (checkBoxPaddingCharacters.Checked)
+                        speeds.AppendLine(new string(textBoxPaddingChar.Text[0], (int)numericUpDownSpeedPadding.Value));
+                    try
+                    {
+                        File.WriteAllText(textBoxExportStatusFile.Text, speeds.ToString());
+                        _lastSpeedExport = speeds.ToString();
                     }
                     catch { }
                 }
@@ -711,6 +736,8 @@ namespace SRVTracker
                         numericUpDownStatusPadding.Enabled = false;
                 if (numericUpDownTargetPadding.Enabled)
                         numericUpDownTargetPadding.Enabled = false;
+                if (numericUpDownSpeedPadding.Enabled)
+                    numericUpDownSpeedPadding.Enabled = false;
                 textBoxPaddingChar.Enabled = false;
             }
             else
@@ -721,7 +748,9 @@ namespace SRVTracker
                 if (!numericUpDownStatusPadding.Enabled)
                     if (checkBoxExportStatus.Checked)
                         numericUpDownStatusPadding.Enabled = true;
-
+                if (!numericUpDownSpeedPadding.Enabled)
+                    if (checkBoxExportSpeed.Checked)
+                        numericUpDownSpeedPadding.Enabled = true;
                 if (!numericUpDownTargetPadding.Enabled)
                     if (checkBoxExportTarget.Checked)
                         numericUpDownTargetPadding.Enabled = true;
@@ -753,6 +782,19 @@ namespace SRVTracker
                     textBoxExportStatusFile.Enabled = false;
                 if (numericUpDownStatusPadding.Enabled)
                     numericUpDownStatusPadding.Enabled = false;
+            }
+
+            if (checkBoxExportSpeed.Checked)
+            {
+                if (!textBoxExportSpeedFile.Enabled)
+                    textBoxExportSpeedFile.Enabled = true;
+            }
+            else
+            {
+                if (textBoxExportSpeedFile.Enabled)
+                    textBoxExportSpeedFile.Enabled = false;
+                if (numericUpDownSpeedPadding.Enabled)
+                    numericUpDownSpeedPadding.Enabled = false;
             }
 
             if (checkBoxExportTarget.Checked)
@@ -840,6 +882,11 @@ namespace SRVTracker
         {
             FormRaceHistory formRaceHistory = new FormRaceHistory(_racersStatus);
             formRaceHistory.Show();
+        }
+
+        private void checkBoxExportSpeed_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateButtons();
         }
     }
 

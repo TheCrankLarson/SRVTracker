@@ -712,6 +712,7 @@
             this.checkBoxExportSpeed.TabIndex = 19;
             this.checkBoxExportSpeed.Text = "Export speed:";
             this.checkBoxExportSpeed.UseVisualStyleBackColor = true;
+            this.checkBoxExportSpeed.CheckedChanged += new System.EventHandler(this.checkBoxExportSpeed_CheckedChanged);
             // 
             // groupBoxTextExport
             // 
