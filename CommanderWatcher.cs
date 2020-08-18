@@ -112,25 +112,22 @@ namespace SRVTracker
                         EDEvent edEvent = EDEvent.FromJson(commanders[i]);
                         if (edEvent!= null && !String.IsNullOrEmpty(edEvent.Commander))
                         {                           
-                            if (edEvent != null)
+                            if (_commanderStatuses.ContainsKey(edEvent.Commander))
                             {
-                                if (_commanderStatuses.ContainsKey(edEvent.Commander))
-                                {
-                                    if (edEvent.TimeStamp > _commanderStatuses[edEvent.Commander].TimeStamp)
-                                    {
-                                        lock (_lock)
-                                            _commanderStatuses[edEvent.Commander] = edEvent;
-                                        UpdateReceived?.Invoke(null, edEvent);
-                                    }
-                                }
-                                else
+                                if (edEvent.TimeStamp > _commanderStatuses[edEvent.Commander].TimeStamp)
                                 {
                                     lock (_lock)
-                                        _commanderStatuses.Add(edEvent.Commander, edEvent);
-                                    countChanged = true;
+                                        _commanderStatuses[edEvent.Commander] = edEvent;
                                     UpdateReceived?.Invoke(null, edEvent);
-                                }                               
+                                }
                             }
+                            else
+                            {
+                                lock (_lock)
+                                    _commanderStatuses.Add(edEvent.Commander, edEvent);
+                                countChanged = true;
+                                UpdateReceived?.Invoke(null, edEvent);
+                            }                               
                         }
                     }
                     if (countChanged)

@@ -270,7 +270,14 @@ namespace SRVTracker
                     // listViewParticipants.ListViewItemSorter = new ListViewItemComparer();
                     listViewParticipants.Sort();
                     listViewParticipants.EndUpdate();
-                    ExportLeaderboard();
+                    try
+                    {
+                        ExportLeaderboard();
+                    }
+                    catch
+                    {
+                        _generatingLeaderboard = false;
+                    }
                 });
                 if (listViewParticipants.InvokeRequired)
                     listViewParticipants.Invoke(action);
@@ -282,21 +289,29 @@ namespace SRVTracker
         private List<string> RacePositions()
         {
             List<string> positions = new List<string>();
+            if (_racersStatus is null)
+                return positions;
+
             int finishedIndex = -1;
             foreach (string racer in _racersStatus.Keys)
             {
                 if (_racersStatus[racer].Finished)
                 {
                     // If the racers are finished, then their position depends upon their time
-                    if (positions.Count < 1)
+                    if (finishedIndex<0)
                     {
-                        positions.Add(racer);
+                        // This is the first finisher we have, so add to top of list
+                        if (positions.Count == 0)
+                            positions.Add(racer);
+                        else
+                            positions.Insert(0, racer);
                         finishedIndex = 0;
                     }
                     else
                     {
+                        // We need to work out where to add this finisher (based on finish time)
                         int i = 0;
-                        while ((i < positions.Count) && _racersStatus[positions[i]].Finished && (_racersStatus[racer].FinishTime > _racersStatus[positions[i]].FinishTime))
+                        while ((i <= finishedIndex) && (_racersStatus[racer].FinishTime > _racersStatus[positions[i]].FinishTime))
                             i++;
                         if (i < positions.Count)
                             positions.Insert(i, racer);
@@ -320,8 +335,10 @@ namespace SRVTracker
                         int i = finishedIndex+1;
                         if (i < positions.Count)
                         {
+                            // Move past anyone who is at a higher waypoint
                             while ((i < positions.Count) && _racersStatus[positions[i]].WaypointIndex < _racersStatus[racer].WaypointIndex && (!_racersStatus[positions[i]].Eliminated))
                                 i++;
+                            // Now we check distances (as these positions are heading to the same waypoint)
                             while ((i < positions.Count) && (_racersStatus[positions[i]].WaypointIndex == _racersStatus[racer].WaypointIndex) && (_racersStatus[positions[i]].DistanceToWaypoint < _racersStatus[racer].DistanceToWaypoint) && (!_racersStatus[positions[i]].Eliminated))
                                 i++;
                         }
@@ -354,7 +371,12 @@ namespace SRVTracker
                     if (_racersStatus[leaderBoard[i]].Finished)
                         status.AppendLine($"({_racersStatus[leaderBoard[i]].FinishTime.Subtract(EDRaceStatus.StartTime):hh\\:mm\\:ss})");
                     else
-                        status.AppendLine(_racersStatus[leaderBoard[i]].ToString());
+                    {
+                        if (checkBoxExportDistance.Checked && !_racersStatus[leaderBoard[i]].Eliminated)
+                            status.AppendLine($"{(_racersStatus[leaderBoard[i]].DistanceToWaypoint / 1000):0.0}km");
+                        else
+                            status.AppendLine(_racersStatus[leaderBoard[i]].ToString());
+                    }
                 }
                 if (!_lastStatusExport.Equals(status.ToString()))
                 {
@@ -392,25 +414,29 @@ namespace SRVTracker
 
             if (checkBoxExportLeaderboard.Checked)
             {
+                StringBuilder leaderBoardExport = new StringBuilder(String.Join(Environment.NewLine, leaderBoard));
                 if (checkBoxPaddingCharacters.Checked)
-                    leaderBoard.Add(new string(textBoxPaddingChar.Text[0], (int)numericUpDownLeaderboardPadding.Value));
-                string participants = String.Join(Environment.NewLine, leaderBoard);
-                if (!_lastLeaderboardExport.Equals(participants))
+                    leaderBoardExport.Append(new string(textBoxPaddingChar.Text[0], (int)numericUpDownLeaderboardPadding.Value));
+                if (!_lastLeaderboardExport.Equals(leaderBoardExport.ToString()))
                 { 
                     try
                     {
-                        File.WriteAllText(textBoxExportLeaderboardFile.Text, participants);
-                        _lastLeaderboardExport = participants;
+                        File.WriteAllText(textBoxExportLeaderboardFile.Text, leaderBoardExport.ToString());
+                        _lastLeaderboardExport = leaderBoardExport.ToString();
                     }
                     catch { }
                 }
             }
 
-            if (checkBoxExportSpeed.Checked)
+            if (checkBoxExportSpeed.Checked && (_racersStatus != null))
             {
                 StringBuilder speeds = new StringBuilder();
                 for (int i = 0; i < leaderBoard.Count; i++)
-                    speeds.AppendLine($"{_racersStatus[leaderBoard[i]].SpeedInMS:0.0}m/s ({_racersStatus[leaderBoard[i]].MaxSpeedInMS}m/s)");
+                {
+                    speeds.Append($"{_racersStatus[leaderBoard[i]].SpeedInMS:0.0}m/s");
+                    if (checkBoxIncludeMaxSpeed.Checked)
+                        speeds.Append($"{_racersStatus[leaderBoard[i]].MaxSpeedInMS:0.0}m/s)");
+                }
 
                 if (!_lastSpeedExport.Equals(speeds.ToString()))
                 {
@@ -418,7 +444,7 @@ namespace SRVTracker
                         speeds.AppendLine(new string(textBoxPaddingChar.Text[0], (int)numericUpDownSpeedPadding.Value));
                     try
                     {
-                        File.WriteAllText(textBoxExportStatusFile.Text, speeds.ToString());
+                        File.WriteAllText(textBoxExportSpeedFile.Text, speeds.ToString());
                         _lastSpeedExport = speeds.ToString();
                     }
                     catch { }
@@ -464,6 +490,9 @@ namespace SRVTracker
                     return;
                 }
 
+            if (_racersStatus == null)
+                return;
+
             StringBuilder html = new StringBuilder(_htmlTemplateBeforeTable);
             for (int i=0; i<commanderPositions.Count; i++)
             {
@@ -487,7 +516,10 @@ namespace SRVTracker
                     File.WriteAllText(textBoxExportHTMLTo.Text, html.ToString());
                     _lastHtml = html.ToString();
                 }
-                catch { }
+                catch// (Exception ex)
+                {
+                    //MessageBox.Show($"Failed to write file: {ex.Message}{Environment.NewLine}{textBoxExportHTMLTo.Text}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
 
@@ -887,6 +919,11 @@ namespace SRVTracker
         private void checkBoxExportSpeed_CheckedChanged(object sender, EventArgs e)
         {
             UpdateButtons();
+        }
+
+        private void checkBoxExportDistance_CheckedChanged(object sender, EventArgs e)
+        {
+
         }
     }
 

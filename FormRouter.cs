@@ -192,6 +192,7 @@ namespace SRVTracker
                         _route = EDRoute.LoadFromFile(openFileDialog.FileName);
                         textBoxRouteName.Text = _route.Name;
                         _saveFileName = openFileDialog.FileName;
+                        buttonSaveRoute.Enabled = true;
                         DisplayRoute();
                     }
                     catch { }
@@ -349,6 +350,22 @@ namespace SRVTracker
 
             _route.Waypoints.RemoveAt(listBoxWaypoints.SelectedIndex);
             listBoxWaypoints.Items.RemoveAt(listBoxWaypoints.SelectedIndex);
+        }
+
+        private void buttonAddWaypoint_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void buttonAddCurrentLocation_Click(object sender, EventArgs e)
+        {
+            if (FormTracker.CurrentLocation != null)
+                AddLocationToRoute(FormTracker.CurrentLocation);
+        }
+
+        private void textBoxRouteName_TextChanged(object sender, EventArgs e)
+        {
+            _route.Name = textBoxRouteName.Text;
         }
     }
 }

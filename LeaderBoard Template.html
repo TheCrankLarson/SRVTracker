@@ -1,38 +1,62 @@
 ﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">  
 <html xmlns="http://www.w3.org/1999/xhtml">  
-<head>  
+<head>
     <style>
         @font-face {
             font-family: euroCaps;
             src: url(EUROCAPS.TTF);
         }
+
         body {
             background-color: rgba(0,0,0,0);
-            width: 575px;
-            height: 747px;
             color: white;
-            font: 36px euroCaps;
+            font: 24px euroCaps;
             margin: 0px auto;
             overflow: hidden;
         }
+
         th {
-            background-color: rgba(128, 128, 128, 0.5);
-            margin: 2px auto;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-top: 2px solid white;
+            border-bottom: 2px solid white;
         }
-        tr {
-            background-color: rgba(128, 128, 128, 0.3);
-            margin: 2px auto;
+
+        td {
+            background-color: rgba(0, 0, 0, 0.3);
         }
-	</style>  
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />  
-    <title>Leaderboard</title>  
+
+        tr.HeaderRow {
+            border-top: 2px solid white;
+            border-bottom: 2px solid white;
+        }
+
+        .BottomRow {
+            border-top: 2px solid white;
+        }
+
+        td.Standing {
+            border-top: 2px solid white;
+            border-bottom: 2px solid white;
+            text-align: center;
+        }
+
+        td.Right {
+            text-align: right;
+        }
+    </style>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script>
+        setTimeout(function(){location.reload()},500);
+    </script>
+    <title>Leaderboard</title>
 </head>  
 <body>  
     <table>
-        <tr><th colspan="2">Driver Standing</th><th>Remaining</th><th>Speed</th><th>Status</th></tr>
+        <tr class="HeaderRow"><th colspan="2">Driver Standings</th><th>Remaining</th><th>Speed</th></tr>
         <!-- #LEADERBOARD# -->
-        <tr><td>Position</td><td>Commander</td><td>RemainingDistance</td><td>CurrentSpeed (MaximumSpeed)</td><td>Status</td></tr>
+        <tr><td class="Standing">Position</td><td>Commander</td><td class="Right">RemainingDistance</td><td class="Right">CurrentSpeed</td></tr>
         <!-- #/LEADERBOARD# -->
+        <tr class="BottomRow"><td class="BottomRow" colspan="4"></td></tr>
     </table>
 </body>  
 </html> 

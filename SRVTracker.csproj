@@ -292,6 +292,7 @@
     <Content Include="ReleaseNotes.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\AddIndexer_16x.png" />
     <None Include="Resources\arrow.bmp" />
     <None Include="Resources\Settings_16x.png" />
     <None Include="Resources\Run_16x1.png" />

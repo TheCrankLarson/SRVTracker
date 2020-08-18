@@ -15,7 +15,7 @@ namespace EDTracking
     public class EDRaceStatus
     {        
         public int Heading { get; internal set; } = -1;
-        public double SpeedInMS { get; internal set; } = -1;
+        public double SpeedInMS { get; internal set; } = 0;
         public double MaxSpeedInMS { get; internal set; } = 0;
         public long Flags { get; internal set; } = -1;
         public DateTime TimeStamp { get; internal set; } = DateTime.MinValue;
