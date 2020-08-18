@@ -31,16 +31,29 @@
             this.components = new System.ComponentModel.Container();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.listBoxWaypoints = new System.Windows.Forms.ListBox();
+            this.buttonLoadRoute = new System.Windows.Forms.Button();
             this.textBoxRouteName = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.buttonLoadRace = new System.Windows.Forms.Button();
+            this.buttonSaveRaceAs = new System.Windows.Forms.Button();
+            this.buttonSaveRace = new System.Windows.Forms.Button();
             this.textBoxRaceName = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.textBoxPlanet = new System.Windows.Forms.TextBox();
             this.textBoxSystem = new System.Windows.Forms.TextBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.buttonRaceHistory = new System.Windows.Forms.Button();
+            this.buttonReset = new System.Windows.Forms.Button();
+            this.buttonEditStatusMessages = new System.Windows.Forms.Button();
             this.groupBoxAddCommander = new System.Windows.Forms.GroupBox();
             this.comboBoxAddCommander = new System.Windows.Forms.ComboBox();
+            this.buttonAddCommander = new System.Windows.Forms.Button();
+            this.buttonStopRace = new System.Windows.Forms.Button();
+            this.buttonStartRace = new System.Windows.Forms.Button();
+            this.buttonTrackParticipant = new System.Windows.Forms.Button();
+            this.buttonRemoveParticipant = new System.Windows.Forms.Button();
+            this.buttonAddParticipant = new System.Windows.Forms.Button();
             this.listViewParticipants = new System.Windows.Forms.ListView();
             this.columnHeaderPosition = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeaderName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -58,7 +71,7 @@
             this.checkBoxStreamInfo = new System.Windows.Forms.CheckBox();
             this.checkBoxAllowPitstops = new System.Windows.Forms.CheckBox();
             this.checkBoxSRVRace = new System.Windows.Forms.CheckBox();
-            this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.checkBoxClosestPlayerTarget = new System.Windows.Forms.CheckBox();
             this.label4 = new System.Windows.Forms.Label();
             this.numericUpDownTargetPadding = new System.Windows.Forms.NumericUpDown();
             this.numericUpDownStatusPadding = new System.Windows.Forms.NumericUpDown();
@@ -70,20 +83,16 @@
             this.textBoxExportLeaderboardFile = new System.Windows.Forms.TextBox();
             this.checkBoxExportStatus = new System.Windows.Forms.CheckBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.checkBoxClosestPlayerTarget = new System.Windows.Forms.CheckBox();
-            this.buttonRaceHistory = new System.Windows.Forms.Button();
-            this.buttonReset = new System.Windows.Forms.Button();
-            this.buttonEditStatusMessages = new System.Windows.Forms.Button();
-            this.buttonAddCommander = new System.Windows.Forms.Button();
-            this.buttonStopRace = new System.Windows.Forms.Button();
-            this.buttonStartRace = new System.Windows.Forms.Button();
-            this.buttonTrackParticipant = new System.Windows.Forms.Button();
-            this.buttonRemoveParticipant = new System.Windows.Forms.Button();
-            this.buttonAddParticipant = new System.Windows.Forms.Button();
-            this.buttonLoadRace = new System.Windows.Forms.Button();
-            this.buttonSaveRaceAs = new System.Windows.Forms.Button();
-            this.buttonSaveRace = new System.Windows.Forms.Button();
-            this.buttonLoadRoute = new System.Windows.Forms.Button();
+            this.numericUpDownSpeedPadding = new System.Windows.Forms.NumericUpDown();
+            this.textBoxExportSpeedFile = new System.Windows.Forms.TextBox();
+            this.checkBoxExportSpeed = new System.Windows.Forms.CheckBox();
+            this.groupBoxTextExport = new System.Windows.Forms.GroupBox();
+            this.groupBoxHTMLExport = new System.Windows.Forms.GroupBox();
+            this.textBoxHTMLTemplateFile = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.textBoxExportHTMLTo = new System.Windows.Forms.TextBox();
+            this.checkBoxExportAsHTML = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -92,9 +101,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLeaderboardPadding)).BeginInit();
             this.groupBox5.SuspendLayout();
             this.groupBox6.SuspendLayout();
-            this.groupBox7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTargetPadding)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownStatusPadding)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownSpeedPadding)).BeginInit();
+            this.groupBoxTextExport.SuspendLayout();
+            this.groupBoxHTMLExport.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -119,6 +130,17 @@
             this.listBoxWaypoints.TabIndex = 2;
             this.listBoxWaypoints.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.listBoxWaypoints_DrawItem);
             // 
+            // buttonLoadRoute
+            // 
+            this.buttonLoadRoute.Image = global::SRVTracker.Properties.Resources.OpenFile_16x;
+            this.buttonLoadRoute.Location = new System.Drawing.Point(256, 17);
+            this.buttonLoadRoute.Name = "buttonLoadRoute";
+            this.buttonLoadRoute.Size = new System.Drawing.Size(38, 23);
+            this.buttonLoadRoute.TabIndex = 1;
+            this.toolTip1.SetToolTip(this.buttonLoadRoute, "Load route from file");
+            this.buttonLoadRoute.UseVisualStyleBackColor = true;
+            this.buttonLoadRoute.Click += new System.EventHandler(this.buttonLoadRoute_Click);
+            // 
             // textBoxRouteName
             // 
             this.textBoxRouteName.Location = new System.Drawing.Point(6, 19);
@@ -139,6 +161,39 @@
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Event";
+            // 
+            // buttonLoadRace
+            // 
+            this.buttonLoadRace.Image = global::SRVTracker.Properties.Resources.OpenFile_16x;
+            this.buttonLoadRace.Location = new System.Drawing.Point(291, 16);
+            this.buttonLoadRace.Name = "buttonLoadRace";
+            this.buttonLoadRace.Size = new System.Drawing.Size(29, 23);
+            this.buttonLoadRace.TabIndex = 10;
+            this.toolTip1.SetToolTip(this.buttonLoadRace, "Load race from file");
+            this.buttonLoadRace.UseVisualStyleBackColor = true;
+            this.buttonLoadRace.Click += new System.EventHandler(this.buttonLoadRace_Click);
+            // 
+            // buttonSaveRaceAs
+            // 
+            this.buttonSaveRaceAs.Image = global::SRVTracker.Properties.Resources.SaveAs_16x;
+            this.buttonSaveRaceAs.Location = new System.Drawing.Point(326, 16);
+            this.buttonSaveRaceAs.Name = "buttonSaveRaceAs";
+            this.buttonSaveRaceAs.Size = new System.Drawing.Size(29, 23);
+            this.buttonSaveRaceAs.TabIndex = 9;
+            this.toolTip1.SetToolTip(this.buttonSaveRaceAs, "Save race as...");
+            this.buttonSaveRaceAs.UseVisualStyleBackColor = true;
+            this.buttonSaveRaceAs.Click += new System.EventHandler(this.buttonSaveRaceAs_Click);
+            // 
+            // buttonSaveRace
+            // 
+            this.buttonSaveRace.Image = global::SRVTracker.Properties.Resources.Save_16x;
+            this.buttonSaveRace.Location = new System.Drawing.Point(361, 16);
+            this.buttonSaveRace.Name = "buttonSaveRace";
+            this.buttonSaveRace.Size = new System.Drawing.Size(29, 23);
+            this.buttonSaveRace.TabIndex = 8;
+            this.toolTip1.SetToolTip(this.buttonSaveRace, "Save race");
+            this.buttonSaveRace.UseVisualStyleBackColor = true;
+            this.buttonSaveRace.Click += new System.EventHandler(this.buttonSaveRace_Click);
             // 
             // textBoxRaceName
             // 
@@ -201,6 +256,41 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Participants";
             // 
+            // buttonRaceHistory
+            // 
+            this.buttonRaceHistory.Enabled = false;
+            this.buttonRaceHistory.Image = global::SRVTracker.Properties.Resources.History_16x;
+            this.buttonRaceHistory.Location = new System.Drawing.Point(361, 202);
+            this.buttonRaceHistory.Name = "buttonRaceHistory";
+            this.buttonRaceHistory.Size = new System.Drawing.Size(29, 23);
+            this.buttonRaceHistory.TabIndex = 9;
+            this.toolTip1.SetToolTip(this.buttonRaceHistory, "Show race history");
+            this.buttonRaceHistory.UseVisualStyleBackColor = true;
+            this.buttonRaceHistory.Click += new System.EventHandler(this.buttonRaceHistory_Click);
+            // 
+            // buttonReset
+            // 
+            this.buttonReset.Enabled = false;
+            this.buttonReset.Image = global::SRVTracker.Properties.Resources.Restart_16x;
+            this.buttonReset.Location = new System.Drawing.Point(361, 318);
+            this.buttonReset.Name = "buttonReset";
+            this.buttonReset.Size = new System.Drawing.Size(29, 23);
+            this.buttonReset.TabIndex = 8;
+            this.toolTip1.SetToolTip(this.buttonReset, "Reset race");
+            this.buttonReset.UseVisualStyleBackColor = true;
+            this.buttonReset.Click += new System.EventHandler(this.buttonReset_Click);
+            // 
+            // buttonEditStatusMessages
+            // 
+            this.buttonEditStatusMessages.Image = global::SRVTracker.Properties.Resources.Text_16x;
+            this.buttonEditStatusMessages.Location = new System.Drawing.Point(361, 231);
+            this.buttonEditStatusMessages.Name = "buttonEditStatusMessages";
+            this.buttonEditStatusMessages.Size = new System.Drawing.Size(29, 23);
+            this.buttonEditStatusMessages.TabIndex = 7;
+            this.toolTip1.SetToolTip(this.buttonEditStatusMessages, "Edit status messages");
+            this.buttonEditStatusMessages.UseVisualStyleBackColor = true;
+            this.buttonEditStatusMessages.Click += new System.EventHandler(this.buttonEditStatusMessages_Click);
+            // 
             // groupBoxAddCommander
             // 
             this.groupBoxAddCommander.Controls.Add(this.comboBoxAddCommander);
@@ -222,6 +312,73 @@
             this.comboBoxAddCommander.TabIndex = 9;
             this.comboBoxAddCommander.SelectedIndexChanged += new System.EventHandler(this.comboBoxAddCommander_SelectedIndexChanged);
             this.comboBoxAddCommander.Leave += new System.EventHandler(this.comboBoxAddCommander_Leave);
+            // 
+            // buttonAddCommander
+            // 
+            this.buttonAddCommander.Image = global::SRVTracker.Properties.Resources.Return_16x;
+            this.buttonAddCommander.Location = new System.Drawing.Point(249, 16);
+            this.buttonAddCommander.Name = "buttonAddCommander";
+            this.buttonAddCommander.Size = new System.Drawing.Size(29, 23);
+            this.buttonAddCommander.TabIndex = 8;
+            this.buttonAddCommander.UseVisualStyleBackColor = true;
+            this.buttonAddCommander.Click += new System.EventHandler(this.buttonAddCommander_Click);
+            // 
+            // buttonStopRace
+            // 
+            this.buttonStopRace.Enabled = false;
+            this.buttonStopRace.Image = global::SRVTracker.Properties.Resources.Stop_16x;
+            this.buttonStopRace.Location = new System.Drawing.Point(361, 289);
+            this.buttonStopRace.Name = "buttonStopRace";
+            this.buttonStopRace.Size = new System.Drawing.Size(29, 23);
+            this.buttonStopRace.TabIndex = 6;
+            this.toolTip1.SetToolTip(this.buttonStopRace, "Stop race");
+            this.buttonStopRace.UseVisualStyleBackColor = true;
+            this.buttonStopRace.Click += new System.EventHandler(this.buttonStopRace_Click);
+            // 
+            // buttonStartRace
+            // 
+            this.buttonStartRace.Enabled = false;
+            this.buttonStartRace.Image = global::SRVTracker.Properties.Resources.Run_16x;
+            this.buttonStartRace.Location = new System.Drawing.Point(361, 260);
+            this.buttonStartRace.Name = "buttonStartRace";
+            this.buttonStartRace.Size = new System.Drawing.Size(29, 23);
+            this.buttonStartRace.TabIndex = 5;
+            this.toolTip1.SetToolTip(this.buttonStartRace, "Start race");
+            this.buttonStartRace.UseVisualStyleBackColor = true;
+            this.buttonStartRace.Click += new System.EventHandler(this.buttonStartRace_Click);
+            // 
+            // buttonTrackParticipant
+            // 
+            this.buttonTrackParticipant.Image = global::SRVTracker.Properties.Resources.Target_16x;
+            this.buttonTrackParticipant.Location = new System.Drawing.Point(361, 77);
+            this.buttonTrackParticipant.Name = "buttonTrackParticipant";
+            this.buttonTrackParticipant.Size = new System.Drawing.Size(29, 23);
+            this.buttonTrackParticipant.TabIndex = 3;
+            this.toolTip1.SetToolTip(this.buttonTrackParticipant, "Track participant");
+            this.buttonTrackParticipant.UseVisualStyleBackColor = true;
+            this.buttonTrackParticipant.Click += new System.EventHandler(this.buttonTrackParticipant_Click);
+            // 
+            // buttonRemoveParticipant
+            // 
+            this.buttonRemoveParticipant.Image = global::SRVTracker.Properties.Resources.Remove_color_16x;
+            this.buttonRemoveParticipant.Location = new System.Drawing.Point(361, 48);
+            this.buttonRemoveParticipant.Name = "buttonRemoveParticipant";
+            this.buttonRemoveParticipant.Size = new System.Drawing.Size(29, 23);
+            this.buttonRemoveParticipant.TabIndex = 2;
+            this.toolTip1.SetToolTip(this.buttonRemoveParticipant, "Remove participant");
+            this.buttonRemoveParticipant.UseVisualStyleBackColor = true;
+            this.buttonRemoveParticipant.Click += new System.EventHandler(this.buttonRemoveParticipant_Click);
+            // 
+            // buttonAddParticipant
+            // 
+            this.buttonAddParticipant.Image = global::SRVTracker.Properties.Resources.Add_16x;
+            this.buttonAddParticipant.Location = new System.Drawing.Point(361, 19);
+            this.buttonAddParticipant.Name = "buttonAddParticipant";
+            this.buttonAddParticipant.Size = new System.Drawing.Size(29, 23);
+            this.buttonAddParticipant.TabIndex = 1;
+            this.toolTip1.SetToolTip(this.buttonAddParticipant, "Add commander");
+            this.buttonAddParticipant.UseVisualStyleBackColor = true;
+            this.buttonAddParticipant.Click += new System.EventHandler(this.buttonAddParticipant_Click);
             // 
             // listViewParticipants
             // 
@@ -304,7 +461,7 @@
             this.checkBoxExportDistance.AutoSize = true;
             this.checkBoxExportDistance.Checked = true;
             this.checkBoxExportDistance.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxExportDistance.Location = new System.Drawing.Point(6, 166);
+            this.checkBoxExportDistance.Location = new System.Drawing.Point(8, 216);
             this.checkBoxExportDistance.Name = "checkBoxExportDistance";
             this.checkBoxExportDistance.Size = new System.Drawing.Size(189, 17);
             this.checkBoxExportDistance.TabIndex = 6;
@@ -414,28 +571,17 @@
             this.checkBoxSRVRace.UseVisualStyleBackColor = true;
             this.checkBoxSRVRace.CheckedChanged += new System.EventHandler(this.checkBoxSRVRace_CheckedChanged);
             // 
-            // groupBox7
+            // checkBoxClosestPlayerTarget
             // 
-            this.groupBox7.Controls.Add(this.checkBoxClosestPlayerTarget);
-            this.groupBox7.Controls.Add(this.label4);
-            this.groupBox7.Controls.Add(this.numericUpDownTargetPadding);
-            this.groupBox7.Controls.Add(this.numericUpDownStatusPadding);
-            this.groupBox7.Controls.Add(this.textBoxPaddingChar);
-            this.groupBox7.Controls.Add(this.checkBoxPaddingCharacters);
-            this.groupBox7.Controls.Add(this.textBoxExportTargetFile);
-            this.groupBox7.Controls.Add(this.checkBoxExportTarget);
-            this.groupBox7.Controls.Add(this.textBoxExportStatusFile);
-            this.groupBox7.Controls.Add(this.textBoxExportLeaderboardFile);
-            this.groupBox7.Controls.Add(this.checkBoxExportStatus);
-            this.groupBox7.Controls.Add(this.checkBoxExportDistance);
-            this.groupBox7.Controls.Add(this.checkBoxExportLeaderboard);
-            this.groupBox7.Controls.Add(this.numericUpDownLeaderboardPadding);
-            this.groupBox7.Location = new System.Drawing.Point(726, 12);
-            this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(245, 238);
-            this.groupBox7.TabIndex = 6;
-            this.groupBox7.TabStop = false;
-            this.groupBox7.Text = "Streaming Options";
+            this.checkBoxClosestPlayerTarget.AutoSize = true;
+            this.checkBoxClosestPlayerTarget.Checked = true;
+            this.checkBoxClosestPlayerTarget.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxClosestPlayerTarget.Location = new System.Drawing.Point(8, 264);
+            this.checkBoxClosestPlayerTarget.Name = "checkBoxClosestPlayerTarget";
+            this.checkBoxClosestPlayerTarget.Size = new System.Drawing.Size(202, 17);
+            this.checkBoxClosestPlayerTarget.TabIndex = 18;
+            this.checkBoxClosestPlayerTarget.Text = "Always export closest player as target";
+            this.checkBoxClosestPlayerTarget.UseVisualStyleBackColor = true;
             // 
             // label4
             // 
@@ -472,7 +618,7 @@
             // 
             // textBoxPaddingChar
             // 
-            this.textBoxPaddingChar.Location = new System.Drawing.Point(166, 187);
+            this.textBoxPaddingChar.Location = new System.Drawing.Point(167, 239);
             this.textBoxPaddingChar.Name = "textBoxPaddingChar";
             this.textBoxPaddingChar.Size = new System.Drawing.Size(30, 20);
             this.textBoxPaddingChar.TabIndex = 13;
@@ -483,7 +629,7 @@
             this.checkBoxPaddingCharacters.AutoSize = true;
             this.checkBoxPaddingCharacters.Checked = true;
             this.checkBoxPaddingCharacters.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxPaddingCharacters.Location = new System.Drawing.Point(6, 189);
+            this.checkBoxPaddingCharacters.Location = new System.Drawing.Point(7, 241);
             this.checkBoxPaddingCharacters.Name = "checkBoxPaddingCharacters";
             this.checkBoxPaddingCharacters.Size = new System.Drawing.Size(154, 17);
             this.checkBoxPaddingCharacters.TabIndex = 12;
@@ -537,170 +683,127 @@
             this.checkBoxExportStatus.UseVisualStyleBackColor = true;
             this.checkBoxExportStatus.CheckedChanged += new System.EventHandler(this.checkBoxExportStatus_CheckedChanged);
             // 
-            // checkBoxClosestPlayerTarget
+            // numericUpDownSpeedPadding
             // 
-            this.checkBoxClosestPlayerTarget.AutoSize = true;
-            this.checkBoxClosestPlayerTarget.Checked = true;
-            this.checkBoxClosestPlayerTarget.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxClosestPlayerTarget.Location = new System.Drawing.Point(6, 212);
-            this.checkBoxClosestPlayerTarget.Name = "checkBoxClosestPlayerTarget";
-            this.checkBoxClosestPlayerTarget.Size = new System.Drawing.Size(202, 17);
-            this.checkBoxClosestPlayerTarget.TabIndex = 18;
-            this.checkBoxClosestPlayerTarget.Text = "Always export closest player as target";
-            this.checkBoxClosestPlayerTarget.UseVisualStyleBackColor = true;
+            this.numericUpDownSpeedPadding.Location = new System.Drawing.Point(179, 188);
+            this.numericUpDownSpeedPadding.Name = "numericUpDownSpeedPadding";
+            this.numericUpDownSpeedPadding.Size = new System.Drawing.Size(50, 20);
+            this.numericUpDownSpeedPadding.TabIndex = 21;
+            this.numericUpDownSpeedPadding.Value = new decimal(new int[] {
+            38,
+            0,
+            0,
+            0});
             // 
-            // buttonRaceHistory
+            // textBoxExportSpeedFile
             // 
-            this.buttonRaceHistory.Enabled = false;
-            this.buttonRaceHistory.Image = global::SRVTracker.Properties.Resources.History_16x;
-            this.buttonRaceHistory.Location = new System.Drawing.Point(361, 202);
-            this.buttonRaceHistory.Name = "buttonRaceHistory";
-            this.buttonRaceHistory.Size = new System.Drawing.Size(29, 23);
-            this.buttonRaceHistory.TabIndex = 9;
-            this.toolTip1.SetToolTip(this.buttonRaceHistory, "Show race history");
-            this.buttonRaceHistory.UseVisualStyleBackColor = true;
-            this.buttonRaceHistory.Click += new System.EventHandler(this.buttonRaceHistory_Click);
+            this.textBoxExportSpeedFile.Location = new System.Drawing.Point(25, 188);
+            this.textBoxExportSpeedFile.Name = "textBoxExportSpeedFile";
+            this.textBoxExportSpeedFile.Size = new System.Drawing.Size(148, 20);
+            this.textBoxExportSpeedFile.TabIndex = 20;
+            this.textBoxExportSpeedFile.Text = "Speeds.txt";
             // 
-            // buttonReset
+            // checkBoxExportSpeed
             // 
-            this.buttonReset.Enabled = false;
-            this.buttonReset.Image = global::SRVTracker.Properties.Resources.Restart_16x;
-            this.buttonReset.Location = new System.Drawing.Point(361, 318);
-            this.buttonReset.Name = "buttonReset";
-            this.buttonReset.Size = new System.Drawing.Size(29, 23);
-            this.buttonReset.TabIndex = 8;
-            this.toolTip1.SetToolTip(this.buttonReset, "Reset race");
-            this.buttonReset.UseVisualStyleBackColor = true;
-            this.buttonReset.Click += new System.EventHandler(this.buttonReset_Click);
+            this.checkBoxExportSpeed.AutoSize = true;
+            this.checkBoxExportSpeed.Location = new System.Drawing.Point(7, 165);
+            this.checkBoxExportSpeed.Name = "checkBoxExportSpeed";
+            this.checkBoxExportSpeed.Size = new System.Drawing.Size(91, 17);
+            this.checkBoxExportSpeed.TabIndex = 19;
+            this.checkBoxExportSpeed.Text = "Export speed:";
+            this.checkBoxExportSpeed.UseVisualStyleBackColor = true;
             // 
-            // buttonEditStatusMessages
+            // groupBoxTextExport
             // 
-            this.buttonEditStatusMessages.Image = global::SRVTracker.Properties.Resources.Text_16x;
-            this.buttonEditStatusMessages.Location = new System.Drawing.Point(361, 231);
-            this.buttonEditStatusMessages.Name = "buttonEditStatusMessages";
-            this.buttonEditStatusMessages.Size = new System.Drawing.Size(29, 23);
-            this.buttonEditStatusMessages.TabIndex = 7;
-            this.toolTip1.SetToolTip(this.buttonEditStatusMessages, "Edit status messages");
-            this.buttonEditStatusMessages.UseVisualStyleBackColor = true;
-            this.buttonEditStatusMessages.Click += new System.EventHandler(this.buttonEditStatusMessages_Click);
+            this.groupBoxTextExport.Controls.Add(this.checkBoxExportLeaderboard);
+            this.groupBoxTextExport.Controls.Add(this.numericUpDownLeaderboardPadding);
+            this.groupBoxTextExport.Controls.Add(this.checkBoxClosestPlayerTarget);
+            this.groupBoxTextExport.Controls.Add(this.numericUpDownSpeedPadding);
+            this.groupBoxTextExport.Controls.Add(this.checkBoxExportDistance);
+            this.groupBoxTextExport.Controls.Add(this.textBoxExportSpeedFile);
+            this.groupBoxTextExport.Controls.Add(this.checkBoxExportStatus);
+            this.groupBoxTextExport.Controls.Add(this.checkBoxExportSpeed);
+            this.groupBoxTextExport.Controls.Add(this.textBoxExportLeaderboardFile);
+            this.groupBoxTextExport.Controls.Add(this.textBoxExportStatusFile);
+            this.groupBoxTextExport.Controls.Add(this.label4);
+            this.groupBoxTextExport.Controls.Add(this.checkBoxExportTarget);
+            this.groupBoxTextExport.Controls.Add(this.numericUpDownTargetPadding);
+            this.groupBoxTextExport.Controls.Add(this.textBoxExportTargetFile);
+            this.groupBoxTextExport.Controls.Add(this.numericUpDownStatusPadding);
+            this.groupBoxTextExport.Controls.Add(this.checkBoxPaddingCharacters);
+            this.groupBoxTextExport.Controls.Add(this.textBoxPaddingChar);
+            this.groupBoxTextExport.Location = new System.Drawing.Point(720, 12);
+            this.groupBoxTextExport.Name = "groupBoxTextExport";
+            this.groupBoxTextExport.Size = new System.Drawing.Size(245, 295);
+            this.groupBoxTextExport.TabIndex = 7;
+            this.groupBoxTextExport.TabStop = false;
+            this.groupBoxTextExport.Text = "Export as text options";
             // 
-            // buttonAddCommander
+            // groupBoxHTMLExport
             // 
-            this.buttonAddCommander.Image = global::SRVTracker.Properties.Resources.Return_16x;
-            this.buttonAddCommander.Location = new System.Drawing.Point(249, 16);
-            this.buttonAddCommander.Name = "buttonAddCommander";
-            this.buttonAddCommander.Size = new System.Drawing.Size(29, 23);
-            this.buttonAddCommander.TabIndex = 8;
-            this.buttonAddCommander.UseVisualStyleBackColor = true;
-            this.buttonAddCommander.Click += new System.EventHandler(this.buttonAddCommander_Click);
+            this.groupBoxHTMLExport.Controls.Add(this.checkBoxExportAsHTML);
+            this.groupBoxHTMLExport.Controls.Add(this.textBoxExportHTMLTo);
+            this.groupBoxHTMLExport.Controls.Add(this.label5);
+            this.groupBoxHTMLExport.Controls.Add(this.label1);
+            this.groupBoxHTMLExport.Controls.Add(this.textBoxHTMLTemplateFile);
+            this.groupBoxHTMLExport.Location = new System.Drawing.Point(720, 313);
+            this.groupBoxHTMLExport.Name = "groupBoxHTMLExport";
+            this.groupBoxHTMLExport.Size = new System.Drawing.Size(245, 106);
+            this.groupBoxHTMLExport.TabIndex = 8;
+            this.groupBoxHTMLExport.TabStop = false;
+            this.groupBoxHTMLExport.Text = "Export as HTML options";
             // 
-            // buttonStopRace
+            // textBoxHTMLTemplateFile
             // 
-            this.buttonStopRace.Enabled = false;
-            this.buttonStopRace.Image = global::SRVTracker.Properties.Resources.Stop_16x;
-            this.buttonStopRace.Location = new System.Drawing.Point(361, 289);
-            this.buttonStopRace.Name = "buttonStopRace";
-            this.buttonStopRace.Size = new System.Drawing.Size(29, 23);
-            this.buttonStopRace.TabIndex = 6;
-            this.toolTip1.SetToolTip(this.buttonStopRace, "Stop race");
-            this.buttonStopRace.UseVisualStyleBackColor = true;
-            this.buttonStopRace.Click += new System.EventHandler(this.buttonStopRace_Click);
+            this.textBoxHTMLTemplateFile.Location = new System.Drawing.Point(99, 40);
+            this.textBoxHTMLTemplateFile.Name = "textBoxHTMLTemplateFile";
+            this.textBoxHTMLTemplateFile.Size = new System.Drawing.Size(140, 20);
+            this.textBoxHTMLTemplateFile.TabIndex = 0;
+            this.textBoxHTMLTemplateFile.Text = "Leaderboard Template.html";
             // 
-            // buttonStartRace
+            // label1
             // 
-            this.buttonStartRace.Enabled = false;
-            this.buttonStartRace.Image = global::SRVTracker.Properties.Resources.Run_16x;
-            this.buttonStartRace.Location = new System.Drawing.Point(361, 260);
-            this.buttonStartRace.Name = "buttonStartRace";
-            this.buttonStartRace.Size = new System.Drawing.Size(29, 23);
-            this.buttonStartRace.TabIndex = 5;
-            this.toolTip1.SetToolTip(this.buttonStartRace, "Start race");
-            this.buttonStartRace.UseVisualStyleBackColor = true;
-            this.buttonStartRace.Click += new System.EventHandler(this.buttonStartRace_Click);
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(6, 43);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(87, 13);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "HTML Template:";
             // 
-            // buttonTrackParticipant
+            // label5
             // 
-            this.buttonTrackParticipant.Image = global::SRVTracker.Properties.Resources.Target_16x;
-            this.buttonTrackParticipant.Location = new System.Drawing.Point(361, 77);
-            this.buttonTrackParticipant.Name = "buttonTrackParticipant";
-            this.buttonTrackParticipant.Size = new System.Drawing.Size(29, 23);
-            this.buttonTrackParticipant.TabIndex = 3;
-            this.toolTip1.SetToolTip(this.buttonTrackParticipant, "Track participant");
-            this.buttonTrackParticipant.UseVisualStyleBackColor = true;
-            this.buttonTrackParticipant.Click += new System.EventHandler(this.buttonTrackParticipant_Click);
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(6, 69);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(52, 13);
+            this.label5.TabIndex = 2;
+            this.label5.Text = "Export to:";
             // 
-            // buttonRemoveParticipant
+            // textBoxExportHTMLTo
             // 
-            this.buttonRemoveParticipant.Image = global::SRVTracker.Properties.Resources.Remove_color_16x;
-            this.buttonRemoveParticipant.Location = new System.Drawing.Point(361, 48);
-            this.buttonRemoveParticipant.Name = "buttonRemoveParticipant";
-            this.buttonRemoveParticipant.Size = new System.Drawing.Size(29, 23);
-            this.buttonRemoveParticipant.TabIndex = 2;
-            this.toolTip1.SetToolTip(this.buttonRemoveParticipant, "Remove participant");
-            this.buttonRemoveParticipant.UseVisualStyleBackColor = true;
-            this.buttonRemoveParticipant.Click += new System.EventHandler(this.buttonRemoveParticipant_Click);
+            this.textBoxExportHTMLTo.Location = new System.Drawing.Point(64, 66);
+            this.textBoxExportHTMLTo.Name = "textBoxExportHTMLTo";
+            this.textBoxExportHTMLTo.Size = new System.Drawing.Size(175, 20);
+            this.textBoxExportHTMLTo.TabIndex = 3;
+            this.textBoxExportHTMLTo.Text = "leaderboard.html";
             // 
-            // buttonAddParticipant
+            // checkBoxExportAsHTML
             // 
-            this.buttonAddParticipant.Image = global::SRVTracker.Properties.Resources.Add_16x;
-            this.buttonAddParticipant.Location = new System.Drawing.Point(361, 19);
-            this.buttonAddParticipant.Name = "buttonAddParticipant";
-            this.buttonAddParticipant.Size = new System.Drawing.Size(29, 23);
-            this.buttonAddParticipant.TabIndex = 1;
-            this.toolTip1.SetToolTip(this.buttonAddParticipant, "Add commander");
-            this.buttonAddParticipant.UseVisualStyleBackColor = true;
-            this.buttonAddParticipant.Click += new System.EventHandler(this.buttonAddParticipant_Click);
-            // 
-            // buttonLoadRace
-            // 
-            this.buttonLoadRace.Image = global::SRVTracker.Properties.Resources.OpenFile_16x;
-            this.buttonLoadRace.Location = new System.Drawing.Point(291, 16);
-            this.buttonLoadRace.Name = "buttonLoadRace";
-            this.buttonLoadRace.Size = new System.Drawing.Size(29, 23);
-            this.buttonLoadRace.TabIndex = 10;
-            this.toolTip1.SetToolTip(this.buttonLoadRace, "Load race from file");
-            this.buttonLoadRace.UseVisualStyleBackColor = true;
-            this.buttonLoadRace.Click += new System.EventHandler(this.buttonLoadRace_Click);
-            // 
-            // buttonSaveRaceAs
-            // 
-            this.buttonSaveRaceAs.Image = global::SRVTracker.Properties.Resources.SaveAs_16x;
-            this.buttonSaveRaceAs.Location = new System.Drawing.Point(326, 16);
-            this.buttonSaveRaceAs.Name = "buttonSaveRaceAs";
-            this.buttonSaveRaceAs.Size = new System.Drawing.Size(29, 23);
-            this.buttonSaveRaceAs.TabIndex = 9;
-            this.toolTip1.SetToolTip(this.buttonSaveRaceAs, "Save race as...");
-            this.buttonSaveRaceAs.UseVisualStyleBackColor = true;
-            this.buttonSaveRaceAs.Click += new System.EventHandler(this.buttonSaveRaceAs_Click);
-            // 
-            // buttonSaveRace
-            // 
-            this.buttonSaveRace.Image = global::SRVTracker.Properties.Resources.Save_16x;
-            this.buttonSaveRace.Location = new System.Drawing.Point(361, 16);
-            this.buttonSaveRace.Name = "buttonSaveRace";
-            this.buttonSaveRace.Size = new System.Drawing.Size(29, 23);
-            this.buttonSaveRace.TabIndex = 8;
-            this.toolTip1.SetToolTip(this.buttonSaveRace, "Save race");
-            this.buttonSaveRace.UseVisualStyleBackColor = true;
-            this.buttonSaveRace.Click += new System.EventHandler(this.buttonSaveRace_Click);
-            // 
-            // buttonLoadRoute
-            // 
-            this.buttonLoadRoute.Image = global::SRVTracker.Properties.Resources.OpenFile_16x;
-            this.buttonLoadRoute.Location = new System.Drawing.Point(256, 17);
-            this.buttonLoadRoute.Name = "buttonLoadRoute";
-            this.buttonLoadRoute.Size = new System.Drawing.Size(38, 23);
-            this.buttonLoadRoute.TabIndex = 1;
-            this.toolTip1.SetToolTip(this.buttonLoadRoute, "Load route from file");
-            this.buttonLoadRoute.UseVisualStyleBackColor = true;
-            this.buttonLoadRoute.Click += new System.EventHandler(this.buttonLoadRoute_Click);
+            this.checkBoxExportAsHTML.AutoSize = true;
+            this.checkBoxExportAsHTML.Location = new System.Drawing.Point(6, 17);
+            this.checkBoxExportAsHTML.Name = "checkBoxExportAsHTML";
+            this.checkBoxExportAsHTML.Size = new System.Drawing.Size(152, 17);
+            this.checkBoxExportAsHTML.TabIndex = 4;
+            this.checkBoxExportAsHTML.Text = "Export HTML Leaderboard";
+            this.checkBoxExportAsHTML.UseVisualStyleBackColor = true;
             // 
             // FormRaceMonitor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(723, 425);
-            this.Controls.Add(this.groupBox7);
+            this.ClientSize = new System.Drawing.Size(975, 425);
+            this.Controls.Add(this.groupBoxHTMLExport);
+            this.Controls.Add(this.groupBoxTextExport);
             this.Controls.Add(this.groupBox6);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox4);
@@ -724,10 +827,13 @@
             this.groupBox5.PerformLayout();
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
-            this.groupBox7.ResumeLayout(false);
-            this.groupBox7.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTargetPadding)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownStatusPadding)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownSpeedPadding)).EndInit();
+            this.groupBoxTextExport.ResumeLayout(false);
+            this.groupBoxTextExport.PerformLayout();
+            this.groupBoxHTMLExport.ResumeLayout(false);
+            this.groupBoxHTMLExport.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -773,7 +879,6 @@
         private System.Windows.Forms.CheckBox checkBoxSRVRace;
         private System.Windows.Forms.Button buttonEditStatusMessages;
         private System.Windows.Forms.CheckBox checkBoxExportDistance;
-        private System.Windows.Forms.GroupBox groupBox7;
         private System.Windows.Forms.CheckBox checkBoxPaddingCharacters;
         private System.Windows.Forms.TextBox textBoxExportTargetFile;
         private System.Windows.Forms.CheckBox checkBoxExportTarget;
@@ -789,5 +894,15 @@
         private System.Windows.Forms.CheckBox checkBoxStreamInfo;
         private System.Windows.Forms.CheckBox checkBoxClosestPlayerTarget;
         private System.Windows.Forms.Button buttonRaceHistory;
+        private System.Windows.Forms.NumericUpDown numericUpDownSpeedPadding;
+        private System.Windows.Forms.TextBox textBoxExportSpeedFile;
+        private System.Windows.Forms.CheckBox checkBoxExportSpeed;
+        private System.Windows.Forms.GroupBox groupBoxTextExport;
+        private System.Windows.Forms.GroupBox groupBoxHTMLExport;
+        private System.Windows.Forms.TextBox textBoxExportHTMLTo;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox textBoxHTMLTemplateFile;
+        private System.Windows.Forms.CheckBox checkBoxExportAsHTML;
     }
 }

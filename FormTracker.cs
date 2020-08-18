@@ -303,7 +303,7 @@ namespace SRVTracker
 
                 for (int i = 0; i < 200; i++)
                 {
-                    edEvent = new EDEvent($"{{\"timestamp\":\"2020-07-28T17:52:25Z\", \"event\":\"Status\", \"Flags\":341852424, \"Pips\":[4,8,0], \"FireGroup\":0, \"GuiFocus\":0, \"Fuel\":{{\"FuelMain\":0.000000, \"FuelReservoir\":0.444637 }}, \"Cargo\":0.000000, \"LegalState\":\"Clean\", \"Latitude\":{latitude}, \"Longitude\":{longitude}, \"Heading\":24, \"Altitude\":0, \"BodyName\":\"Synuefe DJ-G b44-3 A 5\", \"PlanetRadius\":1311227.875000}}",textBoxClientId.Text);
+                    edEvent = new EDEvent($"{{\"timestamp\":\"{String.Format("{0:s}",DateTime.Now)}\", \"event\":\"Status\", \"Flags\":341852424, \"Pips\":[4,8,0], \"FireGroup\":0, \"GuiFocus\":0, \"Fuel\":{{\"FuelMain\":0.000000, \"FuelReservoir\":0.444637 }}, \"Cargo\":0.000000, \"LegalState\":\"Clean\", \"Latitude\":{latitude}, \"Longitude\":{longitude}, \"Heading\":24, \"Altitude\":0, \"BodyName\":\"Synuefe DJ-G b44-3 A 5\", \"PlanetRadius\":1311227.875000}}",textBoxClientId.Text);
                     UpdateUI(edEvent);
                     System.Threading.Thread.Sleep(10);
                     if (rnd.Next(2) == 1)

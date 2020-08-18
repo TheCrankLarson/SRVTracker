@@ -219,6 +219,9 @@
     <EmbeddedResource Include="TrackerHUD.resx">
       <DependentUpon>TrackerHUD.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="EUROCAPS.TTF">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -283,6 +286,9 @@
     <None Include="Resources\Return_16x.png" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="LeaderBoard Template.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="ReleaseNotes.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
