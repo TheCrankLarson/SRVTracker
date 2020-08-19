@@ -291,6 +291,9 @@
     <Content Include="ReleaseNotes.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\Pushpin_16x.png" />
+    <None Include="Resources\PinnedItem_16x.png" />
+    <None Include="Resources\MoveGlyph_16x.png" />
     <None Include="Resources\AddIndexer_16x.png" />
     <None Include="Resources\arrow.bmp" />
     <None Include="Resources\Settings_16x.png" />

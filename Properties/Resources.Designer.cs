@@ -143,6 +143,16 @@ namespace SRVTracker.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap MoveGlyph_16x {
+            get {
+                object obj = ResourceManager.GetObject("MoveGlyph_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap OpenFile_16x {
             get {
                 object obj = ResourceManager.GetObject("OpenFile_16x", resourceCulture);
@@ -153,9 +163,29 @@ namespace SRVTracker.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap PinnedItem_16x {
+            get {
+                object obj = ResourceManager.GetObject("PinnedItem_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap PlayVideo_16x {
             get {
                 object obj = ResourceManager.GetObject("PlayVideo_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Pushpin_16x {
+            get {
+                object obj = ResourceManager.GetObject("Pushpin_16x", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

@@ -37,18 +37,20 @@
             this.label1 = new System.Windows.Forms.Label();
             this.textBoxLongitude = new System.Windows.Forms.TextBox();
             this.groupBoxBearing = new System.Windows.Forms.GroupBox();
-            this.buttonShowHideTarget = new System.Windows.Forms.Button();
             this.labelDistance = new System.Windows.Forms.Label();
             this.labelHeading = new System.Windows.Forms.Label();
+            this.buttonShowHideTarget = new System.Windows.Forms.Button();
             this.buttonPlayers = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.checkBoxTrackClosest = new System.Windows.Forms.CheckBox();
             this.listBoxCommanders = new System.Windows.Forms.ListBox();
             this.buttonTrackCommander = new System.Windows.Forms.Button();
             this.checkBoxEnableVRLocator = new System.Windows.Forms.CheckBox();
             this.comboBoxLocation = new System.Windows.Forms.ComboBox();
-            this.buttonUseCurrentLocation = new System.Windows.Forms.Button();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.checkBoxTrackClosest = new System.Windows.Forms.CheckBox();
+            this.locatorHUD1 = new SRVTracker.LocatorHUD();
+            this.buttonAlwaysOnTop = new System.Windows.Forms.Button();
+            this.buttonUseCurrentLocation = new System.Windows.Forms.Button();
             this.groupBoxDestination.SuspendLayout();
             this.groupBoxBearing.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -56,14 +58,16 @@
             // 
             // groupBoxDestination
             // 
-            this.groupBoxDestination.BackColor = System.Drawing.SystemColors.Control;
+            this.groupBoxDestination.BackColor = System.Drawing.Color.Black;
             this.groupBoxDestination.Controls.Add(this.label3);
             this.groupBoxDestination.Controls.Add(this.label2);
             this.groupBoxDestination.Controls.Add(this.textBoxAltitude);
             this.groupBoxDestination.Controls.Add(this.textBoxLatitude);
             this.groupBoxDestination.Controls.Add(this.label1);
             this.groupBoxDestination.Controls.Add(this.textBoxLongitude);
-            this.groupBoxDestination.Location = new System.Drawing.Point(12, 87);
+            this.groupBoxDestination.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.groupBoxDestination.ForeColor = System.Drawing.Color.White;
+            this.groupBoxDestination.Location = new System.Drawing.Point(6, 66);
             this.groupBoxDestination.Name = "groupBoxDestination";
             this.groupBoxDestination.Size = new System.Drawing.Size(331, 64);
             this.groupBoxDestination.TabIndex = 0;
@@ -90,6 +94,8 @@
             // 
             // textBoxAltitude
             // 
+            this.textBoxAltitude.BackColor = System.Drawing.Color.Black;
+            this.textBoxAltitude.ForeColor = System.Drawing.Color.White;
             this.textBoxAltitude.Location = new System.Drawing.Point(223, 32);
             this.textBoxAltitude.Name = "textBoxAltitude";
             this.textBoxAltitude.ReadOnly = true;
@@ -99,6 +105,8 @@
             // 
             // textBoxLatitude
             // 
+            this.textBoxLatitude.BackColor = System.Drawing.Color.Black;
+            this.textBoxLatitude.ForeColor = System.Drawing.Color.White;
             this.textBoxLatitude.Location = new System.Drawing.Point(115, 32);
             this.textBoxLatitude.Name = "textBoxLatitude";
             this.textBoxLatitude.ReadOnly = true;
@@ -117,6 +125,8 @@
             // 
             // textBoxLongitude
             // 
+            this.textBoxLongitude.BackColor = System.Drawing.Color.Black;
+            this.textBoxLongitude.ForeColor = System.Drawing.Color.White;
             this.textBoxLongitude.Location = new System.Drawing.Point(9, 32);
             this.textBoxLongitude.Name = "textBoxLongitude";
             this.textBoxLongitude.ReadOnly = true;
@@ -126,25 +136,14 @@
             // 
             // groupBoxBearing
             // 
-            this.groupBoxBearing.Controls.Add(this.buttonShowHideTarget);
             this.groupBoxBearing.Controls.Add(this.labelDistance);
             this.groupBoxBearing.Controls.Add(this.labelHeading);
-            this.groupBoxBearing.Location = new System.Drawing.Point(12, 12);
+            this.groupBoxBearing.Location = new System.Drawing.Point(457, 208);
             this.groupBoxBearing.Name = "groupBoxBearing";
             this.groupBoxBearing.Size = new System.Drawing.Size(331, 65);
             this.groupBoxBearing.TabIndex = 1;
             this.groupBoxBearing.TabStop = false;
             this.groupBoxBearing.Text = "Bearing (target not set)";
-            // 
-            // buttonShowHideTarget
-            // 
-            this.buttonShowHideTarget.Location = new System.Drawing.Point(312, 46);
-            this.buttonShowHideTarget.Name = "buttonShowHideTarget";
-            this.buttonShowHideTarget.Size = new System.Drawing.Size(13, 13);
-            this.buttonShowHideTarget.TabIndex = 2;
-            this.toolTip1.SetToolTip(this.buttonShowHideTarget, "Shrink/expand the window");
-            this.buttonShowHideTarget.UseVisualStyleBackColor = true;
-            this.buttonShowHideTarget.Click += new System.EventHandler(this.buttonShowHideTarget_Click);
             // 
             // labelDistance
             // 
@@ -168,9 +167,23 @@
             this.labelHeading.Text = "0°";
             this.toolTip1.SetToolTip(this.labelHeading, "The direction you must travel to reach the target");
             // 
+            // buttonShowHideTarget
+            // 
+            this.buttonShowHideTarget.BackColor = System.Drawing.Color.Yellow;
+            this.buttonShowHideTarget.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonShowHideTarget.ForeColor = System.Drawing.Color.Black;
+            this.buttonShowHideTarget.Location = new System.Drawing.Point(247, 0);
+            this.buttonShowHideTarget.Name = "buttonShowHideTarget";
+            this.buttonShowHideTarget.Size = new System.Drawing.Size(13, 13);
+            this.buttonShowHideTarget.TabIndex = 2;
+            this.toolTip1.SetToolTip(this.buttonShowHideTarget, "Shrink/expand the window");
+            this.buttonShowHideTarget.UseVisualStyleBackColor = false;
+            this.buttonShowHideTarget.Click += new System.EventHandler(this.buttonShowHideTarget_Click);
+            // 
             // buttonPlayers
             // 
-            this.buttonPlayers.Location = new System.Drawing.Point(268, 157);
+            this.buttonPlayers.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonPlayers.Location = new System.Drawing.Point(262, 138);
             this.buttonPlayers.Name = "buttonPlayers";
             this.buttonPlayers.Size = new System.Drawing.Size(75, 23);
             this.buttonPlayers.TabIndex = 8;
@@ -184,15 +197,30 @@
             this.groupBox1.Controls.Add(this.checkBoxTrackClosest);
             this.groupBox1.Controls.Add(this.listBoxCommanders);
             this.groupBox1.Controls.Add(this.buttonTrackCommander);
-            this.groupBox1.Location = new System.Drawing.Point(349, 12);
+            this.groupBox1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.groupBox1.ForeColor = System.Drawing.Color.White;
+            this.groupBox1.Location = new System.Drawing.Point(349, 5);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(200, 168);
             this.groupBox1.TabIndex = 9;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Other Commanders";
             // 
+            // checkBoxTrackClosest
+            // 
+            this.checkBoxTrackClosest.AutoSize = true;
+            this.checkBoxTrackClosest.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.checkBoxTrackClosest.Location = new System.Drawing.Point(6, 143);
+            this.checkBoxTrackClosest.Name = "checkBoxTrackClosest";
+            this.checkBoxTrackClosest.Size = new System.Drawing.Size(87, 17);
+            this.checkBoxTrackClosest.TabIndex = 2;
+            this.checkBoxTrackClosest.Text = "Track closest";
+            this.checkBoxTrackClosest.UseVisualStyleBackColor = true;
+            // 
             // listBoxCommanders
             // 
+            this.listBoxCommanders.BackColor = System.Drawing.Color.Black;
+            this.listBoxCommanders.ForeColor = System.Drawing.Color.White;
             this.listBoxCommanders.FormattingEnabled = true;
             this.listBoxCommanders.Location = new System.Drawing.Point(6, 19);
             this.listBoxCommanders.Name = "listBoxCommanders";
@@ -203,6 +231,8 @@
             // buttonTrackCommander
             // 
             this.buttonTrackCommander.Enabled = false;
+            this.buttonTrackCommander.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonTrackCommander.ForeColor = System.Drawing.Color.White;
             this.buttonTrackCommander.Location = new System.Drawing.Point(119, 139);
             this.buttonTrackCommander.Name = "buttonTrackCommander";
             this.buttonTrackCommander.Size = new System.Drawing.Size(75, 23);
@@ -215,9 +245,10 @@
             // checkBoxEnableVRLocator
             // 
             this.checkBoxEnableVRLocator.AutoSize = true;
-            this.checkBoxEnableVRLocator.Location = new System.Drawing.Point(53, 161);
+            this.checkBoxEnableVRLocator.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.checkBoxEnableVRLocator.Location = new System.Drawing.Point(47, 140);
             this.checkBoxEnableVRLocator.Name = "checkBoxEnableVRLocator";
-            this.checkBoxEnableVRLocator.Size = new System.Drawing.Size(41, 17);
+            this.checkBoxEnableVRLocator.Size = new System.Drawing.Size(38, 17);
             this.checkBoxEnableVRLocator.TabIndex = 10;
             this.checkBoxEnableVRLocator.Text = "VR";
             this.toolTip1.SetToolTip(this.checkBoxEnableVRLocator, "Enable/disable the VR bearing/distance display");
@@ -226,19 +257,43 @@
             // 
             // comboBoxLocation
             // 
+            this.comboBoxLocation.BackColor = System.Drawing.Color.Black;
             this.comboBoxLocation.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxLocation.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.comboBoxLocation.ForeColor = System.Drawing.Color.White;
             this.comboBoxLocation.FormattingEnabled = true;
-            this.comboBoxLocation.Location = new System.Drawing.Point(100, 159);
+            this.comboBoxLocation.Location = new System.Drawing.Point(94, 138);
             this.comboBoxLocation.Name = "comboBoxLocation";
             this.comboBoxLocation.Size = new System.Drawing.Size(162, 21);
             this.comboBoxLocation.TabIndex = 11;
             this.toolTip1.SetToolTip(this.comboBoxLocation, "Select a location to target (add locations in the Route Planner)");
             this.comboBoxLocation.SelectedIndexChanged += new System.EventHandler(this.comboBoxLocation_SelectedIndexChanged);
             // 
+            // locatorHUD1
+            // 
+            this.locatorHUD1.BackColor = System.Drawing.Color.Black;
+            this.locatorHUD1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.locatorHUD1.Location = new System.Drawing.Point(0, 0);
+            this.locatorHUD1.Name = "locatorHUD1";
+            this.locatorHUD1.Size = new System.Drawing.Size(260, 60);
+            this.locatorHUD1.TabIndex = 3;
+            // 
+            // buttonAlwaysOnTop
+            // 
+            this.buttonAlwaysOnTop.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonAlwaysOnTop.Image = global::SRVTracker.Properties.Resources.PinnedItem_16x;
+            this.buttonAlwaysOnTop.Location = new System.Drawing.Point(260, 1);
+            this.buttonAlwaysOnTop.Name = "buttonAlwaysOnTop";
+            this.buttonAlwaysOnTop.Size = new System.Drawing.Size(28, 23);
+            this.buttonAlwaysOnTop.TabIndex = 12;
+            this.buttonAlwaysOnTop.UseVisualStyleBackColor = true;
+            this.buttonAlwaysOnTop.Click += new System.EventHandler(this.buttonAlwaysOnTop_Click);
+            // 
             // buttonUseCurrentLocation
             // 
+            this.buttonUseCurrentLocation.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonUseCurrentLocation.Image = global::SRVTracker.Properties.Resources.Home_16x;
-            this.buttonUseCurrentLocation.Location = new System.Drawing.Point(12, 157);
+            this.buttonUseCurrentLocation.Location = new System.Drawing.Point(6, 136);
             this.buttonUseCurrentLocation.Name = "buttonUseCurrentLocation";
             this.buttonUseCurrentLocation.Size = new System.Drawing.Size(35, 23);
             this.buttonUseCurrentLocation.TabIndex = 6;
@@ -246,21 +301,15 @@
             this.buttonUseCurrentLocation.UseVisualStyleBackColor = true;
             this.buttonUseCurrentLocation.Click += new System.EventHandler(this.buttonUseCurrentLocation_Click);
             // 
-            // checkBoxTrackClosest
-            // 
-            this.checkBoxTrackClosest.AutoSize = true;
-            this.checkBoxTrackClosest.Location = new System.Drawing.Point(6, 143);
-            this.checkBoxTrackClosest.Name = "checkBoxTrackClosest";
-            this.checkBoxTrackClosest.Size = new System.Drawing.Size(90, 17);
-            this.checkBoxTrackClosest.TabIndex = 2;
-            this.checkBoxTrackClosest.Text = "Track closest";
-            this.checkBoxTrackClosest.UseVisualStyleBackColor = true;
-            // 
             // FormLocator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(559, 188);
+            this.BackColor = System.Drawing.Color.Black;
+            this.ClientSize = new System.Drawing.Size(585, 179);
+            this.Controls.Add(this.buttonAlwaysOnTop);
+            this.Controls.Add(this.buttonShowHideTarget);
+            this.Controls.Add(this.locatorHUD1);
             this.Controls.Add(this.comboBoxLocation);
             this.Controls.Add(this.checkBoxEnableVRLocator);
             this.Controls.Add(this.groupBox1);
@@ -268,7 +317,8 @@
             this.Controls.Add(this.groupBoxBearing);
             this.Controls.Add(this.buttonUseCurrentLocation);
             this.Controls.Add(this.groupBoxDestination);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.ForeColor = System.Drawing.Color.White;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "FormLocator";
             this.Text = "Waypoint Locator";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormLocator_FormClosing);
@@ -305,5 +355,7 @@
         private System.Windows.Forms.ComboBox comboBoxLocation;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.CheckBox checkBoxTrackClosest;
+        private LocatorHUD locatorHUD1;
+        private System.Windows.Forms.Button buttonAlwaysOnTop;
     }
 }

@@ -10,11 +10,17 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Linq.Expressions;
 
+
+
 namespace SRVTracker
 {
+
     public partial class LocatorHUD : UserControl
     {
         private static Bitmap[] _arrowAtAngle = new Bitmap[359];
+        int _lastTurnDirection = -1;
+
+
         public LocatorHUD()
         {
             InitializeComponent();
@@ -23,33 +29,61 @@ namespace SRVTracker
 
         private void LocatorHUD_Load(object sender, EventArgs e)
         {
-
         }
 
-        public void SetBearing(int bearingInDegrees)
+        public bool SetBearing(int bearingToTarget, int currentHeading)
         {
-            Action action = new Action(() => { labelBearing.Text = $"{bearingInDegrees}°"; });
-            if (labelBearing.InvokeRequired)
-                labelBearing.Invoke(action);
-            else
-                action();
+            if (currentHeading < 0)
+                return false;
 
-            if (_arrowAtAngle[bearingInDegrees]==null)
+            Action action;
+            bool updated = false;
+
+            int directionToTurn = bearingToTarget - currentHeading;
+            if (directionToTurn < 0)
+                directionToTurn += 360;
+
+            string bearingText = $"{bearingToTarget}°";
+            if (!labelBearing.Text.Equals(bearingText))
+            {
+                action = new Action(() => { labelBearing.Text = bearingText; });
+                if (labelBearing.InvokeRequired)
+                    labelBearing.Invoke(action);
+                else
+                    action();
+                updated = true;
+            }
+
+            if (directionToTurn == _lastTurnDirection)
+                return updated;
+
+            _lastTurnDirection = directionToTurn;
+            if (_arrowAtAngle[directionToTurn] ==null)
             {
                 // We haven't rotated the arrow to this angle yet, so create a copy and do that
-                _arrowAtAngle[bearingInDegrees] = RotateImage((Bitmap)_arrowAtAngle[0].Clone(),(float)bearingInDegrees);
+                _arrowAtAngle[directionToTurn] = RotateImage((Bitmap)_arrowAtAngle[0].Clone(),(float)directionToTurn);
 
             }
-            action = new Action(() => { pictureBoxDirection.Image = _arrowAtAngle[bearingInDegrees]; });
+            action = new Action(() => { pictureBoxDirection.Image = _arrowAtAngle[directionToTurn]; });
             if (pictureBoxDirection.InvokeRequired)
                 pictureBoxDirection.Invoke(action);
             else
-                action();          
+                action();
+            return true;
+        }
+
+        public Bitmap GetBearingImage()
+        {
+            return (Bitmap)pictureBoxDirection.Image;
         }
 
         public void SetDistance(double distance)
         {
-            Action action = new Action(() => { labelDistance.Text = $"{(distance / 1000):F1}km"; });
+            string distanceText = $"{(distance / 1000):F1}km";
+            if (labelDistance.Text.Equals(distanceText))
+                return;
+
+            Action action = new Action(() => { labelDistance.Text = distanceText; });
             if (labelDistance.InvokeRequired)
                 labelDistance.Invoke(action);
             else
@@ -59,6 +93,9 @@ namespace SRVTracker
 
         public void SetTarget(string target)
         {
+            if (labelTarget.Text.Equals(target))
+                return;
+
             Action action = new Action(() => { labelTarget.Text = target; });
             if (labelTarget.InvokeRequired)
                 labelTarget.Invoke(action);

@@ -23,7 +23,9 @@ namespace SRVTracker
         private EDLocation _targetPosition = null;
         private WebClient _webClient = new WebClient();
         private bool _commanderListShowing = false;
-        private static Size _normalView = new Size(364, 228);
+        private static Size _normalView = new Size(558, 180);
+        private static Size _miniView = new Size(260, 60);
+        private static int _commanderListHiddenWidth = 344;
         private static ulong _vrOverlayHandle = 0;
         private static HmdMatrix34_t _vrMatrix;
         private static IntPtr? _intPtrOverlayImage = null;
@@ -37,12 +39,27 @@ namespace SRVTracker
         public FormLocator()
         {
             InitializeComponent();
-            this.Width = _normalView.Width;
+            this.Size = _normalView;
+            this.Width = _commanderListHiddenWidth;
             buttonUseCurrentLocation.Enabled = false;  // We'll enable it when we have a location
             CommanderWatcher.UpdateReceived += CommanderWatcher_UpdateReceived;
             FormTracker.CommanderLocationChanged += FormTracker_CommanderLocationChanged;
             InitVRMatrix();
             InitLocationCombo();
+        }
+
+        protected override void WndProc(ref Message m)
+        {
+            switch (m.Msg)
+            {
+                case 0x84:
+                    base.WndProc(ref m);
+                    if ((int)m.Result == 0x1)
+                        m.Result = (IntPtr)0x2;
+                    return;
+            }
+
+            base.WndProc(ref m);
         }
 
         private void FormTracker_CommanderLocationChanged(object sender, EventArgs e)
@@ -197,6 +214,7 @@ namespace SRVTracker
             {
                 string d;
                 double distance = EDLocation.DistanceBetween(FormTracker.CurrentLocation, _targetPosition);
+                locatorHUD1.SetDistance(distance);
                 if (distance>1000000)
                 {
                     d = $"({(distance / 1000000).ToString("0.0")}Mm";
@@ -208,6 +226,8 @@ namespace SRVTracker
                 else
                     d = $"{distance.ToString("0.0")}m";
                 double bearing = EDLocation.BearingToLocation(FormTracker.CurrentLocation, _targetPosition);
+                if (locatorHUD1.SetBearing((int)bearing, FormTracker.CurrentHeading))
+                    displayChanged = true;
                 string b = $"{Convert.ToInt32(bearing).ToString()}°";
                 
                 if (!labelDistance.Text.Equals(d))
@@ -243,21 +263,17 @@ namespace SRVTracker
             {
                 // We are expanded, so shrink
                 this.FormBorderStyle = FormBorderStyle.None;
-                groupBoxBearing.Left = 0;
-                groupBoxBearing.Top = 0;
-                this.Height = groupBoxBearing.Height;
-                this.Width = groupBoxBearing.Width;
+                this.Height = locatorHUD1.Height;
+                this.Width = locatorHUD1.Width;
             }
             else
             {
-                this.FormBorderStyle = FormBorderStyle.FixedToolWindow;
-                groupBoxBearing.Left = 12;
-                groupBoxBearing.Top = 12;
+                //this.FormBorderStyle = FormBorderStyle.FixedToolWindow;
                 this.Height = _normalView.Height;
                 if (_commanderListShowing)
-                    this.Width = 575;
-                else
                     this.Width = _normalView.Width;
+                else
+                    this.Width = _commanderListHiddenWidth;
             }
         }
 
@@ -277,9 +293,9 @@ namespace SRVTracker
 
         private void buttonPlayers_Click(object sender, EventArgs e)
         {
-            if (this.Width <= _normalView.Width)
+            if (this.Width == _commanderListHiddenWidth)
             {
-                this.Width = 575;
+                this.Width = _normalView.Width;
                 _commanderListShowing = true;
                 CommanderWatcher.Start($"http://{ServerAddress}:11938/DataCollator/status");
                 UpdateAvailableCommanders();;
@@ -287,7 +303,7 @@ namespace SRVTracker
             }
             else
             {
-                this.Width = _normalView.Width;
+                this.Width = _commanderListHiddenWidth;
                 _commanderListShowing = false;
                 CommanderWatcher.OnlineCountChanged -= CommanderWatcher_OnlineCountChanged;
             }
@@ -364,7 +380,7 @@ namespace SRVTracker
             Action action;
             TrackingTarget = target;
 
-
+            locatorHUD1.SetTarget(target);
             string bearingInfo = $"Bearing (tracking {target})";
             if (String.IsNullOrEmpty(target))
                 bearingInfo = "Bearing (target not set)";
@@ -492,6 +508,10 @@ namespace SRVTracker
             // Distance
             _vrgraphics.DrawString(labelDistance.Text, font, directionBrush, new PointF(320, 120));
             font.Dispose();
+
+            // Bearing arrow
+            _vrgraphics.DrawImage(locatorHUD1.GetBearingImage(), new Point(0, 130));
+
             _vrgraphics.Save();
             directionBrush.Dispose();
             targetBrush.Dispose();
@@ -608,6 +628,20 @@ namespace SRVTracker
                 foreach (EDLocation location in locationManager.Locations)
                     comboBoxLocation.Items.Add(location.Name);
             locationManager.Dispose();
+        }
+
+        private void buttonAlwaysOnTop_Click(object sender, EventArgs e)
+        {
+            if (this.TopMost)
+            {
+                this.TopMost = false;
+                buttonAlwaysOnTop.Image = Properties.Resources.PinnedItem_16x;
+            }
+            else
+            {
+                this.TopMost = true;
+                buttonAlwaysOnTop.Image = Properties.Resources.Pushpin_16x;
+            }
         }
     }
 }

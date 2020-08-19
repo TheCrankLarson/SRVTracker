@@ -426,10 +426,11 @@ namespace SRVTracker
                     {
                         speeds.Append($"{_racersStatus[leaderBoard[i]].SpeedInMS:F1}m/s");
                         if (checkBoxIncludeMaxSpeed.Checked)
-                            speeds.Append($"{_racersStatus[leaderBoard[i]].MaxSpeedInMS:F1}m/s)");
+                            speeds.Append($" ({_racersStatus[leaderBoard[i]].MaxSpeedInMS:F1}m/s)");
+                        speeds.AppendLine();
                     }
                     else
-                        speeds.AppendLine("0.0m/s");
+                        speeds.AppendLine("{0:F1}m/s");
                 }
 
                 if (!_lastSpeedExport.Equals(speeds.ToString()))
