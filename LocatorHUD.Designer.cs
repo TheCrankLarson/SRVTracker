@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
+            this.labelTarget = new System.Windows.Forms.Label();
             this.labelBearing = new System.Windows.Forms.Label();
             this.labelDistance = new System.Windows.Forms.Label();
             this.pictureBoxDirection = new System.Windows.Forms.PictureBox();
@@ -46,15 +46,15 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Target:";
             // 
-            // label2
+            // labelTarget
             // 
-            this.label2.AutoSize = true;
-            this.label2.ForeColor = System.Drawing.Color.Yellow;
-            this.label2.Location = new System.Drawing.Point(40, 0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(64, 13);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "Rand Vision";
+            this.labelTarget.AutoSize = true;
+            this.labelTarget.ForeColor = System.Drawing.Color.Yellow;
+            this.labelTarget.Location = new System.Drawing.Point(40, 0);
+            this.labelTarget.Name = "labelTarget";
+            this.labelTarget.Size = new System.Drawing.Size(64, 13);
+            this.labelTarget.TabIndex = 1;
+            this.labelTarget.Text = "Rand Vision";
             // 
             // labelBearing
             // 
@@ -96,7 +96,7 @@
             this.Controls.Add(this.pictureBoxDirection);
             this.Controls.Add(this.labelDistance);
             this.Controls.Add(this.labelBearing);
-            this.Controls.Add(this.label2);
+            this.Controls.Add(this.labelTarget);
             this.Controls.Add(this.label1);
             this.Name = "LocatorHUD";
             this.Size = new System.Drawing.Size(260, 60);
@@ -110,7 +110,7 @@
         #endregion
 
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label labelTarget;
         private System.Windows.Forms.Label labelBearing;
         private System.Windows.Forms.Label labelDistance;
         private System.Windows.Forms.PictureBox pictureBoxDirection;

@@ -11,7 +11,6 @@ namespace EDTracking
 
     public class EDWaypoint
     {
-        private static CultureInfo _enGB = new CultureInfo("en-GB");
         public EDLocation Location { get; set; } = null;
         public double Radius { get; set; } = 5000;
         public double Altitude { get; set; } = 0;
@@ -59,21 +58,11 @@ namespace EDTracking
 
         public override string ToString()
         {
-            return JsonSerializer.Serialize(this);//$"{Location.ToString()}╫{Radius.ToString(_enGB)}╫{Direction}";
+            return JsonSerializer.Serialize(this);
         }
 
         public static EDWaypoint FromString(string location)
         {
-            if (location.Contains('╫'))
-            {
-                try
-                {
-                    string[] locationInfo = location.Split('╫');
-                    return new EDWaypoint(EDLocation.FromString(locationInfo[0]), Convert.ToDouble(locationInfo[1], _enGB), Convert.ToInt32(locationInfo[2]));
-                }
-                catch { }
-                return null;
-            }
             return (EDWaypoint)JsonSerializer.Deserialize(location, typeof(EDWaypoint));
         }
     }

@@ -8,9 +8,9 @@ using System.Net;
 using System.Timers;
 using EDTracking;
 
-namespace SRVTracker
+namespace EDTracking
 {
-    class CommanderWatcher
+    public class CommanderWatcher
     {
         private static WebClient _webClient = new WebClient();
         private static Dictionary<string, EDEvent> _commanderStatuses = new Dictionary<string, EDEvent>();
@@ -18,18 +18,20 @@ namespace SRVTracker
         private static bool _enabled = false;
         private static object _lock = new object();
         private static string _lastStatus = "";
+        private static string _serverUrl = "";
 
         public delegate void UpdateReceivedEventHandler(object sender, EDEvent edEvent);
         public static event UpdateReceivedEventHandler UpdateReceived;
         public static event EventHandler OnlineCountChanged;
 
-        public CommanderWatcher()
+        public CommanderWatcher(string serverUrl)
         {
-            Start();
+            Start(serverUrl);
         }
 
-        public static void Start()
+        public static void Start(string serverUrl)
         {
+            _serverUrl = serverUrl;
             if (!_enabled)
             {
                 // We only want one timer, so ensure we only subscribe once
@@ -89,7 +91,7 @@ namespace SRVTracker
             string commanderStatus = "";
             try
             {
-                Stream statusStream = _webClient.OpenRead($"http://{FormLocator.ServerAddress}:11938/DataCollator/status");
+                Stream statusStream = _webClient.OpenRead(_serverUrl);
                 using (StreamReader reader = new StreamReader(statusStream))
                     commanderStatus = reader.ReadToEnd().Trim();
                 statusStream.Close();

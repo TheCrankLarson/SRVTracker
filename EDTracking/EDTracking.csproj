@@ -69,6 +69,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommanderWatcher.cs" />
     <Compile Include="EDEvent.cs" />
     <Compile Include="EDLocation.cs" />
     <Compile Include="EDRace.cs" />

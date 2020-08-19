@@ -80,7 +80,6 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CommanderWatcher.cs" />
     <Compile Include="FormAddLocation.cs">
       <SubType>Form</SubType>
     </Compile>

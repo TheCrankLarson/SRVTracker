@@ -281,7 +281,7 @@ namespace SRVTracker
             {
                 this.Width = 575;
                 _commanderListShowing = true;
-                CommanderWatcher.Start();
+                CommanderWatcher.Start($"http://{ServerAddress}:11938/DataCollator/status");
                 UpdateAvailableCommanders();;
                 CommanderWatcher.OnlineCountChanged += CommanderWatcher_OnlineCountChanged;
             }

@@ -228,7 +228,7 @@ namespace EDTracking
 
             if (DistanceToWaypoint<_nextLogDistanceToWaypoint)
             {
-                AddRaceHistory($"{(DistanceToWaypoint / 1000):0.0}km to {Route.Waypoints[WaypointIndex].Name}");
+                AddRaceHistory($"{(DistanceToWaypoint / 1000):F1}km to {Route.Waypoints[WaypointIndex].Name}");
                 _nextLogDistanceToWaypoint = DistanceToWaypoint - 5000;
             }
 

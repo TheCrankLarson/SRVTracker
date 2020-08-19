@@ -10,7 +10,6 @@ namespace EDTracking
 {
     public class EDLocation
     {
-        private static CultureInfo _enGB = new CultureInfo("en-GB");
         public double Latitude { get; set; } = 0;
         public double Longitude { get; set; } = 0;
         public double Altitude { get; set; } = 0;
@@ -57,12 +56,6 @@ namespace EDTracking
         { 
             try
             {
-                if (location.Contains('║'))
-                {
-                    string[] locationInfo = location.Split('║');
-                    return new EDLocation(locationInfo[0], locationInfo[1], locationInfo[2], Convert.ToDouble(locationInfo[3], _enGB),
-                        Convert.ToDouble(locationInfo[4], _enGB), Convert.ToDouble(locationInfo[5], _enGB), Convert.ToDouble(locationInfo[6], _enGB));
-                }
                 return (EDLocation)JsonSerializer.Deserialize(location, typeof(EDLocation));
             }
             catch { }

@@ -16,9 +16,6 @@ namespace EDTracking
         // { "timestamp":"2020-07-28T17:46:47Z", "event":"Status", "Flags":16777229, "Pips":[4,8,0], "FireGroup":0, "GuiFocus":0, "Fuel":{ "FuelMain":16.000000, "FuelReservoir":0.430376 }, "Cargo":4.000000, "LegalState":"Clean" }
         //{ "timestamp":"2020-07-28T17:52:25Z", "event":"Status", "Flags":341852424, "Pips":[4,8,0], "FireGroup":0, "GuiFocus":0, "Fuel":{ "FuelMain":0.000000, "FuelReservoir":0.444637 }, "Cargo":0.000000, "LegalState":"Clean", "Latitude":-14.055647, "Longitude":-31.176170, "Heading":24, "Altitude":0, "BodyName":"Synuefe DJ-G b44-3 A 5", "PlanetRadius":1311227.875000 }
         //
-        private static CultureInfo _enGB = new CultureInfo("en-GB");
-
-       // public string RawData { get; } = "";
 
         public double Latitude { get; set; } = 0;
         public double Longitude { get; set; } = 0;
