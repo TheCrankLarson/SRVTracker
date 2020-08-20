@@ -311,11 +311,11 @@
             // 
             // buttonExit
             // 
-            this.buttonExit.Location = new System.Drawing.Point(199, 151);
+            this.buttonExit.Image = global::SRVTracker.Properties.Resources.Close_red_16x;
+            this.buttonExit.Location = new System.Drawing.Point(237, 122);
             this.buttonExit.Name = "buttonExit";
-            this.buttonExit.Size = new System.Drawing.Size(75, 23);
+            this.buttonExit.Size = new System.Drawing.Size(38, 23);
             this.buttonExit.TabIndex = 11;
-            this.buttonExit.Text = "Exit";
             this.toolTip1.SetToolTip(this.buttonExit, "Close the program");
             this.buttonExit.UseVisualStyleBackColor = true;
             this.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
@@ -437,7 +437,8 @@
             this.checkBoxTrack.Size = new System.Drawing.Size(54, 17);
             this.checkBoxTrack.TabIndex = 18;
             this.checkBoxTrack.Text = "Track";
-            this.toolTip1.SetToolTip(this.checkBoxTrack, "Start tracking for status updates");
+            this.toolTip1.SetToolTip(this.checkBoxTrack, "Monitor status file for tracking updates.\r\nRequired for all tracking and locating" +
+        " functions.");
             this.checkBoxTrack.UseVisualStyleBackColor = true;
             this.checkBoxTrack.CheckedChanged += new System.EventHandler(this.checkBoxTrack_CheckedChanged);
             // 
@@ -487,9 +488,9 @@
             // buttonShowConfig
             // 
             this.buttonShowConfig.Image = global::SRVTracker.Properties.Resources.Settings_16x;
-            this.buttonShowConfig.Location = new System.Drawing.Point(199, 122);
+            this.buttonShowConfig.Location = new System.Drawing.Point(193, 122);
             this.buttonShowConfig.Name = "buttonShowConfig";
-            this.buttonShowConfig.Size = new System.Drawing.Size(75, 23);
+            this.buttonShowConfig.Size = new System.Drawing.Size(38, 23);
             this.buttonShowConfig.TabIndex = 12;
             this.toolTip1.SetToolTip(this.buttonShowConfig, "Show Settings");
             this.buttonShowConfig.UseVisualStyleBackColor = true;

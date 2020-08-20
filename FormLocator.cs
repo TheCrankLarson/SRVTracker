@@ -23,7 +23,7 @@ namespace SRVTracker
         private EDLocation _targetPosition = null;
         private WebClient _webClient = new WebClient();
         private bool _commanderListShowing = false;
-        private static Size _normalView = new Size(558, 180);
+        private static Size _normalView = new Size(558, 174);
         private static Size _miniView = new Size(260, 60);
         private static int _commanderListHiddenWidth = 344;
         private static ulong _vrOverlayHandle = 0;
@@ -71,11 +71,15 @@ namespace SRVTracker
         {
             if (_activeLocator != null)
             {
-                if (_activeLocator.Visible)
+                try
                 {
-                    _activeLocator.Focus();
-                    return _activeLocator;
+                    if (_activeLocator.Visible)
+                    {
+                        _activeLocator.Focus();
+                        return _activeLocator;
+                    }
                 }
+                catch { }
             }
 
             try
@@ -642,6 +646,11 @@ namespace SRVTracker
                 this.TopMost = true;
                 buttonAlwaysOnTop.Image = Properties.Resources.Pushpin_16x;
             }
+        }
+
+        private void buttonClose_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

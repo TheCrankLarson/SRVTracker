@@ -78,7 +78,7 @@ namespace EDTracking
             }
             catch { }
         }
-        public void StartRace()
+        public void StartRace(bool asServer)
         {
             if (_raceStarted)
                 return;
@@ -86,7 +86,8 @@ namespace EDTracking
             _statuses = new Dictionary<string, EDRaceStatus>();
             foreach (string contestant in Contestants)
                 _statuses.Add(contestant, new EDRaceStatus(contestant, Route));
-            CommanderWatcher.UpdateReceived += CommanderWatcher_UpdateReceived;
+            if (!asServer)
+                CommanderWatcher.UpdateReceived += CommanderWatcher_UpdateReceived;
             _raceStarted = true;
         }
 
@@ -163,7 +164,7 @@ namespace EDTracking
             return positions;
         }
 
-        private void UpdateStatus(EDEvent edEvent)
+        public void UpdateStatus(EDEvent edEvent)
         {
             if (_statuses != null)
                 if (_statuses.ContainsKey(edEvent.Commander))

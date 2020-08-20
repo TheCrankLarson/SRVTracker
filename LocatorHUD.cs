@@ -58,7 +58,7 @@ namespace SRVTracker
                 return updated;
 
             _lastTurnDirection = directionToTurn;
-            if (_arrowAtAngle[directionToTurn] ==null)
+            if (_arrowAtAngle[directionToTurn] == null)
             {
                 // We haven't rotated the arrow to this angle yet, so create a copy and do that
                 _arrowAtAngle[directionToTurn] = RotateImage((Bitmap)_arrowAtAngle[0].Clone(),(float)directionToTurn);

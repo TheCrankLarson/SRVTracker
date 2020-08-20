@@ -48,9 +48,10 @@
             this.checkBoxEnableVRLocator = new System.Windows.Forms.CheckBox();
             this.comboBoxLocation = new System.Windows.Forms.ComboBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.locatorHUD1 = new SRVTracker.LocatorHUD();
             this.buttonAlwaysOnTop = new System.Windows.Forms.Button();
             this.buttonUseCurrentLocation = new System.Windows.Forms.Button();
+            this.locatorHUD1 = new SRVTracker.LocatorHUD();
+            this.buttonClose = new System.Windows.Forms.Button();
             this.groupBoxDestination.SuspendLayout();
             this.groupBoxBearing.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -58,7 +59,7 @@
             // 
             // groupBoxDestination
             // 
-            this.groupBoxDestination.BackColor = System.Drawing.Color.Black;
+            this.groupBoxDestination.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.groupBoxDestination.Controls.Add(this.label3);
             this.groupBoxDestination.Controls.Add(this.label2);
             this.groupBoxDestination.Controls.Add(this.textBoxAltitude);
@@ -94,7 +95,7 @@
             // 
             // textBoxAltitude
             // 
-            this.textBoxAltitude.BackColor = System.Drawing.Color.Black;
+            this.textBoxAltitude.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.textBoxAltitude.ForeColor = System.Drawing.Color.White;
             this.textBoxAltitude.Location = new System.Drawing.Point(223, 32);
             this.textBoxAltitude.Name = "textBoxAltitude";
@@ -105,7 +106,7 @@
             // 
             // textBoxLatitude
             // 
-            this.textBoxLatitude.BackColor = System.Drawing.Color.Black;
+            this.textBoxLatitude.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.textBoxLatitude.ForeColor = System.Drawing.Color.White;
             this.textBoxLatitude.Location = new System.Drawing.Point(115, 32);
             this.textBoxLatitude.Name = "textBoxLatitude";
@@ -125,7 +126,7 @@
             // 
             // textBoxLongitude
             // 
-            this.textBoxLongitude.BackColor = System.Drawing.Color.Black;
+            this.textBoxLongitude.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.textBoxLongitude.ForeColor = System.Drawing.Color.White;
             this.textBoxLongitude.Location = new System.Drawing.Point(9, 32);
             this.textBoxLongitude.Name = "textBoxLongitude";
@@ -201,7 +202,7 @@
             this.groupBox1.ForeColor = System.Drawing.Color.White;
             this.groupBox1.Location = new System.Drawing.Point(349, 5);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(200, 168);
+            this.groupBox1.Size = new System.Drawing.Size(200, 162);
             this.groupBox1.TabIndex = 9;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Other Commanders";
@@ -210,7 +211,7 @@
             // 
             this.checkBoxTrackClosest.AutoSize = true;
             this.checkBoxTrackClosest.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.checkBoxTrackClosest.Location = new System.Drawing.Point(6, 143);
+            this.checkBoxTrackClosest.Location = new System.Drawing.Point(6, 135);
             this.checkBoxTrackClosest.Name = "checkBoxTrackClosest";
             this.checkBoxTrackClosest.Size = new System.Drawing.Size(87, 17);
             this.checkBoxTrackClosest.TabIndex = 2;
@@ -219,7 +220,7 @@
             // 
             // listBoxCommanders
             // 
-            this.listBoxCommanders.BackColor = System.Drawing.Color.Black;
+            this.listBoxCommanders.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.listBoxCommanders.ForeColor = System.Drawing.Color.White;
             this.listBoxCommanders.FormattingEnabled = true;
             this.listBoxCommanders.Location = new System.Drawing.Point(6, 19);
@@ -233,7 +234,7 @@
             this.buttonTrackCommander.Enabled = false;
             this.buttonTrackCommander.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonTrackCommander.ForeColor = System.Drawing.Color.White;
-            this.buttonTrackCommander.Location = new System.Drawing.Point(119, 139);
+            this.buttonTrackCommander.Location = new System.Drawing.Point(119, 132);
             this.buttonTrackCommander.Name = "buttonTrackCommander";
             this.buttonTrackCommander.Size = new System.Drawing.Size(75, 23);
             this.buttonTrackCommander.TabIndex = 0;
@@ -269,23 +270,21 @@
             this.toolTip1.SetToolTip(this.comboBoxLocation, "Select a location to target (add locations in the Route Planner)");
             this.comboBoxLocation.SelectedIndexChanged += new System.EventHandler(this.comboBoxLocation_SelectedIndexChanged);
             // 
-            // locatorHUD1
+            // toolTip1
             // 
-            this.locatorHUD1.BackColor = System.Drawing.Color.Black;
-            this.locatorHUD1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.locatorHUD1.Location = new System.Drawing.Point(0, 0);
-            this.locatorHUD1.Name = "locatorHUD1";
-            this.locatorHUD1.Size = new System.Drawing.Size(260, 60);
-            this.locatorHUD1.TabIndex = 3;
+            this.toolTip1.AutoPopDelay = 5000;
+            this.toolTip1.InitialDelay = 1000;
+            this.toolTip1.ReshowDelay = 1000;
             // 
             // buttonAlwaysOnTop
             // 
             this.buttonAlwaysOnTop.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonAlwaysOnTop.Image = global::SRVTracker.Properties.Resources.PinnedItem_16x;
-            this.buttonAlwaysOnTop.Location = new System.Drawing.Point(260, 1);
+            this.buttonAlwaysOnTop.Location = new System.Drawing.Point(272, 1);
             this.buttonAlwaysOnTop.Name = "buttonAlwaysOnTop";
             this.buttonAlwaysOnTop.Size = new System.Drawing.Size(28, 23);
             this.buttonAlwaysOnTop.TabIndex = 12;
+            this.toolTip1.SetToolTip(this.buttonAlwaysOnTop, "Pin window topmost");
             this.buttonAlwaysOnTop.UseVisualStyleBackColor = true;
             this.buttonAlwaysOnTop.Click += new System.EventHandler(this.buttonAlwaysOnTop_Click);
             // 
@@ -301,12 +300,34 @@
             this.buttonUseCurrentLocation.UseVisualStyleBackColor = true;
             this.buttonUseCurrentLocation.Click += new System.EventHandler(this.buttonUseCurrentLocation_Click);
             // 
+            // locatorHUD1
+            // 
+            this.locatorHUD1.BackColor = System.Drawing.Color.Black;
+            this.locatorHUD1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.locatorHUD1.Location = new System.Drawing.Point(0, 0);
+            this.locatorHUD1.Name = "locatorHUD1";
+            this.locatorHUD1.Size = new System.Drawing.Size(260, 60);
+            this.locatorHUD1.TabIndex = 3;
+            // 
+            // buttonClose
+            // 
+            this.buttonClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonClose.Image = global::SRVTracker.Properties.Resources.Close_red_16x;
+            this.buttonClose.Location = new System.Drawing.Point(306, 1);
+            this.buttonClose.Name = "buttonClose";
+            this.buttonClose.Size = new System.Drawing.Size(31, 23);
+            this.buttonClose.TabIndex = 13;
+            this.toolTip1.SetToolTip(this.buttonClose, "Close the locator");
+            this.buttonClose.UseVisualStyleBackColor = true;
+            this.buttonClose.Click += new System.EventHandler(this.buttonClose_Click);
+            // 
             // FormLocator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.Black;
-            this.ClientSize = new System.Drawing.Size(585, 179);
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.ClientSize = new System.Drawing.Size(562, 174);
+            this.Controls.Add(this.buttonClose);
             this.Controls.Add(this.buttonAlwaysOnTop);
             this.Controls.Add(this.buttonShowHideTarget);
             this.Controls.Add(this.locatorHUD1);
@@ -321,6 +342,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "FormLocator";
             this.Text = "Waypoint Locator";
+            this.toolTip1.SetToolTip(this, "Click and drag the form background to move");
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormLocator_FormClosing);
             this.groupBoxDestination.ResumeLayout(false);
             this.groupBoxDestination.PerformLayout();
@@ -357,5 +379,6 @@
         private System.Windows.Forms.CheckBox checkBoxTrackClosest;
         private LocatorHUD locatorHUD1;
         private System.Windows.Forms.Button buttonAlwaysOnTop;
+        private System.Windows.Forms.Button buttonClose;
     }
 }

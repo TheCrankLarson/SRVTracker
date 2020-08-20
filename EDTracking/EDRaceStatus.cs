@@ -38,7 +38,8 @@ namespace EDTracking
                 {
                     { "Eliminated", "Eliminated" },
                     { "Completed", "Completed" },
-                    { "Pitstop", "Pitstop" }
+                    { "Pitstop", "Pitstop" },
+                    { "Ready", "" }
                 };
 
         public string _lastStatus = "";
@@ -50,7 +51,7 @@ namespace EDTracking
         private StringBuilder _raceHistory = new StringBuilder();
         private double _nextLogDistanceToWaypoint = double.MaxValue;
         private EDLocation _speedCalculationLocation = null;
-        private DateTime _speedCalculationTimeStamp = DateTime.MinValue;
+        private DateTime _speedCalculationTimeStamp = DateTime.UtcNow;
 
         public EDRaceStatus(EDEvent baseEvent)
         {
@@ -186,22 +187,18 @@ namespace EDTracking
             if (updateEvent.HasCoordinates())
             {
                 TimeSpan timeBetweenLocations = updateEvent.TimeStamp.Subtract(_speedCalculationTimeStamp);
-                if (timeBetweenLocations.TotalSeconds > 1)
+                if (timeBetweenLocations.TotalMilliseconds > 750)
                 {
-                    // We take a speed calculation once per second
-                    if (_speedCalculationLocation==null)
-                    {
-                        // We don't have a previous timestamp/location yet
-                        _speedCalculationLocation = updateEvent.Location();
-                        _speedCalculationTimeStamp = updateEvent.TimeStamp;
-                    }
-                    else
+                    // We take a speed calculation once every 750 milliseconds
+                    _speedCalculationTimeStamp = updateEvent.TimeStamp;
+                    if (_speedCalculationLocation!=null)
                     {
                         double distanceBetweenLocations = EDLocation.DistanceBetween(_speedCalculationLocation, updateEvent.Location());
                         SpeedInMS = distanceBetweenLocations * (1000 / timeBetweenLocations.TotalMilliseconds);
                         if (SpeedInMS > MaxSpeedInMS)
                             MaxSpeedInMS = SpeedInMS;
                     }
+                    _speedCalculationLocation = updateEvent.Location();
                 }
                 Location = updateEvent.Location();
                 if (WaypointIndex > 0)

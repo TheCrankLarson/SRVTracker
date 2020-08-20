@@ -30,12 +30,14 @@ namespace DataCollator
         private readonly object _notificationLock = new object();
         private int _pruneCounter = 0;
         private FileStream _logStream = null;
+        private Dictionary<Guid, EDRace> _races;
 
         public NotificationServer(string ListenURL, bool EnableDebug = false)
         {
             if (EnableDebug)
                 _logStream = File.Open("stream.log", FileMode.OpenOrCreate, FileAccess.Write, FileShare.Read);
             URi = ListenURL;
+            _races = new Dictionary<Guid, EDRace>();
             _Listener = new HttpListener();
 
             Start();
@@ -106,6 +108,14 @@ namespace DataCollator
             EDEvent updateEvent = EDEvent.FromJson(status);
             if (String.IsNullOrEmpty(updateEvent.Commander))
                 return;
+
+            if (_races.Count > 0)
+                Task.Run(new Action(() =>
+                {
+                    foreach (EDRace race in _races.Values)
+                        race.UpdateStatus(updateEvent);
+                }));
+
             if (!_commanderStatus.ContainsKey(updateEvent.Commander))
             {
                 lock (_notificationLock)
@@ -170,19 +180,32 @@ namespace DataCollator
 
                 using (StreamReader reader = new StreamReader(request.InputStream))
                     sRequest = reader.ReadToEnd();
+                string requestUri = request.RawUrl.ToLower();
 
                 Action action;
-                if (request.RawUrl.ToLower().StartsWith("/datacollator/status"))
+                if (requestUri.StartsWith("/datacollator/status"))
                 {
                     // This is a request for all known locations/statuses of clients 
                     action = (() => {
                         SendStatus(context);
                     });
                 }
-                else if (request.RawUrl.ToLower().StartsWith("/datacollator/racestatus"))
+                else if (requestUri.StartsWith("/datacollator/racestatus"))
                 {
                     action = (() => {
                         SendRaceStatus(context);
+                    });
+                }
+                else if (requestUri.StartsWith("/datacollator/startrace"))
+                {
+                    action = (() => {
+                        StartRace(sRequest, context);
+                    });
+                }
+                else if (requestUri.StartsWith("/datacollator/getrace"))
+                {
+                    action = (() => {
+                        GetRace(sRequest, context);
                     });
                 }
                 else
@@ -193,6 +216,63 @@ namespace DataCollator
                 _Listener.BeginGetContext(new AsyncCallback(ListenerCallback), _Listener);               
             }
             catch { }
+        }
+
+        private void WriteErrorResponse(HttpListenerResponse httpResponse, HttpStatusCode errorCode)
+        {
+            httpResponse.StatusCode = (int)errorCode;
+            httpResponse.ContentLength64 = 0;
+            httpResponse.Close();
+        }
+
+        private void WriteResponse(HttpListenerResponse httpResponse, string response)
+        {
+            try
+            {
+                byte[] buffer = System.Text.Encoding.UTF8.GetBytes(response);
+                httpResponse.ContentLength64 = buffer.Length;
+                httpResponse.StatusCode = (int)HttpStatusCode.OK;
+
+                using (Stream output = httpResponse.OutputStream)
+                    output.Write(buffer, 0, buffer.Length);
+                httpResponse.OutputStream.Flush();
+                httpResponse.KeepAlive = true;
+                httpResponse.Close();
+            }
+            catch { }
+        }
+
+        private void WriteResponse(HttpListenerContext Context, string response)
+        {
+            WriteResponse(Context.Response, response);
+        }
+
+        private void StartRace(string request, HttpListenerContext Context)
+        {
+            // Client has requested to start race monitoring.  The request should be an EDRace json.  We return a Guid
+
+            try
+            {
+                EDRace race = EDRace.FromString(request);
+                Guid raceId = Guid.NewGuid();
+                _races.Add(raceId, race);
+                race.StartRace(true);
+                WriteResponse(Context, raceId.ToString());
+            }
+            catch (Exception ex)
+            {
+                WriteResponse(Context,$"Error while initialising race: {ex.Message}");
+            }
+        }
+
+        private void GetRace(string request, HttpListenerContext Context)
+        {
+            Guid raceGuid = Guid.Empty;
+            Guid.TryParse(request, out raceGuid);
+            if (raceGuid != Guid.Empty && _races.ContainsKey(raceGuid))
+                WriteResponse(Context, _races[raceGuid].ToString());
+            else
+                WriteErrorResponse(Context.Response, HttpStatusCode.NotFound);
         }
 
         private void SendRaceStatus(HttpListenerContext Context)
@@ -209,19 +289,7 @@ namespace DataCollator
                 racersStatus.AppendLine(ex.ToString());
             }
 
-            try
-            {
-                byte[] buffer = System.Text.Encoding.UTF8.GetBytes(racersStatus.ToString());
-                Context.Response.ContentLength64 = buffer.Length;
-                Context.Response.StatusCode = (int)HttpStatusCode.OK;
-
-                using (Stream output = Context.Response.OutputStream)
-                    output.Write(buffer, 0, buffer.Length);
-                Context.Response.OutputStream.Flush();
-                Context.Response.KeepAlive = true;
-                Context.Response.Close();
-            }
-            catch { }
+            WriteResponse(Context, racersStatus.ToString());
         }
 
         private void SendStatus(HttpListenerContext Context)
@@ -249,7 +317,7 @@ namespace DataCollator
                     Log("All player status requested");
                     foreach (string id in _playerStatus.Keys)
                         status.AppendLine(_playerStatus[id].ToJson());
-                        
+
                 }
                 else if (_playerStatus.ContainsKey(clientId))
                 {
@@ -257,22 +325,14 @@ namespace DataCollator
                     status.AppendLine(_playerStatus[clientId].ToJson());
                 }
                 else
+                {
                     Log($"Status requested for invalid client: {clientId}");
+                    WriteErrorResponse(Context.Response, HttpStatusCode.NotFound);
+                    return;
+                }
             }
 
-            try
-            {
-                byte[] buffer = System.Text.Encoding.UTF8.GetBytes(status.ToString());
-                Context.Response.ContentLength64 = buffer.Length;
-                Context.Response.StatusCode = (int)HttpStatusCode.OK;
-
-                using (Stream output = Context.Response.OutputStream)
-                    output.Write(buffer, 0, buffer.Length);
-                Context.Response.OutputStream.Flush();
-                Context.Response.KeepAlive = true;
-                Context.Response.Close();
-            }
-            catch { }
+            WriteResponse(Context, status.ToString());
         }
 
         private void DetermineResponse(string Request, HttpListenerContext Context)
@@ -324,23 +384,10 @@ namespace DataCollator
                 Log($"{ClientId} - Sending notifications range {_clientNotificationPointer[ClientId]} to {newIndex}");
             }
             _clientNotificationPointer[ClientId] = newIndex; // Set the client index pointer
-            
+
 
             // Send the events to the response stream
-            try
-            {
-                byte[] buffer = System.Text.Encoding.UTF8.GetBytes(notifications);
-                Response.ContentLength64 = buffer.Length;
-                Response.StatusCode = (int)HttpStatusCode.OK;
-                using (Response.OutputStream)
-                {
-                    if (buffer.Length > 0)
-                        Response.OutputStream.Write(buffer, 0, buffer.Length);
-                    Response.OutputStream.Flush();
-                }
-                Response.Close();
-            }
-            catch { }            
+            WriteResponse(Response, notifications);
         }
 
         private void PruneClients()

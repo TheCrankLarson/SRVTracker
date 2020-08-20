@@ -33,6 +33,7 @@ namespace SRVTracker
         public static event EventHandler CommanderLocationChanged;
         public static EDLocation CurrentLocation { get; private set; } = null;
         public static int CurrentHeading { get; private set; } = -1;
+        FormRaceMonitor _formRaceMonitor = null;
 
         public FormTracker()
         {            
@@ -44,6 +45,7 @@ namespace SRVTracker
             _statusTimer = new System.Timers.Timer(250);
             _statusTimer.Elapsed += _statusTimer_Elapsed;
             this.Size = _configHidden;
+            checkBoxTrack.Checked = true;
         }
 
         private void _statusTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
@@ -656,8 +658,19 @@ namespace SRVTracker
 
         private void buttonRaceTracker_Click(object sender, EventArgs e)
         {
-            FormRaceMonitor formRaceMonitor = new FormRaceMonitor();
-            formRaceMonitor.Show();
+            if (_formRaceMonitor != null)
+            {
+                try
+                {
+                    _formRaceMonitor.Show();
+                    _formRaceMonitor.Focus();
+                    return;
+                }
+                catch { }
+            }
+
+            _formRaceMonitor = new FormRaceMonitor();
+            _formRaceMonitor.Show();
         }
     }
 }
