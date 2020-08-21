@@ -339,14 +339,14 @@ namespace SRVTracker
                             // Move past anyone who is at a higher waypoint
                             while ((i < positions.Count) && _racersStatus[positions[i]].WaypointIndex < _racersStatus[racer].WaypointIndex && !_racersStatus[positions[i]].Eliminated)
                                 i++;
-                            if (i < positions.Count && _racersStatus[positions[i]].Eliminated)
+                            if ( (i < positions.Count) && _racersStatus[positions[i]].Eliminated && (i>0) )
                                 i--;
                             else
                             {
                                 // Now we check distances (as these positions are heading to the same waypoint)
                                 while ((i < positions.Count) && (_racersStatus[positions[i]].WaypointIndex == _racersStatus[racer].WaypointIndex) && (_racersStatus[positions[i]].DistanceToWaypoint < _racersStatus[racer].DistanceToWaypoint) && (!_racersStatus[positions[i]].Eliminated))
                                     i++;
-                                if (i < positions.Count && _racersStatus[positions[i]].Eliminated)
+                                if ( (i < positions.Count) && _racersStatus[positions[i]].Eliminated && (i>0) )
                                     i--;
                             }
                         }
@@ -384,7 +384,12 @@ namespace SRVTracker
                         else
                         {
                             if (checkBoxExportDistance.Checked && !_racersStatus[leaderBoard[i]].Eliminated)
-                                status.AppendLine($"{(_racersStatus[leaderBoard[i]].DistanceToWaypoint / 1000):F1}");
+                            {
+                                if ((_racersStatus[leaderBoard[i]].DistanceToWaypoint == double.MaxValue))
+                                    status.AppendLine("NA");
+                                else
+                                    status.AppendLine($"{(_racersStatus[leaderBoard[i]].DistanceToWaypoint / 1000):F1}");
+                            }
                             else
                                 status.AppendLine(_racersStatus[leaderBoard[i]].ToString());
                         }

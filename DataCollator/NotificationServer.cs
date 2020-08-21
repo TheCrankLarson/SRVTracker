@@ -105,9 +105,17 @@ namespace DataCollator
 
         private void UpdateCommanderStatus(string status)
         {
-            EDEvent updateEvent = EDEvent.FromJson(status);
-            if (String.IsNullOrEmpty(updateEvent.Commander))
-                return;
+            EDEvent updateEvent = null;
+            try
+            {
+                updateEvent = EDEvent.FromJson(status);
+                if (String.IsNullOrEmpty(updateEvent.Commander))
+                    return;
+            }
+            catch (Exception ex)
+            {
+                Log($"Error creating event: {ex.Message}");
+            }
 
             if (_races.Count > 0)
                 Task.Run(new Action(() =>

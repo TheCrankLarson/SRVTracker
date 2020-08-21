@@ -422,9 +422,11 @@ namespace SRVTracker
 
         private void UploadToServer(EDEvent edEvent)
         {
+            if (_udpClient == null)
+                CreateUdpClient();
             try
             {
-                string eventData = $"{textBoxClientId.Text}:{edEvent.ToJson()}";
+                string eventData = edEvent.ToJson();// $"{textBoxClientId.Text}:{edEvent.ToJson()}";
                 //if (checkBoxSendLocationOnly.Checked || String.IsNullOrEmpty(edEvent.RawData))
                 //    eventData = $"{textBoxClientId.Text},{edEvent.TrackingInfo}";
                 //else
@@ -514,24 +516,30 @@ namespace SRVTracker
             FormLocator.ServerAddress = textBoxUploadServer.Text;
         }
 
+        private void CreateUdpClient()
+        {
+            // Create the UDP client for sending tracking data
+            try
+            {
+                string serverUrl = (string)radioButtonUseDefaultServer.Tag;
+                if (radioButtonUseCustomServer.Checked)
+                    serverUrl = textBoxUploadServer.Text;
+                _udpClient = new UdpClient(serverUrl, 11938);
+            }
+            catch (Exception ex)
+            {
+                AddLog($"Error creating UDP client: {ex.Message}");
+                checkBoxUpload.Checked = false;
+            }
+        }
+
         private void checkBoxUpload_CheckedChanged(object sender, EventArgs e)
         {
             UpdateServerSettings();
             if (checkBoxUpload.Checked)
             {
                 // Create the UDP client for sending tracking data
-                try
-                {
-                    string serverUrl = (string)radioButtonUseDefaultServer.Tag;
-                    if (radioButtonUseCustomServer.Checked)
-                        serverUrl = textBoxUploadServer.Text;
-                    _udpClient = new UdpClient(serverUrl, 11938);
-                }
-                catch (Exception ex)
-                {
-                    AddLog($"Error creating UDP client: {ex.Message}");
-                    checkBoxUpload.Checked = false;
-                }
+                CreateUdpClient();
             }
             else  if (_udpClient != null)
             { 
