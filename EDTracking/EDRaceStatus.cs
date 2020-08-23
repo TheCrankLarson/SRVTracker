@@ -52,6 +52,7 @@ namespace EDTracking
         private double _nextLogDistanceToWaypoint = double.MaxValue;
         private EDLocation _speedCalculationLocation = null;
         private DateTime _speedCalculationTimeStamp = DateTime.UtcNow;
+        private double _lastSpeedInMs = 0;
 
         public EDRaceStatus(EDEvent baseEvent)
         {
@@ -160,6 +161,17 @@ namespace EDTracking
             return status.ToString();
         }
 
+        public String DistanceToWaypointDisplay
+        {
+            get
+            {
+                if (Eliminated)
+                    return "NA";
+                if (Finished) return "0";
+                return $"{(DistanceToWaypoint/1000):F1}";
+            }
+        }
+
         public void StartRace()
         {
             Started = true;
@@ -186,20 +198,28 @@ namespace EDTracking
 
             if (updateEvent.HasCoordinates())
             {
-                TimeSpan timeBetweenLocations = updateEvent.TimeStamp.Subtract(_speedCalculationTimeStamp);
-                if (timeBetweenLocations.TotalMilliseconds > 750)
+                if (!Eliminated && !Finished)
                 {
-                    // We take a speed calculation once every 750 milliseconds
-                    _speedCalculationTimeStamp = updateEvent.TimeStamp;
-                    if (_speedCalculationLocation!=null)
+                    TimeSpan timeBetweenLocations = updateEvent.TimeStamp.Subtract(_speedCalculationTimeStamp);
+                    if (timeBetweenLocations.TotalMilliseconds > 750)
                     {
-                        double distanceBetweenLocations = EDLocation.DistanceBetween(_speedCalculationLocation, updateEvent.Location());
-                        SpeedInMS = distanceBetweenLocations * (1000 / timeBetweenLocations.TotalMilliseconds);
-                        if (SpeedInMS > MaxSpeedInMS)
-                            MaxSpeedInMS = SpeedInMS;
+                        // We take a speed calculation once every 750 milliseconds
+                        _speedCalculationTimeStamp = updateEvent.TimeStamp;
+                        if (_speedCalculationLocation != null)
+                        {
+                            double distanceBetweenLocations = EDLocation.DistanceBetween(_speedCalculationLocation, updateEvent.Location());
+                            SpeedInMS = distanceBetweenLocations * (1000 / timeBetweenLocations.TotalMilliseconds);
+                        }
+                        _speedCalculationLocation = updateEvent.Location();
+                        if ((_lastSpeedInMs - SpeedInMS) > 20)  // If the speed increases by more than 20m/s in a short time, this is impossible and due to respawn
+                            SpeedInMS = 0;
                     }
-                    _speedCalculationLocation = updateEvent.Location();
+                    if (SpeedInMS > MaxSpeedInMS)
+                        MaxSpeedInMS = SpeedInMS;
                 }
+                else
+                    SpeedInMS = 0;
+                _lastSpeedInMs = SpeedInMS;
                 Location = updateEvent.Location();
                 if (WaypointIndex > 0)
                 {
@@ -235,6 +255,7 @@ namespace EDTracking
                 {
                     Eliminated = true;
                     DistanceToWaypoint = double.MaxValue;
+                    _speedCalculationLocation = null; // If this occurred due to commander exploding, we need to clear the location otherwise we'll get a massive reading on respawn
                 }
             }
 

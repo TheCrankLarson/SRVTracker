@@ -406,11 +406,7 @@ namespace SRVTracker
             {
                 // This is very inefficient, save to file should only be enabled for debugging
                 // I may revisit this at some point if more features are added for local tracking
-                string eventData = eventData = $"{textBoxClientId.Text},{edEvent.ToJson()}";
-                /*if (checkBoxSendLocationOnly.Checked || String.IsNullOrEmpty(edEvent.RawData))
-                    eventData = $"{textBoxClientId.Text},{edEvent.ToJson()}";
-                else
-                    eventData = $"{textBoxClientId.Text}:{edEvent.RawData}";*/
+                string eventData = eventData = edEvent.ToJson();
                 System.IO.File.AppendAllText(textBoxSaveFile.Text, eventData);
             }
             catch (Exception ex)
@@ -426,11 +422,7 @@ namespace SRVTracker
                 CreateUdpClient();
             try
             {
-                string eventData = edEvent.ToJson();// $"{textBoxClientId.Text}:{edEvent.ToJson()}";
-                //if (checkBoxSendLocationOnly.Checked || String.IsNullOrEmpty(edEvent.RawData))
-                //    eventData = $"{textBoxClientId.Text},{edEvent.TrackingInfo}";
-                //else
-                //    eventData = $"{textBoxClientId.Text}:{edEvent.RawData}";
+                string eventData = edEvent.ToJson();
                 Byte[] sendBytes = Encoding.UTF8.GetBytes(eventData);
                 try
                 {

@@ -115,6 +115,7 @@ namespace DataCollator
             catch (Exception ex)
             {
                 Log($"Error creating event: {ex.Message}");
+                return;
             }
 
             if (_races.Count > 0)
@@ -221,7 +222,7 @@ namespace DataCollator
                         DetermineResponse(sRequest, context);
                     });
                 Task.Run(action);
-                _Listener.BeginGetContext(new AsyncCallback(ListenerCallback), _Listener);               
+                _Listener.BeginGetContext(new AsyncCallback(ListenerCallback), _Listener);
             }
             catch { }
         }

@@ -53,6 +53,7 @@
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>packages\System.Runtime.CompilerServices.Unsafe.4.7.1\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
+    <Reference Include="System.Security" />
     <Reference Include="System.Text.Encodings.Web, Version=4.0.5.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\System.Text.Encodings.Web.4.7.1\lib\net461\System.Text.Encodings.Web.dll</HintPath>
     </Reference>
@@ -86,6 +87,7 @@
     <Compile Include="FormAddLocation.Designer.cs">
       <DependentUpon>FormAddLocation.cs</DependentUpon>
     </Compile>
+    <Compile Include="ConfigSaverClass.cs" />
     <Compile Include="FormFirstRun.cs">
       <SubType>Form</SubType>
     </Compile>
