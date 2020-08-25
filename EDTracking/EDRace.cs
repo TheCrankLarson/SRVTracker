@@ -98,19 +98,21 @@ namespace EDTracking
 
         private List<string> RacePositions()
         {
-            if (_statuses is null)
-            {
-                return Contestants;
-            }
-
             List<string> positions = new List<string>();
+            if (_statuses == null)
+            {
+                if (Contestants.Count > 0)
+                    return Contestants;
+                return positions;
+            }               
+
             int finishedIndex = -1;
             foreach (string racer in _statuses.Keys)
             {
                 if (_statuses[racer].Finished)
                 {
                     // If the racers are finished, then their position depends upon their time
-                    if (finishedIndex < 0)
+                    if (finishedIndex<0)
                     {
                         // This is the first finisher we have, so add to top of list
                         if (positions.Count == 0)
@@ -144,15 +146,22 @@ namespace EDTracking
                         positions.Add(racer);
                     else
                     {
-                        int i = finishedIndex + 1;
+                        int i = finishedIndex+1;
                         if (i < positions.Count)
                         {
                             // Move past anyone who is at a higher waypoint
-                            while ((i < positions.Count) && _statuses[positions[i]].WaypointIndex < _statuses[racer].WaypointIndex && (!_statuses[positions[i]].Eliminated))
+                            while ((i < positions.Count) && _statuses[positions[i]].WaypointIndex < _statuses[racer].WaypointIndex && !_statuses[positions[i]].Eliminated)
                                 i++;
-                            // Now we check distances (as these positions are heading to the same waypoint)
-                            while ((i < positions.Count) && (_statuses[positions[i]].WaypointIndex == _statuses[racer].WaypointIndex) && (_statuses[positions[i]].DistanceToWaypoint < _statuses[racer].DistanceToWaypoint) && (!_statuses[positions[i]].Eliminated))
-                                i++;
+                            if ( (i < positions.Count) && _statuses[positions[i]].Eliminated && (i>0) )
+                                i--;
+                            else
+                            {
+                                // Now we check distances (as these positions are heading to the same waypoint)
+                                while ((i < positions.Count) && (_statuses[positions[i]].WaypointIndex == _statuses[racer].WaypointIndex) && (_statuses[positions[i]].DistanceToWaypoint < _statuses[racer].DistanceToWaypoint) && (!_statuses[positions[i]].Eliminated))
+                                    i++;
+                                if ( (i < positions.Count) && _statuses[positions[i]].Eliminated && (i>0) )
+                                    i--;
+                            }
                         }
                         if (i < positions.Count)
                             positions.Insert(i, racer);
@@ -163,6 +172,7 @@ namespace EDTracking
             }
             return positions;
         }
+
 
         public void UpdateStatus(EDEvent edEvent)
         {

@@ -19,12 +19,14 @@ namespace SRVTracker
     {
         private static Bitmap[] _arrowAtAngle = new Bitmap[359];
         int _lastTurnDirection = -1;
-
+        string _lastSpeed = "";
 
         public LocatorHUD()
         {
             InitializeComponent();
             _arrowAtAngle[0] = (Bitmap)pictureBoxDirection.Image.Clone();
+            labelSpeedInMS.Visible = false;
+            labelMs.Visible = false;
         }
 
         private void LocatorHUD_Load(object sender, EventArgs e)
@@ -99,6 +101,32 @@ namespace SRVTracker
             Action action = new Action(() => { labelTarget.Text = target; });
             if (labelTarget.InvokeRequired)
                 labelTarget.Invoke(action);
+            else
+                action();
+        }
+
+        public void SetSpeed(double speedInMs)
+        {
+            string speed = speedInMs.ToString("F1");
+            if (speed.Equals(_lastSpeed))
+                return;
+
+            Action action = new Action(() => { labelSpeedInMS.Text = speed; });
+            if (labelSpeedInMS.InvokeRequired)
+                labelSpeedInMS.Invoke(action);
+            else
+                action();
+
+            if (labelSpeedInMS.Visible)
+                return;
+
+            action = new Action(() =>
+            {
+                labelSpeedInMS.Visible = true;
+                labelMs.Visible = true;
+            });
+            if (labelSpeedInMS.InvokeRequired)
+                labelSpeedInMS.Invoke(action);
             else
                 action();
         }

@@ -33,7 +33,13 @@ namespace SRVTracker
         public static event EventHandler CommanderLocationChanged;
         public static EDLocation CurrentLocation { get; private set; } = null;
         public static int CurrentHeading { get; private set; } = -1;
+        public static double SpeedInMS { get; internal set; } = 0;
         FormRaceMonitor _formRaceMonitor = null;
+
+        // Keep track of ground speed (E: D shows speed you are travelling in the direction you are facing, which is not ground speed)
+        private EDLocation _speedCalculationLocation = null;
+        private DateTime _speedCalculationTimeStamp = DateTime.UtcNow;
+        private double _lastSpeedInMs = 0;
 
         public FormTracker()
         {            
@@ -333,7 +339,7 @@ namespace SRVTracker
             if (_formFlagsWatcher != null)
                 _formFlagsWatcher.UpdateFlags(edEvent.Flags);
 
-            if (edEvent.PlanetRadius > 0) 
+            if (edEvent.PlanetRadius > 0)
                 if (FormLocator.PlanetaryRadius != edEvent.PlanetRadius)
                     FormLocator.PlanetaryRadius = edEvent.PlanetRadius;
 
@@ -351,6 +357,26 @@ namespace SRVTracker
 
             if (edEvent.HasCoordinates())
             {
+                TimeSpan timeBetweenLocations = edEvent.TimeStamp.Subtract(_speedCalculationTimeStamp);
+                if (timeBetweenLocations.TotalMilliseconds > 750)
+                {
+                    // We take a speed calculation once every 750 milliseconds
+                    _speedCalculationTimeStamp = edEvent.TimeStamp;
+                    if (_speedCalculationLocation != null)
+                    {
+                        double distanceBetweenLocations = EDLocation.DistanceBetween(_speedCalculationLocation, edEvent.Location());
+                        SpeedInMS = distanceBetweenLocations * (1000 / timeBetweenLocations.TotalMilliseconds);
+                    }
+                    _speedCalculationLocation = edEvent.Location();
+                    if ((SpeedInMS - _lastSpeedInMs) > 20)
+                    {
+                        // If the speed increases by more than 20m/s in a short time (i.e. less than a second!), this is impossible and due to respawn
+                        SpeedInMS = 0;
+                        _speedCalculationLocation = null;
+                    }
+                }
+                _lastSpeedInMs = SpeedInMS;
+        
                 CurrentLocation = edEvent.Location();
                 CommanderLocationChanged?.Invoke(null, null);
                 CurrentHeading = edEvent.Heading;

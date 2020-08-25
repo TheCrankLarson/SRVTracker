@@ -33,6 +33,8 @@
             this.labelBearing = new System.Windows.Forms.Label();
             this.labelDistance = new System.Windows.Forms.Label();
             this.pictureBoxDirection = new System.Windows.Forms.PictureBox();
+            this.labelSpeedInMS = new System.Windows.Forms.Label();
+            this.labelMs = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxDirection)).BeginInit();
             this.SuspendLayout();
             // 
@@ -82,11 +84,32 @@
             // 
             this.pictureBoxDirection.Image = global::SRVTracker.Properties.Resources.arrow;
             this.pictureBoxDirection.InitialImage = null;
-            this.pictureBoxDirection.Location = new System.Drawing.Point(188, 0);
+            this.pictureBoxDirection.Location = new System.Drawing.Point(198, 0);
             this.pictureBoxDirection.Name = "pictureBoxDirection";
             this.pictureBoxDirection.Size = new System.Drawing.Size(60, 60);
             this.pictureBoxDirection.TabIndex = 4;
             this.pictureBoxDirection.TabStop = false;
+            // 
+            // labelSpeedInMS
+            // 
+            this.labelSpeedInMS.AutoSize = true;
+            this.labelSpeedInMS.ForeColor = System.Drawing.Color.Yellow;
+            this.labelSpeedInMS.Location = new System.Drawing.Point(144, 0);
+            this.labelSpeedInMS.Name = "labelSpeedInMS";
+            this.labelSpeedInMS.Size = new System.Drawing.Size(34, 13);
+            this.labelSpeedInMS.TabIndex = 5;
+            this.labelSpeedInMS.Text = "999.9";
+            this.labelSpeedInMS.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // labelMs
+            // 
+            this.labelMs.AutoSize = true;
+            this.labelMs.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.labelMs.Location = new System.Drawing.Point(175, 0);
+            this.labelMs.Name = "labelMs";
+            this.labelMs.Size = new System.Drawing.Size(25, 13);
+            this.labelMs.TabIndex = 6;
+            this.labelMs.Text = "m/s";
             // 
             // LocatorHUD
             // 
@@ -94,6 +117,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
             this.Controls.Add(this.pictureBoxDirection);
+            this.Controls.Add(this.labelSpeedInMS);
+            this.Controls.Add(this.labelMs);
             this.Controls.Add(this.labelDistance);
             this.Controls.Add(this.labelBearing);
             this.Controls.Add(this.labelTarget);
@@ -114,5 +139,7 @@
         private System.Windows.Forms.Label labelBearing;
         private System.Windows.Forms.Label labelDistance;
         private System.Windows.Forms.PictureBox pictureBoxDirection;
+        private System.Windows.Forms.Label labelSpeedInMS;
+        private System.Windows.Forms.Label labelMs;
     }
 }

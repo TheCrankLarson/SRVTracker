@@ -26,10 +26,10 @@ namespace SRVTracker
         private string _lastStatusExport = "kpokdpokwqpkdpqw";
         private string _lastSpeedExport = "ljoijgojerjgor";
         private string _lastTrackingTarget = "ojoijoje";
+        private string _lastRacePositions = "fsdgfrg";
         private string _saveFilename = "";
         private bool _generatingLeaderboard = false;
         private object _lockListView = new object();
-        private string _lastRacePositions = "";
         private ConfigSaverClass _formConfig = null;
 
         public FormRaceMonitor()
@@ -374,6 +374,10 @@ namespace SRVTracker
             if (leaderBoard==null)
                 leaderBoard = RacePositions();
 
+            int maxLength = 0;
+            if (checkBoxPaddingCharacters.Checked)
+                maxLength = (int)(numericUpDownStatusPadding.Value / 2);
+
             // We have the leaderboard, so now we retrieve the status for each racer in order
             if (checkBoxExportStatus.Checked)
             {
@@ -394,7 +398,18 @@ namespace SRVTracker
                                     status.AppendLine($"{_racersStatus[leaderBoard[i]].DistanceToWaypointDisplay}");
                             }
                             else
-                                status.AppendLine(_racersStatus[leaderBoard[i]].ToString());
+                            {
+                                if (checkBoxPaddingCharacters.Checked)
+                                {
+                                    // We limit the length of the status to half the padding length
+                                    string s = _racersStatus[leaderBoard[i]].ToString();
+                                    if (s.Length > maxLength)
+                                        s = s.Substring(0, maxLength);
+                                    status.AppendLine(s);
+                                }
+                                else
+                                    status.AppendLine(_racersStatus[leaderBoard[i]].ToString());
+                            }
                         }
                     }
                     else
@@ -436,9 +451,21 @@ namespace SRVTracker
 
             if (checkBoxExportLeaderboard.Checked)
             {
-                StringBuilder leaderBoardExport = new StringBuilder(String.Join(Environment.NewLine, leaderBoard));
+                StringBuilder leaderBoardExport = new StringBuilder(); ;
                 if (checkBoxPaddingCharacters.Checked)
-                    leaderBoardExport.Append(new string(textBoxPaddingChar.Text[0], (int)numericUpDownLeaderboardPadding.Value));
+                {
+                    maxLength = (int)(numericUpDownLeaderboardPadding.Value / 2);
+                    for (int i = 0; i < leaderBoard.Count; i++)
+                        if (leaderBoard[i].Length > maxLength)
+                            leaderBoardExport.AppendLine(leaderBoard[i].Substring(0, maxLength));
+                        else
+                            leaderBoardExport.AppendLine(leaderBoard[i]);
+                }
+                else
+                    leaderBoardExport.AppendLine(String.Join(Environment.NewLine, leaderBoard));
+
+                if (checkBoxPaddingCharacters.Checked)
+                    leaderBoardExport.AppendLine(new string(textBoxPaddingChar.Text[0], (int)numericUpDownLeaderboardPadding.Value));
                 if (!_lastLeaderboardExport.Equals(leaderBoardExport.ToString()))
                 { 
                     try
@@ -612,6 +639,7 @@ namespace SRVTracker
                         _saveFilename = openFileDialog.FileName;
                         textBoxRaceName.Text = _race.Name;
                         DisplayRoute();
+                        checkBoxAutoAddCommanders.Checked = true;
                     }
                     catch { }
                 }
@@ -739,14 +767,17 @@ namespace SRVTracker
             Font font = e.Font;
             e.Graphics.FillRectangle(new SolidBrush(((System.Windows.Forms.ListBox)sender).BackColor), e.Bounds);
 
-            if (_nextWaypoint != null)
-                if (_nextWaypoint.Name == ((System.Windows.Forms.ListBox)sender).Items[e.Index].ToString())
-                {
-                    font = new Font(e.Font, FontStyle.Bold);
-                    brush = Brushes.LimeGreen;
-                }
+            if (e.Index > -1)
+            {
+                if (_nextWaypoint != null)
+                    if (_nextWaypoint.Name == ((System.Windows.Forms.ListBox)sender).Items[e.Index].ToString())
+                    {
+                        font = new Font(e.Font, FontStyle.Bold);
+                        brush = Brushes.LimeGreen;
+                    }
 
-            e.Graphics.DrawString(((System.Windows.Forms.ListBox)sender).Items[e.Index].ToString(), font, brush, e.Bounds, StringFormat.GenericDefault);
+                e.Graphics.DrawString(((System.Windows.Forms.ListBox)sender).Items[e.Index].ToString(), font, brush, e.Bounds, StringFormat.GenericDefault);
+            }
             e.DrawFocusRectangle();
         }
 

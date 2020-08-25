@@ -31,6 +31,7 @@ namespace DataCollator
         private int _pruneCounter = 0;
         private FileStream _logStream = null;
         private Dictionary<Guid, EDRace> _races;
+        private DateTime _lastStaleDataCheck = DateTime.Now;
 
         public NotificationServer(string ListenURL, bool EnableDebug = false)
         {
@@ -299,6 +300,8 @@ namespace DataCollator
             }
 
             WriteResponse(Context, racersStatus.ToString());
+            if (DateTime.Now.Subtract(_lastStaleDataCheck).TotalMinutes > 120)
+                ClearStaleData();
         }
 
         private void SendStatus(HttpListenerContext Context)
@@ -342,6 +345,8 @@ namespace DataCollator
             }
 
             WriteResponse(Context, status.ToString());
+            if (DateTime.Now.Subtract(_lastStaleDataCheck).TotalMinutes > 120)
+                ClearStaleData();
         }
 
         private void DetermineResponse(string Request, HttpListenerContext Context)
@@ -469,6 +474,23 @@ namespace DataCollator
                 }
             }
             catch { }
+        }
+
+        private void ClearStaleData()
+        {
+            // We want to remove tracking information if we haven't received an update from the client for 120 minutes
+
+            if (_playerStatus != null)
+                foreach (string commander in _playerStatus.Keys)
+                    if (DateTime.Now.Subtract(_playerStatus[commander].TimeStamp).TotalMinutes > 120)
+                        _playerStatus.Remove(commander);
+
+            if (_commanderStatus != null)
+                foreach (string commander in _commanderStatus.Keys)
+                    if (DateTime.Now.Subtract(_commanderStatus[commander].TimeStamp).TotalMinutes > 120)
+                        _commanderStatus.Remove(commander);
+
+            _lastStaleDataCheck = DateTime.Now;
         }
 
         private bool isValidClientRegistration(string registrationData, out string responseText)

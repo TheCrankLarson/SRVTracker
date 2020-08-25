@@ -211,14 +211,19 @@ namespace EDTracking
                             SpeedInMS = distanceBetweenLocations * (1000 / timeBetweenLocations.TotalMilliseconds);
                         }
                         _speedCalculationLocation = updateEvent.Location();
-                        if ((_lastSpeedInMs - SpeedInMS) > 20)  // If the speed increases by more than 20m/s in a short time, this is impossible and due to respawn
+                        if ((SpeedInMS - _lastSpeedInMs) > 20)
+                        {
+                            // If the speed increases by more than 20m/s in a short time (i.e. less than a second!), this is impossible and due to respawn
                             SpeedInMS = 0;
+                            _speedCalculationLocation = null;
+                        }
                     }
                     if (SpeedInMS > MaxSpeedInMS)
                         MaxSpeedInMS = SpeedInMS;
                 }
                 else
                     SpeedInMS = 0;
+
                 _lastSpeedInMs = SpeedInMS;
                 Location = updateEvent.Location();
                 if (WaypointIndex > 0)
