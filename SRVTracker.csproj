@@ -88,6 +88,12 @@
       <DependentUpon>FormAddLocation.cs</DependentUpon>
     </Compile>
     <Compile Include="ConfigSaverClass.cs" />
+    <Compile Include="FormDrone.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormDrone.Designer.cs">
+      <DependentUpon>FormDrone.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormFirstRun.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -170,6 +176,9 @@
     </Compile>
     <EmbeddedResource Include="FormAddLocation.resx">
       <DependentUpon>FormAddLocation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormDrone.resx">
+      <DependentUpon>FormDrone.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormFirstRun.resx">
       <DependentUpon>FormFirstRun.cs</DependentUpon>

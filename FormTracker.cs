@@ -215,7 +215,8 @@ namespace SRVTracker
 
             try
             {
-                UpdateUI(new EDEvent(status,textBoxClientId.Text));
+                // E: D status.json file does not include milliseconds in the timestamp.  We want milliseconds, so we add our own timestamp
+                UpdateUI(new EDEvent(status,textBoxClientId.Text, DateTime.Now));
             }
             catch { }
 
@@ -237,7 +238,10 @@ namespace SRVTracker
 
         private void buttonTest_Click(object sender, EventArgs e)
         {
-            SendTestEvents();
+            FormDrone formDrone = new FormDrone();
+            formDrone.Show();
+//            SendTestEvents();
+
             //TestVROverlay();
             //return;
             //if (_formFlagsWatcher != null)

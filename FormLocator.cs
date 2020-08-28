@@ -136,7 +136,7 @@ namespace SRVTracker
             get { 
                 if (_closestCommander!=null)
                     return _closestCommander.Commander;
-                return null;
+                return "";
             }
         }
 

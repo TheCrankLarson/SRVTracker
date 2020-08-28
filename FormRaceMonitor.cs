@@ -55,11 +55,15 @@ namespace SRVTracker
             _formConfig.ExcludedControls.Add(textBoxRaceName);
             _formConfig.ExcludedControls.Add(comboBoxAddCommander);
             _formConfig.ExcludedControls.Add(textBoxRouteName);
+            _formConfig.ExcludedControls.Add(textBoxSystem);
+            _formConfig.ExcludedControls.Add(textBoxPlanet);
             _formConfig.SaveEnabled = true;
             _formConfig.StoreLabelInfo = false;
             _formConfig.StoreButtonInfo = false;
             
             ConfigSaverClass.ApplyConfiguration();
+            textBoxNotableEventsFile.Enabled = checkBoxExportNotableEvents.Checked;
+            numericUpDownNotableEventDuration.Enabled = checkBoxExportNotableEvents.Checked;
         }
 
         private void EDStatus_StatusChanged(object sender, string commander, string status)
@@ -185,7 +189,7 @@ namespace SRVTracker
         {
             Action action = new Action(() =>
                 {
-                    if (_racersStatus.ContainsKey(commander))
+                    if (_racersStatus != null && _racersStatus.ContainsKey(commander))
                         _racers[commander].SubItems[2].Text = $"{_racersStatus[commander].SpeedInMS:F0}m/s {_racersStatus[commander].ToString()}";
                     else
                         _racers[commander].SubItems[2].Text = status;
@@ -240,10 +244,6 @@ namespace SRVTracker
                             if (!_racers[positions[i]].SubItems[0].Text.Equals((i + 1).ToString()))
                                 _racers[positions[i]].SubItems[0].Text = (i + 1).ToString();
                             listViewParticipants.Items.Add(_racers[positions[i]]);
-                            /*if (listViewParticipants.Items[i].SubItems[1].Text!=_racers[positions[i]].SubItems[1].Text)
-                                listViewParticipants.Items[i] = _racers[positions[i]];
-                            if (!_racers[positions[i]].SubItems[0].Text.Equals((i + 1).ToString()))
-                                _racers[positions[i]].SubItems[0].Text = (i + 1).ToString();*/
                         }
                         listViewParticipants.EndUpdate();
                     }
@@ -374,10 +374,6 @@ namespace SRVTracker
             if (leaderBoard==null)
                 leaderBoard = RacePositions();
 
-            int maxLength = 0;
-            if (checkBoxPaddingCharacters.Checked)
-                maxLength = (int)(numericUpDownStatusPadding.Value / 2);
-
             // We have the leaderboard, so now we retrieve the status for each racer in order
             if (checkBoxExportStatus.Checked)
             {
@@ -387,7 +383,8 @@ namespace SRVTracker
                     if (_racersStatus != null)
                     {
                         if (_racersStatus[leaderBoard[i]].Finished)
-                            status.AppendLine($"({_racersStatus[leaderBoard[i]].FinishTime.Subtract(EDRaceStatus.StartTime):hh\\:mm\\:ss})");
+                            status.AppendLine(EDRaceStatus.StatusMessages["Completed"]);
+                        //status.AppendLine($"({_racersStatus[leaderBoard[i]].FinishTime.Subtract(EDRaceStatus.StartTime):hh\\:mm\\:ss})");
                         else
                         {
                             if (checkBoxExportDistance.Checked && !_racersStatus[leaderBoard[i]].Eliminated)
@@ -399,26 +396,19 @@ namespace SRVTracker
                             }
                             else
                             {
-                                if (checkBoxPaddingCharacters.Checked)
-                                {
-                                    // We limit the length of the status to half the padding length
-                                    string s = _racersStatus[leaderBoard[i]].ToString();
-                                    if (s.Length > maxLength)
-                                        s = s.Substring(0, maxLength);
-                                    status.AppendLine(s);
-                                }
-                                else
-                                    status.AppendLine(_racersStatus[leaderBoard[i]].ToString());
+                                string s = _racersStatus[leaderBoard[i]].ToString();
+                                if (s.Length > numericUpDownStatusMaxLength.Value)
+                                    s = s.Substring(0, (int)numericUpDownStatusMaxLength.Value);
+                                status.AppendLine(s);
                             }
                         }
                     }
                     else
                         status.AppendLine(EDRaceStatus.StatusMessages["Ready"]);
                 }
+
                 if (!_lastStatusExport.Equals(status.ToString()))
                 {
-                    if (checkBoxPaddingCharacters.Checked)
-                        status.AppendLine(new string(textBoxPaddingChar.Text[0], (int)numericUpDownStatusPadding.Value));
                     try
                     {
                         File.WriteAllText(textBoxExportStatusFile.Text, status.ToString());
@@ -430,20 +420,18 @@ namespace SRVTracker
 
             if (checkBoxExportTarget.Checked)
             {
-                StringBuilder trackingTarget = new StringBuilder();
+                string trackingTarget;
                 if (checkBoxClosestPlayerTarget.Checked)
-                    trackingTarget.Append(FormLocator.ClosestCommander);
+                    trackingTarget=FormLocator.ClosestCommander;
                 else
-                    trackingTarget.Append(FormLocator.GetLocator().TrackingTarget);
+                    trackingTarget=FormLocator.GetLocator().TrackingTarget;
 
-                if (checkBoxPaddingCharacters.Checked)
-                    trackingTarget.AppendLine(new string(textBoxPaddingChar.Text[0], (int)numericUpDownTargetPadding.Value));
-                if (!_lastTrackingTarget.Equals(trackingTarget.ToString()))
+                if (!_lastTrackingTarget.Equals(trackingTarget))
                 {
                     try
                     {
-                        File.WriteAllText(textBoxExportTargetFile.Text, trackingTarget.ToString());
-                        _lastTrackingTarget = trackingTarget.ToString();
+                        File.WriteAllText(textBoxExportTargetFile.Text, trackingTarget);
+                        _lastTrackingTarget = trackingTarget;
                     }
                     catch { }
                 }
@@ -452,20 +440,12 @@ namespace SRVTracker
             if (checkBoxExportLeaderboard.Checked)
             {
                 StringBuilder leaderBoardExport = new StringBuilder(); ;
-                if (checkBoxPaddingCharacters.Checked)
-                {
-                    maxLength = (int)(numericUpDownLeaderboardPadding.Value / 2);
-                    for (int i = 0; i < leaderBoard.Count; i++)
-                        if (leaderBoard[i].Length > maxLength)
-                            leaderBoardExport.AppendLine(leaderBoard[i].Substring(0, maxLength));
-                        else
-                            leaderBoardExport.AppendLine(leaderBoard[i]);
-                }
-                else
-                    leaderBoardExport.AppendLine(String.Join(Environment.NewLine, leaderBoard));
+                for (int i = 0; i < leaderBoard.Count; i++)
+                    if (leaderBoard[i].Length > numericUpDownLeaderboardMaxLength.Value)
+                        leaderBoardExport.AppendLine(leaderBoard[i].Substring(0, (int)numericUpDownLeaderboardMaxLength.Value));
+                    else
+                        leaderBoardExport.AppendLine(leaderBoard[i]);
 
-                if (checkBoxPaddingCharacters.Checked)
-                    leaderBoardExport.AppendLine(new string(textBoxPaddingChar.Text[0], (int)numericUpDownLeaderboardPadding.Value));
                 if (!_lastLeaderboardExport.Equals(leaderBoardExport.ToString()))
                 { 
                     try
@@ -494,7 +474,7 @@ namespace SRVTracker
                                 speeds.AppendLine();
                             }
                             else
-                                speeds.AppendLine("0");                            
+                                speeds.AppendLine("");                            
                         }
                         else
                             speeds.AppendLine();
@@ -503,8 +483,6 @@ namespace SRVTracker
 
                 if (!_lastSpeedExport.Equals(speeds.ToString()))
                 {
-                    if (checkBoxPaddingCharacters.Checked)
-                        speeds.AppendLine(new string(textBoxPaddingChar.Text[0], (int)numericUpDownSpeedPadding.Value));
                     try
                     {
                         File.WriteAllText(textBoxExportSpeedFile.Text, speeds.ToString());
@@ -745,6 +723,11 @@ namespace SRVTracker
             buttonStopRace.Enabled = true;
             buttonRaceHistory.Enabled = true;
             EDRaceStatus.Started = true;
+            if (checkBoxExportNotableEvents.Checked)
+            {
+                EDRaceStatus.notableEvents = new NotableEvents(textBoxNotableEventsFile.Text);
+                EDRaceStatus.notableEvents.UpdateInterval = (int)numericUpDownNotableEventDuration.Value;
+            }
         }
 
         private void buttonStopRace_Click(object sender, EventArgs e)
@@ -846,60 +829,35 @@ namespace SRVTracker
                     buttonSaveRace.Enabled = true;                   
             }
 
-            if (!checkBoxPaddingCharacters.Checked)
-            {
-                if (numericUpDownLeaderboardPadding.Enabled)
-                        numericUpDownLeaderboardPadding.Enabled = false;
-                if (numericUpDownStatusPadding.Enabled)
-                        numericUpDownStatusPadding.Enabled = false;
-                if (numericUpDownTargetPadding.Enabled)
-                        numericUpDownTargetPadding.Enabled = false;
-                if (numericUpDownSpeedPadding.Enabled)
-                    numericUpDownSpeedPadding.Enabled = false;
-                textBoxPaddingChar.Enabled = false;
-            }
-            else
-            {
-                if (!numericUpDownLeaderboardPadding.Enabled)
-                    if (checkBoxExportLeaderboard.Checked)
-                        numericUpDownLeaderboardPadding.Enabled = true;
-                if (!numericUpDownStatusPadding.Enabled)
-                    if (checkBoxExportStatus.Checked)
-                        numericUpDownStatusPadding.Enabled = true;
-                if (!numericUpDownSpeedPadding.Enabled)
-                    if (checkBoxExportSpeed.Checked)
-                        numericUpDownSpeedPadding.Enabled = true;
-                if (!numericUpDownTargetPadding.Enabled)
-                    if (checkBoxExportTarget.Checked)
-                        numericUpDownTargetPadding.Enabled = true;
-                textBoxPaddingChar.Enabled = true;
-                
-            }
-
             if (checkBoxExportLeaderboard.Checked)
             {
                 if (!textBoxExportLeaderboardFile.Enabled)
                     textBoxExportLeaderboardFile.Enabled = true;
+                if (!numericUpDownLeaderboardMaxLength.Enabled)
+                    numericUpDownLeaderboardMaxLength.Enabled = true;
             }
             else
             {
                 if (textBoxExportLeaderboardFile.Enabled)
                     textBoxExportLeaderboardFile.Enabled = false;
-                if (numericUpDownLeaderboardPadding.Enabled)
-                    numericUpDownLeaderboardPadding.Enabled = false;
+                if (numericUpDownLeaderboardMaxLength.Enabled)
+                    numericUpDownLeaderboardMaxLength.Enabled = false;
             }
 
             if (checkBoxExportStatus.Checked)
             {
                 if (!textBoxExportStatusFile.Enabled)
                     textBoxExportStatusFile.Enabled = true;
+                if (!numericUpDownStatusMaxLength.Enabled)
+                    numericUpDownStatusMaxLength.Enabled = true;
+
             }
             else
             {
                 if (textBoxExportStatusFile.Enabled)
                     textBoxExportStatusFile.Enabled = false;
-                if (numericUpDownStatusPadding.Enabled)
-                    numericUpDownStatusPadding.Enabled = false;
+                if (numericUpDownStatusMaxLength.Enabled)
+                    numericUpDownStatusMaxLength.Enabled = false;
             }
 
             if (checkBoxExportSpeed.Checked)
@@ -911,8 +869,6 @@ namespace SRVTracker
             {
                 if (textBoxExportSpeedFile.Enabled)
                     textBoxExportSpeedFile.Enabled = false;
-                if (numericUpDownSpeedPadding.Enabled)
-                    numericUpDownSpeedPadding.Enabled = false;
             }
 
             if (checkBoxExportTarget.Checked)
@@ -924,8 +880,6 @@ namespace SRVTracker
             {
                 if (textBoxExportTargetFile.Enabled)
                     textBoxExportTargetFile.Enabled = false;
-                if (numericUpDownTargetPadding.Enabled)
-                    numericUpDownTargetPadding.Enabled = false;
             }
         }
 
@@ -970,6 +924,7 @@ namespace SRVTracker
             _lastStatusExport = "kpokdpokwqpkdpqw";
             _lastSpeedExport = "ljoijgojerjgor";
             _lastTrackingTarget = "ojoijoje";
+            
         }
 
         private void ShowHideStreamingOptions()
@@ -1016,7 +971,11 @@ namespace SRVTracker
             // Don't need to do anything here as this is built into the export
         }
 
-
+        private void checkBoxExportNotableEvents_CheckedChanged(object sender, EventArgs e)
+        {
+            textBoxNotableEventsFile.Enabled = checkBoxExportNotableEvents.Checked;
+            numericUpDownNotableEventDuration.Enabled = checkBoxExportNotableEvents.Checked;
+        }
     }
 
     class ListViewItemComparer : IComparer

@@ -46,7 +46,7 @@ namespace EDTracking
             return JsonSerializer.Serialize(this);
         }
 
-        public EDEvent(string statusJson, string commander)
+        public EDEvent(string statusJson, string commander, DateTime? timeStamp = null)
         {
             // Initialise from the ED JSON status file
 
@@ -55,7 +55,9 @@ namespace EDTracking
                 JsonElement root = jsonDoc.RootElement;
                 JsonElement property;
 
-                if (root.TryGetProperty("timestamp", out property))
+                if (timeStamp != null)
+                    TimeStamp = (DateTime)timeStamp;
+                else if (root.TryGetProperty("timestamp", out property))
                     TimeStamp = property.GetDateTime();
                 if (root.TryGetProperty("Flags", out property))
                     Flags = property.GetInt64();

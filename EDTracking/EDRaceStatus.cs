@@ -9,6 +9,7 @@ using System.ComponentModel.Design;
 using System.Runtime.InteropServices;
 using System.Text.Json;
 using System.Runtime.CompilerServices;
+using System.Web.Script.Serialization;
 
 namespace EDTracking
 {
@@ -39,6 +40,9 @@ namespace EDTracking
                     { "Eliminated", "Eliminated" },
                     { "Completed", "Completed" },
                     { "Pitstop", "Pitstop" },
+                    { "EliminatedNotification", " has been eliminated" },
+                    { "CompletedNotification", " has finished the race" },
+                    { "PitstopNotification", " is in the pits" },
                     { "Ready", "" }
                 };
 
@@ -53,6 +57,8 @@ namespace EDTracking
         private EDLocation _speedCalculationLocation = null;
         private DateTime _speedCalculationTimeStamp = DateTime.UtcNow;
         private double _lastSpeedInMs = 0;
+        private bool _gotFirstSpeedReading = false;
+        public static NotableEvents notableEvents = null;
 
         public EDRaceStatus(EDEvent baseEvent)
         {
@@ -161,11 +167,12 @@ namespace EDTracking
             return status.ToString();
         }
 
+        [ScriptIgnore]
         public String DistanceToWaypointDisplay
         {
             get
             {
-                if (Eliminated)
+                if (Eliminated || (DistanceToWaypoint == double.MaxValue))
                     return "NA";
                 if (Finished) return "0";
                 return $"{(DistanceToWaypoint/1000):F1}";
@@ -198,31 +205,29 @@ namespace EDTracking
 
             if (updateEvent.HasCoordinates())
             {
-                if (!Eliminated && !Finished)
+                TimeSpan timeBetweenLocations = updateEvent.TimeStamp.Subtract(_speedCalculationTimeStamp);
+                if (timeBetweenLocations.TotalMilliseconds > 750)
                 {
-                    TimeSpan timeBetweenLocations = updateEvent.TimeStamp.Subtract(_speedCalculationTimeStamp);
-                    if (timeBetweenLocations.TotalMilliseconds > 750)
+                    // We take a speed calculation once every 750 milliseconds
+                    // This will actually be once a second as the timestamp does not include milliseconds
+                    _speedCalculationTimeStamp = updateEvent.TimeStamp;
+                    if (_speedCalculationLocation != null)
                     {
-                        // We take a speed calculation once every 750 milliseconds
-                        _speedCalculationTimeStamp = updateEvent.TimeStamp;
-                        if (_speedCalculationLocation != null)
+                        double distanceBetweenLocations = EDLocation.DistanceBetween(_speedCalculationLocation, updateEvent.Location());
+                        SpeedInMS = distanceBetweenLocations * (1000 / timeBetweenLocations.TotalMilliseconds);
+                    }
+                    _speedCalculationLocation = updateEvent.Location();
+                    if (_gotFirstSpeedReading)
+                        if ((SpeedInMS - _lastSpeedInMs) > 200 && (timeBetweenLocations.TotalMilliseconds<3000))
                         {
-                            double distanceBetweenLocations = EDLocation.DistanceBetween(_speedCalculationLocation, updateEvent.Location());
-                            SpeedInMS = distanceBetweenLocations * (1000 / timeBetweenLocations.TotalMilliseconds);
-                        }
-                        _speedCalculationLocation = updateEvent.Location();
-                        if ((SpeedInMS - _lastSpeedInMs) > 20)
-                        {
-                            // If the speed increases by more than 20m/s in a short time (i.e. less than a second!), this is impossible and due to respawn
+                            // If the speed increases by more than 200m/s in three seconds, this is most likely due to respawn (i.e. invalid)
                             SpeedInMS = 0;
                             _speedCalculationLocation = null;
                         }
-                    }
-                    if (SpeedInMS > MaxSpeedInMS)
-                        MaxSpeedInMS = SpeedInMS;
+                    _gotFirstSpeedReading = (SpeedInMS>0);
                 }
-                else
-                    SpeedInMS = 0;
+                if (SpeedInMS > MaxSpeedInMS)
+                    MaxSpeedInMS = SpeedInMS;
 
                 _lastSpeedInMs = SpeedInMS;
                 Location = updateEvent.Location();
@@ -236,6 +241,7 @@ namespace EDTracking
                         WaypointIndex++;
                         if (WaypointIndex >= Route.Waypoints.Count)
                         {
+                            notableEvents?.AddEvent($"{Commander}{StatusMessages["CompletedNotification"]}");
                             Finished = true;
                             FinishTime = DateTime.Now;
                             WaypointIndex = 0;
@@ -259,13 +265,26 @@ namespace EDTracking
                 if (EliminateOnShipFlight)
                 {
                     Eliminated = true;
+                    notableEvents?.AddEvent($"{Commander}{StatusMessages["EliminatedNotification"]}");
                     DistanceToWaypoint = double.MaxValue;
                     _speedCalculationLocation = null; // If this occurred due to commander exploding, we need to clear the location otherwise we'll get a massive reading on respawn
                 }
             }
 
-            if (isFlagSet(StatusFlags.In_SRV))
-                _inPits = isFlagSet(StatusFlags.Srv_UnderShip) && AllowPitStops;
+            if (AllowPitStops)
+            {
+                if (!_inPits)
+                {
+                    if (isFlagSet(StatusFlags.Srv_UnderShip))
+                    {
+                        _inPits = true;
+                        notableEvents?.AddEvent($"{Commander}{StatusMessages["PitstopNotification"]}");
+                    }
+                }
+                else
+                    if (isFlagSet(StatusFlags.In_SRV) && !isFlagSet(StatusFlags.Srv_UnderShip))
+                        _inPits = false;
+            }
 
             _lowFuel = isFlagSet(StatusFlags.Low_Fuel);
 

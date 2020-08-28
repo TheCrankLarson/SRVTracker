@@ -33,7 +33,9 @@
             this.EventName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.EventStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.buttonOk = new System.Windows.Forms.Button();
-            this.buttonCancel = new System.Windows.Forms.Button();
+            this.buttonLoad = new System.Windows.Forms.Button();
+            this.buttonSave = new System.Windows.Forms.Button();
+            this.buttonSaveAs = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewStatusMessages)).BeginInit();
             this.SuspendLayout();
@@ -84,18 +86,38 @@
             this.buttonOk.Name = "buttonOk";
             this.buttonOk.Size = new System.Drawing.Size(75, 23);
             this.buttonOk.TabIndex = 1;
-            this.buttonOk.Text = "Ok";
+            this.buttonOk.Text = "Close";
             this.buttonOk.UseVisualStyleBackColor = true;
             // 
-            // buttonCancel
+            // buttonLoad
             // 
-            this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.buttonCancel.Location = new System.Drawing.Point(267, 247);
-            this.buttonCancel.Name = "buttonCancel";
-            this.buttonCancel.Size = new System.Drawing.Size(75, 23);
-            this.buttonCancel.TabIndex = 2;
-            this.buttonCancel.Text = "Cancel";
-            this.buttonCancel.UseVisualStyleBackColor = true;
+            this.buttonLoad.Image = global::SRVTracker.Properties.Resources.OpenFile_16x;
+            this.buttonLoad.Location = new System.Drawing.Point(15, 247);
+            this.buttonLoad.Name = "buttonLoad";
+            this.buttonLoad.Size = new System.Drawing.Size(37, 23);
+            this.buttonLoad.TabIndex = 3;
+            this.buttonLoad.UseVisualStyleBackColor = true;
+            this.buttonLoad.Click += new System.EventHandler(this.buttonLoad_Click);
+            // 
+            // buttonSave
+            // 
+            this.buttonSave.Image = global::SRVTracker.Properties.Resources.Save_16x;
+            this.buttonSave.Location = new System.Drawing.Point(101, 247);
+            this.buttonSave.Name = "buttonSave";
+            this.buttonSave.Size = new System.Drawing.Size(37, 23);
+            this.buttonSave.TabIndex = 4;
+            this.buttonSave.UseVisualStyleBackColor = true;
+            this.buttonSave.Click += new System.EventHandler(this.buttonSave_Click);
+            // 
+            // buttonSaveAs
+            // 
+            this.buttonSaveAs.Image = global::SRVTracker.Properties.Resources.SaveAs_16x;
+            this.buttonSaveAs.Location = new System.Drawing.Point(58, 247);
+            this.buttonSaveAs.Name = "buttonSaveAs";
+            this.buttonSaveAs.Size = new System.Drawing.Size(37, 23);
+            this.buttonSaveAs.TabIndex = 5;
+            this.buttonSaveAs.UseVisualStyleBackColor = true;
+            this.buttonSaveAs.Click += new System.EventHandler(this.buttonSaveAs_Click);
             // 
             // FormStatusMessages
             // 
@@ -103,7 +125,9 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(440, 282);
             this.ControlBox = false;
-            this.Controls.Add(this.buttonCancel);
+            this.Controls.Add(this.buttonSaveAs);
+            this.Controls.Add(this.buttonSave);
+            this.Controls.Add(this.buttonLoad);
             this.Controls.Add(this.buttonOk);
             this.Controls.Add(this.groupBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
@@ -120,9 +144,11 @@
 
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button buttonOk;
-        private System.Windows.Forms.Button buttonCancel;
         private System.Windows.Forms.DataGridView dataGridViewStatusMessages;
         private System.Windows.Forms.DataGridViewTextBoxColumn EventName;
         private System.Windows.Forms.DataGridViewTextBoxColumn EventStatus;
+        private System.Windows.Forms.Button buttonLoad;
+        private System.Windows.Forms.Button buttonSave;
+        private System.Windows.Forms.Button buttonSaveAs;
     }
 }
