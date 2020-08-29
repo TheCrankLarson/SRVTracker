@@ -16,11 +16,13 @@ namespace SRVTracker
 {
     public partial class FormStatusMessages : Form
     {
-        private string _saveFile = "statuses.txt";
+        private static string _defaultSaveFile = "statuses.txt";
+        private string _saveFile = "";
 
         public FormStatusMessages()
         {
             InitializeComponent();
+            _saveFile = _defaultSaveFile;
             if (File.Exists(_saveFile))
                 LoadFile(_saveFile);
             DisplayMessages();
@@ -53,21 +55,27 @@ namespace SRVTracker
                 openFileDialog.FileName = _saveFile;
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    LoadFile(openFileDialog.FileName);
+                    if (LoadFile(openFileDialog.FileName))
+                    {
+                        _saveFile = openFileDialog.FileName;
+                        DisplayMessages();
+                        buttonSave.Enabled = true;
+                    }
                 }
             }
         }
 
-        private void LoadFile(string file)
+        public static bool LoadFile(string file="")
         {
+            if (String.IsNullOrEmpty(file))
+                file = _defaultSaveFile;
             try
             {
                 EDRaceStatus.StatusMessages = JsonSerializer.Deserialize<Dictionary<string, string>>(File.ReadAllText(file));
-                _saveFile = file;
-                DisplayMessages();
-                buttonSave.Enabled = true;
+                return true;
             }
             catch { }
+            return false;
         }
 
         private void buttonSaveAs_Click(object sender, EventArgs e)

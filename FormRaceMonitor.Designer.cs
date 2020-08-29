@@ -83,6 +83,10 @@
             this.textBoxExportSpeedFile = new System.Windows.Forms.TextBox();
             this.checkBoxExportSpeed = new System.Windows.Forms.CheckBox();
             this.groupBoxTextExport = new System.Windows.Forms.GroupBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.numericUpDownNotableEventDuration = new System.Windows.Forms.NumericUpDown();
+            this.textBoxNotableEventsFile = new System.Windows.Forms.TextBox();
+            this.checkBoxExportNotableEvents = new System.Windows.Forms.CheckBox();
             this.checkBoxIncludeMaxSpeed = new System.Windows.Forms.CheckBox();
             this.groupBoxHTMLExport = new System.Windows.Forms.GroupBox();
             this.checkBoxExportAsHTML = new System.Windows.Forms.CheckBox();
@@ -90,10 +94,11 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.textBoxHTMLTemplateFile = new System.Windows.Forms.TextBox();
-            this.checkBoxExportNotableEvents = new System.Windows.Forms.CheckBox();
-            this.textBoxNotableEventsFile = new System.Windows.Forms.TextBox();
-            this.numericUpDownNotableEventDuration = new System.Windows.Forms.NumericUpDown();
-            this.label6 = new System.Windows.Forms.Label();
+            this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.checkBoxExportTargetMaxSpeed = new System.Windows.Forms.CheckBox();
+            this.textBoxExportTargetMaxSpeedFile = new System.Windows.Forms.TextBox();
+            this.checkBoxExportTargetPitstops = new System.Windows.Forms.CheckBox();
+            this.textBoxExportTargetPitstopsFile = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -104,8 +109,9 @@
             this.groupBox6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownStatusMaxLength)).BeginInit();
             this.groupBoxTextExport.SuspendLayout();
-            this.groupBoxHTMLExport.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownNotableEventDuration)).BeginInit();
+            this.groupBoxHTMLExport.SuspendLayout();
+            this.groupBox7.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -461,7 +467,7 @@
             this.checkBoxExportDistance.AutoSize = true;
             this.checkBoxExportDistance.Checked = true;
             this.checkBoxExportDistance.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxExportDistance.Location = new System.Drawing.Point(6, 241);
+            this.checkBoxExportDistance.Location = new System.Drawing.Point(25, 192);
             this.checkBoxExportDistance.Name = "checkBoxExportDistance";
             this.checkBoxExportDistance.Size = new System.Drawing.Size(189, 17);
             this.checkBoxExportDistance.TabIndex = 6;
@@ -577,7 +583,7 @@
             this.checkBoxClosestPlayerTarget.AutoSize = true;
             this.checkBoxClosestPlayerTarget.Checked = true;
             this.checkBoxClosestPlayerTarget.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxClosestPlayerTarget.Location = new System.Drawing.Point(6, 264);
+            this.checkBoxClosestPlayerTarget.Location = new System.Drawing.Point(6, 153);
             this.checkBoxClosestPlayerTarget.Name = "checkBoxClosestPlayerTarget";
             this.checkBoxClosestPlayerTarget.Size = new System.Drawing.Size(202, 17);
             this.checkBoxClosestPlayerTarget.TabIndex = 18;
@@ -595,7 +601,7 @@
             // 
             // numericUpDownStatusMaxLength
             // 
-            this.numericUpDownStatusMaxLength.Location = new System.Drawing.Point(179, 80);
+            this.numericUpDownStatusMaxLength.Location = new System.Drawing.Point(179, 168);
             this.numericUpDownStatusMaxLength.Name = "numericUpDownStatusMaxLength";
             this.numericUpDownStatusMaxLength.Size = new System.Drawing.Size(50, 20);
             this.numericUpDownStatusMaxLength.TabIndex = 15;
@@ -607,7 +613,7 @@
             // 
             // textBoxExportTargetFile
             // 
-            this.textBoxExportTargetFile.Location = new System.Drawing.Point(25, 124);
+            this.textBoxExportTargetFile.Location = new System.Drawing.Point(25, 39);
             this.textBoxExportTargetFile.Name = "textBoxExportTargetFile";
             this.textBoxExportTargetFile.Size = new System.Drawing.Size(204, 20);
             this.textBoxExportTargetFile.TabIndex = 11;
@@ -616,7 +622,7 @@
             // checkBoxExportTarget
             // 
             this.checkBoxExportTarget.AutoSize = true;
-            this.checkBoxExportTarget.Location = new System.Drawing.Point(6, 106);
+            this.checkBoxExportTarget.Location = new System.Drawing.Point(6, 21);
             this.checkBoxExportTarget.Name = "checkBoxExportTarget";
             this.checkBoxExportTarget.Size = new System.Drawing.Size(89, 17);
             this.checkBoxExportTarget.TabIndex = 10;
@@ -626,7 +632,7 @@
             // 
             // textBoxExportStatusFile
             // 
-            this.textBoxExportStatusFile.Location = new System.Drawing.Point(24, 80);
+            this.textBoxExportStatusFile.Location = new System.Drawing.Point(24, 167);
             this.textBoxExportStatusFile.Name = "textBoxExportStatusFile";
             this.textBoxExportStatusFile.Size = new System.Drawing.Size(149, 20);
             this.textBoxExportStatusFile.TabIndex = 9;
@@ -643,7 +649,7 @@
             // checkBoxExportStatus
             // 
             this.checkBoxExportStatus.AutoSize = true;
-            this.checkBoxExportStatus.Location = new System.Drawing.Point(6, 62);
+            this.checkBoxExportStatus.Location = new System.Drawing.Point(6, 149);
             this.checkBoxExportStatus.Name = "checkBoxExportStatus";
             this.checkBoxExportStatus.Size = new System.Drawing.Size(90, 17);
             this.checkBoxExportStatus.TabIndex = 7;
@@ -653,7 +659,7 @@
             // 
             // textBoxExportSpeedFile
             // 
-            this.textBoxExportSpeedFile.Location = new System.Drawing.Point(25, 168);
+            this.textBoxExportSpeedFile.Location = new System.Drawing.Point(24, 79);
             this.textBoxExportSpeedFile.Name = "textBoxExportSpeedFile";
             this.textBoxExportSpeedFile.Size = new System.Drawing.Size(204, 20);
             this.textBoxExportSpeedFile.TabIndex = 20;
@@ -662,7 +668,7 @@
             // checkBoxExportSpeed
             // 
             this.checkBoxExportSpeed.AutoSize = true;
-            this.checkBoxExportSpeed.Location = new System.Drawing.Point(7, 150);
+            this.checkBoxExportSpeed.Location = new System.Drawing.Point(6, 61);
             this.checkBoxExportSpeed.Name = "checkBoxExportSpeed";
             this.checkBoxExportSpeed.Size = new System.Drawing.Size(91, 17);
             this.checkBoxExportSpeed.TabIndex = 19;
@@ -679,7 +685,6 @@
             this.groupBoxTextExport.Controls.Add(this.checkBoxIncludeMaxSpeed);
             this.groupBoxTextExport.Controls.Add(this.checkBoxExportLeaderboard);
             this.groupBoxTextExport.Controls.Add(this.numericUpDownLeaderboardMaxLength);
-            this.groupBoxTextExport.Controls.Add(this.checkBoxClosestPlayerTarget);
             this.groupBoxTextExport.Controls.Add(this.checkBoxExportDistance);
             this.groupBoxTextExport.Controls.Add(this.textBoxExportSpeedFile);
             this.groupBoxTextExport.Controls.Add(this.checkBoxExportStatus);
@@ -687,20 +692,68 @@
             this.groupBoxTextExport.Controls.Add(this.textBoxExportLeaderboardFile);
             this.groupBoxTextExport.Controls.Add(this.textBoxExportStatusFile);
             this.groupBoxTextExport.Controls.Add(this.label4);
-            this.groupBoxTextExport.Controls.Add(this.checkBoxExportTarget);
-            this.groupBoxTextExport.Controls.Add(this.textBoxExportTargetFile);
             this.groupBoxTextExport.Controls.Add(this.numericUpDownStatusMaxLength);
             this.groupBoxTextExport.Location = new System.Drawing.Point(720, 12);
             this.groupBoxTextExport.Name = "groupBoxTextExport";
-            this.groupBoxTextExport.Size = new System.Drawing.Size(245, 295);
+            this.groupBoxTextExport.Size = new System.Drawing.Size(245, 216);
             this.groupBoxTextExport.TabIndex = 7;
             this.groupBoxTextExport.TabStop = false;
             this.groupBoxTextExport.Text = "Export as text";
             // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(163, 107);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(72, 13);
+            this.label6.TabIndex = 26;
+            this.label6.Text = "Duration (ms):";
+            // 
+            // numericUpDownNotableEventDuration
+            // 
+            this.numericUpDownNotableEventDuration.Increment = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.numericUpDownNotableEventDuration.Location = new System.Drawing.Point(178, 124);
+            this.numericUpDownNotableEventDuration.Maximum = new decimal(new int[] {
+            60000,
+            0,
+            0,
+            0});
+            this.numericUpDownNotableEventDuration.Name = "numericUpDownNotableEventDuration";
+            this.numericUpDownNotableEventDuration.Size = new System.Drawing.Size(50, 20);
+            this.numericUpDownNotableEventDuration.TabIndex = 25;
+            this.numericUpDownNotableEventDuration.Value = new decimal(new int[] {
+            5000,
+            0,
+            0,
+            0});
+            // 
+            // textBoxNotableEventsFile
+            // 
+            this.textBoxNotableEventsFile.Location = new System.Drawing.Point(24, 124);
+            this.textBoxNotableEventsFile.Name = "textBoxNotableEventsFile";
+            this.textBoxNotableEventsFile.Size = new System.Drawing.Size(148, 20);
+            this.textBoxNotableEventsFile.TabIndex = 24;
+            this.textBoxNotableEventsFile.Text = "Events.txt";
+            // 
+            // checkBoxExportNotableEvents
+            // 
+            this.checkBoxExportNotableEvents.AutoSize = true;
+            this.checkBoxExportNotableEvents.Location = new System.Drawing.Point(6, 106);
+            this.checkBoxExportNotableEvents.Name = "checkBoxExportNotableEvents";
+            this.checkBoxExportNotableEvents.Size = new System.Drawing.Size(132, 17);
+            this.checkBoxExportNotableEvents.TabIndex = 23;
+            this.checkBoxExportNotableEvents.Text = "Export notable events:";
+            this.checkBoxExportNotableEvents.UseVisualStyleBackColor = true;
+            this.checkBoxExportNotableEvents.CheckedChanged += new System.EventHandler(this.checkBoxExportNotableEvents_CheckedChanged);
+            // 
             // checkBoxIncludeMaxSpeed
             // 
             this.checkBoxIncludeMaxSpeed.AutoSize = true;
-            this.checkBoxIncludeMaxSpeed.Location = new System.Drawing.Point(108, 150);
+            this.checkBoxIncludeMaxSpeed.Location = new System.Drawing.Point(107, 61);
             this.checkBoxIncludeMaxSpeed.Name = "checkBoxIncludeMaxSpeed";
             this.checkBoxIncludeMaxSpeed.Size = new System.Drawing.Size(114, 17);
             this.checkBoxIncludeMaxSpeed.TabIndex = 22;
@@ -714,7 +767,7 @@
             this.groupBoxHTMLExport.Controls.Add(this.label5);
             this.groupBoxHTMLExport.Controls.Add(this.label1);
             this.groupBoxHTMLExport.Controls.Add(this.textBoxHTMLTemplateFile);
-            this.groupBoxHTMLExport.Location = new System.Drawing.Point(720, 313);
+            this.groupBoxHTMLExport.Location = new System.Drawing.Point(971, 12);
             this.groupBoxHTMLExport.Name = "groupBoxHTMLExport";
             this.groupBoxHTMLExport.Size = new System.Drawing.Size(245, 106);
             this.groupBoxHTMLExport.TabIndex = 8;
@@ -765,61 +818,66 @@
             this.textBoxHTMLTemplateFile.TabIndex = 0;
             this.textBoxHTMLTemplateFile.Text = "Leaderboard Template.html";
             // 
-            // checkBoxExportNotableEvents
+            // groupBox7
             // 
-            this.checkBoxExportNotableEvents.AutoSize = true;
-            this.checkBoxExportNotableEvents.Location = new System.Drawing.Point(7, 194);
-            this.checkBoxExportNotableEvents.Name = "checkBoxExportNotableEvents";
-            this.checkBoxExportNotableEvents.Size = new System.Drawing.Size(132, 17);
-            this.checkBoxExportNotableEvents.TabIndex = 23;
-            this.checkBoxExportNotableEvents.Text = "Export notable events:";
-            this.checkBoxExportNotableEvents.UseVisualStyleBackColor = true;
-            this.checkBoxExportNotableEvents.CheckedChanged += new System.EventHandler(this.checkBoxExportNotableEvents_CheckedChanged);
+            this.groupBox7.Controls.Add(this.checkBoxExportTargetPitstops);
+            this.groupBox7.Controls.Add(this.textBoxExportTargetPitstopsFile);
+            this.groupBox7.Controls.Add(this.checkBoxExportTargetMaxSpeed);
+            this.groupBox7.Controls.Add(this.textBoxExportTargetMaxSpeedFile);
+            this.groupBox7.Controls.Add(this.checkBoxExportTarget);
+            this.groupBox7.Controls.Add(this.textBoxExportTargetFile);
+            this.groupBox7.Controls.Add(this.checkBoxClosestPlayerTarget);
+            this.groupBox7.Location = new System.Drawing.Point(720, 234);
+            this.groupBox7.Name = "groupBox7";
+            this.groupBox7.Size = new System.Drawing.Size(245, 185);
+            this.groupBox7.TabIndex = 9;
+            this.groupBox7.TabStop = false;
+            this.groupBox7.Text = "Track target";
             // 
-            // textBoxNotableEventsFile
+            // checkBoxExportTargetMaxSpeed
             // 
-            this.textBoxNotableEventsFile.Location = new System.Drawing.Point(25, 212);
-            this.textBoxNotableEventsFile.Name = "textBoxNotableEventsFile";
-            this.textBoxNotableEventsFile.Size = new System.Drawing.Size(148, 20);
-            this.textBoxNotableEventsFile.TabIndex = 24;
-            this.textBoxNotableEventsFile.Text = "Events.txt";
+            this.checkBoxExportTargetMaxSpeed.AutoSize = true;
+            this.checkBoxExportTargetMaxSpeed.Location = new System.Drawing.Point(6, 65);
+            this.checkBoxExportTargetMaxSpeed.Name = "checkBoxExportTargetMaxSpeed";
+            this.checkBoxExportTargetMaxSpeed.Size = new System.Drawing.Size(113, 17);
+            this.checkBoxExportTargetMaxSpeed.TabIndex = 12;
+            this.checkBoxExportTargetMaxSpeed.Text = "Export max speed:";
+            this.checkBoxExportTargetMaxSpeed.UseVisualStyleBackColor = true;
+            this.checkBoxExportTargetMaxSpeed.CheckedChanged += new System.EventHandler(this.checkBoxExportTargetMaxSpeed_CheckedChanged);
             // 
-            // numericUpDownNotableEventDuration
+            // textBoxExportTargetMaxSpeedFile
             // 
-            this.numericUpDownNotableEventDuration.Increment = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this.numericUpDownNotableEventDuration.Location = new System.Drawing.Point(179, 212);
-            this.numericUpDownNotableEventDuration.Maximum = new decimal(new int[] {
-            60000,
-            0,
-            0,
-            0});
-            this.numericUpDownNotableEventDuration.Name = "numericUpDownNotableEventDuration";
-            this.numericUpDownNotableEventDuration.Size = new System.Drawing.Size(50, 20);
-            this.numericUpDownNotableEventDuration.TabIndex = 25;
-            this.numericUpDownNotableEventDuration.Value = new decimal(new int[] {
-            5000,
-            0,
-            0,
-            0});
+            this.textBoxExportTargetMaxSpeedFile.Location = new System.Drawing.Point(25, 83);
+            this.textBoxExportTargetMaxSpeedFile.Name = "textBoxExportTargetMaxSpeedFile";
+            this.textBoxExportTargetMaxSpeedFile.Size = new System.Drawing.Size(204, 20);
+            this.textBoxExportTargetMaxSpeedFile.TabIndex = 13;
+            this.textBoxExportTargetMaxSpeedFile.Text = "Max-Speed.txt";
             // 
-            // label6
+            // checkBoxExportTargetPitstops
             // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(171, 195);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(72, 13);
-            this.label6.TabIndex = 26;
-            this.label6.Text = "Duration (ms):";
+            this.checkBoxExportTargetPitstops.AutoSize = true;
+            this.checkBoxExportTargetPitstops.Location = new System.Drawing.Point(6, 109);
+            this.checkBoxExportTargetPitstops.Name = "checkBoxExportTargetPitstops";
+            this.checkBoxExportTargetPitstops.Size = new System.Drawing.Size(148, 17);
+            this.checkBoxExportTargetPitstops.TabIndex = 14;
+            this.checkBoxExportTargetPitstops.Text = "Export number of pitstops:";
+            this.checkBoxExportTargetPitstops.UseVisualStyleBackColor = true;
+            this.checkBoxExportTargetPitstops.CheckedChanged += new System.EventHandler(this.checkBoxExportTargetPitstops_CheckedChanged);
+            // 
+            // textBoxExportTargetPitstopsFile
+            // 
+            this.textBoxExportTargetPitstopsFile.Location = new System.Drawing.Point(25, 127);
+            this.textBoxExportTargetPitstopsFile.Name = "textBoxExportTargetPitstopsFile";
+            this.textBoxExportTargetPitstopsFile.Size = new System.Drawing.Size(204, 20);
+            this.textBoxExportTargetPitstopsFile.TabIndex = 15;
+            this.textBoxExportTargetPitstopsFile.Text = "Num-Pitstops.txt";
             // 
             // FormRaceMonitor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(975, 425);
+            this.ClientSize = new System.Drawing.Size(1225, 425);
+            this.Controls.Add(this.groupBox7);
             this.Controls.Add(this.groupBoxHTMLExport);
             this.Controls.Add(this.groupBoxTextExport);
             this.Controls.Add(this.groupBox6);
@@ -849,9 +907,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownStatusMaxLength)).EndInit();
             this.groupBoxTextExport.ResumeLayout(false);
             this.groupBoxTextExport.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownNotableEventDuration)).EndInit();
             this.groupBoxHTMLExport.ResumeLayout(false);
             this.groupBoxHTMLExport.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownNotableEventDuration)).EndInit();
+            this.groupBox7.ResumeLayout(false);
+            this.groupBox7.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -923,5 +983,10 @@
         private System.Windows.Forms.CheckBox checkBoxExportNotableEvents;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.NumericUpDown numericUpDownNotableEventDuration;
+        private System.Windows.Forms.GroupBox groupBox7;
+        private System.Windows.Forms.CheckBox checkBoxExportTargetPitstops;
+        private System.Windows.Forms.TextBox textBoxExportTargetPitstopsFile;
+        private System.Windows.Forms.CheckBox checkBoxExportTargetMaxSpeed;
+        private System.Windows.Forms.TextBox textBoxExportTargetMaxSpeedFile;
     }
 }

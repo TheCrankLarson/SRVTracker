@@ -151,7 +151,6 @@ namespace DataCollator
             // Log the notification for retrieval by clients that are polling
             try
             {
-                // We store clientId in lower case (for case insensitive matching), but return the original (as we store it in the status)
                 UpdateCommanderStatus(message);
             }
             catch { }
@@ -160,7 +159,6 @@ namespace DataCollator
                 _notifications.Add(message);
 
             }
-
 
             _pruneCounter++;
             if (_pruneCounter>500)

@@ -27,6 +27,7 @@ namespace EDTracking
         public EDRoute Route { get; set; } = null;
         public static bool Started { get; set; } = false;
         public bool Finished { get; set; } = false;
+        public int PitStopCount { get; set; } = 0;
         public static DateTime StartTime { get; set; } = DateTime.MinValue;
         public DateTime FinishTime { get; internal set; } = DateTime.MinValue;
 
@@ -58,6 +59,8 @@ namespace EDTracking
         private DateTime _speedCalculationTimeStamp = DateTime.UtcNow;
         private double _lastSpeedInMs = 0;
         private bool _gotFirstSpeedReading = false;
+        private double _lastLoggedMaxSpeed = 40;  // We don't log any maximum speeds below 40m/s
+        private DateTime _pitStopStartTime = DateTime.MinValue;
         public static NotableEvents notableEvents = null;
 
         public EDRaceStatus(EDEvent baseEvent)
@@ -209,7 +212,6 @@ namespace EDTracking
                 if (timeBetweenLocations.TotalMilliseconds > 750)
                 {
                     // We take a speed calculation once every 750 milliseconds
-                    // This will actually be once a second as the timestamp does not include milliseconds
                     _speedCalculationTimeStamp = updateEvent.TimeStamp;
                     if (_speedCalculationLocation != null)
                     {
@@ -227,7 +229,14 @@ namespace EDTracking
                     _gotFirstSpeedReading = (SpeedInMS>0);
                 }
                 if (SpeedInMS > MaxSpeedInMS)
+                {
                     MaxSpeedInMS = SpeedInMS;
+                    if (MaxSpeedInMS > _lastLoggedMaxSpeed + 5)
+                    {
+                        AddRaceHistory($"New maximum speed: {MaxSpeedInMS:F1}m/s");
+                        _lastLoggedMaxSpeed = MaxSpeedInMS;
+                    }
+                }
 
                 _lastSpeedInMs = SpeedInMS;
                 Location = updateEvent.Location();
@@ -278,12 +287,16 @@ namespace EDTracking
                     if (isFlagSet(StatusFlags.Srv_UnderShip))
                     {
                         _inPits = true;
+                        _pitStopStartTime = DateTime.Now;
                         notableEvents?.AddEvent($"{Commander}{StatusMessages["PitstopNotification"]}");
+                        PitStopCount++;
                     }
                 }
-                else
-                    if (isFlagSet(StatusFlags.In_SRV) && !isFlagSet(StatusFlags.Srv_UnderShip))
-                        _inPits = false;
+                else if (isFlagSet(StatusFlags.In_SRV) && !isFlagSet(StatusFlags.Srv_UnderShip))
+                {
+                    _inPits = false;
+                    AddRaceHistory($"Pitstop took {DateTime.Now.Subtract(_pitStopStartTime):mm\\:ss}");
+                }
             }
 
             _lowFuel = isFlagSet(StatusFlags.Low_Fuel);

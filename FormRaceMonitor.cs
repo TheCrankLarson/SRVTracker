@@ -22,11 +22,13 @@ namespace SRVTracker
         private Dictionary<string, EDRaceStatus> _racersStatus = null;
         private List<string> _eliminatedRacers = null;
         private EDWaypoint _nextWaypoint = null;
-        private string _lastLeaderboardExport = "(We add random rubbish here to ensure that files are cleared on new race monitor instantiation)";
-        private string _lastStatusExport = "kpokdpokwqpkdpqw";
-        private string _lastSpeedExport = "ljoijgojerjgor";
-        private string _lastTrackingTarget = "ojoijoje";
-        private string _lastRacePositions = "fsdgfrg";
+        private string _lastLeaderboardExport = "k"; // We set to a value to ensure export files are written when cleared first of all
+        private string _lastStatusExport = "k";
+        private string _lastSpeedExport = "k";
+        private string _lastTrackingTarget = "k";
+        private string _lastRacePositions = "k";
+        private string _lastExportTargetPitstops = "k";
+        private string _lastExportTargetMaxSpeed = "k";
         private string _saveFilename = "";
         private bool _generatingLeaderboard = false;
         private object _lockListView = new object();
@@ -44,11 +46,7 @@ namespace SRVTracker
             //listViewParticipants.ListViewItemSorter = new ListViewItemComparer();
             _racers = new Dictionary<string, System.Windows.Forms.ListViewItem>();
             AddTrackedCommanders();
-            checkBoxSRVRace.Checked = _race.SRVOnly;
-            checkBoxAllowPitstops.Checked = _race.AllowPitstops;
-            checkBoxEliminationOnDestruction.Checked = _race.EliminateOnVehicleDestruction;
-            UpdateButtons();
-            ShowHideStreamingOptions();
+            FormStatusMessages.LoadFile();  // This restores any saved status messages
 
             // Attach our form configuration saver
             _formConfig = new ConfigSaverClass(this, true);
@@ -64,6 +62,13 @@ namespace SRVTracker
             ConfigSaverClass.ApplyConfiguration();
             textBoxNotableEventsFile.Enabled = checkBoxExportNotableEvents.Checked;
             numericUpDownNotableEventDuration.Enabled = checkBoxExportNotableEvents.Checked;
+
+            checkBoxSRVRace.Checked = _race.SRVOnly;
+            checkBoxAllowPitstops.Checked = _race.AllowPitstops;
+            checkBoxEliminationOnDestruction.Checked = _race.EliminateOnVehicleDestruction;
+            UpdateButtons();
+            ShowHideStreamingOptions();
+
         }
 
         private void EDStatus_StatusChanged(object sender, string commander, string status)
@@ -418,20 +423,52 @@ namespace SRVTracker
                 }
             }
 
-            if (checkBoxExportTarget.Checked)
+            String trackingTarget = "";
+            if (checkBoxClosestPlayerTarget.Checked)
             {
-                string trackingTarget;
-                if (checkBoxClosestPlayerTarget.Checked)
-                    trackingTarget=FormLocator.ClosestCommander;
-                else
-                    trackingTarget=FormLocator.GetLocator().TrackingTarget;
+                trackingTarget = FormLocator.ClosestCommander;
+            }
+            else
+                trackingTarget = FormLocator.GetLocator().TrackingTarget;
 
-                if (!_lastTrackingTarget.Equals(trackingTarget))
+            if (checkBoxExportTarget.Checked && !_lastTrackingTarget.Equals(trackingTarget.ToString()))
+            {
+                try
+                {
+                    File.WriteAllText(textBoxExportTargetFile.Text, trackingTarget.ToString());
+                    _lastTrackingTarget = trackingTarget.ToString();
+                }
+                catch { }
+            }
+
+            if (checkBoxExportTargetMaxSpeed.Checked)
+            {
+                string exportMaxSpeed = "";
+                if (_racersStatus != null && _racersStatus.ContainsKey(trackingTarget))
+                    exportMaxSpeed = _racersStatus[trackingTarget].MaxSpeedInMS.ToString("F1");
+
+                if (!exportMaxSpeed.Equals(_lastExportTargetMaxSpeed))
                 {
                     try
                     {
-                        File.WriteAllText(textBoxExportTargetFile.Text, trackingTarget);
-                        _lastTrackingTarget = trackingTarget;
+                        File.WriteAllText(textBoxExportTargetMaxSpeedFile.Text, exportMaxSpeed);
+                        _lastExportTargetMaxSpeed = exportMaxSpeed;
+                    }
+                    catch { }
+                }
+            }
+
+            if (checkBoxExportTargetPitstops.Checked)
+            {
+                string exportPitstops = "";
+                if (_racersStatus != null && _racersStatus.ContainsKey(trackingTarget))
+                    exportPitstops = _racersStatus[trackingTarget].PitStopCount.ToString();
+                if (!exportPitstops.Equals(_lastExportTargetPitstops))
+                {
+                    try
+                    {
+                        File.WriteAllText(textBoxExportTargetPitstopsFile.Text, exportPitstops);
+                        _lastExportTargetPitstops = exportPitstops;
                     }
                     catch { }
                 }
@@ -881,6 +918,10 @@ namespace SRVTracker
                 if (textBoxExportTargetFile.Enabled)
                     textBoxExportTargetFile.Enabled = false;
             }
+            checkBoxExportDistance.Enabled = checkBoxExportStatus.Checked;
+
+            textBoxExportTargetMaxSpeedFile.Enabled = checkBoxExportTargetMaxSpeed.Checked;
+            textBoxExportTargetPitstopsFile.Enabled = checkBoxExportTargetPitstops.Checked;
         }
 
         private void listViewParticipants_SelectedIndexChanged(object sender, EventArgs e)
@@ -896,6 +937,8 @@ namespace SRVTracker
         private void checkBoxExportTarget_CheckedChanged(object sender, EventArgs e)
         {
             UpdateButtons();
+            if (checkBoxExportTarget.Checked)
+                FormLocator.GetLocator();
         }
 
         private void checkBoxExportStatus_CheckedChanged(object sender, EventArgs e)
@@ -929,7 +972,7 @@ namespace SRVTracker
 
         private void ShowHideStreamingOptions()
         {
-            Size showStreamingOptions = new Size(998, 464);
+            Size showStreamingOptions = new Size(1240, 464);
             Size hideStreamingOptions = new Size(742, 464);
             if (checkBoxStreamInfo.Checked)
             {
@@ -975,6 +1018,16 @@ namespace SRVTracker
         {
             textBoxNotableEventsFile.Enabled = checkBoxExportNotableEvents.Checked;
             numericUpDownNotableEventDuration.Enabled = checkBoxExportNotableEvents.Checked;
+        }
+
+        private void checkBoxExportTargetMaxSpeed_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateButtons();
+        }
+
+        private void checkBoxExportTargetPitstops_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateButtons();
         }
     }
 

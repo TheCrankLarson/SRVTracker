@@ -56,7 +56,7 @@ namespace EDTracking
                 JsonElement property;
 
                 if (timeStamp != null)
-                    TimeStamp = (DateTime)timeStamp;
+                    TimeStamp = ((DateTime)timeStamp).ToUniversalTime();
                 else if (root.TryGetProperty("timestamp", out property))
                     TimeStamp = property.GetDateTime();
                 if (root.TryGetProperty("Flags", out property))
