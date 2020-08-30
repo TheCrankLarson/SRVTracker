@@ -52,6 +52,7 @@ namespace SRVTracker
             _statusTimer.Elapsed += _statusTimer_Elapsed;
             this.Size = _configHidden;
             checkBoxTrack.Checked = true;
+            this.Text = Application.ProductName + " v" + Application.ProductVersion;
         }
 
         private void _statusTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)

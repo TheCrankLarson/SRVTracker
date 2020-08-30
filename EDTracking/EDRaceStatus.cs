@@ -276,8 +276,8 @@ namespace EDTracking
                     Eliminated = true;
                     notableEvents?.AddEvent($"{Commander}{StatusMessages["EliminatedNotification"]}");
                     DistanceToWaypoint = double.MaxValue;
-                    _speedCalculationLocation = null; // If this occurred due to commander exploding, we need to clear the location otherwise we'll get a massive reading on respawn
                 }
+                _speedCalculationLocation = null; // If this occurred due to commander exploding, we need to clear the location otherwise we'll get a massive reading on respawn
             }
 
             if (AllowPitStops)
@@ -295,7 +295,7 @@ namespace EDTracking
                 else if (isFlagSet(StatusFlags.In_SRV) && !isFlagSet(StatusFlags.Srv_UnderShip))
                 {
                     _inPits = false;
-                    AddRaceHistory($"Pitstop took {DateTime.Now.Subtract(_pitStopStartTime):mm\\:ss}");
+                    AddRaceHistory($"Pitstop {PitStopCount} took {DateTime.Now.Subtract(_pitStopStartTime):mm\\:ss}");
                 }
             }
 
