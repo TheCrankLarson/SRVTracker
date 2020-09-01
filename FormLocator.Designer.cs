@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormLocator));
             this.groupBoxDestination = new System.Windows.Forms.GroupBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -50,8 +51,8 @@
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.buttonAlwaysOnTop = new System.Windows.Forms.Button();
             this.buttonUseCurrentLocation = new System.Windows.Forms.Button();
-            this.locatorHUD1 = new SRVTracker.LocatorHUD();
             this.buttonClose = new System.Windows.Forms.Button();
+            this.locatorHUD1 = new SRVTracker.LocatorHUD();
             this.groupBoxDestination.SuspendLayout();
             this.groupBoxBearing.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -300,15 +301,6 @@
             this.buttonUseCurrentLocation.UseVisualStyleBackColor = true;
             this.buttonUseCurrentLocation.Click += new System.EventHandler(this.buttonUseCurrentLocation_Click);
             // 
-            // locatorHUD1
-            // 
-            this.locatorHUD1.BackColor = System.Drawing.Color.Black;
-            this.locatorHUD1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.locatorHUD1.Location = new System.Drawing.Point(0, 0);
-            this.locatorHUD1.Name = "locatorHUD1";
-            this.locatorHUD1.Size = new System.Drawing.Size(260, 60);
-            this.locatorHUD1.TabIndex = 3;
-            // 
             // buttonClose
             // 
             this.buttonClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -320,6 +312,15 @@
             this.toolTip1.SetToolTip(this.buttonClose, "Close the locator");
             this.buttonClose.UseVisualStyleBackColor = true;
             this.buttonClose.Click += new System.EventHandler(this.buttonClose_Click);
+            // 
+            // locatorHUD1
+            // 
+            this.locatorHUD1.BackColor = System.Drawing.Color.Black;
+            this.locatorHUD1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.locatorHUD1.Location = new System.Drawing.Point(0, 0);
+            this.locatorHUD1.Name = "locatorHUD1";
+            this.locatorHUD1.Size = new System.Drawing.Size(260, 60);
+            this.locatorHUD1.TabIndex = 3;
             // 
             // FormLocator
             // 
@@ -340,6 +341,7 @@
             this.Controls.Add(this.groupBoxDestination);
             this.ForeColor = System.Drawing.Color.White;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FormLocator";
             this.Text = "Waypoint Locator";
             this.toolTip1.SetToolTip(this, "Click and drag the form background to move");

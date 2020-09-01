@@ -87,40 +87,46 @@ namespace SRVTracker
             else
                 action();
 
-            try
+            if (File.Exists(filename))
             {
-                Stream statusStream = File.OpenRead(filename);
-                action = new Action(() => { listBoxLocations.BeginUpdate(); });
-                if (listBoxLocations.InvokeRequired)
-                    listBoxLocations.Invoke(action);
-                else
-                    action();
-                using (StreamReader reader = new StreamReader(statusStream))
+                try
                 {
-                    while (!reader.EndOfStream)
+                    Stream statusStream = File.OpenRead(filename);
+                    action = new Action(() => { listBoxLocations.BeginUpdate(); });
+                    if (listBoxLocations.InvokeRequired)
+                        listBoxLocations.Invoke(action);
+                    else
+                        action();
+                    using (StreamReader reader = new StreamReader(statusStream))
                     {
-                        try
+                        while (!reader.EndOfStream)
                         {
-                            EDLocation location = EDLocation.FromString(reader.ReadLine());
-                            action = new Action(() => { listBoxLocations.Items.Add(location); });
-                            if (listBoxLocations.InvokeRequired)
-                                listBoxLocations.Invoke(action);
-                            else
-                                action();
+                            try
+                            {
+                                EDLocation location = EDLocation.FromString(reader.ReadLine());
+                                if (location != null)
+                                {
+                                    action = new Action(() => { listBoxLocations.Items.Add(location); });
+                                    if (listBoxLocations.InvokeRequired)
+                                        listBoxLocations.Invoke(action);
+                                    else
+                                        action();
+                                }
+                            }
+                            catch { }
                         }
-                        catch { }
+                        reader.Close();
                     }
-                    reader.Close();
                 }
-            }
-            catch { }
-            finally
-            {
-                action = new Action(() => { listBoxLocations.EndUpdate(); });
-                if (listBoxLocations.InvokeRequired)
-                    listBoxLocations.Invoke(action);
-                else
-                    action();
+                catch { }
+                finally
+                {
+                    action = new Action(() => { listBoxLocations.EndUpdate(); });
+                    if (listBoxLocations.InvokeRequired)
+                        listBoxLocations.Invoke(action);
+                    else
+                        action();
+                }
             }
             UpdateButtons();
         }

@@ -41,7 +41,7 @@ namespace DataCollator
 
         private void UDPListener_DataReceived(object sender, string data)
         {
-            Task.Run(new Action(() => { notificationServer?.SendNotification($"{data}"); }));
+            Task.Run(new Action(() => { notificationServer?.ProcessNotification($"{data}"); }));
         }
     }
 }

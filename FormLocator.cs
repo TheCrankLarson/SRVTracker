@@ -21,7 +21,6 @@ namespace SRVTracker
     public partial class FormLocator : Form
     {
         private EDLocation _targetPosition = null;
-        private WebClient _webClient = new WebClient();
         private bool _commanderListShowing = false;
         private static Size _normalView = new Size(558, 174);
         private static Size _miniView = new Size(260, 60);

@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Forms;
 using EDTracking;
+using System.Net;
+using System.Text.Json;
 
 namespace SRVTracker
 {
@@ -33,6 +35,10 @@ namespace SRVTracker
         private bool _generatingLeaderboard = false;
         private object _lockListView = new object();
         private ConfigSaverClass _formConfig = null;
+        private WebClient _webClient = new WebClient();
+        private string _serverRaceGuid = "";
+        private NotableEvents _clientNotableEvents = null;
+        private int _serverNotableEventsIndex = 0;
 
         public FormRaceMonitor()
         {
@@ -347,14 +353,14 @@ namespace SRVTracker
                             // Move past anyone who is at a higher waypoint
                             while ((i < positions.Count) && _racersStatus[positions[i]].WaypointIndex < _racersStatus[racer].WaypointIndex && !_racersStatus[positions[i]].Eliminated)
                                 i++;
-                            if ( (i < positions.Count) && _racersStatus[positions[i]].Eliminated && (i>0) )
+                            if ( (i < positions.Count) && _racersStatus[positions[i]].Eliminated && (i > finishedIndex + 1))
                                 i--;
                             else
                             {
                                 // Now we check distances (as these positions are heading to the same waypoint)
                                 while ((i < positions.Count) && (_racersStatus[positions[i]].WaypointIndex == _racersStatus[racer].WaypointIndex) && (_racersStatus[positions[i]].DistanceToWaypoint < _racersStatus[racer].DistanceToWaypoint) && (!_racersStatus[positions[i]].Eliminated))
                                     i++;
-                                if ( (i < positions.Count) && _racersStatus[positions[i]].Eliminated && (i>0) )
+                                if ( (i < positions.Count) && _racersStatus[positions[i]].Eliminated && (i > finishedIndex + 1))
                                     i--;
                             }
                         }
@@ -388,7 +394,7 @@ namespace SRVTracker
                     if (_racersStatus != null)
                     {
                         if (_racersStatus[leaderBoard[i]].Finished)
-                            status.AppendLine(EDRaceStatus.StatusMessages["Completed"]);
+                            status.AppendLine(EDRace.StatusMessages["Completed"]);
                         //status.AppendLine($"({_racersStatus[leaderBoard[i]].FinishTime.Subtract(EDRaceStatus.StartTime):hh\\:mm\\:ss})");
                         else
                         {
@@ -409,7 +415,7 @@ namespace SRVTracker
                         }
                     }
                     else
-                        status.AppendLine(EDRaceStatus.StatusMessages["Ready"]);
+                        status.AppendLine(EDRace.StatusMessages["Ready"]);
                 }
 
                 if (!_lastStatusExport.Equals(status.ToString()))
@@ -423,56 +429,7 @@ namespace SRVTracker
                 }
             }
 
-            String trackingTarget = "";
-            if (checkBoxClosestPlayerTarget.Checked)
-            {
-                trackingTarget = FormLocator.ClosestCommander;
-            }
-            else
-                trackingTarget = FormLocator.GetLocator().TrackingTarget;
-
-            if (checkBoxExportTarget.Checked && !_lastTrackingTarget.Equals(trackingTarget.ToString()))
-            {
-                try
-                {
-                    File.WriteAllText(textBoxExportTargetFile.Text, trackingTarget.ToString());
-                    _lastTrackingTarget = trackingTarget.ToString();
-                }
-                catch { }
-            }
-
-            if (checkBoxExportTargetMaxSpeed.Checked)
-            {
-                string exportMaxSpeed = "";
-                if (_racersStatus != null && _racersStatus.ContainsKey(trackingTarget))
-                    exportMaxSpeed = _racersStatus[trackingTarget].MaxSpeedInMS.ToString("F1");
-
-                if (!exportMaxSpeed.Equals(_lastExportTargetMaxSpeed))
-                {
-                    try
-                    {
-                        File.WriteAllText(textBoxExportTargetMaxSpeedFile.Text, exportMaxSpeed);
-                        _lastExportTargetMaxSpeed = exportMaxSpeed;
-                    }
-                    catch { }
-                }
-            }
-
-            if (checkBoxExportTargetPitstops.Checked)
-            {
-                string exportPitstops = "";
-                if (_racersStatus != null && _racersStatus.ContainsKey(trackingTarget))
-                    exportPitstops = _racersStatus[trackingTarget].PitStopCount.ToString();
-                if (!exportPitstops.Equals(_lastExportTargetPitstops))
-                {
-                    try
-                    {
-                        File.WriteAllText(textBoxExportTargetPitstopsFile.Text, exportPitstops);
-                        _lastExportTargetPitstops = exportPitstops;
-                    }
-                    catch { }
-                }
-            }
+            ExportTrackingInfo();
 
             if (checkBoxExportLeaderboard.Checked)
             {
@@ -744,11 +701,93 @@ namespace SRVTracker
                 MessageBox.Show(this, "At least one commander is required to start a race", "No participants", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+
+            if (checkBoxServerMonitoring.Checked)
+                if (!StartServerMonitoredRace())
+                    return;
+            else
+                StartClientMonitoredRace();
+
             checkBoxAutoAddCommanders.Checked = false;
+            buttonStartRace.Enabled = false;
+            buttonStopRace.Enabled = true;
+            buttonRaceHistory.Enabled = true;
+
+        }
+
+        private bool StartServerMonitoredRace()
+        {
+            // We send the race info to the server with StartRace command - this starts the monitoring on the server
+            // We then just need to download results, and not keep track of status updates
+
+            //string raceGuid = "";
+            try
+            {
+                //Stream statusStream = _webClient.OpenRead($"http://{FormLocator.ServerAddress}:11938/DataCollator/startrace");
+
+                using (WebClient wc = new WebClient())
+                {
+                    wc.Headers[HttpRequestHeader.ContentType] = "application/x-www-form-urlencoded";
+                    string response = wc.UploadString($"http://{FormLocator.ServerAddress}:11938/DataCollator/startrace", JsonSerializer.Serialize(_race));
+                    Guid raceGuid = Guid.Empty;
+                    if (Guid.TryParse(response, out raceGuid))
+                    {
+                        _serverRaceGuid = response;
+                        Action action = new Action(() =>
+                       {
+                           textBoxServerRaceGuid.Text = _serverRaceGuid;
+                       });
+                        if (textBoxServerRaceGuid.InvokeRequired)
+                            textBoxServerRaceGuid.Invoke(action);
+                        else
+                            action();
+
+                        action = new Action(() =>
+                        {
+                            textBoxRaceStatusServerUrl.Text = $"http://{FormLocator.ServerAddress}:11938/DataCollator/startrace";
+                        });
+                        if (textBoxRaceStatusServerUrl.InvokeRequired)
+                            textBoxRaceStatusServerUrl.Invoke(action);
+                        else
+                            action();
+                    }
+                    else
+                    {
+                        MessageBox.Show($"Unexpected server response:{Environment.NewLine}{response}", "Failed to start race", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return false;
+                    }
+                    CommanderWatcher.UpdateReceived -= CommanderWatcher_UpdateReceived; // We don't want client notifications anymore
+                    string notableEventOutputFile = "";
+                    if (checkBoxExportNotableEvents.Checked)
+                        notableEventOutputFile = textBoxNotableEventsFile.Text;
+                    _clientNotableEvents = new NotableEvents(notableEventOutputFile);
+                    _serverNotableEventsIndex = 0;
+                    timerRefreshFromServer.Start();
+                }
+                return true;
+            }
+            catch { }
+            return false;
+        }
+
+        private void StartClientMonitoredRace()
+        {
             _eliminatedRacers = new List<string>();
             _racersStatus = new Dictionary<string, EDRaceStatus>();
+
+            NotableEvents notableEvents = null;
+            if (checkBoxExportNotableEvents.Checked)
+            {
+                notableEvents = new NotableEvents(textBoxNotableEventsFile.Text);
+                notableEvents.UpdateInterval = (int)numericUpDownNotableEventDuration.Value;
+            }
+
             foreach (string commander in _racers.Keys)
-                _racersStatus.Add(commander, new EDRaceStatus(commander, _race.Route));
+            {
+                EDRaceStatus raceStatus = new EDRaceStatus(commander, _race.Route);
+                raceStatus.notableEvents = notableEvents;
+                _racersStatus.Add(commander, raceStatus);
+            }
             _nextWaypoint = _race.Route.Waypoints[1];
             listBoxWaypoints.Refresh();
             EDRaceStatus.EliminateOnDestruction = _race.EliminateOnVehicleDestruction;
@@ -756,21 +795,14 @@ namespace SRVTracker
             EDRaceStatus.EliminateOnShipFlight = _race.SRVOnly;
             _race.Start = DateTime.Now;
             EDRaceStatus.StartTime = _race.Start;
-            buttonStartRace.Enabled = false;
-            buttonStopRace.Enabled = true;
-            buttonRaceHistory.Enabled = true;
             EDRaceStatus.Started = true;
-            if (checkBoxExportNotableEvents.Checked)
-            {
-                EDRaceStatus.notableEvents = new NotableEvents(textBoxNotableEventsFile.Text);
-                EDRaceStatus.notableEvents.UpdateInterval = (int)numericUpDownNotableEventDuration.Value;
-            }
         }
 
         private void buttonStopRace_Click(object sender, EventArgs e)
         {
-            foreach (EDRaceStatus status in _racersStatus.Values)
-                status.Finished = true;
+            if (_racersStatus != null)
+                foreach (EDRaceStatus status in _racersStatus.Values)
+                    status.Finished = true;
             buttonStopRace.Enabled = false;
             buttonReset.Enabled = true;
         }
@@ -833,7 +865,7 @@ namespace SRVTracker
             using (FormStatusMessages formStatusMessages = new FormStatusMessages())
             {
                 if (formStatusMessages.ShowDialog(this) == DialogResult.OK)
-                    EDRaceStatus.StatusMessages = formStatusMessages.StatusMessages();
+                    EDRace.StatusMessages = formStatusMessages.StatusMessages();
             }
         }
         private void UpdateButtons()
@@ -922,6 +954,17 @@ namespace SRVTracker
 
             textBoxExportTargetMaxSpeedFile.Enabled = checkBoxExportTargetMaxSpeed.Checked;
             textBoxExportTargetPitstopsFile.Enabled = checkBoxExportTargetPitstops.Checked;
+
+            buttonUneliminate.Enabled = false;
+            if (listViewParticipants.SelectedItems.Count>0)
+            {
+                foreach (System.Windows.Forms.ListViewItem item in listViewParticipants.SelectedItems)
+                    if (item.SubItems[2].Text.Contains(EDRace.StatusMessages["Eliminated"]))
+                    {
+                        buttonUneliminate.Enabled = true;
+                        break;
+                    }
+            }
         }
 
         private void listViewParticipants_SelectedIndexChanged(object sender, EventArgs e)
@@ -1029,21 +1072,192 @@ namespace SRVTracker
         {
             UpdateButtons();
         }
-    }
 
-    class ListViewItemComparer : IComparer
-    {
-        public ListViewItemComparer()
+        private void timerRefreshFromServer_Tick(object sender, EventArgs e)
         {
+            timerRefreshFromServer.Stop();
+            if (String.IsNullOrEmpty(_serverRaceGuid))
+                return;
+
+            _webClient.Headers[HttpRequestHeader.ContentType] = "application/x-www-form-urlencoded";
+            string response = _webClient.UploadString($"http://{FormLocator.ServerAddress}:11938/DataCollator/racestatus", _serverRaceGuid);
+            Dictionary<string, string> raceStats = JsonSerializer.Deserialize< Dictionary<string, string>>(response);
+            UpdateFromServerStats(raceStats);
+            ExportTrackingInfo();
+            timerRefreshFromServer.Start();
         }
-        public int Compare(object x, object y)
+
+        private void UpdateFromServerStats(Dictionary<string,string> serverStats)
         {
-            try
-            {                
-                return Convert.ToInt32(((System.Windows.Forms.ListViewItem)x).SubItems[0].Text) - Convert.ToInt32(((System.Windows.Forms.ListViewItem)y).SubItems[0].Text);
+            // Export any statuses and update our list view from the data we've received from the server
+            bool changeDetected = false;
+
+            // Server sends us all the notable events, so we only fire any that are new
+            string[] notableEvents = serverStats["NotableEvents"].Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+            while (_serverNotableEventsIndex<notableEvents.Length)
+            {
+                _clientNotableEvents.AddEvent(notableEvents[_serverNotableEventsIndex]);
+                _serverNotableEventsIndex++;
             }
-            catch { }
-            return 1;
+
+            // We have the leaderboard, so now we retrieve the status for each racer in order
+            if (checkBoxExportStatus.Checked)
+            {
+                if (!_lastStatusExport.Equals(serverStats["Status"]))
+                {
+                    try
+                    {
+                        File.WriteAllText(textBoxExportStatusFile.Text, serverStats["Status"]);
+                        _lastStatusExport = serverStats["Status"];
+                        changeDetected = true;
+                    }
+                    catch { }
+                }
+            }
+
+            if (checkBoxExportLeaderboard.Checked)
+            {
+                if (!_lastLeaderboardExport.Equals(serverStats["Positions"]))
+                {
+                    try
+                    {
+                        File.WriteAllText(textBoxExportLeaderboardFile.Text, serverStats["Positions"]);
+                        _lastLeaderboardExport = serverStats["Positions"];
+                        changeDetected = true;
+                    }
+                    catch { }
+                }
+            }
+
+            if (checkBoxExportSpeed.Checked)
+            {
+                if (!_lastSpeedExport.Equals(serverStats["Speeds"]))
+                {
+                    try
+                    {
+                        File.WriteAllText(textBoxExportSpeedFile.Text, serverStats["Speeds"]);
+                        _lastSpeedExport = serverStats["Speeds"];
+                        changeDetected = true;
+                    }
+                    catch { }
+                }
+            }
+
+            // Get current positions and sort the list view
+            if (changeDetected)
+            {
+                List<string> positions = serverStats["Positions"].Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).ToList<string>();
+                List<string> statuses = serverStats["Status"].Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).ToList<string>();
+                List<string> distancesToWaypoint = serverStats["DistanceToWaypoint"].Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).ToList<string>();
+
+                Action action = new Action(() =>
+                {
+                    lock (_lockListView)
+                    {
+                        listViewParticipants.BeginUpdate();
+                        if (!_lastRacePositions.Equals(serverStats["Positions"]))
+                        {
+                            // If positions have changed, we clear and re-add in correct order
+                            listViewParticipants.Items.Clear();
+                            for (int i = 0; i < positions.Count; i++)
+                            {
+                                if (!_racers[positions[i]].SubItems[0].Text.Equals((i + 1).ToString()))
+                                    _racers[positions[i]].SubItems[0].Text = (i + 1).ToString();
+                                listViewParticipants.Items.Add(_racers[positions[i]]);
+                            }
+                        }
+                        for (int i = 0; i < positions.Count; i++)
+                        {
+                            _racers[positions[i]].SubItems[2].Text = statuses[i];
+                            _racers[positions[i]].SubItems[3].Text = distancesToWaypoint[i];
+                        }
+                        listViewParticipants.EndUpdate();
+                    }
+                });
+                if (listViewParticipants.InvokeRequired)
+                    listViewParticipants.Invoke(action);
+                else
+                    action();
+                _lastRacePositions = serverStats["Positions"];
+            }
+        }
+
+        private EDRaceStatus GetCommanderRaceStatus(string commander)
+        {
+            if (checkBoxServerMonitoring.Checked && !String.IsNullOrEmpty(_serverRaceGuid))
+            {
+                // We need to retrieve the status from the server
+                try
+                {
+                    string raceStatus = _webClient.DownloadString($"http://{FormLocator.ServerAddress}:11938/DataCollator/getcommanderraceevents/{_serverRaceGuid}/{commander}");
+                    if (raceStatus.Length>2)
+                        return EDRaceStatus.FromJson(raceStatus);
+                }
+                catch { }
+            }
+            else if (_racersStatus != null && _racersStatus.ContainsKey(commander))
+                    return _racersStatus[commander];
+         
+            return null;
+        }
+        
+        private void ExportTrackingInfo()
+        {
+            String trackingTarget = "";
+            if (checkBoxClosestPlayerTarget.Checked)
+            {
+                trackingTarget = FormLocator.ClosestCommander;
+            }
+            else
+                trackingTarget = FormLocator.GetLocator().TrackingTarget;
+
+            EDRaceStatus commanderStatus = GetCommanderRaceStatus(trackingTarget);
+            if (commanderStatus == null)
+                return;
+
+            if (checkBoxExportTarget.Checked && !_lastTrackingTarget.Equals(trackingTarget.ToString()))
+            {
+                try
+                {
+                    File.WriteAllText(textBoxExportTargetFile.Text, trackingTarget.ToString());
+                    _lastTrackingTarget = trackingTarget.ToString();
+                }
+                catch { }
+            }
+
+            if (checkBoxExportTargetMaxSpeed.Checked)
+            {
+                string exportMaxSpeed = commanderStatus.MaxSpeedInMS.ToString("F1");
+
+                if (!exportMaxSpeed.Equals(_lastExportTargetMaxSpeed))
+                {
+                    try
+                    {
+                        File.WriteAllText(textBoxExportTargetMaxSpeedFile.Text, exportMaxSpeed);
+                        _lastExportTargetMaxSpeed = exportMaxSpeed;
+                    }
+                    catch { }
+                }
+            }
+
+            if (checkBoxExportTargetPitstops.Checked)
+            {
+                string exportPitstops = commanderStatus.PitStopCount.ToString();
+                if (!exportPitstops.Equals(_lastExportTargetPitstops))
+                {
+                    try
+                    {
+                        File.WriteAllText(textBoxExportTargetPitstopsFile.Text, exportPitstops);
+                        _lastExportTargetPitstops = exportPitstops;
+                    }
+                    catch { }
+                }
+            }
+        }
+
+        private void buttonUneliminate_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

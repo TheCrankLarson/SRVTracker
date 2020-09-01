@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Globalization;
 using System.Text.Json;
+using System.Diagnostics;
 
 namespace EDTracking
 {
@@ -58,7 +59,9 @@ namespace EDTracking
             {
                 return (EDLocation)JsonSerializer.Deserialize(location, typeof(EDLocation));
             }
-            catch { }
+            catch {
+                Debug.WriteLine(location);
+            }
             return null;
         }
 

@@ -17,7 +17,9 @@ namespace EDTracking
         public List<string> Contestants { get; set; } = new List<string>();
 
         // For moving race monitoring away from the form.  Will be public once that work complete
-        private Dictionary<string, EDRaceStatus> _statuses = new Dictionary<string, EDRaceStatus>();  
+        public Dictionary<string, EDRaceStatus> Statuses { get; set; } = new Dictionary<string, EDRaceStatus>();
+        private NotableEvents _notableEvents;
+        private Dictionary<string, List<EDEvent>> _commanderEventHistory = new Dictionary<string, List<EDEvent>>();
 
         public DateTime Start { get; set; } = DateTime.MinValue;
         private bool _raceStarted = false;
@@ -27,10 +29,20 @@ namespace EDTracking
         public bool ShipOnly { get; set; } = false;
         public bool AllowPitstops { get; set; } = true;
         public bool AllowNightVision { get; set; } = true;
-
+        public static Dictionary<string, string> StatusMessages { get; set; } = new Dictionary<string, string>()
+                {
+                    { "Eliminated", "Eliminated" },
+                    { "Completed", "Completed" },
+                    { "Pitstop", "Pitstop" },
+                    { "EliminatedNotification", " has been eliminated" },
+                    { "CompletedNotification", " has finished the race" },
+                    { "PitstopNotification", " is in the pits" },
+                    { "Ready", "" }
+                };
 
         public EDRace()
-        { }
+        {
+        }
 
         public EDRace(string name,EDRoute route)
         {
@@ -48,11 +60,11 @@ namespace EDTracking
             return JsonSerializer.Serialize(this);
         }
 
-        public static EDRace FromString(string location)
+        public static EDRace FromString(string raceInfo)
         {
             try
             {
-                return (EDRace)JsonSerializer.Deserialize(location, typeof(EDRace));
+                return (EDRace)JsonSerializer.Deserialize(raceInfo, typeof(EDRace));
             }
             catch { }
             return null;
@@ -82,13 +94,33 @@ namespace EDTracking
         {
             if (_raceStarted)
                 return;
+
             Start = DateTime.Now;
-            _statuses = new Dictionary<string, EDRaceStatus>();
+            Statuses = new Dictionary<string, EDRaceStatus>();
+            if (asServer)
+            {
+                _notableEvents = new NotableEvents("", false);
+                _commanderEventHistory = new Dictionary<string, List<EDEvent>>();
+            }
+
             foreach (string contestant in Contestants)
-                _statuses.Add(contestant, new EDRaceStatus(contestant, Route));
+            {
+                EDRaceStatus raceStatus = new EDRaceStatus(contestant, Route);
+                if (asServer)
+                    raceStatus.notableEvents = _notableEvents;
+                Statuses.Add(contestant, raceStatus);
+            }
             if (!asServer)
+            {
                 CommanderWatcher.UpdateReceived += CommanderWatcher_UpdateReceived;
+            }
+
             _raceStarted = true;
+        }
+
+        public NotableEvents NotableEvents
+        {
+            get { return _notableEvents; }
         }
 
         private void CommanderWatcher_UpdateReceived(object sender, EDEvent edEvent)
@@ -96,10 +128,10 @@ namespace EDTracking
             Task.Run(new Action(()=> { UpdateStatus(edEvent); })) ;
         }
 
-        private List<string> RacePositions()
+        public List<string> RacePositions()
         {
             List<string> positions = new List<string>();
-            if (_statuses == null)
+            if (Statuses == null)
             {
                 if (Contestants.Count > 0)
                     return Contestants;
@@ -107,9 +139,9 @@ namespace EDTracking
             }               
 
             int finishedIndex = -1;
-            foreach (string racer in _statuses.Keys)
+            foreach (string racer in Statuses.Keys)
             {
-                if (_statuses[racer].Finished)
+                if (Statuses[racer].Finished)
                 {
                     // If the racers are finished, then their position depends upon their time
                     if (finishedIndex<0)
@@ -125,7 +157,7 @@ namespace EDTracking
                     {
                         // We need to work out where to add this finisher (based on finish time)
                         int i = 0;
-                        while ((i <= finishedIndex) && (_statuses[racer].FinishTime > _statuses[positions[i]].FinishTime))
+                        while ((i <= finishedIndex) && (Statuses[racer].FinishTime > Statuses[positions[i]].FinishTime))
                             i++;
                         if (i < positions.Count)
                             positions.Insert(i, racer);
@@ -134,7 +166,7 @@ namespace EDTracking
                         finishedIndex = i;
                     }
                 }
-                else if (_statuses[racer].Eliminated)
+                else if (Statuses[racer].Eliminated)
                 {
                     // Eliminated racers have no position, we can just add them at the end
                     positions.Add(racer);
@@ -150,16 +182,16 @@ namespace EDTracking
                         if (i < positions.Count)
                         {
                             // Move past anyone who is at a higher waypoint
-                            while ((i < positions.Count) && _statuses[positions[i]].WaypointIndex < _statuses[racer].WaypointIndex && !_statuses[positions[i]].Eliminated)
+                            while ((i < positions.Count) && Statuses[positions[i]].WaypointIndex < Statuses[racer].WaypointIndex && !Statuses[positions[i]].Eliminated)
                                 i++;
-                            if ( (i < positions.Count) && _statuses[positions[i]].Eliminated && (i>0) )
+                            if ( (i < positions.Count) && Statuses[positions[i]].Eliminated && (i > finishedIndex+1))
                                 i--;
                             else
                             {
                                 // Now we check distances (as these positions are heading to the same waypoint)
-                                while ((i < positions.Count) && (_statuses[positions[i]].WaypointIndex == _statuses[racer].WaypointIndex) && (_statuses[positions[i]].DistanceToWaypoint < _statuses[racer].DistanceToWaypoint) && (!_statuses[positions[i]].Eliminated))
+                                while ((i < positions.Count) && (Statuses[positions[i]].WaypointIndex == Statuses[racer].WaypointIndex) && (Statuses[positions[i]].DistanceToWaypoint < Statuses[racer].DistanceToWaypoint) && (!Statuses[positions[i]].Eliminated))
                                     i++;
-                                if ( (i < positions.Count) && _statuses[positions[i]].Eliminated && (i>0) )
+                                if ( (i < positions.Count) && Statuses[positions[i]].Eliminated && (i > finishedIndex+1))
                                     i--;
                             }
                         }
@@ -173,12 +205,88 @@ namespace EDTracking
             return positions;
         }
 
+        public string ExportRaceStatistics(int maxStatusLength = 20)
+        {
+            // Export the current leaderboard
+            List<string> leaderBoard = RacePositions();
+            Dictionary<string, string> statsTable = new Dictionary<string, string>();
+
+            StringBuilder status = new StringBuilder();
+            StringBuilder leaderBoardExport = new StringBuilder();
+            StringBuilder speeds = new StringBuilder();
+            StringBuilder maxSpeeds = new StringBuilder();
+            StringBuilder distanceToWaypoint = new StringBuilder();
+
+            for (int i = 0; i < leaderBoard.Count; i++)
+            {
+                if (leaderBoard[i].Length > maxStatusLength)
+                    leaderBoardExport.AppendLine(leaderBoard[i].Substring(0, maxStatusLength));
+                else
+                    leaderBoardExport.AppendLine(leaderBoard[i]);
+
+                if (this.Start>DateTime.MinValue && Statuses != null)
+                {
+                    maxSpeeds.AppendLine($"{Statuses[leaderBoard[i]].MaxSpeedInMS:F0}");
+                    if (!Statuses[leaderBoard[i]].Eliminated && !Statuses[leaderBoard[i]].Finished)
+                    {
+                        speeds.AppendLine($"{Statuses[leaderBoard[i]].SpeedInMS:F0}");
+                    }
+                    else
+                        speeds.AppendLine();
+                }
+                else
+                    speeds.AppendLine();
+
+                if (Statuses != null)
+                {
+                    if (Statuses[leaderBoard[i]].Finished)
+                        status.AppendLine(StatusMessages["Completed"]);
+                    //status.AppendLine($"({_racersStatus[leaderBoard[i]].FinishTime.Subtract(EDRaceStatus.StartTime):hh\\:mm\\:ss})");
+                    else
+                    {
+                        string s = Statuses[leaderBoard[i]].ToString();
+                        if (s.Length > maxStatusLength)
+                            s = s.Substring(0, maxStatusLength);
+                        status.AppendLine(s);
+                    }
+
+                    distanceToWaypoint.AppendLine(Statuses[leaderBoard[i]].DistanceToWaypointDisplay);
+                }
+                else
+                {
+                    status.AppendLine(StatusMessages["Ready"]);
+                    distanceToWaypoint.AppendLine("NA");
+                }
+            }
+            
+            statsTable.Add("Positions", leaderBoardExport.ToString());
+            statsTable.Add("Speeds", speeds.ToString());
+            statsTable.Add("MaxSpeeds", maxSpeeds.ToString());
+            statsTable.Add("Status", status.ToString());
+            statsTable.Add("DistanceToWaypoint", distanceToWaypoint.ToString());
+            statsTable.Add("NotableEvents", String.Join(Environment.NewLine, NotableEvents.EventQueue));
+
+            return JsonSerializer.Serialize(statsTable);
+        }
+
 
         public void UpdateStatus(EDEvent edEvent)
         {
-            if (_statuses != null)
-                if (_statuses.ContainsKey(edEvent.Commander))
-                    _statuses[edEvent.Commander].UpdateStatus(edEvent);
+            if (Statuses != null)
+            {
+                if (Statuses.ContainsKey(edEvent.Commander))
+                    Statuses[edEvent.Commander].UpdateStatus(edEvent);
+                if (!_commanderEventHistory.ContainsKey(edEvent.Commander))
+                    _commanderEventHistory.Add(edEvent.Commander, new List<EDEvent>());
+                _commanderEventHistory[edEvent.Commander].Add(edEvent);
+            }
+        }
+
+        public List<EDEvent> GetCommanderEventHistory(string commander)
+        {
+            if (_commanderEventHistory.ContainsKey(commander))
+                return _commanderEventHistory[commander];
+            return new List<EDEvent>();
         }
     }
 }

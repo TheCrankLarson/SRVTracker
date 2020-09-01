@@ -12,6 +12,7 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Device.Location;
 using EDTracking;
+using System.Text.Json;
 
 namespace DataCollator
 {
@@ -28,7 +29,7 @@ namespace DataCollator
         private Dictionary<string, EDEvent> _playerStatus = new Dictionary<string, EDEvent>(); //  Store last known status (with coordinates) of client
         private Dictionary<string, EDRaceStatus> _commanderStatus = new Dictionary<string, EDRaceStatus>();
         private readonly object _notificationLock = new object();
-        private int _pruneCounter = 0;
+        //private int _pruneCounter = 0;
         private FileStream _logStream = null;
         private Dictionary<Guid, EDRace> _races;
         private DateTime _lastStaleDataCheck = DateTime.Now;
@@ -146,7 +147,7 @@ namespace DataCollator
             }
         }
 
-        public void SendNotification(string message)
+        public void ProcessNotification(string message)
         {
             // Log the notification for retrieval by clients that are polling
             try
@@ -154,16 +155,18 @@ namespace DataCollator
                 UpdateCommanderStatus(message);
             }
             catch { }
+
+            // We have no need for notifications, we just need to keep track of commanders
+            /*
             lock (_notificationLock)
             {
                 _notifications.Add(message);
-
             }
 
             _pruneCounter++;
             if (_pruneCounter>500)
                 PruneNotifications();
-
+            */
             // Send the notification to any listening Urls
             if (_registeredNotificationUrls.Count > 0)
             {
@@ -201,7 +204,7 @@ namespace DataCollator
                 else if (requestUri.StartsWith("/datacollator/racestatus"))
                 {
                     action = (() => {
-                        SendRaceStatus(context);
+                        SendRaceStatus(requestUri, context, sRequest);
                     });
                 }
                 else if (requestUri.StartsWith("/datacollator/startrace"))
@@ -212,18 +215,64 @@ namespace DataCollator
                 }
                 else if (requestUri.StartsWith("/datacollator/getrace"))
                 {
-                    action = (() => {
-                        GetRace(sRequest, context);
-                    });
+                    if (requestUri.Length > 22)
+                    {
+                        // Guid can be specified in the Url or in POST data.  This one has something in the Url
+                        Guid raceGuid = Guid.Empty;
+                        Guid.TryParse(requestUri.Substring(22), out raceGuid); 
+                        action = (() =>
+                        {
+                            GetRace(raceGuid, context);
+                        });
+                    }
+                    else
+                    {
+                        // No Guid in the URL, so check request content
+                        action = (() =>
+                        {
+                            GetRace(sRequest, context);
+                        });
+                    }
+                }
+                else if (requestUri.StartsWith("/datacollator/getcommanderraceevents"))
+                {
+                    if (requestUri.Length > 37)
+                    {
+                        // Guid can be specified in the Url or in POST data.  This one has something in the Url
+                        try
+                        {
+                            string[] requestParams = requestUri.Substring(37).Split('/');
+                            Guid raceGuid = Guid.Empty;
+                            Guid.TryParse(requestParams[0], out raceGuid);
+                            action = (() =>
+                            {
+                                GetCommanderRaceEvents(raceGuid, requestParams[1], context);
+                            });
+                        }
+                        catch
+                        {
+                            action = (() =>
+                            {
+                                WriteErrorResponse(context.Response, HttpStatusCode.NotFound);
+                            });
+                        }
+                    }
+                    else
+                    {
+                        action = (() =>
+                        {
+                            GetCommanderRaceEvents(sRequest, context);
+                        });
+                    }
                 }
                 else
                     action = (() => {
                         DetermineResponse(sRequest, context);
                     });
                 Task.Run(action);
-                _Listener.BeginGetContext(new AsyncCallback(ListenerCallback), _Listener);
             }
             catch { }
+            _Listener.BeginGetContext(new AsyncCallback(ListenerCallback), _Listener);
         }
 
         private void WriteErrorResponse(HttpListenerResponse httpResponse, HttpStatusCode errorCode)
@@ -233,13 +282,13 @@ namespace DataCollator
             httpResponse.Close();
         }
 
-        private void WriteResponse(HttpListenerResponse httpResponse, string response)
+        private void WriteResponse(HttpListenerResponse httpResponse, string response, int returnStatusCode = (int)HttpStatusCode.OK)
         {
             try
             {
                 byte[] buffer = System.Text.Encoding.UTF8.GetBytes(response);
                 httpResponse.ContentLength64 = buffer.Length;
-                httpResponse.StatusCode = (int)HttpStatusCode.OK;
+                httpResponse.StatusCode = returnStatusCode;
 
                 using (Stream output = httpResponse.OutputStream)
                     output.Write(buffer, 0, buffer.Length);
@@ -250,9 +299,9 @@ namespace DataCollator
             catch { }
         }
 
-        private void WriteResponse(HttpListenerContext Context, string response)
+        private void WriteResponse(HttpListenerContext Context, string response, int returnStatusCode = (int)HttpStatusCode.OK)
         {
-            WriteResponse(Context.Response, response);
+            WriteResponse(Context.Response, response, returnStatusCode);
         }
 
         private void StartRace(string request, HttpListenerContext Context)
@@ -269,35 +318,71 @@ namespace DataCollator
             }
             catch (Exception ex)
             {
-                WriteResponse(Context,$"Error while initialising race: {ex.Message}");
+                WriteResponse(Context,$"Error while initialising race:{Environment.NewLine}{ex}", (int)HttpStatusCode.InternalServerError);
             }
         }
 
-        private void GetRace(string request, HttpListenerContext Context)
+        private void GetRace(Guid raceGuid, HttpListenerContext Context)
         {
-            Guid raceGuid = Guid.Empty;
-            Guid.TryParse(request, out raceGuid);
             if (raceGuid != Guid.Empty && _races.ContainsKey(raceGuid))
                 WriteResponse(Context, _races[raceGuid].ToString());
             else
                 WriteErrorResponse(Context.Response, HttpStatusCode.NotFound);
         }
 
-        private void SendRaceStatus(HttpListenerContext Context)
+        private void GetRace(string request, HttpListenerContext Context)
         {
-            StringBuilder racersStatus = new StringBuilder();
-            try
-            {
-                if (_commanderStatus.Count > 0)
-                    foreach (EDRaceStatus raceStatus in _commanderStatus.Values)
-                        racersStatus.AppendLine(raceStatus.ToJson());
-            }
-            catch (Exception ex)
-            {
-                racersStatus.AppendLine(ex.ToString());
-            }
+            Guid raceGuid = Guid.Empty;
+            Guid.TryParse(request, out raceGuid);
+            GetRace(raceGuid, Context);
+        }
 
-            WriteResponse(Context, racersStatus.ToString());
+        private void GetCommanderRaceEvents(Guid raceGuid, string commander, HttpListenerContext Context)
+        {
+            if (raceGuid != Guid.Empty && _races.ContainsKey(raceGuid))
+            {
+                List<EDEvent> raceEvents = _races[raceGuid].GetCommanderEventHistory(commander);
+                WriteResponse(Context, JsonSerializer.Serialize(raceEvents));
+            }
+            else
+                WriteErrorResponse(Context.Response, HttpStatusCode.NotFound);
+        }
+
+        private void GetCommanderRaceEvents(string raceGuid, string commander, HttpListenerContext Context)
+        {
+            Guid guid = Guid.Empty;
+            Guid.TryParse(raceGuid, out guid);
+            GetCommanderRaceEvents(guid, commander, Context);
+        }
+
+        private void GetCommanderRaceEvents(string request, HttpListenerContext Context)
+        {
+            string[] requestParams = request.Split(':');
+            GetCommanderRaceEvents(requestParams[0], requestParams[1], Context);
+        }
+
+        private void SendRaceStatus(string requestUri, HttpListenerContext Context, string request)
+        {
+            string raceStatus = "";
+            Guid raceGuid = Guid.Empty;
+            if (requestUri.Length > 25)
+            {
+                // Guid can be specified in the Url or in POST data.  This one has something in the Url
+                Guid.TryParse(requestUri.Substring(25), out raceGuid);
+            }
+            else
+            {
+                // Check if we have Guid in POST payload
+                Guid.TryParse(request, out raceGuid);
+            }
+            if (raceGuid != Guid.Empty && _races.ContainsKey(raceGuid))
+            {
+                raceStatus = _races[raceGuid].ExportRaceStatistics();
+                WriteResponse(Context, raceStatus);
+            }
+            else
+                WriteErrorResponse(Context.Response, HttpStatusCode.NotFound);
+            
             if (DateTime.Now.Subtract(_lastStaleDataCheck).TotalMinutes > 120)
                 ClearStaleData();
         }
@@ -418,6 +503,7 @@ namespace DataCollator
             }
         }
 
+        /*
         private void PruneNotifications()
         {
             _pruneCounter = 0;
@@ -472,7 +558,7 @@ namespace DataCollator
                 }
             }
             catch { }
-        }
+        }*/
 
         private void ClearStaleData()
         {

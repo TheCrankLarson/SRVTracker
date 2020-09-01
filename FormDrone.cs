@@ -120,7 +120,7 @@ namespace SRVTracker
                 //if (foregroundWindow != _eliteGameWindow)
                 //    SetForegroundWindow(foregroundWindow);
             }
-            catch (Exception ex)
+            catch //(Exception ex)
             {
                 //MessageBox.Show(ex.Message);
             }

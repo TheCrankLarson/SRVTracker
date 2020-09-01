@@ -36,16 +36,7 @@ namespace EDTracking
         public static bool EliminateOnShipFlight { get; set; } = true;
         public static bool AllowPitStops { get; set; } = true;
         public static bool ShowDetailedStatus { get; set; } = false;
-        public static Dictionary<string,string> StatusMessages { get; set; } = new Dictionary<string, string>()
-                {
-                    { "Eliminated", "Eliminated" },
-                    { "Completed", "Completed" },
-                    { "Pitstop", "Pitstop" },
-                    { "EliminatedNotification", " has been eliminated" },
-                    { "CompletedNotification", " has finished the race" },
-                    { "PitstopNotification", " is in the pits" },
-                    { "Ready", "" }
-                };
+
 
         public string _lastStatus = "";
         public delegate void StatusChangedEventHandler(object sender, string commander, string status);
@@ -61,7 +52,7 @@ namespace EDTracking
         private bool _gotFirstSpeedReading = false;
         private double _lastLoggedMaxSpeed = 40;  // We don't log any maximum speeds below 40m/s
         private DateTime _pitStopStartTime = DateTime.MinValue;
-        public static NotableEvents notableEvents = null;
+        public NotableEvents notableEvents = null;
 
         public EDRaceStatus(EDEvent baseEvent)
         {
@@ -99,14 +90,14 @@ namespace EDTracking
         {
             StringBuilder status = new StringBuilder();
             if (Eliminated)
-                status.Append(StatusMessages["Eliminated"]);
+                status.Append(EDRace.StatusMessages["Eliminated"]);
             else if (Finished)
             {
                 TimeSpan timeSpan = FinishTime.Subtract(StartTime);
-                status.Append($"{StatusMessages["Completed"]} ({timeSpan.ToString("hh\\:mm\\:ss")})");
+                status.Append($"{EDRace.StatusMessages["Completed"]} ({timeSpan.ToString("hh\\:mm\\:ss")})");
             }
             else if (_inPits)
-                status.Append(StatusMessages["Pitstop"]);
+                status.Append(EDRace.StatusMessages["Pitstop"]);
             else
             {
                 if (Started)
@@ -190,6 +181,16 @@ namespace EDTracking
             StatusChanged?.Invoke(null, Commander, this.ToString());
         }
 
+        public bool Resurrect()
+        {
+            if (Eliminated)
+            {
+                Eliminated = false;
+                AddRaceHistory("Resurrected (elimination manually rescinded)");
+                return true;
+            }
+            return false;
+        }
 
         private bool isFlagSet(StatusFlags flag)
         {
@@ -250,7 +251,7 @@ namespace EDTracking
                         WaypointIndex++;
                         if (WaypointIndex >= Route.Waypoints.Count)
                         {
-                            notableEvents?.AddEvent($"{Commander}{StatusMessages["CompletedNotification"]}");
+                            notableEvents?.AddEvent($"{Commander}{EDRace.StatusMessages["CompletedNotification"]}");
                             Finished = true;
                             FinishTime = DateTime.Now;
                             WaypointIndex = 0;
@@ -274,7 +275,7 @@ namespace EDTracking
                 if (EliminateOnShipFlight)
                 {
                     Eliminated = true;
-                    notableEvents?.AddEvent($"{Commander}{StatusMessages["EliminatedNotification"]}");
+                    notableEvents?.AddEvent($"{Commander}{EDRace.StatusMessages["EliminatedNotification"]}");
                     DistanceToWaypoint = double.MaxValue;
                 }
                 _speedCalculationLocation = null; // If this occurred due to commander exploding, we need to clear the location otherwise we'll get a massive reading on respawn
@@ -288,7 +289,7 @@ namespace EDTracking
                     {
                         _inPits = true;
                         _pitStopStartTime = DateTime.Now;
-                        notableEvents?.AddEvent($"{Commander}{StatusMessages["PitstopNotification"]}");
+                        notableEvents?.AddEvent($"{Commander}{EDRace.StatusMessages["PitstopNotification"]}");
                         PitStopCount++;
                     }
                 }
@@ -317,7 +318,16 @@ namespace EDTracking
 
         public static EDRaceStatus FromJson(string json)
         {
-            return (EDRaceStatus)JsonSerializer.Deserialize(json, typeof(EDRaceStatus));
+            try
+            {
+                if (!String.IsNullOrEmpty(json))
+                    return (EDRaceStatus)JsonSerializer.Deserialize(json, typeof(EDRaceStatus));
+            }
+            catch
+            {
+                Debug.WriteLine(json);
+            }
+            return null;
         }
     }
 }

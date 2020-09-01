@@ -40,8 +40,8 @@ namespace SRVTracker
         private void DisplayMessages()
         {
             dataGridViewStatusMessages.Rows.Clear();
-            foreach (string eventName in EDRaceStatus.StatusMessages.Keys)
-                dataGridViewStatusMessages.Rows.Add(new string[] { eventName, EDRaceStatus.StatusMessages[eventName] });
+            foreach (string eventName in EDRace.StatusMessages.Keys)
+                dataGridViewStatusMessages.Rows.Add(new string[] { eventName, EDRace.StatusMessages[eventName] });
         }
 
         private void buttonLoad_Click(object sender, EventArgs e)
@@ -69,12 +69,15 @@ namespace SRVTracker
         {
             if (String.IsNullOrEmpty(file))
                 file = _defaultSaveFile;
-            try
+            if (File.Exists(file))
             {
-                EDRaceStatus.StatusMessages = JsonSerializer.Deserialize<Dictionary<string, string>>(File.ReadAllText(file));
-                return true;
+                try
+                {
+                    EDRace.StatusMessages = JsonSerializer.Deserialize<Dictionary<string, string>>(File.ReadAllText(file));
+                    return true;
+                }
+                catch { }
             }
-            catch { }
             return false;
         }
 

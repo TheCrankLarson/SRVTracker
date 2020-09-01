@@ -17,12 +17,15 @@ namespace EDTracking
 
         public int UpdateInterval { get; set; } = 5000;
 
-        public NotableEvents(string SaveFile = "")
+        public NotableEvents(string SaveFile = "", bool autoProcess = true)
         {
             _writeToFile = SaveFile;
-            _updateTimer.Interval = UpdateInterval;
-            _updateTimer.Elapsed += _updateTimer_Elapsed;
-            _updateTimer.Start();
+            if (autoProcess)
+            {
+                _updateTimer.Interval = UpdateInterval;
+                _updateTimer.Elapsed += _updateTimer_Elapsed;
+                _updateTimer.Start();
+            }
 
             if (!String.IsNullOrEmpty(_writeToFile))
             {   // Ensure the file is blank to start
@@ -32,6 +35,11 @@ namespace EDTracking
                 }
                 catch { }
             }
+        }
+
+        public Queue<string> EventQueue
+        {
+            get { return _notableEvents; }
         }
 
         private void _updateTimer_Elapsed(object sender, ElapsedEventArgs e)
@@ -61,6 +69,5 @@ namespace EDTracking
             if (!String.IsNullOrEmpty(eventInfo))
                 _notableEvents.Enqueue(eventInfo);
         }
-
     }
 }
