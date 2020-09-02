@@ -47,20 +47,17 @@ namespace SRVTracker
             if (_raceStatuses == null)
             {
                 // Need to retrieve race history from the server
+                string statusUrl = $"http://{FormLocator.ServerAddress}:11938/DataCollator/getcommanderracereport/{_serverRaceGuid}/{commander}";
                 try
                 {
                     using (WebClient webClient = new WebClient())
                     {
-                        string raceStatus = webClient.DownloadString($"http://{FormLocator.ServerAddress}:11938/DataCollator/getcommanderraceevents/{_serverRaceGuid}/{commander}");
-                        if (raceStatus.Length > 2)
-                            return EDRaceStatus.FromJson(raceStatus).RaceReport;
-                        else
-                            return "No report found";
+                        return webClient.DownloadString(statusUrl);
                     }
                 }
                 catch (Exception ex)
                 {
-                    return $"Error occurred while retrieving report:{Environment.NewLine}{ex}";
+                    return $"{statusUrl}{Environment.NewLine}{Environment.NewLine}Error occurred while retrieving report:{Environment.NewLine}{ex}";
                 }
             }
             else
@@ -93,7 +90,7 @@ namespace SRVTracker
                 {
                     try
                     {
-                        System.IO.File.WriteAllText(saveFileDialog.FileName,_raceStatuses[comboBoxCommander.Text].RaceReport);
+                        System.IO.File.WriteAllText(saveFileDialog.FileName, GetCommanderHistory(comboBoxCommander.Text));
                     }
                     catch (Exception ex)
                     {

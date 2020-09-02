@@ -79,6 +79,24 @@ namespace SRVTracker
                 {
                     formFirstRun.ShowDialog(this);
                     _clientId = formFirstRun.textBoxCommanderName.Text;
+                    if (String.IsNullOrEmpty(_clientId))
+                    {
+                        _clientId = ReadCommanderNameFromJournal();
+                        if (String.IsNullOrEmpty(_clientId))
+                        {
+                            AddLog("New client Id generated");
+                            _clientId = Guid.NewGuid().ToString();
+                        }
+                    }
+                    try
+                    {
+                        File.WriteAllText(ClientIdFile, _clientId);
+                        AddLog($"Saved client Id to file: {ClientIdFile}");
+                    }
+                    catch (Exception ex)
+                    {
+                        AddLog($"Error saving client Id to file: {ex.Message}");
+                    }
                 }
             }
             else
@@ -87,30 +105,10 @@ namespace SRVTracker
                 {
                     // Read the file
                     _clientId = File.ReadAllText(ClientIdFile);
+                    AddLog("Restored client Id");
                 }
                 catch { }
             }
-
-            if (String.IsNullOrEmpty(_clientId))
-            {
-                _clientId = ReadCommanderNameFromJournal();
-                if (String.IsNullOrEmpty(_clientId))
-                {
-                    AddLog("New client Id generated");
-                    _clientId = Guid.NewGuid().ToString();
-                }
-                try
-                {
-                    File.WriteAllText(ClientIdFile, _clientId);
-                    AddLog($"Saved client Id to file: {ClientIdFile}");
-                }
-                catch (Exception ex)
-                {
-                    AddLog($"Error saving client Id to file: {ex.Message}");
-                }
-            }
-            else
-                AddLog("Restored client Id");
 
             if (!String.IsNullOrEmpty(_clientId))
                 textBoxClientId.Text = _clientId;

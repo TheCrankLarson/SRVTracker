@@ -84,6 +84,11 @@ namespace EDTracking
         public string RaceReport
         {
             get { return _raceHistory.ToString(); }
+            set
+            {
+                _raceHistory = new StringBuilder();
+                _raceHistory.Append(value);
+            }
         }
 
         public override string ToString()

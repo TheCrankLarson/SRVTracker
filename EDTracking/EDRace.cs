@@ -40,6 +40,9 @@ namespace EDTracking
                     { "Ready", "" }
                 };
 
+        private string _lastStatsTable = "";
+        private DateTime _statsLastGenerated = DateTime.MinValue;
+
         public EDRace()
         {
         }
@@ -208,6 +211,11 @@ namespace EDTracking
         public string ExportRaceStatistics(int maxStatusLength = 20)
         {
             // Export the current leaderboard
+
+            // We only calculate the export twice a second (max)
+            if (DateTime.Now.Subtract(_statsLastGenerated).TotalMilliseconds<500)
+                return _lastStatsTable;
+
             List<string> leaderBoard = RacePositions();
             Dictionary<string, string> statsTable = new Dictionary<string, string>();
 
@@ -266,7 +274,10 @@ namespace EDTracking
             statsTable.Add("DistanceToWaypoint", distanceToWaypoint.ToString());
             statsTable.Add("NotableEvents", String.Join(Environment.NewLine, NotableEvents.EventQueue));
 
-            return JsonSerializer.Serialize(statsTable);
+            _lastStatsTable = JsonSerializer.Serialize(statsTable);
+            _statsLastGenerated = DateTime.Now;
+
+            return _lastStatsTable;
         }
 
 

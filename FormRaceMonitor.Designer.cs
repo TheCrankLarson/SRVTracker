@@ -96,6 +96,7 @@
             this.textBoxServerRaceGuid = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.textBoxRaceStatusServerUrl = new System.Windows.Forms.TextBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.buttonUneliminate = new System.Windows.Forms.Button();
             this.buttonRaceHistory = new System.Windows.Forms.Button();
             this.buttonReset = new System.Windows.Forms.Button();
@@ -124,6 +125,7 @@
             this.groupBoxHTMLExport.SuspendLayout();
             this.groupBox7.SuspendLayout();
             this.groupBox8.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -310,9 +312,9 @@
             this.checkBoxServerMonitoring.AutoSize = true;
             this.checkBoxServerMonitoring.Location = new System.Drawing.Point(140, 42);
             this.checkBoxServerMonitoring.Name = "checkBoxServerMonitoring";
-            this.checkBoxServerMonitoring.Size = new System.Drawing.Size(143, 17);
+            this.checkBoxServerMonitoring.Size = new System.Drawing.Size(125, 17);
             this.checkBoxServerMonitoring.TabIndex = 6;
-            this.checkBoxServerMonitoring.Text = "Use server for monitoring";
+            this.checkBoxServerMonitoring.Text = "Track race on server";
             this.toolTip1.SetToolTip(this.checkBoxServerMonitoring, "When selected, the race and participants are uploaded to the server on start.\r\nMo" +
         "nitoring occurs on the server, and the client updates twice per second.\r\n");
             this.checkBoxServerMonitoring.UseVisualStyleBackColor = true;
@@ -764,7 +766,7 @@
             this.groupBox8.Controls.Add(this.textBoxRaceStatusServerUrl);
             this.groupBox8.Location = new System.Drawing.Point(971, 124);
             this.groupBox8.Name = "groupBox8";
-            this.groupBox8.Size = new System.Drawing.Size(245, 213);
+            this.groupBox8.Size = new System.Drawing.Size(245, 114);
             this.groupBox8.TabIndex = 10;
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "Server Monitoring";
@@ -800,6 +802,16 @@
             this.textBoxRaceStatusServerUrl.Name = "textBoxRaceStatusServerUrl";
             this.textBoxRaceStatusServerUrl.Size = new System.Drawing.Size(230, 20);
             this.textBoxRaceStatusServerUrl.TabIndex = 0;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = global::SRVTracker.Properties.Resources.SRV_Targetted;
+            this.pictureBox1.Location = new System.Drawing.Point(1009, 244);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(175, 175);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox1.TabIndex = 11;
+            this.pictureBox1.TabStop = false;
             // 
             // buttonUneliminate
             // 
@@ -963,6 +975,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1225, 425);
+            this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.groupBox8);
             this.Controls.Add(this.groupBox7);
             this.Controls.Add(this.groupBoxHTMLExport);
@@ -1002,6 +1015,7 @@
             this.groupBox7.PerformLayout();
             this.groupBox8.ResumeLayout(false);
             this.groupBox8.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1086,5 +1100,6 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox textBoxServerRaceGuid;
         private System.Windows.Forms.Button buttonUneliminate;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }

@@ -302,6 +302,7 @@
     <Content Include="ReleaseNotes.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\SRV Targetted.png" />
     <None Include="Resources\AdvancedBreakpointDisabled_16x.png" />
     <None Include="Resources\Close_red_16x.png" />
     <None Include="Resources\Pushpin_16x.png" />

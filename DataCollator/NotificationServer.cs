@@ -28,6 +28,8 @@ namespace DataCollator
         private FileStream _logStream = null;
         private Dictionary<Guid, EDRace> _races;
         private DateTime _lastStaleDataCheck = DateTime.Now;
+        private DateTime _lastCommanderStatusBuilt = DateTime.MinValue;
+        private string _lastCommanderStatus = "";
 
         public NotificationServer(string ListenURL, bool EnableDebug = false)
         {
@@ -118,14 +120,23 @@ namespace DataCollator
             if (_races.Count > 0)
                 Task.Run(new Action(() =>
                 {
-                    foreach (EDRace race in _races.Values)
-                        race.UpdateStatus(updateEvent);
+                    foreach (Guid raceGuid in _races.Keys)
+                    {
+                        _races[raceGuid].UpdateStatus(updateEvent);
+                        Log($"{raceGuid}: Updated {updateEvent.Commander}");
+                    }
                 }));
 
             if (!_commanderStatus.ContainsKey(updateEvent.Commander))
             {
                 lock (_notificationLock)
+                {
                     _commanderStatus.Add(updateEvent.Commander, new EDRaceStatus(updateEvent));
+                    if (_playerStatus.ContainsKey(updateEvent.Commander))
+                        _playerStatus[updateEvent.Commander] = updateEvent;
+                    else
+                        _playerStatus.Add(updateEvent.Commander, updateEvent);
+                }
                 return;
             }
 
@@ -165,6 +176,7 @@ namespace DataCollator
 
         public void ListenerCallback(IAsyncResult result)
         {
+            _Listener.BeginGetContext(new AsyncCallback(ListenerCallback), _Listener);
             try
             {
                 HttpListener listener = (HttpListener)result.AsyncState;
@@ -175,35 +187,36 @@ namespace DataCollator
 
                 using (StreamReader reader = new StreamReader(request.InputStream))
                     sRequest = reader.ReadToEnd();
-                string requestUri = request.RawUrl.ToLower();
+                string requestUri = System.Web.HttpUtility.UrlDecode(request.RawUrl.Substring(14).ToLower());
+                Log($"{context.Request.RemoteEndPoint.Address}: {requestUri}");
 
                 Action action;
-                if (requestUri.StartsWith("/datacollator/status"))
+                if (requestUri.StartsWith("status"))
                 {
                     // This is a request for all known locations/statuses of clients 
                     action = (() => {
                         SendStatus(context);
                     });
                 }
-                else if (requestUri.StartsWith("/datacollator/racestatus"))
+                else if (requestUri.StartsWith("racestatus"))
                 {
                     action = (() => {
                         SendRaceStatus(requestUri, context, sRequest);
                     });
                 }
-                else if (requestUri.StartsWith("/datacollator/startrace"))
+                else if (requestUri.StartsWith("startrace"))
                 {
                     action = (() => {
                         StartRace(sRequest, context);
                     });
                 }
-                else if (requestUri.StartsWith("/datacollator/resurrectcommander"))
+                else if (requestUri.StartsWith("resurrectcommander"))
                 {
-                    if (requestUri.Length>33)
+                    if (requestUri.Length>19)
                     {
                         action = (() =>
                         {
-                            ResurrectCommander(requestUri.Substring(33), context);
+                            ResurrectCommander(System.Web.HttpUtility.UrlDecode(request.RawUrl).Substring(33), context);
                         });
                     }
                     else
@@ -214,9 +227,9 @@ namespace DataCollator
                         });
                     }
                 }
-                else if (requestUri.StartsWith("/datacollator/getrace"))
+                else if (requestUri.StartsWith("getrace"))
                 {
-                    if (requestUri.Length > 22)
+                    if (requestUri.Length > 8)
                     {
                         // Guid can be specified in the Url or in POST data.  This one has something in the Url
                         Guid raceGuid = Guid.Empty;
@@ -235,14 +248,14 @@ namespace DataCollator
                         });
                     }
                 }
-                else if (requestUri.StartsWith("/datacollator/getcommanderraceevents"))
+                else if (requestUri.StartsWith("getcommanderraceevents"))
                 {
-                    if (requestUri.Length > 37)
+                    if (requestUri.Length > 23)
                     {
                         // Guid can be specified in the Url or in POST data.  This one has something in the Url
                         try
                         {
-                            string[] requestParams = requestUri.Substring(37).Split('/');
+                            string[] requestParams = System.Web.HttpUtility.UrlDecode(request.RawUrl).Substring(37).Split('/');
                             Guid raceGuid = Guid.Empty;
                             Guid.TryParse(requestParams[0], out raceGuid);
                             action = (() =>
@@ -266,6 +279,68 @@ namespace DataCollator
                         });
                     }
                 }
+                else if (requestUri.StartsWith("getcommanderracestatus"))
+                {
+                    if (requestUri.Length > 23)
+                    {
+                        // Guid can be specified in the Url or in POST data.  This one has something in the Url
+                        try
+                        {
+                            string[] requestParams = System.Web.HttpUtility.UrlDecode(request.RawUrl).Substring(37).Split('/');
+                            Guid raceGuid = Guid.Empty;
+                            Guid.TryParse(requestParams[0], out raceGuid);
+                            action = (() =>
+                            {
+                                GetCommanderRaceStatus(raceGuid, requestParams[1], context);
+                            });
+                        }
+                        catch
+                        {
+                            action = (() =>
+                            {
+                                WriteErrorResponse(context.Response, HttpStatusCode.NotFound);
+                            });
+                        }
+                    }
+                    else
+                    {
+                        action = (() =>
+                        {
+                            GetCommanderRaceStatus(sRequest, context);
+                        });
+                    }
+                }
+                else if (requestUri.StartsWith("getcommanderracereport"))
+                {
+                    if (requestUri.Length > 23)
+                    {
+                        // Guid can be specified in the Url or in POST data.  This one has something in the Url
+                        try
+                        {
+                            string[] requestParams = System.Web.HttpUtility.UrlDecode(request.RawUrl).Substring(37).Split('/');
+                            Guid raceGuid = Guid.Empty;
+                            Guid.TryParse(requestParams[0], out raceGuid);
+                            action = (() =>
+                            {
+                                GetCommanderRaceReport(raceGuid, requestParams[1], context);
+                            });
+                        }
+                        catch
+                        {
+                            action = (() =>
+                            {
+                                WriteErrorResponse(context.Response, HttpStatusCode.NotFound);
+                            });
+                        }
+                    }
+                    else
+                    {
+                        action = (() =>
+                        {
+                            GetCommanderRaceReport(sRequest, context);
+                        });
+                    }
+                }
                 else
                     action = (() => {
                         WriteResponse(context, $"{Application.ProductName} v{Application.ProductVersion}");
@@ -273,7 +348,7 @@ namespace DataCollator
                 Task.Run(action);
             }
             catch { }
-            _Listener.BeginGetContext(new AsyncCallback(ListenerCallback), _Listener);
+           
         }
 
         private void WriteErrorResponse(HttpListenerResponse httpResponse, HttpStatusCode errorCode)
@@ -316,10 +391,12 @@ namespace DataCollator
                 _races.Add(raceId, race);
                 race.StartRace(true);
                 WriteResponse(Context, raceId.ToString());
+                Log($"{raceId}: Started race");
             }
             catch (Exception ex)
             {
                 WriteResponse(Context,$"Error while initialising race:{Environment.NewLine}{ex}", (int)HttpStatusCode.InternalServerError);
+                Log($"Failed to start new race: {ex.Message}");
             }
         }
 
@@ -347,9 +424,59 @@ namespace DataCollator
                 {
                     _races[raceGuid].Statuses[requestParams[1]].Resurrect();
                     WriteResponse(Context, $"{requestParams[1]} added back to race");
+                    Log($"{raceGuid}: Resurrected {requestParams[1]}");
                     return;
                 }
+            Log($"{raceGuid}: Resurrection failed for {requestParams[1]}");
             WriteResponse(Context, "Race or commander not found");  // We don't raise an error here as result is discarded client-side anyway
+        }
+
+        private void GetCommanderRaceReport(Guid raceGuid, string commander, HttpListenerContext Context)
+        {
+            if (raceGuid != Guid.Empty && _races.ContainsKey(raceGuid) && _races[raceGuid].Statuses.ContainsKey(commander))
+                WriteResponse(Context, _races[raceGuid].Statuses[commander].RaceReport);
+            else
+            {
+                WriteErrorResponse(Context.Response, HttpStatusCode.NotFound);
+                Log($"{raceGuid}: Race report not found for {commander}");
+            }
+        }
+
+        private void GetCommanderRaceReport(string request, HttpListenerContext Context)
+        {
+            string[] requestParams = request.Split(':');
+            GetCommanderRaceReport(requestParams[0], requestParams[1], Context);
+        }
+
+        private void GetCommanderRaceReport(string raceGuid, string commander, HttpListenerContext Context)
+        {
+            Guid guid = Guid.Empty;
+            Guid.TryParse(raceGuid, out guid);
+            GetCommanderRaceReport(guid, commander, Context);
+        }
+
+        private void GetCommanderRaceStatus(Guid raceGuid, string commander, HttpListenerContext Context)
+        {
+            if (raceGuid != Guid.Empty && _races.ContainsKey(raceGuid) && _races[raceGuid].Statuses.ContainsKey(commander))
+                WriteResponse(Context, _races[raceGuid].Statuses[commander].ToJson());
+            else
+            {
+                WriteErrorResponse(Context.Response, HttpStatusCode.NotFound);
+                Log($"{raceGuid}: Race status not found for {commander}");
+            }
+        }
+
+        private void GetCommanderRaceStatus(string request, HttpListenerContext Context)
+        {
+            string[] requestParams = request.Split(':');
+            GetCommanderRaceStatus(requestParams[0], requestParams[1], Context);
+        }
+
+        private void GetCommanderRaceStatus(string raceGuid, string commander, HttpListenerContext Context)
+        {
+            Guid guid = Guid.Empty;
+            Guid.TryParse(raceGuid, out guid);
+            GetCommanderRaceStatus(guid, commander, Context);
         }
 
         private void GetCommanderRaceEvents(Guid raceGuid, string commander, HttpListenerContext Context)
@@ -357,7 +484,10 @@ namespace DataCollator
             if (raceGuid != Guid.Empty && _races.ContainsKey(raceGuid))
                 WriteResponse(Context, JsonSerializer.Serialize(_races[raceGuid].GetCommanderEventHistory(commander)));
             else
+            {
                 WriteErrorResponse(Context.Response, HttpStatusCode.NotFound);
+                Log($"{raceGuid}: Event history not found for {commander}");
+            }
         }
 
         private void GetCommanderRaceEvents(string raceGuid, string commander, HttpListenerContext Context)
@@ -387,9 +517,15 @@ namespace DataCollator
                 Guid.TryParse(request, out raceGuid);
             }
             if (raceGuid != Guid.Empty && _races.ContainsKey(raceGuid))
+            {
                 WriteResponse(Context, _races[raceGuid].ExportRaceStatistics());
+                Log($"{raceGuid}: Race statistics sent");
+            }
             else
+            {
                 WriteErrorResponse(Context.Response, HttpStatusCode.NotFound);
+                Log("Race statistics for unknown race requested");
+            }
             
             if (DateTime.Now.Subtract(_lastStaleDataCheck).TotalMinutes > 120)
                 Task.Run(new Action(()=> { ClearStaleData(); }));
@@ -418,10 +554,20 @@ namespace DataCollator
                 }
             }
             else
-            {
-                Log("All player status requested");
-                foreach (string id in _playerStatus.Keys)
-                    status.AppendLine(_playerStatus[id].ToJson());
+            {               
+                if (DateTime.Now.Subtract(_lastCommanderStatusBuilt).TotalMilliseconds < 750)
+                {
+                    status.Append(_lastCommanderStatus);
+                    Log("All player status returned from cache");
+                }
+                else
+                {
+                    foreach (string id in _playerStatus.Keys)
+                        status.AppendLine(_playerStatus[id].ToJson());
+                    Log("All player status generated");
+                    _lastCommanderStatus = status.ToString();
+                    _lastCommanderStatusBuilt = DateTime.Now;
+                }
             }
 
             WriteResponse(Context, status.ToString());
@@ -446,7 +592,10 @@ namespace DataCollator
             if (_races.Count > 0) // We remove old races after 72 hours
                 foreach (Guid raceGuid in _races.Keys)
                     if (DateTime.Now.Subtract(_races[raceGuid].Start).TotalDays > 3)
+                    {
                         _races.Remove(raceGuid);
+                        Log($"Removed old race: {raceGuid}");
+                    }
 
             _lastStaleDataCheck = DateTime.Now;
         }
@@ -458,7 +607,7 @@ namespace DataCollator
 
             try
             {
-                byte[] buffer = System.Text.Encoding.UTF8.GetBytes($"{log}\n");
+                byte[] buffer = System.Text.Encoding.UTF8.GetBytes($"{DateTime.Now:HH:mm:ss} {log}{Environment.NewLine}");
                 _logStream.Write(buffer, 0, buffer.Length);
                 _logStream.Flush();
             }

@@ -803,6 +803,13 @@ namespace SRVTracker
             if (_racersStatus != null)
                 foreach (EDRaceStatus status in _racersStatus.Values)
                     status.Finished = true;
+            
+            if (!String.IsNullOrEmpty(_serverRaceGuid))
+            {
+                // Send notification to server that race is finished
+                _serverRaceGuid = "";
+            }
+
             buttonStopRace.Enabled = false;
             buttonReset.Enabled = true;
         }
@@ -959,7 +966,7 @@ namespace SRVTracker
             if (listViewParticipants.SelectedItems.Count>0)
             {
                 foreach (System.Windows.Forms.ListViewItem item in listViewParticipants.SelectedItems)
-                    if (item.SubItems[2].Text.Contains(EDRace.StatusMessages["Eliminated"]))
+                    if ( item.SubItems[2].Text.Contains(EDRace.StatusMessages["Eliminated"]) || item.SubItems[2].Text.Contains("Eliminated") )
                     {
                         buttonUneliminate.Enabled = true;
                         break;
@@ -1105,46 +1112,48 @@ namespace SRVTracker
             }
 
             // We have the leaderboard, so now we retrieve the status for each racer in order
-            if (checkBoxExportStatus.Checked)
+
+            if (!_lastStatusExport.Equals(serverStats["Status"]))
             {
-                if (!_lastStatusExport.Equals(serverStats["Status"]))
+                if (checkBoxExportStatus.Checked)
                 {
                     try
                     {
                         File.WriteAllText(textBoxExportStatusFile.Text, serverStats["Status"]);
                         _lastStatusExport = serverStats["Status"];
-                        changeDetected = true;
                     }
                     catch { }
                 }
+                changeDetected = true;
             }
 
-            if (checkBoxExportLeaderboard.Checked)
+
+            if (!_lastLeaderboardExport.Equals(serverStats["Positions"]))
             {
-                if (!_lastLeaderboardExport.Equals(serverStats["Positions"]))
+                if (checkBoxExportLeaderboard.Checked)
                 {
                     try
                     {
                         File.WriteAllText(textBoxExportLeaderboardFile.Text, serverStats["Positions"]);
                         _lastLeaderboardExport = serverStats["Positions"];
-                        changeDetected = true;
                     }
                     catch { }
                 }
+                changeDetected = true;
             }
 
-            if (checkBoxExportSpeed.Checked)
+            if (!_lastSpeedExport.Equals(serverStats["Speeds"]))
             {
-                if (!_lastSpeedExport.Equals(serverStats["Speeds"]))
+                if (checkBoxExportSpeed.Checked)
                 {
                     try
                     {
                         File.WriteAllText(textBoxExportSpeedFile.Text, serverStats["Speeds"]);
                         _lastSpeedExport = serverStats["Speeds"];
-                        changeDetected = true;
                     }
                     catch { }
                 }
+                changeDetected = true;
             }
 
             // Get current positions and sort the list view
@@ -1170,32 +1179,38 @@ namespace SRVTracker
                                 listViewParticipants.Items.Add(_racers[positions[i]]);
                             }
                         }
+                        _lastRacePositions = serverStats["Positions"];
                         for (int i = 0; i < positions.Count; i++)
                         {
                             _racers[positions[i]].SubItems[2].Text = statuses[i];
                             _racers[positions[i]].SubItems[3].Text = distancesToWaypoint[i];
                         }
-                        listViewParticipants.EndUpdate();
+                        listViewParticipants.EndUpdate();                      
                     }
                 });
                 if (listViewParticipants.InvokeRequired)
                     listViewParticipants.Invoke(action);
                 else
-                    action();
-                _lastRacePositions = serverStats["Positions"];
+                    action();                
             }
         }
 
         private EDRaceStatus GetCommanderRaceStatus(string commander)
         {
+            if (String.IsNullOrEmpty(commander))
+                return null;
+
             if (checkBoxServerMonitoring.Checked && !String.IsNullOrEmpty(_serverRaceGuid))
             {
                 // We need to retrieve the status from the server
                 try
                 {
-                    string raceStatus = _webClient.DownloadString($"http://{FormLocator.ServerAddress}:11938/DataCollator/getcommanderraceevents/{_serverRaceGuid}/{commander}");
-                    if (raceStatus.Length>2)
-                        return EDRaceStatus.FromJson(raceStatus);
+                    using (WebClient webClient = new WebClient())
+                    {
+                        string raceStatus = webClient.DownloadString($"http://{FormLocator.ServerAddress}:11938/DataCollator/getcommanderracestatus/{_serverRaceGuid}/{commander}");
+                        if (raceStatus.Length > 2)
+                            return EDRaceStatus.FromJson(raceStatus);
+                    }
                 }
                 catch { }
             }
