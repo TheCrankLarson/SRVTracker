@@ -804,7 +804,7 @@
             // buttonUneliminate
             // 
             this.buttonUneliminate.Image = global::SRVTracker.Properties.Resources.AdvancedBreakpointDisabled_16x;
-            this.buttonUneliminate.Location = new System.Drawing.Point(361, 106);
+            this.buttonUneliminate.Location = new System.Drawing.Point(361, 231);
             this.buttonUneliminate.Name = "buttonUneliminate";
             this.buttonUneliminate.Size = new System.Drawing.Size(29, 23);
             this.buttonUneliminate.TabIndex = 10;
@@ -839,7 +839,7 @@
             // buttonEditStatusMessages
             // 
             this.buttonEditStatusMessages.Image = global::SRVTracker.Properties.Resources.Text_16x;
-            this.buttonEditStatusMessages.Location = new System.Drawing.Point(361, 231);
+            this.buttonEditStatusMessages.Location = new System.Drawing.Point(361, 139);
             this.buttonEditStatusMessages.Name = "buttonEditStatusMessages";
             this.buttonEditStatusMessages.Size = new System.Drawing.Size(29, 23);
             this.buttonEditStatusMessages.TabIndex = 7;

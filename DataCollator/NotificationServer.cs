@@ -20,16 +20,11 @@ namespace DataCollator
     {
         private HttpListener _Listener = null;
         private int _ListenPort = 11938;
-        private List<HttpListenerResponse> _responses = new List<HttpListenerResponse>();
         private List<string> _registeredNotificationUrls = new List<string>();
         private static HttpClient _httpClient = new HttpClient();
-        private List<String> _notifications = new List<string>(10000); // List of all notifications, pruned as each client gets up to date
-        private Dictionary<string, int> _clientNotificationPointer = new Dictionary<string, int>(); // Pointer into the notification table for each client
-        private Dictionary<string, DateTime> _clientLastRequestTime = new Dictionary<string, DateTime>();
         private Dictionary<string, EDEvent> _playerStatus = new Dictionary<string, EDEvent>(); //  Store last known status (with coordinates) of client
         private Dictionary<string, EDRaceStatus> _commanderStatus = new Dictionary<string, EDRaceStatus>();
         private readonly object _notificationLock = new object();
-        //private int _pruneCounter = 0;
         private FileStream _logStream = null;
         private Dictionary<Guid, EDRace> _races;
         private DateTime _lastStaleDataCheck = DateTime.Now;
@@ -156,17 +151,6 @@ namespace DataCollator
             }
             catch { }
 
-            // We have no need for notifications, we just need to keep track of commanders
-            /*
-            lock (_notificationLock)
-            {
-                _notifications.Add(message);
-            }
-
-            _pruneCounter++;
-            if (_pruneCounter>500)
-                PruneNotifications();
-            */
             // Send the notification to any listening Urls
             if (_registeredNotificationUrls.Count > 0)
             {
@@ -212,6 +196,23 @@ namespace DataCollator
                     action = (() => {
                         StartRace(sRequest, context);
                     });
+                }
+                else if (requestUri.StartsWith("/datacollator/resurrectcommander"))
+                {
+                    if (requestUri.Length>33)
+                    {
+                        action = (() =>
+                        {
+                            ResurrectCommander(requestUri.Substring(33), context);
+                        });
+                    }
+                    else
+                    {
+                        action = (() =>
+                        {
+                            WriteErrorResponse(context.Response, HttpStatusCode.NotFound);
+                        });
+                    }
                 }
                 else if (requestUri.StartsWith("/datacollator/getrace"))
                 {
@@ -267,7 +268,7 @@ namespace DataCollator
                 }
                 else
                     action = (() => {
-                        DetermineResponse(sRequest, context);
+                        WriteResponse(context, $"{Application.ProductName} v{Application.ProductVersion}");
                     });
                 Task.Run(action);
             }
@@ -337,13 +338,24 @@ namespace DataCollator
             GetRace(raceGuid, Context);
         }
 
+        private void ResurrectCommander(string commander, HttpListenerContext Context)
+        {
+            string[] requestParams = commander.Split('/');
+            Guid raceGuid = Guid.Empty;
+            if (Guid.TryParse(requestParams[0], out raceGuid))
+                if (_races.ContainsKey(raceGuid) && _races[raceGuid].Statuses.ContainsKey(requestParams[1]))
+                {
+                    _races[raceGuid].Statuses[requestParams[1]].Resurrect();
+                    WriteResponse(Context, $"{requestParams[1]} added back to race");
+                    return;
+                }
+            WriteResponse(Context, "Race or commander not found");  // We don't raise an error here as result is discarded client-side anyway
+        }
+
         private void GetCommanderRaceEvents(Guid raceGuid, string commander, HttpListenerContext Context)
         {
             if (raceGuid != Guid.Empty && _races.ContainsKey(raceGuid))
-            {
-                List<EDEvent> raceEvents = _races[raceGuid].GetCommanderEventHistory(commander);
-                WriteResponse(Context, JsonSerializer.Serialize(raceEvents));
-            }
+                WriteResponse(Context, JsonSerializer.Serialize(_races[raceGuid].GetCommanderEventHistory(commander)));
             else
                 WriteErrorResponse(Context.Response, HttpStatusCode.NotFound);
         }
@@ -363,7 +375,6 @@ namespace DataCollator
 
         private void SendRaceStatus(string requestUri, HttpListenerContext Context, string request)
         {
-            string raceStatus = "";
             Guid raceGuid = Guid.Empty;
             if (requestUri.Length > 25)
             {
@@ -376,45 +387,25 @@ namespace DataCollator
                 Guid.TryParse(request, out raceGuid);
             }
             if (raceGuid != Guid.Empty && _races.ContainsKey(raceGuid))
-            {
-                raceStatus = _races[raceGuid].ExportRaceStatistics();
-                WriteResponse(Context, raceStatus);
-            }
+                WriteResponse(Context, _races[raceGuid].ExportRaceStatistics());
             else
                 WriteErrorResponse(Context.Response, HttpStatusCode.NotFound);
             
             if (DateTime.Now.Subtract(_lastStaleDataCheck).TotalMinutes > 120)
-                ClearStaleData();
+                Task.Run(new Action(()=> { ClearStaleData(); }));
         }
 
         private void SendStatus(HttpListenerContext Context)
         {
             // Send Commander status
-            // Tracking info is: Client Id,timestamp,latitude,longitude,altitude,heading,planet radius,flags
 
             StringBuilder status = new StringBuilder();
 
             // Check if a client Id was specified
-            if (Context.Request.RawUrl.Equals("/DataCollator/status/fields", StringComparison.CurrentCultureIgnoreCase))
+            if (Context.Request.RawUrl.Length > 21)
             {
-                status.AppendLine("Client Id,timestamp(ticks),latitude,longitude,altitude,heading,planet radius,flags");
-            }
-            else
-            {
-                string clientId = "";
-                try
-                {
-                    clientId = System.Web.HttpUtility.UrlDecode(Context.Request.RawUrl).Substring("/DataCollator/status/".Length).ToLower();
-                }
-                catch { }
-                if (String.IsNullOrEmpty(clientId))
-                {
-                    Log("All player status requested");
-                    foreach (string id in _playerStatus.Keys)
-                        status.AppendLine(_playerStatus[id].ToJson());
-
-                }
-                else if (_playerStatus.ContainsKey(clientId))
+                string clientId = System.Web.HttpUtility.UrlDecode(Context.Request.RawUrl).Substring(21).ToLower();
+                if (_playerStatus.ContainsKey(clientId))
                 {
                     Log($"Player status requested: {clientId}");
                     status.AppendLine(_playerStatus[clientId].ToJson());
@@ -426,139 +417,17 @@ namespace DataCollator
                     return;
                 }
             }
+            else
+            {
+                Log("All player status requested");
+                foreach (string id in _playerStatus.Keys)
+                    status.AppendLine(_playerStatus[id].ToJson());
+            }
 
             WriteResponse(Context, status.ToString());
             if (DateTime.Now.Subtract(_lastStaleDataCheck).TotalMinutes > 120)
                 ClearStaleData();
         }
-
-        private void DetermineResponse(string Request, HttpListenerContext Context)
-        {
-            string responseText = "";
-            Context.Response.ContentType = "text/plain";
-            
-
-            if (isValidClientRegistration(Request, out responseText))
-            {
-                // Client has registered a listener Url.  We just respond with confirmation
-                byte[] buffer = System.Text.Encoding.UTF8.GetBytes(responseText);
-                Context.Response.ContentLength64 = buffer.Length;
-                Context.Response.StatusCode = (int)HttpStatusCode.OK;
-
-                using (Stream output = Context.Response.OutputStream)
-                    output.Write(buffer, 0, buffer.Length);
-                Context.Response.OutputStream.Flush();
-
-                Context.Response.Close();
-            }
-            else
-            {
-                // No WebHook, so we just return a data feed (base it on IP now, but could use cookies or headers in future)
-                Context.Response.KeepAlive = true;
-                SendNotificationsToResponse(Context.Response, Context.Request.RemoteEndPoint.ToString());
-            }
-        }
-
-        private void SendNotificationsToResponse(HttpListenerResponse Response, string ClientId)
-        {
-            // Build string of all events that we need to transmit
-            if (!_clientNotificationPointer.ContainsKey(ClientId))
-            {
-                _clientNotificationPointer.Add(ClientId, 0); // New client, set index to 0
-                Log($"New streaming client detected: {ClientId}");
-            }
-
-            if (!_clientLastRequestTime.ContainsKey(ClientId))
-                _clientLastRequestTime.Add(ClientId, DateTime.Now);
-            else
-                _clientLastRequestTime[ClientId] = DateTime.Now;
-
-            int newIndex = _notifications.Count;
-            string notifications = "";
-            if (newIndex > _clientNotificationPointer[ClientId])
-            {
-                notifications = String.Join("", _notifications.GetRange(_clientNotificationPointer[ClientId], newIndex - _clientNotificationPointer[ClientId]));
-                Log($"{ClientId} - Sending notifications range {_clientNotificationPointer[ClientId]} to {newIndex}");
-            }
-            _clientNotificationPointer[ClientId] = newIndex; // Set the client index pointer
-
-
-            // Send the events to the response stream
-            WriteResponse(Response, notifications);
-        }
-
-        private void PruneClients()
-        {
-            // Process our client list and get rid of any that haven't requested data in the last 60 minutes
-
-            if (_clientNotificationPointer.Count == 0)
-                return;
-
-            DateTime removeBefore = DateTime.Now.Subtract(new TimeSpan(1, 0, 0));
-            lock (_notificationLock)
-            {
-                foreach (string clientId in _clientLastRequestTime.Keys)
-                    if (_clientLastRequestTime[clientId] < removeBefore)
-                        _clientNotificationPointer.Remove(clientId);
-            }
-        }
-
-        /*
-        private void PruneNotifications()
-        {
-            _pruneCounter = 0;
-            if (_notifications.Count < 1)
-                return;
-
-            if (_clientNotificationPointer.Count == 0)
-            {
-                // No clients, so don't keep anything
-                Log("No active clients, clearing notifications cache");
-                _notifications.Clear();
-                return;
-            }
-            PruneClients();
-
-            // We obtain the lowest available index and remove anything before that
-            int deleteBefore = _clientNotificationPointer.Values.Min();
-            Log($"Minimum client index is {deleteBefore}");
-            if (_clientNotificationPointer.Count>9000)
-            {
-                // We want to limit the maximum size we keep
-                if (deleteBefore < 1000)
-                    deleteBefore = 1000;
-            }
-            Log($"Will delete all notifications below index {deleteBefore}");
-
-            try
-            {
-                lock (_notificationLock)
-                {
-                    try
-                    {
-                        if (deleteBefore >= _notifications.Count)
-                            _notifications.Clear();
-                        else
-                            _notifications.RemoveRange(0, deleteBefore);
-                    }
-                    catch (Exception ex)
-                    {
-                        Log($"Error clearing notifications cache: {ex.Message}");
-                        return; // No need to adjust indexes if we couldn't clear the cache
-                    }
-                    // Adjust indexes
-                    Log($"Reducing client indexes by {deleteBefore}");
-                    foreach (string client in _clientNotificationPointer.Keys)
-                    {
-                        if (_clientNotificationPointer[client] > deleteBefore)
-                            _clientNotificationPointer[client] = _clientNotificationPointer[client] - deleteBefore;
-                        else
-                            _clientNotificationPointer[client] = 0;
-                    }
-                }
-            }
-            catch { }
-        }*/
 
         private void ClearStaleData()
         {
@@ -574,45 +443,13 @@ namespace DataCollator
                     if (DateTime.Now.Subtract(_commanderStatus[commander].TimeStamp).TotalMinutes > 120)
                         _commanderStatus.Remove(commander);
 
+            if (_races.Count > 0) // We remove old races after 72 hours
+                foreach (Guid raceGuid in _races.Keys)
+                    if (DateTime.Now.Subtract(_races[raceGuid].Start).TotalDays > 3)
+                        _races.Remove(raceGuid);
+
             _lastStaleDataCheck = DateTime.Now;
         }
-
-        private bool isValidClientRegistration(string registrationData, out string responseText)
-        {
-            responseText = "";
-            if (registrationData.ToLower().StartsWith("subscribe:"))
-            {
-                // This is a subscription request (for us to send notifications to the specified URL)
-                string notificationUrl = registrationData.Substring(10).Trim();
-
-                if (notificationUrl.ToLower().StartsWith("http")) // Only accept http/s URLs
-                {
-                    if (!_registeredNotificationUrls.Contains(notificationUrl))
-                    {
-                        _registeredNotificationUrls.Add(notificationUrl);
-                        responseText = $"Successfully registered Url: {notificationUrl}";
-                        Log($"Subscription Url registered: {notificationUrl}");
-                    }
-                    else
-                        responseText = $"Url already registered: {notificationUrl}";
-                    Log($"Subscription Url already registered: {notificationUrl}");
-                }
-                else
-                {
-                    responseText = $"Invalid Url: {notificationUrl}";
-                    Log($"Subscription Url invalid: {notificationUrl}");
-                }
-                return true;
-            }
-            if (registrationData.Equals("LOCATIONS"))
-            {
-                // This is a request for all known current locations
-
-            }
-            return false;
-        }
-
-
 
         private void Log(string log)
         {

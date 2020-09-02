@@ -724,7 +724,7 @@ namespace SRVTracker
             try
             {
                 //Stream statusStream = _webClient.OpenRead($"http://{FormLocator.ServerAddress}:11938/DataCollator/startrace");
-
+                _racersStatus = null;
                 using (WebClient wc = new WebClient())
                 {
                     wc.Headers[HttpRequestHeader.ContentType] = "application/x-www-form-urlencoded";
@@ -744,7 +744,7 @@ namespace SRVTracker
 
                         action = new Action(() =>
                         {
-                            textBoxRaceStatusServerUrl.Text = $"http://{FormLocator.ServerAddress}:11938/DataCollator/startrace";
+                            textBoxRaceStatusServerUrl.Text = $"http://{FormLocator.ServerAddress}:11938/DataCollator/getrace/{_serverRaceGuid}";
                         });
                         if (textBoxRaceStatusServerUrl.InvokeRequired)
                             textBoxRaceStatusServerUrl.Invoke(action);
@@ -1043,7 +1043,11 @@ namespace SRVTracker
 
         private void buttonRaceHistory_Click(object sender, EventArgs e)
         {
-            FormRaceHistory formRaceHistory = new FormRaceHistory(_racersStatus);
+            FormRaceHistory formRaceHistory;
+            if (checkBoxServerMonitoring.Checked)
+                formRaceHistory = new FormRaceHistory(_racers.Keys.ToList<string>(),_serverRaceGuid);
+            else
+                formRaceHistory = new FormRaceHistory(_racersStatus);
             formRaceHistory.Show();
         }
 
@@ -1255,9 +1259,25 @@ namespace SRVTracker
             }
         }
 
+        private void Resurrect(string commander)
+        {
+            if (checkBoxServerMonitoring.Checked)
+            {
+                // Need to send resurrection request to server
+                if (!String.IsNullOrEmpty(_serverRaceGuid))
+                    _ = _webClient.DownloadString($"http://{FormLocator.ServerAddress}:11938/DataCollator/ResurrectCommander/{_serverRaceGuid}/{commander}");
+            }
+            else
+            {
+                if ((_racersStatus != null) && _racersStatus.ContainsKey(commander))
+                    _racersStatus[commander].Resurrect();                    
+            }
+        }
+
         private void buttonUneliminate_Click(object sender, EventArgs e)
         {
-
+            foreach (System.Windows.Forms.ListViewItem item in listViewParticipants.SelectedItems)
+                Resurrect(item.SubItems[1].Text);
         }
     }
 }

@@ -8,16 +8,27 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Net;
 
 namespace SRVTracker
 {
     public partial class FormRaceHistory : Form
     {
-        private Dictionary<String, EDRaceStatus> _raceStatuses;
+        private Dictionary<String, EDRaceStatus> _raceStatuses = null;
+        private string _serverRaceGuid = "";
+
+        public FormRaceHistory(List<string> racers, string raceGuid)
+        {
+            InitializeComponent();
+            buttonExport.Enabled = false;
+            _serverRaceGuid = raceGuid;
+            comboBoxCommander.Items.Clear();
+            foreach (string commander in racers)
+                comboBoxCommander.Items.Add(commander);
+        }
 
         public FormRaceHistory(Dictionary<String, EDRaceStatus> raceStatuses)
         {
-            InitializeComponent();
             _raceStatuses = raceStatuses;
             buttonExport.Enabled = false;
             comboBoxCommander.Items.Clear();
@@ -25,16 +36,46 @@ namespace SRVTracker
                 comboBoxCommander.Items.Add(commander);
         }
 
+
         private void buttonClose_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private string GetCommanderHistory(string commander)
+        {
+            if (_raceStatuses == null)
+            {
+                // Need to retrieve race history from the server
+                try
+                {
+                    using (WebClient webClient = new WebClient())
+                    {
+                        string raceStatus = webClient.DownloadString($"http://{FormLocator.ServerAddress}:11938/DataCollator/getcommanderraceevents/{_serverRaceGuid}/{commander}");
+                        if (raceStatus.Length > 2)
+                            return EDRaceStatus.FromJson(raceStatus).RaceReport;
+                        else
+                            return "No report found";
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return $"Error occurred while retrieving report:{Environment.NewLine}{ex}";
+                }
+            }
+            else
+            {
+                if (_raceStatuses.ContainsKey(commander))
+                    return _raceStatuses[commander].RaceReport;
+            }
+            return "No report found";
         }
 
         private void comboBoxCommander_SelectedIndexChanged(object sender, EventArgs e)
         {
             try
             {
-                textBoxRaceHistory.Text = _raceStatuses[comboBoxCommander.Text].RaceReport;
+                textBoxRaceHistory.Text = GetCommanderHistory(comboBoxCommander.Text);
                 buttonExport.Enabled = true;
             }
             catch { }
