@@ -53,7 +53,9 @@ namespace EDTracking
         private bool _gotFirstSpeedReading = false;
         private double _lastLoggedMaxSpeed = 40;  // We don't log any maximum speeds below 40m/s
         private DateTime _pitStopStartTime = DateTime.MinValue;
+        private DateTime _lastUnderShip = DateTime.MinValue;
         public NotableEvents notableEvents = null;
+        
 
         public EDRaceStatus(EDEvent baseEvent)
         {
@@ -294,9 +296,14 @@ namespace EDTracking
                     if (isFlagSet(StatusFlags.Srv_UnderShip))
                     {
                         _inPits = true;
-                        _pitStopStartTime = DateTime.Now;
-                        notableEvents?.AddEvent($"{Commander}{EDRace.StatusMessages["PitstopNotification"]}");
-                        PitStopCount++;
+                        if (DateTime.Now.Subtract(_lastUnderShip).TotalSeconds > 60)
+                        {
+                            // This check allows for problems boarding the ship (i.e. if you can only access from one direction, which might trigger the flag several times)
+                            notableEvents?.AddEvent($"{Commander}{EDRace.StatusMessages["PitstopNotification"]}");
+                            PitStopCount++;
+                            _pitStopStartTime = DateTime.Now;
+                        }
+                        _lastUnderShip = DateTime.Now;
                     }
                 }
                 else if (isFlagSet(StatusFlags.In_SRV) && !isFlagSet(StatusFlags.Srv_UnderShip))
