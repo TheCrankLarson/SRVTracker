@@ -36,6 +36,7 @@
             this.buttonStart = new System.Windows.Forms.Button();
             this.buttonExit = new System.Windows.Forms.Button();
             this.checkBoxDebug = new System.Windows.Forms.CheckBox();
+            this.checkBoxVerboseDebug = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.SuspendLayout();
@@ -127,12 +128,24 @@
             this.checkBoxDebug.Text = "Debug";
             this.checkBoxDebug.UseVisualStyleBackColor = true;
             // 
+            // checkBoxVerboseDebug
+            // 
+            this.checkBoxVerboseDebug.AutoSize = true;
+            this.checkBoxVerboseDebug.Location = new System.Drawing.Point(74, 101);
+            this.checkBoxVerboseDebug.Name = "checkBoxVerboseDebug";
+            this.checkBoxVerboseDebug.Size = new System.Drawing.Size(65, 17);
+            this.checkBoxVerboseDebug.TabIndex = 4;
+            this.checkBoxVerboseDebug.Text = "Verbose";
+            this.checkBoxVerboseDebug.UseVisualStyleBackColor = true;
+            this.checkBoxVerboseDebug.CheckedChanged += new System.EventHandler(this.checkBoxVerboseDebug_CheckedChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(365, 128);
             this.ControlBox = false;
+            this.Controls.Add(this.checkBoxVerboseDebug);
             this.Controls.Add(this.checkBoxDebug);
             this.Controls.Add(this.buttonExit);
             this.Controls.Add(this.buttonStart);
@@ -157,6 +170,7 @@
         private System.Windows.Forms.Button buttonStart;
         private System.Windows.Forms.Button buttonExit;
         private System.Windows.Forms.CheckBox checkBoxDebug;
+        private System.Windows.Forms.CheckBox checkBoxVerboseDebug;
     }
 }
 

@@ -28,6 +28,7 @@ namespace EDTracking
         public static bool Started { get; set; } = false;
         public bool Finished { get; set; } = false;
         public int PitStopCount { get; set; } = 0;
+        public int RacePosition { get; set; } = 0;
         public static DateTime StartTime { get; set; } = DateTime.MinValue;
         public DateTime FinishTime { get; internal set; } = DateTime.MinValue;
 

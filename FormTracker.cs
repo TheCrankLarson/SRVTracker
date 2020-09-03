@@ -24,6 +24,7 @@ namespace SRVTracker
         private System.Timers.Timer _statusTimer = null;
         private string _statusFile = "";
         private DateTime _lastFileWrite = DateTime.MinValue;
+        private DateTime _lastStatusSend = DateTime.MinValue;
         private Size _configShowing = new Size(738, 392);
         private Size _configHidden = new Size(298, 222);
         public static CVRSystem VRSystem = null;
@@ -61,10 +62,11 @@ namespace SRVTracker
 
             // If the file has been written, then process it
             DateTime lastWriteTime = File.GetLastWriteTime(_statusFile);
-            if (lastWriteTime != _lastFileWrite)
+            if ( (lastWriteTime != _lastFileWrite) || (DateTime.Now.Subtract(_lastStatusSend).TotalSeconds>5) )
             {
                 ProcessStatusFileUpdate(_statusFile);
                 _lastFileWrite = lastWriteTime;
+                _lastStatusSend = DateTime.Now;
             }
             _statusTimer.Start();
         }
@@ -215,6 +217,7 @@ namespace SRVTracker
             try
             {
                 // E: D status.json file does not include milliseconds in the timestamp.  We want milliseconds, so we add our own timestamp
+                // This also gives us polling every five seconds in case the commander stops moving (as soon as they move, the new status should be picked up)
                 UpdateUI(new EDEvent(status,textBoxClientId.Text, DateTime.Now));
             }
             catch { }

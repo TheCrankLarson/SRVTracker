@@ -14,7 +14,7 @@ namespace EDTracking
     {
         private static WebClient _webClient = new WebClient();
         private static Dictionary<string, EDEvent> _commanderStatuses = new Dictionary<string, EDEvent>();
-        private static Timer _updateTimer = new Timer(500);
+        private static Timer _updateTimer = new Timer(750);
         private static bool _enabled = false;
         private static object _lock = new object();
         private static string _lastStatus = "";
@@ -36,7 +36,7 @@ namespace EDTracking
             {
                 // We only want one timer, so ensure we only subscribe once
                 _updateTimer.Elapsed += _updateTimer_Elapsed;
-                _updateTimer.Interval = 500;
+                _updateTimer.Interval = 750;
                 _updateTimer.Start();
                 _enabled = true;
             }

@@ -23,6 +23,7 @@ namespace EDTracking
 
         public DateTime Start { get; set; } = DateTime.MinValue;
         private bool _raceStarted = false;
+        public bool Finished { get; set; } = false;
         public bool EliminateOnVehicleDestruction { get; set; } = true;
         public bool SRVOnly { get; set; } = true;
         public bool FighterOnly { get; set; } = false;
@@ -205,6 +206,11 @@ namespace EDTracking
                     }
                 }
             }
+
+            // Now we need to update each RaceStatus with the positions
+            for (int i = 0; i < positions.Count; i++)
+                Statuses[positions[i]].RacePosition = i + 1;
+
             return positions;
         }
 
@@ -212,8 +218,8 @@ namespace EDTracking
         {
             // Export the current leaderboard
 
-            // We only calculate the export twice a second (max)
-            if (DateTime.Now.Subtract(_statsLastGenerated).TotalMilliseconds<500)
+            // We only rebuild the statistics after a short time
+            if (DateTime.Now.Subtract(_statsLastGenerated).TotalMilliseconds<750)
                 return _lastStatsTable;
 
             List<string> leaderBoard = RacePositions();

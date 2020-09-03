@@ -31,8 +31,9 @@ namespace DataCollator
         private DateTime _lastCommanderStatusBuilt = DateTime.MinValue;
         private string _lastCommanderStatus = "";
 
-        public NotificationServer(string ListenURL, bool EnableDebug = false)
+        public NotificationServer(string ListenURL, bool EnableDebug = false, bool VerboseDebug = false)
         {
+            VerboseDebugEnabled = VerboseDebug;
             if (EnableDebug)
                 _logStream = File.Open("stream.log", FileMode.OpenOrCreate, FileAccess.Write, FileShare.Read);
             URi = ListenURL;
@@ -55,6 +56,8 @@ namespace DataCollator
                 _logStream = null;
             }
         }
+
+        public bool VerboseDebugEnabled { get; set; } = false;
 
         public void Start()
         {
@@ -109,7 +112,10 @@ namespace DataCollator
             {
                 updateEvent = EDEvent.FromJson(status);
                 if (String.IsNullOrEmpty(updateEvent.Commander))
+                {
+                    Log($"Updated received with blank commander: {status}", true);
                     return;
+                }
             }
             catch (Exception ex)
             {
@@ -122,8 +128,9 @@ namespace DataCollator
                 {
                     foreach (Guid raceGuid in _races.Keys)
                     {
-                        _races[raceGuid].UpdateStatus(updateEvent);
-                        Log($"{raceGuid}: Updated {updateEvent.Commander}");
+                        if (!_races[raceGuid].Finished)
+                            _races[raceGuid].UpdateStatus(updateEvent);
+                        Log($"{raceGuid}: Updated {updateEvent.Commander}",true);
                     }
                 }));
 
@@ -133,23 +140,38 @@ namespace DataCollator
                 {
                     _commanderStatus.Add(updateEvent.Commander, new EDRaceStatus(updateEvent));
                     if (_playerStatus.ContainsKey(updateEvent.Commander))
+                    {
                         _playerStatus[updateEvent.Commander] = updateEvent;
+                        Log($"Processed status update for commander: {updateEvent.Commander}", true);
+                    }
                     else
+                    {
                         _playerStatus.Add(updateEvent.Commander, updateEvent);
+                        Log($"Received status update for new commander: {updateEvent.Commander}", true);
+                    }
                 }
                 return;
             }
 
             if (_commanderStatus[updateEvent.Commander].TimeStamp > updateEvent.TimeStamp)
+            {
+                Log($"Event timestamp ({updateEvent.TimeStamp}) older than existing timestamp ({_commanderStatus[updateEvent.Commander].TimeStamp}): {updateEvent.Commander}", true);
                 return;
+            }
 
             lock (_notificationLock)
             {
                 _commanderStatus[updateEvent.Commander].UpdateStatus(updateEvent);
                 if (_playerStatus.ContainsKey(updateEvent.Commander))
+                {
                     _playerStatus[updateEvent.Commander] = updateEvent;
+                    Log($"Processed status update for commander: {updateEvent.Commander}", true);
+                }
                 else
+                {
                     _playerStatus.Add(updateEvent.Commander, updateEvent);
+                    Log($"Received status update for new commander: {updateEvent.Commander}", true);
+                }
             }
         }
 
@@ -535,42 +557,37 @@ namespace DataCollator
         {
             // Send Commander status
 
-            StringBuilder status = new StringBuilder();
 
             // Check if a client Id was specified
-            if (Context.Request.RawUrl.Length > 21)
+            if (Context.Request.RawUrl.Length > 20)
             {
                 string clientId = System.Web.HttpUtility.UrlDecode(Context.Request.RawUrl).Substring(21).ToLower();
                 if (_playerStatus.ContainsKey(clientId))
                 {
                     Log($"Player status requested: {clientId}");
-                    status.AppendLine(_playerStatus[clientId].ToJson());
+                    WriteResponse(Context, _playerStatus[clientId].ToJson());
                 }
                 else
                 {
-                    Log($"Status requested for invalid client: {clientId}");
+                    //Log($"Status requested for invalid client: {clientId}");
                     WriteErrorResponse(Context.Response, HttpStatusCode.NotFound);
-                    return;
                 }
-            }
-            else
-            {               
-                if (DateTime.Now.Subtract(_lastCommanderStatusBuilt).TotalMilliseconds < 750)
-                {
-                    status.Append(_lastCommanderStatus);
-                    Log("All player status returned from cache");
-                }
-                else
-                {
-                    foreach (string id in _playerStatus.Keys)
-                        status.AppendLine(_playerStatus[id].ToJson());
-                    Log("All player status generated");
-                    _lastCommanderStatus = status.ToString();
-                    _lastCommanderStatusBuilt = DateTime.Now;
-                }
+                return;
             }
 
-            WriteResponse(Context, status.ToString());
+            if (DateTime.Now.Subtract(_lastCommanderStatusBuilt).TotalMilliseconds > 750)
+            {
+                StringBuilder status = new StringBuilder();
+                foreach (string id in _playerStatus.Keys)
+                    status.AppendLine(_playerStatus[id].ToJson());
+                Log("All player status generated");
+                _lastCommanderStatus = status.ToString();
+                _lastCommanderStatusBuilt = DateTime.Now;
+            }
+            else
+                Log("All player status returned from cache");
+
+            WriteResponse(Context, _lastCommanderStatus);
             if (DateTime.Now.Subtract(_lastStaleDataCheck).TotalMinutes > 120)
                 ClearStaleData();
         }
@@ -582,27 +599,60 @@ namespace DataCollator
             if (_playerStatus != null)
                 foreach (string commander in _playerStatus.Keys)
                     if (DateTime.Now.Subtract(_playerStatus[commander].TimeStamp).TotalMinutes > 120)
+                    {
                         _playerStatus.Remove(commander);
+                        Log($"{commander}: deleted tracking data as last update over 2 hours ago", true);
+                    }
 
             if (_commanderStatus != null)
                 foreach (string commander in _commanderStatus.Keys)
                     if (DateTime.Now.Subtract(_commanderStatus[commander].TimeStamp).TotalMinutes > 120)
+                    {
                         _commanderStatus.Remove(commander);
+                        Log($"{commander}: deleted race status data as last update over 2 hours ago", true);
+                    }
 
             if (_races.Count > 0) // We remove old races after 72 hours
                 foreach (Guid raceGuid in _races.Keys)
-                    if (DateTime.Now.Subtract(_races[raceGuid].Start).TotalDays > 3)
+                {
+                    TimeSpan timeSinceStart = DateTime.Now.Subtract(_races[raceGuid].Start);
+                    if (timeSinceStart.TotalDays > 3)
                     {
                         _races.Remove(raceGuid);
-                        Log($"Removed old race: {raceGuid}");
+                        Log($"{raceGuid}: deleted race as older than three days");
                     }
+                    else if ( !_races[raceGuid].Finished && (_races[raceGuid].Start != DateTime.MinValue) )
+                    {
+                        if (timeSinceStart.TotalHours > 24)
+                        {
+                            _races[raceGuid].Finished = true;
+                            Log($"{raceGuid}: race marked as finished due to 24 hours since start");
+                        }
+                        else
+                        {
+                            // Check each racer status to see if race is finished
+                            bool allFinished = true;
+                            foreach (EDRaceStatus status in _races[raceGuid].Statuses.Values)
+                                if (!status.Finished && !status.Eliminated)
+                                {
+                                    allFinished = false;
+                                    break;
+                                }
+                            if (allFinished)
+                            {
+                                _races[raceGuid].Finished = true;
+                                Log($"{raceGuid}: finished - all participants finished or eliminated");
+                            }
+                        }
+                    }
+                }
 
             _lastStaleDataCheck = DateTime.Now;
         }
 
-        private void Log(string log)
+        private void Log(string log, bool Verbose = false)
         {
-            if (_logStream == null)
+            if ( (_logStream == null) || (Verbose && !VerboseDebugEnabled) )
                 return;
 
             try

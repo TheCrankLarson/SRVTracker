@@ -31,6 +31,8 @@ namespace SRVTracker
         private string _lastRacePositions = "k";
         private string _lastExportTargetPitstops = "k";
         private string _lastExportTargetMaxSpeed = "k";
+        private string _lastExportTargetSpeed = "k";
+        private int _lastExportTargetRacePosition = 0;
         private string _saveFilename = "";
         private bool _generatingLeaderboard = false;
         private object _lockListView = new object();
@@ -936,31 +938,13 @@ namespace SRVTracker
                     numericUpDownStatusMaxLength.Enabled = false;
             }
 
-            if (checkBoxExportSpeed.Checked)
-            {
-                if (!textBoxExportSpeedFile.Enabled)
-                    textBoxExportSpeedFile.Enabled = true;
-            }
-            else
-            {
-                if (textBoxExportSpeedFile.Enabled)
-                    textBoxExportSpeedFile.Enabled = false;
-            }
-
-            if (checkBoxExportTarget.Checked)
-            {
-                if (!textBoxExportTargetFile.Enabled)
-                    textBoxExportTargetFile.Enabled = true;
-            }
-            else
-            {
-                if (textBoxExportTargetFile.Enabled)
-                    textBoxExportTargetFile.Enabled = false;
-            }
+            textBoxExportSpeedFile.Enabled = checkBoxExportSpeed.Checked;
             checkBoxExportDistance.Enabled = checkBoxExportStatus.Checked;
-
+            textBoxExportTargetFile.Enabled = checkBoxExportTarget.Checked;
             textBoxExportTargetMaxSpeedFile.Enabled = checkBoxExportTargetMaxSpeed.Checked;
             textBoxExportTargetPitstopsFile.Enabled = checkBoxExportTargetPitstops.Checked;
+            textBoxExportTargetSpeedFile.Enabled = checkBoxExportTargetSpeed.Checked;
+            textBoxExportTargetPosition.Enabled = checkBoxExportTargetPosition.Checked;
 
             buttonUneliminate.Enabled = false;
             if (listViewParticipants.SelectedItems.Count>0)
@@ -1242,6 +1226,34 @@ namespace SRVTracker
                     _lastTrackingTarget = trackingTarget.ToString();
                 }
                 catch { }
+            }
+
+            if (checkBoxExportTargetSpeed.Checked)
+            {
+                string exportSpeed = commanderStatus.SpeedInMS.ToString("F1");
+
+                if (!exportSpeed.Equals(_lastExportTargetSpeed))
+                {
+                    try
+                    {
+                        File.WriteAllText(textBoxExportSpeedFile.Text, exportSpeed);
+                        _lastExportTargetMaxSpeed = exportSpeed;
+                    }
+                    catch { }
+                }
+            }
+
+            if (checkBoxExportTargetPosition.Checked)
+            {
+                if (commanderStatus.RacePosition != _lastExportTargetRacePosition)
+                {
+                    try
+                    {
+                        File.WriteAllText(textBoxExportTargetPosition.Text, commanderStatus.RacePosition.ToString());
+                        _lastExportTargetRacePosition = commanderStatus.RacePosition;
+                    }
+                    catch { }
+                }
             }
 
             if (checkBoxExportTargetMaxSpeed.Checked)

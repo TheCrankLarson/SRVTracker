@@ -13,7 +13,7 @@ namespace DataCollator
 {
     public partial class Form1 : Form
     {
-        NotificationServer notificationServer = null;
+        NotificationServer _notificationServer = null;
 
         public Form1()
         {
@@ -33,15 +33,28 @@ namespace DataCollator
             {
                 UDPListener.StartListening((int)numericUpDown1.Value);
                 buttonStart.Text = "Stop";
-                notificationServer = new NotificationServer(textBoxWebhookUrl.Text, checkBoxDebug.Checked);
+                if (_notificationServer == null)
+                    _notificationServer = new NotificationServer(textBoxWebhookUrl.Text, checkBoxDebug.Checked, checkBoxVerboseDebug.Checked);
+                else
+                    _notificationServer.Start();
                 return;
             }
+
             
+            _notificationServer.Stop();
+            buttonStart.Text = "Start";
         }
 
         private void UDPListener_DataReceived(object sender, string data)
         {
-            Task.Run(new Action(() => { notificationServer?.ProcessNotification($"{data}"); }));
+            Task.Run(new Action(() => { _notificationServer?.ProcessNotification($"{data}"); }));
+        }
+
+        private void checkBoxVerboseDebug_CheckedChanged(object sender, EventArgs e)
+        {
+            if (_notificationServer == null)
+                return;
+            _notificationServer.VerboseDebugEnabled = checkBoxVerboseDebug.Checked;
         }
     }
 }
