@@ -731,7 +731,7 @@ namespace SRVTracker
                 //Stream statusStream = _webClient.OpenRead($"http://{FormLocator.ServerAddress}:11938/DataCollator/startrace");
                 using (WebClient wc = new WebClient())
                 {
-                    wc.Headers[HttpRequestHeader.ContentType] = "application/x-www-form-urlencoded";
+                    wc.Headers[HttpRequestHeader.ContentType] = "application/json";
                     string response = wc.UploadString($"http://{FormLocator.ServerAddress}:11938/DataCollator/startrace", JsonSerializer.Serialize(_race));
                     Guid raceGuid = Guid.Empty;
                     if (Guid.TryParse(response, out raceGuid))
@@ -814,6 +814,7 @@ namespace SRVTracker
                 }
                 catch { }
                 _serverRaceGuid = "";
+                CommanderWatcher.UpdateReceived += CommanderWatcher_UpdateReceived; // Enable updates again
             }
 
             buttonStopRace.Enabled = false;
