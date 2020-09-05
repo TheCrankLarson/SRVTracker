@@ -216,7 +216,7 @@ namespace EDTracking
                 if (timeBetweenLocations.TotalMilliseconds > 750)
                 {
                     // We take a speed calculation once every 750 milliseconds
-                    _speedCalculationTimeStamp = updateEvent.TimeStamp;
+                    
                     if (_speedCalculationLocation != null)
                     {
                         double distanceBetweenLocations = EDLocation.DistanceBetween(_speedCalculationLocation, updateEvent.Location());
@@ -228,7 +228,15 @@ namespace EDTracking
                             _speedCalculationLocation = null;
                         }
                         else
+                        {
                             _speedCalculationLocation = updateEvent.Location();
+                            _speedCalculationTimeStamp = updateEvent.TimeStamp;
+                        }
+                    }
+                    else
+                    {
+                        _speedCalculationLocation = updateEvent.Location();
+                        _speedCalculationTimeStamp = updateEvent.TimeStamp;
                     }
                 }
                 if (SpeedInMS > MaxSpeedInMS)
