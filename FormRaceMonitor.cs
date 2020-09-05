@@ -1190,7 +1190,7 @@ namespace SRVTracker
             }
         }
 
-        private bool _showError = true;
+        private DateTime _errorLastShown = DateTime.MinValue;
         private EDRaceStatus GetCommanderRaceStatus(string commander)
         {
             if (String.IsNullOrEmpty(commander))
@@ -1210,9 +1210,11 @@ namespace SRVTracker
                 }
                 catch (Exception ex)
                 {
-                    if (_showError)
+                    if (DateTime.Now.Subtract(_errorLastShown).TotalSeconds > 60)
+                    {
                         MessageBox.Show($"Error retrieving tracked target:{Environment.NewLine}{ex.Message}", "Tracking Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    _showError = false;
+                        _errorLastShown = DateTime.Now;
+                    }
                 }
             }
             else if (_race.Statuses != null && _race.Statuses.ContainsKey(commander))
