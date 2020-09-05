@@ -49,7 +49,7 @@ namespace SRVTracker
             InitStatusLocation();
             buttonTest.Visible = System.Diagnostics.Debugger.IsAttached;
             FormLocator.ServerAddress = (string)radioButtonUseDefaultServer.Tag;
-            _statusTimer = new System.Timers.Timer(250);
+            _statusTimer = new System.Timers.Timer(700);
             _statusTimer.Elapsed += _statusTimer_Elapsed;
             this.Size = _configHidden;
             checkBoxTrack.Checked = true;
