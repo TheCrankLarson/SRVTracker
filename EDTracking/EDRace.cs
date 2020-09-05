@@ -254,8 +254,10 @@ namespace EDTracking
                 if (Statuses != null)
                 {
                     if (Statuses[leaderBoard[i]].Finished)
-                        status.AppendLine(StatusMessages["Completed"]);
-                    //status.AppendLine($"({_racersStatus[leaderBoard[i]].FinishTime.Subtract(EDRaceStatus.StartTime):hh\\:mm\\:ss})");
+                    {
+                        status.Append(StatusMessages["Completed"]);
+                        status.AppendLine($" ({Statuses[leaderBoard[i]].FinishTime.Subtract(EDRaceStatus.StartTime):hh\\:mm\\:ss})");
+                    }
                     else
                     {
                         string s = Statuses[leaderBoard[i]].ToString();
@@ -264,7 +266,7 @@ namespace EDTracking
                         status.AppendLine(s);
                     }
 
-                    distanceToWaypoint.AppendLine(Statuses[leaderBoard[i]].DistanceToWaypointDisplay);
+                    distanceToWaypoint.AppendLine(Statuses[leaderBoard[i]].DistanceToWaypointInKmDisplay);
                 }
                 else
                 {

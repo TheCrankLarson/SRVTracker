@@ -385,6 +385,13 @@ namespace SRVTracker
             Action action;
             TrackingTarget = target;
 
+            if (_targetPosition==null)
+            {
+                EDEvent commanderEvent = CommanderWatcher.GetCommanderStatus(target);
+                if (commanderEvent != null)
+                    _targetPosition = commanderEvent.Location();
+            }
+
             locatorHUD1.SetTarget(target);
             string bearingInfo = $"Bearing (tracking {target})";
             if (String.IsNullOrEmpty(target))
@@ -401,6 +408,7 @@ namespace SRVTracker
                         action();
                 }
             }
+            /*
             if (!groupBoxBearing.Text.Equals(bearingInfo))
             {
                 action = new Action(() => { groupBoxBearing.Text = bearingInfo; });
@@ -408,7 +416,7 @@ namespace SRVTracker
                     groupBoxBearing.Invoke(action);
                 else
                     action();
-            }           
+            } */          
         }
 
         private void buttonTrackCommander_Click(object sender, EventArgs e)
@@ -435,6 +443,7 @@ namespace SRVTracker
                 // Stop tracking               
                 UpdateTrackingTarget("");
             }
+            DisplayTarget();
         }
 
         private void checkBoxEnableVRLocator_CheckedChanged(object sender, EventArgs e)

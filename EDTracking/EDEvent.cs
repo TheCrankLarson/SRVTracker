@@ -59,6 +59,7 @@ namespace EDTracking
                     TimeStamp = ((DateTime)timeStamp).ToUniversalTime();
                 else if (root.TryGetProperty("timestamp", out property))
                     TimeStamp = property.GetDateTime();
+
                 if (root.TryGetProperty("Flags", out property))
                     Flags = property.GetInt64();
                 if (root.TryGetProperty("Latitude", out property))

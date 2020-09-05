@@ -53,12 +53,13 @@
             this.numericUpDownRadius = new System.Windows.Forms.NumericUpDown();
             this.checkBoxRadius = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.locationManager1 = new SRVTracker.LocationManager();
             this.textBoxRouteName = new System.Windows.Forms.TextBox();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.buttonSettings = new System.Windows.Forms.Button();
             this.buttonPlay = new System.Windows.Forms.Button();
             this.buttonStop = new System.Windows.Forms.Button();
             this.buttonStartRecording = new System.Windows.Forms.Button();
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.groupBox2.SuspendLayout();
             this.groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRecordDistance)).BeginInit();
@@ -155,7 +156,6 @@
             // 
             // buttonAddWaypoint
             // 
-            this.buttonAddWaypoint.Enabled = false;
             this.buttonAddWaypoint.Image = global::SRVTracker.Properties.Resources.Add_16x;
             this.buttonAddWaypoint.Location = new System.Drawing.Point(49, 172);
             this.buttonAddWaypoint.Name = "buttonAddWaypoint";
@@ -357,6 +357,15 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Route name";
             // 
+            // locationManager1
+            // 
+            this.locationManager1.Location = new System.Drawing.Point(298, 12);
+            this.locationManager1.LocatorForm = null;
+            this.locationManager1.Name = "locationManager1";
+            this.locationManager1.Size = new System.Drawing.Size(281, 287);
+            this.locationManager1.TabIndex = 14;
+            this.locationManager1.SelectionChanged += new System.EventHandler(this.locationManager1_SelectionChanged);
+            // 
             // textBoxRouteName
             // 
             this.textBoxRouteName.Location = new System.Drawing.Point(6, 19);
@@ -413,15 +422,16 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(495, 279);
-            this.Controls.Add(this.groupBox1);
+            this.ClientSize = new System.Drawing.Size(588, 310);
+            this.Controls.Add(this.locationManager1);
             this.Controls.Add(this.buttonSettings);
             this.Controls.Add(this.buttonPlay);
             this.Controls.Add(this.buttonStop);
-            this.Controls.Add(this.groupBox3);
-            this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.buttonStartRecording);
+            this.Controls.Add(this.groupBox4);
+            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.groupBox3);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
@@ -472,5 +482,6 @@
         private System.Windows.Forms.TextBox textBoxRouteName;
         private System.Windows.Forms.Button buttonAddCurrentLocation;
         private System.Windows.Forms.ToolTip toolTip1;
+        private LocationManager locationManager1;
     }
 }

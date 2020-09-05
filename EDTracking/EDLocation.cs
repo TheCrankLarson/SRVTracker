@@ -85,7 +85,7 @@ namespace EDTracking
                           Math.Cos(ConvertToRadians(location1.Latitude)) * Math.Cos(ConvertToRadians(location2.Latitude)) *
                           Math.Sin(lng / 2) * Math.Sin(lng / 2);
             var h2 = 2 * Math.Asin(Math.Min(1, Math.Sqrt(h1)));
-            return R * h2;
+            return Math.Abs(R * h2);
         }
 
         public static double BearingToLocation(EDLocation sourceLocation, EDLocation targetLocation)

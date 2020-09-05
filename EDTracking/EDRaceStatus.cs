@@ -51,7 +51,7 @@ namespace EDTracking
         private DateTime _speedCalculationTimeStamp = DateTime.UtcNow;
         private double _lastSpeedInMs = 0;
         private bool _gotFirstSpeedReading = false;
-        private double _lastLoggedMaxSpeed = 40;  // We don't log any maximum speeds below 40m/s
+        private double _lastLoggedMaxSpeed = 50;  // We don't log any maximum speeds below 50m/s
         private DateTime _pitStopStartTime = DateTime.MinValue;
         private DateTime _lastUnderShip = DateTime.MinValue;
         public NotableEvents notableEvents = null;
@@ -115,11 +115,6 @@ namespace EDTracking
                     status.Append(" (low fuel)");
             }
 
-            //if (SpeedInMS >= 0)
-            //    status.Append($" {SpeedInMS:0.0}m/s");
-
-
-
             if (ShowDetailedStatus)
             {
                 // Flags that apply to all vehicles
@@ -162,15 +157,12 @@ namespace EDTracking
                     if (isFlagSet(StatusFlags.Being_Interdicted))
                         status.Append(" I");
                 }
-
-
             }
-
             return status.ToString();
         }
 
         [ScriptIgnore]
-        public String DistanceToWaypointDisplay
+        public String DistanceToWaypointInKmDisplay
         {
             get
             {
@@ -194,6 +186,8 @@ namespace EDTracking
             if (Eliminated)
             {
                 Eliminated = false;
+                DistanceToWaypoint = double.MaxValue;
+                _speedCalculationLocation = null;
                 AddRaceHistory("Resurrected (elimination manually rescinded)");
                 return true;
             }
@@ -211,6 +205,7 @@ namespace EDTracking
 
             _lastFlags = Flags;
             Flags = updateEvent.Flags;
+            TimeStamp = updateEvent.TimeStamp;
 
             if (Finished || Eliminated)
                 return;
@@ -298,7 +293,7 @@ namespace EDTracking
                         _inPits = true;
                         if (DateTime.Now.Subtract(_lastUnderShip).TotalSeconds > 60)
                         {
-                            // This check allows for problems boarding the ship (i.e. if you can only access from one direction, which might trigger the flag several times)
+                            // This check allows for problems boarding the ship (e.g. if you can only access from one direction, which might trigger the flag several times)
                             notableEvents?.AddEvent($"{Commander}{EDRace.StatusMessages["PitstopNotification"]}");
                             PitStopCount++;
                             _pitStopStartTime = DateTime.Now;

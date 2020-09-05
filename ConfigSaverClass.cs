@@ -400,7 +400,8 @@ namespace SRVTracker
                     appSettings.AppendLine(control.Name + ":Text:" + Encode(control.Text));
             }
             else
-                appSettings.AppendLine(control.Name + ":Text:" + Encode(control.Text));
+                if( !(control is CheckBox) )
+                    appSettings.AppendLine(control.Name + ":Text:" + Encode(control.Text));
 
             PropertyInfo prop = control.GetType().GetProperty("SelectedIndex", BindingFlags.Public | BindingFlags.Instance);
             if (prop != null && prop.CanWrite)
@@ -419,7 +420,7 @@ namespace SRVTracker
             if (!ParentControl.HasChildren)
                 return;
 
-            if (_controlTypesExcludedFromRecursion.Contains(ParentControl.GetType().ToString()))// == "SOAPe.XmlEditor")
+            if (_controlTypesExcludedFromRecursion.Contains(ParentControl.GetType().ToString()))
                 return;  // Don't recurse into this control
 
             foreach (Control control in ParentControl.Controls)

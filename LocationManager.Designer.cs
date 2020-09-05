@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.buttonTrackLocation = new System.Windows.Forms.Button();
             this.buttonSaveAs = new System.Windows.Forms.Button();
@@ -37,6 +38,7 @@
             this.buttonLoadLocations = new System.Windows.Forms.Button();
             this.buttonSaveLocations = new System.Windows.Forms.Button();
             this.listBoxLocations = new System.Windows.Forms.ListBox();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -65,6 +67,7 @@
             this.buttonTrackLocation.Name = "buttonTrackLocation";
             this.buttonTrackLocation.Size = new System.Drawing.Size(23, 23);
             this.buttonTrackLocation.TabIndex = 7;
+            this.toolTip1.SetToolTip(this.buttonTrackLocation, "Add current location");
             this.buttonTrackLocation.UseVisualStyleBackColor = true;
             this.buttonTrackLocation.Click += new System.EventHandler(this.buttonTrackLocation_Click);
             // 
@@ -76,6 +79,7 @@
             this.buttonSaveAs.Name = "buttonSaveAs";
             this.buttonSaveAs.Size = new System.Drawing.Size(40, 23);
             this.buttonSaveAs.TabIndex = 6;
+            this.toolTip1.SetToolTip(this.buttonSaveAs, "Save locations as");
             this.buttonSaveAs.UseVisualStyleBackColor = true;
             this.buttonSaveAs.Click += new System.EventHandler(this.buttonSaveAs_Click);
             // 
@@ -86,6 +90,7 @@
             this.buttonEditLocation.Name = "buttonEditLocation";
             this.buttonEditLocation.Size = new System.Drawing.Size(23, 23);
             this.buttonEditLocation.TabIndex = 5;
+            this.toolTip1.SetToolTip(this.buttonEditLocation, "Edit selected location");
             this.buttonEditLocation.UseVisualStyleBackColor = true;
             this.buttonEditLocation.Click += new System.EventHandler(this.buttonEditLocation_Click);
             // 
@@ -97,6 +102,7 @@
             this.buttonAddLocation.Name = "buttonAddLocation";
             this.buttonAddLocation.Size = new System.Drawing.Size(23, 23);
             this.buttonAddLocation.TabIndex = 4;
+            this.toolTip1.SetToolTip(this.buttonAddLocation, "Add new location (opens the Location window)");
             this.buttonAddLocation.UseVisualStyleBackColor = true;
             this.buttonAddLocation.Click += new System.EventHandler(this.buttonAddLocation_Click);
             // 
@@ -108,6 +114,7 @@
             this.buttonDeleteLocation.Name = "buttonDeleteLocation";
             this.buttonDeleteLocation.Size = new System.Drawing.Size(23, 23);
             this.buttonDeleteLocation.TabIndex = 3;
+            this.toolTip1.SetToolTip(this.buttonDeleteLocation, "Delete location from list");
             this.buttonDeleteLocation.UseVisualStyleBackColor = true;
             this.buttonDeleteLocation.Click += new System.EventHandler(this.buttonDeleteLocation_Click);
             // 
@@ -119,6 +126,7 @@
             this.buttonLoadLocations.Name = "buttonLoadLocations";
             this.buttonLoadLocations.Size = new System.Drawing.Size(40, 23);
             this.buttonLoadLocations.TabIndex = 2;
+            this.toolTip1.SetToolTip(this.buttonLoadLocations, "Load locations from file");
             this.buttonLoadLocations.UseVisualStyleBackColor = true;
             this.buttonLoadLocations.Click += new System.EventHandler(this.buttonLoadLocations_Click);
             // 
@@ -130,6 +138,7 @@
             this.buttonSaveLocations.Name = "buttonSaveLocations";
             this.buttonSaveLocations.Size = new System.Drawing.Size(40, 23);
             this.buttonSaveLocations.TabIndex = 1;
+            this.toolTip1.SetToolTip(this.buttonSaveLocations, "Save locations");
             this.buttonSaveLocations.UseVisualStyleBackColor = true;
             this.buttonSaveLocations.Click += new System.EventHandler(this.buttonSaveLocations_Click);
             // 
@@ -170,5 +179,6 @@
         private System.Windows.Forms.Button buttonEditLocation;
         private System.Windows.Forms.Button buttonSaveAs;
         private System.Windows.Forms.Button buttonTrackLocation;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }

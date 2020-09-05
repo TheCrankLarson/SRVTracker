@@ -16,6 +16,8 @@ namespace SRVTracker
     {
         static Size _fullSize = new Size(489, 297);
         static Size _miniSize = new Size(313, 291);
+        static Size _chooseLocation = new Size(604, 349);
+        private Size? _previousSize = null;
         private EDLocation _lastLoggedLocation = null;
         private int _nextWaypoint = 0;
         private EDRoute _route = null;
@@ -30,6 +32,7 @@ namespace SRVTracker
             _formTracker = formTracker;
             FormTracker.CommanderLocationChanged += FormTracker_CommanderLocationChanged;
             buttonStop.Enabled = false;
+            locationManager1.Visible = false;
         }
 
         private void DisplayRoute()
@@ -131,6 +134,15 @@ namespace SRVTracker
 
         private void buttonSettings_Click(object sender, EventArgs e)
         {
+            if (locationManager1.Visible)
+            {
+                // Revert to previous size/location
+                locationManager1.Visible = false;
+                if (_previousSize != null)
+                    this.Size = (Size)_previousSize;
+                _previousSize = null;
+                return;
+            }
             if (this.Size == _miniSize)
                 this.Size = _fullSize;
             else
@@ -354,7 +366,12 @@ namespace SRVTracker
 
         private void buttonAddWaypoint_Click(object sender, EventArgs e)
         {
-
+            if (!locationManager1.Visible)
+            {
+                _previousSize = this.Size;
+                this.Size = _chooseLocation;
+                locationManager1.Visible = true;
+            }
         }
 
         private void buttonAddCurrentLocation_Click(object sender, EventArgs e)
@@ -366,6 +383,24 @@ namespace SRVTracker
         private void textBoxRouteName_TextChanged(object sender, EventArgs e)
         {
             _route.Name = textBoxRouteName.Text;
+        }
+
+        private void locationManager1_SelectionChanged(object sender, EventArgs e)
+        {
+            if (!locationManager1.Visible)
+                return;
+
+            EDLocation selectedLocation = locationManager1.SelectedLocation;
+            if (selectedLocation != null)
+            {
+                AddLocationToRoute(locationManager1.SelectedLocation);
+                locationManager1.Visible = false;
+                if (_previousSize != null)
+                {
+                    this.Size = (Size)_previousSize;
+                    _previousSize = null;
+                }
+            }
         }
     }
 }

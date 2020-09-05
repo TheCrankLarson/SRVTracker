@@ -14,7 +14,7 @@ namespace SRVTracker
 {
     public partial class LocationManager : UserControl
     {
-        private string _saveFilename = "default.edlocations";
+        private static string _saveFilename = "default.edlocations";
         public event EventHandler SelectionChanged;
         public FormLocator LocatorForm { get; set; } = null;
 

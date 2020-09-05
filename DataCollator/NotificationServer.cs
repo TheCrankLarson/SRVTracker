@@ -129,8 +129,10 @@ namespace DataCollator
                     foreach (Guid raceGuid in _races.Keys)
                     {
                         if (!_races[raceGuid].Finished)
+                        {
                             _races[raceGuid].UpdateStatus(updateEvent);
-                        Log($"{raceGuid}: Updated {updateEvent.Commander}",true);
+                            Log($"{raceGuid}: Updated {updateEvent.Commander}", true);
+                        }
                     }
                 }));
 
@@ -210,7 +212,7 @@ namespace DataCollator
                 using (StreamReader reader = new StreamReader(request.InputStream))
                     sRequest = reader.ReadToEnd();
                 string requestUri = System.Web.HttpUtility.UrlDecode(request.RawUrl.Substring(14).ToLower());
-                Log($"{context.Request.RemoteEndPoint.Address}: {requestUri}");
+                Log($"{context.Request.RemoteEndPoint.Address}: {request.RawUrl.Substring(14)}");
 
                 Action action;
                 if (requestUri.StartsWith("status"))
@@ -255,7 +257,7 @@ namespace DataCollator
                     {
                         // Guid can be specified in the Url or in POST data.  This one has something in the Url
                         Guid raceGuid = Guid.Empty;
-                        Guid.TryParse(requestUri.Substring(22), out raceGuid); 
+                        Guid.TryParse(requestUri.Substring(8), out raceGuid); 
                         action = (() =>
                         {
                             GetRace(raceGuid, context);
@@ -267,6 +269,27 @@ namespace DataCollator
                         action = (() =>
                         {
                             GetRace(sRequest, context);
+                        });
+                    }
+                }
+                else if (requestUri.StartsWith("stoprace"))
+                {
+                    if (requestUri.Length > 9)
+                    {
+                        // Guid can be specified in the Url or in POST data.  This one has something in the Url
+                        Guid raceGuid = Guid.Empty;
+                        Guid.TryParse(requestUri.Substring(9), out raceGuid);
+                        action = (() =>
+                        {
+                            StopRace(raceGuid, context);
+                        });
+                    }
+                    else
+                    {
+                        // No Guid in the URL, so check request content
+                        action = (() =>
+                        {
+                            StopRace(sRequest, context);
                         });
                     }
                 }
@@ -431,6 +454,25 @@ namespace DataCollator
         }
 
         private void GetRace(string request, HttpListenerContext Context)
+        {
+            Guid raceGuid = Guid.Empty;
+            Guid.TryParse(request, out raceGuid);
+            GetRace(raceGuid, Context);
+        }
+
+        private void StopRace(Guid raceGuid, HttpListenerContext Context)
+        {
+            if (raceGuid != Guid.Empty && _races.ContainsKey(raceGuid))
+            {
+                _races[raceGuid].Finished = true;
+                WriteResponse(Context, _races[raceGuid].ToString());
+                Log($"{raceGuid}: race finished (received stop from client)");
+            }
+            else
+                WriteErrorResponse(Context.Response, HttpStatusCode.NotFound);
+        }
+
+        private void StopRace(string request, HttpListenerContext Context)
         {
             Guid raceGuid = Guid.Empty;
             Guid.TryParse(request, out raceGuid);
