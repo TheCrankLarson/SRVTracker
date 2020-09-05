@@ -50,7 +50,6 @@ namespace EDTracking
         private EDLocation _speedCalculationLocation = null;
         private DateTime _speedCalculationTimeStamp = DateTime.UtcNow;
         private double _lastSpeedInMs = 0;
-        private bool _gotFirstSpeedReading = false;
         private double _lastLoggedMaxSpeed = 50;  // We don't log any maximum speeds below 50m/s
         private DateTime _pitStopStartTime = DateTime.MinValue;
         private DateTime _lastUnderShip = DateTime.MinValue;

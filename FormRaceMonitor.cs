@@ -1209,6 +1209,7 @@ namespace SRVTracker
                         string raceStatus = webClient.DownloadString(statusUrl);
                         if (raceStatus.Length > 2)
                             return EDRaceStatus.FromJson(raceStatus);
+                        throw new Exception($"Unexpected server response: {raceStatus}");
                     }
                 }
                 catch (Exception ex)
