@@ -40,7 +40,7 @@ namespace EDTracking
                     { "PitstopNotification", " is in the pits" },
                     { "Ready", "" }
                 };
-
+        public Dictionary<string, string> CustomStatusMessages { get; set; } = StatusMessages;
         private string _lastStatsTable = "";
         private DateTime _statsLastGenerated = DateTime.MinValue;
 
@@ -255,12 +255,17 @@ namespace EDTracking
                 {
                     if (Statuses[leaderBoard[i]].Finished)
                     {
-                        status.Append(StatusMessages["Completed"]);
+                        status.Append(CustomStatusMessages["Completed"]);
                         status.AppendLine($" ({Statuses[leaderBoard[i]].FinishTime.Subtract(EDRaceStatus.StartTime):hh\\:mm\\:ss})");
                     }
                     else
                     {
-                        string s = Statuses[leaderBoard[i]].ToString();
+                        string s;
+                        if (Statuses[leaderBoard[i]].Eliminated)
+                            s = CustomStatusMessages["Eliminated"];
+                        else
+                            s = Statuses[leaderBoard[i]].ToString();
+
                         if (s.Length > maxStatusLength)
                             s = s.Substring(0, maxStatusLength);
                         status.AppendLine(s);
@@ -270,7 +275,7 @@ namespace EDTracking
                 }
                 else
                 {
-                    status.AppendLine(StatusMessages["Ready"]);
+                    status.AppendLine(CustomStatusMessages["Ready"]);
                     distanceToWaypoint.AppendLine("NA");
                 }
             }
