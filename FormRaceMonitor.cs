@@ -1199,11 +1199,13 @@ namespace SRVTracker
             if (checkBoxServerMonitoring.Checked && !String.IsNullOrEmpty(_serverRaceGuid))
             {
                 // We need to retrieve the status from the server
+                string statusUrl = $"http://{FormLocator.ServerAddress}:11938/DataCollator/getcommanderracestatus/{_serverRaceGuid}/{System.Web.HttpUtility.UrlEncode(commander)}";
                 try
                 {
+
                     using (WebClient webClient = new WebClient())
                     {
-                        string raceStatus = webClient.DownloadString($"http://{FormLocator.ServerAddress}:11938/DataCollator/getcommanderracestatus/{_serverRaceGuid}/{System.Web.HttpUtility.UrlEncode(commander)}");
+                        string raceStatus = webClient.DownloadString(statusUrl);
                         if (raceStatus.Length > 2)
                             return EDRaceStatus.FromJson(raceStatus);
                     }
@@ -1212,7 +1214,7 @@ namespace SRVTracker
                 {
                     if (DateTime.Now.Subtract(_errorLastShown).TotalSeconds > 60)
                     {
-                        MessageBox.Show($"Error retrieving tracked target:{Environment.NewLine}{ex.Message}", "Tracking Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show($"Error retrieving tracked target:{Environment.NewLine}{ex.Message}{Environment.NewLine}{statusUrl}", "Tracking Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         _errorLastShown = DateTime.Now;
                     }
                 }
