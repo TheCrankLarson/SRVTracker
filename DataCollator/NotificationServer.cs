@@ -637,22 +637,31 @@ namespace DataCollator
         private void ClearStaleData()
         {
             // We want to remove tracking information if we haven't received an update from the client for 120 minutes
-
+            List<string> playersToRemove = new List<string>();
             if (_playerStatus != null)
+            {
                 foreach (string commander in _playerStatus.Keys)
                     if (DateTime.Now.Subtract(_playerStatus[commander].TimeStamp).TotalMinutes > 120)
+                        playersToRemove.Add(commander);
+                foreach(string commander in playersToRemove)
                     {
                         _playerStatus.Remove(commander);
                         Log($"{commander}: deleted tracking data as last update over 2 hours ago", true);
                     }
+                playersToRemove = new List<string>();
+            }
 
             if (_commanderStatus != null)
+            {
                 foreach (string commander in _commanderStatus.Keys)
                     if (DateTime.Now.Subtract(_commanderStatus[commander].TimeStamp).TotalMinutes > 120)
-                    {
-                        _commanderStatus.Remove(commander);
-                        Log($"{commander}: deleted race status data as last update over 2 hours ago", true);
-                    }
+                        playersToRemove.Add(commander);
+                foreach (string commander in playersToRemove)
+                {
+                    _commanderStatus.Remove(commander);
+                    Log($"{commander}: deleted race status data as last update over 2 hours ago", true);
+                }
+            }
 
             if (_races.Count > 0) // We remove old races after 72 hours
                 foreach (Guid raceGuid in _races.Keys)
