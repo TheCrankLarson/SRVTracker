@@ -218,6 +218,8 @@ namespace SRVTracker
             {
                 // E: D status.json file does not include milliseconds in the timestamp.  We want milliseconds, so we add our own timestamp
                 // This also gives us polling every five seconds in case the commander stops moving (as soon as they move, the new status should be picked up)
+                // Turns out milliseconds is pointless as E: D is very unlikely to generate a new status file more than once a second (or we won't detect it), but
+                // we'll keep them in case this changes in future.
                 UpdateUI(new EDEvent(status,textBoxClientId.Text, DateTime.Now));
             }
             catch { }

@@ -1190,6 +1190,7 @@ namespace SRVTracker
             }
         }
 
+        private bool _showError = true;
         private EDRaceStatus GetCommanderRaceStatus(string commander)
         {
             if (String.IsNullOrEmpty(commander))
@@ -1202,12 +1203,17 @@ namespace SRVTracker
                 {
                     using (WebClient webClient = new WebClient())
                     {
-                        string raceStatus = webClient.DownloadString($"http://{FormLocator.ServerAddress}:11938/DataCollator/getcommanderracestatus/{_serverRaceGuid}/{commander}");
+                        string raceStatus = webClient.DownloadString($"http://{FormLocator.ServerAddress}:11938/DataCollator/getcommanderracestatus/{_serverRaceGuid}/{System.Web.HttpUtility.UrlEncode(commander)}");
                         if (raceStatus.Length > 2)
                             return EDRaceStatus.FromJson(raceStatus);
                     }
                 }
-                catch { }
+                catch (Exception ex)
+                {
+                    if (_showError)
+                        MessageBox.Show($"Error retrieving tracked target:{Environment.NewLine}{ex.Message}", "Tracking Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    _showError = false;
+                }
             }
             else if (_race.Statuses != null && _race.Statuses.ContainsKey(commander))
                     return _race.Statuses[commander];
