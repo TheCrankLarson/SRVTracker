@@ -104,6 +104,7 @@ namespace EDTracking
             if (asServer)
             {
                 _notableEvents = new NotableEvents("", false);
+                _notableEvents.CustomStatusMessages = CustomStatusMessages;
                 _commanderEventHistory = new Dictionary<string, List<EDEvent>>();
             }
 

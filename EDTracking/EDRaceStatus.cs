@@ -261,7 +261,7 @@ namespace EDTracking
                         WaypointIndex++;
                         if (WaypointIndex >= Route.Waypoints.Count)
                         {
-                            notableEvents?.AddEvent($"{Commander}{EDRace.StatusMessages["CompletedNotification"]}");
+                            notableEvents?.AddStatusEvent("CompletedNotification",Commander);
                             Finished = true;
                             FinishTime = DateTime.Now;
                             WaypointIndex = 0;
@@ -285,7 +285,7 @@ namespace EDTracking
                 if (EliminateOnShipFlight)
                 {
                     Eliminated = true;
-                    notableEvents?.AddEvent($"{Commander}{EDRace.StatusMessages["EliminatedNotification"]}");
+                    notableEvents?.AddStatusEvent("EliminatedNotification", Commander);
                     DistanceToWaypoint = double.MaxValue;
                 }
                 _speedCalculationLocation = null; // If this occurred due to commander exploding, we need to clear the location otherwise we'll get a massive reading on respawn
@@ -301,7 +301,7 @@ namespace EDTracking
                         if (DateTime.Now.Subtract(_lastUnderShip).TotalSeconds > 60)
                         {
                             // This check allows for problems boarding the ship (e.g. if you can only access from one direction, which might trigger the flag several times)
-                            notableEvents?.AddEvent($"{Commander}{EDRace.StatusMessages["PitstopNotification"]}");
+                            notableEvents?.AddStatusEvent("PitstopNotification",Commander);
                             PitStopCount++;
                             _pitStopStartTime = DateTime.Now;
                         }

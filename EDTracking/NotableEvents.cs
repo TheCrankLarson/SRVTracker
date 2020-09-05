@@ -14,6 +14,7 @@ namespace EDTracking
         Timer _updateTimer = new Timer();
         private string _activeEvent = "";
         private string _writeToFile = "";
+        public Dictionary<string, string> CustomStatusMessages = EDRace.StatusMessages;
 
         public int UpdateInterval { get; set; } = 5000;
 
@@ -68,6 +69,11 @@ namespace EDTracking
         {
             if (!String.IsNullOrEmpty(eventInfo))
                 _notableEvents.Enqueue(eventInfo);
+        }
+
+        public void AddStatusEvent(string statusEvent, string commander)
+        {
+            AddEvent($"{commander}{CustomStatusMessages[statusEvent]}");
         }
     }
 }
