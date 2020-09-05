@@ -532,7 +532,7 @@ namespace SRVTracker
 
         private void buttonLocator_Click(object sender, EventArgs e)
         {
-            FormLocator.GetLocator();
+            FormLocator.GetLocator(true);
         }
 
         private void textBoxUploadServer_TextChanged(object sender, EventArgs e)

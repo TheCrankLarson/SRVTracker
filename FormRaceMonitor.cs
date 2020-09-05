@@ -63,6 +63,7 @@ namespace SRVTracker
             _formConfig.ExcludedControls.Add(textBoxRouteName);
             _formConfig.ExcludedControls.Add(textBoxSystem);
             _formConfig.ExcludedControls.Add(textBoxPlanet);
+            _formConfig.ExcludedControls.Add(groupBoxTrackTarget);
             _formConfig.SaveEnabled = true;
             _formConfig.StoreLabelInfo = false;
             _formConfig.StoreButtonInfo = false;

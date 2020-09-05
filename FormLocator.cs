@@ -66,7 +66,7 @@ namespace SRVTracker
             UpdateTracking();
         }
 
-        public static FormLocator GetLocator()
+        public static FormLocator GetLocator(bool focus = false)
         {
             if (_activeLocator != null)
             {
@@ -74,7 +74,8 @@ namespace SRVTracker
                 {
                     if (_activeLocator.Visible)
                     {
-                        _activeLocator.Focus();
+                        if (focus)
+                            _activeLocator.Focus();
                         return _activeLocator;
                     }
                 }
