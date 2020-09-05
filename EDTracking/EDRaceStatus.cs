@@ -221,16 +221,15 @@ namespace EDTracking
                     {
                         double distanceBetweenLocations = EDLocation.DistanceBetween(_speedCalculationLocation, updateEvent.Location());
                         SpeedInMS = distanceBetweenLocations * (1000 / timeBetweenLocations.TotalMilliseconds);
-                    }
-                    _speedCalculationLocation = updateEvent.Location();
-                    if (_gotFirstSpeedReading)
-                        if ((SpeedInMS - _lastSpeedInMs) > 200 && (timeBetweenLocations.TotalMilliseconds<3000))
+                        if ((SpeedInMS - _lastSpeedInMs) > 200 && (timeBetweenLocations.TotalMilliseconds < 3000))
                         {
                             // If the speed increases by more than 200m/s in three seconds, this is most likely due to respawn (i.e. invalid)
                             SpeedInMS = 0;
                             _speedCalculationLocation = null;
                         }
-                    _gotFirstSpeedReading = (SpeedInMS>0);
+                        else
+                            _speedCalculationLocation = updateEvent.Location();
+                    }
                 }
                 if (SpeedInMS > MaxSpeedInMS)
                 {
