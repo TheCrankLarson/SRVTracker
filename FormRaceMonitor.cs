@@ -1197,26 +1197,37 @@ namespace SRVTracker
             if (String.IsNullOrEmpty(commander))
                 return null;
 
-            if (checkBoxServerMonitoring.Checked && !String.IsNullOrEmpty(_serverRaceGuid))
+            if (checkBoxServerMonitoring.Checked)
             {
-                // We need to retrieve the status from the server
-                string statusUrl = $"http://{FormLocator.ServerAddress}:11938/DataCollator/getcommanderracestatus/{_serverRaceGuid}/{System.Web.HttpUtility.UrlEncode(commander)}";
-                try
-                {
-
-                    using (WebClient webClient = new WebClient())
+                if (!String.IsNullOrEmpty(_serverRaceGuid))
+                { 
+                    // We need to retrieve the status from the server
+                    string statusUrl = $"http://{FormLocator.ServerAddress}:11938/DataCollator/getcommanderracestatus/{_serverRaceGuid}/{System.Web.HttpUtility.UrlEncode(commander)}";
+                    try
                     {
-                        string raceStatus = webClient.DownloadString(statusUrl);
-                        if (raceStatus.Length > 2)
-                            return EDRaceStatus.FromJson(raceStatus);
-                        throw new Exception($"Unexpected server response: {raceStatus}");
+
+                        using (WebClient webClient = new WebClient())
+                        {
+                            string raceStatus = webClient.DownloadString(statusUrl);
+                            if (raceStatus.Length > 2)
+                                return EDRaceStatus.FromJson(raceStatus);
+                            throw new Exception($"Unexpected server response: {raceStatus}");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        if (DateTime.Now.Subtract(_errorLastShown).TotalSeconds > 60)
+                        {
+                            MessageBox.Show($"Error retrieving tracked target:{Environment.NewLine}{ex.Message}{Environment.NewLine}{statusUrl}", "Tracking Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            _errorLastShown = DateTime.Now;
+                        }
                     }
                 }
-                catch (Exception ex)
+                else
                 {
                     if (DateTime.Now.Subtract(_errorLastShown).TotalSeconds > 60)
                     {
-                        MessageBox.Show($"Error retrieving tracked target:{Environment.NewLine}{ex.Message}{Environment.NewLine}{statusUrl}", "Tracking Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show($"Race Guid not set - cannot query server", "Tracking Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         _errorLastShown = DateTime.Now;
                     }
                 }
@@ -1279,8 +1290,8 @@ namespace SRVTracker
                 {
                     try
                     {
-                        File.WriteAllText(textBoxExportSpeedFile.Text, exportSpeed);
-                        _lastExportTargetMaxSpeed = exportSpeed;
+                        File.WriteAllText(textBoxExportTargetSpeedFile.Text, exportSpeed);
+                        _lastExportTargetSpeed = exportSpeed;
                     }
                     catch { }
                 }

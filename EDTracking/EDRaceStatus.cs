@@ -16,8 +16,8 @@ namespace EDTracking
     public class EDRaceStatus
     {        
         public int Heading { get; internal set; } = -1;
-        public double SpeedInMS { get; internal set; } = 0;
-        public double MaxSpeedInMS { get; internal set; } = 0;
+        public double SpeedInMS { get; set; } = 0;
+        public double MaxSpeedInMS { get; set; } = 0;
         public long Flags { get; internal set; } = -1;
         public DateTime TimeStamp { get; internal set; } = DateTime.MinValue;
         public bool Eliminated { get; internal set; } = false;
@@ -55,6 +55,9 @@ namespace EDTracking
         private DateTime _lastUnderShip = DateTime.MinValue;
         public NotableEvents notableEvents = null;
         
+        public EDRaceStatus()
+        {
+        }
 
         public EDRaceStatus(EDEvent baseEvent)
         {
