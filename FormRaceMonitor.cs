@@ -1216,7 +1216,7 @@ namespace SRVTracker
                     }
                     catch (Exception ex)
                     {
-                        if (DateTime.Now.Subtract(_errorLastShown).TotalSeconds > 60)
+                        if (false)//DateTime.Now.Subtract(_errorLastShown).TotalSeconds > 60)
                         {
                             MessageBox.Show($"Error retrieving tracked target:{Environment.NewLine}{ex.Message}{Environment.NewLine}{statusUrl}", "Tracking Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             _errorLastShown = DateTime.Now;

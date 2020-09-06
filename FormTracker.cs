@@ -30,7 +30,7 @@ namespace SRVTracker
         public static CVRSystem VRSystem = null;
         private static FormFlagsWatcher _formFlagsWatcher = null;
         private static string _clientId = null;
-        //public delegate void UpdateReceivedEventHandler(object sender, EDEvent edEvent);
+        private JournalReader _journalReader = null;
         public static event EventHandler CommanderLocationChanged;
         public static EDLocation CurrentLocation { get; private set; } = null;
         public static int CurrentHeading { get; private set; } = -1;
@@ -54,6 +54,7 @@ namespace SRVTracker
             this.Size = _configHidden;
             checkBoxTrack.Checked = true;
             this.Text = Application.ProductName + " v" + Application.ProductVersion;
+            _journalReader = new JournalReader(EDJournalPath());
         }
 
         private void _statusTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
@@ -652,6 +653,7 @@ namespace SRVTracker
             }
             if (!checkBoxTrack.Checked)
                 checkBoxTrack.Checked = true;
+            _journalReader.StartMonitoring();
             AddLog("Status tracking started");
         }
 
@@ -666,6 +668,7 @@ namespace SRVTracker
             }
             catch { }
             _udpClient = null;
+            _journalReader.StopMonitoring();
             AddLog("Status tracking stopped");
         }
 
