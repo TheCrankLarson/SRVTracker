@@ -214,6 +214,7 @@ namespace DataCollator
                 string requestUri = System.Web.HttpUtility.UrlDecode(request.RawUrl.Substring(14).ToLower());
                 Log($"{context.Request.RemoteEndPoint.Address}: {request.RawUrl.Substring(14)}");
 
+                // This is really messy and will be tidied at some point
                 Action action;
                 if (requestUri.StartsWith("status"))
                 {

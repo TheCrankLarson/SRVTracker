@@ -40,6 +40,8 @@ namespace EDTracking
 
         private void FindActiveJournalFile()
         {
+            // Journal files are named Journal.200906152959.01.log, which is Journal.yymmddhhmmss.01.log
+            // However, we are probably interested in the Journal.cache file this seems to contain recent events
             string journalPrefix = $"Journal.{DateTime.UtcNow:yy:MM:dd}";
         }
 
