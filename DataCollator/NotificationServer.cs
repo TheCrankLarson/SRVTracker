@@ -701,6 +701,7 @@ namespace DataCollator
             _lastStaleDataCheck = DateTime.Now;
         }
 
+        private int _flushCount = 0;
         private void Log(string log, bool Verbose = false)
         {
             if ( (_logStream == null) || (Verbose && !VerboseDebugEnabled) )
@@ -710,7 +711,12 @@ namespace DataCollator
             {
                 byte[] buffer = System.Text.Encoding.UTF8.GetBytes($"{DateTime.Now:HH:mm:ss} {log}{Environment.NewLine}");
                 _logStream.Write(buffer, 0, buffer.Length);
-                _logStream.Flush();
+                _flushCount++;
+                if (_flushCount > 50)
+                {
+                    _logStream.Flush();
+                    _flushCount = 0;
+                }
             }
             catch { }
         }
