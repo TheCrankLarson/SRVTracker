@@ -54,9 +54,12 @@ namespace EDTracking
         private DateTime _pitStopStartTime = DateTime.MinValue;
         private DateTime _lastUnderShip = DateTime.MinValue;
         public NotableEvents notableEvents = null;
+        private double[] _lastThreeSpeedReadings;
+        private int _oldestSpeedReading = 0;
         
         public EDRaceStatus()
         {
+            _lastThreeSpeedReadings = new double[] { 0, 0, 0 };
         }
 
         public EDRaceStatus(EDEvent baseEvent)
@@ -218,15 +221,16 @@ namespace EDTracking
                 if (timeBetweenLocations.TotalMilliseconds > 750)
                 {
                     // We take a speed calculation once every 750 milliseconds
-                    
+
+                    double speedInMS = 0;
                     if (_speedCalculationLocation != null)
                     {
                         double distanceBetweenLocations = EDLocation.DistanceBetween(_speedCalculationLocation, updateEvent.Location());
-                        SpeedInMS = distanceBetweenLocations * (1000 / timeBetweenLocations.TotalMilliseconds);
-                        if ((SpeedInMS - _lastSpeedInMs) > 200 && (timeBetweenLocations.TotalMilliseconds < 3000))
+                        speedInMS = distanceBetweenLocations * 1000 / timeBetweenLocations.TotalMilliseconds;
+                        if ((speedInMS - _lastSpeedInMs) > 200 && (timeBetweenLocations.TotalMilliseconds < 3000))
                         {
                             // If the speed increases by more than 200m/s in three seconds, this is most likely due to respawn (i.e. invalid)
-                            SpeedInMS = 0;
+                            speedInMS = 0;
                             _speedCalculationLocation = null;
                         }
                         else
@@ -240,7 +244,14 @@ namespace EDTracking
                         _speedCalculationLocation = updateEvent.Location();
                         _speedCalculationTimeStamp = updateEvent.TimeStamp;
                     }
+
+                    _lastThreeSpeedReadings[_oldestSpeedReading] = speedInMS;
+                    _oldestSpeedReading++;
+                    if (_oldestSpeedReading > 2)
+                        _oldestSpeedReading = 0;
+                    SpeedInMS = Queryable.Average(_lastThreeSpeedReadings.AsQueryable());  // Returning an average of the last three readings should prevent blips
                 }
+
                 if (SpeedInMS > MaxSpeedInMS)
                 {
                     MaxSpeedInMS = SpeedInMS;
@@ -263,9 +274,11 @@ namespace EDTracking
                         WaypointIndex++;
                         if (WaypointIndex >= Route.Waypoints.Count)
                         {
-                            notableEvents?.AddStatusEvent("CompletedNotification",Commander);
                             Finished = true;
                             FinishTime = DateTime.Now;
+                            string raceTime = $"{FinishTime.Subtract(StartTime):hh\\:mm\\:ss}";
+                            notableEvents?.AddStatusEvent("CompletedNotification",Commander,$" ({raceTime})");
+                            AddRaceHistory($"Completed in {raceTime}");
                             WaypointIndex = 0;
                             DistanceToWaypoint = 0;
                         }

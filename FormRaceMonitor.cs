@@ -87,7 +87,6 @@ namespace SRVTracker
 
         private void CommanderWatcher_UpdateReceived(object sender, EDEvent edEvent)
         {
-
             // We've received an event for a listed racer
             Task.Run(new Action(() => { UpdateStatus(edEvent); }));
         }

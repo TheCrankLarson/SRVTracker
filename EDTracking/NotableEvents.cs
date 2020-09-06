@@ -71,9 +71,9 @@ namespace EDTracking
                 _notableEvents.Enqueue(eventInfo);
         }
 
-        public void AddStatusEvent(string statusEvent, string commander)
+        public void AddStatusEvent(string statusEvent, string commander, string postfix = "")
         {
-            AddEvent($"{commander}{CustomStatusMessages[statusEvent]}");
+            AddEvent($"{commander}{CustomStatusMessages[statusEvent]}{postfix}");
         }
     }
 }

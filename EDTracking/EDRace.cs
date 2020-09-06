@@ -258,6 +258,7 @@ namespace EDTracking
                     {
                         status.Append(CustomStatusMessages["Completed"]);
                         status.AppendLine($" ({Statuses[leaderBoard[i]].FinishTime.Subtract(EDRaceStatus.StartTime):hh\\:mm\\:ss})");
+                        distanceToWaypoint.AppendLine(CustomStatusMessages["Completed"]);
                     }
                     else
                     {
@@ -270,9 +271,11 @@ namespace EDTracking
                         if (s.Length > maxStatusLength)
                             s = s.Substring(0, maxStatusLength);
                         status.AppendLine(s);
+
+                        distanceToWaypoint.AppendLine(Statuses[leaderBoard[i]].DistanceToWaypointInKmDisplay);
                     }
 
-                    distanceToWaypoint.AppendLine(Statuses[leaderBoard[i]].DistanceToWaypointInKmDisplay);
+                    
                 }
                 else
                 {
