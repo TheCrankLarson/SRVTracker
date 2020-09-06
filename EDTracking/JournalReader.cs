@@ -33,14 +33,21 @@ namespace EDTracking
             _statusCheckTimer.Stop();
 
             if (String.IsNullOrEmpty(_activeJournalFile))
-                return;
-
-            // If the file has been written, then process it
-            DateTime lastWriteTime = File.GetLastWriteTime(_activeJournalFile);
-            if (lastWriteTime != _lastFileWrite)
             {
-                ProcessJournalFileUpdate(_activeJournalFile);
-                _lastFileWrite = lastWriteTime;
+                FindActiveJournalFile();
+                if (!String.IsNullOrEmpty(_activeJournalFile))
+                    _statusCheckTimer.Interval = 1000;
+            }
+
+            if (!String.IsNullOrEmpty(_activeJournalFile))
+            {
+                // If the file has been written, then process it
+                DateTime lastWriteTime = File.GetLastWriteTime(_activeJournalFile);
+                if (lastWriteTime != _lastFileWrite)
+                {
+                    ProcessJournalFileUpdate(_activeJournalFile);
+                    _lastFileWrite = lastWriteTime;
+                }
             }
             _statusCheckTimer.Start();
         }
@@ -61,7 +68,7 @@ namespace EDTracking
             // We find the cache file that has been written to today.  This will usually work, and is only likely to fail if player is running beta or other versions
             // of the game on the same machine
             foreach (string fileName in cacheFiles)
-                if (File.GetLastWriteTime($"{_journalDirectory}\\{fileName}").Date == DateTime.Today.Date)
+                if (File.GetLastWriteTime(fileName).Date == DateTime.Today.Date)
                 {
                     _activeJournalFile = fileName;
                     return true;
@@ -72,9 +79,10 @@ namespace EDTracking
 
         public void StartMonitoring()
         {
+            _statusCheckTimer.Interval = 1000;
             if (String.IsNullOrEmpty(_activeJournalFile))
                 if (!FindActiveJournalFile())
-                    return;
+                    _statusCheckTimer.Interval = 10000;
 
             _statusCheckTimer.Start();
         }
@@ -129,17 +137,20 @@ namespace EDTracking
                 {
                     using (JsonDocument jsonDoc = JsonDocument.Parse(journalEvent))
                     {
-                        JsonElement eventElement = jsonDoc.RootElement.GetProperty("event");
-                        if (ReportEvents.Contains(eventElement.GetString()))
+                        JsonElement timestampElement = jsonDoc.RootElement.GetProperty("timestamp");
+                        if (DateTime.Now.Subtract(timestampElement.GetDateTime()).TotalSeconds < 60)
                         {
-                            // This is an event we are interested in
-                            File.AppendAllText("journalevents.log", journalEvent);
+                            JsonElement eventElement = jsonDoc.RootElement.GetProperty("event");
+                            if (ReportEvents.Contains(eventElement.GetString()))
+                            {
+                                // This is an event we are interested in
+                                File.AppendAllText("journalevents.log", $"{journalEvent}{Environment.NewLine}");
+                            }
                         }
                     }
                 }
                 catch { }
             }
-
         }
     }
 }

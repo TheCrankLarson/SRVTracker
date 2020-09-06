@@ -52,9 +52,9 @@ namespace SRVTracker
             _statusTimer = new System.Timers.Timer(700);
             _statusTimer.Elapsed += _statusTimer_Elapsed;
             this.Size = _configHidden;
+            _journalReader = new JournalReader(EDJournalPath());
             checkBoxTrack.Checked = true;
             this.Text = Application.ProductName + " v" + Application.ProductVersion;
-            _journalReader = new JournalReader(EDJournalPath());
         }
 
         private void _statusTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
