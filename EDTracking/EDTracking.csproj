@@ -78,6 +78,7 @@
     <Compile Include="EDRaceStatus.cs" />
     <Compile Include="EDWaypoint.cs" />
     <Compile Include="Flags.cs" />
+    <Compile Include="JournalReader.cs" />
     <Compile Include="NotableEvents.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
