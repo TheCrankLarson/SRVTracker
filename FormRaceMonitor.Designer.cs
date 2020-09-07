@@ -117,6 +117,10 @@
             this.textBoxRaceStatusServerUrl = new System.Windows.Forms.TextBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.columnHeaderHull = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.textBoxExportHullFile = new System.Windows.Forms.TextBox();
+            this.checkBoxExportHull = new System.Windows.Forms.CheckBox();
+            this.checkBoxExportTrackedTargetHull = new System.Windows.Forms.CheckBox();
+            this.textBoxExportTargetHull = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -657,9 +661,9 @@
             // 
             // textBoxExportTargetFile
             // 
-            this.textBoxExportTargetFile.Location = new System.Drawing.Point(101, 40);
+            this.textBoxExportTargetFile.Location = new System.Drawing.Point(134, 40);
             this.textBoxExportTargetFile.Name = "textBoxExportTargetFile";
-            this.textBoxExportTargetFile.Size = new System.Drawing.Size(138, 20);
+            this.textBoxExportTargetFile.Size = new System.Drawing.Size(105, 20);
             this.textBoxExportTargetFile.TabIndex = 11;
             this.textBoxExportTargetFile.Text = "Tracking-Name.txt";
             // 
@@ -722,6 +726,8 @@
             // 
             // groupBoxTextExport
             // 
+            this.groupBoxTextExport.Controls.Add(this.textBoxExportHullFile);
+            this.groupBoxTextExport.Controls.Add(this.checkBoxExportHull);
             this.groupBoxTextExport.Controls.Add(this.textBoxExportWaypointDistanceFile);
             this.groupBoxTextExport.Controls.Add(this.label6);
             this.groupBoxTextExport.Controls.Add(this.numericUpDownNotableEventDuration);
@@ -740,7 +746,7 @@
             this.groupBoxTextExport.Controls.Add(this.numericUpDownStatusMaxLength);
             this.groupBoxTextExport.Location = new System.Drawing.Point(720, 12);
             this.groupBoxTextExport.Name = "groupBoxTextExport";
-            this.groupBoxTextExport.Size = new System.Drawing.Size(245, 239);
+            this.groupBoxTextExport.Size = new System.Drawing.Size(245, 295);
             this.groupBoxTextExport.TabIndex = 7;
             this.groupBoxTextExport.TabStop = false;
             this.groupBoxTextExport.Text = "Export as text";
@@ -820,7 +826,7 @@
             this.groupBoxHTMLExport.Controls.Add(this.label5);
             this.groupBoxHTMLExport.Controls.Add(this.label1);
             this.groupBoxHTMLExport.Controls.Add(this.textBoxHTMLTemplateFile);
-            this.groupBoxHTMLExport.Location = new System.Drawing.Point(971, 12);
+            this.groupBoxHTMLExport.Location = new System.Drawing.Point(720, 313);
             this.groupBoxHTMLExport.Name = "groupBoxHTMLExport";
             this.groupBoxHTMLExport.Size = new System.Drawing.Size(245, 106);
             this.groupBoxHTMLExport.TabIndex = 8;
@@ -873,6 +879,8 @@
             // 
             // groupBoxTrackTarget
             // 
+            this.groupBoxTrackTarget.Controls.Add(this.textBoxExportTargetHull);
+            this.groupBoxTrackTarget.Controls.Add(this.checkBoxExportTrackedTargetHull);
             this.groupBoxTrackTarget.Controls.Add(this.textBoxExportTargetPosition);
             this.groupBoxTrackTarget.Controls.Add(this.checkBoxExportTrackedTargetPosition);
             this.groupBoxTrackTarget.Controls.Add(this.textBoxExportTargetSpeedFile);
@@ -884,9 +892,9 @@
             this.groupBoxTrackTarget.Controls.Add(this.checkBoxExportTrackedTarget);
             this.groupBoxTrackTarget.Controls.Add(this.textBoxExportTargetFile);
             this.groupBoxTrackTarget.Controls.Add(this.checkBoxClosestPlayerTarget);
-            this.groupBoxTrackTarget.Location = new System.Drawing.Point(720, 257);
+            this.groupBoxTrackTarget.Location = new System.Drawing.Point(971, 12);
             this.groupBoxTrackTarget.Name = "groupBoxTrackTarget";
-            this.groupBoxTrackTarget.Size = new System.Drawing.Size(245, 162);
+            this.groupBoxTrackTarget.Size = new System.Drawing.Size(245, 188);
             this.groupBoxTrackTarget.TabIndex = 9;
             this.groupBoxTrackTarget.TabStop = false;
             this.groupBoxTrackTarget.Text = "Track target";
@@ -912,9 +920,9 @@
             // 
             // textBoxExportTargetSpeedFile
             // 
-            this.textBoxExportTargetSpeedFile.Location = new System.Drawing.Point(103, 63);
+            this.textBoxExportTargetSpeedFile.Location = new System.Drawing.Point(134, 63);
             this.textBoxExportTargetSpeedFile.Name = "textBoxExportTargetSpeedFile";
-            this.textBoxExportTargetSpeedFile.Size = new System.Drawing.Size(136, 20);
+            this.textBoxExportTargetSpeedFile.Size = new System.Drawing.Size(105, 20);
             this.textBoxExportTargetSpeedFile.TabIndex = 20;
             this.textBoxExportTargetSpeedFile.Text = "Tracking-Speed.txt";
             // 
@@ -942,9 +950,9 @@
             // 
             // textBoxExportTargetPitstopsFile
             // 
-            this.textBoxExportTargetPitstopsFile.Location = new System.Drawing.Point(135, 109);
+            this.textBoxExportTargetPitstopsFile.Location = new System.Drawing.Point(134, 109);
             this.textBoxExportTargetPitstopsFile.Name = "textBoxExportTargetPitstopsFile";
-            this.textBoxExportTargetPitstopsFile.Size = new System.Drawing.Size(104, 20);
+            this.textBoxExportTargetPitstopsFile.Size = new System.Drawing.Size(105, 20);
             this.textBoxExportTargetPitstopsFile.TabIndex = 15;
             this.textBoxExportTargetPitstopsFile.Text = "Tracking-Pit.txt";
             // 
@@ -961,9 +969,9 @@
             // 
             // textBoxExportTargetMaxSpeedFile
             // 
-            this.textBoxExportTargetMaxSpeedFile.Location = new System.Drawing.Point(125, 86);
+            this.textBoxExportTargetMaxSpeedFile.Location = new System.Drawing.Point(134, 86);
             this.textBoxExportTargetMaxSpeedFile.Name = "textBoxExportTargetMaxSpeedFile";
-            this.textBoxExportTargetMaxSpeedFile.Size = new System.Drawing.Size(114, 20);
+            this.textBoxExportTargetMaxSpeedFile.Size = new System.Drawing.Size(105, 20);
             this.textBoxExportTargetMaxSpeedFile.TabIndex = 13;
             this.textBoxExportTargetMaxSpeedFile.Text = "Tracking-Max.txt";
             // 
@@ -1034,6 +1042,44 @@
             // 
             this.columnHeaderHull.Text = "Hull";
             this.columnHeaderHull.Width = 45;
+            // 
+            // textBoxExportHullFile
+            // 
+            this.textBoxExportHullFile.Location = new System.Drawing.Point(24, 254);
+            this.textBoxExportHullFile.Name = "textBoxExportHullFile";
+            this.textBoxExportHullFile.Size = new System.Drawing.Size(205, 20);
+            this.textBoxExportHullFile.TabIndex = 29;
+            this.textBoxExportHullFile.Text = "Hull.txt";
+            // 
+            // checkBoxExportHull
+            // 
+            this.checkBoxExportHull.AutoSize = true;
+            this.checkBoxExportHull.Location = new System.Drawing.Point(6, 236);
+            this.checkBoxExportHull.Name = "checkBoxExportHull";
+            this.checkBoxExportHull.Size = new System.Drawing.Size(123, 17);
+            this.checkBoxExportHull.TabIndex = 28;
+            this.checkBoxExportHull.Text = "Export hull remaining";
+            this.checkBoxExportHull.UseVisualStyleBackColor = true;
+            this.checkBoxExportHull.CheckedChanged += new System.EventHandler(this.checkBoxExportHull_CheckedChanged);
+            // 
+            // checkBoxExportTrackedTargetHull
+            // 
+            this.checkBoxExportTrackedTargetHull.AutoSize = true;
+            this.checkBoxExportTrackedTargetHull.Location = new System.Drawing.Point(6, 157);
+            this.checkBoxExportTrackedTargetHull.Name = "checkBoxExportTrackedTargetHull";
+            this.checkBoxExportTrackedTargetHull.Size = new System.Drawing.Size(78, 17);
+            this.checkBoxExportTrackedTargetHull.TabIndex = 23;
+            this.checkBoxExportTrackedTargetHull.Text = "Export hull:";
+            this.checkBoxExportTrackedTargetHull.UseVisualStyleBackColor = true;
+            this.checkBoxExportTrackedTargetHull.CheckedChanged += new System.EventHandler(this.checkBoxExportTrackedTargetHull_CheckedChanged);
+            // 
+            // textBoxExportTargetHull
+            // 
+            this.textBoxExportTargetHull.Location = new System.Drawing.Point(134, 155);
+            this.textBoxExportTargetHull.Name = "textBoxExportTargetHull";
+            this.textBoxExportTargetHull.Size = new System.Drawing.Size(105, 20);
+            this.textBoxExportTargetHull.TabIndex = 24;
+            this.textBoxExportTargetHull.Text = "Tracking-Hull.txt";
             // 
             // FormRaceMonitor
             // 
@@ -1173,5 +1219,9 @@
         private System.Windows.Forms.CheckBox checkBoxExportTrackedTargetPosition;
         private System.Windows.Forms.TextBox textBoxExportWaypointDistanceFile;
         private System.Windows.Forms.ColumnHeader columnHeaderHull;
+        private System.Windows.Forms.TextBox textBoxExportHullFile;
+        private System.Windows.Forms.CheckBox checkBoxExportHull;
+        private System.Windows.Forms.TextBox textBoxExportTargetHull;
+        private System.Windows.Forms.CheckBox checkBoxExportTrackedTargetHull;
     }
 }

@@ -32,6 +32,8 @@ namespace SRVTracker
         private string _lastExportTargetPitstops = "k";
         private string _lastExportTargetMaxSpeed = "k";
         private string _lastExportTargetSpeed = "k";
+        private string _lastExportTargetHull = "k";
+        private string _lastHullValues = "k";
         private int _lastExportTargetRacePosition = 0;
         private string _saveFilename = "";
         private bool _generatingLeaderboard = false;
@@ -949,7 +951,9 @@ namespace SRVTracker
             textBoxExportTargetPitstopsFile.Enabled = checkBoxExportTrackedTargetPitstops.Checked;
             textBoxExportTargetSpeedFile.Enabled = checkBoxExportTrackedTargetSpeed.Checked;
             textBoxExportTargetPosition.Enabled = checkBoxExportTrackedTargetPosition.Checked;
+            textBoxExportTargetHull.Enabled = checkBoxExportTrackedTargetHull.Checked;
             textBoxExportWaypointDistanceFile.Enabled = checkBoxExportDistance.Checked;
+            textBoxExportHullFile.Enabled = checkBoxExportHull.Checked;
 
             buttonUneliminate.Enabled = false;
             if (listViewParticipants.SelectedItems.Count>0)
@@ -1118,6 +1122,20 @@ namespace SRVTracker
                     {
                         File.WriteAllText(textBoxExportWaypointDistanceFile.Text, serverStats["DistanceToWaypoint"]);
                         _lastWPDistanceExport = serverStats["DistanceToWaypoint"];
+                    }
+                    catch { }
+                }
+                changeDetected = true;
+            }
+
+            if (!_lastHullValues.Equals(serverStats["HullStrengths"]))
+            {
+                if (checkBoxExportHull.Checked)
+                {
+                    try
+                    {
+                        File.WriteAllText(textBoxExportHullFile.Text, serverStats["HullStrengths"]);
+                        _lastHullValues = serverStats["HullStrengths"];
                     }
                     catch { }
                 }
@@ -1340,6 +1358,20 @@ namespace SRVTracker
                     catch { }
                 }
             }
+
+            if (checkBoxExportTrackedTargetHull.Checked)
+            {
+                string hullStrength = commanderStatus.HullDisplay;
+                if (!hullStrength.Equals(_lastExportTargetHull))
+                {
+                    try
+                    {
+                        File.WriteAllText(textBoxExportHullFile.Text, hullStrength);
+                        _lastExportTargetHull = hullStrength;
+                    }
+                    catch { }
+                }
+            }
         }
 
         private void Resurrect(string commander)
@@ -1377,6 +1409,16 @@ namespace SRVTracker
         {
             if (!String.IsNullOrEmpty(_serverRaceGuid))
                 buttonStopRace_Click(this, null);
+        }
+
+        private void checkBoxExportHull_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateButtons();
+        }
+
+        private void checkBoxExportTrackedTargetHull_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateButtons();
         }
     }
 }
