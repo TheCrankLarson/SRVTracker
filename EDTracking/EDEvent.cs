@@ -20,7 +20,7 @@ namespace EDTracking
         public double Latitude { get; set; } = 0;
         public double Longitude { get; set; } = 0;
         public int Heading { get; set; } = -1;
-        public long Flags { get; set; } = -1;
+        public long Flags { get; set; } = 0;
         public DateTime TimeStamp { get; set; } = DateTime.MinValue;
         public string BodyName { get; set; } = "";
         public double PlanetRadius { get;  set; } = 0;
@@ -79,6 +79,8 @@ namespace EDTracking
                 if (root.TryGetProperty("Heading", out property))
                     Heading = property.GetInt16();
                 if (root.TryGetProperty("event", out property))
+                    EventName = property.GetString();
+                if (root.TryGetProperty("EventName", out property))
                     EventName = property.GetString();
             }
             Commander = commander;

@@ -55,12 +55,11 @@ namespace EDTracking
         private DateTime _pitStopStartTime = DateTime.MinValue;
         private DateTime _lastUnderShip = DateTime.MinValue;
         public NotableEvents notableEvents = null;
-        private double[] _lastThreeSpeedReadings;
+        private double[] _lastThreeSpeedReadings = new double[] { 0, 0, 0 };
         private int _oldestSpeedReading = 0;
         
         public EDRaceStatus()
         {
-            _lastThreeSpeedReadings = new double[] { 0, 0, 0 };
         }
 
         public EDRaceStatus(EDEvent baseEvent)

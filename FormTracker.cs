@@ -52,15 +52,17 @@ namespace SRVTracker
             _statusTimer = new System.Timers.Timer(700);
             _statusTimer.Elapsed += _statusTimer_Elapsed;
             this.Size = _configHidden;
-            _journalReader.InterestingEventOccurred += _journalReader_InterestingEventOccurred;
             _journalReader = new JournalReader(EDJournalPath());
+            _journalReader.InterestingEventOccurred += _journalReader_InterestingEventOccurred;
             checkBoxTrack.Checked = true;
             this.Text = Application.ProductName + " v" + Application.ProductVersion;
         }
 
         private void _journalReader_InterestingEventOccurred(object sender, string eventJson)
         {
-            UpdateUI(EDEvent.FromJson(eventJson));
+            EDEvent updateEvent = EDEvent.FromJson(eventJson);
+            updateEvent.Commander = textBoxClientId.Text;
+            UpdateUI(updateEvent);
         }
 
         private void _statusTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
@@ -345,6 +347,8 @@ namespace SRVTracker
 
         private void UpdateUI(EDEvent edEvent)
         {
+
+
             if (checkBoxSaveToFile.Checked)
                 SaveToFile(edEvent);
 

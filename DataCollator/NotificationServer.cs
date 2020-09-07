@@ -136,11 +136,36 @@ namespace DataCollator
                     }
                 }));
 
-            if (!_commanderStatus.ContainsKey(updateEvent.Commander))
+            try
             {
+                if (!_commanderStatus.ContainsKey(updateEvent.Commander))
+                {
+                    lock (_notificationLock)
+                    {
+                        _commanderStatus.Add(updateEvent.Commander, new EDRaceStatus(updateEvent));
+                        if (_playerStatus.ContainsKey(updateEvent.Commander))
+                        {
+                            _playerStatus[updateEvent.Commander] = updateEvent;
+                            Log($"Processed status update for commander: {updateEvent.Commander}", true);
+                        }
+                        else
+                        {
+                            _playerStatus.Add(updateEvent.Commander, updateEvent);
+                            Log($"Received status update for new commander: {updateEvent.Commander}", true);
+                        }
+                    }
+                    return;
+                }
+
+                if (_commanderStatus[updateEvent.Commander].TimeStamp > updateEvent.TimeStamp)
+                {
+                    Log($"Event timestamp ({updateEvent.TimeStamp}) older than existing timestamp ({_commanderStatus[updateEvent.Commander].TimeStamp}): {updateEvent.Commander}", true);
+                    return;
+                }
+
                 lock (_notificationLock)
                 {
-                    _commanderStatus.Add(updateEvent.Commander, new EDRaceStatus(updateEvent));
+                    _commanderStatus[updateEvent.Commander].UpdateStatus(updateEvent);
                     if (_playerStatus.ContainsKey(updateEvent.Commander))
                     {
                         _playerStatus[updateEvent.Commander] = updateEvent;
@@ -152,28 +177,10 @@ namespace DataCollator
                         Log($"Received status update for new commander: {updateEvent.Commander}", true);
                     }
                 }
-                return;
             }
-
-            if (_commanderStatus[updateEvent.Commander].TimeStamp > updateEvent.TimeStamp)
+            catch (Exception ex)
             {
-                Log($"Event timestamp ({updateEvent.TimeStamp}) older than existing timestamp ({_commanderStatus[updateEvent.Commander].TimeStamp}): {updateEvent.Commander}", true);
-                return;
-            }
-
-            lock (_notificationLock)
-            {
-                _commanderStatus[updateEvent.Commander].UpdateStatus(updateEvent);
-                if (_playerStatus.ContainsKey(updateEvent.Commander))
-                {
-                    _playerStatus[updateEvent.Commander] = updateEvent;
-                    Log($"Processed status update for commander: {updateEvent.Commander}", true);
-                }
-                else
-                {
-                    _playerStatus.Add(updateEvent.Commander, updateEvent);
-                    Log($"Received status update for new commander: {updateEvent.Commander}", true);
-                }
+                Log($"Error processing update:{Environment.NewLine}{ex}");
             }
         }
 
@@ -184,7 +191,10 @@ namespace DataCollator
             {
                 UpdateCommanderStatus(message);
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Log($"Error processing message:{Environment.NewLine}{ex}{Environment.NewLine}{Environment.NewLine}{message}");
+            }
 
             // Send the notification to any listening Urls
             if (_registeredNotificationUrls.Count > 0)
