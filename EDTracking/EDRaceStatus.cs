@@ -305,6 +305,16 @@ namespace EDTracking
             if (!Started)
                 return;
 
+            if (updateEvent.EventName.Equals("SRVDestroyed"))
+            {
+                // Eliminated
+                Eliminated = true;
+                AddRaceHistory("SRV destroyed");
+                notableEvents?.AddStatusEvent("EliminatedNotification", Commander);
+                DistanceToWaypoint = double.MaxValue;
+                SpeedInMS = 0;
+            }
+
             if (DistanceToWaypoint<_nextLogDistanceToWaypoint)
             {
                 AddRaceHistory($"{(DistanceToWaypoint / 1000):F1}km to {Route.Waypoints[WaypointIndex].Name}");
@@ -320,6 +330,7 @@ namespace EDTracking
                         Eliminated = true;
                         notableEvents?.AddStatusEvent("EliminatedNotification", Commander);
                         DistanceToWaypoint = double.MaxValue;
+                        SpeedInMS = 0;
                     }
                     _speedCalculationLocation = null; // If this occurred due to commander exploding, we need to clear the location otherwise we'll get a massive reading on respawn
                 }
