@@ -793,7 +793,6 @@ namespace SRVTracker
             EDRaceStatus.AllowPitStops = _race.AllowPitstops;
             EDRaceStatus.EliminateOnShipFlight = _race.SRVOnly;
             _race.StartRace(false);
-            EDRaceStatus.StartTime = _race.Start;
             EDRaceStatus.Started = true;
         }
 
@@ -1230,13 +1229,13 @@ namespace SRVTracker
                             throw new Exception($"Unexpected server response: {raceStatus}");
                         }
                     }
-                    catch (Exception ex)
+                    catch //(Exception ex)
                     {
-                        if (false)//DateTime.Now.Subtract(_errorLastShown).TotalSeconds > 60)
+                        /*if (false)//DateTime.Now.Subtract(_errorLastShown).TotalSeconds > 60)
                         {
                             MessageBox.Show($"Error retrieving tracked target:{Environment.NewLine}{ex.Message}{Environment.NewLine}{statusUrl}", "Tracking Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             _errorLastShown = DateTime.Now;
-                        }
+                        }*/
                     }
                 }
                 else
