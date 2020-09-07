@@ -305,7 +305,7 @@ namespace EDTracking
             if (!Started)
                 return;
 
-            if (updateEvent.EventName.Equals("SRVDestroyed"))
+            if (updateEvent.EventName.Equals("SRVDestroyed") && EliminateOnDestruction)
             {
                 // Eliminated
                 Eliminated = true;
