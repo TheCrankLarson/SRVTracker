@@ -452,12 +452,12 @@
             // columnHeaderName
             // 
             this.columnHeaderName.Text = "Commander";
-            this.columnHeaderName.Width = 80;
+            this.columnHeaderName.Width = 100;
             // 
             // columnHeaderStatus
             // 
             this.columnHeaderStatus.Text = "Status";
-            this.columnHeaderStatus.Width = 140;
+            this.columnHeaderStatus.Width = 120;
             // 
             // columnHeaderDistanceToWaypoint
             // 

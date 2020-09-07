@@ -83,9 +83,7 @@ namespace EDTracking
 
         private void AddRaceHistory(string eventInfo)
         {
-            _raceHistory.Append(TimeStamp.ToString("HH:mm:ss "));
-            //_raceHistory.Append("  ");
-            _raceHistory.AppendLine(eventInfo);
+            _raceHistory.AppendLine($"{TimeStamp:HH:mm:ss} {eventInfo}");
         }
 
         public string RaceReport
