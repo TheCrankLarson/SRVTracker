@@ -200,20 +200,20 @@ namespace EDTracking
                         {
                             JsonElement eventElement = jsonDoc.RootElement.GetProperty("event");
                             string eventName = eventElement.GetString();
-                            if (ReportEvents.Contains(eventName))
+                            if (eventName.Equals("Shutdown"))
+                            {
+                                // We won't receive any more events into this log file
+                                // Chances are we're shutting down, but we'll go into slow ping mode in case it is a game restart
+                                _statusCheckTimer.Interval = 10000;
+                                _activeJournalFile = "";
+                                _journalFileStream?.Close();
+                                _journalFileStream = null;
+                            }
+                            else if (ReportEvents.Contains(eventName))
                             {
                                 // This is an event we are interested in
-                                File.AppendAllText("journalevents.log", $"{journalEvent}{Environment.NewLine}");
-                                if (eventName.Equals("Shutdown"))
-                                {
-                                    // We won't receive any more events into this log file
-                                    _statusCheckTimer.Interval = 10000;
-                                    _activeJournalFile = "";
-                                    _journalFileStream?.Close();
-                                    _journalFileStream = null;
-                                }
-                                else
-                                    InterestingEventOccurred?.Invoke(this, journalEvent);
+                                //File.AppendAllText("journalevents.log", $"{journalEvent}{Environment.NewLine}");
+                                InterestingEventOccurred?.Invoke(this, journalEvent);
                             }
                         }
                     }
