@@ -110,7 +110,9 @@ namespace EDTracking
                 status.Append($"{EDRace.StatusMessages["Completed"]} ({timeSpan.ToString("hh\\:mm\\:ss")})");
             }
             else if (_inPits)
+            {
                 status.Append(EDRace.StatusMessages["Pitstop"]);
+            }
             else
             {
                 if (Started)
@@ -309,42 +311,45 @@ namespace EDTracking
                 _nextLogDistanceToWaypoint = DistanceToWaypoint - 5000;
             }
 
-            if (!isFlagSet(StatusFlags.In_SRV) && (!_inPits || !isFlagSet(StatusFlags.Landed_on_planet_surface)))
+            if (Flags > 0)
             {
-                if (EliminateOnShipFlight)
+                if (!isFlagSet(StatusFlags.In_SRV) && (!_inPits || !isFlagSet(StatusFlags.Landed_on_planet_surface)))
                 {
-                    Eliminated = true;
-                    notableEvents?.AddStatusEvent("EliminatedNotification", Commander);
-                    DistanceToWaypoint = double.MaxValue;
-                }
-                _speedCalculationLocation = null; // If this occurred due to commander exploding, we need to clear the location otherwise we'll get a massive reading on respawn
-            }
-
-            if (AllowPitStops)
-            {
-                if (!_inPits)
-                {
-                    if (isFlagSet(StatusFlags.Srv_UnderShip))
+                    if (EliminateOnShipFlight)
                     {
-                        _inPits = true;
-                        if (DateTime.Now.Subtract(_lastUnderShip).TotalSeconds > 60)
+                        Eliminated = true;
+                        notableEvents?.AddStatusEvent("EliminatedNotification", Commander);
+                        DistanceToWaypoint = double.MaxValue;
+                    }
+                    _speedCalculationLocation = null; // If this occurred due to commander exploding, we need to clear the location otherwise we'll get a massive reading on respawn
+                }
+
+                if (AllowPitStops)
+                {
+                    if (!_inPits)
+                    {
+                        if (isFlagSet(StatusFlags.Srv_UnderShip))
                         {
-                            // This check allows for problems boarding the ship (e.g. if you can only access from one direction, which might trigger the flag several times)
-                            notableEvents?.AddStatusEvent("PitstopNotification",Commander);
-                            PitStopCount++;
-                            _pitStopStartTime = DateTime.Now;
+                            _inPits = true;
+                            if (DateTime.Now.Subtract(_lastUnderShip).TotalSeconds > 60)
+                            {
+                                // This check allows for problems boarding the ship (e.g. if you can only access from one direction, which might trigger the flag several times)
+                                notableEvents?.AddStatusEvent("PitstopNotification", Commander);
+                                PitStopCount++;
+                                _pitStopStartTime = DateTime.Now;
+                            }
+                            _lastUnderShip = DateTime.Now;
                         }
-                        _lastUnderShip = DateTime.Now;
+                    }
+                    else if (isFlagSet(StatusFlags.In_SRV) && !isFlagSet(StatusFlags.Srv_UnderShip))
+                    {
+                        _inPits = false;
+                        AddRaceHistory($"Pitstop {PitStopCount} took {DateTime.Now.Subtract(_pitStopStartTime):mm\\:ss}");
                     }
                 }
-                else if (isFlagSet(StatusFlags.In_SRV) && !isFlagSet(StatusFlags.Srv_UnderShip))
-                {
-                    _inPits = false;
-                    AddRaceHistory($"Pitstop {PitStopCount} took {DateTime.Now.Subtract(_pitStopStartTime):mm\\:ss}");
-                }
-            }
 
-            _lowFuel = isFlagSet(StatusFlags.Low_Fuel);
+                _lowFuel = isFlagSet(StatusFlags.Low_Fuel);
+            }
 
             String currentStatus = ToString();
             if (currentStatus.Equals(_lastStatus))

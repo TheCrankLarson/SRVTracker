@@ -180,7 +180,7 @@ namespace DataCollator
             }
             catch (Exception ex)
             {
-                Log($"Error processing update:{Environment.NewLine}{ex}");
+                Log($"Error processing update:{Environment.NewLine}{ex}{Environment.NewLine}{Environment.NewLine}{status}");
             }
         }
 
