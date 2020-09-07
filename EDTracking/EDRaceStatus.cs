@@ -9,7 +9,6 @@ using System.ComponentModel.Design;
 using System.Runtime.InteropServices;
 using System.Text.Json;
 using System.Runtime.CompilerServices;
-using System.Web.Script.Serialization;
 
 namespace EDTracking
 {
@@ -84,7 +83,7 @@ namespace EDTracking
 
         private void AddRaceHistory(string eventInfo)
         {
-            _raceHistory.Append(DateTime.Now.ToString("HH:mm:ss "));
+            _raceHistory.Append(TimeStamp.ToString("HH:mm:ss "));
             //_raceHistory.Append("  ");
             _raceHistory.AppendLine(eventInfo);
         }
@@ -168,7 +167,6 @@ namespace EDTracking
             return status.ToString();
         }
 
-        [ScriptIgnore]
         public String DistanceToWaypointInKmDisplay
         {
             get
@@ -190,6 +188,7 @@ namespace EDTracking
 
         public void StartRace()
         {
+            TimeStamp = DateTime.Now;
             Started = true;
             AddRaceHistory("Race started");
             WaypointIndex = 1;
@@ -200,6 +199,7 @@ namespace EDTracking
         {
             if (Eliminated)
             {
+                TimeStamp = DateTime.Now;
                 Eliminated = false;
                 DistanceToWaypoint = double.MaxValue;
                 _speedCalculationLocation = null;
@@ -218,8 +218,11 @@ namespace EDTracking
         {
             // Update our status based on the passed event
 
-            _lastFlags = Flags;
-            Flags = updateEvent.Flags;
+            if (Flags > 0 && (Flags != _lastFlags) )
+            {
+                _lastFlags = Flags;
+                Flags = updateEvent.Flags;
+            }
             TimeStamp = updateEvent.TimeStamp;
 
             if (Finished || Eliminated)
@@ -313,6 +316,7 @@ namespace EDTracking
                 notableEvents?.AddStatusEvent("EliminatedNotification", Commander);
                 DistanceToWaypoint = double.MaxValue;
                 SpeedInMS = 0;
+                _speedCalculationLocation = null;
             }
 
             if (DistanceToWaypoint<_nextLogDistanceToWaypoint)
