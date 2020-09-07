@@ -853,7 +853,6 @@ namespace SRVTracker
         {
             EDRaceStatus.ShowDetailedStatus = checkBoxShowDetailedStatus.Checked;
         }
-
         private void comboBoxAddCommander_SelectedIndexChanged(object sender, EventArgs e)
         {
             buttonAddCommander_Click(null, null);
@@ -887,31 +886,18 @@ namespace SRVTracker
         private void UpdateButtons()
         {
             bool participantSelected = listViewParticipants.SelectedIndices.Count > 0;
-            if (!buttonRemoveParticipant.Enabled && participantSelected)
-            {
-                buttonRemoveParticipant.Enabled = true;
-                buttonTrackParticipant.Enabled = true;
-            }
-            else if (buttonRemoveParticipant.Enabled && !participantSelected)
-            {
-                buttonRemoveParticipant.Enabled = false;
-                buttonTrackParticipant.Enabled = false;
-            }
+            buttonRemoveParticipant.Enabled = participantSelected;
+            buttonTrackParticipant.Enabled = participantSelected;
 
             if (String.IsNullOrEmpty(_race.Name))
             {
-                if (buttonSaveRaceAs.Enabled)
-                {
-                    buttonSaveRace.Enabled = false;
-                    buttonSaveRaceAs.Enabled = false;
-                }
+                buttonSaveRace.Enabled = false;
+                buttonSaveRaceAs.Enabled = false;
             }
             else
             {
-                if (!buttonSaveRaceAs.Enabled)
-                    buttonSaveRaceAs.Enabled = true;
-                if (!buttonSaveRace.Enabled && !String.IsNullOrEmpty(_saveFilename))
-                    buttonSaveRace.Enabled = true;                   
+                buttonSaveRaceAs.Enabled = true;
+                buttonSaveRace.Enabled = !String.IsNullOrEmpty(_saveFilename);                   
             }
 
             if (checkBoxExportLeaderboard.Checked)
@@ -946,14 +932,23 @@ namespace SRVTracker
             }
 
             textBoxExportSpeedFile.Enabled = checkBoxExportSpeed.Checked;
-            textBoxExportTargetFile.Enabled = checkBoxExportTrackedTarget.Checked;
-            textBoxExportTargetMaxSpeedFile.Enabled = checkBoxExportTrackedTargetMaxSpeed.Checked;
-            textBoxExportTargetPitstopsFile.Enabled = checkBoxExportTrackedTargetPitstops.Checked;
-            textBoxExportTargetSpeedFile.Enabled = checkBoxExportTrackedTargetSpeed.Checked;
-            textBoxExportTargetPosition.Enabled = checkBoxExportTrackedTargetPosition.Checked;
-            textBoxExportTargetHull.Enabled = checkBoxExportTrackedTargetHull.Checked;
             textBoxExportWaypointDistanceFile.Enabled = checkBoxExportDistance.Checked;
             textBoxExportHullFile.Enabled = checkBoxExportHull.Checked;
+
+            checkBoxExportTrackedTargetHull.Enabled = checkBoxExportTrackedTarget.Checked;
+            checkBoxExportTrackedTargetMaxSpeed.Enabled = checkBoxExportTrackedTarget.Checked;
+            checkBoxExportTrackedTargetPitstops.Enabled = checkBoxExportTrackedTarget.Checked;
+            checkBoxExportTrackedTargetPosition.Enabled = checkBoxExportTrackedTarget.Checked;
+            checkBoxExportTrackedTargetSpeed.Enabled = checkBoxExportTrackedTarget.Checked;
+            checkBoxClosestPlayerTarget.Enabled = checkBoxExportTrackedTarget.Checked;
+
+            textBoxExportTargetFile.Enabled = checkBoxExportTrackedTarget.Checked && checkBoxExportTrackedTarget.Enabled;
+            textBoxExportTargetMaxSpeedFile.Enabled = checkBoxExportTrackedTargetMaxSpeed.Checked && checkBoxExportTrackedTargetMaxSpeed.Enabled;
+            textBoxExportTargetPitstopsFile.Enabled = checkBoxExportTrackedTargetPitstops.Checked && checkBoxExportTrackedTargetPitstops.Enabled;
+            textBoxExportTargetSpeedFile.Enabled = checkBoxExportTrackedTargetSpeed.Checked && checkBoxExportTrackedTargetSpeed.Enabled;
+            textBoxExportTargetPosition.Enabled = checkBoxExportTrackedTargetPosition.Checked && checkBoxExportTrackedTargetPosition.Enabled;
+            textBoxExportTargetHull.Enabled = checkBoxExportTrackedTargetHull.Checked && checkBoxExportTrackedTargetHull.Enabled;
+
 
             buttonUneliminate.Enabled = false;
             if (listViewParticipants.SelectedItems.Count>0)
@@ -1260,8 +1255,7 @@ namespace SRVTracker
         
         private void ExportTrackingInfo()
         {
-            if (!checkBoxExportTrackedTarget.Checked && !checkBoxExportTrackedTargetMaxSpeed.Checked && !checkBoxExportTrackedTargetPitstops.Checked &&
-                !checkBoxExportTrackedTargetPosition.Checked && !checkBoxExportTrackedTargetSpeed.Checked)
+            if (!checkBoxExportTrackedTarget.Checked)
                 return;
 
             String trackingTarget = "";

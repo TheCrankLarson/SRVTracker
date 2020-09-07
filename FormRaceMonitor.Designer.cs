@@ -746,7 +746,7 @@
             this.groupBoxTextExport.Controls.Add(this.numericUpDownStatusMaxLength);
             this.groupBoxTextExport.Location = new System.Drawing.Point(720, 12);
             this.groupBoxTextExport.Name = "groupBoxTextExport";
-            this.groupBoxTextExport.Size = new System.Drawing.Size(245, 295);
+            this.groupBoxTextExport.Size = new System.Drawing.Size(245, 283);
             this.groupBoxTextExport.TabIndex = 7;
             this.groupBoxTextExport.TabStop = false;
             this.groupBoxTextExport.Text = "Export as text";
@@ -826,7 +826,7 @@
             this.groupBoxHTMLExport.Controls.Add(this.label5);
             this.groupBoxHTMLExport.Controls.Add(this.label1);
             this.groupBoxHTMLExport.Controls.Add(this.textBoxHTMLTemplateFile);
-            this.groupBoxHTMLExport.Location = new System.Drawing.Point(720, 313);
+            this.groupBoxHTMLExport.Location = new System.Drawing.Point(720, 301);
             this.groupBoxHTMLExport.Name = "groupBoxHTMLExport";
             this.groupBoxHTMLExport.Size = new System.Drawing.Size(245, 106);
             this.groupBoxHTMLExport.TabIndex = 8;
@@ -1085,7 +1085,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1225, 426);
+            this.ClientSize = new System.Drawing.Size(1225, 425);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.groupBox8);
             this.Controls.Add(this.groupBoxTrackTarget);
