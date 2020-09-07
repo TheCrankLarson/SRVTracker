@@ -557,12 +557,16 @@ namespace DataCollator
         private void GetCommanderRaceEvents(Guid raceGuid, string commander, HttpListenerContext Context)
         {
             if (raceGuid != Guid.Empty && _races.ContainsKey(raceGuid))
-                WriteResponse(Context, JsonSerializer.Serialize(_races[raceGuid].GetCommanderEventHistory(commander)));
-            else
             {
-                WriteErrorResponse(Context.Response, HttpStatusCode.NotFound);
-                Log($"{raceGuid}: Event history not found for {commander}");
+                List<EDEvent> eventHistory = _races[raceGuid].GetCommanderEventHistory(commander);
+                if (eventHistory != null)
+                {
+                    WriteResponse(Context, JsonSerializer.Serialize(_races[raceGuid].GetCommanderEventHistory(commander)));
+                    return;
+                }
             }
+            WriteErrorResponse(Context.Response, HttpStatusCode.NotFound);
+            Log($"{raceGuid}: Event history not found for {commander}");
         }
 
         private void GetCommanderRaceEvents(string raceGuid, string commander, HttpListenerContext Context)

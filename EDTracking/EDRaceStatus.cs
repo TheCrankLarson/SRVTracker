@@ -29,7 +29,7 @@ namespace EDTracking
         public bool Finished { get; set; } = false;
         public int PitStopCount { get; set; } = 0;
         public int RacePosition { get; set; } = 0;
-        public static DateTime StartTime { get; set; } = DateTime.MinValue;
+        public DateTime StartTime { get; set; } = DateTime.MinValue;
         public DateTime FinishTime { get; set; } = DateTime.MinValue;
 
         public string Commander { get; } = "";
@@ -56,6 +56,7 @@ namespace EDTracking
         public NotableEvents notableEvents = null;
         private double[] _lastThreeSpeedReadings = new double[] { 0, 0, 0 };
         private int _oldestSpeedReading = 0;
+        private string _status = "";
         
         public EDRaceStatus()
         {
@@ -81,9 +82,15 @@ namespace EDTracking
                 StartRace();
         }
 
+        private string _lastHistoryLog = "";
         private void AddRaceHistory(string eventInfo)
         {
-            _raceHistory.AppendLine($"{TimeStamp:HH:mm:ss} {eventInfo}");
+            string log = $"{TimeStamp:HH:mm:ss} {eventInfo}";
+            if (!log.Equals(_lastHistoryLog))
+            {
+                _raceHistory.AppendLine(log);
+                _lastHistoryLog = log;
+            }
         }
 
         public string RaceReport
@@ -97,6 +104,11 @@ namespace EDTracking
         }
 
         public override string ToString()
+        {
+            return _status;
+        }
+
+        private string GenerateStatus()
         {
             StringBuilder status = new StringBuilder();
             if (Eliminated)
@@ -162,7 +174,8 @@ namespace EDTracking
                         status.Append(" I");
                 }
             }
-            return status.ToString();
+            _status = status.ToString();
+            return _status;
         }
 
         public String DistanceToWaypointInKmDisplay
@@ -180,7 +193,7 @@ namespace EDTracking
         {
             get
             {
-                return $"{Hull * 100:F1}";
+                return $"{Hull * 100:F0}";
             }
         }
 
@@ -364,13 +377,12 @@ namespace EDTracking
                 _lowFuel = isFlagSet(StatusFlags.Low_Fuel);
             }
 
-            String currentStatus = ToString();
-            if (currentStatus.Equals(_lastStatus))
+            if (GenerateStatus().Equals(_lastStatus))
                 return;
 
-            AddRaceHistory(currentStatus);
-            _lastStatus = currentStatus;
-            StatusChanged?.Invoke(null, Commander, currentStatus);
+            AddRaceHistory(_status);
+            _lastStatus = _status;
+            StatusChanged?.Invoke(null, Commander, _status);
         }
 
         public string ToJson()

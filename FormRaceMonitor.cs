@@ -181,7 +181,7 @@ namespace SRVTracker
             item.SubItems.Add(status);
             item.SubItems.Add("NA");
             item.SubItems[3].Tag = double.MaxValue;
-            item.SubItems.Add("100%");
+            item.SubItems.Add("100");
             _racers.Add(commander, item);
             _race.Contestants.Add(commander);
 
@@ -1188,8 +1188,9 @@ namespace SRVTracker
                                     _racers[positions[i]].SubItems[0].Text = (i + 1).ToString();
                                 listViewParticipants.Items.Add(_racers[positions[i]]);
                             }
+                            _lastRacePositions = serverStats["Positions"];
                         }
-                        _lastRacePositions = serverStats["Positions"];
+                        
                         for (int i = 0; i < positions.Count; i++)
                         {
                             _racers[positions[i]].SubItems[2].Text = statuses[i];

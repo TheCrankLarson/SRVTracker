@@ -108,12 +108,15 @@ namespace EDTracking
                 _commanderEventHistory = new Dictionary<string, List<EDEvent>>();
             }
 
+            _commanderEventHistory = new Dictionary<string, List<EDEvent>>();
             foreach (string contestant in Contestants)
             {
                 EDRaceStatus raceStatus = new EDRaceStatus(contestant, Route);
+                raceStatus.StartTime = Start;
                 if (asServer)
                     raceStatus.notableEvents = _notableEvents;
                 Statuses.Add(contestant, raceStatus);
+                _commanderEventHistory.Add(contestant, new List<EDEvent>());
             }
             if (!asServer)
             {
@@ -258,7 +261,7 @@ namespace EDTracking
                     if (Statuses[leaderBoard[i]].Finished)
                     {
                         status.Append(CustomStatusMessages["Completed"]);
-                        status.AppendLine($" ({Statuses[leaderBoard[i]].FinishTime.Subtract(EDRaceStatus.StartTime):hh\\:mm\\:ss})");
+                        status.AppendLine($" ({Statuses[leaderBoard[i]].FinishTime.Subtract(Start):hh\\:mm\\:ss})");
                         distanceToWaypoint.AppendLine(CustomStatusMessages["Completed"]);
                     }
                     else
@@ -305,10 +308,12 @@ namespace EDTracking
             if (Statuses != null)
             {
                 if (Statuses.ContainsKey(edEvent.Commander))
+                {
                     Statuses[edEvent.Commander].UpdateStatus(edEvent);
-                if (!_commanderEventHistory.ContainsKey(edEvent.Commander))
-                    _commanderEventHistory.Add(edEvent.Commander, new List<EDEvent>());
-                _commanderEventHistory[edEvent.Commander].Add(edEvent);
+                    if (!_commanderEventHistory.ContainsKey(edEvent.Commander))
+                        _commanderEventHistory.Add(edEvent.Commander, new List<EDEvent>());
+                    _commanderEventHistory[edEvent.Commander].Add(edEvent);
+                }
             }
         }
 
@@ -316,7 +321,7 @@ namespace EDTracking
         {
             if (_commanderEventHistory.ContainsKey(commander))
                 return _commanderEventHistory[commander];
-            return new List<EDEvent>();
+            return null;
         }
     }
 }
