@@ -54,9 +54,9 @@
             this.labelTarget.ForeColor = System.Drawing.Color.Yellow;
             this.labelTarget.Location = new System.Drawing.Point(40, 0);
             this.labelTarget.Name = "labelTarget";
-            this.labelTarget.Size = new System.Drawing.Size(64, 13);
+            this.labelTarget.Size = new System.Drawing.Size(41, 13);
             this.labelTarget.TabIndex = 1;
-            this.labelTarget.Text = "Rand Vision";
+            this.labelTarget.Text = "Not set";
             // 
             // labelBearing
             // 
@@ -92,6 +92,7 @@
             // 
             // labelSpeedInMS
             // 
+            this.labelSpeedInMS.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.labelSpeedInMS.AutoSize = true;
             this.labelSpeedInMS.ForeColor = System.Drawing.Color.Yellow;
             this.labelSpeedInMS.Location = new System.Drawing.Point(144, 0);

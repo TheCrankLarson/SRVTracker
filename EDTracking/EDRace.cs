@@ -231,6 +231,7 @@ namespace EDTracking
             StringBuilder speeds = new StringBuilder();
             StringBuilder maxSpeeds = new StringBuilder();
             StringBuilder distanceToWaypoint = new StringBuilder();
+            StringBuilder hullStrengths = new StringBuilder();
 
             for (int i = 0; i < leaderBoard.Count; i++)
             {
@@ -275,7 +276,7 @@ namespace EDTracking
                         distanceToWaypoint.AppendLine(Statuses[leaderBoard[i]].DistanceToWaypointInKmDisplay);
                     }
 
-                    
+                    hullStrengths.AppendLine(Statuses[leaderBoard[i]].HullDisplay);
                 }
                 else
                 {
@@ -290,6 +291,7 @@ namespace EDTracking
             statsTable.Add("Status", status.ToString());
             statsTable.Add("DistanceToWaypoint", distanceToWaypoint.ToString());
             statsTable.Add("NotableEvents", String.Join(Environment.NewLine, NotableEvents.EventQueue));
+            statsTable.Add("HullStrengths", hullStrengths.ToString());
 
             _lastStatsTable = JsonSerializer.Serialize(statsTable);
             _statsLastGenerated = DateTime.Now;

@@ -19,6 +19,8 @@ namespace EDTracking
         private Dictionary<string, long> _filePointers;
         private DateTime _lastJournalEventTimeStamp = DateTime.MinValue;
         public string[] ReportEvents = { "DockSRV","SRVDestroyed","HullDamage","LaunchSRV", "Shutdown", "Touchdown", "Liftoff" };
+        public delegate void InterestingEventHandler(object sender, string eventJson);
+        public  event InterestingEventHandler InterestingEventOccurred;
 
         public JournalReader(string journalFolder)
         {
@@ -210,6 +212,8 @@ namespace EDTracking
                                     _journalFileStream?.Close();
                                     _journalFileStream = null;
                                 }
+                                else
+                                    InterestingEventOccurred?.Invoke(this, journalEvent);
                             }
                         }
                     }

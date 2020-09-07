@@ -116,6 +116,7 @@
             this.label7 = new System.Windows.Forms.Label();
             this.textBoxRaceStatusServerUrl = new System.Windows.Forms.TextBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.columnHeaderHull = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -423,7 +424,8 @@
             this.columnHeaderPosition,
             this.columnHeaderName,
             this.columnHeaderStatus,
-            this.columnHeaderDistanceToWaypoint});
+            this.columnHeaderDistanceToWaypoint,
+            this.columnHeaderHull});
             this.listViewParticipants.FullRowSelect = true;
             this.listViewParticipants.GridLines = true;
             this.listViewParticipants.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
@@ -446,16 +448,17 @@
             // columnHeaderName
             // 
             this.columnHeaderName.Text = "Commander";
-            this.columnHeaderName.Width = 100;
+            this.columnHeaderName.Width = 80;
             // 
             // columnHeaderStatus
             // 
             this.columnHeaderStatus.Text = "Status";
-            this.columnHeaderStatus.Width = 150;
+            this.columnHeaderStatus.Width = 140;
             // 
             // columnHeaderDistanceToWaypoint
             // 
             this.columnHeaderDistanceToWaypoint.Text = "WP";
+            this.columnHeaderDistanceToWaypoint.Width = 45;
             // 
             // groupBox4
             // 
@@ -1027,6 +1030,11 @@
             this.pictureBox1.TabIndex = 11;
             this.pictureBox1.TabStop = false;
             // 
+            // columnHeaderHull
+            // 
+            this.columnHeaderHull.Text = "Hull";
+            this.columnHeaderHull.Width = 45;
+            // 
             // FormRaceMonitor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1164,5 +1172,6 @@
         private System.Windows.Forms.TextBox textBoxExportTargetPosition;
         private System.Windows.Forms.CheckBox checkBoxExportTrackedTargetPosition;
         private System.Windows.Forms.TextBox textBoxExportWaypointDistanceFile;
+        private System.Windows.Forms.ColumnHeader columnHeaderHull;
     }
 }

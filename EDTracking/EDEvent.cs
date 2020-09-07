@@ -26,6 +26,8 @@ namespace EDTracking
         public double PlanetRadius { get;  set; } = 0;
         public double Altitude { get; set; } = 0;
         public string Commander { get; set; } = "";
+        public string EventName { get; set; } = "";
+        public double Health { get; set; } = -1;
 
         public EDEvent() { }
 
@@ -70,10 +72,14 @@ namespace EDTracking
                     Altitude = property.GetDouble();
                 if (root.TryGetProperty("PlanetRadius", out property))
                     PlanetRadius = property.GetDouble();
+                if (root.TryGetProperty("Health", out property))
+                    Health = property.GetDouble();
                 if (root.TryGetProperty("BodyName", out property))
                     BodyName = property.GetString();
                 if (root.TryGetProperty("Heading", out property))
                     Heading = property.GetInt16();
+                if (root.TryGetProperty("event", out property))
+                    EventName = property.GetString();
             }
             Commander = commander;
         }

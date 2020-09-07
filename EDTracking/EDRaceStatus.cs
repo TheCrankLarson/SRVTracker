@@ -15,22 +15,23 @@ namespace EDTracking
 {
     public class EDRaceStatus
     {        
-        public int Heading { get; internal set; } = -1;
+        public int Heading { get; set; } = -1;
         public double SpeedInMS { get; set; } = 0;
         public double MaxSpeedInMS { get; set; } = 0;
-        public long Flags { get; internal set; } = -1;
+        public long Flags { get; set; } = -1;
+        public double Hull { get; set; } = 1;
         public DateTime TimeStamp { get; internal set; } = DateTime.MinValue;
-        public bool Eliminated { get; internal set; } = false;
-        public EDLocation Location { get; internal set; } = null;
-        public int WaypointIndex { get; internal set; } = 0;
-        public double DistanceToWaypoint { get; internal set; } = double.MaxValue;
+        public bool Eliminated { get; set; } = false;
+        public EDLocation Location { get; set; } = null;
+        public int WaypointIndex { get; set; } = 0;
+        public double DistanceToWaypoint { get; set; } = double.MaxValue;
         public EDRoute Route { get; set; } = null;
         public static bool Started { get; set; } = false;
         public bool Finished { get; set; } = false;
         public int PitStopCount { get; set; } = 0;
         public int RacePosition { get; set; } = 0;
         public static DateTime StartTime { get; set; } = DateTime.MinValue;
-        public DateTime FinishTime { get; internal set; } = DateTime.MinValue;
+        public DateTime FinishTime { get; set; } = DateTime.MinValue;
 
         public string Commander { get; } = "";
         public static bool EliminateOnDestruction { get; set; } = true;
@@ -178,6 +179,14 @@ namespace EDTracking
             }
         }
 
+        public string HullDisplay
+        {
+            get
+            {
+                return $"{Hull * 100:F1}";
+            }
+        }
+
         public void StartRace()
         {
             Started = true;
@@ -214,6 +223,12 @@ namespace EDTracking
 
             if (Finished || Eliminated)
                 return;
+
+            if (updateEvent.Health >= 0)
+            {
+                Hull = updateEvent.Health;
+                AddRaceHistory($"Hull percentage: {Hull*100:F1}");
+            }
 
             if (updateEvent.HasCoordinates())
             {

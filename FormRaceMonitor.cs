@@ -179,6 +179,7 @@ namespace SRVTracker
             item.SubItems.Add(status);
             item.SubItems.Add("NA");
             item.SubItems[3].Tag = double.MaxValue;
+            item.SubItems.Add("100%");
             _racers.Add(commander, item);
             _race.Contestants.Add(commander);
 
@@ -1157,6 +1158,7 @@ namespace SRVTracker
                 List<string> positions = serverStats["Positions"].Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).ToList<string>();
                 List<string> statuses = serverStats["Status"].Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).ToList<string>();
                 List<string> distancesToWaypoint = serverStats["DistanceToWaypoint"].Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).ToList<string>();
+                List<string> hullStrengths = serverStats["HullStrengths"].Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).ToList<string>();
 
                 Action action = new Action(() =>
                 {
@@ -1179,6 +1181,7 @@ namespace SRVTracker
                         {
                             _racers[positions[i]].SubItems[2].Text = statuses[i];
                             _racers[positions[i]].SubItems[3].Text = distancesToWaypoint[i];
+                            _racers[positions[i]].SubItems[4].Text = hullStrengths[i];
                         }
                         listViewParticipants.EndUpdate();                      
                     }
