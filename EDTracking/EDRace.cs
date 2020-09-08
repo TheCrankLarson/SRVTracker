@@ -279,7 +279,10 @@ namespace EDTracking
                         distanceToWaypoint.AppendLine(Statuses[leaderBoard[i]].DistanceToWaypointInKmDisplay);
                     }
 
-                    hullStrengths.AppendLine(Statuses[leaderBoard[i]].HullDisplay);
+                    if (!Statuses[leaderBoard[i]].Eliminated && !Statuses[leaderBoard[i]].Finished)
+                        hullStrengths.AppendLine(Statuses[leaderBoard[i]].HullDisplay);
+                    else
+                        hullStrengths.AppendLine();
                 }
                 else
                 {

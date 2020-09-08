@@ -57,11 +57,22 @@ namespace EDTracking
                 JsonElement root = jsonDoc.RootElement;
                 JsonElement property;
 
-                if (timeStamp != null)
-                    TimeStamp = ((DateTime)timeStamp).ToUniversalTime();
-                else if (root.TryGetProperty("timestamp", out property))
-                    TimeStamp = property.GetDateTime();
+                try
+                {
+                    if (timeStamp != null)
+                        TimeStamp = ((DateTime)timeStamp).ToUniversalTime();
+                    else if (root.TryGetProperty("timestamp", out property))
+                        TimeStamp = property.GetDateTime();
+                    else
+                        TimeStamp = DateTime.Now;
+                }
+                catch
+                {
+                    TimeStamp = DateTime.Now;
+                }
 
+                if (root.TryGetProperty("event", out property))
+                    EventName = property.GetString();
                 if (root.TryGetProperty("Flags", out property))
                     Flags = property.GetInt64();
                 if (root.TryGetProperty("Latitude", out property))
@@ -78,27 +89,9 @@ namespace EDTracking
                     BodyName = property.GetString();
                 if (root.TryGetProperty("Heading", out property))
                     Heading = property.GetInt16();
-                if (root.TryGetProperty("event", out property))
-                    EventName = property.GetString();
-                if (root.TryGetProperty("EventName", out property))
-                    EventName = property.GetString();
             }
             Commander = commander;
         }
-
-        public EDEvent(string commander, long timestamp, double latitude, double longitude, double altitude, int heading, double planetRadius, long flags)
-        {
-            Commander = commander;
-            Latitude = latitude;
-            Longitude = longitude;
-            Altitude = altitude;
-            Heading = heading;
-            PlanetRadius = planetRadius;
-            TimeStamp = new DateTime(timestamp);
-            this.Flags = flags;
-        }
-
-
 
         public bool isInSRV()
         {

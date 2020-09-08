@@ -213,7 +213,7 @@ namespace EDTracking
                             {
                                 // This is an event we are interested in
                                 //File.AppendAllText("journalevents.log", $"{journalEvent}{Environment.NewLine}");
-                                InterestingEventOccurred?.Invoke(this, journalEvent);
+                                InterestingEventOccurred?.Invoke(this, journalEvent.Trim());
                             }
                         }
                     }

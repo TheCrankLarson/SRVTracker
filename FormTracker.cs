@@ -47,7 +47,7 @@ namespace SRVTracker
             InitializeComponent();
             InitClientId();
             InitStatusLocation();
-            //buttonTest.Visible = System.Diagnostics.Debugger.IsAttached;
+            buttonTest.Visible = System.Diagnostics.Debugger.IsAttached;
             FormLocator.ServerAddress = (string)radioButtonUseDefaultServer.Tag;
             _statusTimer = new System.Timers.Timer(700);
             _statusTimer.Elapsed += _statusTimer_Elapsed;
@@ -60,8 +60,7 @@ namespace SRVTracker
 
         private void _journalReader_InterestingEventOccurred(object sender, string eventJson)
         {
-            EDEvent updateEvent = EDEvent.FromJson(eventJson);
-            updateEvent.Commander = textBoxClientId.Text;
+            EDEvent updateEvent = new EDEvent(eventJson, textBoxClientId.Text);
             UpdateUI(updateEvent);
         }
 
@@ -347,8 +346,6 @@ namespace SRVTracker
 
         private void UpdateUI(EDEvent edEvent)
         {
-
-
             if (checkBoxSaveToFile.Checked)
                 SaveToFile(edEvent);
 

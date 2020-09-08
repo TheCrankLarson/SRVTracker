@@ -239,7 +239,8 @@ namespace EDTracking
                 _lastFlags = Flags;
                 Flags = updateEvent.Flags;
             }
-            TimeStamp = updateEvent.TimeStamp;
+            if (updateEvent.TimeStamp>DateTime.MinValue)
+                TimeStamp = updateEvent.TimeStamp;
 
             if (Finished || Eliminated)
                 return;
