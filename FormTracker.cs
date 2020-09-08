@@ -47,7 +47,7 @@ namespace SRVTracker
             InitializeComponent();
             InitClientId();
             InitStatusLocation();
-            buttonTest.Visible = System.Diagnostics.Debugger.IsAttached;
+            //buttonTest.Visible = System.Diagnostics.Debugger.IsAttached;
             FormLocator.ServerAddress = (string)radioButtonUseDefaultServer.Tag;
             _statusTimer = new System.Timers.Timer(700);
             _statusTimer.Elapsed += _statusTimer_Elapsed;
@@ -587,9 +587,7 @@ namespace SRVTracker
 
         private void UpdateServerSettings()
         {
-            radioButtonUseCustomServer.Enabled = checkBoxUpload.Checked;
-            radioButtonUseDefaultServer.Enabled = checkBoxUpload.Checked;
-            textBoxUploadServer.Enabled = checkBoxUpload.Checked && radioButtonUseCustomServer.Checked;
+            textBoxUploadServer.Enabled = radioButtonUseCustomServer.Checked;
             if (radioButtonUseDefaultServer.Checked)
                 FormLocator.ServerAddress = (string)radioButtonUseDefaultServer.Tag;
             else

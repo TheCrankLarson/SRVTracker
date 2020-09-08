@@ -163,8 +163,8 @@ namespace DataCollator
                     return;
                 }
 
-                lock (_notificationLock)
-                {
+                //lock (_notificationLock)
+                //{
                     _commanderStatus[updateEvent.Commander].UpdateStatus(updateEvent);
                     if (_playerStatus.ContainsKey(updateEvent.Commander))
                     {
@@ -176,11 +176,12 @@ namespace DataCollator
                         _playerStatus.Add(updateEvent.Commander, updateEvent);
                         Log($"Received status update for new commander: {updateEvent.Commander}", true);
                     }
-                }
+                //}
             }
             catch (Exception ex)
             {
                 Log($"Error processing update:{Environment.NewLine}{ex}{Environment.NewLine}{Environment.NewLine}{status}");
+                //Log($"Recreated json: {updateEvent.ToJson()}");
             }
         }
 

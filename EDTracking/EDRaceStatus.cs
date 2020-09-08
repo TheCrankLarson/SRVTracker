@@ -19,7 +19,7 @@ namespace EDTracking
         public double MaxSpeedInMS { get; set; } = 0;
         public long Flags { get; set; } = -1;
         public double Hull { get; set; } = 1;
-        public DateTime TimeStamp { get; internal set; } = DateTime.MinValue;
+        public DateTime TimeStamp { get; set; } = DateTime.MinValue;
         public bool Eliminated { get; set; } = false;
         public EDLocation Location { get; set; } = null;
         public int WaypointIndex { get; set; } = 0;
@@ -39,7 +39,7 @@ namespace EDTracking
         public static bool ShowDetailedStatus { get; set; } = false;
 
 
-        public string _lastStatus = "";
+        private string _lastStatus = "";
         public delegate void StatusChangedEventHandler(object sender, string commander, string status);
         public static event StatusChangedEventHandler StatusChanged;
         private long _lastFlags = 0;
@@ -56,7 +56,7 @@ namespace EDTracking
         public NotableEvents notableEvents = null;
         private double[] _lastThreeSpeedReadings = new double[] { 0, 0, 0 };
         private int _oldestSpeedReading = 0;
-        private string _status = "";
+        private string _status = "NA";
         
         public EDRaceStatus()
         {
@@ -110,71 +110,76 @@ namespace EDTracking
 
         private string GenerateStatus()
         {
-            StringBuilder status = new StringBuilder();
+            StringBuilder statusBuilder = new StringBuilder();
+
             if (Eliminated)
-                status.Append(EDRace.StatusMessages["Eliminated"]);
+                statusBuilder.Append(EDRace.StatusMessages["Eliminated"]);
             else if (Finished)
             {
                 TimeSpan timeSpan = FinishTime.Subtract(StartTime);
-                status.Append($"{EDRace.StatusMessages["Completed"]} ({timeSpan.ToString("hh\\:mm\\:ss")})");
-            }
+                statusBuilder.Append($"{EDRace.StatusMessages["Completed"]} ({timeSpan.ToString("hh\\:mm\\:ss")})");
+            }           
             else if (_inPits)
             {
-                status.Append(EDRace.StatusMessages["Pitstop"]);
+                statusBuilder.Append(EDRace.StatusMessages["Pitstop"]);
             }
-            else
-            {
-                if (Started)
-                    status.Append($"-> {Route.Waypoints[WaypointIndex].Name}");
+           
 
+            if (statusBuilder.Length == 0 && Started)
+            {
+                if (Route != null)
+                    statusBuilder.Append($"-> {Route.Waypoints[WaypointIndex].Name}");
                 if (_lowFuel)
-                    status.Append(" (low fuel)");
+                    statusBuilder.Append(" (low fuel)");
             }
 
             if (ShowDetailedStatus)
             {
                 // Flags that apply to all vehicles
                 if (isFlagSet(StatusFlags.Night_Vision_Active))
-                    status.Append(" NV");
+                    statusBuilder.Append(" NV");
 
                 if (isFlagSet(StatusFlags.LightsOn))
-                    status.Append(" L");
+                    statusBuilder.Append(" L");
 
                 if (isFlagSet(StatusFlags.In_SRV))
                 {
                     // SRV only flags
 
                     if (isFlagSet(StatusFlags.srvHighBeam))
-                        status.Append("H");
+                        statusBuilder.Append("H");
                     else
-                        status.Append("L");
+                        statusBuilder.Append("L");
 
                     if (isFlagSet(StatusFlags.Srv_Handbrake))
-                        status.Append(" HB");
+                        statusBuilder.Append(" HB");
 
                     if (isFlagSet(StatusFlags.Srv_DriveAssist))
-                        status.Append(" DA");
+                        statusBuilder.Append(" DA");
                 }
                 else if (isFlagSet(StatusFlags.In_MainShip))
                 {
                     // Ship only flags
                     if (isFlagSet(StatusFlags.Landing_Gear_Down))
-                        status.Append(" LG");
+                        statusBuilder.Append(" LG");
 
                     if (!isFlagSet(StatusFlags.FlightAssist_Off))
-                        status.Append(" FA");
+                        statusBuilder.Append(" FA");
 
                     if (isFlagSet(StatusFlags.Silent_Running))
-                        status.Append(" SR");
+                        statusBuilder.Append(" SR");
 
                     if (isFlagSet(StatusFlags.Cargo_Scoop_Deployed))
-                        status.Append(" C");
+                        statusBuilder.Append(" C");
 
                     if (isFlagSet(StatusFlags.Being_Interdicted))
-                        status.Append(" I");
+                        statusBuilder.Append(" I");
                 }
             }
-            _status = status.ToString();
+            if (statusBuilder.Length == 0)
+                statusBuilder.Append("NA");
+
+            _status = statusBuilder.ToString();
             return _status;
         }
 
@@ -229,7 +234,7 @@ namespace EDTracking
         {
             // Update our status based on the passed event
 
-            if (Flags > 0 && (Flags != _lastFlags) )
+            if ( (updateEvent.Flags > 0) && (Flags != updateEvent.Flags) )
             {
                 _lastFlags = Flags;
                 Flags = updateEvent.Flags;
@@ -377,7 +382,8 @@ namespace EDTracking
                 _lowFuel = isFlagSet(StatusFlags.Low_Fuel);
             }
 
-            if (GenerateStatus().Equals(_lastStatus))
+            GenerateStatus();
+            if (_status.Equals(_lastStatus))
                 return;
 
             AddRaceHistory(_status);
