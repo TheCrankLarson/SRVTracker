@@ -992,6 +992,7 @@ namespace SRVTracker
         {
             EDRaceStatus.Started = false;
             _race.Statuses = null;
+            _race.Start = DateTime.MinValue;
             _eliminatedRacers = null;
             if (_race.Route.Waypoints.Count > 0)
                 _nextWaypoint = _race.Route.Waypoints[0];
@@ -1167,10 +1168,10 @@ namespace SRVTracker
             // Get current positions and sort the list view
             if (changeDetected)
             {
-                List<string> positions = serverStats["Positions"].Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).ToList<string>();
-                List<string> statuses = serverStats["Status"].Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).ToList<string>();
-                List<string> distancesToWaypoint = serverStats["DistanceToWaypoint"].Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).ToList<string>();
-                List<string> hullStrengths = serverStats["HullStrengths"].Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).ToList<string>();
+                List<string> positions = serverStats["Positions"].Split(new string[] { Environment.NewLine }, StringSplitOptions.None).ToList<string>();
+                List<string> statuses = serverStats["Status"].Split(new string[] { Environment.NewLine }, StringSplitOptions.None).ToList<string>();
+                List<string> distancesToWaypoint = serverStats["DistanceToWaypoint"].Split(new string[] { Environment.NewLine }, StringSplitOptions.None).ToList<string>();
+                List<string> hullStrengths = serverStats["HullStrengths"].Split(new string[] { Environment.NewLine }, StringSplitOptions.None).ToList<string>();
 
                 Action action = new Action(() =>
                 {

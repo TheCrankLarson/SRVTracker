@@ -101,19 +101,10 @@ namespace SRVTracker
         private void AddLocationToRoute(EDLocation location)
         {
             EDWaypoint waypoint = new EDWaypoint(location, DateTime.Now, (double)numericUpDownRadius.Value);
-            if (checkBoxRadius.Checked)
-                waypoint.Radius = (double)numericUpDownRadius.Value;
-            else
-                waypoint.Radius = 1;
+            waypoint.Radius = (double)numericUpDownRadius.Value;
+            waypoint.MinimumAltitude = (double)numericUpDownMinAltitude.Value;
+            waypoint.MaximumAltitude = (double)numericUpDownMaxAltitude.Value;
 
-            if (checkBoxTestAltitude.Checked)
-            {
-                if (radioButtonAboveAltitude.Checked)
-                    waypoint.AltitudeTest = 1;
-                else
-                    waypoint.AltitudeTest = -1;
-            }
-            waypoint.Altitude = (double)numericUpDownAltitude.Value;
             _route.Waypoints.Add(waypoint);
             Action action = new Action(() =>
             {
@@ -241,31 +232,9 @@ namespace SRVTracker
             EDWaypoint waypoint = _route.Waypoints[listBoxWaypoints.SelectedIndex];
             textBoxWaypointName.Text = waypoint.Name;
             numericUpDownRadius.Value = (decimal)waypoint.Radius;
-            numericUpDownAltitude.Value = (decimal)waypoint.Altitude;
-            checkBoxTestAltitude.Checked = waypoint.AltitudeTest != 0;
-            if (checkBoxTestAltitude.Checked)
-            {
-                radioButtonAboveAltitude.Checked = waypoint.AltitudeTest == 1;
-            }
-            else
-            {
-                radioButtonAboveAltitude.Enabled = false;
-                radioButtonBelowAltitude.Enabled = false;
-            }
-        }
+            numericUpDownMinAltitude.Value = (decimal)waypoint.MinimumAltitude;
+            numericUpDownMaxAltitude.Value = (decimal)waypoint.MaximumAltitude;
 
-        private void checkBoxRadius_CheckedChanged(object sender, EventArgs e)
-        {
-            if (listBoxWaypoints.SelectedIndex < 0)
-                return;
-
-            if (!checkBoxRadius.Checked)
-            {
-                _route.Waypoints[listBoxWaypoints.SelectedIndex].Radius = 1;
-                numericUpDownRadius.Enabled = false;
-            }
-            else
-                _route.Waypoints[listBoxWaypoints.SelectedIndex].Radius = (double)numericUpDownRadius.Value;
         }
 
         private void numericUpDownRadius_ValueChanged(object sender, EventArgs e)
@@ -275,55 +244,18 @@ namespace SRVTracker
             _route.Waypoints[listBoxWaypoints.SelectedIndex].Radius = (double)numericUpDownRadius.Value;
         }
 
-        private void numericUpDownAltitude_ValueChanged(object sender, EventArgs e)
+        private void numericUpDownMinAltitude_ValueChanged(object sender, EventArgs e)
         {
             if (listBoxWaypoints.SelectedIndex < 0)
                 return;
-            _route.Waypoints[listBoxWaypoints.SelectedIndex].Altitude = (double)numericUpDownAltitude.Value;
+            _route.Waypoints[listBoxWaypoints.SelectedIndex].MinimumAltitude = (double)numericUpDownMinAltitude.Value;
         }
 
-        private void radioButtonAboveAltitude_CheckedChanged(object sender, EventArgs e)
+        private void numericUpDownMaxAltitude_ValueChanged(object sender, EventArgs e)
         {
             if (listBoxWaypoints.SelectedIndex < 0)
                 return;
-            _route.Waypoints[listBoxWaypoints.SelectedIndex].AltitudeTest = 1;
-        }
-
-        private void radioButtonBelowAltitude_CheckedChanged(object sender, EventArgs e)
-        {
-            if (listBoxWaypoints.SelectedIndex < 0)
-                return;
-            _route.Waypoints[listBoxWaypoints.SelectedIndex].AltitudeTest = -1;
-        }
-
-        private void checkBoxTestAltitude_CheckedChanged(object sender, EventArgs e)
-        {
-            if (listBoxWaypoints.SelectedIndex < 0)
-                return;
-
-            if (checkBoxTestAltitude.Checked)
-            {
-                if (!radioButtonAboveAltitude.Enabled)
-                {
-                    radioButtonAboveAltitude.Enabled = true;
-                    radioButtonBelowAltitude.Enabled = true;
-                    numericUpDownAltitude.Enabled = true;
-                }
-                if (radioButtonAboveAltitude.Checked)
-                    _route.Waypoints[listBoxWaypoints.SelectedIndex].AltitudeTest = 1;
-                else
-                    _route.Waypoints[listBoxWaypoints.SelectedIndex].AltitudeTest = -1;
-            }
-            else
-            {
-                if (radioButtonAboveAltitude.Enabled)
-                {
-                    radioButtonAboveAltitude.Enabled = false;
-                    radioButtonBelowAltitude.Enabled = false;
-                    numericUpDownAltitude.Enabled = false;
-                }
-                _route.Waypoints[listBoxWaypoints.SelectedIndex].AltitudeTest = 0;
-            }
+            _route.Waypoints[listBoxWaypoints.SelectedIndex].MaximumAltitude = (double)numericUpDownMaxAltitude.Value;
         }
 
         private void textBoxWaypointName_TextChanged(object sender, EventArgs e)
@@ -402,5 +334,7 @@ namespace SRVTracker
                 }
             }
         }
+
+
     }
 }

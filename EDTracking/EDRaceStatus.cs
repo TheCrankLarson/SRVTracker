@@ -57,6 +57,7 @@ namespace EDTracking
         private double[] _lastThreeSpeedReadings = new double[] { 0, 0, 0 };
         private int _oldestSpeedReading = 0;
         private string _status = "NA";
+        private EDRace _race = null;
         
         public EDRaceStatus()
         {
@@ -80,6 +81,11 @@ namespace EDTracking
             Route = route;
             if (immediateStart)
                 StartRace();
+        }
+
+        public void SetRace(EDRace race)
+        {
+            _race = race;
         }
 
         private string _lastHistoryLog = "";
@@ -108,20 +114,29 @@ namespace EDTracking
             return _status;
         }
 
+        private string StatusMessage(string messageName)
+        {
+            if (_race != null && _race.CustomStatusMessages.ContainsKey(messageName))
+                return _race.CustomStatusMessages[messageName];
+            if (EDRace.StatusMessages.ContainsKey(messageName))
+                return EDRace.StatusMessages[messageName];
+            return messageName;
+        }
+
         private string GenerateStatus()
         {
             StringBuilder statusBuilder = new StringBuilder();
 
             if (Eliminated)
-                statusBuilder.Append(EDRace.StatusMessages["Eliminated"]);
+                statusBuilder.Append(StatusMessage("Eliminated"));
             else if (Finished)
             {
                 TimeSpan timeSpan = FinishTime.Subtract(StartTime);
-                statusBuilder.Append($"{EDRace.StatusMessages["Completed"]} ({timeSpan.ToString("hh\\:mm\\:ss")})");
+                statusBuilder.Append($"{StatusMessage("Completed")} ({timeSpan.ToString("hh\\:mm\\:ss")})");
             }           
             else if (_inPits)
             {
-                statusBuilder.Append(EDRace.StatusMessages["Pitstop"]);
+                statusBuilder.Append(StatusMessage("Pitstop"));
             }
            
 

@@ -13,8 +13,9 @@ namespace EDTracking
     {
         public EDLocation Location { get; set; } = null;
         public double Radius { get; set; } = 5000;
-        public double Altitude { get; set; } = 0;
-        public sbyte AltitudeTest { get; set; } = 0; // -1, must be below, +1 must be above, 0 not checked
+        public double MinimumAltitude { get; set; } = 0;
+        public double MaximumAltitude { get; set; } = 100;
+        //public sbyte AltitudeTest { get; set; } = 0; // -1, must be below, +1 must be above, 0 not checked
         public int Direction { get; set; } = -1;
         public DateTime TimeTracked { get; internal set; }  // To store the time the location was recorded when route recording
         private static int _nextWaypointNumber = 1;
@@ -53,7 +54,10 @@ namespace EDTracking
 
         public bool LocationIsWithinWaypoint(EDLocation location)
         {
-            return (EDLocation.DistanceBetween(Location, location) < Radius);
+            if (EDLocation.DistanceBetween(Location, location) < Radius)
+                if (location.Altitude >= MinimumAltitude && location.Altitude <= MaximumAltitude)
+                    return true;
+            return false;
         }
 
         public override string ToString()

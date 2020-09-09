@@ -113,6 +113,7 @@ namespace EDTracking
             {
                 EDRaceStatus raceStatus = new EDRaceStatus(contestant, Route);
                 raceStatus.StartTime = Start;
+                raceStatus.SetRace(this);
                 if (asServer)
                     raceStatus.notableEvents = _notableEvents;
                 Statuses.Add(contestant, raceStatus);
@@ -282,7 +283,7 @@ namespace EDTracking
                     if (!Statuses[leaderBoard[i]].Eliminated)
                         hullStrengths.AppendLine(Statuses[leaderBoard[i]].HullDisplay);
                     else
-                        hullStrengths.AppendLine();
+                        hullStrengths.AppendLine(" ");
                 }
                 else
                 {

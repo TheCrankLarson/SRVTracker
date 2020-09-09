@@ -44,27 +44,28 @@
             this.label2 = new System.Windows.Forms.Label();
             this.numericUpDownRecordDistance = new System.Windows.Forms.NumericUpDown();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.radioButtonBelowAltitude = new System.Windows.Forms.RadioButton();
-            this.radioButtonAboveAltitude = new System.Windows.Forms.RadioButton();
-            this.numericUpDownAltitude = new System.Windows.Forms.NumericUpDown();
-            this.checkBoxTestAltitude = new System.Windows.Forms.CheckBox();
+            this.numericUpDownMaxAltitude = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDownMinAltitude = new System.Windows.Forms.NumericUpDown();
             this.label3 = new System.Windows.Forms.Label();
             this.textBoxWaypointName = new System.Windows.Forms.TextBox();
             this.numericUpDownRadius = new System.Windows.Forms.NumericUpDown();
-            this.checkBoxRadius = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.locationManager1 = new SRVTracker.LocationManager();
             this.textBoxRouteName = new System.Windows.Forms.TextBox();
+            this.locationManager1 = new SRVTracker.LocationManager();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.buttonSettings = new System.Windows.Forms.Button();
             this.buttonPlay = new System.Windows.Forms.Button();
             this.buttonStop = new System.Windows.Forms.Button();
             this.buttonStartRecording = new System.Windows.Forms.Button();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
             this.groupBox2.SuspendLayout();
             this.groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRecordDistance)).BeginInit();
             this.groupBox3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownAltitude)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMaxAltitude)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMinAltitude)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRadius)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -231,14 +232,14 @@
             // 
             // groupBox3
             // 
-            this.groupBox3.Controls.Add(this.radioButtonBelowAltitude);
-            this.groupBox3.Controls.Add(this.radioButtonAboveAltitude);
-            this.groupBox3.Controls.Add(this.numericUpDownAltitude);
-            this.groupBox3.Controls.Add(this.checkBoxTestAltitude);
+            this.groupBox3.Controls.Add(this.label6);
+            this.groupBox3.Controls.Add(this.label5);
+            this.groupBox3.Controls.Add(this.label4);
+            this.groupBox3.Controls.Add(this.numericUpDownMaxAltitude);
+            this.groupBox3.Controls.Add(this.numericUpDownMinAltitude);
             this.groupBox3.Controls.Add(this.label3);
             this.groupBox3.Controls.Add(this.textBoxWaypointName);
             this.groupBox3.Controls.Add(this.numericUpDownRadius);
-            this.groupBox3.Controls.Add(this.checkBoxRadius);
             this.groupBox3.Location = new System.Drawing.Point(298, 122);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(163, 125);
@@ -246,51 +247,21 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Waypoint info";
             // 
-            // radioButtonBelowAltitude
+            // numericUpDownMaxAltitude
             // 
-            this.radioButtonBelowAltitude.AutoSize = true;
-            this.radioButtonBelowAltitude.Location = new System.Drawing.Point(104, 94);
-            this.radioButtonBelowAltitude.Name = "radioButtonBelowAltitude";
-            this.radioButtonBelowAltitude.Size = new System.Drawing.Size(53, 17);
-            this.radioButtonBelowAltitude.TabIndex = 7;
-            this.radioButtonBelowAltitude.TabStop = true;
-            this.radioButtonBelowAltitude.Text = "below";
-            this.toolTip1.SetToolTip(this.radioButtonBelowAltitude, "Only altitudes above that specified are within the waypoint");
-            this.radioButtonBelowAltitude.UseVisualStyleBackColor = true;
-            this.radioButtonBelowAltitude.CheckedChanged += new System.EventHandler(this.radioButtonBelowAltitude_CheckedChanged);
+            this.numericUpDownMaxAltitude.Location = new System.Drawing.Point(98, 90);
+            this.numericUpDownMaxAltitude.Name = "numericUpDownMaxAltitude";
+            this.numericUpDownMaxAltitude.Size = new System.Drawing.Size(59, 20);
+            this.numericUpDownMaxAltitude.TabIndex = 7;
+            this.numericUpDownMaxAltitude.ValueChanged += new System.EventHandler(this.numericUpDownMaxAltitude_ValueChanged);
             // 
-            // radioButtonAboveAltitude
+            // numericUpDownMinAltitude
             // 
-            this.radioButtonAboveAltitude.AutoSize = true;
-            this.radioButtonAboveAltitude.Location = new System.Drawing.Point(43, 94);
-            this.radioButtonAboveAltitude.Name = "radioButtonAboveAltitude";
-            this.radioButtonAboveAltitude.Size = new System.Drawing.Size(55, 17);
-            this.radioButtonAboveAltitude.TabIndex = 6;
-            this.radioButtonAboveAltitude.TabStop = true;
-            this.radioButtonAboveAltitude.Text = "above";
-            this.toolTip1.SetToolTip(this.radioButtonAboveAltitude, "Only altitudes below that specified are within the waypoint");
-            this.radioButtonAboveAltitude.UseVisualStyleBackColor = true;
-            this.radioButtonAboveAltitude.CheckedChanged += new System.EventHandler(this.radioButtonAboveAltitude_CheckedChanged);
-            // 
-            // numericUpDownAltitude
-            // 
-            this.numericUpDownAltitude.Location = new System.Drawing.Point(98, 70);
-            this.numericUpDownAltitude.Name = "numericUpDownAltitude";
-            this.numericUpDownAltitude.Size = new System.Drawing.Size(59, 20);
-            this.numericUpDownAltitude.TabIndex = 5;
-            this.numericUpDownAltitude.ValueChanged += new System.EventHandler(this.numericUpDownAltitude_ValueChanged);
-            // 
-            // checkBoxTestAltitude
-            // 
-            this.checkBoxTestAltitude.AutoSize = true;
-            this.checkBoxTestAltitude.Location = new System.Drawing.Point(6, 71);
-            this.checkBoxTestAltitude.Name = "checkBoxTestAltitude";
-            this.checkBoxTestAltitude.Size = new System.Drawing.Size(64, 17);
-            this.checkBoxTestAltitude.TabIndex = 4;
-            this.checkBoxTestAltitude.Text = "Altitude:";
-            this.toolTip1.SetToolTip(this.checkBoxTestAltitude, "Whether altitude is included as part of the waypoint");
-            this.checkBoxTestAltitude.UseVisualStyleBackColor = true;
-            this.checkBoxTestAltitude.CheckedChanged += new System.EventHandler(this.checkBoxTestAltitude_CheckedChanged);
+            this.numericUpDownMinAltitude.Location = new System.Drawing.Point(98, 67);
+            this.numericUpDownMinAltitude.Name = "numericUpDownMinAltitude";
+            this.numericUpDownMinAltitude.Size = new System.Drawing.Size(59, 20);
+            this.numericUpDownMinAltitude.TabIndex = 5;
+            this.numericUpDownMinAltitude.ValueChanged += new System.EventHandler(this.numericUpDownMinAltitude_ValueChanged);
             // 
             // label3
             // 
@@ -333,20 +304,6 @@
             0});
             this.numericUpDownRadius.ValueChanged += new System.EventHandler(this.numericUpDownRadius_ValueChanged);
             // 
-            // checkBoxRadius
-            // 
-            this.checkBoxRadius.AutoSize = true;
-            this.checkBoxRadius.Checked = true;
-            this.checkBoxRadius.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxRadius.Location = new System.Drawing.Point(6, 45);
-            this.checkBoxRadius.Name = "checkBoxRadius";
-            this.checkBoxRadius.Size = new System.Drawing.Size(79, 17);
-            this.checkBoxRadius.TabIndex = 0;
-            this.checkBoxRadius.Text = "Radius (m):";
-            this.toolTip1.SetToolTip(this.checkBoxRadius, "Radius defining the hitbox of the waypoint");
-            this.checkBoxRadius.UseVisualStyleBackColor = true;
-            this.checkBoxRadius.CheckedChanged += new System.EventHandler(this.checkBoxRadius_CheckedChanged);
-            // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.textBoxRouteName);
@@ -357,6 +314,14 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Route name";
             // 
+            // textBoxRouteName
+            // 
+            this.textBoxRouteName.Location = new System.Drawing.Point(6, 19);
+            this.textBoxRouteName.Name = "textBoxRouteName";
+            this.textBoxRouteName.Size = new System.Drawing.Size(151, 20);
+            this.textBoxRouteName.TabIndex = 0;
+            this.textBoxRouteName.TextChanged += new System.EventHandler(this.textBoxRouteName_TextChanged);
+            // 
             // locationManager1
             // 
             this.locationManager1.Location = new System.Drawing.Point(298, 12);
@@ -365,14 +330,6 @@
             this.locationManager1.Size = new System.Drawing.Size(281, 287);
             this.locationManager1.TabIndex = 14;
             this.locationManager1.SelectionChanged += new System.EventHandler(this.locationManager1_SelectionChanged);
-            // 
-            // textBoxRouteName
-            // 
-            this.textBoxRouteName.Location = new System.Drawing.Point(6, 19);
-            this.textBoxRouteName.Name = "textBoxRouteName";
-            this.textBoxRouteName.Size = new System.Drawing.Size(151, 20);
-            this.textBoxRouteName.TabIndex = 0;
-            this.textBoxRouteName.TextChanged += new System.EventHandler(this.textBoxRouteName_TextChanged);
             // 
             // buttonSettings
             // 
@@ -418,11 +375,38 @@
             this.buttonStartRecording.UseVisualStyleBackColor = true;
             this.buttonStartRecording.Click += new System.EventHandler(this.buttonStartRecording_Click);
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(6, 69);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(88, 13);
+            this.label4.TabIndex = 8;
+            this.label4.Text = "Minimum altitude:";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(6, 92);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(91, 13);
+            this.label5.TabIndex = 9;
+            this.label5.Text = "Maximum altitude:";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(6, 46);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(43, 13);
+            this.label6.TabIndex = 10;
+            this.label6.Text = "Radius:";
+            // 
             // FormRouter
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(588, 310);
+            this.ClientSize = new System.Drawing.Size(877, 255);
             this.Controls.Add(this.locationManager1);
             this.Controls.Add(this.buttonSettings);
             this.Controls.Add(this.buttonPlay);
@@ -443,7 +427,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRecordDistance)).EndInit();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownAltitude)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMaxAltitude)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMinAltitude)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRadius)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -461,7 +446,6 @@
         private System.Windows.Forms.Button buttonStartRecording;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.NumericUpDown numericUpDownRadius;
-        private System.Windows.Forms.CheckBox checkBoxRadius;
         private System.Windows.Forms.Button buttonSetAsTarget;
         private System.Windows.Forms.Button buttonDeleteWaypoint;
         private System.Windows.Forms.Button buttonAddWaypoint;
@@ -474,14 +458,15 @@
         private System.Windows.Forms.Button buttonLoadRoute;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox textBoxWaypointName;
-        private System.Windows.Forms.RadioButton radioButtonBelowAltitude;
-        private System.Windows.Forms.RadioButton radioButtonAboveAltitude;
-        private System.Windows.Forms.NumericUpDown numericUpDownAltitude;
-        private System.Windows.Forms.CheckBox checkBoxTestAltitude;
+        private System.Windows.Forms.NumericUpDown numericUpDownMinAltitude;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.TextBox textBoxRouteName;
         private System.Windows.Forms.Button buttonAddCurrentLocation;
         private System.Windows.Forms.ToolTip toolTip1;
         private LocationManager locationManager1;
+        private System.Windows.Forms.NumericUpDown numericUpDownMaxAltitude;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label6;
     }
 }
