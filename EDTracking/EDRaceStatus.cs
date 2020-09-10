@@ -212,7 +212,7 @@ namespace EDTracking
         {
             get
             {
-                return $"{Hull * 100:F0}";
+                return $"{(Hull * 100):F0}";
             }
         }
 
@@ -391,6 +391,7 @@ namespace EDTracking
                     else if (isFlagSet(StatusFlags.In_SRV) && !isFlagSet(StatusFlags.Srv_UnderShip))
                     {
                         _inPits = false;
+                        Hull = 1;
                         AddRaceHistory($"Pitstop {PitStopCount} took {DateTime.Now.Subtract(_pitStopStartTime):mm\\:ss}");
                     }
                 }

@@ -271,15 +271,21 @@ namespace EDTracking
                     {
                         string s;
                         if (Statuses[leaderBoard[i]].Eliminated)
+                        {
+                            distanceToWaypoint.AppendLine(CustomStatusMessages["Eliminated"]);
                             s = CustomStatusMessages["Eliminated"];
+                        }
                         else
+                        {
+                            distanceToWaypoint.AppendLine(Statuses[leaderBoard[i]].DistanceToWaypointInKmDisplay);
                             s = Statuses[leaderBoard[i]].ToString();
+                        }
 
                         if (s.Length > maxStatusLength)
                             s = s.Substring(0, maxStatusLength);
                         status.AppendLine(s);
 
-                        distanceToWaypoint.AppendLine(Statuses[leaderBoard[i]].DistanceToWaypointInKmDisplay);
+                        
                     }
 
                     if (!Statuses[leaderBoard[i]].Eliminated)

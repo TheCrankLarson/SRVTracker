@@ -1361,7 +1361,7 @@ namespace SRVTracker
                 {
                     try
                     {
-                        File.WriteAllText(textBoxExportHullFile.Text, hullStrength);
+                        File.WriteAllText(textBoxExportTargetHull.Text, hullStrength);
                         _lastExportTargetHull = hullStrength;
                     }
                     catch { }
