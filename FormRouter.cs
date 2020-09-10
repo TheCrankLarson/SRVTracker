@@ -234,7 +234,6 @@ namespace SRVTracker
             numericUpDownRadius.Value = (decimal)waypoint.Radius;
             numericUpDownMinAltitude.Value = (decimal)waypoint.MinimumAltitude;
             numericUpDownMaxAltitude.Value = (decimal)waypoint.MaximumAltitude;
-
         }
 
         private void numericUpDownRadius_ValueChanged(object sender, EventArgs e)

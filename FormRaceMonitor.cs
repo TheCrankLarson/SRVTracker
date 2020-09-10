@@ -792,7 +792,7 @@ namespace SRVTracker
             EDRaceStatus.EliminateOnDestruction = _race.EliminateOnVehicleDestruction;
             EDRaceStatus.AllowPitStops = _race.AllowPitstops;
             EDRaceStatus.EliminateOnShipFlight = _race.SRVOnly;
-            _race.StartRace(false);
+            _race.StartRace(false, notableEvents);
             EDRaceStatus.Started = true;
         }
 
@@ -1168,7 +1168,7 @@ namespace SRVTracker
             // Get current positions and sort the list view
             if (changeDetected)
             {
-                List<string> positions = serverStats["Positions"].Split(new string[] { Environment.NewLine }, StringSplitOptions.None).ToList<string>();
+                List<string> positions = serverStats["Positions"].Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).ToList<string>();
                 List<string> statuses = serverStats["Status"].Split(new string[] { Environment.NewLine }, StringSplitOptions.None).ToList<string>();
                 List<string> distancesToWaypoint = serverStats["DistanceToWaypoint"].Split(new string[] { Environment.NewLine }, StringSplitOptions.None).ToList<string>();
                 List<string> hullStrengths = serverStats["HullStrengths"].Split(new string[] { Environment.NewLine }, StringSplitOptions.None).ToList<string>();

@@ -94,14 +94,16 @@ namespace EDTracking
             }
             catch { }
         }
-        public void StartRace(bool asServer)
+        public void StartRace(bool asServer, NotableEvents notableEvents = null)
         {
             if (_raceStarted)
                 return;
 
             Start = DateTime.Now;
             Statuses = new Dictionary<string, EDRaceStatus>();
-            if (asServer)
+            if (notableEvents != null)
+                _notableEvents = notableEvents;
+            else if (asServer)
             {
                 _notableEvents = new NotableEvents("", false);
                 _notableEvents.CustomStatusMessages = CustomStatusMessages;

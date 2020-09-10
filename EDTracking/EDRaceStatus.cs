@@ -137,8 +137,7 @@ namespace EDTracking
             else if (_inPits)
             {
                 statusBuilder.Append(StatusMessage("Pitstop"));
-            }
-           
+            }         
 
             if (statusBuilder.Length == 0 && Started)
             {
@@ -300,7 +299,7 @@ namespace EDTracking
                     _oldestSpeedReading++;
                     if (_oldestSpeedReading > 2)
                         _oldestSpeedReading = 0;
-                    SpeedInMS = Queryable.Average(_lastThreeSpeedReadings.AsQueryable());  // Returning an average of the last three readings should prevent blips
+                    SpeedInMS = (_lastThreeSpeedReadings[0] + _lastThreeSpeedReadings[1] + _lastThreeSpeedReadings[2]) / 3; // Returning an average of the last three readings should prevent blips
                 }
 
                 if (SpeedInMS > MaxSpeedInMS)
@@ -349,6 +348,7 @@ namespace EDTracking
                 DistanceToWaypoint = double.MaxValue;
                 SpeedInMS = 0;
                 _speedCalculationLocation = null;
+                Hull = 0;
             }
 
             if (DistanceToWaypoint<_nextLogDistanceToWaypoint)
