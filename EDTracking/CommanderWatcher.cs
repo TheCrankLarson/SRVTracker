@@ -12,7 +12,7 @@ namespace EDTracking
 {
     public class CommanderWatcher
     {
-        private static WebClient _webClient = new WebClient();
+       // private static WebClient _webClient = new WebClient();
         private static Dictionary<string, EDEvent> _commanderStatuses = new Dictionary<string, EDEvent>();
         private static Timer _updateTimer = new Timer(750);
         private static bool _enabled = false;
@@ -74,14 +74,15 @@ namespace EDTracking
 
         private static void _updateTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            _updateTimer.Stop();
+            //_updateTimer.Stop();
+            System.Diagnostics.Debug.WriteLine($"CommanderWatcher_Elapsed {DateTime.Now:HH:mm:ss}");
             try
             {
                 UpdateAvailableCommanders();
             }
             catch { }
-            if (_enabled)
-                _updateTimer.Start();
+            //if (_enabled)
+            //    _updateTimer.Start();
         }
 
         private static void UpdateAvailableCommanders()
@@ -91,14 +92,19 @@ namespace EDTracking
             string commanderStatus = "";
             try
             {
-                Stream statusStream = _webClient.OpenRead(_serverUrl);
-                using (StreamReader reader = new StreamReader(statusStream))
-                    commanderStatus = reader.ReadToEnd().Trim();
-                statusStream.Close();
+                using (WebClient webClient = new WebClient())
+                    commanderStatus = webClient.DownloadString(_serverUrl);
             }
-            catch { }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"UpdateAvailableCommanders error: {ex}");
+                return;
+            }
             if (_lastStatus.Equals(commanderStatus))
                 return;
+            
+            System.Diagnostics.Debug.WriteLine($"CommanderWatcher Update Detected {DateTime.Now:HH:mm:ss}");
+
             _lastStatus = commanderStatus;
             bool countChanged = false;
 

@@ -331,7 +331,7 @@ namespace SRVTracker
                     double longitude = -133.180405;
                     for (int j = 0; j < 20; j++)
                     {
-                        edEvent = new EDEvent($"{{\"timestamp\":\"{String.Format("{0:s}", DateTime.Now)}\", \"event\":\"Status\", \"Flags\":341852424, \"Pips\":[4,8,0], \"FireGroup\":0, \"GuiFocus\":0, \"Fuel\":{{\"FuelMain\":0.000000, \"FuelReservoir\":0.444637 }}, \"Cargo\":0.000000, \"LegalState\":\"Clean\", \"Latitude\":{latitude}, \"Longitude\":{longitude}, \"Heading\":24, \"Altitude\":0, \"BodyName\":\"Djambe ABC1\", \"PlanetRadius\":1311227.875000}}", commanderName);
+                        edEvent = new EDEvent($"{{\"timestamp\":\"{String.Format("{0:s}", DateTime.Now)}\", \"event\":\"Status\", \"Flags\":69206272, \"Pips\":[4,8,0], \"FireGroup\":0, \"GuiFocus\":0, \"Fuel\":{{\"FuelMain\":0.000000, \"FuelReservoir\":0.444637 }}, \"Cargo\":0.000000, \"LegalState\":\"Clean\", \"Latitude\":{latitude}, \"Longitude\":{longitude}, \"Heading\":24, \"Altitude\":0, \"BodyName\":\"Djambe ABC1\", \"PlanetRadius\":1311227.875000}}", commanderName);
                         UpdateUI(edEvent);
                         if (j==0)
                             System.Threading.Thread.Sleep(500);

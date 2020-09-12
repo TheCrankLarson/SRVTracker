@@ -133,6 +133,8 @@ namespace DataCollator
                             _races[raceGuid].UpdateStatus(updateEvent);
                             Log($"{raceGuid}: Updated {updateEvent.Commander}", true);
                         }
+                        else
+                            Log($"{raceGuid}: not updated, race finished", true);
                     }
                 }));
 

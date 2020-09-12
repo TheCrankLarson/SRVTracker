@@ -739,9 +739,9 @@ namespace SRVTracker
                     {
                         _serverRaceGuid = response;
                         Action action = new Action(() =>
-                       {
-                           textBoxServerRaceGuid.Text = _serverRaceGuid;
-                       });
+                            {
+                                textBoxServerRaceGuid.Text = _serverRaceGuid;
+                            });
                         if (textBoxServerRaceGuid.InvokeRequired)
                             textBoxServerRaceGuid.Invoke(action);
                         else
@@ -761,6 +761,7 @@ namespace SRVTracker
                         MessageBox.Show($"Unexpected server response:{Environment.NewLine}{response}", "Failed to start race", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return false;
                     }
+
                     CommanderWatcher.UpdateReceived -= CommanderWatcher_UpdateReceived; // We don't want client notifications anymore
                     string notableEventOutputFile = "";
                     if (checkBoxExportNotableEvents.Checked)
@@ -989,6 +990,11 @@ namespace SRVTracker
         private void buttonReset_Click(object sender, EventArgs e)
         {
             EDRaceStatus.Started = false;
+            _race.Finished = false;
+            if (!String.IsNullOrEmpty(_serverRaceGuid))
+            {
+                CommanderWatcher.UpdateReceived += CommanderWatcher_UpdateReceived;
+            }
             _serverRaceGuid = "";
             _race.Statuses = null;
             _race.Start = DateTime.MinValue;
@@ -998,7 +1004,7 @@ namespace SRVTracker
             listBoxWaypoints.Refresh();
             buttonStartRace.Enabled = true;
             buttonReset.Enabled = false;
-            buttonRaceHistory.Enabled = false;          
+            buttonRaceHistory.Enabled = false; 
         }
 
         private void ShowHideStreamingOptions()
@@ -1067,16 +1073,25 @@ namespace SRVTracker
 
         private void timerRefreshFromServer_Tick(object sender, EventArgs e)
         {
-            timerRefreshFromServer.Stop();
+            //timerRefreshFromServer.Stop();
             if (String.IsNullOrEmpty(_serverRaceGuid))
                 return;
 
-            _webClient.Headers[HttpRequestHeader.ContentType] = "application/x-www-form-urlencoded";
-            string response = _webClient.UploadString($"http://{FormLocator.ServerAddress}:11938/DataCollator/racestatus", _serverRaceGuid);
+            string response = "";
+            try
+            {
+                using (WebClient webClient = new WebClient())
+                    response = _webClient.UploadString($"http://{FormLocator.ServerAddress}:11938/DataCollator/racestatus", _serverRaceGuid);
+            }
+            catch
+            {
+                return;
+            }
+
             Dictionary<string, string> raceStats = JsonSerializer.Deserialize< Dictionary<string, string>>(response);
             UpdateFromServerStats(raceStats);
             ExportTrackingInfo();
-            timerRefreshFromServer.Start();
+            //timerRefreshFromServer.Start();
         }
 
         private void UpdateFromServerStats(Dictionary<string,string> serverStats)
