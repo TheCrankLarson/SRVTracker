@@ -226,7 +226,7 @@ namespace EDTracking
             // Export the current leaderboard
 
             // We only rebuild the statistics after a short time
-            if (DateTime.Now.Subtract(_statsLastGenerated).TotalMilliseconds<750)
+            if ( (Finished || DateTime.Now.Subtract(_statsLastGenerated).TotalMilliseconds<750) && !String.IsNullOrEmpty(_lastStatsTable) )
                 return _lastStatsTable;
 
             List<string> leaderBoard = RacePositions();

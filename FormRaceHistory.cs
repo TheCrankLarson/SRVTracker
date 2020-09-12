@@ -21,10 +21,14 @@ namespace SRVTracker
         {
             InitializeComponent();
             buttonExport.Enabled = false;
+            buttonExportAll.Enabled = false;
+            if (String.IsNullOrEmpty(raceGuid))
+                return;
             _serverRaceGuid = raceGuid;
             comboBoxCommander.Items.Clear();
             foreach (string commander in racers)
                 comboBoxCommander.Items.Add(commander);
+            buttonExportAll.Enabled = racers.Count > 0;
         }
 
         public FormRaceHistory(Dictionary<String, EDRaceStatus> raceStatuses)

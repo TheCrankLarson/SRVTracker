@@ -250,9 +250,9 @@ namespace SRVTracker
 
         private void buttonTest_Click(object sender, EventArgs e)
         {
-            FormDrone formDrone = new FormDrone();
-            formDrone.Show();
-//            SendTestEvents();
+            //FormDrone formDrone = new FormDrone();
+            //formDrone.Show();
+            SendTestEvents();
 
             //TestVROverlay();
             //return;
@@ -321,19 +321,27 @@ namespace SRVTracker
 
             Action action = new Action(() =>
             {
-                double latitude = -14.055647;
-                double longitude = -31.176170;
                 Random rnd = new Random();
+                
 
-                for (int i = 0; i < 200; i++)
+                for (int i = 0; i < 20; i++)
                 {
-                    edEvent = new EDEvent($"{{\"timestamp\":\"{String.Format("{0:s}",DateTime.Now)}\", \"event\":\"Status\", \"Flags\":341852424, \"Pips\":[4,8,0], \"FireGroup\":0, \"GuiFocus\":0, \"Fuel\":{{\"FuelMain\":0.000000, \"FuelReservoir\":0.444637 }}, \"Cargo\":0.000000, \"LegalState\":\"Clean\", \"Latitude\":{latitude}, \"Longitude\":{longitude}, \"Heading\":24, \"Altitude\":0, \"BodyName\":\"Synuefe DJ-G b44-3 A 5\", \"PlanetRadius\":1311227.875000}}",textBoxClientId.Text);
-                    UpdateUI(edEvent);
-                    System.Threading.Thread.Sleep(10);
-                    if (rnd.Next(2) == 1)
-                        latitude += rnd.NextDouble() / 100;
-                    if (rnd.Next(2) == 1)
-                        longitude += rnd.NextDouble() / 100;
+                    string commanderName = $"Commander {i + 1}";
+                    double latitude = -47.312565;
+                    double longitude = -133.180405;
+                    for (int j = 0; j < 20; j++)
+                    {
+                        edEvent = new EDEvent($"{{\"timestamp\":\"{String.Format("{0:s}", DateTime.Now)}\", \"event\":\"Status\", \"Flags\":341852424, \"Pips\":[4,8,0], \"FireGroup\":0, \"GuiFocus\":0, \"Fuel\":{{\"FuelMain\":0.000000, \"FuelReservoir\":0.444637 }}, \"Cargo\":0.000000, \"LegalState\":\"Clean\", \"Latitude\":{latitude}, \"Longitude\":{longitude}, \"Heading\":24, \"Altitude\":0, \"BodyName\":\"Djambe ABC1\", \"PlanetRadius\":1311227.875000}}", commanderName);
+                        UpdateUI(edEvent);
+                        if (j==0)
+                            System.Threading.Thread.Sleep(500);
+                        else
+                            System.Threading.Thread.Sleep(10);
+                        if (rnd.Next(2) == 1)
+                            latitude += rnd.NextDouble() / 100;
+                        if (rnd.Next(2) == 1)
+                            longitude += rnd.NextDouble() / 100;
+                    }
                 }
                 Action enableTest = new Action(() => { buttonTest.Enabled = true; });
                 if (buttonTest.InvokeRequired)

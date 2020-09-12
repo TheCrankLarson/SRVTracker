@@ -163,8 +163,8 @@ namespace DataCollator
                     return;
                 }
 
-                //lock (_notificationLock)
-                //{
+                lock (_notificationLock)
+                {
                     _commanderStatus[updateEvent.Commander].UpdateStatus(updateEvent);
                     if (_playerStatus.ContainsKey(updateEvent.Commander))
                     {
@@ -176,7 +176,7 @@ namespace DataCollator
                         _playerStatus.Add(updateEvent.Commander, updateEvent);
                         Log($"Received status update for new commander: {updateEvent.Commander}", true);
                     }
-                //}
+                }
             }
             catch (Exception ex)
             {
@@ -467,7 +467,7 @@ namespace DataCollator
 
         private void GetRace(string request, HttpListenerContext Context)
         {
-            Guid raceGuid = Guid.Empty;
+            Guid raceGuid;
             Guid.TryParse(request, out raceGuid);
             GetRace(raceGuid, Context);
         }

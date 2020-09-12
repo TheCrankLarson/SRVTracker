@@ -53,7 +53,6 @@ namespace SRVTracker
             CommanderWatcher.UpdateReceived += CommanderWatcher_UpdateReceived;
             CommanderWatcher.Start($"http://{FormLocator.ServerAddress}:11938/DataCollator/status");
             EDRaceStatus.StatusChanged += EDStatus_StatusChanged;
-            //listViewParticipants.ListViewItemSorter = new ListViewItemComparer();
             _racers = new Dictionary<string, System.Windows.Forms.ListViewItem>();
             AddTrackedCommanders();
             FormStatusMessages.LoadFile();  // This restores any saved status messages
@@ -814,7 +813,6 @@ namespace SRVTracker
                     }
                 }
                 catch { }
-                _serverRaceGuid = "";
                 CommanderWatcher.UpdateReceived += CommanderWatcher_UpdateReceived; // Enable updates again
             }
 
@@ -991,6 +989,7 @@ namespace SRVTracker
         private void buttonReset_Click(object sender, EventArgs e)
         {
             EDRaceStatus.Started = false;
+            _serverRaceGuid = "";
             _race.Statuses = null;
             _race.Start = DateTime.MinValue;
             _eliminatedRacers = null;
