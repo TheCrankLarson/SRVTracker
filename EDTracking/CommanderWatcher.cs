@@ -10,24 +10,20 @@ using EDTracking;
 
 namespace EDTracking
 {
-    public class CommanderWatcher
+    public static class CommanderWatcher
     {
-       // private static WebClient _webClient = new WebClient();
+        //private static WebClient _webClient = new WebClient();
         private static Dictionary<string, EDEvent> _commanderStatuses = new Dictionary<string, EDEvent>();
         private static Timer _updateTimer = new Timer(750);
         private static bool _enabled = false;
         private static object _lock = new object();
         private static string _lastStatus = "";
         private static string _serverUrl = "";
+        private static byte _outstandingRequests = 0;
 
         public delegate void UpdateReceivedEventHandler(object sender, EDEvent edEvent);
         public static event UpdateReceivedEventHandler UpdateReceived;
         public static event EventHandler OnlineCountChanged;
-
-        public CommanderWatcher(string serverUrl)
-        {
-            Start(serverUrl);
-        }
 
         public static void Start(string serverUrl)
         {
@@ -52,6 +48,13 @@ namespace EDTracking
             }
         }
 
+        private static void _webClient_DownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e)
+        {
+            _outstandingRequests--;
+            System.Diagnostics.Debug.WriteLine($"Received Commander Status {DateTime.Now:HH:mm:ss}");
+            UpdateAvailableCommanders(e.Result);
+        }
+
         public static EDEvent GetCommanderStatus(string commander)
         {
             if (_commanderStatuses.ContainsKey(commander))
@@ -74,35 +77,20 @@ namespace EDTracking
 
         private static void _updateTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            //_updateTimer.Stop();
             System.Diagnostics.Debug.WriteLine($"CommanderWatcher_Elapsed {DateTime.Now:HH:mm:ss}");
-            try
+            if (_outstandingRequests > 5)
             {
-                UpdateAvailableCommanders();
+                System.Diagnostics.Debug.WriteLine($"{_outstandingRequests} requests already active");
+                return;
             }
-            catch { }
-            //if (_enabled)
-            //    _updateTimer.Start();
+            UpdateAvailableCommanders();
         }
 
-        private static void UpdateAvailableCommanders()
+        private static void UpdateAvailableCommanders(string commanderStatus)
         {
-            // Connect to the server and retrieve the list of any currently live commanders
-
-            string commanderStatus = "";
-            try
-            {
-                using (WebClient webClient = new WebClient())
-                    commanderStatus = webClient.DownloadString(_serverUrl);
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"UpdateAvailableCommanders error: {ex}");
-                return;
-            }
             if (_lastStatus.Equals(commanderStatus))
                 return;
-            
+
             System.Diagnostics.Debug.WriteLine($"CommanderWatcher Update Detected {DateTime.Now:HH:mm:ss}");
 
             _lastStatus = commanderStatus;
@@ -118,8 +106,8 @@ namespace EDTracking
                     for (int i = 0; i < commanders.Length; i++)
                     {
                         EDEvent edEvent = EDEvent.FromJson(commanders[i]);
-                        if (edEvent!= null && !String.IsNullOrEmpty(edEvent.Commander))
-                        {                           
+                        if (edEvent != null && !String.IsNullOrEmpty(edEvent.Commander))
+                        {
                             if (_commanderStatuses.ContainsKey(edEvent.Commander))
                             {
                                 if (edEvent.TimeStamp > _commanderStatuses[edEvent.Commander].TimeStamp)
@@ -135,13 +123,45 @@ namespace EDTracking
                                     _commanderStatuses.Add(edEvent.Commander, edEvent);
                                 countChanged = true;
                                 UpdateReceived?.Invoke(null, edEvent);
-                            }                               
+                            }
                         }
                     }
                     if (countChanged)
                         OnlineCountChanged?.Invoke(null, null);
                 }
             }
+
+        }
+
+        private static void UpdateAvailableCommanders()
+        {
+            // Connect to the server and retrieve the list of any currently live commanders
+
+            try
+            {
+                System.Diagnostics.Debug.WriteLine($"Requesting Commander Status {DateTime.Now:HH:mm:ss}");
+                WebClient webClient = new WebClient();
+                webClient.DownloadStringCompleted += WebClient_DownloadStringCompleted;
+                webClient.DownloadStringAsync(new Uri(_serverUrl),webClient);
+                _outstandingRequests++;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"UpdateAvailableCommanders error: {ex}");
+                return;
+            }
+        }
+
+        private static void WebClient_DownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e)
+        {
+            _outstandingRequests--;
+            System.Diagnostics.Debug.WriteLine($"Received Commander Status {DateTime.Now:HH:mm:ss}");
+            UpdateAvailableCommanders(e.Result);
+            try
+            {
+                ((WebClient)e.UserState).Dispose();
+            }
+            catch { }
         }
     }
 }

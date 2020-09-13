@@ -105,8 +105,10 @@ namespace EDTracking
                 _notableEvents = notableEvents;
             else if (asServer)
             {
-                _notableEvents = new NotableEvents("", false);
-                _notableEvents.CustomStatusMessages = CustomStatusMessages;
+                _notableEvents = new NotableEvents("", false)
+                {
+                    CustomStatusMessages = CustomStatusMessages
+                };
                 _commanderEventHistory = new Dictionary<string, List<EDEvent>>();
             }
 
@@ -152,64 +154,60 @@ namespace EDTracking
             int finishedIndex = -1;
             foreach (string racer in Statuses.Keys)
             {
-                if (Statuses[racer].Finished)
-                {
-                    // If the racers are finished, then their position depends upon their time
-                    if (finishedIndex<0)
-                    {
-                        // This is the first finisher we have, so add to top of list
-                        if (positions.Count == 0)
-                            positions.Add(racer);
-                        else
-                            positions.Insert(0, racer);
-                        finishedIndex = 0;
-                    }
-                    else
-                    {
-                        // We need to work out where to add this finisher (based on finish time)
-                        int i = 0;
-                        while ((i <= finishedIndex) && (Statuses[racer].FinishTime > Statuses[positions[i]].FinishTime))
-                            i++;
-                        if (i < positions.Count)
-                            positions.Insert(i, racer);
-                        else
-                            positions.Add(racer);
-                        finishedIndex = i;
-                    }
-                }
-                else if (Statuses[racer].Eliminated)
-                {
-                    // Eliminated racers have no position, we can just add them at the end
+                if (positions.Count == 0) // This is the first status - we just add it
                     positions.Add(racer);
-                }
                 else
                 {
-                    // All other positions are based on waypoint and distance from it (i.e. lowest waypoint number
-                    if (positions.Count < 1)
+                    if (Statuses[racer].Finished)
+                    {
+                        // If the racers are finished, then their position depends upon their time
+                        if (finishedIndex < 0)
+                        {
+                            // This is the first finisher we have, so add to top of list
+                            positions.Insert(0, racer);
+                            finishedIndex = 0;
+                        }
+                        else
+                        {
+                            // We need to work out where to add this finisher (based on finish time)
+                            int i = 0;
+                            while ((i <= finishedIndex) && (Statuses[racer].FinishTime > Statuses[positions[i]].FinishTime))
+                                i++;
+                            if (i < positions.Count)
+                                positions.Insert(i, racer);
+                            else
+                                positions.Add(racer);
+                            finishedIndex = i;
+                        }
+                    }
+                    else if (Statuses[racer].Eliminated)
+                    {
+                        // Eliminated racers have no position, we can just add them at the end
                         positions.Add(racer);
+                    }
                     else
                     {
-                        int i = finishedIndex+1;
-                        if (i < positions.Count)
+                        // All other positions are based on waypoint and distance from it (i.e. lowest waypoint number
+                        int i = finishedIndex + 1;
+                        if (i < positions.Count && !Statuses[positions[i]].Eliminated)
                         {
                             // Move past anyone who is at a higher waypoint
                             while ((i < positions.Count) && Statuses[positions[i]].WaypointIndex < Statuses[racer].WaypointIndex && !Statuses[positions[i]].Eliminated)
                                 i++;
-                            if ( (i < positions.Count) && Statuses[positions[i]].Eliminated && (i > finishedIndex+1))
-                                i--;
-                            else
+                            if ( (i < positions.Count) && !Statuses[positions[i]].Eliminated )
                             {
                                 // Now we check distances (as these positions are heading to the same waypoint)
                                 while ((i < positions.Count) && (Statuses[positions[i]].WaypointIndex == Statuses[racer].WaypointIndex) && (Statuses[positions[i]].DistanceToWaypoint < Statuses[racer].DistanceToWaypoint) && (!Statuses[positions[i]].Eliminated))
                                     i++;
-                                if ( (i < positions.Count) && Statuses[positions[i]].Eliminated && (i > finishedIndex+1))
-                                    i--;
+                                //if ((i < positions.Count) && Statuses[positions[i]].Eliminated && (i > finishedIndex + 1))
+                                    //i--;
                             }
                         }
                         if (i < positions.Count)
                             positions.Insert(i, racer);
                         else
                             positions.Add(racer);
+                        
                     }
                 }
             }

@@ -587,8 +587,11 @@ namespace SRVTracker
             if (listViewParticipants.SelectedItems.Count != 1)
                 return;
 
-            if (_racers.ContainsKey(listViewParticipants.SelectedItems[0].SubItems[1].Text))
-                _racers.Remove(listViewParticipants.SelectedItems[0].SubItems[1].Text);
+            string commanderToRemove = listViewParticipants.SelectedItems[0].SubItems[1].Text;
+            if (_racers.ContainsKey(commanderToRemove))
+                _racers.Remove(commanderToRemove);
+            if (_race.Contestants.Contains(commanderToRemove))
+                _race.Contestants.Remove(commanderToRemove);
             listViewParticipants.SelectedItems[0].Remove();
         }
 
@@ -1180,45 +1183,49 @@ namespace SRVTracker
             }
 
             // Get current positions and sort the list view
-            if (changeDetected)
+            try
             {
-                List<string> positions = serverStats["Positions"].Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).ToList<string>();
-                List<string> statuses = serverStats["Status"].Split(new string[] { Environment.NewLine }, StringSplitOptions.None).ToList<string>();
-                List<string> distancesToWaypoint = serverStats["DistanceToWaypoint"].Split(new string[] { Environment.NewLine }, StringSplitOptions.None).ToList<string>();
-                List<string> hullStrengths = serverStats["HullStrengths"].Split(new string[] { Environment.NewLine }, StringSplitOptions.None).ToList<string>();
-
-                Action action = new Action(() =>
+                if (changeDetected)
                 {
-                    lock (_lockListView)
+                    List<string> positions = serverStats["Positions"].Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).ToList<string>();
+                    List<string> statuses = serverStats["Status"].Split(new string[] { Environment.NewLine }, StringSplitOptions.None).ToList<string>();
+                    List<string> distancesToWaypoint = serverStats["DistanceToWaypoint"].Split(new string[] { Environment.NewLine }, StringSplitOptions.None).ToList<string>();
+                    List<string> hullStrengths = serverStats["HullStrengths"].Split(new string[] { Environment.NewLine }, StringSplitOptions.None).ToList<string>();
+
+                    Action action = new Action(() =>
                     {
-                        listViewParticipants.BeginUpdate();
-                        if (!_lastRacePositions.Equals(serverStats["Positions"]))
+                        lock (_lockListView)
                         {
-                            // If positions have changed, we clear and re-add in correct order
-                            listViewParticipants.Items.Clear();
+                            listViewParticipants.BeginUpdate();
+                            if (!_lastRacePositions.Equals(serverStats["Positions"]))
+                            {
+                                // If positions have changed, we clear and re-add in correct order
+                                listViewParticipants.Items.Clear();
+                                for (int i = 0; i < positions.Count; i++)
+                                {
+                                    if (!_racers[positions[i]].SubItems[0].Text.Equals((i + 1).ToString()))
+                                        _racers[positions[i]].SubItems[0].Text = (i + 1).ToString();
+                                    listViewParticipants.Items.Add(_racers[positions[i]]);
+                                }
+                                _lastRacePositions = serverStats["Positions"];
+                            }
+
                             for (int i = 0; i < positions.Count; i++)
                             {
-                                if (!_racers[positions[i]].SubItems[0].Text.Equals((i + 1).ToString()))
-                                    _racers[positions[i]].SubItems[0].Text = (i + 1).ToString();
-                                listViewParticipants.Items.Add(_racers[positions[i]]);
+                                _racers[positions[i]].SubItems[2].Text = statuses[i];
+                                _racers[positions[i]].SubItems[3].Text = distancesToWaypoint[i];
+                                _racers[positions[i]].SubItems[4].Text = hullStrengths[i];
                             }
-                            _lastRacePositions = serverStats["Positions"];
+                            listViewParticipants.EndUpdate();
                         }
-                        
-                        for (int i = 0; i < positions.Count; i++)
-                        {
-                            _racers[positions[i]].SubItems[2].Text = statuses[i];
-                            _racers[positions[i]].SubItems[3].Text = distancesToWaypoint[i];
-                            _racers[positions[i]].SubItems[4].Text = hullStrengths[i];
-                        }
-                        listViewParticipants.EndUpdate();                      
-                    }
-                });
-                if (listViewParticipants.InvokeRequired)
-                    listViewParticipants.Invoke(action);
-                else
-                    action();                
+                    });
+                    if (listViewParticipants.InvokeRequired)
+                        listViewParticipants.Invoke(action);
+                    else
+                        action();
+                }
             }
+            catch { }
         }
 
         private DateTime _errorLastShown = DateTime.MinValue;
