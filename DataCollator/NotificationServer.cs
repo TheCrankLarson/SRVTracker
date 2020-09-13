@@ -31,11 +31,11 @@ namespace DataCollator
         private DateTime _lastCommanderStatusBuilt = DateTime.MinValue;
         private string _lastCommanderStatus = "";
 
-        public NotificationServer(string ListenURL, bool EnableDebug = false, bool VerboseDebug = false)
+        public NotificationServer(string ListenURL, bool StartDebug = false, bool VerboseDebug = false)
         {
             VerboseDebugEnabled = VerboseDebug;
-            if (EnableDebug)
-                _logStream = File.Open("stream.log", FileMode.OpenOrCreate, FileAccess.Write, FileShare.Read);
+            if (StartDebug)
+                EnableDebug();
             URi = ListenURL;
             _races = new Dictionary<Guid, EDRace>();
             _Listener = new HttpListener();
@@ -58,6 +58,29 @@ namespace DataCollator
         }
 
         public bool VerboseDebugEnabled { get; set; } = false;
+
+        public void EnableDebug()
+        {
+            if (_logStream == null)
+            {
+                _logStream = File.Open("stream.log", FileMode.OpenOrCreate, FileAccess.Write, FileShare.Read);
+                return;
+            }
+        }
+
+        public void DisableDebug()
+        {
+            if (_logStream == null)
+                return;
+
+            try
+            {
+                _logStream.Close();
+                _logStream.Dispose();
+            }
+            catch { }
+            _logStream = null;
+        }
 
         public void Start()
         {

@@ -56,5 +56,16 @@ namespace DataCollator
                 return;
             _notificationServer.VerboseDebugEnabled = checkBoxVerboseDebug.Checked;
         }
+
+        private void checkBoxDebug_CheckedChanged(object sender, EventArgs e)
+        {
+            if (_notificationServer == null)
+                return;
+
+            if (checkBoxDebug.Checked)
+                _notificationServer.EnableDebug();
+            else
+                _notificationServer.DisableDebug();
+        }
     }
 }

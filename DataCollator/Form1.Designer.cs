@@ -127,6 +127,7 @@
             this.checkBoxDebug.TabIndex = 3;
             this.checkBoxDebug.Text = "Debug";
             this.checkBoxDebug.UseVisualStyleBackColor = true;
+            this.checkBoxDebug.CheckedChanged += new System.EventHandler(this.checkBoxDebug_CheckedChanged);
             // 
             // checkBoxVerboseDebug
             // 

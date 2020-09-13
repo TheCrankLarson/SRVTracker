@@ -221,14 +221,8 @@ namespace EDTracking
             return positions;
         }
 
-        public string ExportRaceStatistics(int maxStatusLength = 20)
+        public Dictionary<string, string> ExportRaceStatisticsDict(int maxStatusLength = 20)
         {
-            // Export the current leaderboard
-
-            // We only rebuild the statistics after a short time
-            if ( (Finished || DateTime.Now.Subtract(_statsLastGenerated).TotalMilliseconds<750) && !String.IsNullOrEmpty(_lastStatsTable) )
-                return _lastStatsTable;
-
             List<string> leaderBoard = RacePositions();
             Dictionary<string, string> statsTable = new Dictionary<string, string>();
 
@@ -246,7 +240,7 @@ namespace EDTracking
                 else
                     leaderBoardExport.AppendLine(leaderBoard[i]);
 
-                if (this.Start>DateTime.MinValue && Statuses != null)
+                if (this.Start > DateTime.MinValue && Statuses != null)
                 {
                     maxSpeeds.AppendLine($"{Statuses[leaderBoard[i]].MaxSpeedInMS:F0}");
                     if (!Statuses[leaderBoard[i]].Eliminated && !Statuses[leaderBoard[i]].Finished)
@@ -259,7 +253,7 @@ namespace EDTracking
                 else
                     speeds.AppendLine();
 
-                if (Statuses != null && (Statuses.Count>0) )
+                if (Statuses != null && (Statuses.Count > 0))
                 {
                     if (Statuses[leaderBoard[i]].Finished)
                     {
@@ -285,7 +279,7 @@ namespace EDTracking
                             s = s.Substring(0, maxStatusLength);
                         status.AppendLine(s);
 
-                        
+
                     }
 
                     if (!Statuses[leaderBoard[i]].Eliminated)
@@ -299,7 +293,7 @@ namespace EDTracking
                     distanceToWaypoint.AppendLine("NA");
                 }
             }
-            
+
             statsTable.Add("Positions", leaderBoardExport.ToString());
             statsTable.Add("Speeds", speeds.ToString());
             statsTable.Add("MaxSpeeds", maxSpeeds.ToString());
@@ -309,6 +303,18 @@ namespace EDTracking
                 statsTable.Add("NotableEvents", String.Join(Environment.NewLine, NotableEvents.EventQueue));
             statsTable.Add("HullStrengths", hullStrengths.ToString());
 
+            return statsTable;
+        }
+
+        public string ExportRaceStatistics(int maxStatusLength = 20)
+        {
+            // Export the current leaderboard
+
+            // We only rebuild the statistics after a short time
+            if ( (Finished || DateTime.Now.Subtract(_statsLastGenerated).TotalMilliseconds<750) && !String.IsNullOrEmpty(_lastStatsTable) )
+                return _lastStatsTable;
+
+            Dictionary<string, string> statsTable = ExportRaceStatisticsDict(maxStatusLength);
             _lastStatsTable = JsonSerializer.Serialize(statsTable);
             _statsLastGenerated = DateTime.Now;
 

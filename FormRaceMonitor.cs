@@ -1449,7 +1449,7 @@ namespace SRVTracker
             if (_race == null)
                 return;
           
-            UpdateFromServerStats(JsonSerializer.Deserialize<Dictionary<string, string>>(_race.ExportRaceStatistics()));
+            UpdateFromServerStats(_race.ExportRaceStatisticsDict());
         }
     }
 }
