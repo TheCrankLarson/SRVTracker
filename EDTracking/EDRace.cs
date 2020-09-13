@@ -149,7 +149,9 @@ namespace EDTracking
                 if (Contestants.Count > 0)
                     return Contestants;
                 return positions;
-            }               
+            }
+            if (Statuses.Count == 0 && (Contestants.Count > 0))
+                return Contestants;
 
             int finishedIndex = -1;
             foreach (string racer in Statuses.Keys)
@@ -257,7 +259,7 @@ namespace EDTracking
                 else
                     speeds.AppendLine();
 
-                if (Statuses != null)
+                if (Statuses != null && (Statuses.Count>0) )
                 {
                     if (Statuses[leaderBoard[i]].Finished)
                     {
@@ -303,7 +305,8 @@ namespace EDTracking
             statsTable.Add("MaxSpeeds", maxSpeeds.ToString());
             statsTable.Add("Status", status.ToString());
             statsTable.Add("DistanceToWaypoint", distanceToWaypoint.ToString());
-            statsTable.Add("NotableEvents", String.Join(Environment.NewLine, NotableEvents.EventQueue));
+            if (NotableEvents != null)
+                statsTable.Add("NotableEvents", String.Join(Environment.NewLine, NotableEvents.EventQueue));
             statsTable.Add("HullStrengths", hullStrengths.ToString());
 
             _lastStatsTable = JsonSerializer.Serialize(statsTable);

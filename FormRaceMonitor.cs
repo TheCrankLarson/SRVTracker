@@ -78,6 +78,8 @@ namespace SRVTracker
             checkBoxEliminationOnDestruction.Checked = _race.EliminateOnVehicleDestruction;
             ShowHideStreamingOptions();
             UpdateButtons();
+
+            timerPreraceExport.Start();
         }
 
         private void EDStatus_StatusChanged(object sender, string commander, string status)
@@ -717,6 +719,7 @@ namespace SRVTracker
             else
                 StartClientMonitoredRace();
 
+            timerPreraceExport.Stop();
             checkBoxAutoAddCommanders.Checked = false;
             buttonStartRace.Enabled = false;
             buttonStopRace.Enabled = true;
@@ -1007,7 +1010,8 @@ namespace SRVTracker
             listBoxWaypoints.Refresh();
             buttonStartRace.Enabled = true;
             buttonReset.Enabled = false;
-            buttonRaceHistory.Enabled = false; 
+            buttonRaceHistory.Enabled = false;
+            timerPreraceExport.Start();
         }
 
         private void ShowHideStreamingOptions()
@@ -1103,11 +1107,14 @@ namespace SRVTracker
             bool changeDetected = false;
 
             // Server sends us all the notable events, so we only fire any that are new
-            string[] notableEvents = serverStats["NotableEvents"].Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
-            while (_serverNotableEventsIndex<notableEvents.Length)
+            if (serverStats.ContainsKey("NotableEvents"))
             {
-                _clientNotableEvents.AddEvent(notableEvents[_serverNotableEventsIndex]);
-                _serverNotableEventsIndex++;
+                string[] notableEvents = serverStats["NotableEvents"].Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+                while (_serverNotableEventsIndex < notableEvents.Length)
+                {
+                    _clientNotableEvents.AddEvent(notableEvents[_serverNotableEventsIndex]);
+                    _serverNotableEventsIndex++;
+                }
             }
 
             // We have the leaderboard, so now we retrieve the status for each racer in order
@@ -1435,6 +1442,14 @@ namespace SRVTracker
         private void checkBoxExportTrackedTargetHull_CheckedChanged(object sender, EventArgs e)
         {
             UpdateButtons();
+        }
+
+        private void timerPreraceExport_Tick(object sender, EventArgs e)
+        {
+            if (_race == null)
+                return;
+          
+            UpdateFromServerStats(JsonSerializer.Deserialize<Dictionary<string, string>>(_race.ExportRaceStatistics()));
         }
     }
 }
