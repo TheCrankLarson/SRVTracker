@@ -156,8 +156,13 @@ namespace EDTracking
             int finishedIndex = -1;
             foreach (string racer in Statuses.Keys)
             {
-                if (positions.Count == 0) // This is the first status - we just add it
+                if (positions.Count == 0)
+                {
+                    // This is the first status - we just add it
                     positions.Add(racer);
+                    if (Statuses[racer].Finished)
+                        finishedIndex = 0;
+                }
                 else
                 {
                     if (Statuses[racer].Finished)
@@ -196,20 +201,20 @@ namespace EDTracking
                             // Move past anyone who is at a higher waypoint
                             while ((i < positions.Count) && Statuses[positions[i]].WaypointIndex < Statuses[racer].WaypointIndex && !Statuses[positions[i]].Eliminated)
                                 i++;
-                            if ( (i < positions.Count) && !Statuses[positions[i]].Eliminated )
+                            if ((i < positions.Count) && !Statuses[positions[i]].Eliminated)
                             {
                                 // Now we check distances (as these positions are heading to the same waypoint)
                                 while ((i < positions.Count) && (Statuses[positions[i]].WaypointIndex == Statuses[racer].WaypointIndex) && (Statuses[positions[i]].DistanceToWaypoint < Statuses[racer].DistanceToWaypoint) && (!Statuses[positions[i]].Eliminated))
                                     i++;
                                 //if ((i < positions.Count) && Statuses[positions[i]].Eliminated && (i > finishedIndex + 1))
-                                    //i--;
+                                //i--;
                             }
                         }
                         if (i < positions.Count)
                             positions.Insert(i, racer);
                         else
                             positions.Add(racer);
-                        
+
                     }
                 }
             }
