@@ -340,6 +340,14 @@ namespace SRVTracker
             }
         }
 
+        private void buttonMoveUp_Click(object sender, EventArgs e)
+        {
 
+        }
+
+        private void buttonMoveDown_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

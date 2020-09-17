@@ -13,6 +13,7 @@ using System.Windows.Forms;
 using EDTracking;
 using System.Net;
 using System.Text.Json;
+using System.Web.Routing;
 
 namespace SRVTracker
 {
@@ -1114,6 +1115,16 @@ namespace SRVTracker
                 {
                     _clientNotableEvents.AddEvent(notableEvents[_serverNotableEventsIndex]);
                     _serverNotableEventsIndex++;
+                }
+            }
+
+            if (serverStats.ContainsKey("LeaderWaypoint"))
+            {
+                int leaderWaypoint = Convert.ToInt32(serverStats["LeaderWaypoint"]);
+                if (_nextWaypoint != _race.Route.Waypoints[leaderWaypoint])
+                {
+                    _nextWaypoint = _race.Route.Waypoints[leaderWaypoint];
+                    listBoxWaypoints.Refresh();
                 }
             }
 

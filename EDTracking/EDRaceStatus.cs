@@ -317,11 +317,13 @@ namespace EDTracking
                 if (WaypointIndex > 0)
                 {
                     DistanceToWaypoint = EDLocation.DistanceBetween(Location, Route.Waypoints[WaypointIndex].Location);
-                    if (DistanceToWaypoint<Route.Waypoints[WaypointIndex].Radius)
+                    if (Route.Waypoints[WaypointIndex].LocationIsWithinWaypoint(Location))
                     {
                         // Commander has reached the target waypoint
                         AddRaceHistory($"Arrived at {Route.Waypoints[WaypointIndex].Name}");
                         WaypointIndex++;
+                        if (WaypointIndex > _race.LeaderWaypoint)
+                            _race.LeaderWaypoint = WaypointIndex;
                         if (WaypointIndex >= Route.Waypoints.Count)
                         {
                             Finished = true;

@@ -44,6 +44,9 @@
             this.label2 = new System.Windows.Forms.Label();
             this.numericUpDownRecordDistance = new System.Windows.Forms.NumericUpDown();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
             this.numericUpDownMaxAltitude = new System.Windows.Forms.NumericUpDown();
             this.numericUpDownMinAltitude = new System.Windows.Forms.NumericUpDown();
             this.label3 = new System.Windows.Forms.Label();
@@ -57,9 +60,8 @@
             this.buttonPlay = new System.Windows.Forms.Button();
             this.buttonStop = new System.Windows.Forms.Button();
             this.buttonStartRecording = new System.Windows.Forms.Button();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
+            this.buttonMoveUp = new System.Windows.Forms.Button();
+            this.buttonMoveDown = new System.Windows.Forms.Button();
             this.groupBox2.SuspendLayout();
             this.groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRecordDistance)).BeginInit();
@@ -72,8 +74,10 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.buttonMoveDown);
             this.groupBox2.Controls.Add(this.buttonAddCurrentLocation);
             this.groupBox2.Controls.Add(this.buttonSaveRoute);
+            this.groupBox2.Controls.Add(this.buttonMoveUp);
             this.groupBox2.Controls.Add(this.buttonSetAsTarget);
             this.groupBox2.Controls.Add(this.buttonSaveRouteAs);
             this.groupBox2.Controls.Add(this.buttonLoadRoute);
@@ -92,7 +96,7 @@
             this.buttonAddCurrentLocation.Image = global::SRVTracker.Properties.Resources.AddIndexer_16x;
             this.buttonAddCurrentLocation.Location = new System.Drawing.Point(9, 172);
             this.buttonAddCurrentLocation.Name = "buttonAddCurrentLocation";
-            this.buttonAddCurrentLocation.Size = new System.Drawing.Size(34, 23);
+            this.buttonAddCurrentLocation.Size = new System.Drawing.Size(30, 23);
             this.buttonAddCurrentLocation.TabIndex = 16;
             this.toolTip1.SetToolTip(this.buttonAddCurrentLocation, "Add current location");
             this.buttonAddCurrentLocation.UseVisualStyleBackColor = true;
@@ -147,9 +151,9 @@
             // buttonDeleteWaypoint
             // 
             this.buttonDeleteWaypoint.Image = global::SRVTracker.Properties.Resources.Remove_color_16x;
-            this.buttonDeleteWaypoint.Location = new System.Drawing.Point(89, 172);
+            this.buttonDeleteWaypoint.Location = new System.Drawing.Point(81, 172);
             this.buttonDeleteWaypoint.Name = "buttonDeleteWaypoint";
-            this.buttonDeleteWaypoint.Size = new System.Drawing.Size(34, 23);
+            this.buttonDeleteWaypoint.Size = new System.Drawing.Size(30, 23);
             this.buttonDeleteWaypoint.TabIndex = 2;
             this.toolTip1.SetToolTip(this.buttonDeleteWaypoint, "Remove selected location");
             this.buttonDeleteWaypoint.UseVisualStyleBackColor = true;
@@ -158,9 +162,9 @@
             // buttonAddWaypoint
             // 
             this.buttonAddWaypoint.Image = global::SRVTracker.Properties.Resources.Add_16x;
-            this.buttonAddWaypoint.Location = new System.Drawing.Point(49, 172);
+            this.buttonAddWaypoint.Location = new System.Drawing.Point(45, 172);
             this.buttonAddWaypoint.Name = "buttonAddWaypoint";
-            this.buttonAddWaypoint.Size = new System.Drawing.Size(34, 23);
+            this.buttonAddWaypoint.Size = new System.Drawing.Size(30, 23);
             this.buttonAddWaypoint.TabIndex = 1;
             this.toolTip1.SetToolTip(this.buttonAddWaypoint, "Add saved location");
             this.buttonAddWaypoint.UseVisualStyleBackColor = true;
@@ -246,6 +250,33 @@
             this.groupBox3.TabIndex = 6;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Waypoint info";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(6, 46);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(43, 13);
+            this.label6.TabIndex = 10;
+            this.label6.Text = "Radius:";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(6, 92);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(91, 13);
+            this.label5.TabIndex = 9;
+            this.label5.Text = "Maximum altitude:";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(6, 69);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(88, 13);
+            this.label4.TabIndex = 8;
+            this.label4.Text = "Minimum altitude:";
             // 
             // numericUpDownMaxAltitude
             // 
@@ -375,32 +406,25 @@
             this.buttonStartRecording.UseVisualStyleBackColor = true;
             this.buttonStartRecording.Click += new System.EventHandler(this.buttonStartRecording_Click);
             // 
-            // label4
+            // buttonMoveUp
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(6, 69);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(88, 13);
-            this.label4.TabIndex = 8;
-            this.label4.Text = "Minimum altitude:";
+            this.buttonMoveUp.Image = global::SRVTracker.Properties.Resources.CollapseUp_lg_16x;
+            this.buttonMoveUp.Location = new System.Drawing.Point(117, 172);
+            this.buttonMoveUp.Name = "buttonMoveUp";
+            this.buttonMoveUp.Size = new System.Drawing.Size(30, 23);
+            this.buttonMoveUp.TabIndex = 17;
+            this.buttonMoveUp.UseVisualStyleBackColor = true;
+            this.buttonMoveUp.Click += new System.EventHandler(this.buttonMoveUp_Click);
             // 
-            // label5
+            // buttonMoveDown
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(6, 92);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(91, 13);
-            this.label5.TabIndex = 9;
-            this.label5.Text = "Maximum altitude:";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(6, 46);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(43, 13);
-            this.label6.TabIndex = 10;
-            this.label6.Text = "Radius:";
+            this.buttonMoveDown.Image = global::SRVTracker.Properties.Resources.ExpandDown_lg_16x;
+            this.buttonMoveDown.Location = new System.Drawing.Point(153, 172);
+            this.buttonMoveDown.Name = "buttonMoveDown";
+            this.buttonMoveDown.Size = new System.Drawing.Size(30, 23);
+            this.buttonMoveDown.TabIndex = 18;
+            this.buttonMoveDown.UseVisualStyleBackColor = true;
+            this.buttonMoveDown.Click += new System.EventHandler(this.buttonMoveDown_Click);
             // 
             // FormRouter
             // 
@@ -468,5 +492,7 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Button buttonMoveDown;
+        private System.Windows.Forms.Button buttonMoveUp;
     }
 }

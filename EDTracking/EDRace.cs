@@ -14,6 +14,7 @@ namespace EDTracking
         private string _saveFilename = "";
         public string Name { get; set; } = null;
         public EDRoute Route { get; set; } = null;
+        public int LeaderWaypoint { get; set; } = 0;
         public List<string> Contestants { get; set; } = new List<string>();
 
         // For moving race monitoring away from the form.  Will be public once that work complete
@@ -307,6 +308,7 @@ namespace EDTracking
             if (NotableEvents != null)
                 statsTable.Add("NotableEvents", String.Join(Environment.NewLine, NotableEvents.EventQueue));
             statsTable.Add("HullStrengths", hullStrengths.ToString());
+            statsTable.Add("LeaderWaypoint", LeaderWaypoint.ToString());
 
             return statsTable;
         }
