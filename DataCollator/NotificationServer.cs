@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using System.Device.Location;
 using EDTracking;
 using System.Text.Json;
+using System.Diagnostics;
 
 namespace DataCollator
 {
@@ -501,10 +502,15 @@ namespace DataCollator
         {
             if (raceGuid != Guid.Empty && _races.ContainsKey(raceGuid))
             {
-                _races[raceGuid].Finished = true;
+                if (!_races[raceGuid].Finished)
+                {
+                    Log($"{raceGuid}: race stopped by client instruction");
+                    _races[raceGuid].Finished = true;
+                    SaveRaceToDisk(raceGuid);
+                }
+                else
+                    Log($"{raceGuid}: race already stopped (client requested stop)");
                 WriteResponse(Context, _races[raceGuid].ToString());
-                Log($"{raceGuid}: race finished (received stop from client)");
-                SaveRaceToDisk(raceGuid);
             }
             else
                 WriteErrorResponse(Context.Response, HttpStatusCode.NotFound);
@@ -720,6 +726,7 @@ namespace DataCollator
                         {
                             _races[raceGuid].Finished = true;
                             Log($"{raceGuid}: race marked as finished due to 24 hours since start");
+                            SaveRaceToDisk(raceGuid);
                         }
                         else
                         {
@@ -735,6 +742,7 @@ namespace DataCollator
                             {
                                 _races[raceGuid].Finished = true;
                                 Log($"{raceGuid}: finished - all participants finished or eliminated");
+                                SaveRaceToDisk(raceGuid);
                             }
                         }
                     }
