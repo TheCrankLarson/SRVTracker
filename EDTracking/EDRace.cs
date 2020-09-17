@@ -297,6 +297,7 @@ namespace EDTracking
                 {
                     status.AppendLine(CustomStatusMessages["Ready"]);
                     distanceToWaypoint.AppendLine("NA");
+                    hullStrengths.AppendLine(" ");
                 }
             }
 

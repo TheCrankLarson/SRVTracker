@@ -1120,11 +1120,14 @@ namespace SRVTracker
 
             if (serverStats.ContainsKey("LeaderWaypoint"))
             {
-                int leaderWaypoint = Convert.ToInt32(serverStats["LeaderWaypoint"]);
-                if (_nextWaypoint != _race.Route.Waypoints[leaderWaypoint])
+                if (_race.Route.Waypoints.Count > 0)
                 {
-                    _nextWaypoint = _race.Route.Waypoints[leaderWaypoint];
-                    listBoxWaypoints.Refresh();
+                    int leaderWaypoint = Convert.ToInt32(serverStats["LeaderWaypoint"]);
+                    if (_nextWaypoint != _race.Route.Waypoints[leaderWaypoint])
+                    {
+                        _nextWaypoint = _race.Route.Waypoints[leaderWaypoint];
+                        listBoxWaypoints.Refresh();
+                    }
                 }
             }
 
