@@ -504,6 +504,7 @@ namespace DataCollator
                 _races[raceGuid].Finished = true;
                 WriteResponse(Context, _races[raceGuid].ToString());
                 Log($"{raceGuid}: race finished (received stop from client)");
+                SaveRaceToDisk(raceGuid);
             }
             else
                 WriteErrorResponse(Context.Response, HttpStatusCode.NotFound);
@@ -740,6 +741,22 @@ namespace DataCollator
                 }
 
             _lastStaleDataCheck = DateTime.Now;
+        }
+
+        private void SaveRaceToDisk(Guid raceGuid)
+        {
+            if (!Directory.Exists("Races"))
+                return;
+
+            string raceDataPath = $"Races\\{raceGuid}";
+            try
+            {
+                Directory.CreateDirectory(raceDataPath);
+                File.WriteAllText($"{raceDataPath}\\Race.Summary", _races[raceGuid].ToString());
+                foreach (string commander in _races[raceGuid].Contestants)
+                    File.WriteAllText($"{raceDataPath}\\{commander}.Tracking", JsonSerializer.Serialize(_races[raceGuid].GetCommanderEventHistory(commander)));
+            }
+            catch { }
         }
 
         private int _flushCount = 0;
