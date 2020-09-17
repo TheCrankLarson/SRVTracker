@@ -193,10 +193,13 @@ namespace SRVTracker
                     try
                     {
                         _route = EDRoute.LoadFromFile(openFileDialog.FileName);
-                        textBoxRouteName.Text = _route.Name;
-                        _saveFileName = openFileDialog.FileName;
-                        buttonSaveRoute.Enabled = true;
-                        DisplayRoute();
+                        if (_route != null)
+                        {
+                            textBoxRouteName.Text = _route.Name;
+                            _saveFileName = openFileDialog.FileName;
+                            buttonSaveRoute.Enabled = true;
+                            DisplayRoute();
+                        }
                     }
                     catch { }
                 }
@@ -229,6 +232,9 @@ namespace SRVTracker
 
         private void listBoxWaypoints_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (listBoxWaypoints.SelectedIndex < 0)
+                return;
+
             EDWaypoint waypoint = _route.Waypoints[listBoxWaypoints.SelectedIndex];
             textBoxWaypointName.Text = waypoint.Name;
             numericUpDownRadius.Value = (decimal)waypoint.Radius;
