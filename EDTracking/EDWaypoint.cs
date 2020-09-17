@@ -55,8 +55,12 @@ namespace EDTracking
         public bool LocationIsWithinWaypoint(EDLocation location)
         {
             if (EDLocation.DistanceBetween(Location, location) < Radius)
+            {
+                if (MinimumAltitude == 0 && MaximumAltitude == 0)
+                    return true;
                 if (location.Altitude >= MinimumAltitude && location.Altitude <= MaximumAltitude)
                     return true;
+            }
             return false;
         }
 
