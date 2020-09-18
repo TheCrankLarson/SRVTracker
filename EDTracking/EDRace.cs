@@ -295,8 +295,9 @@ namespace EDTracking
                 }
                 else
                 {
+                    // We don't have any statuses, so this is pre-race
                     status.AppendLine(CustomStatusMessages["Ready"]);
-                    distanceToWaypoint.AppendLine("NA");
+                    distanceToWaypoint.AppendLine(CustomStatusMessages["Ready"]);
                     hullStrengths.AppendLine(" ");
                 }
             }

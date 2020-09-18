@@ -469,8 +469,10 @@ namespace DataCollator
 
             try
             {
-                EDRace race = EDRace.FromString(request);
                 Guid raceId = Guid.NewGuid();
+                SaveRaceToDisk(raceId, "StartRequest", false, request);
+                EDRace race = EDRace.FromString(request);
+                SaveRaceToDisk(raceId, "Start", false);
                 _races.Add(raceId, race);
                 race.StartRace(true);
                 WriteResponse(Context, raceId.ToString());
@@ -751,18 +753,42 @@ namespace DataCollator
             _lastStaleDataCheck = DateTime.Now;
         }
 
-        private void SaveRaceToDisk(Guid raceGuid)
+        private string GetRaceSaveFolder(Guid raceGuid)
         {
             if (!Directory.Exists("Races"))
-                return;
+                return "";
 
             string raceDataPath = $"Races\\{raceGuid}";
+            if (!Directory.Exists(raceDataPath))
+            {
+                try
+                {
+                    Directory.CreateDirectory(raceDataPath);
+                    return raceDataPath;
+                }
+                catch { }
+            }
+            else
+                return raceDataPath;
+            return "";
+        }
+
+        private void SaveRaceToDisk(Guid raceGuid, string fileExtension = "Summary", bool includeEventData = true, string raceData = "")
+        {
+            string raceDataPath = GetRaceSaveFolder(raceGuid);
+            if (String.IsNullOrEmpty(raceDataPath))
+                return;
+
             try
             {
-                Directory.CreateDirectory(raceDataPath);
-                File.WriteAllText($"{raceDataPath}\\Race.Summary", _races[raceGuid].ToString());
-                foreach (string commander in _races[raceGuid].Contestants)
-                    File.WriteAllText($"{raceDataPath}\\{commander}.Tracking", JsonSerializer.Serialize(_races[raceGuid].GetCommanderEventHistory(commander)));
+                if (String.IsNullOrEmpty(raceData))
+                    File.WriteAllText($"{raceDataPath}\\Race.{fileExtension}", _races[raceGuid].ToString());
+                else
+                    File.WriteAllText($"{raceDataPath}\\Race.{fileExtension}", raceData);
+
+                if (includeEventData)
+                    foreach (string commander in _races[raceGuid].Contestants)
+                        File.WriteAllText($"{raceDataPath}\\{commander}.Tracking", JsonSerializer.Serialize(_races[raceGuid].GetCommanderEventHistory(commander)));
             }
             catch { }
         }
