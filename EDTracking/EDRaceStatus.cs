@@ -24,7 +24,6 @@ namespace EDTracking
         public EDLocation Location { get; set; } = null;
         public int WaypointIndex { get; set; } = 0;
         public double DistanceToWaypoint { get; set; } = double.MaxValue;
-        public EDRoute Route { get; set; } = null;
         public static bool Started { get; set; } = false;
         public bool Finished { get; set; } = false;
         public int PitStopCount { get; set; } = 0;
@@ -74,11 +73,11 @@ namespace EDTracking
                 Location = baseEvent.Location();
         }
 
-        public EDRaceStatus(string commander, EDRoute route, bool immediateStart = true)
+        public EDRaceStatus(string commander, EDRace race, bool immediateStart = true)
         {
             _raceHistory = new StringBuilder();
             Commander = commander;
-            Route = route;
+            _race = race;// Route = route;
             if (immediateStart)
                 StartRace();
         }
@@ -141,8 +140,8 @@ namespace EDTracking
 
             if (statusBuilder.Length == 0 && Started)
             {
-                if (Route != null)
-                    statusBuilder.Append($"-> {Route.Waypoints[WaypointIndex].Name}");
+                if (_race.Route != null)
+                    statusBuilder.Append($"-> {_race.Route.Waypoints[WaypointIndex].Name}");
                 if (_lowFuel)
                     statusBuilder.Append(" (low fuel)");
             }
@@ -316,15 +315,15 @@ namespace EDTracking
                 Location = updateEvent.Location();
                 if (WaypointIndex > 0)
                 {
-                    DistanceToWaypoint = EDLocation.DistanceBetween(Location, Route.Waypoints[WaypointIndex].Location);
-                    if (Route.Waypoints[WaypointIndex].LocationIsWithinWaypoint(Location))
+                    DistanceToWaypoint = EDLocation.DistanceBetween(Location, _race.Route.Waypoints[WaypointIndex].Location);
+                    if (_race.Route.Waypoints[WaypointIndex].LocationIsWithinWaypoint(Location))
                     {
                         // Commander has reached the target waypoint
-                        AddRaceHistory($"Arrived at {Route.Waypoints[WaypointIndex].Name}");
+                        AddRaceHistory($"Arrived at {_race.Route.Waypoints[WaypointIndex].Name}");
                         WaypointIndex++;
                         if (WaypointIndex > _race.LeaderWaypoint)
                             _race.LeaderWaypoint = WaypointIndex;
-                        if (WaypointIndex >= Route.Waypoints.Count)
+                        if (WaypointIndex >= _race.Route.Waypoints.Count)
                         {
                             Finished = true;
                             FinishTime = DateTime.Now;
@@ -355,7 +354,7 @@ namespace EDTracking
 
             if (DistanceToWaypoint<_nextLogDistanceToWaypoint)
             {
-                AddRaceHistory($"{(DistanceToWaypoint / 1000):F1}km to {Route.Waypoints[WaypointIndex].Name}");
+                AddRaceHistory($"{(DistanceToWaypoint / 1000):F1}km to {_race.Route.Waypoints[WaypointIndex].Name}");
                 _nextLogDistanceToWaypoint = DistanceToWaypoint - 5000;
             }
 

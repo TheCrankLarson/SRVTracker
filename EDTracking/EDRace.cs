@@ -116,9 +116,8 @@ namespace EDTracking
             _commanderEventHistory = new Dictionary<string, List<EDEvent>>();
             foreach (string contestant in Contestants)
             {
-                EDRaceStatus raceStatus = new EDRaceStatus(contestant, Route);
+                EDRaceStatus raceStatus = new EDRaceStatus(contestant, this);
                 raceStatus.StartTime = Start;
-                raceStatus.SetRace(this);
                 if (asServer)
                     raceStatus.notableEvents = _notableEvents;
                 Statuses.Add(contestant, raceStatus);

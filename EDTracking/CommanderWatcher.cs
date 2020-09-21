@@ -13,10 +13,10 @@ namespace EDTracking
     public static class CommanderWatcher
     {
         //private static WebClient _webClient = new WebClient();
-        private static Dictionary<string, EDEvent> _commanderStatuses = new Dictionary<string, EDEvent>();
-        private static Timer _updateTimer = new Timer(750);
+        private static readonly Dictionary<string, EDEvent> _commanderStatuses = new Dictionary<string, EDEvent>();
+        private static readonly Timer _updateTimer = new Timer(750);
         private static bool _enabled = false;
-        private static object _lock = new object();
+        private static readonly object _lock = new object();
         private static string _lastStatus = "";
         private static string _serverUrl = "";
         private static byte _outstandingRequests = 0;
@@ -46,13 +46,6 @@ namespace EDTracking
                 _updateTimer.Elapsed -= _updateTimer_Elapsed;
                 _enabled = false;
             }
-        }
-
-        private static void _webClient_DownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e)
-        {
-            _outstandingRequests--;
-            System.Diagnostics.Debug.WriteLine($"Received Commander Status {DateTime.Now:HH:mm:ss}");
-            UpdateAvailableCommanders(e.Result);
         }
 
         public static EDEvent GetCommanderStatus(string commander)
