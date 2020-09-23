@@ -373,7 +373,10 @@ namespace EDTracking
             }
 
             if (updateEvent.EventName.Equals("Touchdown") && !updateEvent.PlayerControlled)
+            {
                 _lastTouchDown = updateEvent.TimeStamp;
+                _pitStopStartTime = _lastTouchDown;
+            }
 
             if (updateEvent.EventName.Equals("DockSRV"))
             {
@@ -384,6 +387,7 @@ namespace EDTracking
                     PitStopCount++;
                     Hull = 1;
                     notableEvents?.AddStatusEvent("PitstopNotification", Commander);
+                    _inPits = true;
                 }
             }
 
@@ -414,9 +418,9 @@ namespace EDTracking
                         if (isFlagSet(StatusFlags.Srv_UnderShip))
                         {
                             _inPits = true;
-                            if (DateTime.Now.Subtract(_lastUnderShip).TotalSeconds > 60)
+                            if ( (_pitStopStartTime != _lastTouchDown) && DateTime.Now.Subtract(_lastUnderShip).TotalSeconds > 60)
                             {
-                                // This check allows for problems boarding the ship (e.g. if you can only access from one direction, which might trigger the flag several times)                                
+                                // This check allows for problems boarding the ship (e.g. if you can only access from one direction, which might trigger the flag several times)                            
                                 _pitStopStartTime = DateTime.Now;
                             }
                             _lastUnderShip = DateTime.Now;
@@ -424,9 +428,12 @@ namespace EDTracking
                     }
                     else if (isFlagSet(StatusFlags.In_SRV) && !isFlagSet(StatusFlags.Srv_UnderShip))
                     {
-                        _inPits = false;                        
+                        _inPits = false;
                         if (DateTime.Now.Subtract(_lastDockSRV).TotalSeconds < 60)
+                        {
                             AddRaceHistory($"Pitstop {PitStopCount} took {DateTime.Now.Subtract(_pitStopStartTime):mm\\:ss}");
+                            _pitStopStartTime = DateTime.MinValue;
+                        }
                     }
                 }
 
