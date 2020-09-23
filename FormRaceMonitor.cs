@@ -620,10 +620,13 @@ namespace SRVTracker
                     try
                     {
                         _race = EDRace.LoadFromFile(openFileDialog.FileName);
-                        _saveFilename = openFileDialog.FileName;
-                        textBoxRaceName.Text = _race.Name;
-                        DisplayRoute();
-                        checkBoxAutoAddCommanders.Checked = true;
+                        if (_race != null)
+                        {
+                            _saveFilename = openFileDialog.FileName;
+                            textBoxRaceName.Text = _race.Name;
+                            DisplayRoute();
+                            checkBoxAutoAddCommanders.Checked = true;
+                        }
                     }
                     catch { }
                 }
