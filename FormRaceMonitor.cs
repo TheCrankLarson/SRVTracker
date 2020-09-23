@@ -733,11 +733,9 @@ namespace SRVTracker
             // We send the race info to the server with StartRace command - this starts the monitoring on the server
             // We then just need to download results, and not keep track of status updates
 
-            //string raceGuid = "";
             _race.CustomStatusMessages = EDRace.StatusMessages;
             try
             {
-                //Stream statusStream = _webClient.OpenRead($"http://{FormLocator.ServerAddress}:11938/DataCollator/startrace");
                 using (WebClient wc = new WebClient())
                 {
                     wc.Headers[HttpRequestHeader.ContentType] = "application/json";
