@@ -32,9 +32,6 @@ namespace EDTracking
         public DateTime FinishTime { get; set; } = DateTime.MinValue;
 
         public string Commander { get; } = "";
-        public static bool EliminateOnDestruction { get; set; } = true;
-        public static bool EliminateOnShipFlight { get; set; } = true;
-        public static bool AllowPitStops { get; set; } = true;
         public static bool ShowDetailedStatus { get; set; } = false;
 
 
@@ -52,6 +49,8 @@ namespace EDTracking
         private double _lastLoggedMaxSpeed = 50;  // We don't log any maximum speeds below 50m/s
         private DateTime _pitStopStartTime = DateTime.MinValue;
         private DateTime _lastUnderShip = DateTime.MinValue;
+        private DateTime _lastTouchDown = DateTime.MinValue;
+        private DateTime _lastDockSRV = DateTime.MinValue;
         public NotableEvents notableEvents = null;
         private double[] _lastThreeSpeedReadings = new double[] { 0, 0, 0 };
         private int _oldestSpeedReading = 0;
@@ -243,6 +242,27 @@ namespace EDTracking
             return ((Flags & (long)flag) == (long)flag);
         }
 
+        private bool AllowPitStops()
+        {
+            if (_race == null)
+                return true;
+            return _race.AllowPitstops;
+        }
+
+        private bool EliminateOnDestruction()
+        {
+            if (_race == null)
+                return false;
+            return _race.EliminateOnVehicleDestruction;
+        }
+
+        private bool EliminateOnShipFlight()
+        {
+            if (_race == null)
+                return false;
+            return _race.SRVOnly;
+        }
+
         public void UpdateStatus(EDEvent updateEvent)
         {
             // Update our status based on the passed event
@@ -340,7 +360,7 @@ namespace EDTracking
             if (!Started)
                 return;
 
-            if (updateEvent.EventName.Equals("SRVDestroyed") && EliminateOnDestruction)
+            if (updateEvent.EventName.Equals("SRVDestroyed") && EliminateOnDestruction())
             {
                 // Eliminated
                 Eliminated = true;
@@ -350,6 +370,21 @@ namespace EDTracking
                 SpeedInMS = 0;
                 _speedCalculationLocation = null;
                 Hull = 0;
+            }
+
+            if (updateEvent.EventName.Equals("Touchdown") && !updateEvent.PlayerControlled)
+                _lastTouchDown = updateEvent.TimeStamp;
+
+            if (updateEvent.EventName.Equals("DockSRV"))
+            {
+                if (AllowPitStops())
+                {
+                    // We only increase pitstop count on DockSRV
+                    _lastDockSRV = updateEvent.TimeStamp;
+                    PitStopCount++;
+                    Hull = 1;
+                    notableEvents?.AddStatusEvent("PitstopNotification", Commander);
+                }
             }
 
             if (DistanceToWaypoint<_nextLogDistanceToWaypoint)
@@ -362,7 +397,7 @@ namespace EDTracking
             {
                 if (!isFlagSet(StatusFlags.In_SRV) && (!_inPits || !isFlagSet(StatusFlags.Landed_on_planet_surface)))
                 {
-                    if (EliminateOnShipFlight)
+                    if (EliminateOnShipFlight())
                     {
                         Eliminated = true;
                         notableEvents?.AddStatusEvent("EliminatedNotification", Commander);
@@ -372,7 +407,7 @@ namespace EDTracking
                     _speedCalculationLocation = null; // If this occurred due to commander exploding, we need to clear the location otherwise we'll get a massive reading on respawn
                 }
 
-                if (AllowPitStops)
+                if (AllowPitStops())
                 {
                     if (!_inPits)
                     {
@@ -381,9 +416,7 @@ namespace EDTracking
                             _inPits = true;
                             if (DateTime.Now.Subtract(_lastUnderShip).TotalSeconds > 60)
                             {
-                                // This check allows for problems boarding the ship (e.g. if you can only access from one direction, which might trigger the flag several times)
-                                notableEvents?.AddStatusEvent("PitstopNotification", Commander);
-                                PitStopCount++;
+                                // This check allows for problems boarding the ship (e.g. if you can only access from one direction, which might trigger the flag several times)                                
                                 _pitStopStartTime = DateTime.Now;
                             }
                             _lastUnderShip = DateTime.Now;
@@ -391,9 +424,9 @@ namespace EDTracking
                     }
                     else if (isFlagSet(StatusFlags.In_SRV) && !isFlagSet(StatusFlags.Srv_UnderShip))
                     {
-                        _inPits = false;
-                        Hull = 1;
-                        AddRaceHistory($"Pitstop {PitStopCount} took {DateTime.Now.Subtract(_pitStopStartTime):mm\\:ss}");
+                        _inPits = false;                        
+                        if (DateTime.Now.Subtract(_lastDockSRV).TotalSeconds < 60)
+                            AddRaceHistory($"Pitstop {PitStopCount} took {DateTime.Now.Subtract(_pitStopStartTime):mm\\:ss}");
                     }
                 }
 

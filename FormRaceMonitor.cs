@@ -796,9 +796,6 @@ namespace SRVTracker
 
             _nextWaypoint = _race.Route.Waypoints[1];
             listBoxWaypoints.Refresh();
-            EDRaceStatus.EliminateOnDestruction = _race.EliminateOnVehicleDestruction;
-            EDRaceStatus.AllowPitStops = _race.AllowPitstops;
-            EDRaceStatus.EliminateOnShipFlight = _race.SRVOnly;
             _race.StartRace(false, notableEvents);
             EDRaceStatus.Started = true;
         }

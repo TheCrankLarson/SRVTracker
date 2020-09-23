@@ -18,7 +18,8 @@ namespace EDTracking
         private System.Timers.Timer _statusCheckTimer = null;
         private Dictionary<string, long> _filePointers;
         private DateTime _lastJournalEventTimeStamp = DateTime.MinValue;
-        public string[] ReportEvents = { "DockSRV","SRVDestroyed","HullDamage","LaunchSRV", "Shutdown", "Touchdown", "Liftoff" };
+        public string[] ReportEvents = { "DockSRV","SRVDestroyed", "FighterDestroyed","HullDamage","LaunchSRV", "Shutdown", "Continued", "Touchdown", "Liftoff", "Died",
+            "UnderAttack", "MaterialCollected", "DatalinkScan", "DataScanned", "ApproachSettlement"};
         public delegate void InterestingEventHandler(object sender, string eventJson);
         public  event InterestingEventHandler InterestingEventOccurred;
 
@@ -98,7 +99,7 @@ namespace EDTracking
             if (_oldJournals.Contains(fileName))
                 return true;
 
-            // We just need to read the last 62 bytes, as the Shutdown event should always be the same length
+            // We just need to read the last 62 bytes, as that should capture both Shutdown and Continued events (which both mean this log file won't be written anymore)
 
             FileStream fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
             if (fileStream.Length > 62)
@@ -112,10 +113,10 @@ namespace EDTracking
             if (jsonStart < 0)
                 return false;
 
-            if (!GetJournalEventName(lastJournalEvent.Substring(jsonStart)).Equals("Shutdown"))
-            {
+            string lastEventName = GetJournalEventName(lastJournalEvent.Substring(jsonStart));
+            if (!lastEventName.Equals("Shutdown") && !lastEventName.Equals("Continued") )
                 return false;
-            }
+
             _oldJournals.Add(fileName);  // So that we don't bother reading this one again
             return true;
         }

@@ -28,6 +28,7 @@ namespace EDTracking
         public string Commander { get; set; } = "";
         public string EventName { get; set; } = "";
         public double Health { get; set; } = -1;
+        public bool PlayerControlled { get; set; } = true;
 
         public EDEvent() { }
 
@@ -89,6 +90,8 @@ namespace EDTracking
                     BodyName = property.GetString();
                 if (root.TryGetProperty("Heading", out property))
                     Heading = property.GetInt16();
+                if (root.TryGetProperty("PlayerControlled", out property))
+                    PlayerControlled = property.GetBoolean();
             }
             Commander = commander;
         }
