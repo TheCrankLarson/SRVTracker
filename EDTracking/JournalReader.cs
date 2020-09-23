@@ -210,6 +210,13 @@ namespace EDTracking
                                 _journalFileStream?.Close();
                                 _journalFileStream = null;
                             }
+                            else if (eventName.Equals("Continued"))
+                            {
+                                // We won't receive any more events into this log file, but a new one should be created
+                                _activeJournalFile = "";
+                                _journalFileStream?.Close();
+                                _journalFileStream = null;
+                            }
                             else if (ReportEvents.Contains(eventName))
                             {
                                 // This is an event we are interested in
