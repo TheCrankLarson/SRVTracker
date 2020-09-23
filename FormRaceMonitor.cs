@@ -617,18 +617,17 @@ namespace SRVTracker
                 openFileDialog.FileName = _saveFilename;
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    try
+                    EDRace race = EDRace.LoadFromFile(openFileDialog.FileName);
+                    if (race == null)
                     {
-                        _race = EDRace.LoadFromFile(openFileDialog.FileName);
-                        if (_race != null)
-                        {
-                            _saveFilename = openFileDialog.FileName;
-                            textBoxRaceName.Text = _race.Name;
-                            DisplayRoute();
-                            checkBoxAutoAddCommanders.Checked = true;
-                        }
+                        MessageBox.Show("Invalid race file", "Load Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
                     }
-                    catch { }
+                    _race = race;
+                    _saveFilename = openFileDialog.FileName;
+                    textBoxRaceName.Text = _race.Name;
+                    DisplayRoute();
+                    checkBoxAutoAddCommanders.Checked = true;
                 }
             }
         }
