@@ -734,6 +734,7 @@ namespace SRVTracker
             // We then just need to download results, and not keep track of status updates
 
             //string raceGuid = "";
+            _race.CustomStatusMessages = EDRace.StatusMessages;
             try
             {
                 //Stream statusStream = _webClient.OpenRead($"http://{FormLocator.ServerAddress}:11938/DataCollator/startrace");
