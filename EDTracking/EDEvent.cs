@@ -29,6 +29,7 @@ namespace EDTracking
         public string EventName { get; set; } = "";
         public double Health { get; set; } = -1;
         public bool PlayerControlled { get; set; } = true;
+        public string TargetedShipName { get; set; } = "";
 
         public EDEvent() { }
 
@@ -74,6 +75,9 @@ namespace EDTracking
 
                 if (root.TryGetProperty("event", out property))
                     EventName = property.GetString();
+                if (root.TryGetProperty("Ship", out property))
+                    TargetedShipName = property.GetString();
+
                 if (root.TryGetProperty("Flags", out property))
                     Flags = property.GetInt64();
                 if (root.TryGetProperty("Latitude", out property))

@@ -139,7 +139,7 @@ namespace EDTracking
 
             if (statusBuilder.Length == 0 && Started)
             {
-                if (_race.Route != null)
+                if (_race?.Route != null)
                     statusBuilder.Append($"-> {_race.Route.Waypoints[WaypointIndex].Name}");
                 if (_lowFuel)
                     statusBuilder.Append(" (low fuel)");
@@ -378,9 +378,12 @@ namespace EDTracking
                 _pitStopStartTime = _lastTouchDown;
             }
 
+            if (updateEvent.EventName.Equals("Liftoff"))
+                _lastTouchDown = DateTime.MinValue;
+
             if (updateEvent.EventName.Equals("DockSRV"))
             {
-                if (AllowPitStops())
+                if (!Finished && AllowPitStops())
                 {
                     // We only increase pitstop count on DockSRV
                     _lastDockSRV = updateEvent.TimeStamp;
@@ -388,6 +391,18 @@ namespace EDTracking
                     Hull = 1;
                     notableEvents?.AddStatusEvent("PitstopNotification", Commander);
                     _inPits = true;
+                }
+            }
+
+            if (updateEvent.EventName.Equals("LaunchSRV"))
+            {
+                if (!Finished && AllowPitStops())
+                {
+                    if (DateTime.Now.Subtract(_lastDockSRV).TotalSeconds < 60)
+                    {
+                        AddRaceHistory($"Pitstop {PitStopCount} took {DateTime.Now.Subtract(_pitStopStartTime):mm\\:ss}");
+                        _pitStopStartTime = DateTime.MinValue;
+                    }
                 }
             }
 
@@ -427,14 +442,7 @@ namespace EDTracking
                         }
                     }
                     else if (isFlagSet(StatusFlags.In_SRV) && !isFlagSet(StatusFlags.Srv_UnderShip))
-                    {
                         _inPits = false;
-                        if (DateTime.Now.Subtract(_lastDockSRV).TotalSeconds < 60)
-                        {
-                            AddRaceHistory($"Pitstop {PitStopCount} took {DateTime.Now.Subtract(_pitStopStartTime):mm\\:ss}");
-                            _pitStopStartTime = DateTime.MinValue;
-                        }
-                    }
                 }
 
                 _lowFuel = isFlagSet(StatusFlags.Low_Fuel);

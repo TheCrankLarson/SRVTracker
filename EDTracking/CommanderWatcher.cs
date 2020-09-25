@@ -149,8 +149,12 @@ namespace EDTracking
         {
             _outstandingRequests--;
             System.Diagnostics.Debug.WriteLine($"Received Commander Status {DateTime.Now:HH:mm:ss}");
-            if (!e.Cancelled)
-                UpdateAvailableCommanders(e.Result);
+            try
+            {
+                if (!e.Cancelled)
+                    UpdateAvailableCommanders(e.Result);
+            }
+            catch { }
             try
             {
                 ((WebClient)e.UserState).Dispose();
