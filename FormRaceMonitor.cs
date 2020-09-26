@@ -28,6 +28,7 @@ namespace SRVTracker
         private string _lastStatusExport = "k";
         private string _lastSpeedExport = "k";
         private string _lastWPDistanceExport = "k";
+        private string _lastTotalDistanceExport = "k";
         private string _lastTrackingTarget = "k";
         private string _lastRacePositions = "k";
         private string _lastExportTargetPitstops = "k";
@@ -1150,6 +1151,20 @@ namespace SRVTracker
                     {
                         File.WriteAllText(textBoxExportWaypointDistanceFile.Text, serverStats["DistanceToWaypoint"]);
                         _lastWPDistanceExport = serverStats["DistanceToWaypoint"];
+                    }
+                    catch { }
+                }
+                changeDetected = true;
+            }
+
+            if (!_lastTotalDistanceExport.Equals(serverStats["TotalDistanceLeft"]))
+            {
+                if (checkBoxExportTotalDistanceLeft.Checked)
+                {
+                    try
+                    {
+                        File.WriteAllText(textBoxExportTotalDistanceLeftFile.Text, serverStats["TotalDistanceLeft"]);
+                        _lastTotalDistanceExport = serverStats["TotalDistanceLeft"];
                     }
                     catch { }
                 }

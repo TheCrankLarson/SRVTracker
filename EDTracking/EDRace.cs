@@ -236,6 +236,7 @@ namespace EDTracking
             StringBuilder speeds = new StringBuilder();
             StringBuilder maxSpeeds = new StringBuilder();
             StringBuilder distanceToWaypoint = new StringBuilder();
+            StringBuilder totalDistanceLeft = new StringBuilder();
             StringBuilder hullStrengths = new StringBuilder();
 
             for (int i = 0; i < leaderBoard.Count; i++)
@@ -272,11 +273,13 @@ namespace EDTracking
                         if (Statuses[leaderBoard[i]].Eliminated)
                         {
                             distanceToWaypoint.AppendLine(CustomStatusMessages["Eliminated"]);
+                            totalDistanceLeft.AppendLine(CustomStatusMessages["Eliminated"]);
                             s = CustomStatusMessages["Eliminated"];
                         }
                         else
                         {
                             distanceToWaypoint.AppendLine(Statuses[leaderBoard[i]].DistanceToWaypointInKmDisplay);
+                            totalDistanceLeft.AppendLine(Statuses[leaderBoard[i]].TotalDistanceLeftInKmDisplay);
                             s = Statuses[leaderBoard[i]].ToString();
                         }
 
@@ -297,6 +300,7 @@ namespace EDTracking
                     // We don't have any statuses, so this is pre-race
                     status.AppendLine(CustomStatusMessages["Ready"]);
                     distanceToWaypoint.AppendLine(CustomStatusMessages["Ready"]);
+                    totalDistanceLeft.AppendLine(CustomStatusMessages["Ready"]);
                     hullStrengths.AppendLine(" ");
                 }
             }
@@ -306,6 +310,7 @@ namespace EDTracking
             statsTable.Add("MaxSpeeds", maxSpeeds.ToString());
             statsTable.Add("Status", status.ToString());
             statsTable.Add("DistanceToWaypoint", distanceToWaypoint.ToString());
+            statsTable.Add("TotalDistanceLeft", totalDistanceLeft.ToString());
             if (NotableEvents != null)
                 statsTable.Add("NotableEvents", String.Join(Environment.NewLine, NotableEvents.EventQueue));
             statsTable.Add("HullStrengths", hullStrengths.ToString());

@@ -24,6 +24,7 @@ namespace EDTracking
         public EDLocation Location { get; set; } = null;
         public int WaypointIndex { get; set; } = 0;
         public double DistanceToWaypoint { get; set; } = double.MaxValue;
+        public double TotalDistanceLeft { get; set; } = double.MaxValue;
         public static bool Started { get; set; } = false;
         public bool Finished { get; set; } = false;
         public int PitStopCount { get; set; } = 0;
@@ -205,6 +206,17 @@ namespace EDTracking
             }
         }
 
+        public String TotalDistanceLeftInKmDisplay
+        {
+            get
+            {
+                if (Eliminated || (DistanceToWaypoint == double.MaxValue))
+                    return "NA";
+                if (Finished) return "0";
+                return $"{(TotalDistanceLeft / 1000):F1}";
+            }
+        }
+
         public string HullDisplay
         {
             get
@@ -335,6 +347,7 @@ namespace EDTracking
                 if (WaypointIndex > 0)
                 {
                     DistanceToWaypoint = EDLocation.DistanceBetween(Location, _race.Route.Waypoints[WaypointIndex].Location);
+                    TotalDistanceLeft = _race.Route.TotalDistanceLeftAtWaypoint(WaypointIndex) + DistanceToWaypoint;
                     if (_race.Route.Waypoints[WaypointIndex].LocationIsWithinWaypoint(Location))
                     {
                         // Commander has reached the target waypoint

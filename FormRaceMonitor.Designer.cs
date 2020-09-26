@@ -122,6 +122,8 @@
             this.textBoxRaceStatusServerUrl = new System.Windows.Forms.TextBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.timerPreraceExport = new System.Windows.Forms.Timer(this.components);
+            this.textBoxExportTotalDistanceLeftFile = new System.Windows.Forms.TextBox();
+            this.checkBoxExportTotalDistanceLeft = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -732,6 +734,8 @@
             // 
             // groupBoxTextExport
             // 
+            this.groupBoxTextExport.Controls.Add(this.textBoxExportTotalDistanceLeftFile);
+            this.groupBoxTextExport.Controls.Add(this.checkBoxExportTotalDistanceLeft);
             this.groupBoxTextExport.Controls.Add(this.textBoxExportHullFile);
             this.groupBoxTextExport.Controls.Add(this.checkBoxExportHull);
             this.groupBoxTextExport.Controls.Add(this.textBoxExportWaypointDistanceFile);
@@ -752,14 +756,14 @@
             this.groupBoxTextExport.Controls.Add(this.numericUpDownStatusMaxLength);
             this.groupBoxTextExport.Location = new System.Drawing.Point(720, 12);
             this.groupBoxTextExport.Name = "groupBoxTextExport";
-            this.groupBoxTextExport.Size = new System.Drawing.Size(245, 283);
+            this.groupBoxTextExport.Size = new System.Drawing.Size(245, 347);
             this.groupBoxTextExport.TabIndex = 7;
             this.groupBoxTextExport.TabStop = false;
             this.groupBoxTextExport.Text = "Export as text";
             // 
             // textBoxExportHullFile
             // 
-            this.textBoxExportHullFile.Location = new System.Drawing.Point(24, 254);
+            this.textBoxExportHullFile.Location = new System.Drawing.Point(24, 301);
             this.textBoxExportHullFile.Name = "textBoxExportHullFile";
             this.textBoxExportHullFile.Size = new System.Drawing.Size(205, 20);
             this.textBoxExportHullFile.TabIndex = 29;
@@ -768,7 +772,7 @@
             // checkBoxExportHull
             // 
             this.checkBoxExportHull.AutoSize = true;
-            this.checkBoxExportHull.Location = new System.Drawing.Point(6, 236);
+            this.checkBoxExportHull.Location = new System.Drawing.Point(6, 283);
             this.checkBoxExportHull.Name = "checkBoxExportHull";
             this.checkBoxExportHull.Size = new System.Drawing.Size(123, 17);
             this.checkBoxExportHull.TabIndex = 28;
@@ -851,12 +855,13 @@
             this.groupBoxHTMLExport.Controls.Add(this.label5);
             this.groupBoxHTMLExport.Controls.Add(this.label1);
             this.groupBoxHTMLExport.Controls.Add(this.textBoxHTMLTemplateFile);
-            this.groupBoxHTMLExport.Location = new System.Drawing.Point(720, 301);
+            this.groupBoxHTMLExport.Location = new System.Drawing.Point(971, 206);
             this.groupBoxHTMLExport.Name = "groupBoxHTMLExport";
             this.groupBoxHTMLExport.Size = new System.Drawing.Size(245, 106);
             this.groupBoxHTMLExport.TabIndex = 8;
             this.groupBoxHTMLExport.TabStop = false;
             this.groupBoxHTMLExport.Text = "Export as HTML";
+            this.groupBoxHTMLExport.Visible = false;
             // 
             // checkBoxExportAsHTML
             // 
@@ -1087,6 +1092,24 @@
             this.timerPreraceExport.Interval = 2000;
             this.timerPreraceExport.Tick += new System.EventHandler(this.timerPreraceExport_Tick);
             // 
+            // textBoxExportTotalDistanceLeftFile
+            // 
+            this.textBoxExportTotalDistanceLeftFile.Location = new System.Drawing.Point(24, 255);
+            this.textBoxExportTotalDistanceLeftFile.Name = "textBoxExportTotalDistanceLeftFile";
+            this.textBoxExportTotalDistanceLeftFile.Size = new System.Drawing.Size(205, 20);
+            this.textBoxExportTotalDistanceLeftFile.TabIndex = 31;
+            this.textBoxExportTotalDistanceLeftFile.Text = "DistancesLeft.txt";
+            // 
+            // checkBoxExportTotalDistanceLeft
+            // 
+            this.checkBoxExportTotalDistanceLeft.AutoSize = true;
+            this.checkBoxExportTotalDistanceLeft.Location = new System.Drawing.Point(6, 236);
+            this.checkBoxExportTotalDistanceLeft.Name = "checkBoxExportTotalDistanceLeft";
+            this.checkBoxExportTotalDistanceLeft.Size = new System.Drawing.Size(139, 17);
+            this.checkBoxExportTotalDistanceLeft.TabIndex = 30;
+            this.checkBoxExportTotalDistanceLeft.Text = "Export total distance left";
+            this.checkBoxExportTotalDistanceLeft.UseVisualStyleBackColor = true;
+            // 
             // FormRaceMonitor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1230,5 +1253,7 @@
         private System.Windows.Forms.TextBox textBoxExportTargetHull;
         private System.Windows.Forms.CheckBox checkBoxExportTrackedTargetHull;
         private System.Windows.Forms.Timer timerPreraceExport;
+        private System.Windows.Forms.TextBox textBoxExportTotalDistanceLeftFile;
+        private System.Windows.Forms.CheckBox checkBoxExportTotalDistanceLeft;
     }
 }
