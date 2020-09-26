@@ -937,6 +937,7 @@ namespace SRVTracker
 
             textBoxExportSpeedFile.Enabled = checkBoxExportSpeed.Checked;
             textBoxExportWaypointDistanceFile.Enabled = checkBoxExportDistance.Checked;
+            textBoxExportTotalDistanceLeftFile.Enabled = checkBoxExportTotalDistanceLeft.Checked;
             textBoxExportHullFile.Enabled = checkBoxExportHull.Checked;
 
             checkBoxExportTrackedTargetHull.Enabled = checkBoxExportTrackedTarget.Checked;
@@ -1474,6 +1475,11 @@ namespace SRVTracker
                 return;
           
             UpdateFromServerStats(_race.ExportRaceStatisticsDict());
+        }
+
+        private void checkBoxExportTotalDistanceLeft_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateButtons();
         }
     }
 }
