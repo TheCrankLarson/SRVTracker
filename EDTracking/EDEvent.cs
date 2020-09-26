@@ -75,8 +75,9 @@ namespace EDTracking
 
                 if (root.TryGetProperty("event", out property))
                     EventName = property.GetString();
-                if (root.TryGetProperty("Ship", out property))
-                    TargetedShipName = property.GetString();
+                if (EventName.Equals("ShipTargeted"))
+                    if (root.TryGetProperty("PilotName", out property))
+                        TargetedShipName = property.GetString();
 
                 if (root.TryGetProperty("Flags", out property))
                     Flags = property.GetInt64();

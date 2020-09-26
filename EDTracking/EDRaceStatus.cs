@@ -89,12 +89,11 @@ namespace EDTracking
         private string _lastHistoryLog = "";
         private void AddRaceHistory(string eventInfo)
         {
+            if (eventInfo.Equals(_lastHistoryLog))
+                return;
             string log = $"{TimeStamp:HH:mm:ss} {eventInfo}";
-            if (!log.Equals(_lastHistoryLog))
-            {
-                _raceHistory.AppendLine(log);
-                _lastHistoryLog = log;
-            }
+            _raceHistory.AppendLine(log);
+            _lastHistoryLog = eventInfo;
         }
 
         public string RaceReport
@@ -372,10 +371,15 @@ namespace EDTracking
                 Hull = 0;
             }
 
+            if (updateEvent.EventName.Equals("ShipTargeted"))  // "$RolePanel2_unmanned; $cmdr_decorate:#name=Crank Larson;"
+                if (updateEvent.TargetedShipName.EndsWith($"{Commander};", StringComparison.OrdinalIgnoreCase) && (_pitStopStartTime == DateTime.MinValue) )
+                    _pitStopStartTime = updateEvent.TimeStamp;
+
             if (updateEvent.EventName.Equals("Touchdown") && !updateEvent.PlayerControlled)
             {
                 _lastTouchDown = updateEvent.TimeStamp;
-                _pitStopStartTime = _lastTouchDown;
+                if (DateTime.Now.Subtract(_pitStopStartTime).TotalSeconds > 120)
+                    _pitStopStartTime = _lastTouchDown;
             }
 
             if (updateEvent.EventName.Equals("Liftoff"))
@@ -391,6 +395,8 @@ namespace EDTracking
                     Hull = 1;
                     notableEvents?.AddStatusEvent("PitstopNotification", Commander);
                     _inPits = true;
+                    if (_pitStopStartTime == DateTime.MinValue)
+                        _pitStopStartTime = _lastDockSRV;
                 }
             }
 
@@ -400,7 +406,10 @@ namespace EDTracking
                 {
                     if (DateTime.Now.Subtract(_lastDockSRV).TotalSeconds < 60)
                     {
-                        AddRaceHistory($"Pitstop {PitStopCount} took {DateTime.Now.Subtract(_pitStopStartTime):mm\\:ss}");
+                        if (_pitStopStartTime > DateTime.MinValue)
+                            AddRaceHistory($"Pitstop {PitStopCount} took {DateTime.Now.Subtract(_pitStopStartTime):mm\\:ss}");
+                        else
+                            AddRaceHistory($"Pitstop {PitStopCount} completed (time unknown)");
                         _pitStopStartTime = DateTime.MinValue;
                     }
                 }
@@ -414,36 +423,21 @@ namespace EDTracking
 
             if (Flags > 0)
             {
-                if (!isFlagSet(StatusFlags.In_SRV) && (!_inPits || !isFlagSet(StatusFlags.Landed_on_planet_surface)))
+                if (EliminateOnShipFlight())
                 {
-                    if (EliminateOnShipFlight())
+                    if (!isFlagSet(StatusFlags.In_SRV) && (!_inPits || !isFlagSet(StatusFlags.Landed_on_planet_surface)))
                     {
                         Eliminated = true;
                         notableEvents?.AddStatusEvent("EliminatedNotification", Commander);
                         DistanceToWaypoint = double.MaxValue;
                         SpeedInMS = 0;
+                        _speedCalculationLocation = null; 
                     }
-                    _speedCalculationLocation = null; // If this occurred due to commander exploding, we need to clear the location otherwise we'll get a massive reading on respawn
                 }
 
-                if (AllowPitStops())
-                {
-                    if (!_inPits)
-                    {
-                        if (isFlagSet(StatusFlags.Srv_UnderShip))
-                        {
-                            _inPits = true;
-                            if ( (_pitStopStartTime != _lastTouchDown) && DateTime.Now.Subtract(_lastUnderShip).TotalSeconds > 60)
-                            {
-                                // This check allows for problems boarding the ship (e.g. if you can only access from one direction, which might trigger the flag several times)                            
-                                _pitStopStartTime = DateTime.Now;
-                            }
-                            _lastUnderShip = DateTime.Now;
-                        }
-                    }
-                    else if (isFlagSet(StatusFlags.In_SRV) && !isFlagSet(StatusFlags.Srv_UnderShip))
+                if (_inPits)
+                    if (isFlagSet(StatusFlags.In_SRV) && !isFlagSet(StatusFlags.Srv_UnderShip))
                         _inPits = false;
-                }
 
                 _lowFuel = isFlagSet(StatusFlags.Low_Fuel);
             }
