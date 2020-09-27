@@ -197,7 +197,7 @@ namespace EDTracking
                     using (JsonDocument jsonDoc = JsonDocument.Parse(journalEvent))
                     {
                         JsonElement timestampElement = jsonDoc.RootElement.GetProperty("timestamp");
-                        if (DateTime.UtcNow.Subtract(timestampElement.GetDateTime()).TotalSeconds < 60)
+                        if (DateTime.UtcNow.Subtract(timestampElement.GetDateTime()).TotalSeconds < 10)
                         {
                             JsonElement eventElement = jsonDoc.RootElement.GetProperty("event");
                             string eventName = eventElement.GetString();
