@@ -499,6 +499,7 @@
             // checkBoxShowDetailedStatus
             // 
             this.checkBoxShowDetailedStatus.AutoSize = true;
+            this.checkBoxShowDetailedStatus.Enabled = false;
             this.checkBoxShowDetailedStatus.Location = new System.Drawing.Point(6, 42);
             this.checkBoxShowDetailedStatus.Name = "checkBoxShowDetailedStatus";
             this.checkBoxShowDetailedStatus.Size = new System.Drawing.Size(128, 17);
@@ -538,7 +539,7 @@
             this.numericUpDownLeaderboardMaxLength.Size = new System.Drawing.Size(50, 20);
             this.numericUpDownLeaderboardMaxLength.TabIndex = 3;
             this.numericUpDownLeaderboardMaxLength.Value = new decimal(new int[] {
-            20,
+            30,
             0,
             0,
             0});
@@ -662,7 +663,7 @@
             this.numericUpDownStatusMaxLength.Size = new System.Drawing.Size(50, 20);
             this.numericUpDownStatusMaxLength.TabIndex = 15;
             this.numericUpDownStatusMaxLength.Value = new decimal(new int[] {
-            20,
+            30,
             0,
             0,
             0});
@@ -786,7 +787,7 @@
             this.textBoxExportWaypointDistanceFile.Name = "textBoxExportWaypointDistanceFile";
             this.textBoxExportWaypointDistanceFile.Size = new System.Drawing.Size(104, 20);
             this.textBoxExportWaypointDistanceFile.TabIndex = 27;
-            this.textBoxExportWaypointDistanceFile.Text = "WP-Distances.txt";
+            this.textBoxExportWaypointDistanceFile.Text = "WPDistances.txt";
             // 
             // label6
             // 
