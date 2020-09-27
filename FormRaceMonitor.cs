@@ -45,6 +45,7 @@ namespace SRVTracker
         private string _serverRaceGuid = "";
         private NotableEvents _clientNotableEvents = null;
         private int _serverNotableEventsIndex = 0;
+        private List<string> _skipAutoAdd = new List<string>();
 
         public FormRaceMonitor()
         {
@@ -236,12 +237,10 @@ namespace SRVTracker
             if (!edEvent.HasCoordinates())
                 return;
 
-
             if (checkBoxAutoAddCommanders.Checked)
                 if (_race.Route.Waypoints.Count > 0)
-                    if (_race.Route.Waypoints[0].LocationIsWithinWaypoint(edEvent.Location()))
+                    if (!_skipAutoAdd.Contains(edEvent.Commander) && _race.Route.Waypoints[0].LocationIsWithinWaypoint(edEvent.Location()))
                         AddTrackedCommander(edEvent.Commander);
-
 
             if (!_racers.ContainsKey(edEvent.Commander))
                 return;
@@ -597,6 +596,7 @@ namespace SRVTracker
             if (_race.Contestants.Contains(commanderToRemove))
                 _race.Contestants.Remove(commanderToRemove);
             listViewParticipants.SelectedItems[0].Remove();
+            _skipAutoAdd.Add(commanderToRemove);
         }
 
         private void buttonTrackParticipant_Click(object sender, EventArgs e)
