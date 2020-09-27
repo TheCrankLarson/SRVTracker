@@ -1024,6 +1024,7 @@ namespace SRVTracker
             buttonReset.Enabled = false;
             buttonRaceHistory.Enabled = false;
             timerPreraceExport.Start();
+            _skipAutoAdd = new List<string>();
         }
 
         private void ShowHideStreamingOptions()
