@@ -143,17 +143,14 @@ namespace EDTracking
 
         public List<string> RacePositions()
         {
-            List<string> positions = new List<string>();
             if (Statuses == null)
-            {
-                if (Contestants.Count > 0)
-                    return Contestants;
-                return positions;
-            }
-            if (Statuses.Count == 0 && (Contestants.Count > 0))
+                return Contestants;
+            if (Statuses.Count == 0)
                 return Contestants;
 
+            List<string> positions = new List<string>();
             int finishedIndex = -1;
+
             foreach (string racer in Statuses.Keys)
             {
                 if (positions.Count == 0)
@@ -184,7 +181,7 @@ namespace EDTracking
                                 positions.Insert(i, racer);
                             else
                                 positions.Add(racer);
-                            finishedIndex = i;
+                            finishedIndex++;
                         }
                     }
                     else if (Statuses[racer].Eliminated)
@@ -196,12 +193,10 @@ namespace EDTracking
                     {
                         // All other positions are based on waypoint and distance from it (i.e. lowest waypoint number
                         int i = finishedIndex + 1;
-                        if (i < positions.Count && !Statuses[positions[i]].Eliminated)
-                        {
-                            // We check total distance left to work out the position
-                            while ((i < positions.Count) && Statuses[positions[i]].TotalDistanceLeft < Statuses[racer].TotalDistanceLeft && !Statuses[positions[i]].Eliminated)
-                                i++;
-                        }
+                        // We check total distance left to work out the position
+                        while ((i < positions.Count) && Statuses[positions[i]].TotalDistanceLeft < Statuses[racer].TotalDistanceLeft && !Statuses[positions[i]].Eliminated)
+                            i++;
+
                         if (i < positions.Count)
                             positions.Insert(i, racer);
                         else
