@@ -417,14 +417,11 @@ namespace EDTracking
             {
                 if (!Finished && AllowPitStops())
                 {
-                    if (DateTime.Now.Subtract(_lastDockSRV).TotalSeconds < 60)
-                    {
-                        if (_pitStopStartTime > DateTime.MinValue)
-                            AddRaceHistory($"Pitstop {PitStopCount} took {DateTime.Now.Subtract(_pitStopStartTime):mm\\:ss}");
-                        else
-                            AddRaceHistory($"Pitstop {PitStopCount} completed (time unknown)");
-                        _pitStopStartTime = DateTime.MinValue;
-                    }
+                    if (_pitStopStartTime > DateTime.MinValue)
+                        AddRaceHistory($"Pitstop {PitStopCount} took {DateTime.Now.Subtract(_pitStopStartTime):mm\\:ss}");
+                    else
+                        AddRaceHistory($"Pitstop {PitStopCount} completed (time unknown)");
+                    _pitStopStartTime = DateTime.MinValue;
                 }
             }
 

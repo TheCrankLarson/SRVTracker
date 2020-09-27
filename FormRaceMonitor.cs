@@ -588,7 +588,7 @@ namespace SRVTracker
 
         private void buttonRemoveParticipant_Click(object sender, EventArgs e)
         {
-            if (listViewParticipants.SelectedItems.Count != 1)
+            if ( (listViewParticipants.SelectedItems.Count != 1) || (_race.Start > DateTime.MinValue) )
                 return;
 
             string commanderToRemove = listViewParticipants.SelectedItems[0].SubItems[1].Text;
@@ -727,6 +727,7 @@ namespace SRVTracker
             checkBoxAutoAddCommanders.Checked = false;
             buttonStartRace.Enabled = false;
             buttonStopRace.Enabled = true;
+            buttonRemoveParticipant.Enabled = false;
             buttonRaceHistory.Enabled = true;
 
         }
@@ -811,6 +812,7 @@ namespace SRVTracker
             
             if (!String.IsNullOrEmpty(_serverRaceGuid))
             {
+                timerRefreshFromServer.Stop();
                 // Send notification to server that race is finished
                 try
                 {
@@ -825,6 +827,7 @@ namespace SRVTracker
 
             buttonStopRace.Enabled = false;
             buttonReset.Enabled = true;
+            buttonUneliminate.Enabled = false;
         }
 
         private void comboBoxAddCommander_Leave(object sender, EventArgs e)
@@ -890,8 +893,28 @@ namespace SRVTracker
         private void UpdateButtons()
         {
             bool participantSelected = listViewParticipants.SelectedIndices.Count > 0;
-            buttonRemoveParticipant.Enabled = participantSelected;
-            buttonTrackParticipant.Enabled = participantSelected;
+            buttonUneliminate.Enabled = false;
+            if (_race.Start == DateTime.MinValue)
+            {
+                // We can only add and remove participants before the race has started
+                buttonRemoveParticipant.Enabled = participantSelected;
+                buttonTrackParticipant.Enabled = participantSelected;
+            }
+            else
+            {
+                buttonRemoveParticipant.Enabled = false;
+                buttonTrackParticipant.Enabled = false;
+                // We can only resurrect participants during the race
+                if (listViewParticipants.SelectedItems.Count > 0)
+                {
+                    foreach (System.Windows.Forms.ListViewItem item in listViewParticipants.SelectedItems)
+                        if (item.SubItems[2].Text.Contains(EDRace.StatusMessages["Eliminated"]) || item.SubItems[2].Text.Contains("Eliminated"))
+                        {
+                            buttonUneliminate.Enabled = true;
+                            break;
+                        }
+                }
+            }           
 
             if (String.IsNullOrEmpty(_race.Name))
             {
@@ -953,18 +976,6 @@ namespace SRVTracker
             textBoxExportTargetSpeedFile.Enabled = checkBoxExportTrackedTargetSpeed.Checked && checkBoxExportTrackedTargetSpeed.Enabled;
             textBoxExportTargetPosition.Enabled = checkBoxExportTrackedTargetPosition.Checked && checkBoxExportTrackedTargetPosition.Enabled;
             textBoxExportTargetHull.Enabled = checkBoxExportTrackedTargetHull.Checked && checkBoxExportTrackedTargetHull.Enabled;
-
-
-            buttonUneliminate.Enabled = false;
-            if (listViewParticipants.SelectedItems.Count>0)
-            {
-                foreach (System.Windows.Forms.ListViewItem item in listViewParticipants.SelectedItems)
-                    if ( item.SubItems[2].Text.Contains(EDRace.StatusMessages["Eliminated"]) || item.SubItems[2].Text.Contains("Eliminated") )
-                    {
-                        buttonUneliminate.Enabled = true;
-                        break;
-                    }
-            }
         }
 
         private void listViewParticipants_SelectedIndexChanged(object sender, EventArgs e)
