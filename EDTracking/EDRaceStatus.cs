@@ -423,6 +423,7 @@ namespace EDTracking
                         AddRaceHistory($"Pitstop {PitStopCount} completed (time unknown)");
                     _pitStopStartTime = DateTime.MinValue;
                 }
+                _inPits = false;
             }
 
             if (DistanceToWaypoint<_nextLogDistanceToWaypoint)
@@ -439,6 +440,7 @@ namespace EDTracking
                     {
                         Eliminated = true;
                         notableEvents?.AddStatusEvent("EliminatedNotification", Commander);
+                        AddRaceHistory("Eliminated as detected not in SRV and not landed");
                         DistanceToWaypoint = double.MaxValue;
                         SpeedInMS = 0;
                         _speedCalculationLocation = null; 
