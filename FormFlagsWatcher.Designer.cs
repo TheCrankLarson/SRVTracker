@@ -35,6 +35,7 @@
             this.listBoxStatusHistory = new System.Windows.Forms.ListBox();
             this.buttonShowCurrent = new System.Windows.Forms.Button();
             this.buttonClose = new System.Windows.Forms.Button();
+            this.textBoxFlags = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -111,11 +112,20 @@
             this.buttonClose.UseVisualStyleBackColor = true;
             this.buttonClose.Click += new System.EventHandler(this.buttonClose_Click);
             // 
+            // textBoxFlags
+            // 
+            this.textBoxFlags.Location = new System.Drawing.Point(143, 387);
+            this.textBoxFlags.Name = "textBoxFlags";
+            this.textBoxFlags.Size = new System.Drawing.Size(100, 20);
+            this.textBoxFlags.TabIndex = 4;
+            this.textBoxFlags.TextChanged += new System.EventHandler(this.textBoxFlags_TextChanged);
+            // 
             // FormFlagsWatcher
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(473, 418);
+            this.Controls.Add(this.textBoxFlags);
             this.Controls.Add(this.buttonClose);
             this.Controls.Add(this.buttonShowCurrent);
             this.Controls.Add(this.groupBox2);
@@ -126,6 +136,7 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -138,5 +149,6 @@
         private System.Windows.Forms.ListBox listBoxStatusHistory;
         private System.Windows.Forms.Button buttonShowCurrent;
         private System.Windows.Forms.Button buttonClose;
+        private System.Windows.Forms.TextBox textBoxFlags;
     }
 }

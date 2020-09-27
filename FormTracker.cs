@@ -252,14 +252,14 @@ namespace SRVTracker
         {
             //FormDrone formDrone = new FormDrone();
             //formDrone.Show();
-            SendTestEvents();
+            //SendTestEvents();
 
             //TestVROverlay();
             //return;
             //if (_formFlagsWatcher != null)
             //    return;
-            //_formFlagsWatcher = new FormFlagsWatcher();
-            //_formFlagsWatcher.Show();
+            _formFlagsWatcher = new FormFlagsWatcher();
+            _formFlagsWatcher.Show();
         }
 
         public static bool InitVR()

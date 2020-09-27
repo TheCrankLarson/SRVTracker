@@ -435,7 +435,7 @@ namespace EDTracking
             {
                 if (EliminateOnShipFlight())
                 {
-                    if (!isFlagSet(StatusFlags.In_SRV) && (!_inPits || !isFlagSet(StatusFlags.Landed_on_planet_surface)))
+                    if (!isFlagSet(StatusFlags.In_SRV) && !isFlagSet(StatusFlags.Landed_on_planet_surface) && !isFlagSet(StatusFlags.Docked_on_a_landing_pad) )
                     {
                         Eliminated = true;
                         notableEvents?.AddStatusEvent("EliminatedNotification", Commander);

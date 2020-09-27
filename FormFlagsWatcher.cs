@@ -95,5 +95,14 @@ namespace SRVTracker
         {
             listBoxStatusHistory.SelectedIndex = -1;
         }
+
+        private void textBoxFlags_TextChanged(object sender, EventArgs e)
+        {
+            if (String.IsNullOrEmpty(textBoxFlags.Text))
+                return;            
+            long flags = Convert.ToInt32(textBoxFlags.Text);
+            if (flags>0)
+                UpdateFlags(flags);
+        }
     }
 }
