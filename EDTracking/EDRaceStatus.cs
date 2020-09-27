@@ -30,7 +30,7 @@ namespace EDTracking
         public int PitStopCount { get; set; } = 0;
         public int RacePosition { get; set; } = 0;
         public DateTime StartTime { get; set; } = DateTime.MinValue;
-        public DateTime FinishTime { get; set; } = DateTime.MinValue;
+        public DateTime FinishTime { get; set; } = DateTime.MaxValue;
 
         public string Commander { get; } = "";
         public static bool ShowDetailedStatus { get; set; } = false;

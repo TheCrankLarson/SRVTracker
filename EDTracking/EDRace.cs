@@ -198,17 +198,9 @@ namespace EDTracking
                         int i = finishedIndex + 1;
                         if (i < positions.Count && !Statuses[positions[i]].Eliminated)
                         {
-                            // Move past anyone who is at a higher waypoint
-                            while ((i < positions.Count) && Statuses[positions[i]].WaypointIndex < Statuses[racer].WaypointIndex && !Statuses[positions[i]].Eliminated)
+                            // We check total distance left to work out the position
+                            while ((i < positions.Count) && Statuses[positions[i]].TotalDistanceLeft < Statuses[racer].TotalDistanceLeft && !Statuses[positions[i]].Eliminated)
                                 i++;
-                            if ((i < positions.Count) && !Statuses[positions[i]].Eliminated)
-                            {
-                                // Now we check distances (as these positions are heading to the same waypoint)
-                                while ((i < positions.Count) && (Statuses[positions[i]].WaypointIndex == Statuses[racer].WaypointIndex) && (Statuses[positions[i]].DistanceToWaypoint < Statuses[racer].DistanceToWaypoint) && (!Statuses[positions[i]].Eliminated))
-                                    i++;
-                                //if ((i < positions.Count) && Statuses[positions[i]].Eliminated && (i > finishedIndex + 1))
-                                //i--;
-                            }
                         }
                         if (i < positions.Count)
                             positions.Insert(i, racer);
