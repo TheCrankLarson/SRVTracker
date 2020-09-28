@@ -252,6 +252,7 @@ namespace EDTracking
                     {
                         status.Append(CustomStatusMessages["Completed"]);
                         status.AppendLine($" ({Statuses[leaderBoard[i]].FinishTime.Subtract(Start):hh\\:mm\\:ss})");
+                        totalDistanceLeft.AppendLine(CustomStatusMessages["Completed"]);
                         distanceToWaypoint.AppendLine(CustomStatusMessages["Completed"]);
                     }
                     else
