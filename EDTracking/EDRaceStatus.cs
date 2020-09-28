@@ -344,33 +344,34 @@ namespace EDTracking
 
                 _lastSpeedInMs = SpeedInMS;
                 Location = updateEvent.Location();
-                if (WaypointIndex > 0)
-                {
-                    DistanceToWaypoint = EDLocation.DistanceBetween(Location, _race.Route.Waypoints[WaypointIndex].Location);
-                    TotalDistanceLeft = _race.Route.TotalDistanceLeftAtWaypoint(WaypointIndex) + DistanceToWaypoint;
-                    if (_race.Route.Waypoints[WaypointIndex].LocationIsWithinWaypoint(Location))
-                    {
-                        // Commander has reached the target waypoint
-                        AddRaceHistory($"Arrived at {_race.Route.Waypoints[WaypointIndex].Name}");
-                        WaypointIndex++;
-                        if (WaypointIndex > _race.LeaderWaypoint)
-                            _race.LeaderWaypoint = WaypointIndex;
-                        if (WaypointIndex >= _race.Route.Waypoints.Count)
-                        {
-                            Finished = true;
-                            FinishTime = DateTime.Now;
-                            string raceTime = $"{FinishTime.Subtract(StartTime):hh\\:mm\\:ss}";
-                            notableEvents?.AddStatusEvent("CompletedNotification",Commander,$" ({raceTime})");
-                            AddRaceHistory($"Completed in {raceTime}");
-                            WaypointIndex = 0;
-                            DistanceToWaypoint = 0;
-                        }
-                    }
-                }
             }
 
             if (!Started)
                 return;
+
+            if (WaypointIndex > 0)
+            {
+                DistanceToWaypoint = EDLocation.DistanceBetween(Location, _race.Route.Waypoints[WaypointIndex].Location);
+                TotalDistanceLeft = _race.Route.TotalDistanceLeftAtWaypoint(WaypointIndex) + DistanceToWaypoint;
+                if (_race.Route.Waypoints[WaypointIndex].LocationIsWithinWaypoint(Location))
+                {
+                    // Commander has reached the target waypoint
+                    AddRaceHistory($"Arrived at {_race.Route.Waypoints[WaypointIndex].Name}");
+                    WaypointIndex++;
+                    if (WaypointIndex > _race.LeaderWaypoint)
+                        _race.LeaderWaypoint = WaypointIndex;
+                    if (WaypointIndex >= _race.Route.Waypoints.Count)
+                    {
+                        Finished = true;
+                        FinishTime = DateTime.Now;
+                        string raceTime = $"{FinishTime.Subtract(StartTime):hh\\:mm\\:ss}";
+                        notableEvents?.AddStatusEvent("CompletedNotification", Commander, $" ({raceTime})");
+                        AddRaceHistory($"Completed in {raceTime}");
+                        WaypointIndex = 0;
+                        DistanceToWaypoint = 0;
+                    }
+                }
+            }
 
             if (updateEvent.EventName.Equals("SRVDestroyed") && EliminateOnDestruction())
             {
