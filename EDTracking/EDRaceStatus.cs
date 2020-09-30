@@ -380,14 +380,33 @@ namespace EDTracking
                 AddRaceHistory("SRV destroyed");
                 notableEvents?.AddStatusEvent("EliminatedNotification", Commander);
                 DistanceToWaypoint = double.MaxValue;
+                if (_race != null && WaypointIndex == _race.LeaderWaypoint)
+                {
+                    // We could have been the race leader, so we need to check that we still have the correct leader waypoint
+                    int leaderWaypoint = 0;
+                    foreach (EDRaceStatus status in _race.Statuses.Values)
+                    {
+                        if (!status.Eliminated)
+                            if (status.WaypointIndex > leaderWaypoint)
+                                leaderWaypoint = status.WaypointIndex;
+                        if (status.Finished)
+                            break; // If someone has finished they'll be at the last waypoint, so no need to check further
+                    }
+                    _race.LeaderWaypoint = leaderWaypoint;
+                }
                 SpeedInMS = 0;
                 _speedCalculationLocation = null;
                 Hull = 0;
             }
 
             if (updateEvent.EventName.Equals("ShipTargeted"))  // "$RolePanel2_unmanned; $cmdr_decorate:#name=Crank Larson;"
-                if (updateEvent.TargetedShipName.EndsWith($"{Commander};", StringComparison.OrdinalIgnoreCase) && (_pitStopStartTime == DateTime.MinValue) )
+            {
+                string commanderName = Commander;
+                if (commanderName.StartsWith("cmdr", StringComparison.OrdinalIgnoreCase))
+                    commanderName = commanderName.Substring(5);
+                if (updateEvent.TargetedShipName.EndsWith($"{commanderName};", StringComparison.OrdinalIgnoreCase) && (_pitStopStartTime == DateTime.MinValue))
                     _pitStopStartTime = updateEvent.TimeStamp;
+            }
 
             if (updateEvent.EventName.Equals("Touchdown") && !updateEvent.PlayerControlled)
             {
@@ -420,11 +439,13 @@ namespace EDTracking
                 {
                     if (_pitStopStartTime > DateTime.MinValue)
                         AddRaceHistory($"Pitstop {PitStopCount} took {DateTime.Now.Subtract(_pitStopStartTime):mm\\:ss}");
-                    else
+                    else if (PitStopCount > 0)
                         AddRaceHistory($"Pitstop {PitStopCount} completed (time unknown)");
+
                     _pitStopStartTime = DateTime.MinValue;
                 }
                 _inPits = false;
+                Hull = 1; // Hull is repaired when in ship, so ensure we have this set
             }
 
             if (DistanceToWaypoint<_nextLogDistanceToWaypoint)

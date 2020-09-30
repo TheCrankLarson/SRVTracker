@@ -652,7 +652,6 @@ namespace SRVTracker
                     _statusFile = $"{textBoxStatusFile.Text}\\Status.json";
                     if (File.Exists(_statusFile))
                     {
-                        _statusTimer.Interval = 250;
                         _statusTimer.Start();
                     }
                     else
