@@ -29,6 +29,7 @@ namespace DataCollator
         private FileStream _logStream = null;
         private Dictionary<Guid, EDRace> _races;
         private DateTime _lastStaleDataCheck = DateTime.Now;
+        private DateTime _lastFinishedRaceCheck = DateTime.Now;
         private DateTime _lastCommanderStatusBuilt = DateTime.MinValue;
         private string _lastCommanderStatus = "";
 
@@ -159,6 +160,16 @@ namespace DataCollator
                         }
                         else
                             Log($"{raceGuid}: not updated, race finished", true);
+                    }
+                    if (DateTime.Now.Subtract(_lastFinishedRaceCheck).TotalMinutes >= 5)
+                    {
+                        foreach (Guid raceGuid in _races.Keys)
+                        {
+                            if (!_races[raceGuid].Finished)
+                                if (_races[raceGuid].CheckIfFinished())
+                                    SaveRaceToDisk(raceGuid);
+                        }
+                        _lastFinishedRaceCheck = DateTime.Now;
                     }
                 }));
 

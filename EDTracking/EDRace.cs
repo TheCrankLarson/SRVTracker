@@ -213,6 +213,22 @@ namespace EDTracking
             return positions;
         }
 
+        public bool CheckIfFinished()
+        {
+            // Go through each racer status and check if any are still running
+            if (Statuses == null || Finished)
+                return true;
+
+            foreach (EDRaceStatus raceStatus in Statuses.Values)
+            {
+                if (!raceStatus.Eliminated && !raceStatus.Finished)
+                    return false;
+            }
+
+            Finished = true;
+            return true;
+        }
+
         public Dictionary<string, string> ExportRaceStatisticsDict(int maxStatusLength = 20)
         {
             List<string> leaderBoard = RacePositions();
