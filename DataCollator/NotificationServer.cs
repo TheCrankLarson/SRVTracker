@@ -631,10 +631,10 @@ namespace DataCollator
         private void SendRaceStatus(string requestUri, HttpListenerContext Context, string request)
         {
             Guid raceGuid = Guid.Empty;
-            if (requestUri.Length > 25)
+            if (requestUri.Length > 11)
             {
                 // Guid can be specified in the Url or in POST data.  This one has something in the Url
-                Guid.TryParse(requestUri.Substring(25), out raceGuid);
+                Guid.TryParse(requestUri.Substring(11), out raceGuid);
             }
             else
             {
