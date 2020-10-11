@@ -1090,17 +1090,30 @@ namespace SRVTracker
             UpdateButtons();
         }
 
-        private int _refreshRequestCount = 0;
+        Task _refreshFromServerTask = null;
+        DateTime _refreshFromServerTaskStart = DateTime.MinValue;
         private void timerRefreshFromServer_Tick(object sender, EventArgs e)
         {
             if (String.IsNullOrEmpty(_serverRaceGuid))
                 return;
 
-            if (_refreshRequestCount > 2)
-                return; // We don't want more than two outstanding requests
-            _refreshRequestCount++;
+            if (_refreshFromServerTask != null)
+            {
+                // We haven't finished previous refresh.  If more than five seconds, we kill the task and try again
+                if (_refreshFromServerTask.IsFaulted || DateTime.Now.Subtract(_refreshFromServerTaskStart).TotalSeconds > 5)
+                {
+                    try
+                    {
+                        _refreshFromServerTask.Dispose();
+                    }
+                    catch { }
+                    _refreshFromServerTask = null;
+                }
+                else
+                    return;
+            }
 
-            Task.Run(new Action(() =>
+            _refreshFromServerTask = Task.Run(new Action(() =>
             {
                 string response = "";
                 try
@@ -1116,8 +1129,9 @@ namespace SRVTracker
                 Dictionary<string, string> raceStats = JsonSerializer.Deserialize<Dictionary<string, string>>(response);
                 UpdateFromServerStats(raceStats);
                 ExportTrackingInfo();
-                _refreshRequestCount--;
+                _refreshFromServerTask = null;
             }));
+            _refreshFromServerTaskStart = DateTime.Now;
         }
 
         private void UpdateFromServerStats(Dictionary<string,string> serverStats)
