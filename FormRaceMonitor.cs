@@ -1106,7 +1106,7 @@ namespace SRVTracker
                 try
                 {
                     using (WebClient webClient = new WebClient())
-                        response = webClient.UploadString($"http://{FormLocator.ServerAddress}:11938/DataCollator/racestatus", _serverRaceGuid);
+                        response = webClient.DownloadString($"http://{FormLocator.ServerAddress}:11938/DataCollator/racestatus/{_serverRaceGuid}");
                 }
                 catch
                 {
