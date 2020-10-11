@@ -483,8 +483,8 @@ namespace DataCollator
                 Guid raceId = Guid.NewGuid();
                 SaveRaceToDisk(raceId, "StartRequest", false, request);
                 EDRace race = EDRace.FromString(request);
-                SaveRaceToDisk(raceId, "Start", false);
                 _races.Add(raceId, race);
+                SaveRaceToDisk(raceId, "Start", false);
                 race.StartRace(true);
                 WriteResponse(Context, raceId.ToString());
                 Log($"{raceId}: Started race");
@@ -649,11 +649,11 @@ namespace DataCollator
             else
             {
                 WriteErrorResponse(Context.Response, HttpStatusCode.NotFound);
-                Log("Race statistics for unknown race requested");
+                Log($"Race statistics for unknown race requested: {raceGuid}");
             }
             
-            if (DateTime.Now.Subtract(_lastStaleDataCheck).TotalMinutes > 120)
-                Task.Run(new Action(()=> { ClearStaleData(); }));
+            //if (DateTime.Now.Subtract(_lastStaleDataCheck).TotalMinutes > 120)
+            //    Task.Run(new Action(()=> { ClearStaleData(); }));
         }
 
         private void SendStatus(HttpListenerContext Context)
@@ -698,6 +698,7 @@ namespace DataCollator
         private void ClearStaleData()
         {
             // We want to remove tracking information if we haven't received an update from the client for 120 minutes
+            Log("Checking for stale data to purge", true);
             List<string> playersToRemove = new List<string>();
             if (_playerStatus != null)
             {

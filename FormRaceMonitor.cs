@@ -41,7 +41,6 @@ namespace SRVTracker
         private bool _generatingLeaderboard = false;
         private object _lockListView = new object();
         private ConfigSaverClass _formConfig = null;
-        private WebClient _webClient = new WebClient();
         private string _serverRaceGuid = "";
         private NotableEvents _clientNotableEvents = null;
         private int _serverNotableEventsIndex = 0;
@@ -1091,27 +1090,34 @@ namespace SRVTracker
             UpdateButtons();
         }
 
+        private int _refreshRequestCount = 0;
         private void timerRefreshFromServer_Tick(object sender, EventArgs e)
         {
-            //timerRefreshFromServer.Stop();
             if (String.IsNullOrEmpty(_serverRaceGuid))
                 return;
 
-            string response = "";
-            try
-            {
-                using (WebClient webClient = new WebClient())
-                    response = _webClient.UploadString($"http://{FormLocator.ServerAddress}:11938/DataCollator/racestatus", _serverRaceGuid);
-            }
-            catch
-            {
-                return;
-            }
+            if (_refreshRequestCount > 2)
+                return; // We don't want more than two outstanding requests
+            _refreshRequestCount++;
 
-            Dictionary<string, string> raceStats = JsonSerializer.Deserialize< Dictionary<string, string>>(response);
-            UpdateFromServerStats(raceStats);
-            ExportTrackingInfo();
-            //timerRefreshFromServer.Start();
+            Task.Run(new Action(() =>
+            {
+                string response = "";
+                try
+                {
+                    using (WebClient webClient = new WebClient())
+                        response = webClient.UploadString($"http://{FormLocator.ServerAddress}:11938/DataCollator/racestatus", _serverRaceGuid);
+                }
+                catch
+                {
+                    return;
+                }
+
+                Dictionary<string, string> raceStats = JsonSerializer.Deserialize<Dictionary<string, string>>(response);
+                UpdateFromServerStats(raceStats);
+                ExportTrackingInfo();
+                _refreshRequestCount--;
+            }));
         }
 
         private void UpdateFromServerStats(Dictionary<string,string> serverStats)
@@ -1440,7 +1446,8 @@ namespace SRVTracker
             {
                 // Need to send resurrection request to server
                 if (!String.IsNullOrEmpty(_serverRaceGuid))
-                    _ = _webClient.DownloadString($"http://{FormLocator.ServerAddress}:11938/DataCollator/ResurrectCommander/{_serverRaceGuid}/{commander}");
+                    using (WebClient webClient = new WebClient())
+                        _ = webClient.DownloadString($"http://{FormLocator.ServerAddress}:11938/DataCollator/ResurrectCommander/{_serverRaceGuid}/{commander}");
             }
             else
             {

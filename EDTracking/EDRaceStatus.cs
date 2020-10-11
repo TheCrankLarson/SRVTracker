@@ -49,7 +49,6 @@ namespace EDTracking
         private double _lastSpeedInMs = 0;
         private double _lastLoggedMaxSpeed = 50;  // We don't log any maximum speeds below 50m/s
         private DateTime _pitStopStartTime = DateTime.MinValue;
-        private DateTime _lastUnderShip = DateTime.MinValue;
         private DateTime _lastTouchDown = DateTime.MinValue;
         private DateTime _lastDockSRV = DateTime.MinValue;
         public NotableEvents notableEvents = null;
