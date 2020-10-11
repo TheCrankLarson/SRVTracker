@@ -1123,6 +1123,7 @@ namespace SRVTracker
                 }
                 catch
                 {
+                    _refreshFromServerTask = null;
                     return;
                 }
 
