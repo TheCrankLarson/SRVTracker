@@ -125,6 +125,8 @@ namespace SRVTracker
             // Set race going
             _race = race;
             _serverRaceGuid = raceGuid;
+            textBoxRaceName.Text = _race.Name;
+            DisplayRoute();
 
             // Restore racers to the listbox
             foreach (string racer in _race.Contestants)
