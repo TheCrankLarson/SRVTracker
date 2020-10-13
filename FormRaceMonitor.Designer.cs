@@ -17,8 +17,6 @@
             {
                 components.Dispose();
             }
-            if (disposing)
-                _webClient.Dispose();
             base.Dispose(disposing);
         }
 

@@ -52,11 +52,6 @@ namespace SRVTracker
             groupBoxAddCommander.Visible = false;
             _race = new EDRace("", new EDRoute(""));
             
-            CommanderWatcher.UpdateReceived += CommanderWatcher_UpdateReceived;
-            CommanderWatcher.Start($"http://{FormLocator.ServerAddress}:11938/DataCollator/status");
-            EDRaceStatus.StatusChanged += EDStatus_StatusChanged;
-            _racers = new Dictionary<string, System.Windows.Forms.ListViewItem>();
-            AddTrackedCommanders();
             FormStatusMessages.LoadFile();  // This restores any saved status messages
 
             // Attach our form configuration saver
@@ -81,7 +76,66 @@ namespace SRVTracker
             ShowHideStreamingOptions();
             UpdateButtons();
 
+            _racers = new Dictionary<string, System.Windows.Forms.ListViewItem>();
+
+            if (!String.IsNullOrEmpty(textBoxServerRaceGuid.Text))
+            {
+                // We have a server race Guid, check for reconnect
+                if (CheckIfPreviousRaceRunning())
+                    return;
+            }
+
+            CommanderWatcher.UpdateReceived += CommanderWatcher_UpdateReceived;
+            CommanderWatcher.Start($"http://{FormLocator.ServerAddress}:11938/DataCollator/status");
+            EDRaceStatus.StatusChanged += EDStatus_StatusChanged;
+            AddTrackedCommanders();
+
             timerPreraceExport.Start();
+        }
+
+        private bool CheckIfPreviousRaceRunning()
+        {
+            string raceGuid = textBoxServerRaceGuid.Text;
+            EDRace race = null;
+            string response = "";
+            try
+            {
+                using (WebClient webClient = new WebClient())
+                    response = webClient.DownloadString($"http://{FormLocator.ServerAddress}:11938/DataCollator/getrace/{raceGuid}");
+                if (!String.IsNullOrEmpty(response))
+                    race = EDRace.FromString(response);
+            }
+            catch
+            {
+                return false;
+            }
+            if (race == null || race.Finished)
+                return false;
+
+            // There is a race still running on the server
+            if (MessageBox.Show(this, "Reconnect to last race (still running on server)?", "Active race found", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                return false;
+
+            ReconnectServerRace(raceGuid, race);
+            return true;
+        }
+
+        private void ReconnectServerRace(string raceGuid, EDRace race)
+        {
+            // Set race going
+            _race = race;
+            _serverRaceGuid = raceGuid;
+
+            // Restore racers to the listbox
+            foreach (string racer in _race.Contestants)
+                AddTrackedCommander(racer);
+
+            string notableEventOutputFile = "";
+            if (checkBoxExportNotableEvents.Checked)
+                notableEventOutputFile = textBoxNotableEventsFile.Text;
+            _clientNotableEvents = new NotableEvents(notableEventOutputFile);
+            _serverNotableEventsIndex = _race.NotableEvents.EventQueue.Count - 1;
+            timerRefreshFromServer.Start();
         }
 
         private void EDStatus_StatusChanged(object sender, string commander, string status)
@@ -93,6 +147,9 @@ namespace SRVTracker
         private void CommanderWatcher_UpdateReceived(object sender, EDEvent edEvent)
         {
             // We've received an event for a listed racer
+            if (!String.IsNullOrEmpty(_serverRaceGuid) && _race.Start > DateTime.MinValue)
+                return; // Server monitored race is running - we shouldn't get here, but just in case
+
             Task.Run(new Action(() => { UpdateStatus(edEvent); }));
         }
 
@@ -1099,7 +1156,7 @@ namespace SRVTracker
 
             if (_refreshFromServerTask != null)
             {
-                // We haven't finished previous refresh.  If more than five seconds, we kill the task and try again
+                // We haven't finished previous refresh.  If more than five seconds, we ignore this task and start a new one
                 if (_refreshFromServerTask.IsFaulted || DateTime.Now.Subtract(_refreshFromServerTaskStart).TotalSeconds > 5)
                 {
                     try

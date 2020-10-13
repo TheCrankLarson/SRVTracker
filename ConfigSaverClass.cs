@@ -400,7 +400,7 @@ namespace SRVTracker
                     appSettings.AppendLine(control.Name + ":Text:" + Encode(control.Text));
             }
             else
-                if( !(control is CheckBox) )
+                if( !(control is CheckBox) && !(control is RadioButton))
                     appSettings.AppendLine(control.Name + ":Text:" + Encode(control.Text));
 
             PropertyInfo prop = control.GetType().GetProperty("SelectedIndex", BindingFlags.Public | BindingFlags.Instance);
