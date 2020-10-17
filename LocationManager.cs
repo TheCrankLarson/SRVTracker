@@ -35,6 +35,8 @@ namespace SRVTracker
             {
                 try
                 {
+                    if (listBoxLocations.SelectedIndex < 0)
+                        return null;
                     return (EDLocation)listBoxLocations.SelectedItem;
                 }
                 catch { }
@@ -52,6 +54,11 @@ namespace SRVTracker
                         locations.Add(location);
                 return locations;
             }
+        }
+
+        public void ClearSelection()
+        {
+            listBoxLocations.SelectedIndex = -1;
         }
 
         private void buttonLoadLocations_Click(object sender, EventArgs e)

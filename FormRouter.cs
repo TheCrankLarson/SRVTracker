@@ -14,10 +14,9 @@ namespace SRVTracker
 {
     public partial class FormRouter : Form
     {
-        static Size _fullSize = new Size(489, 297);
-        static Size _miniSize = new Size(313, 291);
-        static Size _chooseLocation = new Size(604, 349);
-        private Size? _previousSize = null;
+        static Size _fullSize = new Size(484, 350);
+        //static Size _miniSize = new Size(313, 291);
+        static Size _chooseLocation = new Size(774, 350);
         private EDLocation _lastLoggedLocation = null;
         private int _nextWaypoint = 0;
         private EDRoute _route = null;
@@ -27,12 +26,11 @@ namespace SRVTracker
         public FormRouter(FormTracker formTracker)
         {
             InitializeComponent();
-            this.Size = _miniSize;
+            this.Size = _fullSize;
             _route = new EDRoute();
             _formTracker = formTracker;
             FormTracker.CommanderLocationChanged += FormTracker_CommanderLocationChanged;
             buttonStop.Enabled = false;
-            locationManager1.Visible = false;
         }
 
         private void DisplayRoute()
@@ -121,23 +119,6 @@ namespace SRVTracker
             buttonStartRecording.Enabled = true;
             buttonPlay.Enabled = true;
             buttonStop.Enabled = false;
-        }
-
-        private void buttonSettings_Click(object sender, EventArgs e)
-        {
-            if (locationManager1.Visible)
-            {
-                // Revert to previous size/location
-                locationManager1.Visible = false;
-                if (_previousSize != null)
-                    this.Size = (Size)_previousSize;
-                _previousSize = null;
-                return;
-            }
-            if (this.Size == _miniSize)
-                this.Size = _fullSize;
-            else
-                this.Size = _miniSize;
         }
 
         private void buttonStartRecording_Click(object sender, EventArgs e)
@@ -303,12 +284,13 @@ namespace SRVTracker
 
         private void buttonAddWaypoint_Click(object sender, EventArgs e)
         {
-            if (!locationManager1.Visible)
+            if (this.Size == _fullSize)
             {
-                _previousSize = this.Size;
+                locationManager1.ClearSelection();
                 this.Size = _chooseLocation;
-                locationManager1.Visible = true;
             }
+            else
+                this.Size = _fullSize;
         }
 
         private void buttonAddCurrentLocation_Click(object sender, EventArgs e)
@@ -324,30 +306,56 @@ namespace SRVTracker
 
         private void locationManager1_SelectionChanged(object sender, EventArgs e)
         {
-            if (!locationManager1.Visible)
-                return;
-
             EDLocation selectedLocation = locationManager1.SelectedLocation;
             if (selectedLocation != null)
             {
                 AddLocationToRoute(locationManager1.SelectedLocation);
-                locationManager1.Visible = false;
-                if (_previousSize != null)
-                {
-                    this.Size = (Size)_previousSize;
-                    _previousSize = null;
-                }
+                this.Size = _fullSize;
             }
         }
 
         private void buttonMoveUp_Click(object sender, EventArgs e)
         {
+            if (listBoxWaypoints.SelectedIndex < 1)
+                return;
 
+            int newIndex = listBoxWaypoints.SelectedIndex - 1;
+            EDWaypoint waypoint = _route.Waypoints[listBoxWaypoints.SelectedIndex];
+            _route.Waypoints[listBoxWaypoints.SelectedIndex] = _route.Waypoints[newIndex];
+            _route.Waypoints[newIndex] = waypoint;
+            Action action = new Action(() =>
+            {
+                object selected = listBoxWaypoints.SelectedItem;
+                listBoxWaypoints.Items.Remove(selected);
+                listBoxWaypoints.Items.Insert(newIndex, selected);
+                listBoxWaypoints.SetSelected(newIndex, true);
+            });
+            if (listBoxWaypoints.InvokeRequired)
+                listBoxWaypoints.Invoke(action);
+            else
+                action();
         }
 
         private void buttonMoveDown_Click(object sender, EventArgs e)
         {
+            if (listBoxWaypoints.SelectedIndex < 0 || listBoxWaypoints.SelectedIndex == listBoxWaypoints.Items.Count - 1)
+                return;
 
+            int newIndex = listBoxWaypoints.SelectedIndex + 1;
+            EDWaypoint waypoint = _route.Waypoints[listBoxWaypoints.SelectedIndex];
+            _route.Waypoints[listBoxWaypoints.SelectedIndex] = _route.Waypoints[newIndex];
+            _route.Waypoints[newIndex] = waypoint;
+            Action action = new Action(() =>
+            {
+                object selected = listBoxWaypoints.SelectedItem;
+                listBoxWaypoints.Items.Remove(selected);
+                listBoxWaypoints.Items.Insert(newIndex, selected);
+                listBoxWaypoints.SetSelected(newIndex, true);
+            });
+            if (listBoxWaypoints.InvokeRequired)
+                listBoxWaypoints.Invoke(action);
+            else
+                action();
         }
     }
 }

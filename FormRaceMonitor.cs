@@ -122,7 +122,8 @@ namespace SRVTracker
 
         private void ReconnectServerRace(string raceGuid, EDRace race)
         {
-            // Set race going
+            // Restore from the supplied race, then start monitoring
+
             _race = race;
             _serverRaceGuid = raceGuid;
             textBoxRaceName.Text = _race.Name;

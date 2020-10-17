@@ -31,8 +31,10 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormRouter));
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.buttonMoveDown = new System.Windows.Forms.Button();
             this.buttonAddCurrentLocation = new System.Windows.Forms.Button();
             this.buttonSaveRoute = new System.Windows.Forms.Button();
+            this.buttonMoveUp = new System.Windows.Forms.Button();
             this.buttonSetAsTarget = new System.Windows.Forms.Button();
             this.buttonSaveRouteAs = new System.Windows.Forms.Button();
             this.buttonLoadRoute = new System.Windows.Forms.Button();
@@ -56,12 +58,10 @@
             this.textBoxRouteName = new System.Windows.Forms.TextBox();
             this.locationManager1 = new SRVTracker.LocationManager();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.buttonSettings = new System.Windows.Forms.Button();
             this.buttonPlay = new System.Windows.Forms.Button();
             this.buttonStop = new System.Windows.Forms.Button();
             this.buttonStartRecording = new System.Windows.Forms.Button();
-            this.buttonMoveUp = new System.Windows.Forms.Button();
-            this.buttonMoveDown = new System.Windows.Forms.Button();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.groupBox2.SuspendLayout();
             this.groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRecordDistance)).BeginInit();
@@ -70,6 +70,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMinAltitude)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRadius)).BeginInit();
             this.groupBox1.SuspendLayout();
+            this.groupBox5.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox2
@@ -84,17 +85,27 @@
             this.groupBox2.Controls.Add(this.buttonDeleteWaypoint);
             this.groupBox2.Controls.Add(this.buttonAddWaypoint);
             this.groupBox2.Controls.Add(this.listBoxWaypoints);
-            this.groupBox2.Location = new System.Drawing.Point(12, 41);
+            this.groupBox2.Location = new System.Drawing.Point(9, 67);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(280, 206);
+            this.groupBox2.Size = new System.Drawing.Size(280, 232);
             this.groupBox2.TabIndex = 2;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Waypoints";
             // 
+            // buttonMoveDown
+            // 
+            this.buttonMoveDown.Image = global::SRVTracker.Properties.Resources.ExpandDown_lg_16x;
+            this.buttonMoveDown.Location = new System.Drawing.Point(153, 203);
+            this.buttonMoveDown.Name = "buttonMoveDown";
+            this.buttonMoveDown.Size = new System.Drawing.Size(30, 23);
+            this.buttonMoveDown.TabIndex = 18;
+            this.buttonMoveDown.UseVisualStyleBackColor = true;
+            this.buttonMoveDown.Click += new System.EventHandler(this.buttonMoveDown_Click);
+            // 
             // buttonAddCurrentLocation
             // 
             this.buttonAddCurrentLocation.Image = global::SRVTracker.Properties.Resources.AddIndexer_16x;
-            this.buttonAddCurrentLocation.Location = new System.Drawing.Point(9, 172);
+            this.buttonAddCurrentLocation.Location = new System.Drawing.Point(9, 203);
             this.buttonAddCurrentLocation.Name = "buttonAddCurrentLocation";
             this.buttonAddCurrentLocation.Size = new System.Drawing.Size(30, 23);
             this.buttonAddCurrentLocation.TabIndex = 16;
@@ -114,10 +125,20 @@
             this.buttonSaveRoute.UseVisualStyleBackColor = true;
             this.buttonSaveRoute.Click += new System.EventHandler(this.buttonSaveRoute_Click);
             // 
+            // buttonMoveUp
+            // 
+            this.buttonMoveUp.Image = global::SRVTracker.Properties.Resources.CollapseUp_lg_16x;
+            this.buttonMoveUp.Location = new System.Drawing.Point(117, 203);
+            this.buttonMoveUp.Name = "buttonMoveUp";
+            this.buttonMoveUp.Size = new System.Drawing.Size(30, 23);
+            this.buttonMoveUp.TabIndex = 17;
+            this.buttonMoveUp.UseVisualStyleBackColor = true;
+            this.buttonMoveUp.Click += new System.EventHandler(this.buttonMoveUp_Click);
+            // 
             // buttonSetAsTarget
             // 
             this.buttonSetAsTarget.Image = global::SRVTracker.Properties.Resources.Target_16x;
-            this.buttonSetAsTarget.Location = new System.Drawing.Point(193, 172);
+            this.buttonSetAsTarget.Location = new System.Drawing.Point(193, 203);
             this.buttonSetAsTarget.Name = "buttonSetAsTarget";
             this.buttonSetAsTarget.Size = new System.Drawing.Size(34, 23);
             this.buttonSetAsTarget.TabIndex = 5;
@@ -151,7 +172,7 @@
             // buttonDeleteWaypoint
             // 
             this.buttonDeleteWaypoint.Image = global::SRVTracker.Properties.Resources.Remove_color_16x;
-            this.buttonDeleteWaypoint.Location = new System.Drawing.Point(81, 172);
+            this.buttonDeleteWaypoint.Location = new System.Drawing.Point(81, 203);
             this.buttonDeleteWaypoint.Name = "buttonDeleteWaypoint";
             this.buttonDeleteWaypoint.Size = new System.Drawing.Size(30, 23);
             this.buttonDeleteWaypoint.TabIndex = 2;
@@ -162,7 +183,7 @@
             // buttonAddWaypoint
             // 
             this.buttonAddWaypoint.Image = global::SRVTracker.Properties.Resources.Add_16x;
-            this.buttonAddWaypoint.Location = new System.Drawing.Point(45, 172);
+            this.buttonAddWaypoint.Location = new System.Drawing.Point(45, 203);
             this.buttonAddWaypoint.Name = "buttonAddWaypoint";
             this.buttonAddWaypoint.Size = new System.Drawing.Size(30, 23);
             this.buttonAddWaypoint.TabIndex = 1;
@@ -176,7 +197,7 @@
             this.listBoxWaypoints.FormattingEnabled = true;
             this.listBoxWaypoints.Location = new System.Drawing.Point(9, 19);
             this.listBoxWaypoints.Name = "listBoxWaypoints";
-            this.listBoxWaypoints.Size = new System.Drawing.Size(218, 147);
+            this.listBoxWaypoints.Size = new System.Drawing.Size(218, 173);
             this.listBoxWaypoints.TabIndex = 0;
             this.listBoxWaypoints.ValueMember = "Name";
             this.listBoxWaypoints.SelectedIndexChanged += new System.EventHandler(this.listBoxWaypoints_SelectedIndexChanged);
@@ -186,7 +207,7 @@
             this.groupBox4.Controls.Add(this.label1);
             this.groupBox4.Controls.Add(this.label2);
             this.groupBox4.Controls.Add(this.numericUpDownRecordDistance);
-            this.groupBox4.Location = new System.Drawing.Point(298, 67);
+            this.groupBox4.Location = new System.Drawing.Point(295, 67);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(163, 49);
             this.groupBox4.TabIndex = 8;
@@ -244,7 +265,7 @@
             this.groupBox3.Controls.Add(this.label3);
             this.groupBox3.Controls.Add(this.textBoxWaypointName);
             this.groupBox3.Controls.Add(this.numericUpDownRadius);
-            this.groupBox3.Location = new System.Drawing.Point(298, 122);
+            this.groupBox3.Location = new System.Drawing.Point(295, 174);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(163, 125);
             this.groupBox3.TabIndex = 6;
@@ -338,9 +359,9 @@
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.textBoxRouteName);
-            this.groupBox1.Location = new System.Drawing.Point(298, 12);
+            this.groupBox1.Location = new System.Drawing.Point(9, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(163, 49);
+            this.groupBox1.Size = new System.Drawing.Size(280, 49);
             this.groupBox1.TabIndex = 13;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Route name";
@@ -349,34 +370,23 @@
             // 
             this.textBoxRouteName.Location = new System.Drawing.Point(6, 19);
             this.textBoxRouteName.Name = "textBoxRouteName";
-            this.textBoxRouteName.Size = new System.Drawing.Size(151, 20);
+            this.textBoxRouteName.Size = new System.Drawing.Size(268, 20);
             this.textBoxRouteName.TabIndex = 0;
             this.textBoxRouteName.TextChanged += new System.EventHandler(this.textBoxRouteName_TextChanged);
             // 
             // locationManager1
             // 
-            this.locationManager1.Location = new System.Drawing.Point(298, 12);
+            this.locationManager1.Location = new System.Drawing.Point(467, 12);
             this.locationManager1.LocatorForm = null;
             this.locationManager1.Name = "locationManager1";
             this.locationManager1.Size = new System.Drawing.Size(281, 287);
             this.locationManager1.TabIndex = 14;
             this.locationManager1.SelectionChanged += new System.EventHandler(this.locationManager1_SelectionChanged);
             // 
-            // buttonSettings
-            // 
-            this.buttonSettings.Image = global::SRVTracker.Properties.Resources.Settings_16x;
-            this.buttonSettings.Location = new System.Drawing.Point(258, 12);
-            this.buttonSettings.Name = "buttonSettings";
-            this.buttonSettings.Size = new System.Drawing.Size(34, 23);
-            this.buttonSettings.TabIndex = 12;
-            this.toolTip1.SetToolTip(this.buttonSettings, "Show/hide further settings");
-            this.buttonSettings.UseVisualStyleBackColor = true;
-            this.buttonSettings.Click += new System.EventHandler(this.buttonSettings_Click);
-            // 
             // buttonPlay
             // 
             this.buttonPlay.Image = global::SRVTracker.Properties.Resources.Run_16x1;
-            this.buttonPlay.Location = new System.Drawing.Point(52, 12);
+            this.buttonPlay.Location = new System.Drawing.Point(66, 16);
             this.buttonPlay.Name = "buttonPlay";
             this.buttonPlay.Size = new System.Drawing.Size(34, 23);
             this.buttonPlay.TabIndex = 11;
@@ -387,7 +397,7 @@
             // buttonStop
             // 
             this.buttonStop.Image = global::SRVTracker.Properties.Resources.Stop_16x;
-            this.buttonStop.Location = new System.Drawing.Point(92, 12);
+            this.buttonStop.Location = new System.Drawing.Point(106, 16);
             this.buttonStop.Name = "buttonStop";
             this.buttonStop.Size = new System.Drawing.Size(34, 23);
             this.buttonStop.TabIndex = 10;
@@ -398,7 +408,7 @@
             // buttonStartRecording
             // 
             this.buttonStartRecording.Image = global::SRVTracker.Properties.Resources.RecordDot_16x;
-            this.buttonStartRecording.Location = new System.Drawing.Point(12, 12);
+            this.buttonStartRecording.Location = new System.Drawing.Point(26, 16);
             this.buttonStartRecording.Name = "buttonStartRecording";
             this.buttonStartRecording.Size = new System.Drawing.Size(34, 23);
             this.buttonStartRecording.TabIndex = 7;
@@ -406,37 +416,25 @@
             this.buttonStartRecording.UseVisualStyleBackColor = true;
             this.buttonStartRecording.Click += new System.EventHandler(this.buttonStartRecording_Click);
             // 
-            // buttonMoveUp
+            // groupBox5
             // 
-            this.buttonMoveUp.Image = global::SRVTracker.Properties.Resources.CollapseUp_lg_16x;
-            this.buttonMoveUp.Location = new System.Drawing.Point(117, 172);
-            this.buttonMoveUp.Name = "buttonMoveUp";
-            this.buttonMoveUp.Size = new System.Drawing.Size(30, 23);
-            this.buttonMoveUp.TabIndex = 17;
-            this.buttonMoveUp.UseVisualStyleBackColor = true;
-            this.buttonMoveUp.Click += new System.EventHandler(this.buttonMoveUp_Click);
-            // 
-            // buttonMoveDown
-            // 
-            this.buttonMoveDown.Image = global::SRVTracker.Properties.Resources.ExpandDown_lg_16x;
-            this.buttonMoveDown.Location = new System.Drawing.Point(153, 172);
-            this.buttonMoveDown.Name = "buttonMoveDown";
-            this.buttonMoveDown.Size = new System.Drawing.Size(30, 23);
-            this.buttonMoveDown.TabIndex = 18;
-            this.buttonMoveDown.UseVisualStyleBackColor = true;
-            this.buttonMoveDown.Click += new System.EventHandler(this.buttonMoveDown_Click);
+            this.groupBox5.Controls.Add(this.buttonStop);
+            this.groupBox5.Controls.Add(this.buttonStartRecording);
+            this.groupBox5.Controls.Add(this.buttonPlay);
+            this.groupBox5.Location = new System.Drawing.Point(295, 12);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(163, 49);
+            this.groupBox5.TabIndex = 15;
+            this.groupBox5.TabStop = false;
             // 
             // FormRouter
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(877, 255);
+            this.ClientSize = new System.Drawing.Size(760, 311);
+            this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.locationManager1);
-            this.Controls.Add(this.buttonSettings);
-            this.Controls.Add(this.buttonPlay);
-            this.Controls.Add(this.buttonStop);
             this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.buttonStartRecording);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.groupBox3);
@@ -456,6 +454,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRadius)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.groupBox5.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -475,7 +474,6 @@
         private System.Windows.Forms.Button buttonAddWaypoint;
         private System.Windows.Forms.ListBox listBoxWaypoints;
         private System.Windows.Forms.Button buttonPlay;
-        private System.Windows.Forms.Button buttonSettings;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button buttonSaveRoute;
         private System.Windows.Forms.Button buttonSaveRouteAs;
@@ -494,5 +492,6 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Button buttonMoveDown;
         private System.Windows.Forms.Button buttonMoveUp;
+        private System.Windows.Forms.GroupBox groupBox5;
     }
 }
