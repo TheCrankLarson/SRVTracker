@@ -125,12 +125,6 @@
     <Compile Include="FormRaceMonitor.Designer.cs">
       <DependentUpon>FormRaceMonitor.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormRoutePlanner.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormRoutePlanner.Designer.cs">
-      <DependentUpon>FormRoutePlanner.cs</DependentUpon>
-    </Compile>
     <Compile Include="FormRouter.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -195,9 +189,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormRaceMonitor.resx">
       <DependentUpon>FormRaceMonitor.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FormRoutePlanner.resx">
-      <DependentUpon>FormRoutePlanner.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormRouter.resx">
       <DependentUpon>FormRouter.cs</DependentUpon>
@@ -303,6 +294,7 @@
     <Content Include="ReleaseNotes.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\CopyItem_16x.png" />
     <None Include="Resources\SRV Targetted.png" />
     <None Include="Resources\AdvancedBreakpointDisabled_16x.png" />
     <None Include="Resources\Close_red_16x.png" />

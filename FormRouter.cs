@@ -31,6 +31,7 @@ namespace SRVTracker
             _formTracker = formTracker;
             FormTracker.CommanderLocationChanged += FormTracker_CommanderLocationChanged;
             buttonStop.Enabled = false;
+            listBoxWaypoints_SelectedIndexChanged(null, null);
         }
 
         private void DisplayRoute()
@@ -103,6 +104,11 @@ namespace SRVTracker
             waypoint.MinimumAltitude = (double)numericUpDownMinAltitude.Value;
             waypoint.MaximumAltitude = (double)numericUpDownMaxAltitude.Value;
 
+            AddWaypointToRoute(waypoint);
+        }
+
+        private void AddWaypointToRoute(EDWaypoint waypoint)
+        {
             _route.Waypoints.Add(waypoint);
             Action action = new Action(() =>
             {
@@ -214,13 +220,26 @@ namespace SRVTracker
         private void listBoxWaypoints_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (listBoxWaypoints.SelectedIndex < 0)
+            {
+                buttonDuplicateWaypoint.Enabled = false;
+                buttonDeleteWaypoint.Enabled = false;
+                buttonMoveDown.Enabled = false;
+                buttonMoveUp.Enabled = false;
+                buttonSetAsTarget.Enabled = false;
+                textBoxWaypointName.Text = "";
                 return;
+            }
 
             EDWaypoint waypoint = _route.Waypoints[listBoxWaypoints.SelectedIndex];
             textBoxWaypointName.Text = waypoint.Name;
             numericUpDownRadius.Value = (decimal)waypoint.Radius;
             numericUpDownMinAltitude.Value = (decimal)waypoint.MinimumAltitude;
             numericUpDownMaxAltitude.Value = (decimal)waypoint.MaximumAltitude;
+            buttonDuplicateWaypoint.Enabled = true;
+            buttonDeleteWaypoint.Enabled = true;
+            buttonMoveDown.Enabled = true;
+            buttonMoveUp.Enabled = true;
+            buttonSetAsTarget.Enabled = true;
         }
 
         private void numericUpDownRadius_ValueChanged(object sender, EventArgs e)
@@ -356,6 +375,15 @@ namespace SRVTracker
                 listBoxWaypoints.Invoke(action);
             else
                 action();
+        }
+
+        private void buttonDuplicateWaypoint_Click(object sender, EventArgs e)
+        {
+            if (listBoxWaypoints.SelectedIndex < 0)
+                return;
+
+            EDWaypoint newWaypoint = EDWaypoint.FromString(_route.Waypoints[listBoxWaypoints.SelectedIndex].ToString());
+            AddWaypointToRoute(newWaypoint);
         }
     }
 }

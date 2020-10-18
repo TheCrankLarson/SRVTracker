@@ -618,10 +618,6 @@ namespace SRVTracker
         {
             FormRouter formRouter = new FormRouter(this);
             formRouter.Show();
-            /*
-            FormRoutePlanner formRoutePlanner = new FormRoutePlanner();
-            formRoutePlanner.Show();
-            */
         }
         
         public void StartTracking()
