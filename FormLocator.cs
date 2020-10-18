@@ -449,29 +449,37 @@ namespace SRVTracker
 
         private void checkBoxEnableVRLocator_CheckedChanged(object sender, EventArgs e)
         {
+            string initError = "";
             try
             {
                 if (!Valve.VR.OpenVR.IsHmdPresent())
                 {
                     checkBoxEnableVRLocator.Checked = false;
                     checkBoxEnableVRLocator.Enabled = false;
-                    return;
+                    initError = "No HMD present";
                 }
             }
-            catch
+            catch (Exception ex)
             {
                 checkBoxEnableVRLocator.Checked = false;
                 checkBoxEnableVRLocator.Enabled = false;
-                return;
+                initError = $"IsHmdPresent:{Environment.NewLine}{ex}";
             }
 
             if (checkBoxEnableVRLocator.Checked)
             {
-                if (!ShowVRLocator())
+                if (!ShowVRLocator(ref initError))
                     checkBoxEnableVRLocator.Checked = false;
+                else
+                    return;
+            }
+
+            if (!string.IsNullOrEmpty(initError))
+            {
+                MessageBox.Show(this, initError, "VR Initialisation Failed",  MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            
+
             HideVRLocator();
         }
 
@@ -560,15 +568,19 @@ namespace SRVTracker
             _vrMatrix.m11 = -0.1F;
         }
 
-        private bool ShowVRLocator()
+        private bool ShowVRLocator(ref string info)
         {
             try
             {
                 if (!FormTracker.InitVR() || (_vrOverlayHandle > 0))
+                {
+                    info = "InitVR failed";
                     return false;
+                }
             }
-            catch
+            catch (Exception ex)
             {
+                info = $"InitVR: {Environment.NewLine}{ex}";
                 return false;
             }
 
@@ -576,17 +588,18 @@ namespace SRVTracker
             {
                 OpenVR.Overlay.CreateOverlay("overlaySRVTracker", "SRV Tracking", ref _vrOverlayHandle);
             }
-            catch
+            catch (Exception ex)
             {
+                info =$"CreateOverlay: {Environment.NewLine}{ex}";
                 return false;
             }
+
             OpenVR.Overlay.SetOverlayWidthInMeters(_vrOverlayHandle, 0.8f);
             UpdateVRLocatorImage();
-
-            var error = OpenVR.Overlay.ShowOverlay(_vrOverlayHandle);
+            _ = OpenVR.Overlay.ShowOverlay(_vrOverlayHandle);
 
             OpenVR.Overlay.SetOverlayTransformAbsolute(_vrOverlayHandle, Valve.VR.ETrackingUniverseOrigin.TrackingUniverseStanding, ref _vrMatrix);
-            
+
             /*
             FormVRMatrixTest formVRMatrixTest = new FormVRMatrixTest(_vrOverlayHandle);
             formVRMatrixTest.SetMatrix(ref _vrMatrix);
@@ -623,6 +636,21 @@ namespace SRVTracker
             if (comboBoxLocation.SelectedIndex < 0)
                 return;
 
+            if (comboBoxLocation.SelectedIndex==0)
+            {
+                // Show the location editor
+                comboBoxLocation.SelectedIndex = -1;
+                FormAddLocation formAddLocation = new FormAddLocation();
+                EDLocation newLocation = formAddLocation.GetLocation(this);
+                if (newLocation != null)
+                {
+                    _targetPosition = newLocation;
+                    UpdateTrackingTarget(newLocation.Name);
+                    DisplayTarget();
+                }
+                return;
+            }
+
             LocationManager locationManager = new LocationManager();
             if (locationManager.Locations.Count>0)
                 foreach (EDLocation location in locationManager.Locations)
@@ -638,6 +666,7 @@ namespace SRVTracker
         private void InitLocationCombo()
         {
             comboBoxLocation.Items.Clear();
+            comboBoxLocation.Items.Add("Add new location...");
             LocationManager locationManager = new LocationManager();
             if (locationManager.Locations.Count > 0)
                 foreach (EDLocation location in locationManager.Locations)

@@ -19,9 +19,23 @@ namespace SRVTracker
         public FormAddLocation(EDLocation location = null)
         {
             InitializeComponent();
-            _location =location;
+            _location = location;
             if (_location == null)
+            {
                 _location = new EDLocation();
+                DisplayLocation();
+            }
+            if (String.IsNullOrEmpty(textBoxPlanetaryRadius.Text))
+                if (FormTracker.CurrentLocation.PlanetaryRadius > 1)
+                    textBoxPlanetaryRadius.Text = FormTracker.CurrentLocation.PlanetaryRadius.ToString();
+        }
+
+        public EDLocation GetLocation(IWin32Window owner)
+        {
+            if (this.ShowDialog(owner) != DialogResult.OK)
+                return null;
+
+            return GetDisplayedLocation();
         }
 
         private void buttonCurrentLocation_Click(object sender, EventArgs e)
@@ -59,10 +73,15 @@ namespace SRVTracker
 
             try
             {
-                if (updateLocation==null)
-                    return new EDLocation(textBoxLocationName.Text, textBoxSystem.Text, textBoxPlanet.Text,
+                if (updateLocation == null)
+                {
+                    EDLocation newLocation = new EDLocation(textBoxLocationName.Text, textBoxSystem.Text, textBoxPlanet.Text,
                         Convert.ToDouble(textBoxLatitude.Text), Convert.ToDouble(textBoxLongitude.Text), Convert.ToDouble(textBoxAltitude.Text),
                         Convert.ToDouble(textBoxPlanetaryRadius.Text));
+                    if (newLocation != null)
+                        return newLocation;
+                    return null;
+                }
 
                 updateLocation.Name = textBoxLocationName.Text;
                 updateLocation.SystemName = textBoxSystem.Text;

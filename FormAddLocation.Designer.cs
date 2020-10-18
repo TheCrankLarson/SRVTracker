@@ -163,6 +163,7 @@
             this.textBoxPlanetaryRadius.Name = "textBoxPlanetaryRadius";
             this.textBoxPlanetaryRadius.Size = new System.Drawing.Size(142, 20);
             this.textBoxPlanetaryRadius.TabIndex = 4;
+            this.textBoxPlanetaryRadius.Text = "1";
             // 
             // label4
             // 
@@ -226,6 +227,7 @@
             this.textBoxAltitude.Name = "textBoxAltitude";
             this.textBoxAltitude.Size = new System.Drawing.Size(100, 20);
             this.textBoxAltitude.TabIndex = 9;
+            this.textBoxAltitude.Text = "0";
             // 
             // FormAddLocation
             // 
