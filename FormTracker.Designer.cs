@@ -137,7 +137,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(90, 16);
+            this.label2.Location = new System.Drawing.Point(9, 16);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(48, 13);
             this.label2.TabIndex = 3;
@@ -146,7 +146,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 16);
+            this.label1.Location = new System.Drawing.Point(90, 16);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(57, 13);
             this.label1.TabIndex = 2;
@@ -154,7 +154,7 @@
             // 
             // textBoxLatitude
             // 
-            this.textBoxLatitude.Location = new System.Drawing.Point(93, 32);
+            this.textBoxLatitude.Location = new System.Drawing.Point(9, 32);
             this.textBoxLatitude.MaxLength = 20;
             this.textBoxLatitude.Name = "textBoxLatitude";
             this.textBoxLatitude.Size = new System.Drawing.Size(78, 20);
@@ -163,7 +163,7 @@
             // 
             // textBoxLongitude
             // 
-            this.textBoxLongitude.Location = new System.Drawing.Point(9, 32);
+            this.textBoxLongitude.Location = new System.Drawing.Point(90, 32);
             this.textBoxLongitude.Margin = new System.Windows.Forms.Padding(0);
             this.textBoxLongitude.MaxLength = 20;
             this.textBoxLongitude.Name = "textBoxLongitude";

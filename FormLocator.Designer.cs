@@ -90,9 +90,9 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(112, 16);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(45, 13);
+            this.label2.Size = new System.Drawing.Size(54, 13);
             this.label2.TabIndex = 4;
-            this.label2.Text = "Latitude";
+            this.label2.Text = "Longitude";
             // 
             // textBoxAltitude
             // 
@@ -109,7 +109,7 @@
             // 
             this.textBoxLatitude.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.textBoxLatitude.ForeColor = System.Drawing.Color.White;
-            this.textBoxLatitude.Location = new System.Drawing.Point(115, 32);
+            this.textBoxLatitude.Location = new System.Drawing.Point(9, 32);
             this.textBoxLatitude.Name = "textBoxLatitude";
             this.textBoxLatitude.ReadOnly = true;
             this.textBoxLatitude.Size = new System.Drawing.Size(100, 20);
@@ -121,15 +121,15 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(6, 16);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(54, 13);
+            this.label1.Size = new System.Drawing.Size(45, 13);
             this.label1.TabIndex = 1;
-            this.label1.Text = "Longitude";
+            this.label1.Text = "Latitude";
             // 
             // textBoxLongitude
             // 
             this.textBoxLongitude.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.textBoxLongitude.ForeColor = System.Drawing.Color.White;
-            this.textBoxLongitude.Location = new System.Drawing.Point(9, 32);
+            this.textBoxLongitude.Location = new System.Drawing.Point(115, 32);
             this.textBoxLongitude.Name = "textBoxLongitude";
             this.textBoxLongitude.ReadOnly = true;
             this.textBoxLongitude.Size = new System.Drawing.Size(100, 20);

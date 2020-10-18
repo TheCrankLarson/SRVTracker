@@ -44,7 +44,7 @@
             this.labelTrackerLabels.Name = "labelTrackerLabels";
             this.labelTrackerLabels.Size = new System.Drawing.Size(242, 13);
             this.labelTrackerLabels.TabIndex = 30;
-            this.labelTrackerLabels.Text = "Longitude        Latitude         Altitude        Heading";
+            this.labelTrackerLabels.Text = "Latitude           Longitude      Altitude        Heading";
             // 
             // labelHeading
             // 
@@ -73,7 +73,7 @@
             this.labelLatitude.AutoSize = true;
             this.labelLatitude.BackColor = System.Drawing.Color.Black;
             this.labelLatitude.ForeColor = System.Drawing.Color.Yellow;
-            this.labelLatitude.Location = new System.Drawing.Point(80, 21);
+            this.labelLatitude.Location = new System.Drawing.Point(9, 21);
             this.labelLatitude.Name = "labelLatitude";
             this.labelLatitude.Size = new System.Drawing.Size(58, 13);
             this.labelLatitude.TabIndex = 27;
@@ -84,7 +84,7 @@
             this.labelLongitude.AutoSize = true;
             this.labelLongitude.BackColor = System.Drawing.Color.Black;
             this.labelLongitude.ForeColor = System.Drawing.Color.Yellow;
-            this.labelLongitude.Location = new System.Drawing.Point(9, 21);
+            this.labelLongitude.Location = new System.Drawing.Point(80, 21);
             this.labelLongitude.Name = "labelLongitude";
             this.labelLongitude.Size = new System.Drawing.Size(58, 13);
             this.labelLongitude.TabIndex = 26;

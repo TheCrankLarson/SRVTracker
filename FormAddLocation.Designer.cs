@@ -38,15 +38,15 @@
             this.buttonAdd = new System.Windows.Forms.Button();
             this.buttonCancel = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.textBoxSystem = new System.Windows.Forms.TextBox();
-            this.textBoxPlanet = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.textBoxPlanetaryRadius = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
+            this.textBoxPlanetaryRadius = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.textBoxPlanet = new System.Windows.Forms.TextBox();
+            this.textBoxSystem = new System.Windows.Forms.TextBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.textBoxAltitude = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
+            this.textBoxAltitude = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -72,7 +72,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 55);
+            this.label2.Location = new System.Drawing.Point(6, 16);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(45, 13);
             this.label2.TabIndex = 8;
@@ -80,7 +80,7 @@
             // 
             // textBoxLatitude
             // 
-            this.textBoxLatitude.Location = new System.Drawing.Point(9, 71);
+            this.textBoxLatitude.Location = new System.Drawing.Point(9, 32);
             this.textBoxLatitude.Name = "textBoxLatitude";
             this.textBoxLatitude.Size = new System.Drawing.Size(100, 20);
             this.textBoxLatitude.TabIndex = 3;
@@ -88,7 +88,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 16);
+            this.label1.Location = new System.Drawing.Point(6, 55);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(54, 13);
             this.label1.TabIndex = 6;
@@ -96,7 +96,7 @@
             // 
             // textBoxLongitude
             // 
-            this.textBoxLongitude.Location = new System.Drawing.Point(9, 32);
+            this.textBoxLongitude.Location = new System.Drawing.Point(9, 71);
             this.textBoxLongitude.Name = "textBoxLongitude";
             this.textBoxLongitude.Size = new System.Drawing.Size(100, 20);
             this.textBoxLongitude.TabIndex = 2;
@@ -148,28 +148,21 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Stellar Location";
             // 
-            // textBoxSystem
+            // label5
             // 
-            this.textBoxSystem.Location = new System.Drawing.Point(6, 32);
-            this.textBoxSystem.Name = "textBoxSystem";
-            this.textBoxSystem.Size = new System.Drawing.Size(142, 20);
-            this.textBoxSystem.TabIndex = 0;
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(6, 94);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(90, 13);
+            this.label5.TabIndex = 5;
+            this.label5.Text = "Planetary Radius:";
             // 
-            // textBoxPlanet
+            // textBoxPlanetaryRadius
             // 
-            this.textBoxPlanet.Location = new System.Drawing.Point(6, 71);
-            this.textBoxPlanet.Name = "textBoxPlanet";
-            this.textBoxPlanet.Size = new System.Drawing.Size(142, 20);
-            this.textBoxPlanet.TabIndex = 1;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 16);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(44, 13);
-            this.label3.TabIndex = 2;
-            this.label3.Text = "System:";
+            this.textBoxPlanetaryRadius.Location = new System.Drawing.Point(6, 110);
+            this.textBoxPlanetaryRadius.Name = "textBoxPlanetaryRadius";
+            this.textBoxPlanetaryRadius.Size = new System.Drawing.Size(142, 20);
+            this.textBoxPlanetaryRadius.TabIndex = 4;
             // 
             // label4
             // 
@@ -180,21 +173,28 @@
             this.label4.TabIndex = 3;
             this.label4.Text = "Planet:";
             // 
-            // textBoxPlanetaryRadius
+            // label3
             // 
-            this.textBoxPlanetaryRadius.Location = new System.Drawing.Point(6, 110);
-            this.textBoxPlanetaryRadius.Name = "textBoxPlanetaryRadius";
-            this.textBoxPlanetaryRadius.Size = new System.Drawing.Size(142, 20);
-            this.textBoxPlanetaryRadius.TabIndex = 4;
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(6, 16);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(44, 13);
+            this.label3.TabIndex = 2;
+            this.label3.Text = "System:";
             // 
-            // label5
+            // textBoxPlanet
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(6, 94);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(90, 13);
-            this.label5.TabIndex = 5;
-            this.label5.Text = "Planetary Radius:";
+            this.textBoxPlanet.Location = new System.Drawing.Point(6, 71);
+            this.textBoxPlanet.Name = "textBoxPlanet";
+            this.textBoxPlanet.Size = new System.Drawing.Size(142, 20);
+            this.textBoxPlanet.TabIndex = 1;
+            // 
+            // textBoxSystem
+            // 
+            this.textBoxSystem.Location = new System.Drawing.Point(6, 32);
+            this.textBoxSystem.Name = "textBoxSystem";
+            this.textBoxSystem.Size = new System.Drawing.Size(142, 20);
+            this.textBoxSystem.TabIndex = 0;
             // 
             // groupBox3
             // 
@@ -211,13 +211,6 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Planetary location";
             // 
-            // textBoxAltitude
-            // 
-            this.textBoxAltitude.Location = new System.Drawing.Point(9, 110);
-            this.textBoxAltitude.Name = "textBoxAltitude";
-            this.textBoxAltitude.Size = new System.Drawing.Size(100, 20);
-            this.textBoxAltitude.TabIndex = 9;
-            // 
             // label6
             // 
             this.label6.AutoSize = true;
@@ -226,6 +219,13 @@
             this.label6.Size = new System.Drawing.Size(42, 13);
             this.label6.TabIndex = 10;
             this.label6.Text = "Altitude";
+            // 
+            // textBoxAltitude
+            // 
+            this.textBoxAltitude.Location = new System.Drawing.Point(9, 110);
+            this.textBoxAltitude.Name = "textBoxAltitude";
+            this.textBoxAltitude.Size = new System.Drawing.Size(100, 20);
+            this.textBoxAltitude.TabIndex = 9;
             // 
             // FormAddLocation
             // 
