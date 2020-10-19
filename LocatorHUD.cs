@@ -23,20 +23,18 @@ namespace SRVTracker
 
         public LocatorHUD()
         {
-            InitializeComponent();
-            _arrowAtAngle[0] = (Bitmap)pictureBoxDirection.Image.Clone();
+            InitializeComponent();           
             labelSpeedInMS.Visible = false;
             labelMs.Visible = false;
-        }
-
-        private void LocatorHUD_Load(object sender, EventArgs e)
-        {
         }
 
         public bool SetBearing(int bearingToTarget, int currentHeading)
         {
             if (currentHeading < 0)
                 return false;
+
+            if (_arrowAtAngle[0] == null)
+                _arrowAtAngle[0] = (Bitmap)pictureBoxDirection.Image.Clone();
 
             Action action;
             bool updated = false;

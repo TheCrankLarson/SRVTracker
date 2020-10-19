@@ -126,7 +126,6 @@
             this.Controls.Add(this.label1);
             this.Name = "LocatorHUD";
             this.Size = new System.Drawing.Size(260, 60);
-            this.Load += new System.EventHandler(this.LocatorHUD_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxDirection)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

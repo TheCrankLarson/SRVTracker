@@ -51,10 +51,13 @@ namespace SRVTracker
         {
             switch (m.Msg)
             {
-                case 0x84:
+                case 0x84: // WM_NCHITTEST
                     base.WndProc(ref m);
                     if ((int)m.Result == 0x1)
+                    {
+                        // This is a hit in the client area
                         m.Result = (IntPtr)0x2;
+                    }
                     return;
             }
 
