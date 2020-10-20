@@ -131,13 +131,16 @@ namespace SRVTracker
 
             // Restore racers to the listbox
             foreach (string racer in _race.Contestants)
-                AddTrackedCommander(racer);
+                AddTrackedCommander(racer,"Reconnecting...", true);
 
             string notableEventOutputFile = "";
             if (checkBoxExportNotableEvents.Checked)
                 notableEventOutputFile = textBoxNotableEventsFile.Text;
             _clientNotableEvents = new NotableEvents(notableEventOutputFile);
             _serverNotableEventsIndex = _race.NotableEvents.EventQueue.Count - 1;
+
+            // We trigger an immediate status update, then start the timer
+            timerRefreshFromServer_Tick(null, null);
             timerRefreshFromServer.Start();
         }
 
@@ -234,7 +237,7 @@ namespace SRVTracker
                 action();
         }
 
-        private void AddTrackedCommander(string commander, string status = "Ready")
+        private void AddTrackedCommander(string commander, string status = "Ready", bool SkipAddContestant = false)
         {
             if (_racers.ContainsKey(commander))
                 return;
@@ -246,7 +249,8 @@ namespace SRVTracker
             item.SubItems[3].Tag = double.MaxValue;
             item.SubItems.Add("100");
             _racers.Add(commander, item);
-            _race.Contestants.Add(commander);
+            if (!SkipAddContestant && !_race.Contestants.Contains(commander))
+                _race.Contestants.Add(commander);
 
             Action action = new Action(() =>
             {
@@ -289,7 +293,7 @@ namespace SRVTracker
                 // Race has started
                 if (!_race.Statuses.ContainsKey(edEvent.Commander))
                     return; // We're not tracking this commander
-                _race.Statuses[edEvent.Commander].UpdateStatus(edEvent);
+                _race.UpdateStatus(edEvent);
                 UpdateStatus(edEvent.Commander, _race.Statuses[edEvent.Commander].ToString()); // We do this to display the speed in the listview
             }
 
@@ -1574,6 +1578,11 @@ namespace SRVTracker
         private void checkBoxExportTotalDistanceLeft_CheckedChanged(object sender, EventArgs e)
         {
             UpdateButtons();
+        }
+
+        private void textBoxServerRaceGuid_TextChanged(object sender, EventArgs e)
+        {
+            _formConfig.SaveConfiguration();
         }
     }
 }
