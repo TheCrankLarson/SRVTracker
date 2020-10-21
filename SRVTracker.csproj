@@ -213,6 +213,7 @@
     <Compile Include="TrackerHUD.Designer.cs">
       <DependentUpon>TrackerHUD.cs</DependentUpon>
     </Compile>
+    <Compile Include="Updater.cs" />
     <EmbeddedResource Include="FormAddLocation.resx">
       <DependentUpon>FormAddLocation.cs</DependentUpon>
     </EmbeddedResource>
@@ -332,6 +333,7 @@
     <None Include="Resources\Return_16x.png" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="CurrentVersion.txt" />
     <Content Include="LeaderBoard Template.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
