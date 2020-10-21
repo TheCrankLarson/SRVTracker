@@ -75,6 +75,7 @@ namespace SRVTracker
             checkBoxEliminationOnDestruction.Checked = _race.EliminateOnVehicleDestruction;
             ShowHideStreamingOptions();
             UpdateButtons();
+            ClearTrackingFiles();
 
             _racers = new Dictionary<string, System.Windows.Forms.ListViewItem>();
 
@@ -137,7 +138,13 @@ namespace SRVTracker
             if (checkBoxExportNotableEvents.Checked)
                 notableEventOutputFile = textBoxNotableEventsFile.Text;
             _clientNotableEvents = new NotableEvents(notableEventOutputFile);
-            _serverNotableEventsIndex = _race.NotableEvents.EventQueue.Count - 1;
+            _serverNotableEventsIndex = int.MaxValue;
+
+            checkBoxAutoAddCommanders.Checked = false;
+            buttonStartRace.Enabled = false;
+            buttonStopRace.Enabled = true;
+            buttonRemoveParticipant.Enabled = false;
+            buttonRaceHistory.Enabled = true;
 
             // We trigger an immediate status update, then start the timer
             timerRefreshFromServer_Tick(null, null);
@@ -154,7 +161,7 @@ namespace SRVTracker
         {
             // We've received an event for a listed racer
             if (!String.IsNullOrEmpty(_serverRaceGuid) && _race.Start > DateTime.MinValue)
-                return; // Server monitored race is running - we shouldn't get here, but just in case
+                return; // Server monitored race is running
 
             Task.Run(new Action(() => { UpdateStatus(edEvent); }));
         }
@@ -672,6 +679,13 @@ namespace SRVTracker
 
         private void buttonLoadRace_Click(object sender, EventArgs e)
         {
+            if (buttonStopRace.Enabled)
+            {
+                // Don't load a race while one is running
+                if (MessageBox.Show(this, "Stop the currently running race?", "Race is running", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                    return;
+                buttonStopRace_Click(sender, null);
+            }
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
                 openFileDialog.InitialDirectory = _routeFile;
@@ -687,7 +701,12 @@ namespace SRVTracker
                         MessageBox.Show("Invalid race file", "Load Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
+                    if (buttonReset.Enabled)
+                        buttonReset_Click(sender, null);
+
                     _race = race;
+                    _racers = new Dictionary<string, System.Windows.Forms.ListViewItem>();
+                    listViewParticipants.Items.Clear();
                     _saveFilename = openFileDialog.FileName;
                     textBoxRaceName.Text = _race.Name;
                     DisplayRoute();
@@ -835,7 +854,6 @@ namespace SRVTracker
                         return false;
                     }
 
-                    CommanderWatcher.UpdateReceived -= CommanderWatcher_UpdateReceived; // We don't want client notifications anymore
                     string notableEventOutputFile = "";
                     if (checkBoxExportNotableEvents.Checked)
                         notableEventOutputFile = textBoxNotableEventsFile.Text;
@@ -1072,11 +1090,8 @@ namespace SRVTracker
         {
             EDRaceStatus.Started = false;
             _race.Finished = false;
-            if (!String.IsNullOrEmpty(_serverRaceGuid))
-            {
-                CommanderWatcher.UpdateReceived += CommanderWatcher_UpdateReceived;
-            }
             _serverRaceGuid = "";
+            textBoxServerRaceGuid.Text = "";
             _race.Statuses = null;
             _race.Start = DateTime.MinValue;
             _eliminatedRacers = null;
@@ -1213,6 +1228,8 @@ namespace SRVTracker
                     _clientNotableEvents.AddEvent(notableEvents[_serverNotableEventsIndex]);
                     _serverNotableEventsIndex++;
                 }
+                if (_serverNotableEventsIndex == int.MaxValue)
+                    _serverNotableEventsIndex = notableEvents.Length;
             }
 
             if (serverStats.ContainsKey("LeaderWaypoint"))
@@ -1403,7 +1420,64 @@ namespace SRVTracker
          
             return null;
         }
-        
+
+        private void ClearTrackingFiles()
+        {
+            if (checkBoxExportTrackedTarget.Checked)
+            {
+                try
+                {
+                    File.WriteAllText(textBoxExportTargetFile.Text, "");
+                }
+                catch { }
+            }
+
+            if (checkBoxExportTrackedTargetSpeed.Checked)
+            {
+                try
+                {
+                    File.WriteAllText(textBoxExportTargetSpeedFile.Text, "");
+                }
+                catch { }
+            }
+
+            if (checkBoxExportTrackedTargetPosition.Checked)
+            {
+                try
+                {
+                    File.WriteAllText(textBoxExportTargetPosition.Text, "");
+                }
+                catch { }
+            }
+
+            if (checkBoxExportTrackedTargetMaxSpeed.Checked)
+            {
+                try
+                {
+                    File.WriteAllText(textBoxExportTargetMaxSpeedFile.Text, "");
+                }
+                catch { }
+            }
+
+            if (checkBoxExportTrackedTargetPitstops.Checked)
+            {
+                try
+                {
+                    File.WriteAllText(textBoxExportTargetPitstopsFile.Text, "");
+                }
+                catch { }
+            }
+
+            if (checkBoxExportTrackedTargetHull.Checked)
+            {
+                    try
+                    {
+                        File.WriteAllText(textBoxExportTargetHull.Text, "");
+                    }
+                    catch { }
+            }
+        }
+
         private void ExportTrackingInfo()
         {
             if (!checkBoxExportTrackedTarget.Checked)
@@ -1554,7 +1628,8 @@ namespace SRVTracker
         private void FormRaceMonitor_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (!String.IsNullOrEmpty(_serverRaceGuid))
-                buttonStopRace_Click(this, null);
+                if (MessageBox.Show(this, "Stop race on server?", "Race still running", MessageBoxButtons.YesNo, MessageBoxIcon.Question)==DialogResult.Yes)
+                    buttonStopRace_Click(this, null);
         }
 
         private void checkBoxExportHull_CheckedChanged(object sender, EventArgs e)
@@ -1580,9 +1655,5 @@ namespace SRVTracker
             UpdateButtons();
         }
 
-        private void textBoxServerRaceGuid_TextChanged(object sender, EventArgs e)
-        {
-            _formConfig.SaveConfiguration();
-        }
     }
 }

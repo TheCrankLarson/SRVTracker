@@ -1075,7 +1075,6 @@
             this.textBoxServerRaceGuid.Name = "textBoxServerRaceGuid";
             this.textBoxServerRaceGuid.Size = new System.Drawing.Size(230, 20);
             this.textBoxServerRaceGuid.TabIndex = 2;
-            this.textBoxServerRaceGuid.TextChanged += new System.EventHandler(this.textBoxServerRaceGuid_TextChanged);
             // 
             // label7
             // 
