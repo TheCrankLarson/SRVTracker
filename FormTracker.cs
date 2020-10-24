@@ -378,9 +378,8 @@ namespace SRVTracker
             if (_formFlagsWatcher != null)
                 _formFlagsWatcher.UpdateFlags(edEvent.Flags);
 
-            if (edEvent.PlanetRadius > 0)
-                if (FormLocator.PlanetaryRadius != edEvent.PlanetRadius)
-                    FormLocator.PlanetaryRadius = edEvent.PlanetRadius;
+            if ( (edEvent.PlanetRadius > 0) && (FormLocator.PlanetaryRadius != edEvent.PlanetRadius) )
+                FormLocator.PlanetaryRadius = edEvent.PlanetRadius;
 
             // Update the UI with the event data
             Action action;
@@ -415,8 +414,15 @@ namespace SRVTracker
                     }
                 }
                 _lastSpeedInMs = SpeedInMS;
-        
-                CurrentLocation = edEvent.Location();
+
+                CurrentLocation.Latitude = edEvent.Latitude;
+                CurrentLocation.Longitude = edEvent.Longitude;
+                CurrentLocation.Altitude = edEvent.Altitude;
+                if (!String.IsNullOrEmpty(edEvent.BodyName))
+                    CurrentLocation.PlanetName = edEvent.BodyName;
+                if (edEvent.PlanetRadius > 0)
+                    CurrentLocation.PlanetaryRadius = edEvent.PlanetRadius;
+
                 CommanderLocationChanged?.Invoke(null, null);
                 CurrentHeading = edEvent.Heading;
             }

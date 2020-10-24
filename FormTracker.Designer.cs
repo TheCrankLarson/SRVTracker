@@ -53,7 +53,6 @@
             this.textBoxUploadServer = new System.Windows.Forms.TextBox();
             this.checkBoxUpload = new System.Windows.Forms.CheckBox();
             this.buttonRoutePlanner = new System.Windows.Forms.Button();
-            this.buttonExit = new System.Windows.Forms.Button();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
@@ -68,10 +67,11 @@
             this.label3 = new System.Windows.Forms.Label();
             this.textBoxPlanetRadius = new System.Windows.Forms.TextBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.buttonShowConfig = new System.Windows.Forms.Button();
-            this.buttonLocator = new System.Windows.Forms.Button();
             this.checkBoxAutoUpdate = new System.Windows.Forms.CheckBox();
             this.checkBoxIncludeBetaUpdates = new System.Windows.Forms.CheckBox();
+            this.buttonShowConfig = new System.Windows.Forms.Button();
+            this.buttonExit = new System.Windows.Forms.Button();
+            this.buttonLocator = new System.Windows.Forms.Button();
             this.trackerHUD1 = new SRVTracker.TrackerHUD();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.statusFileWatcher)).BeginInit();
@@ -312,17 +312,6 @@
             this.buttonRoutePlanner.UseVisualStyleBackColor = true;
             this.buttonRoutePlanner.Click += new System.EventHandler(this.buttonRoutePlanner_Click);
             // 
-            // buttonExit
-            // 
-            this.buttonExit.Image = global::SRVTracker.Properties.Resources.Close_red_16x;
-            this.buttonExit.Location = new System.Drawing.Point(237, 122);
-            this.buttonExit.Name = "buttonExit";
-            this.buttonExit.Size = new System.Drawing.Size(38, 23);
-            this.buttonExit.TabIndex = 11;
-            this.toolTip1.SetToolTip(this.buttonExit, "Close the program");
-            this.buttonExit.UseVisualStyleBackColor = true;
-            this.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
-            // 
             // groupBox5
             // 
             this.groupBox5.Controls.Add(this.textBoxClientId);
@@ -488,28 +477,6 @@
             this.toolTip1.InitialDelay = 500;
             this.toolTip1.ReshowDelay = 100;
             // 
-            // buttonShowConfig
-            // 
-            this.buttonShowConfig.Image = global::SRVTracker.Properties.Resources.Settings_16x;
-            this.buttonShowConfig.Location = new System.Drawing.Point(193, 122);
-            this.buttonShowConfig.Name = "buttonShowConfig";
-            this.buttonShowConfig.Size = new System.Drawing.Size(38, 23);
-            this.buttonShowConfig.TabIndex = 12;
-            this.toolTip1.SetToolTip(this.buttonShowConfig, "Show Settings");
-            this.buttonShowConfig.UseVisualStyleBackColor = true;
-            this.buttonShowConfig.Click += new System.EventHandler(this.buttonShowConfig_Click);
-            // 
-            // buttonLocator
-            // 
-            this.buttonLocator.Image = global::SRVTracker.Properties.Resources.Target_16x;
-            this.buttonLocator.Location = new System.Drawing.Point(72, 122);
-            this.buttonLocator.Name = "buttonLocator";
-            this.buttonLocator.Size = new System.Drawing.Size(55, 23);
-            this.buttonLocator.TabIndex = 9;
-            this.toolTip1.SetToolTip(this.buttonLocator, "Open the Locator (to track other\r\ncommanders and locations)");
-            this.buttonLocator.UseVisualStyleBackColor = true;
-            this.buttonLocator.Click += new System.EventHandler(this.buttonLocator_Click);
-            // 
             // checkBoxAutoUpdate
             // 
             this.checkBoxAutoUpdate.AutoSize = true;
@@ -530,8 +497,42 @@
             this.checkBoxIncludeBetaUpdates.Size = new System.Drawing.Size(85, 17);
             this.checkBoxIncludeBetaUpdates.TabIndex = 22;
             this.checkBoxIncludeBetaUpdates.Text = "Include beta";
+            this.toolTip1.SetToolTip(this.checkBoxIncludeBetaUpdates, resources.GetString("checkBoxIncludeBetaUpdates.ToolTip"));
             this.checkBoxIncludeBetaUpdates.UseVisualStyleBackColor = true;
             this.checkBoxIncludeBetaUpdates.Visible = false;
+            // 
+            // buttonShowConfig
+            // 
+            this.buttonShowConfig.Image = global::SRVTracker.Properties.Resources.Settings_16x;
+            this.buttonShowConfig.Location = new System.Drawing.Point(193, 122);
+            this.buttonShowConfig.Name = "buttonShowConfig";
+            this.buttonShowConfig.Size = new System.Drawing.Size(38, 23);
+            this.buttonShowConfig.TabIndex = 12;
+            this.toolTip1.SetToolTip(this.buttonShowConfig, "Show Settings");
+            this.buttonShowConfig.UseVisualStyleBackColor = true;
+            this.buttonShowConfig.Click += new System.EventHandler(this.buttonShowConfig_Click);
+            // 
+            // buttonExit
+            // 
+            this.buttonExit.Image = global::SRVTracker.Properties.Resources.Close_red_16x;
+            this.buttonExit.Location = new System.Drawing.Point(237, 122);
+            this.buttonExit.Name = "buttonExit";
+            this.buttonExit.Size = new System.Drawing.Size(38, 23);
+            this.buttonExit.TabIndex = 11;
+            this.toolTip1.SetToolTip(this.buttonExit, "Close the program");
+            this.buttonExit.UseVisualStyleBackColor = true;
+            this.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
+            // 
+            // buttonLocator
+            // 
+            this.buttonLocator.Image = global::SRVTracker.Properties.Resources.Target_16x;
+            this.buttonLocator.Location = new System.Drawing.Point(72, 122);
+            this.buttonLocator.Name = "buttonLocator";
+            this.buttonLocator.Size = new System.Drawing.Size(55, 23);
+            this.buttonLocator.TabIndex = 9;
+            this.toolTip1.SetToolTip(this.buttonLocator, "Open the Locator (to track other\r\ncommanders and locations)");
+            this.buttonLocator.UseVisualStyleBackColor = true;
+            this.buttonLocator.Click += new System.EventHandler(this.buttonLocator_Click);
             // 
             // trackerHUD1
             // 

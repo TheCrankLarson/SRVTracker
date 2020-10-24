@@ -46,8 +46,9 @@ namespace SRVTracker
             _location.Latitude = FormTracker.CurrentLocation.Latitude;
             _location.Longitude = FormTracker.CurrentLocation.Longitude;
             _location.Altitude = FormTracker.CurrentLocation.Altitude;
+            _location.PlanetaryRadius = FormTracker.CurrentLocation.PlanetaryRadius;
             // Only overwrite properties if they are set
-            if (FormLocator.PlanetaryRadius>0)
+            if ((_location.PlanetaryRadius<1) && FormLocator.PlanetaryRadius>0)
                 _location.PlanetaryRadius = FormLocator.PlanetaryRadius;
             if (!String.IsNullOrEmpty(FormTracker.CurrentLocation.PlanetName))
                 _location.PlanetName = FormTracker.CurrentLocation.PlanetName;
