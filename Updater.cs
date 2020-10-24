@@ -115,7 +115,7 @@ namespace SRVTracker
             return true;
         }
 
-        private string ApplicationUpdateInfoFile()
+        public string ApplicationUpdateInfoFile()
         {
             return $"{Application.ProductName}.update";
         }

@@ -30,17 +30,25 @@ namespace SRVTracker
         public UpdaterForm(Updater updater): this()
         {
             // This is the entry point if we are updating.  The .update file should contain the update information
-            try
+            if (!File.Exists(updater.ApplicationUpdateInfoFile()))
+                MessageBox.Show("Update information file not found", "Update Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            else
             {
-                string updateInfo = File.ReadAllText($"{Application.ProductName}.update");
-                _updateInformation = VersionInfo.FromString(updateInfo);
+                try
+                {
+                    string updateInfo = File.ReadAllText(updater.ApplicationUpdateInfoFile());
+                    _updateInformation = VersionInfo.FromString(updateInfo);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Failed to get latest version{Environment.NewLine}{Environment.NewLine}{ex.Message}", "Update Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
-            catch { }
             if (_updateInformation == null)
-            {
-                MessageBox.Show("Failed to get latest version", "Update Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            {               
                 groupBoxUpdating.Visible = false;
                 buttonYes.Enabled = false;
+                buttonNo.Text = "Close";
                 return;
             }
 
