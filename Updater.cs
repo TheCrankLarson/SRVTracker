@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Net;
 using System.IO;
-using System.Windows.Shapes;
+using System.Diagnostics;
 
 namespace SRVTracker
 {
-    class VersionInfo
+    public class VersionInfo
     {
         public string version;
         public string downloadUrl;
@@ -21,6 +21,21 @@ namespace SRVTracker
             version = Version;
             downloadUrl = DownloadUrl;
             isBeta = IsBeta;
+        }
+
+        public string ToString()
+        {
+            if (isBeta)
+                return $"Beta {version} {downloadUrl}";
+            return $"Release {version} {downloadUrl}";
+        }
+
+        public static VersionInfo FromString(string versionInfo)
+        {
+            string[] infoSegments = versionInfo.Split(' ');
+            if (infoSegments.Length != 3)
+                return null;
+            return new VersionInfo(infoSegments[1], infoSegments[2], infoSegments[0].Equals("Beta"));
         }
 
         public bool IsHigherThan(string CompareVersion)
@@ -57,18 +72,14 @@ namespace SRVTracker
 
         public Updater()
         {
-
         }
 
-        public void ProcessUpdate()
+        public VersionInfo LatestAvailableVersion()
         {
-            string updateFile = $"{Application.ProductName}.update";
-            if (!File.Exists(updateFile))
-                return;
+            if (_latestVersion==null)
+                GetLatestVersion();
 
-            // We have an update info file
-            string updateInfo = File.ReadAllText(updateFile);
-            ProcessUpdateInfo(updateInfo);
+            return _latestVersion;
         }
 
         public bool RunningVersionIsBeta
@@ -105,9 +116,15 @@ namespace SRVTracker
                     availableVersionInfo = webClient.DownloadString(_releaseInfoUrl);
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"{ex}");
+            }
             if (String.IsNullOrEmpty(availableVersionInfo))
+            {
+                MessageBox.Show("Failed to retrieve available versions");
                 return;
+            }
 
             using (StringReader reader = new StringReader(availableVersionInfo))
             {
@@ -149,18 +166,17 @@ namespace SRVTracker
             if (String.IsNullOrEmpty(_latestReleaseVersion))
                 return false;
 
-            VersionInfo latestVersion = null;
             foreach (VersionInfo versionInfo in _availableVersions)
             {
                 if (versionInfo.isBeta)
                 {
                     if (useBeta && versionInfo.IsHigherThan(ThisVersion))
-                        latestVersion = versionInfo;
+                        _latestVersion = versionInfo;
                 }
                 else if (versionInfo.IsHigherThan(ThisVersion))
-                    latestVersion = versionInfo;
+                    _latestVersion = versionInfo;
             }
-            if (latestVersion == null)
+            if (_latestVersion == null)
                 return false;
             return true;
         }
@@ -171,20 +187,35 @@ namespace SRVTracker
                 return false;
 
             // If we get here, there is an update available.  Prompt whether to download and install.
-            string latest = _latestVersion.version;
-            if (_latestVersion.isBeta)
-                latest += " BETA";
-            DialogResult dResult = MessageBox.Show($"Installed version: {ThisVersion}{Environment.NewLine}Available version:{latest}{Environment.NewLine}{Environment.NewLine}Update now?", 
-                "Update available", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
-            if (dResult == DialogResult.No)
+            UpdaterForm updaterForm = new UpdaterForm(_latestVersion);
+            if (updaterForm.ShowDialog()==DialogResult.No)
                 return false;
 
-            // Download and install update
-
             // To install, we copy this executable to Updater.exe, and run that to process the update
-
-            return true;
+            try
+            {
+                string updaterPath = $"{Application.ExecutablePath.Substring(0, Application.ExecutablePath.Length - 4)}Updater.exe";
+                if (File.Exists(updaterPath))
+                    File.Delete(updaterPath);
+                File.Copy(Application.ExecutablePath, updaterPath);
+                WriteUpdateFile(_latestVersion.ToString());
+                LaunchApplication(updaterPath);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"{ex}", "Update error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            return false;
         }
+
+        public void LaunchApplication(string ApplicationPath)
+        {
+            var psi = new ProcessStartInfo();
+
+            psi.FileName = ApplicationPath;
+            _ = Process.Start(psi);
+        }
+
     }
 }

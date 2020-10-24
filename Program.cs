@@ -13,17 +13,24 @@ namespace SRVTracker
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
             if (Application.ExecutablePath.EndsWith("Updater.exe"))
             {
                 // We're about to install an update
-                Updater updater = new Updater();
+                try
+                {
+                    Application.Run(new UpdaterForm(new Updater()));
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"{ex}", "Failed to start updater", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
-
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FormTracker());
+            else
+                Application.Run(new FormTracker());
         }
     }
 }

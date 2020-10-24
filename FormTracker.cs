@@ -744,8 +744,7 @@ namespace SRVTracker
                     Updater updater = new Updater();
                     if (updater.DownloadUpdate(checkBoxIncludeBetaUpdates.Checked))
                     {
-                        this.Close();
-                        return;
+                        Close();
                     }
                     if (updater.RunningVersionIsBeta)
                     {

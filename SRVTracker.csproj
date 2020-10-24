@@ -87,6 +87,7 @@
       <HintPath>packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
     </Reference>
     <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression" />
     <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
     </Reference>
@@ -214,6 +215,12 @@
       <DependentUpon>TrackerHUD.cs</DependentUpon>
     </Compile>
     <Compile Include="Updater.cs" />
+    <Compile Include="UpdaterForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UpdaterForm.Designer.cs">
+      <DependentUpon>UpdaterForm.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="FormAddLocation.resx">
       <DependentUpon>FormAddLocation.cs</DependentUpon>
     </EmbeddedResource>
@@ -265,6 +272,9 @@
     </Compile>
     <EmbeddedResource Include="TrackerHUD.resx">
       <DependentUpon>TrackerHUD.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UpdaterForm.resx">
+      <DependentUpon>UpdaterForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="EUROCAPS.TTF">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
