@@ -32,7 +32,7 @@ namespace SRVTracker
         private static string _clientId = null;
         private JournalReader _journalReader = null;
         public static event EventHandler CommanderLocationChanged;
-        public static EDLocation CurrentLocation { get; private set; } = null;
+        public static EDLocation CurrentLocation { get; private set; } = new EDLocation();
         public static int CurrentHeading { get; private set; } = -1;
         public static double SpeedInMS { get; internal set; } = 0;
         FormRaceMonitor _formRaceMonitor = null;
@@ -46,8 +46,13 @@ namespace SRVTracker
         public FormTracker()
         {            
             InitializeComponent();
-            // Attach our form configuration saver
 
+            _statusTimer = new System.Timers.Timer(700);
+            _statusTimer.Elapsed += _statusTimer_Elapsed;
+            _journalReader = new JournalReader(EDJournalPath());
+            _journalReader.InterestingEventOccurred += _journalReader_InterestingEventOccurred;
+
+            // Attach our form configuration saver
             _formConfig = new ConfigSaverClass(this, true);
             _formConfig.ExcludedControls.Add(textBoxClientId);
             _formConfig.ExcludedControls.Add(textBoxStatusFile);
@@ -65,11 +70,8 @@ namespace SRVTracker
             InitStatusLocation();
             buttonTest.Visible = System.Diagnostics.Debugger.IsAttached;
             FormLocator.ServerAddress = (string)radioButtonUseDefaultServer.Tag;
-            _statusTimer = new System.Timers.Timer(700);
-            _statusTimer.Elapsed += _statusTimer_Elapsed;
+
             this.Size = _configHidden;
-            _journalReader = new JournalReader(EDJournalPath());
-            _journalReader.InterestingEventOccurred += _journalReader_InterestingEventOccurred;
             this.Text = Application.ProductName + " v" + Application.ProductVersion;
         }
 
@@ -85,7 +87,7 @@ namespace SRVTracker
 
             // If the file has been written, then process it
             DateTime lastWriteTime = File.GetLastWriteTime(_statusFile);
-            if ( (lastWriteTime != _lastFileWrite) || (DateTime.Now.Subtract(_lastStatusSend).TotalSeconds>5) )
+            if ( (lastWriteTime != _lastFileWrite) || ( DateTime.Now.Subtract(_lastStatusSend).TotalSeconds>5 ) )
             {
                 ProcessStatusFileUpdate(_statusFile);
                 _lastFileWrite = lastWriteTime;
@@ -243,7 +245,9 @@ namespace SRVTracker
                 // This also gives us polling every five seconds in case the commander stops moving (as soon as they move, the new status should be picked up)
                 // Turns out milliseconds is pointless as E: D is very unlikely to generate a new status file more than once a second (and/or we won't detect it), but
                 // we'll keep them in case this changes in future.
-                UpdateUI(new EDEvent(status,textBoxClientId.Text, DateTime.Now));
+                EDEvent updateEvent = new EDEvent(status, textBoxClientId.Text, DateTime.Now);
+                if (updateEvent.Flags != 0)
+                    UpdateUI(updateEvent);
             }
             catch { }
 
