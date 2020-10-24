@@ -23,7 +23,7 @@ namespace SRVTracker
             isBeta = IsBeta;
         }
 
-        public string ToString()
+        public override string ToString()
         {
             if (isBeta)
                 return $"Beta {version} {downloadUrl}";
@@ -94,6 +94,28 @@ namespace SRVTracker
         private void WriteUpdateFile(string updateInfo)
         {
             File.WriteAllText($"{Application.ProductName}.update", updateInfo);
+        }
+
+        public void ClearUpdateFiles()
+        {
+            // Remove the Updater.exe and .update files, if they exist
+
+            if (File.Exists($"{Application.ProductName}.update"))
+            {
+                try
+                {
+                    File.Delete($"{Application.ProductName}.update");
+                }
+                catch { }
+            }
+            if (File.Exists(UpdaterExeName()))
+            {
+                try
+                {
+                    File.Delete(UpdaterExeName());
+                }
+                catch { }
+            }
         }
 
         private void ProcessUpdateInfo(string updateInfo)
@@ -181,6 +203,11 @@ namespace SRVTracker
             return true;
         }
 
+        public string UpdaterExeName()
+        {
+            return $"{Application.ExecutablePath.Substring(0, Application.ExecutablePath.Length - 4)}Updater.exe";
+        }
+
         public bool DownloadUpdate(bool IncludeBeta = false)
         {
             if (!UpdateAvailable(IncludeBeta))
@@ -194,7 +221,7 @@ namespace SRVTracker
             // To install, we copy this executable to Updater.exe, and run that to process the update
             try
             {
-                string updaterPath = $"{Application.ExecutablePath.Substring(0, Application.ExecutablePath.Length - 4)}Updater.exe";
+                string updaterPath = UpdaterExeName();
                 if (File.Exists(updaterPath))
                     File.Delete(updaterPath);
                 File.Copy(Application.ExecutablePath, updaterPath);

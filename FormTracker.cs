@@ -757,6 +757,7 @@ namespace SRVTracker
                         else
                             updateBetaAction();
                     }
+                    updater.ClearUpdateFiles();
                 });
                 Task.Run(action);
             }
