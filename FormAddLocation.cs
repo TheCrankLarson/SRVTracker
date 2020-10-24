@@ -23,11 +23,13 @@ namespace SRVTracker
             if (_location == null)
             {
                 _location = new EDLocation();
-                DisplayLocation();
+                if (FormTracker.CurrentLocation.PlanetaryRadius > 0)
+                    _location.PlanetaryRadius = FormTracker.CurrentLocation.PlanetaryRadius;
+                _location.PlanetName = FormTracker.CurrentLocation.PlanetName;
+                _location.SystemName = FormTracker.CurrentLocation.SystemName;
             }
-            if (String.IsNullOrEmpty(textBoxPlanetaryRadius.Text))
-                if (FormTracker.CurrentLocation.PlanetaryRadius > 1)
-                    textBoxPlanetaryRadius.Text = FormTracker.CurrentLocation.PlanetaryRadius.ToString();
+
+            DisplayLocation();
         }
 
         public EDLocation GetLocation(IWin32Window owner)
