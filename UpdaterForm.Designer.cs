@@ -30,10 +30,10 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UpdaterForm));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.textBoxThisVersion = new System.Windows.Forms.TextBox();
-            this.textBoxAvailableVersion = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.textBoxAvailableVersion = new System.Windows.Forms.TextBox();
+            this.textBoxThisVersion = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.buttonYes = new System.Windows.Forms.Button();
             this.buttonNo = new System.Windows.Forms.Button();
@@ -56,14 +56,23 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Update Available";
             // 
-            // textBoxThisVersion
+            // label2
             // 
-            this.textBoxThisVersion.Location = new System.Drawing.Point(102, 19);
-            this.textBoxThisVersion.Name = "textBoxThisVersion";
-            this.textBoxThisVersion.ReadOnly = true;
-            this.textBoxThisVersion.Size = new System.Drawing.Size(100, 20);
-            this.textBoxThisVersion.TabIndex = 2;
-            this.textBoxThisVersion.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(6, 48);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(90, 13);
+            this.label2.TabIndex = 3;
+            this.label2.Text = "Available version:";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(6, 22);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(67, 13);
+            this.label1.TabIndex = 2;
+            this.label1.Text = "This version:";
             // 
             // textBoxAvailableVersion
             // 
@@ -75,23 +84,14 @@
             this.textBoxAvailableVersion.TabIndex = 3;
             this.textBoxAvailableVersion.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // label1
+            // textBoxThisVersion
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 22);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(67, 13);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "This version:";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 48);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(90, 13);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "Available version:";
+            this.textBoxThisVersion.Location = new System.Drawing.Point(102, 19);
+            this.textBoxThisVersion.Name = "textBoxThisVersion";
+            this.textBoxThisVersion.ReadOnly = true;
+            this.textBoxThisVersion.Size = new System.Drawing.Size(100, 20);
+            this.textBoxThisVersion.TabIndex = 2;
+            this.textBoxThisVersion.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label3
             // 
@@ -141,6 +141,7 @@
             this.textBoxUpdateProgress.Location = new System.Drawing.Point(3, 16);
             this.textBoxUpdateProgress.Multiline = true;
             this.textBoxUpdateProgress.Name = "textBoxUpdateProgress";
+            this.textBoxUpdateProgress.ReadOnly = true;
             this.textBoxUpdateProgress.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.textBoxUpdateProgress.Size = new System.Drawing.Size(233, 112);
             this.textBoxUpdateProgress.TabIndex = 0;
