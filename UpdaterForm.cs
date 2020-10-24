@@ -74,7 +74,10 @@ namespace SRVTracker
                         AddLog($"Deleting {entry.FullName}");
                         File.Delete(entry.FullName);
                     }
-                    catch { }
+                    catch (Exception ex)
+                    {
+                        AddLog($"Error: {ex.Message}");
+                    }
                     var d = Path.GetDirectoryName(entry.FullName);
                     if (!string.IsNullOrEmpty(d))
                     {
@@ -83,12 +86,22 @@ namespace SRVTracker
                             AddLog($"Creating directory {d}");
                             Directory.CreateDirectory(d);
                         }
-                        catch { }
+                        catch (Exception ex)
+                        {
+                            AddLog($"Error: {ex.Message}");
+                        }
                     }
                     AddLog($"Writing {entry.FullName}");
-                    using (var stm1 = entry.Open())
-                    using (var stm2 = File.OpenWrite(entry.FullName))
-                        stm1.CopyTo(stm2);
+                    try
+                    {
+                        using (Stream zipStream = entry.Open())
+                            using (FileStream fileStream = File.OpenWrite(entry.FullName))
+                                zipStream.CopyTo(fileStream);
+                    }
+                    catch (Exception ex)
+                    {
+                        AddLog($"Error: {ex.Message}");
+                    }
                 }
             }
         }
