@@ -124,7 +124,7 @@ namespace SRVTracker
         {
             // Remove the Updater.exe and .update files, if they exist
 
-            if (File.Exists(ApplicationUpdateInfoFile())
+            if (File.Exists(ApplicationUpdateInfoFile()))
             {
                 try
                 {
