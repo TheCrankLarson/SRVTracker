@@ -752,6 +752,7 @@ namespace SRVTracker
                 Action action = new Action(() =>
                 {
                     Updater updater = new Updater();
+                    updater.ClearUpdateFiles();
                     if (updater.DownloadUpdate(checkBoxIncludeBetaUpdates.Checked))
                     {
                         Close();
@@ -767,7 +768,6 @@ namespace SRVTracker
                         else
                             updateBetaAction();
                     }
-                    updater.ClearUpdateFiles();
                 });
                 Task.Run(action);
             }

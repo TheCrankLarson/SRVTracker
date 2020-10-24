@@ -19,9 +19,10 @@ namespace EDTracking
         private Dictionary<string, long> _filePointers;
         private DateTime _lastJournalEventTimeStamp = DateTime.MinValue;
         public string[] ReportEvents = { "DockSRV","SRVDestroyed", "FighterDestroyed","HullDamage","LaunchSRV", "Shutdown", "Continued", "Touchdown", "Liftoff", "Died",
-            "UnderAttack", "MaterialCollected", "DatalinkScan", "DataScanned", "ApproachSettlement", "ShipTargeted"};
+            "UnderAttack", "MaterialCollected", "DatalinkScan", "DataScanned", "ApproachSettlement", "ShipTargeted", "Commander"};
         public delegate void InterestingEventHandler(object sender, string eventJson);
-        public  event InterestingEventHandler InterestingEventOccurred;
+        public event InterestingEventHandler InterestingEventOccurred;
+        public string CommanderName = "";
 
         public JournalReader(string journalFolder)
         {
@@ -216,6 +217,12 @@ namespace EDTracking
                                 _activeJournalFile = "";
                                 _journalFileStream?.Close();
                                 _journalFileStream = null;
+                            }
+                            else if (eventName.Equals("Commander"))
+                            {
+                                // This event gives us the Commander name
+                                JsonElement commanderNameElement = jsonDoc.RootElement.GetProperty("Name");
+                                CommanderName = commanderNameElement.GetString();
                             }
                             else if (ReportEvents.Contains(eventName))
                             {
