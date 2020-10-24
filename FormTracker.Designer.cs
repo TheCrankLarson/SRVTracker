@@ -70,8 +70,9 @@
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.buttonShowConfig = new System.Windows.Forms.Button();
             this.buttonLocator = new System.Windows.Forms.Button();
-            this.trackerHUD1 = new SRVTracker.TrackerHUD();
             this.checkBoxAutoUpdate = new System.Windows.Forms.CheckBox();
+            this.checkBoxIncludeBetaUpdates = new System.Windows.Forms.CheckBox();
+            this.trackerHUD1 = new SRVTracker.TrackerHUD();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.statusFileWatcher)).BeginInit();
             this.groupBox5.SuspendLayout();
@@ -509,6 +510,29 @@
             this.buttonLocator.UseVisualStyleBackColor = true;
             this.buttonLocator.Click += new System.EventHandler(this.buttonLocator_Click);
             // 
+            // checkBoxAutoUpdate
+            // 
+            this.checkBoxAutoUpdate.AutoSize = true;
+            this.checkBoxAutoUpdate.Location = new System.Drawing.Point(193, 155);
+            this.checkBoxAutoUpdate.Name = "checkBoxAutoUpdate";
+            this.checkBoxAutoUpdate.Size = new System.Drawing.Size(84, 17);
+            this.checkBoxAutoUpdate.TabIndex = 21;
+            this.checkBoxAutoUpdate.Text = "Auto-update";
+            this.toolTip1.SetToolTip(this.checkBoxAutoUpdate, "If enabled, will automatically check for update on start-up.");
+            this.checkBoxAutoUpdate.UseVisualStyleBackColor = true;
+            this.checkBoxAutoUpdate.CheckedChanged += new System.EventHandler(this.checkBoxAutoUpdate_CheckedChanged);
+            // 
+            // checkBoxIncludeBetaUpdates
+            // 
+            this.checkBoxIncludeBetaUpdates.AutoSize = true;
+            this.checkBoxIncludeBetaUpdates.Location = new System.Drawing.Point(193, 178);
+            this.checkBoxIncludeBetaUpdates.Name = "checkBoxIncludeBetaUpdates";
+            this.checkBoxIncludeBetaUpdates.Size = new System.Drawing.Size(85, 17);
+            this.checkBoxIncludeBetaUpdates.TabIndex = 22;
+            this.checkBoxIncludeBetaUpdates.Text = "Include beta";
+            this.checkBoxIncludeBetaUpdates.UseVisualStyleBackColor = true;
+            this.checkBoxIncludeBetaUpdates.Visible = false;
+            // 
             // trackerHUD1
             // 
             this.trackerHUD1.BackColor = System.Drawing.Color.Black;
@@ -518,22 +542,12 @@
             this.trackerHUD1.TabIndex = 20;
             this.trackerHUD1.Visible = false;
             // 
-            // checkBoxAutoUpdate
-            // 
-            this.checkBoxAutoUpdate.AutoSize = true;
-            this.checkBoxAutoUpdate.Location = new System.Drawing.Point(193, 155);
-            this.checkBoxAutoUpdate.Name = "checkBoxAutoUpdate";
-            this.checkBoxAutoUpdate.Size = new System.Drawing.Size(84, 17);
-            this.checkBoxAutoUpdate.TabIndex = 21;
-            this.checkBoxAutoUpdate.Text = "Auto-update";
-            this.checkBoxAutoUpdate.UseVisualStyleBackColor = true;
-            this.checkBoxAutoUpdate.CheckedChanged += new System.EventHandler(this.checkBoxAutoUpdate_CheckedChanged);
-            // 
             // FormTracker
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(925, 481);
+            this.Controls.Add(this.checkBoxIncludeBetaUpdates);
             this.Controls.Add(this.checkBoxAutoUpdate);
             this.Controls.Add(this.trackerHUD1);
             this.Controls.Add(this.groupBox4);
@@ -620,6 +634,7 @@
         private System.Windows.Forms.ToolTip toolTip1;
         private TrackerHUD trackerHUD1;
         private System.Windows.Forms.CheckBox checkBoxAutoUpdate;
+        private System.Windows.Forms.CheckBox checkBoxIncludeBetaUpdates;
     }
 }
 

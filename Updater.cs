@@ -22,13 +22,37 @@ namespace SRVTracker
             downloadUrl = DownloadUrl;
             isBeta = IsBeta;
         }
+
+        public bool IsHigherThan(string CompareVersion)
+        {
+            // Compare the version with the pass version, and return true if we are higher
+            string[] thisVersion = version.Split('.');
+            string[] compareVersion = CompareVersion.Split('.');
+
+            int versionLength = thisVersion.Length;
+            if (compareVersion.Length < thisVersion.Length)
+                versionLength = compareVersion.Length;
+
+            for (int i = 0; i < versionLength; i++)
+            {
+                int thisVersionSegment = Convert.ToInt32(thisVersion[i]);
+                int compareVersionSegment = Convert.ToInt32(compareVersion[i]);
+                if (thisVersionSegment > compareVersionSegment)
+                    return true;
+                if (thisVersionSegment < compareVersionSegment)
+                    return false;
+            }
+            // Same version
+            return false;
+        }
     }
 
     public class Updater
     {
         private static string _releaseInfoUrl = "https://raw.githubusercontent.com/TheCrankLarson/SRVTracker/master/CurrentVersion.txt";
         private static string _latestReleaseVersion = "";
-        private static string _latestBetaVersion = "";
+        private static VersionInfo _latestVersion = null;
+        private static bool _runningVersionIsBeta = false;
         private static List<VersionInfo> _availableVersions = new List<VersionInfo>();
 
         public Updater()
@@ -45,6 +69,15 @@ namespace SRVTracker
             // We have an update info file
             string updateInfo = File.ReadAllText(updateFile);
             ProcessUpdateInfo(updateInfo);
+        }
+
+        public bool RunningVersionIsBeta
+        {
+            get {
+                if (String.IsNullOrEmpty(_latestReleaseVersion))
+                    GetLatestVersion();
+                return _runningVersionIsBeta;
+            }
         }
 
         private void WriteUpdateFile(string updateInfo)
@@ -67,7 +100,10 @@ namespace SRVTracker
             try
             {
                 using (WebClient webClient = new WebClient())
+                {
+                    webClient.CachePolicy = new System.Net.Cache.RequestCachePolicy(System.Net.Cache.RequestCacheLevel.NoCacheNoStore);
                     availableVersionInfo = webClient.DownloadString(_releaseInfoUrl);
+                }
             }
             catch { }
             if (String.IsNullOrEmpty(availableVersionInfo))
@@ -85,11 +121,15 @@ namespace SRVTracker
                         string[] releaseInfo = line.Split(' ');
                         if (releaseInfo.Length == 3)
                         {
-                            _availableVersions.Add(new VersionInfo(releaseInfo[1], releaseInfo[2], (releaseInfo[0] == "Beta")));
+                            VersionInfo thisVersionInfo = new VersionInfo(releaseInfo[1], releaseInfo[2], (releaseInfo[0] == "Beta"));
+                            _availableVersions.Add(thisVersionInfo);
                             if (releaseInfo[0].Equals("Release"))
+                            {
                                 _latestReleaseVersion = releaseInfo[1];
-                            else if (releaseInfo[0].Equals("Beta"))
-                                _latestBetaVersion = releaseInfo[1];
+                                VersionInfo runningVersionInfo = new VersionInfo(ThisVersion, "", false);
+                                if (runningVersionInfo.IsHigherThan(_latestReleaseVersion))
+                                    _runningVersionIsBeta = true;
+                            }
                         }
                     }
                 } while (line != null);
@@ -101,7 +141,7 @@ namespace SRVTracker
             get { return Application.ProductVersion; }
         }
 
-        public bool UpdateAvailable()
+        public bool UpdateAvailable(bool useBeta = false)
         {
             if (String.IsNullOrEmpty(_latestReleaseVersion))
                 GetLatestVersion();
@@ -109,34 +149,33 @@ namespace SRVTracker
             if (String.IsNullOrEmpty(_latestReleaseVersion))
                 return false;
 
-            string[] currentVersion = ThisVersion.Split('.');
-            string[] latestVersion = _latestReleaseVersion.Split('.');
-
-            int versionLength = currentVersion.Length;
-            if (latestVersion.Length < currentVersion.Length)
-                versionLength = latestVersion.Length;
-
-            for (int i = 0; i < versionLength; i++)
+            VersionInfo latestVersion = null;
+            foreach (VersionInfo versionInfo in _availableVersions)
             {
-                int current = Convert.ToInt32(currentVersion[i]);
-                int updated = Convert.ToInt32(latestVersion[i]);
-                if (current < updated)
-                    return true;
-                if (current > updated)
-                    return false;
+                if (versionInfo.isBeta)
+                {
+                    if (useBeta && versionInfo.IsHigherThan(ThisVersion))
+                        latestVersion = versionInfo;
+                }
+                else if (versionInfo.IsHigherThan(ThisVersion))
+                    latestVersion = versionInfo;
             }
-            // Same version
-            return false;
+            if (latestVersion == null)
+                return false;
+            return true;
         }
 
-        public bool DownloadUpdate()
+        public bool DownloadUpdate(bool IncludeBeta = false)
         {
-            if (!UpdateAvailable())
+            if (!UpdateAvailable(IncludeBeta))
                 return false;
 
             // If we get here, there is an update available.  Prompt whether to download and install.
-            DialogResult dResult = MessageBox.Show($"Installed version: {ThisVersion}{Environment.NewLine}Available version:{_latestReleaseVersion}{Environment.NewLine}Update now?", 
-                "Updated available", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            string latest = _latestVersion.version;
+            if (_latestVersion.isBeta)
+                latest += " BETA";
+            DialogResult dResult = MessageBox.Show($"Installed version: {ThisVersion}{Environment.NewLine}Available version:{latest}{Environment.NewLine}{Environment.NewLine}Update now?", 
+                "Update available", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
             if (dResult == DialogResult.No)
                 return false;

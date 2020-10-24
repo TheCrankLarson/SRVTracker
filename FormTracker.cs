@@ -735,14 +735,31 @@ namespace SRVTracker
 
         private void checkBoxAutoUpdate_CheckedChanged(object sender, EventArgs e)
         {
+            // Note that this gets called when the ConfigSaver restores values (if auto-update is enabled), so we check each time the form loads
+
             if (checkBoxAutoUpdate.Checked)
             {
-                Updater updater = new Updater();
-                if (updater.DownloadUpdate())
+                Action action = new Action(() =>
                 {
-                    this.Close();
-                    return;
-                }
+                    Updater updater = new Updater();
+                    if (updater.DownloadUpdate(checkBoxIncludeBetaUpdates.Checked))
+                    {
+                        this.Close();
+                        return;
+                    }
+                    if (updater.RunningVersionIsBeta)
+                    {
+                        Action updateBetaAction = new Action(() =>
+                        {
+                            checkBoxIncludeBetaUpdates.Checked = true;
+                        });
+                        if (checkBoxIncludeBetaUpdates.InvokeRequired)
+                            checkBoxIncludeBetaUpdates.Invoke(updateBetaAction);
+                        else
+                            updateBetaAction();
+                    }
+                });
+                Task.Run(action);
             }
         }
     }
