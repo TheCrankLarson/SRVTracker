@@ -15,11 +15,12 @@ namespace SRVTracker
         [STAThread]
         static void Main()
         {
-            Updater updater = new Updater();
-            if (updater.UpdateAvailable())
+            if (Application.ExecutablePath.EndsWith("Updater.exe"))
             {
-
+                // We're about to install an update
+                Updater updater = new Updater();
             }
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new FormTracker());

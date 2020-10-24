@@ -71,6 +71,7 @@
             this.buttonShowConfig = new System.Windows.Forms.Button();
             this.buttonLocator = new System.Windows.Forms.Button();
             this.trackerHUD1 = new SRVTracker.TrackerHUD();
+            this.checkBoxAutoUpdate = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.statusFileWatcher)).BeginInit();
             this.groupBox5.SuspendLayout();
@@ -517,11 +518,23 @@
             this.trackerHUD1.TabIndex = 20;
             this.trackerHUD1.Visible = false;
             // 
+            // checkBoxAutoUpdate
+            // 
+            this.checkBoxAutoUpdate.AutoSize = true;
+            this.checkBoxAutoUpdate.Location = new System.Drawing.Point(193, 155);
+            this.checkBoxAutoUpdate.Name = "checkBoxAutoUpdate";
+            this.checkBoxAutoUpdate.Size = new System.Drawing.Size(84, 17);
+            this.checkBoxAutoUpdate.TabIndex = 21;
+            this.checkBoxAutoUpdate.Text = "Auto-update";
+            this.checkBoxAutoUpdate.UseVisualStyleBackColor = true;
+            this.checkBoxAutoUpdate.CheckedChanged += new System.EventHandler(this.checkBoxAutoUpdate_CheckedChanged);
+            // 
             // FormTracker
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(925, 481);
+            this.Controls.Add(this.checkBoxAutoUpdate);
             this.Controls.Add(this.trackerHUD1);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.checkBoxTrack);
@@ -606,6 +619,7 @@
         private System.Windows.Forms.TextBox textBoxPlanetRadius;
         private System.Windows.Forms.ToolTip toolTip1;
         private TrackerHUD trackerHUD1;
+        private System.Windows.Forms.CheckBox checkBoxAutoUpdate;
     }
 }
 

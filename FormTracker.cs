@@ -41,10 +41,26 @@ namespace SRVTracker
         private EDLocation _speedCalculationLocation = null;
         private DateTime _speedCalculationTimeStamp = DateTime.UtcNow;
         private double _lastSpeedInMs = 0;
+        private ConfigSaverClass _formConfig = null;
 
         public FormTracker()
         {            
             InitializeComponent();
+            // Attach our form configuration saver
+
+            _formConfig = new ConfigSaverClass(this, true);
+            _formConfig.ExcludedControls.Add(textBoxClientId);
+            _formConfig.ExcludedControls.Add(textBoxStatusFile);
+            _formConfig.ExcludedControls.Add(textBoxLatitude);
+            _formConfig.ExcludedControls.Add(textBoxLongitude);
+            _formConfig.ExcludedControls.Add(textBoxAltitude);
+            _formConfig.ExcludedControls.Add(textBoxHeading);
+            _formConfig.ExcludedControls.Add(textBoxPlanetRadius);
+            _formConfig.SaveEnabled = true;
+            _formConfig.StoreLabelInfo = false;
+            _formConfig.StoreButtonInfo = false;
+            ConfigSaverClass.ApplyConfiguration();
+
             InitClientId();
             InitStatusLocation();
             buttonTest.Visible = System.Diagnostics.Debugger.IsAttached;
@@ -54,7 +70,6 @@ namespace SRVTracker
             this.Size = _configHidden;
             _journalReader = new JournalReader(EDJournalPath());
             _journalReader.InterestingEventOccurred += _journalReader_InterestingEventOccurred;
-            checkBoxTrack.Checked = true;
             this.Text = Application.ProductName + " v" + Application.ProductVersion;
         }
 
@@ -716,6 +731,19 @@ namespace SRVTracker
 
             _formRaceMonitor = new FormRaceMonitor();
             _formRaceMonitor.Show();
+        }
+
+        private void checkBoxAutoUpdate_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBoxAutoUpdate.Checked)
+            {
+                Updater updater = new Updater();
+                if (updater.DownloadUpdate())
+                {
+                    this.Close();
+                    return;
+                }
+            }
         }
     }
 }
