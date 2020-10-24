@@ -11,6 +11,7 @@ namespace SRVTracker
     {
         private VersionInfo _updateInformation = null;
         private Updater _updater = null;
+        private bool _errorPreventsClose = false;
 
         public UpdaterForm()
         {
@@ -49,7 +50,8 @@ namespace SRVTracker
             Action action = new Action(() =>
             {
                 InstallUpdate();
-                Close();
+                if (!_errorPreventsClose) // Close is prevented if a potentially fatal error occurred during update
+                    Close();
             });
             Task.Run(action);
         }
@@ -101,6 +103,7 @@ namespace SRVTracker
                         catch (Exception ex)
                         {
                             AddLog($"Error: {ex.Message}");
+                            _errorPreventsClose = true;
                         }
                     }
                 }
@@ -108,6 +111,7 @@ namespace SRVTracker
             catch (Exception ex)
             {
                 AddLog($"Error: {ex.Message}");
+                _errorPreventsClose = true;
             }
         }
 
