@@ -21,7 +21,7 @@ namespace SRVTracker
 
         public UpdaterForm(VersionInfo updateInformation): this()
         {
-            // This is the entry point to prompt whether to update ot not - so we hide the updating group box so that the update options can be seen
+            // This is the entry point to prompt whether to update or not - so we hide the updating group box so that the update options can be seen
             _updateInformation = updateInformation;
             textBoxAvailableVersion.Text = _updateInformation.version;           
             groupBoxUpdating.Visible = false;
