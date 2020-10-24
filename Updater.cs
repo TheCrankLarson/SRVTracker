@@ -91,20 +91,44 @@ namespace SRVTracker
             }
         }
 
-        private void WriteUpdateFile(string updateInfo)
+        private bool WriteUpdateFile(string updateInfo)
         {
-            File.WriteAllText($"{Application.ProductName}.update", updateInfo);
+            if (File.Exists(ApplicationUpdateInfoFile()))
+            {
+                try
+                {
+                    File.Delete(ApplicationUpdateInfoFile());
+                }
+                catch
+                {
+                    return false;
+                }
+            }
+            try
+            {
+                File.WriteAllText($"{Application.ProductName}.update", updateInfo);
+            }
+            catch
+            {
+                return false;
+            }
+            return true;
+        }
+
+        private string ApplicationUpdateInfoFile()
+        {
+            return $"{Application.ProductName}.update";
         }
 
         public void ClearUpdateFiles()
         {
             // Remove the Updater.exe and .update files, if they exist
 
-            if (File.Exists($"{Application.ProductName}.update"))
+            if (File.Exists(ApplicationUpdateInfoFile())
             {
                 try
                 {
-                    File.Delete($"{Application.ProductName}.update");
+                    File.Delete(ApplicationUpdateInfoFile());
                 }
                 catch { }
             }
@@ -225,9 +249,16 @@ namespace SRVTracker
                 if (File.Exists(updaterPath))
                     File.Delete(updaterPath);
                 File.Copy(Application.ExecutablePath, updaterPath);
-                WriteUpdateFile(_latestVersion.ToString());
-                LaunchApplication(updaterPath);
-                return true;
+                if (WriteUpdateFile(_latestVersion.ToString()))
+                {
+                    LaunchApplication(updaterPath);
+                    return true;
+                }
+                else
+                {
+                    MessageBox.Show($"Failed to write update information file", "Update error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return false;
+                }
             }
             catch (Exception ex)
             {
