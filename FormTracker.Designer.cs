@@ -51,7 +51,6 @@
             this.checkBoxSaveToFile = new System.Windows.Forms.CheckBox();
             this.textBoxUploadServer = new System.Windows.Forms.TextBox();
             this.checkBoxUpload = new System.Windows.Forms.CheckBox();
-            this.buttonRoutePlanner = new System.Windows.Forms.Button();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
@@ -60,7 +59,6 @@
             this.groupBox8 = new System.Windows.Forms.GroupBox();
             this.radioButtonWatchStatusFile = new System.Windows.Forms.RadioButton();
             this.radioButtonUseTimer = new System.Windows.Forms.RadioButton();
-            this.buttonRaceTracker = new System.Windows.Forms.Button();
             this.checkBoxTrack = new System.Windows.Forms.CheckBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.label3 = new System.Windows.Forms.Label();
@@ -68,12 +66,14 @@
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.checkBoxAutoUpdate = new System.Windows.Forms.CheckBox();
             this.checkBoxIncludeBetaUpdates = new System.Windows.Forms.CheckBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.trackerHUD1 = new SRVTracker.TrackerHUD();
             this.buttonShowConfig = new System.Windows.Forms.Button();
+            this.buttonRaceTracker = new System.Windows.Forms.Button();
             this.buttonExit = new System.Windows.Forms.Button();
+            this.buttonRoutePlanner = new System.Windows.Forms.Button();
             this.buttonLocator = new System.Windows.Forms.Button();
             this.buttonBrowseStatusFile = new System.Windows.Forms.Button();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.statusFileWatcher)).BeginInit();
             this.groupBox5.SuspendLayout();
@@ -293,17 +293,6 @@
             this.checkBoxUpload.UseVisualStyleBackColor = true;
             this.checkBoxUpload.CheckedChanged += new System.EventHandler(this.checkBoxUpload_CheckedChanged);
             // 
-            // buttonRoutePlanner
-            // 
-            this.buttonRoutePlanner.Location = new System.Drawing.Point(11, 122);
-            this.buttonRoutePlanner.Name = "buttonRoutePlanner";
-            this.buttonRoutePlanner.Size = new System.Drawing.Size(55, 23);
-            this.buttonRoutePlanner.TabIndex = 10;
-            this.buttonRoutePlanner.Text = "Route";
-            this.toolTip1.SetToolTip(this.buttonRoutePlanner, "Open the Route Planner");
-            this.buttonRoutePlanner.UseVisualStyleBackColor = true;
-            this.buttonRoutePlanner.Click += new System.EventHandler(this.buttonRoutePlanner_Click);
-            // 
             // groupBox5
             // 
             this.groupBox5.Controls.Add(this.textBoxClientId);
@@ -402,17 +391,6 @@
         "dated every 750ms.  If it has, it reads and processes\r\nit.");
             this.radioButtonUseTimer.UseVisualStyleBackColor = true;
             // 
-            // buttonRaceTracker
-            // 
-            this.buttonRaceTracker.Location = new System.Drawing.Point(11, 151);
-            this.buttonRaceTracker.Name = "buttonRaceTracker";
-            this.buttonRaceTracker.Size = new System.Drawing.Size(55, 23);
-            this.buttonRaceTracker.TabIndex = 17;
-            this.buttonRaceTracker.Text = "Race";
-            this.toolTip1.SetToolTip(this.buttonRaceTracker, "Open the Race Manager");
-            this.buttonRaceTracker.UseVisualStyleBackColor = true;
-            this.buttonRaceTracker.Click += new System.EventHandler(this.buttonRaceTracker_Click);
-            // 
             // checkBoxTrack
             // 
             this.checkBoxTrack.AutoSize = true;
@@ -492,6 +470,16 @@
             this.toolTip1.SetToolTip(this.checkBoxIncludeBetaUpdates, resources.GetString("checkBoxIncludeBetaUpdates.ToolTip"));
             this.checkBoxIncludeBetaUpdates.UseVisualStyleBackColor = true;
             // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.checkBoxIncludeBetaUpdates);
+            this.groupBox2.Location = new System.Drawing.Point(542, 122);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(170, 44);
+            this.groupBox2.TabIndex = 23;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Auto-update";
+            // 
             // trackerHUD1
             // 
             this.trackerHUD1.BackColor = System.Drawing.Color.Black;
@@ -512,6 +500,17 @@
             this.buttonShowConfig.UseVisualStyleBackColor = true;
             this.buttonShowConfig.Click += new System.EventHandler(this.buttonShowConfig_Click);
             // 
+            // buttonRaceTracker
+            // 
+            this.buttonRaceTracker.Image = global::SRVTracker.Properties.Resources.race_flag16x16;
+            this.buttonRaceTracker.Location = new System.Drawing.Point(11, 151);
+            this.buttonRaceTracker.Name = "buttonRaceTracker";
+            this.buttonRaceTracker.Size = new System.Drawing.Size(55, 23);
+            this.buttonRaceTracker.TabIndex = 17;
+            this.toolTip1.SetToolTip(this.buttonRaceTracker, "Open the Race Manager");
+            this.buttonRaceTracker.UseVisualStyleBackColor = true;
+            this.buttonRaceTracker.Click += new System.EventHandler(this.buttonRaceTracker_Click);
+            // 
             // buttonExit
             // 
             this.buttonExit.Image = global::SRVTracker.Properties.Resources.Close_red_16x;
@@ -522,6 +521,17 @@
             this.toolTip1.SetToolTip(this.buttonExit, "Close the program");
             this.buttonExit.UseVisualStyleBackColor = true;
             this.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
+            // 
+            // buttonRoutePlanner
+            // 
+            this.buttonRoutePlanner.Image = global::SRVTracker.Properties.Resources.Route_planner_16x16bw;
+            this.buttonRoutePlanner.Location = new System.Drawing.Point(11, 122);
+            this.buttonRoutePlanner.Name = "buttonRoutePlanner";
+            this.buttonRoutePlanner.Size = new System.Drawing.Size(55, 23);
+            this.buttonRoutePlanner.TabIndex = 10;
+            this.toolTip1.SetToolTip(this.buttonRoutePlanner, "Open the Route Planner");
+            this.buttonRoutePlanner.UseVisualStyleBackColor = true;
+            this.buttonRoutePlanner.Click += new System.EventHandler(this.buttonRoutePlanner_Click);
             // 
             // buttonLocator
             // 
@@ -543,16 +553,6 @@
             this.buttonBrowseStatusFile.TabIndex = 1;
             this.buttonBrowseStatusFile.UseVisualStyleBackColor = true;
             this.buttonBrowseStatusFile.Click += new System.EventHandler(this.buttonBrowseStatusFile_Click);
-            // 
-            // groupBox2
-            // 
-            this.groupBox2.Controls.Add(this.checkBoxIncludeBetaUpdates);
-            this.groupBox2.Location = new System.Drawing.Point(542, 122);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(170, 44);
-            this.groupBox2.TabIndex = 23;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Auto-update";
             // 
             // FormTracker
             // 

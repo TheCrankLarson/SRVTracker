@@ -1,6 +1,6 @@
 ﻿namespace SRVTracker
 {
-    partial class FormRaceMonitor
+    partial class FormRaceManager
     {
         /// <summary>
         /// Required designer variable.
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormRaceMonitor));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormRaceManager));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.listBoxWaypoints = new System.Windows.Forms.ListBox();
             this.buttonLoadRoute = new System.Windows.Forms.Button();
@@ -1129,7 +1129,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "FormRaceMonitor";
-            this.Text = "Race Monitor";
+            this.Text = "Race Manager";
             this.Deactivate += new System.EventHandler(this.FormRaceMonitor_Deactivate);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormRaceMonitor_FormClosing);
             this.groupBox1.ResumeLayout(false);

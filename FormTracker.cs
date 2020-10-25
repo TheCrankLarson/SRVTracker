@@ -35,7 +35,7 @@ namespace SRVTracker
         public static EDLocation CurrentLocation { get; private set; } = new EDLocation();
         public static int CurrentHeading { get; private set; } = -1;
         public static double SpeedInMS { get; internal set; } = 0;
-        FormRaceMonitor _formRaceMonitor = null;
+        FormRaceManager _formRaceMonitor = null;
 
         // Keep track of ground speed (E: D shows speed you are travelling in the direction you are facing, which is not ground speed)
         private EDLocation _speedCalculationLocation = null;
@@ -739,7 +739,7 @@ namespace SRVTracker
                 catch { }
             }
 
-            _formRaceMonitor = new FormRaceMonitor();
+            _formRaceMonitor = new FormRaceManager();
             _formRaceMonitor.Show();
         }
 

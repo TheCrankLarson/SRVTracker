@@ -17,7 +17,7 @@ using System.Web.Routing;
 
 namespace SRVTracker
 {
-    public partial class FormRaceMonitor : Form
+    public partial class FormRaceManager : Form
     {
         private string _routeFile = "";
         private EDRace _race = null;
@@ -46,7 +46,7 @@ namespace SRVTracker
         private int _serverNotableEventsIndex = 0;
         private List<string> _skipAutoAdd = new List<string>();
 
-        public FormRaceMonitor()
+        public FormRaceManager()
         {
             InitializeComponent();
             groupBoxAddCommander.Visible = false;

@@ -233,6 +233,16 @@ namespace SRVTracker.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap race_flag16x16 {
+            get {
+                object obj = ResourceManager.GetObject("race flag16x16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Record_16x {
             get {
                 object obj = ResourceManager.GetObject("Record_16x", resourceCulture);
@@ -296,6 +306,26 @@ namespace SRVTracker.Properties {
         internal static System.Drawing.Bitmap Return_16x {
             get {
                 object obj = ResourceManager.GetObject("Return_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Route_planner_16x16 {
+            get {
+                object obj = ResourceManager.GetObject("Route planner 16x16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Route_planner_16x16bw {
+            get {
+                object obj = ResourceManager.GetObject("Route planner 16x16bw", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
