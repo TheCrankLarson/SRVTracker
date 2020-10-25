@@ -67,18 +67,17 @@ namespace SRVTracker
         private void DownloadAndExtractZip()
         {
             // Download the latest zip from the update Url, and extract the contents
-
             try
             {
+                AddLog($"Downloading update from {_updateInformation.downloadUrl}");
                 WebRequest wrq = WebRequest.Create(_updateInformation.downloadUrl);
                 WebResponse wrs = wrq.GetResponse();
-                AddLog("Update retrieved");
-                using (var stm = wrs.GetResponseStream())
+                AddLog("Update retrieved, unpacking");
+                using (Stream response = wrs.GetResponseStream())
                 {
-                    var zip = new ZipArchive(stm);
+                    ZipArchive zip = new ZipArchive(response);
                     foreach (var entry in zip.Entries)
                     {
-
                         try
                         {
                             AddLog($"Deleting {entry.FullName}");
@@ -143,7 +142,6 @@ namespace SRVTracker
         private void InstallUpdate()
         {
             AddLog($"Updating to version {_updateInformation.version}");
-            AddLog($"Starting update from {_updateInformation.downloadUrl}");
             DownloadAndExtractZip();
             AddLog($"Update complete.  Restarting application.");
             string appPath = $"{Application.ExecutablePath.Substring(0, Application.ExecutablePath.Length - 11)}.exe";
