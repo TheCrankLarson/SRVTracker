@@ -133,6 +133,8 @@ namespace SRVTracker
         public bool StoreButtonInfo { get; set; } = false;
 
         public bool StoreLabelInfo { get; set; } = false;
+        
+        public bool StoreGroupboxInfo { get; set; } = false;
 
         public bool SaveConfiguration()
         {
@@ -387,6 +389,7 @@ namespace SRVTracker
 
             if ((control is Label) && !StoreLabelInfo) return;
             if ((control is Button) && !StoreButtonInfo) return;
+            if ((control is GroupBox) && !StoreGroupboxInfo) return;
             if (ExcludedControls.Contains(control)) return;
             if (control.Tag != null)
             {
@@ -530,7 +533,13 @@ namespace SRVTracker
                             }
                             else
                             {
-                                if (control.Tag != null)
+                                if (!StoreGroupboxInfo && (control is GroupBox))
+                                    bRestore = false;
+                                else if (!StoreLabelInfo && (control is Label))
+                                    bRestore = false;
+                                else if (!StoreButtonInfo && (control is Button))
+                                    bRestore = false;
+                                else if (control.Tag != null)
                                 {
                                     bRestore = !control.Tag.Equals("NoConfigSave");
                                 }

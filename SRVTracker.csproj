@@ -350,6 +350,7 @@
     <Content Include="ReleaseNotes.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\FolderOpened_16x.png" />
     <None Include="Resources\CopyItem_16x.png" />
     <None Include="Resources\SRV Targetted.png" />
     <None Include="Resources\AdvancedBreakpointDisabled_16x.png" />

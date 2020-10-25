@@ -31,7 +31,6 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormTracker));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.buttonBrowseStatusFile = new System.Windows.Forms.Button();
             this.textBoxStatusFile = new System.Windows.Forms.TextBox();
             this.statusFileWatcher = new System.IO.FileSystemWatcher();
             this.label5 = new System.Windows.Forms.Label();
@@ -69,10 +68,12 @@
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.checkBoxAutoUpdate = new System.Windows.Forms.CheckBox();
             this.checkBoxIncludeBetaUpdates = new System.Windows.Forms.CheckBox();
+            this.trackerHUD1 = new SRVTracker.TrackerHUD();
             this.buttonShowConfig = new System.Windows.Forms.Button();
             this.buttonExit = new System.Windows.Forms.Button();
             this.buttonLocator = new System.Windows.Forms.Button();
-            this.trackerHUD1 = new SRVTracker.TrackerHUD();
+            this.buttonBrowseStatusFile = new System.Windows.Forms.Button();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.statusFileWatcher)).BeginInit();
             this.groupBox5.SuspendLayout();
@@ -80,6 +81,7 @@
             this.groupBox7.SuspendLayout();
             this.groupBox8.SuspendLayout();
             this.groupBox4.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -88,26 +90,16 @@
             this.groupBox1.Controls.Add(this.textBoxStatusFile);
             this.groupBox1.Location = new System.Drawing.Point(281, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(431, 48);
+            this.groupBox1.Size = new System.Drawing.Size(303, 48);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Status.json location";
-            // 
-            // buttonBrowseStatusFile
-            // 
-            this.buttonBrowseStatusFile.Location = new System.Drawing.Point(371, 17);
-            this.buttonBrowseStatusFile.Name = "buttonBrowseStatusFile";
-            this.buttonBrowseStatusFile.Size = new System.Drawing.Size(54, 23);
-            this.buttonBrowseStatusFile.TabIndex = 1;
-            this.buttonBrowseStatusFile.Text = "Browse";
-            this.buttonBrowseStatusFile.UseVisualStyleBackColor = true;
-            this.buttonBrowseStatusFile.Click += new System.EventHandler(this.buttonBrowseStatusFile_Click);
             // 
             // textBoxStatusFile
             // 
             this.textBoxStatusFile.Location = new System.Drawing.Point(6, 19);
             this.textBoxStatusFile.Name = "textBoxStatusFile";
-            this.textBoxStatusFile.Size = new System.Drawing.Size(359, 20);
+            this.textBoxStatusFile.Size = new System.Drawing.Size(258, 20);
             this.textBoxStatusFile.TabIndex = 0;
             this.toolTip1.SetToolTip(this.textBoxStatusFile, "Location of the Status.json file of Elite: Dangerous.\r\nThis should be automatical" +
         "ly located.");
@@ -320,7 +312,7 @@
             this.groupBox5.Size = new System.Drawing.Size(183, 50);
             this.groupBox5.TabIndex = 13;
             this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "Client Id (or commander name)";
+            this.groupBox5.Text = "Commander Name";
             // 
             // groupBox6
             // 
@@ -376,9 +368,9 @@
             // 
             this.groupBox8.Controls.Add(this.radioButtonWatchStatusFile);
             this.groupBox8.Controls.Add(this.radioButtonUseTimer);
-            this.groupBox8.Location = new System.Drawing.Point(542, 122);
+            this.groupBox8.Location = new System.Drawing.Point(590, 12);
             this.groupBox8.Name = "groupBox8";
-            this.groupBox8.Size = new System.Drawing.Size(122, 44);
+            this.groupBox8.Size = new System.Drawing.Size(122, 48);
             this.groupBox8.TabIndex = 16;
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "Monitor method";
@@ -386,28 +378,28 @@
             // radioButtonWatchStatusFile
             // 
             this.radioButtonWatchStatusFile.AutoSize = true;
-            this.radioButtonWatchStatusFile.Location = new System.Drawing.Point(6, 19);
+            this.radioButtonWatchStatusFile.Location = new System.Drawing.Point(6, 20);
             this.radioButtonWatchStatusFile.Name = "radioButtonWatchStatusFile";
             this.radioButtonWatchStatusFile.Size = new System.Drawing.Size(53, 17);
             this.radioButtonWatchStatusFile.TabIndex = 9;
             this.radioButtonWatchStatusFile.Text = "Event";
             this.toolTip1.SetToolTip(this.radioButtonWatchStatusFile, "This method of monitoring the status.json file registers for\r\nnotifications of ch" +
         "anges to the file, and when it receives\r\nsuch a notification will read the updat" +
-        "ed information.");
+        "ed file.");
             this.radioButtonWatchStatusFile.UseVisualStyleBackColor = true;
             // 
             // radioButtonUseTimer
             // 
             this.radioButtonUseTimer.AutoSize = true;
             this.radioButtonUseTimer.Checked = true;
-            this.radioButtonUseTimer.Location = new System.Drawing.Point(65, 19);
+            this.radioButtonUseTimer.Location = new System.Drawing.Point(65, 20);
             this.radioButtonUseTimer.Name = "radioButtonUseTimer";
             this.radioButtonUseTimer.Size = new System.Drawing.Size(51, 17);
             this.radioButtonUseTimer.TabIndex = 8;
             this.radioButtonUseTimer.TabStop = true;
             this.radioButtonUseTimer.Text = "Timer";
             this.toolTip1.SetToolTip(this.radioButtonUseTimer, "This method of Status.json monitoring simply checks whether the\r\nfile has been up" +
-        "dated every 250ms.  If it has, it reads and processes\r\nit.");
+        "dated every 750ms.  If it has, it reads and processes\r\nit.");
             this.radioButtonUseTimer.UseVisualStyleBackColor = true;
             // 
             // buttonRaceTracker
@@ -492,14 +484,22 @@
             // checkBoxIncludeBetaUpdates
             // 
             this.checkBoxIncludeBetaUpdates.AutoSize = true;
-            this.checkBoxIncludeBetaUpdates.Location = new System.Drawing.Point(193, 178);
+            this.checkBoxIncludeBetaUpdates.Location = new System.Drawing.Point(6, 21);
             this.checkBoxIncludeBetaUpdates.Name = "checkBoxIncludeBetaUpdates";
-            this.checkBoxIncludeBetaUpdates.Size = new System.Drawing.Size(85, 17);
+            this.checkBoxIncludeBetaUpdates.Size = new System.Drawing.Size(127, 17);
             this.checkBoxIncludeBetaUpdates.TabIndex = 22;
-            this.checkBoxIncludeBetaUpdates.Text = "Include beta";
+            this.checkBoxIncludeBetaUpdates.Text = "Include beta versions";
             this.toolTip1.SetToolTip(this.checkBoxIncludeBetaUpdates, resources.GetString("checkBoxIncludeBetaUpdates.ToolTip"));
             this.checkBoxIncludeBetaUpdates.UseVisualStyleBackColor = true;
-            this.checkBoxIncludeBetaUpdates.Visible = false;
+            // 
+            // trackerHUD1
+            // 
+            this.trackerHUD1.BackColor = System.Drawing.Color.Black;
+            this.trackerHUD1.Location = new System.Drawing.Point(0, 0);
+            this.trackerHUD1.Name = "trackerHUD1";
+            this.trackerHUD1.Size = new System.Drawing.Size(260, 40);
+            this.trackerHUD1.TabIndex = 20;
+            this.trackerHUD1.Visible = false;
             // 
             // buttonShowConfig
             // 
@@ -534,21 +534,32 @@
             this.buttonLocator.UseVisualStyleBackColor = true;
             this.buttonLocator.Click += new System.EventHandler(this.buttonLocator_Click);
             // 
-            // trackerHUD1
+            // buttonBrowseStatusFile
             // 
-            this.trackerHUD1.BackColor = System.Drawing.Color.Black;
-            this.trackerHUD1.Location = new System.Drawing.Point(0, 0);
-            this.trackerHUD1.Name = "trackerHUD1";
-            this.trackerHUD1.Size = new System.Drawing.Size(260, 40);
-            this.trackerHUD1.TabIndex = 20;
-            this.trackerHUD1.Visible = false;
+            this.buttonBrowseStatusFile.Image = global::SRVTracker.Properties.Resources.FolderOpened_16x;
+            this.buttonBrowseStatusFile.Location = new System.Drawing.Point(270, 17);
+            this.buttonBrowseStatusFile.Name = "buttonBrowseStatusFile";
+            this.buttonBrowseStatusFile.Size = new System.Drawing.Size(27, 23);
+            this.buttonBrowseStatusFile.TabIndex = 1;
+            this.buttonBrowseStatusFile.UseVisualStyleBackColor = true;
+            this.buttonBrowseStatusFile.Click += new System.EventHandler(this.buttonBrowseStatusFile_Click);
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.checkBoxIncludeBetaUpdates);
+            this.groupBox2.Location = new System.Drawing.Point(542, 122);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(170, 44);
+            this.groupBox2.TabIndex = 23;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Auto-update";
             // 
             // FormTracker
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(925, 481);
-            this.Controls.Add(this.checkBoxIncludeBetaUpdates);
+            this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.checkBoxAutoUpdate);
             this.Controls.Add(this.trackerHUD1);
             this.Controls.Add(this.groupBox4);
@@ -586,6 +597,8 @@
             this.groupBox8.PerformLayout();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -636,6 +649,7 @@
         private TrackerHUD trackerHUD1;
         private System.Windows.Forms.CheckBox checkBoxAutoUpdate;
         private System.Windows.Forms.CheckBox checkBoxIncludeBetaUpdates;
+        private System.Windows.Forms.GroupBox groupBox2;
     }
 }
 
