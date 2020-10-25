@@ -753,12 +753,10 @@ namespace SRVTracker
                 {
                     Updater updater = new Updater();
                     updater.ClearUpdateFiles();
-                    if (updater.DownloadUpdate(checkBoxIncludeBetaUpdates.Checked))
-                    {
-                        Close();
-                    }
+
                     if (updater.RunningVersionIsBeta)
                     {
+                        // If we're already running a beta version we always check for beta updates
                         Action updateBetaAction = new Action(() =>
                         {
                             checkBoxIncludeBetaUpdates.Checked = true;
@@ -768,6 +766,9 @@ namespace SRVTracker
                         else
                             updateBetaAction();
                     }
+
+                    if (updater.DownloadUpdate(checkBoxIncludeBetaUpdates.Checked))
+                        Close();
                 });
                 Task.Run(action);
             }
