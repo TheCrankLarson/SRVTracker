@@ -51,6 +51,8 @@ namespace SRVTracker
             _statusTimer.Elapsed += _statusTimer_Elapsed;
             _journalReader = new JournalReader(EDJournalPath());
             _journalReader.InterestingEventOccurred += _journalReader_InterestingEventOccurred;
+            InitStatusLocation();
+            InitClientId();
 
             // Attach our form configuration saver
             _formConfig = new ConfigSaverClass(this, true);
@@ -66,8 +68,6 @@ namespace SRVTracker
             _formConfig.StoreButtonInfo = false;
             ConfigSaverClass.ApplyConfiguration();
 
-            InitClientId();
-            InitStatusLocation();
             buttonTest.Visible = System.Diagnostics.Debugger.IsAttached;
             FormLocator.ServerAddress = (string)radioButtonUseDefaultServer.Tag;
 
