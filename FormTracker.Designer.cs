@@ -31,6 +31,7 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormTracker));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.buttonBrowseStatusFile = new System.Windows.Forms.Button();
             this.textBoxStatusFile = new System.Windows.Forms.TextBox();
             this.statusFileWatcher = new System.IO.FileSystemWatcher();
             this.label5 = new System.Windows.Forms.Label();
@@ -66,14 +67,13 @@
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.checkBoxAutoUpdate = new System.Windows.Forms.CheckBox();
             this.checkBoxIncludeBetaUpdates = new System.Windows.Forms.CheckBox();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.trackerHUD1 = new SRVTracker.TrackerHUD();
             this.buttonShowConfig = new System.Windows.Forms.Button();
             this.buttonRaceTracker = new System.Windows.Forms.Button();
             this.buttonExit = new System.Windows.Forms.Button();
             this.buttonRoutePlanner = new System.Windows.Forms.Button();
             this.buttonLocator = new System.Windows.Forms.Button();
-            this.buttonBrowseStatusFile = new System.Windows.Forms.Button();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.trackerHUD1 = new SRVTracker.TrackerHUD();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.statusFileWatcher)).BeginInit();
             this.groupBox5.SuspendLayout();
@@ -94,6 +94,16 @@
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Status.json location";
+            // 
+            // buttonBrowseStatusFile
+            // 
+            this.buttonBrowseStatusFile.Image = global::SRVTracker.Properties.Resources.FolderOpened_16x;
+            this.buttonBrowseStatusFile.Location = new System.Drawing.Point(270, 17);
+            this.buttonBrowseStatusFile.Name = "buttonBrowseStatusFile";
+            this.buttonBrowseStatusFile.Size = new System.Drawing.Size(27, 23);
+            this.buttonBrowseStatusFile.TabIndex = 1;
+            this.buttonBrowseStatusFile.UseVisualStyleBackColor = true;
+            this.buttonBrowseStatusFile.Click += new System.EventHandler(this.buttonBrowseStatusFile_Click);
             // 
             // textBoxStatusFile
             // 
@@ -193,7 +203,7 @@
             // 
             // buttonTest
             // 
-            this.buttonTest.Location = new System.Drawing.Point(72, 151);
+            this.buttonTest.Location = new System.Drawing.Point(133, 149);
             this.buttonTest.Name = "buttonTest";
             this.buttonTest.Size = new System.Drawing.Size(54, 23);
             this.buttonTest.TabIndex = 5;
@@ -282,7 +292,7 @@
             // checkBoxUpload
             // 
             this.checkBoxUpload.AutoSize = true;
-            this.checkBoxUpload.Location = new System.Drawing.Point(133, 155);
+            this.checkBoxUpload.Location = new System.Drawing.Point(72, 155);
             this.checkBoxUpload.Name = "checkBoxUpload";
             this.checkBoxUpload.Size = new System.Drawing.Size(60, 17);
             this.checkBoxUpload.TabIndex = 0;
@@ -394,7 +404,7 @@
             // checkBoxTrack
             // 
             this.checkBoxTrack.AutoSize = true;
-            this.checkBoxTrack.Location = new System.Drawing.Point(133, 126);
+            this.checkBoxTrack.Location = new System.Drawing.Point(12, 155);
             this.checkBoxTrack.Name = "checkBoxTrack";
             this.checkBoxTrack.Size = new System.Drawing.Size(54, 17);
             this.checkBoxTrack.TabIndex = 18;
@@ -450,11 +460,11 @@
             // checkBoxAutoUpdate
             // 
             this.checkBoxAutoUpdate.AutoSize = true;
-            this.checkBoxAutoUpdate.Location = new System.Drawing.Point(193, 155);
+            this.checkBoxAutoUpdate.Location = new System.Drawing.Point(6, 21);
             this.checkBoxAutoUpdate.Name = "checkBoxAutoUpdate";
-            this.checkBoxAutoUpdate.Size = new System.Drawing.Size(84, 17);
+            this.checkBoxAutoUpdate.Size = new System.Drawing.Size(65, 17);
             this.checkBoxAutoUpdate.TabIndex = 21;
-            this.checkBoxAutoUpdate.Text = "Auto-update";
+            this.checkBoxAutoUpdate.Text = "Enabled";
             this.toolTip1.SetToolTip(this.checkBoxAutoUpdate, "If enabled, will automatically check for update on start-up.");
             this.checkBoxAutoUpdate.UseVisualStyleBackColor = true;
             this.checkBoxAutoUpdate.CheckedChanged += new System.EventHandler(this.checkBoxAutoUpdate_CheckedChanged);
@@ -462,17 +472,73 @@
             // checkBoxIncludeBetaUpdates
             // 
             this.checkBoxIncludeBetaUpdates.AutoSize = true;
-            this.checkBoxIncludeBetaUpdates.Location = new System.Drawing.Point(6, 21);
+            this.checkBoxIncludeBetaUpdates.Location = new System.Drawing.Point(77, 21);
             this.checkBoxIncludeBetaUpdates.Name = "checkBoxIncludeBetaUpdates";
-            this.checkBoxIncludeBetaUpdates.Size = new System.Drawing.Size(127, 17);
+            this.checkBoxIncludeBetaUpdates.Size = new System.Drawing.Size(85, 17);
             this.checkBoxIncludeBetaUpdates.TabIndex = 22;
-            this.checkBoxIncludeBetaUpdates.Text = "Include beta versions";
+            this.checkBoxIncludeBetaUpdates.Text = "Include beta";
             this.toolTip1.SetToolTip(this.checkBoxIncludeBetaUpdates, resources.GetString("checkBoxIncludeBetaUpdates.ToolTip"));
             this.checkBoxIncludeBetaUpdates.UseVisualStyleBackColor = true;
+            // 
+            // buttonShowConfig
+            // 
+            this.buttonShowConfig.Image = global::SRVTracker.Properties.Resources.Settings_16x;
+            this.buttonShowConfig.Location = new System.Drawing.Point(236, 149);
+            this.buttonShowConfig.Name = "buttonShowConfig";
+            this.buttonShowConfig.Size = new System.Drawing.Size(38, 23);
+            this.buttonShowConfig.TabIndex = 12;
+            this.toolTip1.SetToolTip(this.buttonShowConfig, "Show Settings");
+            this.buttonShowConfig.UseVisualStyleBackColor = true;
+            this.buttonShowConfig.Click += new System.EventHandler(this.buttonShowConfig_Click);
+            // 
+            // buttonRaceTracker
+            // 
+            this.buttonRaceTracker.Image = global::SRVTracker.Properties.Resources.race_flag16x16;
+            this.buttonRaceTracker.Location = new System.Drawing.Point(133, 122);
+            this.buttonRaceTracker.Name = "buttonRaceTracker";
+            this.buttonRaceTracker.Size = new System.Drawing.Size(55, 23);
+            this.buttonRaceTracker.TabIndex = 17;
+            this.toolTip1.SetToolTip(this.buttonRaceTracker, "Open the Race Manager");
+            this.buttonRaceTracker.UseVisualStyleBackColor = true;
+            this.buttonRaceTracker.Click += new System.EventHandler(this.buttonRaceTracker_Click);
+            // 
+            // buttonExit
+            // 
+            this.buttonExit.Image = global::SRVTracker.Properties.Resources.Close_red_16x;
+            this.buttonExit.Location = new System.Drawing.Point(236, 122);
+            this.buttonExit.Name = "buttonExit";
+            this.buttonExit.Size = new System.Drawing.Size(38, 23);
+            this.buttonExit.TabIndex = 11;
+            this.toolTip1.SetToolTip(this.buttonExit, "Close the program");
+            this.buttonExit.UseVisualStyleBackColor = true;
+            this.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
+            // 
+            // buttonRoutePlanner
+            // 
+            this.buttonRoutePlanner.Image = global::SRVTracker.Properties.Resources.Route_planner_16x16bw;
+            this.buttonRoutePlanner.Location = new System.Drawing.Point(72, 122);
+            this.buttonRoutePlanner.Name = "buttonRoutePlanner";
+            this.buttonRoutePlanner.Size = new System.Drawing.Size(55, 23);
+            this.buttonRoutePlanner.TabIndex = 10;
+            this.toolTip1.SetToolTip(this.buttonRoutePlanner, "Open the Route Planner");
+            this.buttonRoutePlanner.UseVisualStyleBackColor = true;
+            this.buttonRoutePlanner.Click += new System.EventHandler(this.buttonRoutePlanner_Click);
+            // 
+            // buttonLocator
+            // 
+            this.buttonLocator.Image = global::SRVTracker.Properties.Resources.Target_16x;
+            this.buttonLocator.Location = new System.Drawing.Point(11, 122);
+            this.buttonLocator.Name = "buttonLocator";
+            this.buttonLocator.Size = new System.Drawing.Size(55, 23);
+            this.buttonLocator.TabIndex = 9;
+            this.toolTip1.SetToolTip(this.buttonLocator, "Open the Locator (to track other\r\ncommanders and locations)");
+            this.buttonLocator.UseVisualStyleBackColor = true;
+            this.buttonLocator.Click += new System.EventHandler(this.buttonLocator_Click);
             // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.checkBoxIncludeBetaUpdates);
+            this.groupBox2.Controls.Add(this.checkBoxAutoUpdate);
             this.groupBox2.Location = new System.Drawing.Point(542, 122);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(170, 44);
@@ -489,78 +555,12 @@
             this.trackerHUD1.TabIndex = 20;
             this.trackerHUD1.Visible = false;
             // 
-            // buttonShowConfig
-            // 
-            this.buttonShowConfig.Image = global::SRVTracker.Properties.Resources.Settings_16x;
-            this.buttonShowConfig.Location = new System.Drawing.Point(193, 122);
-            this.buttonShowConfig.Name = "buttonShowConfig";
-            this.buttonShowConfig.Size = new System.Drawing.Size(38, 23);
-            this.buttonShowConfig.TabIndex = 12;
-            this.toolTip1.SetToolTip(this.buttonShowConfig, "Show Settings");
-            this.buttonShowConfig.UseVisualStyleBackColor = true;
-            this.buttonShowConfig.Click += new System.EventHandler(this.buttonShowConfig_Click);
-            // 
-            // buttonRaceTracker
-            // 
-            this.buttonRaceTracker.Image = global::SRVTracker.Properties.Resources.race_flag16x16;
-            this.buttonRaceTracker.Location = new System.Drawing.Point(11, 151);
-            this.buttonRaceTracker.Name = "buttonRaceTracker";
-            this.buttonRaceTracker.Size = new System.Drawing.Size(55, 23);
-            this.buttonRaceTracker.TabIndex = 17;
-            this.toolTip1.SetToolTip(this.buttonRaceTracker, "Open the Race Manager");
-            this.buttonRaceTracker.UseVisualStyleBackColor = true;
-            this.buttonRaceTracker.Click += new System.EventHandler(this.buttonRaceTracker_Click);
-            // 
-            // buttonExit
-            // 
-            this.buttonExit.Image = global::SRVTracker.Properties.Resources.Close_red_16x;
-            this.buttonExit.Location = new System.Drawing.Point(237, 122);
-            this.buttonExit.Name = "buttonExit";
-            this.buttonExit.Size = new System.Drawing.Size(38, 23);
-            this.buttonExit.TabIndex = 11;
-            this.toolTip1.SetToolTip(this.buttonExit, "Close the program");
-            this.buttonExit.UseVisualStyleBackColor = true;
-            this.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
-            // 
-            // buttonRoutePlanner
-            // 
-            this.buttonRoutePlanner.Image = global::SRVTracker.Properties.Resources.Route_planner_16x16bw;
-            this.buttonRoutePlanner.Location = new System.Drawing.Point(11, 122);
-            this.buttonRoutePlanner.Name = "buttonRoutePlanner";
-            this.buttonRoutePlanner.Size = new System.Drawing.Size(55, 23);
-            this.buttonRoutePlanner.TabIndex = 10;
-            this.toolTip1.SetToolTip(this.buttonRoutePlanner, "Open the Route Planner");
-            this.buttonRoutePlanner.UseVisualStyleBackColor = true;
-            this.buttonRoutePlanner.Click += new System.EventHandler(this.buttonRoutePlanner_Click);
-            // 
-            // buttonLocator
-            // 
-            this.buttonLocator.Image = global::SRVTracker.Properties.Resources.Target_16x;
-            this.buttonLocator.Location = new System.Drawing.Point(72, 122);
-            this.buttonLocator.Name = "buttonLocator";
-            this.buttonLocator.Size = new System.Drawing.Size(55, 23);
-            this.buttonLocator.TabIndex = 9;
-            this.toolTip1.SetToolTip(this.buttonLocator, "Open the Locator (to track other\r\ncommanders and locations)");
-            this.buttonLocator.UseVisualStyleBackColor = true;
-            this.buttonLocator.Click += new System.EventHandler(this.buttonLocator_Click);
-            // 
-            // buttonBrowseStatusFile
-            // 
-            this.buttonBrowseStatusFile.Image = global::SRVTracker.Properties.Resources.FolderOpened_16x;
-            this.buttonBrowseStatusFile.Location = new System.Drawing.Point(270, 17);
-            this.buttonBrowseStatusFile.Name = "buttonBrowseStatusFile";
-            this.buttonBrowseStatusFile.Size = new System.Drawing.Size(27, 23);
-            this.buttonBrowseStatusFile.TabIndex = 1;
-            this.buttonBrowseStatusFile.UseVisualStyleBackColor = true;
-            this.buttonBrowseStatusFile.Click += new System.EventHandler(this.buttonBrowseStatusFile_Click);
-            // 
             // FormTracker
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(925, 481);
             this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.checkBoxAutoUpdate);
             this.Controls.Add(this.trackerHUD1);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.checkBoxTrack);
