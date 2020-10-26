@@ -71,7 +71,7 @@ namespace SRVTracker
 
             if (_lastLoggedLocation==null)
             {
-                _lastLoggedLocation = FormTracker.CurrentLocation;
+                _lastLoggedLocation = FormTracker.CurrentLocation.Copy();
                 return;
             }
 
