@@ -26,12 +26,26 @@ namespace SRVTracker
         public FormRouter(FormTracker formTracker)
         {
             InitializeComponent();
+            CalculateWindowSizes();
             this.Size = _fullSize;
             _route = new EDRoute();
             _formTracker = formTracker;
             FormTracker.CommanderLocationChanged += FormTracker_CommanderLocationChanged;
             buttonStop.Enabled = false;
             listBoxWaypoints_SelectedIndexChanged(null, null);
+        }
+
+        private void CalculateWindowSizes()
+        {
+            // Calculate size with locations hidden
+            int leftBound = groupBoxWaypointInfo.Location.X + groupBoxWaypointInfo.Width;
+            _fullSize.Width = (this.Width - this.ClientRectangle.Width) + leftBound + ((locationManager1.Left - leftBound) / 2);
+            int bottomBound = groupBoxWaypointInfo.Location.Y + groupBoxWaypointInfo.Height;
+            _fullSize.Height = (this.Height - this.ClientRectangle.Height) + bottomBound + 6;
+
+            // Calculate size with locations displayed
+            _chooseLocation.Width = locationManager1.Location.X + locationManager1.Width + (this.Width - this.ClientRectangle.Width) + 6;
+            _chooseLocation.Height = locationManager1.Location.Y + locationManager1.Height + (this.Height - this.ClientRectangle.Height) + 6;
         }
 
         private void DisplayRoute()
