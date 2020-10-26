@@ -70,9 +70,23 @@ namespace SRVTracker
 
             buttonTest.Visible = System.Diagnostics.Debugger.IsAttached;
             FormLocator.ServerAddress = (string)radioButtonUseDefaultServer.Tag;
+            CalculateWindowSizes();
 
             this.Size = _configHidden;
             this.Text = Application.ProductName + " v" + Application.ProductVersion;
+        }
+
+        private void CalculateWindowSizes()
+        {
+            // Calculate size with setting hidden
+            int leftBound = groupBoxLocationData.Location.X + groupBoxLocationData.Width;
+            _configHidden.Width = (this.Width-this.ClientRectangle.Width) + leftBound + ((groupBoxStatusLocation.Left - leftBound) / 2);
+            int bottomBound = buttonShowConfig.Location.Y + buttonShowConfig.Height;
+            _configHidden.Height = (this.Height - this.ClientRectangle.Height) + bottomBound + 6;
+
+            // Calculate size with config displayed
+            _configShowing.Width = listBoxLog.Location.X + listBoxLog.Width + (this.Width - this.ClientRectangle.Width) + 6;
+            _configShowing.Height = listBoxLog.Location.Y + listBoxLog.Height + (this.Height - this.ClientRectangle.Height) + 6;
         }
 
         private void _journalReader_InterestingEventOccurred(object sender, string eventJson)

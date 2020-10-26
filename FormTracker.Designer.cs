@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormTracker));
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupBoxStatusLocation = new System.Windows.Forms.GroupBox();
             this.buttonBrowseStatusFile = new System.Windows.Forms.Button();
             this.textBoxStatusFile = new System.Windows.Forms.TextBox();
             this.statusFileWatcher = new System.IO.FileSystemWatcher();
@@ -61,7 +61,7 @@
             this.radioButtonWatchStatusFile = new System.Windows.Forms.RadioButton();
             this.radioButtonUseTimer = new System.Windows.Forms.RadioButton();
             this.checkBoxTrack = new System.Windows.Forms.CheckBox();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.groupBoxLocationData = new System.Windows.Forms.GroupBox();
             this.label3 = new System.Windows.Forms.Label();
             this.textBoxPlanetRadius = new System.Windows.Forms.TextBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
@@ -74,26 +74,26 @@
             this.buttonLocator = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.trackerHUD1 = new SRVTracker.TrackerHUD();
-            this.groupBox1.SuspendLayout();
+            this.groupBoxStatusLocation.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.statusFileWatcher)).BeginInit();
             this.groupBox5.SuspendLayout();
             this.groupBox6.SuspendLayout();
             this.groupBox7.SuspendLayout();
             this.groupBox8.SuspendLayout();
-            this.groupBox4.SuspendLayout();
+            this.groupBoxLocationData.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
-            // groupBox1
+            // groupBoxStatusLocation
             // 
-            this.groupBox1.Controls.Add(this.buttonBrowseStatusFile);
-            this.groupBox1.Controls.Add(this.textBoxStatusFile);
-            this.groupBox1.Location = new System.Drawing.Point(281, 12);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(303, 48);
-            this.groupBox1.TabIndex = 0;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Status.json location";
+            this.groupBoxStatusLocation.Controls.Add(this.buttonBrowseStatusFile);
+            this.groupBoxStatusLocation.Controls.Add(this.textBoxStatusFile);
+            this.groupBoxStatusLocation.Location = new System.Drawing.Point(281, 12);
+            this.groupBoxStatusLocation.Name = "groupBoxStatusLocation";
+            this.groupBoxStatusLocation.Size = new System.Drawing.Size(303, 48);
+            this.groupBoxStatusLocation.TabIndex = 0;
+            this.groupBoxStatusLocation.TabStop = false;
+            this.groupBoxStatusLocation.Text = "Status.json location";
             // 
             // buttonBrowseStatusFile
             // 
@@ -196,14 +196,14 @@
             // listBoxLog
             // 
             this.listBoxLog.FormattingEnabled = true;
-            this.listBoxLog.Location = new System.Drawing.Point(11, 195);
+            this.listBoxLog.Location = new System.Drawing.Point(6, 195);
             this.listBoxLog.Name = "listBoxLog";
-            this.listBoxLog.Size = new System.Drawing.Size(700, 147);
+            this.listBoxLog.Size = new System.Drawing.Size(705, 147);
             this.listBoxLog.TabIndex = 4;
             // 
             // buttonTest
             // 
-            this.buttonTest.Location = new System.Drawing.Point(133, 149);
+            this.buttonTest.Location = new System.Drawing.Point(128, 151);
             this.buttonTest.Name = "buttonTest";
             this.buttonTest.Size = new System.Drawing.Size(54, 23);
             this.buttonTest.TabIndex = 5;
@@ -292,7 +292,7 @@
             // checkBoxUpload
             // 
             this.checkBoxUpload.AutoSize = true;
-            this.checkBoxUpload.Location = new System.Drawing.Point(72, 155);
+            this.checkBoxUpload.Location = new System.Drawing.Point(68, 155);
             this.checkBoxUpload.Name = "checkBoxUpload";
             this.checkBoxUpload.Size = new System.Drawing.Size(60, 17);
             this.checkBoxUpload.TabIndex = 0;
@@ -404,7 +404,7 @@
             // checkBoxTrack
             // 
             this.checkBoxTrack.AutoSize = true;
-            this.checkBoxTrack.Location = new System.Drawing.Point(12, 155);
+            this.checkBoxTrack.Location = new System.Drawing.Point(8, 155);
             this.checkBoxTrack.Name = "checkBoxTrack";
             this.checkBoxTrack.Size = new System.Drawing.Size(54, 17);
             this.checkBoxTrack.TabIndex = 18;
@@ -414,25 +414,25 @@
             this.checkBoxTrack.UseVisualStyleBackColor = true;
             this.checkBoxTrack.CheckedChanged += new System.EventHandler(this.checkBoxTrack_CheckedChanged);
             // 
-            // groupBox4
+            // groupBoxLocationData
             // 
-            this.groupBox4.Controls.Add(this.label3);
-            this.groupBox4.Controls.Add(this.textBoxPlanetRadius);
-            this.groupBox4.Controls.Add(this.label5);
-            this.groupBox4.Controls.Add(this.textBoxLatitude);
-            this.groupBox4.Controls.Add(this.textBoxAltitude);
-            this.groupBox4.Controls.Add(this.label4);
-            this.groupBox4.Controls.Add(this.textBoxLongitude);
-            this.groupBox4.Controls.Add(this.label2);
-            this.groupBox4.Controls.Add(this.textBoxHeading);
-            this.groupBox4.Controls.Add(this.label1);
-            this.groupBox4.Controls.Add(this.labelLastUpdateTime);
-            this.groupBox4.Location = new System.Drawing.Point(11, 11);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(263, 105);
-            this.groupBox4.TabIndex = 19;
-            this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Location";
+            this.groupBoxLocationData.Controls.Add(this.label3);
+            this.groupBoxLocationData.Controls.Add(this.textBoxPlanetRadius);
+            this.groupBoxLocationData.Controls.Add(this.label5);
+            this.groupBoxLocationData.Controls.Add(this.textBoxLatitude);
+            this.groupBoxLocationData.Controls.Add(this.textBoxAltitude);
+            this.groupBoxLocationData.Controls.Add(this.label4);
+            this.groupBoxLocationData.Controls.Add(this.textBoxLongitude);
+            this.groupBoxLocationData.Controls.Add(this.label2);
+            this.groupBoxLocationData.Controls.Add(this.textBoxHeading);
+            this.groupBoxLocationData.Controls.Add(this.label1);
+            this.groupBoxLocationData.Controls.Add(this.labelLastUpdateTime);
+            this.groupBoxLocationData.Location = new System.Drawing.Point(6, 6);
+            this.groupBoxLocationData.Name = "groupBoxLocationData";
+            this.groupBoxLocationData.Size = new System.Drawing.Size(263, 105);
+            this.groupBoxLocationData.TabIndex = 19;
+            this.groupBoxLocationData.TabStop = false;
+            this.groupBoxLocationData.Text = "Location";
             // 
             // label3
             // 
@@ -483,7 +483,7 @@
             // buttonShowConfig
             // 
             this.buttonShowConfig.Image = global::SRVTracker.Properties.Resources.Settings_16x;
-            this.buttonShowConfig.Location = new System.Drawing.Point(236, 149);
+            this.buttonShowConfig.Location = new System.Drawing.Point(231, 151);
             this.buttonShowConfig.Name = "buttonShowConfig";
             this.buttonShowConfig.Size = new System.Drawing.Size(38, 23);
             this.buttonShowConfig.TabIndex = 12;
@@ -494,7 +494,7 @@
             // buttonRaceTracker
             // 
             this.buttonRaceTracker.Image = global::SRVTracker.Properties.Resources.race_flag16x16;
-            this.buttonRaceTracker.Location = new System.Drawing.Point(133, 122);
+            this.buttonRaceTracker.Location = new System.Drawing.Point(128, 122);
             this.buttonRaceTracker.Name = "buttonRaceTracker";
             this.buttonRaceTracker.Size = new System.Drawing.Size(55, 23);
             this.buttonRaceTracker.TabIndex = 17;
@@ -505,7 +505,7 @@
             // buttonExit
             // 
             this.buttonExit.Image = global::SRVTracker.Properties.Resources.Close_red_16x;
-            this.buttonExit.Location = new System.Drawing.Point(236, 122);
+            this.buttonExit.Location = new System.Drawing.Point(231, 122);
             this.buttonExit.Name = "buttonExit";
             this.buttonExit.Size = new System.Drawing.Size(38, 23);
             this.buttonExit.TabIndex = 11;
@@ -516,7 +516,7 @@
             // buttonRoutePlanner
             // 
             this.buttonRoutePlanner.Image = global::SRVTracker.Properties.Resources.Route_planner_16x16bw;
-            this.buttonRoutePlanner.Location = new System.Drawing.Point(72, 122);
+            this.buttonRoutePlanner.Location = new System.Drawing.Point(67, 122);
             this.buttonRoutePlanner.Name = "buttonRoutePlanner";
             this.buttonRoutePlanner.Size = new System.Drawing.Size(55, 23);
             this.buttonRoutePlanner.TabIndex = 10;
@@ -527,7 +527,7 @@
             // buttonLocator
             // 
             this.buttonLocator.Image = global::SRVTracker.Properties.Resources.Target_16x;
-            this.buttonLocator.Location = new System.Drawing.Point(11, 122);
+            this.buttonLocator.Location = new System.Drawing.Point(6, 122);
             this.buttonLocator.Name = "buttonLocator";
             this.buttonLocator.Size = new System.Drawing.Size(55, 23);
             this.buttonLocator.TabIndex = 9;
@@ -562,7 +562,7 @@
             this.ClientSize = new System.Drawing.Size(925, 481);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.trackerHUD1);
-            this.Controls.Add(this.groupBox4);
+            this.Controls.Add(this.groupBoxLocationData);
             this.Controls.Add(this.checkBoxTrack);
             this.Controls.Add(this.checkBoxUpload);
             this.Controls.Add(this.buttonShowConfig);
@@ -578,14 +578,14 @@
             this.Controls.Add(this.buttonLocator);
             this.Controls.Add(this.buttonTest);
             this.Controls.Add(this.listBoxLog);
-            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.groupBoxStatusLocation);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "FormTracker";
             this.Text = "Vehicle Tracker";
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.groupBoxStatusLocation.ResumeLayout(false);
+            this.groupBoxStatusLocation.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.statusFileWatcher)).EndInit();
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
@@ -595,8 +595,8 @@
             this.groupBox7.PerformLayout();
             this.groupBox8.ResumeLayout(false);
             this.groupBox8.PerformLayout();
-            this.groupBox4.ResumeLayout(false);
-            this.groupBox4.PerformLayout();
+            this.groupBoxLocationData.ResumeLayout(false);
+            this.groupBoxLocationData.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
@@ -606,7 +606,7 @@
 
         #endregion
 
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox groupBoxStatusLocation;
         private System.Windows.Forms.Button buttonBrowseStatusFile;
         private System.Windows.Forms.TextBox textBoxStatusFile;
         private System.IO.FileSystemWatcher statusFileWatcher;
@@ -642,7 +642,7 @@
         private System.Windows.Forms.CheckBox checkBoxTrack;
         private System.Windows.Forms.RadioButton radioButtonWatchStatusFile;
         private System.Windows.Forms.RadioButton radioButtonUseTimer;
-        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.GroupBox groupBoxLocationData;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox textBoxPlanetRadius;
         private System.Windows.Forms.ToolTip toolTip1;
