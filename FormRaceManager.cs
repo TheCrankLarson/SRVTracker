@@ -21,7 +21,7 @@ namespace SRVTracker
     {
         private string _routeFile = "";
         private EDRace _race = null;
-        private Dictionary<string, System.Windows.Forms.ListViewItem> _racers = null;
+        private Dictionary<string, System.Windows.Forms.ListViewItem> _racersListViewItemList = null;
         private List<string> _eliminatedRacers = null;
         private EDWaypoint _nextWaypoint = null;
         private string _lastLeaderboardExport = "k"; // We set to a value to ensure export files are written when cleared first of all
@@ -77,7 +77,7 @@ namespace SRVTracker
             UpdateButtons();
             ClearTrackingFiles();
 
-            _racers = new Dictionary<string, System.Windows.Forms.ListViewItem>();
+            _racersListViewItemList = new Dictionary<string, System.Windows.Forms.ListViewItem>();
 
             if (!String.IsNullOrEmpty(textBoxServerRaceGuid.Text))
             {
@@ -153,14 +153,14 @@ namespace SRVTracker
 
         private void EDStatus_StatusChanged(object sender, string commander, string status)
         {
-            if (_racers.ContainsKey(commander))
+            if (_racersListViewItemList.ContainsKey(commander))
                 UpdateStatus(commander, status);
         }
 
         private void CommanderWatcher_UpdateReceived(object sender, EDEvent edEvent)
         {
             // We've received an event for a listed racer
-            if (!String.IsNullOrEmpty(_serverRaceGuid) && _race.Start > DateTime.MinValue)
+            if (!String.IsNullOrEmpty(_serverRaceGuid) && !buttonStartRace.Enabled)
                 return; // Server monitored race is running
 
             Task.Run(new Action(() => { UpdateStatus(edEvent); }));
@@ -226,7 +226,7 @@ namespace SRVTracker
                 listViewParticipants.BeginUpdate();
                 foreach (string commander in CommanderWatcher.GetCommanders())
                 {
-                    if (!_racers.ContainsKey(commander))
+                    if (!_racersListViewItemList.ContainsKey(commander))
                     {
                         try
                         {
@@ -246,7 +246,7 @@ namespace SRVTracker
 
         private void AddTrackedCommander(string commander, string status = "Ready", bool SkipAddContestant = false)
         {
-            if (_racers.ContainsKey(commander))
+            if (_racersListViewItemList.ContainsKey(commander))
                 return;
 
             System.Windows.Forms.ListViewItem item = new System.Windows.Forms.ListViewItem("-");
@@ -255,7 +255,6 @@ namespace SRVTracker
             item.SubItems.Add("NA");
             item.SubItems[3].Tag = double.MaxValue;
             item.SubItems.Add("100");
-            _racers.Add(commander, item);
             if (!SkipAddContestant && !_race.Contestants.Contains(commander))
                 _race.Contestants.Add(commander);
 
@@ -263,9 +262,8 @@ namespace SRVTracker
             {
                 lock (_lockListView)
                 {
-                    listViewParticipants.BeginUpdate();                    
                     listViewParticipants.Items.Add(item);
-                    listViewParticipants.EndUpdate();
+                    _racersListViewItemList.Add(commander, item);
                 }
             });
             if (listViewParticipants.InvokeRequired)
@@ -280,9 +278,9 @@ namespace SRVTracker
             Action action = new Action(() =>
                 {
                     if (_race.Statuses != null && _race.Statuses.ContainsKey(commander))
-                        _racers[commander].SubItems[2].Text = $"{_race.Statuses[commander].SpeedInMS:F0}m/s {_race.Statuses[commander].ToString()}";
+                        _racersListViewItemList[commander].SubItems[2].Text = $"{_race.Statuses[commander].SpeedInMS:F0}m/s {_race.Statuses[commander].ToString()}";
                     else
-                        _racers[commander].SubItems[2].Text = status;
+                        _racersListViewItemList[commander].SubItems[2].Text = status;
                 });
             if (listViewParticipants.InvokeRequired)
                 listViewParticipants.Invoke(action);
@@ -292,31 +290,31 @@ namespace SRVTracker
 
         private void UpdateStatus(EDEvent edEvent)
         {
-            // Update the status table
+            // Process status update for a commander
             Action action;
 
-            if (_race.Start>DateTime.MinValue)
+            if (buttonStartRace.Enabled)
             {
-                // Race has started
-                if (!_race.Statuses.ContainsKey(edEvent.Commander))
-                    return; // We're not tracking this commander
-                _race.UpdateStatus(edEvent);
-                UpdateStatus(edEvent.Commander, _race.Statuses[edEvent.Commander].ToString()); // We do this to display the speed in the listview
+                if (_race.Contestants.Contains(edEvent.Commander))
+                    return; // Already tracking this commander
+                if (checkBoxAutoAddCommanders.Checked && edEvent.HasCoordinates())
+                    if (_race.Route.Waypoints.Count > 0)
+                        if (!_skipAutoAdd.Contains(edEvent.Commander) && _race.Route.Waypoints[0].LocationIsWithinWaypoint(edEvent.Location()))
+                            AddTrackedCommander(edEvent.Commander);
+                return; // Race hasn't started, so we don't do anything further
             }
 
-            if (!edEvent.HasCoordinates())
+            // Race has started.  We should only get here for a client-side monitored race
+
+            if (!_race.Statuses.ContainsKey(edEvent.Commander))
+                return; // We're not tracking this commander
+            _race.UpdateStatus(edEvent);
+            UpdateStatus(edEvent.Commander, _race.Statuses[edEvent.Commander].ToString()); // We do this to display the speed in the listview
+
+
+            if (!edEvent.HasCoordinates() || !_racersListViewItemList.ContainsKey(edEvent.Commander))
                 return;
 
-            if (checkBoxAutoAddCommanders.Checked)
-                if (_race.Route.Waypoints.Count > 0)
-                    if (!_skipAutoAdd.Contains(edEvent.Commander) && _race.Route.Waypoints[0].LocationIsWithinWaypoint(edEvent.Location()))
-                        AddTrackedCommander(edEvent.Commander);
-
-            if (!_racers.ContainsKey(edEvent.Commander))
-                return;
-
-            if (_race.Start == DateTime.MinValue)
-                return; // Race hasn't started, so we don't do anything further
 
             // Get current positions and sort the list view
             List<string> positions = RacePositions();
@@ -331,9 +329,9 @@ namespace SRVTracker
                         listViewParticipants.Items.Clear();
                         for (int i = 0; i < positions.Count; i++)
                         {
-                            if (!_racers[positions[i]].SubItems[0].Text.Equals((i + 1).ToString()))
-                                _racers[positions[i]].SubItems[0].Text = (i + 1).ToString();
-                            listViewParticipants.Items.Add(_racers[positions[i]]);
+                            if (!_racersListViewItemList[positions[i]].SubItems[0].Text.Equals((i + 1).ToString()))
+                                _racersListViewItemList[positions[i]].SubItems[0].Text = (i + 1).ToString();
+                            listViewParticipants.Items.Add(_racersListViewItemList[positions[i]]);
                         }
                         listViewParticipants.EndUpdate();
                     }
@@ -345,18 +343,14 @@ namespace SRVTracker
                 _lastRacePositions = pos;
             }
 
-            if (_race.Statuses == null)
-            {
-                // Race hasn't started, so we just show location info
-            }
-            else
+            if (_race.Statuses != null)
             {
                 // We have race status, so update listview item with that
-                if (_race.Statuses.ContainsKey(edEvent.Commander) && !_race.Statuses[edEvent.Commander].DistanceToWaypointInKmDisplay.Equals(_racers[edEvent.Commander].SubItems[3].Text))
+                if (_race.Statuses.ContainsKey(edEvent.Commander) && !_race.Statuses[edEvent.Commander].DistanceToWaypointInKmDisplay.Equals(_racersListViewItemList[edEvent.Commander].SubItems[3].Text))
                 {
                     // Needs updating
                     action = new Action(() => {
-                        _racers[edEvent.Commander].SubItems[3].Text = _race.Statuses[edEvent.Commander].DistanceToWaypointInKmDisplay;
+                        _racersListViewItemList[edEvent.Commander].SubItems[3].Text = _race.Statuses[edEvent.Commander].DistanceToWaypointInKmDisplay;
                     });
                     if (listViewParticipants.InvokeRequired)
                         listViewParticipants.Invoke(action);
@@ -380,8 +374,8 @@ namespace SRVTracker
             List<string> positions = new List<string>();
             if (_race.Statuses == null)
             {
-                if (_racers.Count > 0)
-                    return _racers.Keys.ToList();
+                if (_racersListViewItemList.Count > 0)
+                    return _racersListViewItemList.Keys.ToList();
                 return positions;
             }               
 
@@ -661,8 +655,8 @@ namespace SRVTracker
                 return;
 
             string commanderToRemove = listViewParticipants.SelectedItems[0].SubItems[1].Text;
-            if (_racers.ContainsKey(commanderToRemove))
-                _racers.Remove(commanderToRemove);
+            if (_racersListViewItemList.ContainsKey(commanderToRemove))
+                _racersListViewItemList.Remove(commanderToRemove);
             if (_race.Contestants.Contains(commanderToRemove))
                 _race.Contestants.Remove(commanderToRemove);
             listViewParticipants.SelectedItems[0].Remove();
@@ -705,7 +699,7 @@ namespace SRVTracker
                         buttonReset_Click(sender, null);
 
                     _race = race;
-                    _racers = new Dictionary<string, System.Windows.Forms.ListViewItem>();
+                    _racersListViewItemList = new Dictionary<string, System.Windows.Forms.ListViewItem>();
                     listViewParticipants.Items.Clear();
                     _saveFilename = openFileDialog.FileName;
                     textBoxRaceName.Text = _race.Name;
@@ -793,7 +787,7 @@ namespace SRVTracker
                 MessageBox.Show(this, "At least two waypoints are required to start a race", "Invalid Route", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            if (_racers.Count<1)
+            if (_racersListViewItemList.Count<1)
             {
                 MessageBox.Show(this, "At least one commander is required to start a race", "No participants", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
@@ -1137,7 +1131,7 @@ namespace SRVTracker
         {
             FormRaceHistory formRaceHistory;
             if (checkBoxServerMonitoring.Checked)
-                formRaceHistory = new FormRaceHistory(_racers.Keys.ToList<string>(),_serverRaceGuid);
+                formRaceHistory = new FormRaceHistory(_racersListViewItemList.Keys.ToList<string>(),_serverRaceGuid);
             else
                 formRaceHistory = new FormRaceHistory(_race.Statuses);
             formRaceHistory.Show();
@@ -1349,18 +1343,18 @@ namespace SRVTracker
                                 listViewParticipants.Items.Clear();
                                 for (int i = 0; i < positions.Count; i++)
                                 {
-                                    if (!_racers[positions[i]].SubItems[0].Text.Equals((i + 1).ToString()))
-                                        _racers[positions[i]].SubItems[0].Text = (i + 1).ToString();
-                                    listViewParticipants.Items.Add(_racers[positions[i]]);
+                                    if (!_racersListViewItemList[positions[i]].SubItems[0].Text.Equals((i + 1).ToString()))
+                                        _racersListViewItemList[positions[i]].SubItems[0].Text = (i + 1).ToString();
+                                    listViewParticipants.Items.Add(_racersListViewItemList[positions[i]]);
                                 }
                                 _lastRacePositions = serverStats["Positions"];
                             }
 
                             for (int i = 0; i < positions.Count; i++)
                             {
-                                _racers[positions[i]].SubItems[2].Text = statuses[i];
-                                _racers[positions[i]].SubItems[3].Text = distancesToWaypoint[i];
-                                _racers[positions[i]].SubItems[4].Text = hullStrengths[i];
+                                _racersListViewItemList[positions[i]].SubItems[2].Text = statuses[i];
+                                _racersListViewItemList[positions[i]].SubItems[3].Text = distancesToWaypoint[i];
+                                _racersListViewItemList[positions[i]].SubItems[4].Text = hullStrengths[i];
                             }
                             listViewParticipants.EndUpdate();
                         }
