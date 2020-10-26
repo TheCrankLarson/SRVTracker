@@ -48,6 +48,11 @@ namespace EDTracking
             Altitude = altitude;
         }
 
+        public EDLocation Copy()
+        {
+            return new EDLocation(Name, SystemName, PlanetName, Latitude, Longitude, Altitude, PlanetaryRadius);
+        }
+
         public override string ToString()
         {
             return JsonSerializer.Serialize(this);// $"{Name}║{SystemName}║{PlanetName}║{Latitude.ToString(_enGB)}║{Longitude.ToString(_enGB)}║{Altitude.ToString(_enGB)}║{PlanetaryRadius.ToString(_enGB)}";

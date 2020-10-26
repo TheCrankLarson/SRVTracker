@@ -315,7 +315,7 @@ namespace SRVTracker
         private void buttonAddCurrentLocation_Click(object sender, EventArgs e)
         {
             if (FormTracker.CurrentLocation != null)
-                AddLocationToRoute(FormTracker.CurrentLocation);
+                AddLocationToRoute(FormTracker.CurrentLocation.Copy());
         }
 
         private void textBoxRouteName_TextChanged(object sender, EventArgs e)
