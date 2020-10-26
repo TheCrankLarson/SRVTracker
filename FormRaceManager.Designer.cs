@@ -62,7 +62,7 @@
             this.columnHeaderStatus = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeaderDistanceToWaypoint = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeaderHull = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.groupBoxRaceManagement = new System.Windows.Forms.GroupBox();
             this.checkBoxServerMonitoring = new System.Windows.Forms.CheckBox();
             this.checkBoxShowDetailedStatus = new System.Windows.Forms.CheckBox();
             this.checkBoxAutoAddCommanders = new System.Windows.Forms.CheckBox();
@@ -115,7 +115,7 @@
             this.checkBoxExportTrackedTargetMaxSpeed = new System.Windows.Forms.CheckBox();
             this.textBoxExportTargetMaxSpeedFile = new System.Windows.Forms.TextBox();
             this.timerRefreshFromServer = new System.Windows.Forms.Timer(this.components);
-            this.groupBox8 = new System.Windows.Forms.GroupBox();
+            this.groupBoxServerInfo = new System.Windows.Forms.GroupBox();
             this.label8 = new System.Windows.Forms.Label();
             this.textBoxServerRaceGuid = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
@@ -126,7 +126,7 @@
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBoxAddCommander.SuspendLayout();
-            this.groupBox4.SuspendLayout();
+            this.groupBoxRaceManagement.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLeaderboardMaxLength)).BeginInit();
             this.groupBox5.SuspendLayout();
             this.groupBox6.SuspendLayout();
@@ -135,7 +135,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownNotableEventDuration)).BeginInit();
             this.groupBoxHTMLExport.SuspendLayout();
             this.groupBoxTrackTarget.SuspendLayout();
-            this.groupBox8.SuspendLayout();
+            this.groupBoxServerInfo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -144,7 +144,7 @@
             this.groupBox1.Controls.Add(this.listBoxWaypoints);
             this.groupBox1.Controls.Add(this.buttonLoadRoute);
             this.groupBox1.Controls.Add(this.textBoxRouteName);
-            this.groupBox1.Location = new System.Drawing.Point(414, 91);
+            this.groupBox1.Location = new System.Drawing.Point(408, 85);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(300, 183);
             this.groupBox1.TabIndex = 0;
@@ -186,7 +186,7 @@
             this.groupBox2.Controls.Add(this.buttonSaveRaceAs);
             this.groupBox2.Controls.Add(this.buttonSaveRace);
             this.groupBox2.Controls.Add(this.textBoxRaceName);
-            this.groupBox2.Location = new System.Drawing.Point(12, 12);
+            this.groupBox2.Location = new System.Drawing.Point(6, 6);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(396, 48);
             this.groupBox2.TabIndex = 1;
@@ -281,7 +281,7 @@
             this.groupBox3.Controls.Add(this.buttonRemoveParticipant);
             this.groupBox3.Controls.Add(this.buttonAddParticipant);
             this.groupBox3.Controls.Add(this.listViewParticipants);
-            this.groupBox3.Location = new System.Drawing.Point(12, 66);
+            this.groupBox3.Location = new System.Drawing.Point(6, 60);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(396, 347);
             this.groupBox3.TabIndex = 2;
@@ -470,17 +470,17 @@
             this.columnHeaderHull.Text = "Hull";
             this.columnHeaderHull.Width = 45;
             // 
-            // groupBox4
+            // groupBoxRaceManagement
             // 
-            this.groupBox4.Controls.Add(this.checkBoxServerMonitoring);
-            this.groupBox4.Controls.Add(this.checkBoxShowDetailedStatus);
-            this.groupBox4.Controls.Add(this.checkBoxAutoAddCommanders);
-            this.groupBox4.Location = new System.Drawing.Point(414, 349);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(300, 70);
-            this.groupBox4.TabIndex = 3;
-            this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Race Management";
+            this.groupBoxRaceManagement.Controls.Add(this.checkBoxServerMonitoring);
+            this.groupBoxRaceManagement.Controls.Add(this.checkBoxShowDetailedStatus);
+            this.groupBoxRaceManagement.Controls.Add(this.checkBoxAutoAddCommanders);
+            this.groupBoxRaceManagement.Location = new System.Drawing.Point(408, 343);
+            this.groupBoxRaceManagement.Name = "groupBoxRaceManagement";
+            this.groupBoxRaceManagement.Size = new System.Drawing.Size(300, 70);
+            this.groupBoxRaceManagement.TabIndex = 3;
+            this.groupBoxRaceManagement.TabStop = false;
+            this.groupBoxRaceManagement.Text = "Race Management";
             // 
             // checkBoxServerMonitoring
             // 
@@ -573,7 +573,7 @@
             this.groupBox5.Controls.Add(this.label3);
             this.groupBox5.Controls.Add(this.textBoxSystem);
             this.groupBox5.Controls.Add(this.textBoxPlanet);
-            this.groupBox5.Location = new System.Drawing.Point(414, 12);
+            this.groupBox5.Location = new System.Drawing.Point(408, 6);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Size = new System.Drawing.Size(300, 73);
             this.groupBox5.TabIndex = 4;
@@ -586,7 +586,7 @@
             this.groupBox6.Controls.Add(this.checkBoxAllowPitstops);
             this.groupBox6.Controls.Add(this.checkBoxSRVRace);
             this.groupBox6.Controls.Add(this.checkBoxEliminationOnDestruction);
-            this.groupBox6.Location = new System.Drawing.Point(414, 280);
+            this.groupBox6.Location = new System.Drawing.Point(408, 274);
             this.groupBox6.Name = "groupBox6";
             this.groupBox6.Size = new System.Drawing.Size(300, 63);
             this.groupBox6.TabIndex = 5;
@@ -753,7 +753,7 @@
             this.groupBoxTextExport.Controls.Add(this.numericUpDownStatusMaxLength);
             this.groupBoxTextExport.Controls.Add(this.checkBoxIncludeMaxSpeed);
             this.groupBoxTextExport.Controls.Add(this.checkBoxExportSpeed);
-            this.groupBoxTextExport.Location = new System.Drawing.Point(720, 12);
+            this.groupBoxTextExport.Location = new System.Drawing.Point(714, 6);
             this.groupBoxTextExport.Name = "groupBoxTextExport";
             this.groupBoxTextExport.Size = new System.Drawing.Size(245, 251);
             this.groupBoxTextExport.TabIndex = 7;
@@ -873,7 +873,7 @@
             this.groupBoxHTMLExport.Controls.Add(this.label5);
             this.groupBoxHTMLExport.Controls.Add(this.label1);
             this.groupBoxHTMLExport.Controls.Add(this.textBoxHTMLTemplateFile);
-            this.groupBoxHTMLExport.Location = new System.Drawing.Point(720, 272);
+            this.groupBoxHTMLExport.Location = new System.Drawing.Point(714, 262);
             this.groupBoxHTMLExport.Name = "groupBoxHTMLExport";
             this.groupBoxHTMLExport.Size = new System.Drawing.Size(245, 106);
             this.groupBoxHTMLExport.TabIndex = 8;
@@ -939,7 +939,7 @@
             this.groupBoxTrackTarget.Controls.Add(this.checkBoxExportTrackedTarget);
             this.groupBoxTrackTarget.Controls.Add(this.textBoxExportTargetFile);
             this.groupBoxTrackTarget.Controls.Add(this.checkBoxClosestPlayerTarget);
-            this.groupBoxTrackTarget.Location = new System.Drawing.Point(971, 12);
+            this.groupBoxTrackTarget.Location = new System.Drawing.Point(965, 6);
             this.groupBoxTrackTarget.Name = "groupBoxTrackTarget";
             this.groupBoxTrackTarget.Size = new System.Drawing.Size(245, 188);
             this.groupBoxTrackTarget.TabIndex = 9;
@@ -1046,19 +1046,19 @@
             this.timerRefreshFromServer.Interval = 1000;
             this.timerRefreshFromServer.Tick += new System.EventHandler(this.timerRefreshFromServer_Tick);
             // 
-            // groupBox8
+            // groupBoxServerInfo
             // 
-            this.groupBox8.Controls.Add(this.label8);
-            this.groupBox8.Controls.Add(this.textBoxServerRaceGuid);
-            this.groupBox8.Controls.Add(this.label7);
-            this.groupBox8.Controls.Add(this.textBoxRaceStatusServerUrl);
-            this.groupBox8.Location = new System.Drawing.Point(971, 305);
-            this.groupBox8.Name = "groupBox8";
-            this.groupBox8.Size = new System.Drawing.Size(245, 114);
-            this.groupBox8.TabIndex = 10;
-            this.groupBox8.TabStop = false;
-            this.groupBox8.Text = "Server Monitoring";
-            this.groupBox8.Visible = false;
+            this.groupBoxServerInfo.Controls.Add(this.label8);
+            this.groupBoxServerInfo.Controls.Add(this.textBoxServerRaceGuid);
+            this.groupBoxServerInfo.Controls.Add(this.label7);
+            this.groupBoxServerInfo.Controls.Add(this.textBoxRaceStatusServerUrl);
+            this.groupBoxServerInfo.Location = new System.Drawing.Point(965, 299);
+            this.groupBoxServerInfo.Name = "groupBoxServerInfo";
+            this.groupBoxServerInfo.Size = new System.Drawing.Size(245, 114);
+            this.groupBoxServerInfo.TabIndex = 10;
+            this.groupBoxServerInfo.TabStop = false;
+            this.groupBoxServerInfo.Text = "Server Monitoring";
+            this.groupBoxServerInfo.Visible = false;
             // 
             // label8
             // 
@@ -1097,7 +1097,7 @@
             this.pictureBox1.BackColor = System.Drawing.Color.White;
             this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pictureBox1.Image = global::SRVTracker.Properties.Resources.SRV_Targetted1;
-            this.pictureBox1.Location = new System.Drawing.Point(1009, 244);
+            this.pictureBox1.Location = new System.Drawing.Point(1004, 222);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(175, 175);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -1109,26 +1109,26 @@
             this.timerPreraceExport.Interval = 2000;
             this.timerPreraceExport.Tick += new System.EventHandler(this.timerPreraceExport_Tick);
             // 
-            // FormRaceMonitor
+            // FormRaceManager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1226, 429);
             this.Controls.Add(this.pictureBox1);
-            this.Controls.Add(this.groupBox8);
+            this.Controls.Add(this.groupBoxServerInfo);
             this.Controls.Add(this.groupBoxTrackTarget);
             this.Controls.Add(this.groupBoxHTMLExport);
             this.Controls.Add(this.groupBoxTextExport);
             this.Controls.Add(this.groupBox6);
             this.Controls.Add(this.groupBox5);
-            this.Controls.Add(this.groupBox4);
+            this.Controls.Add(this.groupBoxRaceManagement);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
-            this.Name = "FormRaceMonitor";
+            this.Name = "FormRaceManager";
             this.Text = "Race Manager";
             this.Deactivate += new System.EventHandler(this.FormRaceMonitor_Deactivate);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormRaceMonitor_FormClosing);
@@ -1138,8 +1138,8 @@
             this.groupBox2.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBoxAddCommander.ResumeLayout(false);
-            this.groupBox4.ResumeLayout(false);
-            this.groupBox4.PerformLayout();
+            this.groupBoxRaceManagement.ResumeLayout(false);
+            this.groupBoxRaceManagement.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLeaderboardMaxLength)).EndInit();
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
@@ -1153,8 +1153,8 @@
             this.groupBoxHTMLExport.PerformLayout();
             this.groupBoxTrackTarget.ResumeLayout(false);
             this.groupBoxTrackTarget.PerformLayout();
-            this.groupBox8.ResumeLayout(false);
-            this.groupBox8.PerformLayout();
+            this.groupBoxServerInfo.ResumeLayout(false);
+            this.groupBoxServerInfo.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
@@ -1180,7 +1180,7 @@
         private System.Windows.Forms.Button buttonTrackParticipant;
         private System.Windows.Forms.Button buttonRemoveParticipant;
         private System.Windows.Forms.Button buttonAddParticipant;
-        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.GroupBox groupBoxRaceManagement;
         private System.Windows.Forms.CheckBox checkBoxExportLeaderboard;
         private System.Windows.Forms.CheckBox checkBoxEliminationOnDestruction;
         private System.Windows.Forms.ListBox listBoxWaypoints;
@@ -1234,7 +1234,7 @@
         private System.Windows.Forms.TextBox textBoxExportTargetMaxSpeedFile;
         private System.Windows.Forms.CheckBox checkBoxServerMonitoring;
         private System.Windows.Forms.Timer timerRefreshFromServer;
-        private System.Windows.Forms.GroupBox groupBox8;
+        private System.Windows.Forms.GroupBox groupBoxServerInfo;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox textBoxRaceStatusServerUrl;
         private System.Windows.Forms.Label label8;

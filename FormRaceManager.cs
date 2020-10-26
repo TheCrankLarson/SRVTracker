@@ -94,6 +94,8 @@ namespace SRVTracker
             timerPreraceExport.Start();
         }
 
+
+
         private bool CheckIfPreviousRaceRunning()
         {
             string raceGuid = textBoxServerRaceGuid.Text;
@@ -1101,8 +1103,14 @@ namespace SRVTracker
 
         private void ShowHideStreamingOptions()
         {
-            Size showStreamingOptions = new Size(1240, 464);
-            Size hideStreamingOptions = new Size(742, 464);
+            Size showStreamingOptions = new Size(groupBoxServerInfo.Location.X + groupBoxServerInfo.Width + (this.Width - this.ClientRectangle.Width) + 6,
+                groupBoxServerInfo.Location.Y + groupBoxServerInfo.Height + (this.Height - this.ClientRectangle.Height) + 6);
+
+            int leftBound = groupBoxRaceManagement.Location.X + groupBoxRaceManagement.Width;
+            int bottomBound = groupBoxRaceManagement.Location.Y + groupBoxRaceManagement.Height;
+            Size hideStreamingOptions = new Size((this.Width - this.ClientRectangle.Width) + leftBound + ((groupBoxHTMLExport.Left - leftBound) / 2),
+                (this.Height - this.ClientRectangle.Height) + bottomBound + 6);
+
             if (checkBoxStreamInfo.Checked)
             {
                 if (!this.Size.Equals(showStreamingOptions))
