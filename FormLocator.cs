@@ -55,7 +55,7 @@ namespace SRVTracker
                     base.WndProc(ref m);
                     if ((int)m.Result == 0x1)
                     {
-                        // This is a hit in the client area
+                        // This is a hit in the client area - but we return that it is a hit on the window bar
                         m.Result = (IntPtr)0x2;
                     }
                     return;
@@ -221,19 +221,8 @@ namespace SRVTracker
             bool displayChanged = false;
             try
             {
-                string d;
                 double distance = EDLocation.DistanceBetween(FormTracker.CurrentLocation, _targetPosition);
-                locatorHUD1.SetDistance(distance);
-                if (distance>1000000)
-                {
-                    d = $"({(distance / 1000000).ToString("0.0")}Mm";
-                }
-                else if (distance>1000)
-                {
-                    d = $"{(distance / 1000).ToString("0.0")}km";
-                }
-                else
-                    d = $"{distance.ToString("0.0")}m";
+                string d = locatorHUD1.SetDistance(distance);
                 double bearing = EDLocation.BearingToLocation(FormTracker.CurrentLocation, _targetPosition);
                 if (locatorHUD1.SetBearing((int)bearing, FormTracker.CurrentHeading))
                     displayChanged = true;

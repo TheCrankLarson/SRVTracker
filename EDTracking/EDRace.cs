@@ -143,9 +143,7 @@ namespace EDTracking
 
         public List<string> RacePositions()
         {
-            if (Statuses == null)
-                return Contestants;
-            if (Statuses.Count == 0)
+            if (Statuses == null || Statuses.Count == 0)
                 return Contestants;
 
             List<string> positions = new List<string>();
@@ -244,71 +242,70 @@ namespace EDTracking
 
             for (int i = 0; i < leaderBoard.Count; i++)
             {
-                if (!String.IsNullOrEmpty(leaderBoard[i]))
-                {
-                    if (leaderBoard[i].Length > maxStatusLength)
-                        leaderBoardExport.AppendLine(leaderBoard[i].Substring(0, maxStatusLength));
-                    else
-                        leaderBoardExport.AppendLine(leaderBoard[i]);
+                if (leaderBoard[i] == null)
+                    leaderBoard[i] = "Unknown error";
+                if (leaderBoard[i].Length > maxStatusLength)
+                    leaderBoardExport.AppendLine(leaderBoard[i].Substring(0, maxStatusLength));
+                else
+                    leaderBoardExport.AppendLine(leaderBoard[i]);
 
-                    if (this.Start > DateTime.MinValue && Statuses != null)
+                if (this.Start > DateTime.MinValue && Statuses != null)
+                {
+                    maxSpeeds.AppendLine($"{Statuses[leaderBoard[i]].MaxSpeedInMS:F0}");
+                    if (!Statuses[leaderBoard[i]].Eliminated && !Statuses[leaderBoard[i]].Finished)
                     {
-                        maxSpeeds.AppendLine($"{Statuses[leaderBoard[i]].MaxSpeedInMS:F0}");
-                        if (!Statuses[leaderBoard[i]].Eliminated && !Statuses[leaderBoard[i]].Finished)
-                        {
-                            speeds.AppendLine($"{Statuses[leaderBoard[i]].SpeedInMS:F0}");
-                        }
-                        else
-                            speeds.AppendLine();
+                        speeds.AppendLine($"{Statuses[leaderBoard[i]].SpeedInMS:F0}");
                     }
                     else
                         speeds.AppendLine();
+                }
+                else
+                    speeds.AppendLine();
 
-                    if (Statuses != null && (Statuses.Count > 0))
+                if (Statuses != null && (Statuses.Count > 0))
+                {
+                    if (Statuses[leaderBoard[i]].Finished)
                     {
-                        if (Statuses[leaderBoard[i]].Finished)
-                        {
-                            status.Append(CustomStatusMessages["Completed"]);
-                            status.AppendLine($" ({Statuses[leaderBoard[i]].FinishTime.Subtract(Start):hh\\:mm\\:ss})");
-                            totalDistanceLeft.AppendLine(CustomStatusMessages["Completed"]);
-                            distanceToWaypoint.AppendLine(CustomStatusMessages["Completed"]);
-                        }
-                        else
-                        {
-                            string s;
-                            if (Statuses[leaderBoard[i]].Eliminated)
-                            {
-                                distanceToWaypoint.AppendLine(CustomStatusMessages["Eliminated"]);
-                                totalDistanceLeft.AppendLine(CustomStatusMessages["Eliminated"]);
-                                s = CustomStatusMessages["Eliminated"];
-                            }
-                            else
-                            {
-                                distanceToWaypoint.AppendLine(Statuses[leaderBoard[i]].DistanceToWaypointInKmDisplay);
-                                totalDistanceLeft.AppendLine(Statuses[leaderBoard[i]].TotalDistanceLeftInKmDisplay);
-                                s = Statuses[leaderBoard[i]].ToString();
-                            }
-
-                            if (s.Length > maxStatusLength)
-                                s = s.Substring(0, maxStatusLength);
-                            status.AppendLine(s);
-
-
-                        }
-
-                        if (!Statuses[leaderBoard[i]].Eliminated)
-                            hullStrengths.AppendLine(Statuses[leaderBoard[i]].HullDisplay);
-                        else
-                            hullStrengths.AppendLine(" ");
+                        status.Append(CustomStatusMessages["Completed"]);
+                        status.AppendLine($" ({Statuses[leaderBoard[i]].FinishTime.Subtract(Start):hh\\:mm\\:ss})");
+                        totalDistanceLeft.AppendLine(CustomStatusMessages["Completed"]);
+                        distanceToWaypoint.AppendLine(CustomStatusMessages["Completed"]);
                     }
                     else
                     {
-                        // We don't have any statuses, so this is pre-race
-                        status.AppendLine(CustomStatusMessages["Ready"]);
-                        distanceToWaypoint.AppendLine(CustomStatusMessages["Ready"]);
-                        totalDistanceLeft.AppendLine(CustomStatusMessages["Ready"]);
-                        hullStrengths.AppendLine(" ");
+                        string s;
+                        if (Statuses[leaderBoard[i]].Eliminated)
+                        {
+                            distanceToWaypoint.AppendLine(CustomStatusMessages["Eliminated"]);
+                            totalDistanceLeft.AppendLine(CustomStatusMessages["Eliminated"]);
+                            s = CustomStatusMessages["Eliminated"];
+                        }
+                        else
+                        {
+                            distanceToWaypoint.AppendLine(Statuses[leaderBoard[i]].DistanceToWaypointInKmDisplay);
+                            totalDistanceLeft.AppendLine(Statuses[leaderBoard[i]].TotalDistanceLeftInKmDisplay);
+                            s = Statuses[leaderBoard[i]].ToString();
+                        }
+
+                        if (s.Length > maxStatusLength)
+                            s = s.Substring(0, maxStatusLength);
+                        status.AppendLine(s);
+
+
                     }
+
+                    if (!Statuses[leaderBoard[i]].Eliminated)
+                        hullStrengths.AppendLine(Statuses[leaderBoard[i]].HullDisplay);
+                    else
+                        hullStrengths.AppendLine(" ");
+                }
+                else
+                {
+                    // We don't have any statuses, so this is pre-race
+                    status.AppendLine(CustomStatusMessages["Ready"]);
+                    distanceToWaypoint.AppendLine(CustomStatusMessages["Ready"]);
+                    totalDistanceLeft.AppendLine(CustomStatusMessages["Ready"]);
+                    hullStrengths.AppendLine(" ");
                 }
             }
 

@@ -252,9 +252,9 @@ namespace SRVTracker
             System.Windows.Forms.ListViewItem item = new System.Windows.Forms.ListViewItem("-");
             item.SubItems.Add(commander);
             item.SubItems.Add(status);
-            item.SubItems.Add("NA");
+            item.SubItems.Add("");
             item.SubItems[3].Tag = double.MaxValue;
-            item.SubItems.Add("100");
+            item.SubItems.Add("");
             if (!SkipAddContestant && !_race.Contestants.Contains(commander))
                 _race.Contestants.Add(commander);
 

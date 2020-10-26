@@ -77,18 +77,28 @@ namespace SRVTracker
             return (Bitmap)pictureBoxDirection.Image;
         }
 
-        public void SetDistance(double distance)
+        public string SetDistance(double distance)
         {
-            string distanceText = $"{(distance / 1000):F1}km";
+            string distanceText;
+            if (distance > 1000000)
+            {
+                distanceText = $"({(distance / 1000000).ToString("F1")}Mm";
+            }
+            else if (distance > 1000)
+            {
+                distanceText = $"{(distance / 1000).ToString("F1")}km";
+            }
+            else
+                distanceText = $"{distance.ToString("F1")}m";
             if (labelDistance.Text.Equals(distanceText))
-                return;
+                return distanceText;
 
             Action action = new Action(() => { labelDistance.Text = distanceText; });
             if (labelDistance.InvokeRequired)
                 labelDistance.Invoke(action);
             else
                 action();
-            
+            return distanceText;
         }
 
         public void SetTarget(string target)
