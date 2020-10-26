@@ -42,7 +42,7 @@
             this.labelHeading = new System.Windows.Forms.Label();
             this.buttonShowHideTarget = new System.Windows.Forms.Button();
             this.buttonPlayers = new System.Windows.Forms.Button();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupBoxOtherCommanders = new System.Windows.Forms.GroupBox();
             this.checkBoxTrackClosest = new System.Windows.Forms.CheckBox();
             this.listBoxCommanders = new System.Windows.Forms.ListBox();
             this.buttonTrackCommander = new System.Windows.Forms.Button();
@@ -55,7 +55,7 @@
             this.locatorHUD1 = new SRVTracker.LocatorHUD();
             this.groupBoxDestination.SuspendLayout();
             this.groupBoxBearing.SuspendLayout();
-            this.groupBox1.SuspendLayout();
+            this.groupBoxOtherCommanders.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBoxDestination
@@ -194,19 +194,19 @@
             this.buttonPlayers.UseVisualStyleBackColor = true;
             this.buttonPlayers.Click += new System.EventHandler(this.buttonPlayers_Click);
             // 
-            // groupBox1
+            // groupBoxOtherCommanders
             // 
-            this.groupBox1.Controls.Add(this.checkBoxTrackClosest);
-            this.groupBox1.Controls.Add(this.listBoxCommanders);
-            this.groupBox1.Controls.Add(this.buttonTrackCommander);
-            this.groupBox1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.groupBox1.ForeColor = System.Drawing.Color.White;
-            this.groupBox1.Location = new System.Drawing.Point(349, 5);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(200, 162);
-            this.groupBox1.TabIndex = 9;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Other Commanders";
+            this.groupBoxOtherCommanders.Controls.Add(this.checkBoxTrackClosest);
+            this.groupBoxOtherCommanders.Controls.Add(this.listBoxCommanders);
+            this.groupBoxOtherCommanders.Controls.Add(this.buttonTrackCommander);
+            this.groupBoxOtherCommanders.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.groupBoxOtherCommanders.ForeColor = System.Drawing.Color.White;
+            this.groupBoxOtherCommanders.Location = new System.Drawing.Point(349, 5);
+            this.groupBoxOtherCommanders.Name = "groupBoxOtherCommanders";
+            this.groupBoxOtherCommanders.Size = new System.Drawing.Size(200, 162);
+            this.groupBoxOtherCommanders.TabIndex = 9;
+            this.groupBoxOtherCommanders.TabStop = false;
+            this.groupBoxOtherCommanders.Text = "Other Commanders";
             // 
             // checkBoxTrackClosest
             // 
@@ -334,7 +334,7 @@
             this.Controls.Add(this.locatorHUD1);
             this.Controls.Add(this.comboBoxLocation);
             this.Controls.Add(this.checkBoxEnableVRLocator);
-            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.groupBoxOtherCommanders);
             this.Controls.Add(this.buttonPlayers);
             this.Controls.Add(this.groupBoxBearing);
             this.Controls.Add(this.buttonUseCurrentLocation);
@@ -354,8 +354,8 @@
             this.groupBoxDestination.PerformLayout();
             this.groupBoxBearing.ResumeLayout(false);
             this.groupBoxBearing.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.groupBoxOtherCommanders.ResumeLayout(false);
+            this.groupBoxOtherCommanders.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -376,7 +376,7 @@
         private System.Windows.Forms.Button buttonShowHideTarget;
         private System.Windows.Forms.Button buttonUseCurrentLocation;
         private System.Windows.Forms.Button buttonPlayers;
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox groupBoxOtherCommanders;
         private System.Windows.Forms.ListBox listBoxCommanders;
         private System.Windows.Forms.Button buttonTrackCommander;
         private System.Windows.Forms.CheckBox checkBoxEnableVRLocator;

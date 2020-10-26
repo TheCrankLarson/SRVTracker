@@ -38,6 +38,7 @@ namespace SRVTracker
         public FormLocator()
         {
             InitializeComponent();
+            CalculateWindowSizes();
             this.Size = _normalView;
             this.Width = _commanderListHiddenWidth;
             buttonUseCurrentLocation.Enabled = false;  // We'll enable it when we have a location
@@ -45,6 +46,18 @@ namespace SRVTracker
             FormTracker.CommanderLocationChanged += FormTracker_CommanderLocationChanged;
             InitVRMatrix();
             InitLocationCombo();
+        }
+
+        private void CalculateWindowSizes()
+        {
+            // Calculate window sizes
+            int leftBound = buttonPlayers.Location.X + buttonPlayers.Width;
+            _commanderListHiddenWidth = (this.Width - this.ClientRectangle.Width) + leftBound + ((groupBoxOtherCommanders.Left - leftBound) / 2);
+
+            _miniView.Height = locatorHUD1.Height;
+            _miniView.Width = locatorHUD1.Width;
+            _normalView.Width = groupBoxOtherCommanders.Location.X + groupBoxOtherCommanders.Width + (this.Width - this.ClientRectangle.Width) + 6;
+            _normalView.Height = groupBoxOtherCommanders.Location.Y + groupBoxOtherCommanders.Height + (this.Height - this.ClientRectangle.Height) + 6;
         }
 
         protected override void WndProc(ref Message m)
