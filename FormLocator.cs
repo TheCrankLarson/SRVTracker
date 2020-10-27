@@ -603,6 +603,8 @@ namespace SRVTracker
             UpdateVRLocatorImage();
             _ = OpenVR.Overlay.ShowOverlay(_vrOverlayHandle);
 
+            //OpenVR.Overlay.GetOverlayTransformAbsolute(_vrOverlayHandle, Valve.VR.ETrackingUniverseOrigin.TrackingUniverseStanding, ref _vrMatrix);
+            
             OpenVR.Overlay.SetOverlayTransformAbsolute(_vrOverlayHandle, Valve.VR.ETrackingUniverseOrigin.TrackingUniverseStanding, ref _vrMatrix);
 
             /*

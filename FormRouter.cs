@@ -290,16 +290,9 @@ namespace SRVTracker
         private void buttonPlay_Click(object sender, EventArgs e)
         {
             _nextWaypoint = 0;
-            if (buttonStartRecording.Enabled)
-            {
-                if (listBoxWaypoints.SelectedIndex > 0)
-                {
-                    if (MessageBox.Show($"Start tracking from currently selected waypoint?{Environment.NewLine}(Choose no to start from the first waypoint)", "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                        _nextWaypoint = listBoxWaypoints.SelectedIndex;
-                }
-            }
-            else
+            if (listBoxWaypoints.SelectedIndex > 0)
                 _nextWaypoint = listBoxWaypoints.SelectedIndex;
+
             buttonStartRecording.Enabled = false;
             buttonStop.Enabled = true;
             _formTracker.StartTracking();

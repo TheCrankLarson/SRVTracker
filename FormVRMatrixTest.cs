@@ -66,6 +66,13 @@ namespace SRVTracker
 
         private void buttonApply_Click(object sender, EventArgs e)
         {
+            ApplyMatrixToOverlay(true);
+        }
+
+        private void ApplyMatrixToOverlay(bool force = false)
+        {
+            if (!force && !checkBoxAutoApply.Checked)
+                return;
             if (_overlayHandle > 0)
             {
                 GetMatrix();
@@ -93,6 +100,67 @@ namespace SRVTracker
             matrixCode.AppendLine();
 
             File.AppendAllText("matrices.txt", matrixCode.ToString());
+        }
+
+
+        private void numericUpDownm3_ValueChanged(object sender, EventArgs e)
+        {
+            ApplyMatrixToOverlay();
+        }
+
+        private void numericUpDownm0_ValueChanged(object sender, EventArgs e)
+        {
+            ApplyMatrixToOverlay();
+        }
+
+        private void numericUpDownm4_ValueChanged(object sender, EventArgs e)
+        {
+            ApplyMatrixToOverlay();
+        }
+
+        private void numericUpDownm8_ValueChanged(object sender, EventArgs e)
+        {
+            ApplyMatrixToOverlay();
+        }
+
+        private void numericUpDownm1_ValueChanged(object sender, EventArgs e)
+        {
+            ApplyMatrixToOverlay();
+        }
+
+        private void numericUpDownm5_ValueChanged(object sender, EventArgs e)
+        {
+            ApplyMatrixToOverlay();
+        }
+
+        private void numericUpDownm9_ValueChanged(object sender, EventArgs e)
+        {
+            ApplyMatrixToOverlay();
+        }
+
+        private void numericUpDownm2_ValueChanged(object sender, EventArgs e)
+        {
+            ApplyMatrixToOverlay();
+        }
+
+        private void numericUpDownm6_ValueChanged(object sender, EventArgs e)
+        {
+            ApplyMatrixToOverlay();
+        }
+
+        private void numericUpDownm10_ValueChanged(object sender, EventArgs e)
+        {
+            ApplyMatrixToOverlay();
+        }
+
+        private void numericUpDownm7_ValueChanged(object sender, EventArgs e)
+        {
+            ApplyMatrixToOverlay();
+        }
+
+        private void numericUpDownm11_ValueChanged(object sender, EventArgs e)
+        {
+            ApplyMatrixToOverlay();
         }
     }
 }

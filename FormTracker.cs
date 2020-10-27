@@ -287,7 +287,7 @@ namespace SRVTracker
             //formDrone.Show();
             //SendTestEvents();
 
-            //TestVROverlay();
+            TestVROverlay();
             //return;
             //if (_formFlagsWatcher != null)
             //    return;

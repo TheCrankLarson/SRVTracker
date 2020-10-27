@@ -44,6 +44,7 @@
             this.buttonApply = new System.Windows.Forms.Button();
             this.buttonClose = new System.Windows.Forms.Button();
             this.buttonExport = new System.Windows.Forms.Button();
+            this.checkBoxAutoApply = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownm11)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownm10)).BeginInit();
@@ -87,7 +88,7 @@
             1,
             0,
             0,
-            65536});
+            131072});
             this.numericUpDownm11.Location = new System.Drawing.Point(195, 71);
             this.numericUpDownm11.Maximum = new decimal(new int[] {
             2,
@@ -102,6 +103,7 @@
             this.numericUpDownm11.Name = "numericUpDownm11";
             this.numericUpDownm11.Size = new System.Drawing.Size(57, 20);
             this.numericUpDownm11.TabIndex = 11;
+            this.numericUpDownm11.ValueChanged += new System.EventHandler(this.numericUpDownm11_ValueChanged);
             // 
             // numericUpDownm10
             // 
@@ -110,7 +112,7 @@
             1,
             0,
             0,
-            65536});
+            131072});
             this.numericUpDownm10.Location = new System.Drawing.Point(132, 71);
             this.numericUpDownm10.Maximum = new decimal(new int[] {
             2,
@@ -125,6 +127,7 @@
             this.numericUpDownm10.Name = "numericUpDownm10";
             this.numericUpDownm10.Size = new System.Drawing.Size(57, 20);
             this.numericUpDownm10.TabIndex = 10;
+            this.numericUpDownm10.ValueChanged += new System.EventHandler(this.numericUpDownm10_ValueChanged);
             // 
             // numericUpDownm9
             // 
@@ -133,7 +136,7 @@
             1,
             0,
             0,
-            65536});
+            131072});
             this.numericUpDownm9.Location = new System.Drawing.Point(69, 71);
             this.numericUpDownm9.Maximum = new decimal(new int[] {
             2,
@@ -148,6 +151,7 @@
             this.numericUpDownm9.Name = "numericUpDownm9";
             this.numericUpDownm9.Size = new System.Drawing.Size(57, 20);
             this.numericUpDownm9.TabIndex = 9;
+            this.numericUpDownm9.ValueChanged += new System.EventHandler(this.numericUpDownm9_ValueChanged);
             // 
             // numericUpDownm8
             // 
@@ -156,7 +160,7 @@
             1,
             0,
             0,
-            65536});
+            131072});
             this.numericUpDownm8.Location = new System.Drawing.Point(6, 71);
             this.numericUpDownm8.Maximum = new decimal(new int[] {
             2,
@@ -171,6 +175,7 @@
             this.numericUpDownm8.Name = "numericUpDownm8";
             this.numericUpDownm8.Size = new System.Drawing.Size(57, 20);
             this.numericUpDownm8.TabIndex = 8;
+            this.numericUpDownm8.ValueChanged += new System.EventHandler(this.numericUpDownm8_ValueChanged);
             // 
             // numericUpDownm7
             // 
@@ -179,7 +184,7 @@
             1,
             0,
             0,
-            65536});
+            131072});
             this.numericUpDownm7.Location = new System.Drawing.Point(195, 45);
             this.numericUpDownm7.Maximum = new decimal(new int[] {
             2,
@@ -194,6 +199,7 @@
             this.numericUpDownm7.Name = "numericUpDownm7";
             this.numericUpDownm7.Size = new System.Drawing.Size(57, 20);
             this.numericUpDownm7.TabIndex = 7;
+            this.numericUpDownm7.ValueChanged += new System.EventHandler(this.numericUpDownm7_ValueChanged);
             // 
             // numericUpDownm6
             // 
@@ -202,7 +208,7 @@
             1,
             0,
             0,
-            65536});
+            131072});
             this.numericUpDownm6.Location = new System.Drawing.Point(132, 45);
             this.numericUpDownm6.Maximum = new decimal(new int[] {
             2,
@@ -217,6 +223,7 @@
             this.numericUpDownm6.Name = "numericUpDownm6";
             this.numericUpDownm6.Size = new System.Drawing.Size(57, 20);
             this.numericUpDownm6.TabIndex = 6;
+            this.numericUpDownm6.ValueChanged += new System.EventHandler(this.numericUpDownm6_ValueChanged);
             // 
             // numericUpDownm5
             // 
@@ -225,7 +232,7 @@
             1,
             0,
             0,
-            65536});
+            131072});
             this.numericUpDownm5.Location = new System.Drawing.Point(69, 45);
             this.numericUpDownm5.Maximum = new decimal(new int[] {
             2,
@@ -240,6 +247,7 @@
             this.numericUpDownm5.Name = "numericUpDownm5";
             this.numericUpDownm5.Size = new System.Drawing.Size(57, 20);
             this.numericUpDownm5.TabIndex = 5;
+            this.numericUpDownm5.ValueChanged += new System.EventHandler(this.numericUpDownm5_ValueChanged);
             // 
             // numericUpDownm4
             // 
@@ -248,7 +256,7 @@
             1,
             0,
             0,
-            65536});
+            131072});
             this.numericUpDownm4.Location = new System.Drawing.Point(6, 45);
             this.numericUpDownm4.Maximum = new decimal(new int[] {
             2,
@@ -263,6 +271,7 @@
             this.numericUpDownm4.Name = "numericUpDownm4";
             this.numericUpDownm4.Size = new System.Drawing.Size(57, 20);
             this.numericUpDownm4.TabIndex = 4;
+            this.numericUpDownm4.ValueChanged += new System.EventHandler(this.numericUpDownm4_ValueChanged);
             // 
             // numericUpDownm3
             // 
@@ -271,7 +280,7 @@
             1,
             0,
             0,
-            65536});
+            131072});
             this.numericUpDownm3.Location = new System.Drawing.Point(195, 19);
             this.numericUpDownm3.Maximum = new decimal(new int[] {
             2,
@@ -286,6 +295,7 @@
             this.numericUpDownm3.Name = "numericUpDownm3";
             this.numericUpDownm3.Size = new System.Drawing.Size(57, 20);
             this.numericUpDownm3.TabIndex = 3;
+            this.numericUpDownm3.ValueChanged += new System.EventHandler(this.numericUpDownm3_ValueChanged);
             // 
             // numericUpDownm2
             // 
@@ -294,7 +304,7 @@
             1,
             0,
             0,
-            65536});
+            131072});
             this.numericUpDownm2.Location = new System.Drawing.Point(132, 19);
             this.numericUpDownm2.Maximum = new decimal(new int[] {
             2,
@@ -309,6 +319,7 @@
             this.numericUpDownm2.Name = "numericUpDownm2";
             this.numericUpDownm2.Size = new System.Drawing.Size(57, 20);
             this.numericUpDownm2.TabIndex = 2;
+            this.numericUpDownm2.ValueChanged += new System.EventHandler(this.numericUpDownm2_ValueChanged);
             // 
             // numericUpDownm1
             // 
@@ -317,7 +328,7 @@
             1,
             0,
             0,
-            65536});
+            131072});
             this.numericUpDownm1.Location = new System.Drawing.Point(69, 19);
             this.numericUpDownm1.Maximum = new decimal(new int[] {
             2,
@@ -332,6 +343,7 @@
             this.numericUpDownm1.Name = "numericUpDownm1";
             this.numericUpDownm1.Size = new System.Drawing.Size(57, 20);
             this.numericUpDownm1.TabIndex = 1;
+            this.numericUpDownm1.ValueChanged += new System.EventHandler(this.numericUpDownm1_ValueChanged);
             // 
             // numericUpDownm0
             // 
@@ -340,7 +352,7 @@
             1,
             0,
             0,
-            65536});
+            131072});
             this.numericUpDownm0.Location = new System.Drawing.Point(6, 19);
             this.numericUpDownm0.Maximum = new decimal(new int[] {
             2,
@@ -355,6 +367,7 @@
             this.numericUpDownm0.Name = "numericUpDownm0";
             this.numericUpDownm0.Size = new System.Drawing.Size(57, 20);
             this.numericUpDownm0.TabIndex = 0;
+            this.numericUpDownm0.ValueChanged += new System.EventHandler(this.numericUpDownm0_ValueChanged);
             // 
             // buttonApply
             // 
@@ -386,12 +399,23 @@
             this.buttonExport.UseVisualStyleBackColor = true;
             this.buttonExport.Click += new System.EventHandler(this.buttonExport_Click);
             // 
+            // checkBoxAutoApply
+            // 
+            this.checkBoxAutoApply.AutoSize = true;
+            this.checkBoxAutoApply.Location = new System.Drawing.Point(147, 123);
+            this.checkBoxAutoApply.Name = "checkBoxAutoApply";
+            this.checkBoxAutoApply.Size = new System.Drawing.Size(48, 17);
+            this.checkBoxAutoApply.TabIndex = 4;
+            this.checkBoxAutoApply.Text = "Auto";
+            this.checkBoxAutoApply.UseVisualStyleBackColor = true;
+            // 
             // FormVRMatrixTest
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(285, 153);
+            this.ClientSize = new System.Drawing.Size(282, 150);
             this.ControlBox = false;
+            this.Controls.Add(this.checkBoxAutoApply);
             this.Controls.Add(this.buttonExport);
             this.Controls.Add(this.buttonClose);
             this.Controls.Add(this.buttonApply);
@@ -414,6 +438,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownm1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownm0)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -435,5 +460,6 @@
         private System.Windows.Forms.Button buttonApply;
         private System.Windows.Forms.Button buttonClose;
         private System.Windows.Forms.Button buttonExport;
+        private System.Windows.Forms.CheckBox checkBoxAutoApply;
     }
 }

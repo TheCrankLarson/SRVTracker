@@ -203,9 +203,9 @@
             // 
             // buttonTest
             // 
-            this.buttonTest.Location = new System.Drawing.Point(128, 151);
+            this.buttonTest.Location = new System.Drawing.Point(189, 122);
             this.buttonTest.Name = "buttonTest";
-            this.buttonTest.Size = new System.Drawing.Size(54, 23);
+            this.buttonTest.Size = new System.Drawing.Size(36, 23);
             this.buttonTest.TabIndex = 5;
             this.buttonTest.Text = "Test";
             this.buttonTest.UseVisualStyleBackColor = true;
@@ -460,11 +460,11 @@
             // checkBoxAutoUpdate
             // 
             this.checkBoxAutoUpdate.AutoSize = true;
-            this.checkBoxAutoUpdate.Location = new System.Drawing.Point(6, 21);
+            this.checkBoxAutoUpdate.Location = new System.Drawing.Point(134, 155);
             this.checkBoxAutoUpdate.Name = "checkBoxAutoUpdate";
-            this.checkBoxAutoUpdate.Size = new System.Drawing.Size(65, 17);
+            this.checkBoxAutoUpdate.Size = new System.Drawing.Size(84, 17);
             this.checkBoxAutoUpdate.TabIndex = 21;
-            this.checkBoxAutoUpdate.Text = "Enabled";
+            this.checkBoxAutoUpdate.Text = "Auto-update";
             this.toolTip1.SetToolTip(this.checkBoxAutoUpdate, "If enabled, will automatically check for update on start-up.");
             this.checkBoxAutoUpdate.UseVisualStyleBackColor = true;
             this.checkBoxAutoUpdate.CheckedChanged += new System.EventHandler(this.checkBoxAutoUpdate_CheckedChanged);
@@ -472,12 +472,14 @@
             // checkBoxIncludeBetaUpdates
             // 
             this.checkBoxIncludeBetaUpdates.AutoSize = true;
-            this.checkBoxIncludeBetaUpdates.Location = new System.Drawing.Point(77, 21);
+            this.checkBoxIncludeBetaUpdates.Location = new System.Drawing.Point(6, 19);
             this.checkBoxIncludeBetaUpdates.Name = "checkBoxIncludeBetaUpdates";
-            this.checkBoxIncludeBetaUpdates.Size = new System.Drawing.Size(85, 17);
+            this.checkBoxIncludeBetaUpdates.Size = new System.Drawing.Size(127, 17);
             this.checkBoxIncludeBetaUpdates.TabIndex = 22;
-            this.checkBoxIncludeBetaUpdates.Text = "Include beta";
-            this.toolTip1.SetToolTip(this.checkBoxIncludeBetaUpdates, resources.GetString("checkBoxIncludeBetaUpdates.ToolTip"));
+            this.checkBoxIncludeBetaUpdates.Text = "Include beta releases";
+            this.toolTip1.SetToolTip(this.checkBoxIncludeBetaUpdates, "If selected, auto-update will include beta versions.  If\r\nnot set, only release v" +
+        "ersions will be updated.\r\nSetting is automatically enabled if a beta version is " +
+        "run.\r\n");
             this.checkBoxIncludeBetaUpdates.UseVisualStyleBackColor = true;
             // 
             // buttonShowConfig
@@ -498,7 +500,7 @@
             this.buttonRaceTracker.Name = "buttonRaceTracker";
             this.buttonRaceTracker.Size = new System.Drawing.Size(55, 23);
             this.buttonRaceTracker.TabIndex = 17;
-            this.toolTip1.SetToolTip(this.buttonRaceTracker, "Open the Race Manager");
+            this.toolTip1.SetToolTip(this.buttonRaceTracker, "Open the Race Manager\r\nCreate, manage and track SRV races");
             this.buttonRaceTracker.UseVisualStyleBackColor = true;
             this.buttonRaceTracker.Click += new System.EventHandler(this.buttonRaceTracker_Click);
             // 
@@ -520,7 +522,7 @@
             this.buttonRoutePlanner.Name = "buttonRoutePlanner";
             this.buttonRoutePlanner.Size = new System.Drawing.Size(55, 23);
             this.buttonRoutePlanner.TabIndex = 10;
-            this.toolTip1.SetToolTip(this.buttonRoutePlanner, "Open the Route Planner");
+            this.toolTip1.SetToolTip(this.buttonRoutePlanner, "Open the Route Planner\r\nCreate/edit and replay routes (integrates with Locator)");
             this.buttonRoutePlanner.UseVisualStyleBackColor = true;
             this.buttonRoutePlanner.Click += new System.EventHandler(this.buttonRoutePlanner_Click);
             // 
@@ -531,14 +533,13 @@
             this.buttonLocator.Name = "buttonLocator";
             this.buttonLocator.Size = new System.Drawing.Size(55, 23);
             this.buttonLocator.TabIndex = 9;
-            this.toolTip1.SetToolTip(this.buttonLocator, "Open the Locator (to track other\r\ncommanders and locations)");
+            this.toolTip1.SetToolTip(this.buttonLocator, "Open the Locator\r\nProvides directions to locations and other commanders.");
             this.buttonLocator.UseVisualStyleBackColor = true;
             this.buttonLocator.Click += new System.EventHandler(this.buttonLocator_Click);
             // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.checkBoxIncludeBetaUpdates);
-            this.groupBox2.Controls.Add(this.checkBoxAutoUpdate);
             this.groupBox2.Location = new System.Drawing.Point(542, 122);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(170, 44);
@@ -561,6 +562,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(925, 481);
             this.Controls.Add(this.groupBox2);
+            this.Controls.Add(this.checkBoxAutoUpdate);
             this.Controls.Add(this.trackerHUD1);
             this.Controls.Add(this.groupBoxLocationData);
             this.Controls.Add(this.checkBoxTrack);
