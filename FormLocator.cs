@@ -455,19 +455,22 @@ namespace SRVTracker
         private void checkBoxEnableVRLocator_CheckedChanged(object sender, EventArgs e)
         {
             string initError = "";
+            if (!checkBoxEnableVRLocator.Enabled)
+                return;
+
             try
             {
                 if (!Valve.VR.OpenVR.IsHmdPresent())
                 {
-                    checkBoxEnableVRLocator.Checked = false;
                     checkBoxEnableVRLocator.Enabled = false;
+                    checkBoxEnableVRLocator.Checked = false;
                     initError = "No HMD present";
                 }
             }
             catch (Exception ex)
             {
-                checkBoxEnableVRLocator.Checked = false;
                 checkBoxEnableVRLocator.Enabled = false;
+                checkBoxEnableVRLocator.Checked = false;
                 initError = $"IsHmdPresent:{Environment.NewLine}{ex}";
             }
 
@@ -475,8 +478,7 @@ namespace SRVTracker
             {
                 if (!ShowVRLocator(ref initError))
                     checkBoxEnableVRLocator.Checked = false;
-                else
-                    return;
+                return;
             }
 
             if (!string.IsNullOrEmpty(initError))
@@ -575,11 +577,13 @@ namespace SRVTracker
 
         private bool ShowVRLocator(ref string info)
         {
+            if (_vrOverlayHandle > 0)
+                return true;
             try
             {
-                if (!FormTracker.InitVR() || (_vrOverlayHandle > 0))
+                if (!FormTracker.InitVR())
                 {
-                    info = "InitVR failed";
+                    info = "";
                     return false;
                 }
             }
@@ -599,18 +603,14 @@ namespace SRVTracker
                 return false;
             }
 
-            OpenVR.Overlay.SetOverlayWidthInMeters(_vrOverlayHandle, 0.8f);
+
+            //OpenVR.Overlay.SetOverlayTransformAbsolute(_vrOverlayHandle, Valve.VR.ETrackingUniverseOrigin.TrackingUniverseStanding, ref _vrMatrix);
+            FormVRMatrixTest formVRMatrixTest = new FormVRMatrixTest(_vrOverlayHandle);
+            formVRMatrixTest.SetOverlayWidth(0.8f);
+            formVRMatrixTest.SetMatrix(ref _vrMatrix);
+            //OpenVR.Overlay.SetOverlayWidthInMeters(_vrOverlayHandle, 0.8f);
             UpdateVRLocatorImage();
             _ = OpenVR.Overlay.ShowOverlay(_vrOverlayHandle);
-
-            //OpenVR.Overlay.GetOverlayTransformAbsolute(_vrOverlayHandle, Valve.VR.ETrackingUniverseOrigin.TrackingUniverseStanding, ref _vrMatrix);
-            
-            OpenVR.Overlay.SetOverlayTransformAbsolute(_vrOverlayHandle, Valve.VR.ETrackingUniverseOrigin.TrackingUniverseStanding, ref _vrMatrix);
-
-            
-            FormVRMatrixTest formVRMatrixTest = new FormVRMatrixTest(_vrOverlayHandle);
-            formVRMatrixTest.SetMatrix(ref _vrMatrix);
-            formVRMatrixTest.SetOverlayWidth(0.8f);
             formVRMatrixTest.Show();
             
             return true;

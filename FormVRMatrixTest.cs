@@ -57,6 +57,7 @@ namespace SRVTracker
         public void SetOverlayWidth(Single WidthInMetres)
         {
             numericUpDownOverlayWidth.Value = (decimal)WidthInMetres;
+            ApplyOverlayWidth();
         }
 
         public HmdMatrix34_t GetMatrix()
