@@ -562,15 +562,15 @@ namespace SRVTracker
             _vrMatrix.m0 = 0.7F;
             _vrMatrix.m1 = 0.0F;
             _vrMatrix.m2 = 0.0F;
-            _vrMatrix.m3 = 0.42F;
+            _vrMatrix.m3 = 0.42F; // x
             _vrMatrix.m4 = 0.0F;
             _vrMatrix.m5 = -1.0F;
             _vrMatrix.m6 = 0.0F;
-            _vrMatrix.m7 = 0.78F;
+            _vrMatrix.m7 = 0.78F; // y
             _vrMatrix.m8 = 0F;
             _vrMatrix.m9 = 0.0F;
             _vrMatrix.m10 = 0.0F;
-            _vrMatrix.m11 = -0.1F;
+            _vrMatrix.m11 = -0.1F; // -z
         }
 
         private bool ShowVRLocator(ref string info)
@@ -607,11 +607,12 @@ namespace SRVTracker
             
             OpenVR.Overlay.SetOverlayTransformAbsolute(_vrOverlayHandle, Valve.VR.ETrackingUniverseOrigin.TrackingUniverseStanding, ref _vrMatrix);
 
-            /*
+            
             FormVRMatrixTest formVRMatrixTest = new FormVRMatrixTest(_vrOverlayHandle);
             formVRMatrixTest.SetMatrix(ref _vrMatrix);
+            formVRMatrixTest.SetOverlayWidth(0.8f);
             formVRMatrixTest.Show();
-            */
+            
             return true;
         }
 
@@ -655,6 +656,7 @@ namespace SRVTracker
                     UpdateTrackingTarget(newLocation.Name);
                     DisplayTarget();
                 }
+                formAddLocation.Dispose();
                 return;
             }
 

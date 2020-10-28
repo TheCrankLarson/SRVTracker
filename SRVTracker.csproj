@@ -352,7 +352,6 @@
     </Content>
     <None Include="Resources\race flag16x16.png" />
     <None Include="Resources\Route planner 16x16bw.png" />
-    <None Include="Resources\Route planner 16x16.png" />
     <None Include="Resources\FolderOpened_16x.png" />
     <None Include="Resources\CopyItem_16x.png" />
     <None Include="Resources\SRV Targetted.png" />

@@ -71,9 +71,7 @@ namespace SRVTracker
                     EDLocation newLocation = new EDLocation(textBoxLocationName.Text, textBoxSystem.Text, textBoxPlanet.Text,
                         Convert.ToDouble(textBoxLatitude.Text), Convert.ToDouble(textBoxLongitude.Text), Convert.ToDouble(textBoxAltitude.Text),
                         Convert.ToDouble(textBoxPlanetaryRadius.Text));
-                    if (newLocation != null)
-                        return newLocation;
-                    return null;
+                    return newLocation;
                 }
 
                 updateLocation.Name = textBoxLocationName.Text;

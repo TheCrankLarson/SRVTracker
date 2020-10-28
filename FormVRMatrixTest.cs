@@ -22,6 +22,7 @@ namespace SRVTracker
             InitializeComponent();
             _overlayHandle = overlayHandle;
             _hmdMatrix = new HmdMatrix34_t();
+            buttonApply.Enabled = !checkBoxAutoApply.Checked;
         }
 
         private void buttonClose_Click(object sender, EventArgs e)
@@ -31,6 +32,10 @@ namespace SRVTracker
 
         public void SetMatrix(ref HmdMatrix34_t hmdMatrix)
         {
+            bool autoApply = checkBoxAutoApply.Checked;
+            if (checkBoxAutoApply.Checked)
+                checkBoxAutoApply.Checked = false;
+
             numericUpDownm0.Value = (decimal)hmdMatrix.m0;
             numericUpDownm1.Value = (decimal)hmdMatrix.m1;
             numericUpDownm2.Value = (decimal)hmdMatrix.m2;
@@ -44,6 +49,14 @@ namespace SRVTracker
             numericUpDownm10.Value = (decimal)hmdMatrix.m10;
             numericUpDownm11.Value = (decimal)hmdMatrix.m11;
             _hmdMatrix = hmdMatrix;
+
+            checkBoxAutoApply.Checked = autoApply;
+            ApplyMatrixToOverlay(true);
+        }
+
+        public void SetOverlayWidth(Single WidthInMetres)
+        {
+            numericUpDownOverlayWidth.Value = (decimal)WidthInMetres;
         }
 
         public HmdMatrix34_t GetMatrix()
@@ -64,9 +77,18 @@ namespace SRVTracker
             return _hmdMatrix;
         }
 
+        private void ApplyOverlayWidth()
+        {
+            if (_overlayHandle > 0)
+            {
+                OpenVR.Overlay.SetOverlayWidthInMeters(_overlayHandle, (float)numericUpDownOverlayWidth.Value);
+            }
+        }
+
         private void buttonApply_Click(object sender, EventArgs e)
         {
             ApplyMatrixToOverlay(true);
+            ApplyOverlayWidth();
         }
 
         private void ApplyMatrixToOverlay(bool force = false)
@@ -161,6 +183,16 @@ namespace SRVTracker
         private void numericUpDownm11_ValueChanged(object sender, EventArgs e)
         {
             ApplyMatrixToOverlay();
+        }
+
+        private void checkBoxAutoApply_CheckedChanged(object sender, EventArgs e)
+        {
+            buttonApply.Enabled = !checkBoxAutoApply.Checked;
+        }
+
+        private void numericUpDownOverlayWidth_ValueChanged(object sender, EventArgs e)
+        {
+            ApplyOverlayWidth();
         }
     }
 }

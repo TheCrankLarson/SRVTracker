@@ -28,6 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormVRMatrixTest));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.numericUpDownm11 = new System.Windows.Forms.NumericUpDown();
             this.numericUpDownm10 = new System.Windows.Forms.NumericUpDown();
@@ -45,6 +47,10 @@
             this.buttonClose = new System.Windows.Forms.Button();
             this.buttonExport = new System.Windows.Forms.Button();
             this.checkBoxAutoApply = new System.Windows.Forms.CheckBox();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.numericUpDownOverlayWidth = new System.Windows.Forms.NumericUpDown();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownm11)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownm10)).BeginInit();
@@ -58,6 +64,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownm2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownm1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownm0)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownOverlayWidth)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -103,6 +110,8 @@
             this.numericUpDownm11.Name = "numericUpDownm11";
             this.numericUpDownm11.Size = new System.Drawing.Size(57, 20);
             this.numericUpDownm11.TabIndex = 11;
+            this.numericUpDownm11.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.toolTip1.SetToolTip(this.numericUpDownm11, "-z offset");
             this.numericUpDownm11.ValueChanged += new System.EventHandler(this.numericUpDownm11_ValueChanged);
             // 
             // numericUpDownm10
@@ -113,7 +122,7 @@
             0,
             0,
             131072});
-            this.numericUpDownm10.Location = new System.Drawing.Point(132, 71);
+            this.numericUpDownm10.Location = new System.Drawing.Point(6, 71);
             this.numericUpDownm10.Maximum = new decimal(new int[] {
             2,
             0,
@@ -127,6 +136,7 @@
             this.numericUpDownm10.Name = "numericUpDownm10";
             this.numericUpDownm10.Size = new System.Drawing.Size(57, 20);
             this.numericUpDownm10.TabIndex = 10;
+            this.numericUpDownm10.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.numericUpDownm10.ValueChanged += new System.EventHandler(this.numericUpDownm10_ValueChanged);
             // 
             // numericUpDownm9
@@ -137,7 +147,7 @@
             0,
             0,
             131072});
-            this.numericUpDownm9.Location = new System.Drawing.Point(69, 71);
+            this.numericUpDownm9.Location = new System.Drawing.Point(132, 19);
             this.numericUpDownm9.Maximum = new decimal(new int[] {
             2,
             0,
@@ -151,6 +161,7 @@
             this.numericUpDownm9.Name = "numericUpDownm9";
             this.numericUpDownm9.Size = new System.Drawing.Size(57, 20);
             this.numericUpDownm9.TabIndex = 9;
+            this.numericUpDownm9.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.numericUpDownm9.ValueChanged += new System.EventHandler(this.numericUpDownm9_ValueChanged);
             // 
             // numericUpDownm8
@@ -161,7 +172,7 @@
             0,
             0,
             131072});
-            this.numericUpDownm8.Location = new System.Drawing.Point(6, 71);
+            this.numericUpDownm8.Location = new System.Drawing.Point(132, 45);
             this.numericUpDownm8.Maximum = new decimal(new int[] {
             2,
             0,
@@ -175,6 +186,7 @@
             this.numericUpDownm8.Name = "numericUpDownm8";
             this.numericUpDownm8.Size = new System.Drawing.Size(57, 20);
             this.numericUpDownm8.TabIndex = 8;
+            this.numericUpDownm8.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.numericUpDownm8.ValueChanged += new System.EventHandler(this.numericUpDownm8_ValueChanged);
             // 
             // numericUpDownm7
@@ -199,6 +211,8 @@
             this.numericUpDownm7.Name = "numericUpDownm7";
             this.numericUpDownm7.Size = new System.Drawing.Size(57, 20);
             this.numericUpDownm7.TabIndex = 7;
+            this.numericUpDownm7.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.toolTip1.SetToolTip(this.numericUpDownm7, "y offset");
             this.numericUpDownm7.ValueChanged += new System.EventHandler(this.numericUpDownm7_ValueChanged);
             // 
             // numericUpDownm6
@@ -209,7 +223,7 @@
             0,
             0,
             131072});
-            this.numericUpDownm6.Location = new System.Drawing.Point(132, 45);
+            this.numericUpDownm6.Location = new System.Drawing.Point(69, 19);
             this.numericUpDownm6.Maximum = new decimal(new int[] {
             2,
             0,
@@ -223,6 +237,7 @@
             this.numericUpDownm6.Name = "numericUpDownm6";
             this.numericUpDownm6.Size = new System.Drawing.Size(57, 20);
             this.numericUpDownm6.TabIndex = 6;
+            this.numericUpDownm6.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.numericUpDownm6.ValueChanged += new System.EventHandler(this.numericUpDownm6_ValueChanged);
             // 
             // numericUpDownm5
@@ -233,7 +248,7 @@
             0,
             0,
             131072});
-            this.numericUpDownm5.Location = new System.Drawing.Point(69, 45);
+            this.numericUpDownm5.Location = new System.Drawing.Point(6, 45);
             this.numericUpDownm5.Maximum = new decimal(new int[] {
             2,
             0,
@@ -247,6 +262,7 @@
             this.numericUpDownm5.Name = "numericUpDownm5";
             this.numericUpDownm5.Size = new System.Drawing.Size(57, 20);
             this.numericUpDownm5.TabIndex = 5;
+            this.numericUpDownm5.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.numericUpDownm5.ValueChanged += new System.EventHandler(this.numericUpDownm5_ValueChanged);
             // 
             // numericUpDownm4
@@ -257,7 +273,7 @@
             0,
             0,
             131072});
-            this.numericUpDownm4.Location = new System.Drawing.Point(6, 45);
+            this.numericUpDownm4.Location = new System.Drawing.Point(132, 71);
             this.numericUpDownm4.Maximum = new decimal(new int[] {
             2,
             0,
@@ -271,6 +287,7 @@
             this.numericUpDownm4.Name = "numericUpDownm4";
             this.numericUpDownm4.Size = new System.Drawing.Size(57, 20);
             this.numericUpDownm4.TabIndex = 4;
+            this.numericUpDownm4.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.numericUpDownm4.ValueChanged += new System.EventHandler(this.numericUpDownm4_ValueChanged);
             // 
             // numericUpDownm3
@@ -295,6 +312,8 @@
             this.numericUpDownm3.Name = "numericUpDownm3";
             this.numericUpDownm3.Size = new System.Drawing.Size(57, 20);
             this.numericUpDownm3.TabIndex = 3;
+            this.numericUpDownm3.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.toolTip1.SetToolTip(this.numericUpDownm3, "x offset");
             this.numericUpDownm3.ValueChanged += new System.EventHandler(this.numericUpDownm3_ValueChanged);
             // 
             // numericUpDownm2
@@ -305,7 +324,7 @@
             0,
             0,
             131072});
-            this.numericUpDownm2.Location = new System.Drawing.Point(132, 19);
+            this.numericUpDownm2.Location = new System.Drawing.Point(69, 45);
             this.numericUpDownm2.Maximum = new decimal(new int[] {
             2,
             0,
@@ -319,6 +338,7 @@
             this.numericUpDownm2.Name = "numericUpDownm2";
             this.numericUpDownm2.Size = new System.Drawing.Size(57, 20);
             this.numericUpDownm2.TabIndex = 2;
+            this.numericUpDownm2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.numericUpDownm2.ValueChanged += new System.EventHandler(this.numericUpDownm2_ValueChanged);
             // 
             // numericUpDownm1
@@ -329,7 +349,7 @@
             0,
             0,
             131072});
-            this.numericUpDownm1.Location = new System.Drawing.Point(69, 19);
+            this.numericUpDownm1.Location = new System.Drawing.Point(69, 71);
             this.numericUpDownm1.Maximum = new decimal(new int[] {
             2,
             0,
@@ -343,6 +363,7 @@
             this.numericUpDownm1.Name = "numericUpDownm1";
             this.numericUpDownm1.Size = new System.Drawing.Size(57, 20);
             this.numericUpDownm1.TabIndex = 1;
+            this.numericUpDownm1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.numericUpDownm1.ValueChanged += new System.EventHandler(this.numericUpDownm1_ValueChanged);
             // 
             // numericUpDownm0
@@ -367,11 +388,12 @@
             this.numericUpDownm0.Name = "numericUpDownm0";
             this.numericUpDownm0.Size = new System.Drawing.Size(57, 20);
             this.numericUpDownm0.TabIndex = 0;
+            this.numericUpDownm0.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.numericUpDownm0.ValueChanged += new System.EventHandler(this.numericUpDownm0_ValueChanged);
             // 
             // buttonApply
             // 
-            this.buttonApply.Location = new System.Drawing.Point(197, 119);
+            this.buttonApply.Location = new System.Drawing.Point(197, 145);
             this.buttonApply.Name = "buttonApply";
             this.buttonApply.Size = new System.Drawing.Size(75, 23);
             this.buttonApply.TabIndex = 1;
@@ -381,7 +403,7 @@
             // 
             // buttonClose
             // 
-            this.buttonClose.Location = new System.Drawing.Point(12, 119);
+            this.buttonClose.Location = new System.Drawing.Point(12, 145);
             this.buttonClose.Name = "buttonClose";
             this.buttonClose.Size = new System.Drawing.Size(52, 23);
             this.buttonClose.TabIndex = 2;
@@ -391,7 +413,7 @@
             // 
             // buttonExport
             // 
-            this.buttonExport.Location = new System.Drawing.Point(70, 119);
+            this.buttonExport.Location = new System.Drawing.Point(70, 145);
             this.buttonExport.Name = "buttonExport";
             this.buttonExport.Size = new System.Drawing.Size(53, 23);
             this.buttonExport.TabIndex = 3;
@@ -402,25 +424,80 @@
             // checkBoxAutoApply
             // 
             this.checkBoxAutoApply.AutoSize = true;
-            this.checkBoxAutoApply.Location = new System.Drawing.Point(147, 123);
+            this.checkBoxAutoApply.Checked = true;
+            this.checkBoxAutoApply.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxAutoApply.Location = new System.Drawing.Point(147, 149);
             this.checkBoxAutoApply.Name = "checkBoxAutoApply";
             this.checkBoxAutoApply.Size = new System.Drawing.Size(48, 17);
             this.checkBoxAutoApply.TabIndex = 4;
             this.checkBoxAutoApply.Text = "Auto";
             this.checkBoxAutoApply.UseVisualStyleBackColor = true;
+            this.checkBoxAutoApply.CheckedChanged += new System.EventHandler(this.checkBoxAutoApply_CheckedChanged);
+            // 
+            // numericUpDownOverlayWidth
+            // 
+            this.numericUpDownOverlayWidth.DecimalPlaces = 2;
+            this.numericUpDownOverlayWidth.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.numericUpDownOverlayWidth.Location = new System.Drawing.Point(144, 119);
+            this.numericUpDownOverlayWidth.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numericUpDownOverlayWidth.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.numericUpDownOverlayWidth.Name = "numericUpDownOverlayWidth";
+            this.numericUpDownOverlayWidth.Size = new System.Drawing.Size(57, 20);
+            this.numericUpDownOverlayWidth.TabIndex = 5;
+            this.numericUpDownOverlayWidth.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.numericUpDownOverlayWidth.Value = new decimal(new int[] {
+            8,
+            0,
+            0,
+            65536});
+            this.numericUpDownOverlayWidth.ValueChanged += new System.EventHandler(this.numericUpDownOverlayWidth_ValueChanged);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(43, 121);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(95, 13);
+            this.label1.TabIndex = 6;
+            this.label1.Text = "HUD Panel Width:";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(207, 121);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(15, 13);
+            this.label2.TabIndex = 7;
+            this.label2.Text = "m";
             // 
             // FormVRMatrixTest
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(282, 150);
+            this.ClientSize = new System.Drawing.Size(282, 181);
             this.ControlBox = false;
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.numericUpDownOverlayWidth);
             this.Controls.Add(this.checkBoxAutoApply);
             this.Controls.Add(this.buttonExport);
             this.Controls.Add(this.buttonClose);
             this.Controls.Add(this.buttonApply);
             this.Controls.Add(this.groupBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FormVRMatrixTest";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Matrix Editor";
@@ -437,6 +514,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownm2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownm1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownm0)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownOverlayWidth)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -461,5 +539,9 @@
         private System.Windows.Forms.Button buttonClose;
         private System.Windows.Forms.Button buttonExport;
         private System.Windows.Forms.CheckBox checkBoxAutoApply;
+        private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.NumericUpDown numericUpDownOverlayWidth;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
     }
 }
