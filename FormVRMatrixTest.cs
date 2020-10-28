@@ -90,6 +90,8 @@ namespace SRVTracker
         {
             ApplyMatrixToOverlay(true);
             ApplyOverlayWidth();
+            if (checkBoxAutoApply.Checked)
+                buttonApply.Enabled = false;
         }
 
         private void ApplyMatrixToOverlay(bool force = false)
@@ -193,7 +195,7 @@ namespace SRVTracker
 
         private void numericUpDownOverlayWidth_ValueChanged(object sender, EventArgs e)
         {
-            ApplyOverlayWidth();
+            buttonApply.Enabled = true;
         }
     }
 }

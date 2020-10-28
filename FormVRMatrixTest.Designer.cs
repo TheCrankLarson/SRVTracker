@@ -51,6 +51,12 @@
             this.numericUpDownOverlayWidth = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.listBoxMatrices = new System.Windows.Forms.ListBox();
+            this.buttonAdd = new System.Windows.Forms.Button();
+            this.buttonDelete = new System.Windows.Forms.Button();
+            this.buttonSave = new System.Windows.Forms.Button();
+            this.textBoxMatrixName = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownm11)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownm10)).BeginInit();
@@ -65,6 +71,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownm1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownm0)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownOverlayWidth)).BeginInit();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -398,6 +405,7 @@
             this.buttonApply.Size = new System.Drawing.Size(75, 23);
             this.buttonApply.TabIndex = 1;
             this.buttonApply.Text = "Apply";
+            this.toolTip1.SetToolTip(this.buttonApply, "Apply changes");
             this.buttonApply.UseVisualStyleBackColor = true;
             this.buttonApply.Click += new System.EventHandler(this.buttonApply_Click);
             // 
@@ -431,6 +439,7 @@
             this.checkBoxAutoApply.Size = new System.Drawing.Size(48, 17);
             this.checkBoxAutoApply.TabIndex = 4;
             this.checkBoxAutoApply.Text = "Auto";
+            this.toolTip1.SetToolTip(this.checkBoxAutoApply, "When checked, changes to the\r\nmatrix are applied automatically");
             this.checkBoxAutoApply.UseVisualStyleBackColor = true;
             this.checkBoxAutoApply.CheckedChanged += new System.EventHandler(this.checkBoxAutoApply_CheckedChanged);
             // 
@@ -449,7 +458,7 @@
             0,
             0});
             this.numericUpDownOverlayWidth.Minimum = new decimal(new int[] {
-            1,
+            2,
             0,
             0,
             65536});
@@ -457,6 +466,7 @@
             this.numericUpDownOverlayWidth.Size = new System.Drawing.Size(57, 20);
             this.numericUpDownOverlayWidth.TabIndex = 5;
             this.numericUpDownOverlayWidth.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.toolTip1.SetToolTip(this.numericUpDownOverlayWidth, "HUD panel width in metres.\r\nMust be applied manually.");
             this.numericUpDownOverlayWidth.Value = new decimal(new int[] {
             8,
             0,
@@ -482,12 +492,69 @@
             this.label2.TabIndex = 7;
             this.label2.Text = "m";
             // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.textBoxMatrixName);
+            this.groupBox2.Controls.Add(this.buttonSave);
+            this.groupBox2.Controls.Add(this.buttonDelete);
+            this.groupBox2.Controls.Add(this.buttonAdd);
+            this.groupBox2.Controls.Add(this.listBoxMatrices);
+            this.groupBox2.Location = new System.Drawing.Point(278, 12);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(200, 157);
+            this.groupBox2.TabIndex = 8;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Saved Matrices";
+            // 
+            // listBoxMatrices
+            // 
+            this.listBoxMatrices.FormattingEnabled = true;
+            this.listBoxMatrices.Location = new System.Drawing.Point(6, 19);
+            this.listBoxMatrices.Name = "listBoxMatrices";
+            this.listBoxMatrices.Size = new System.Drawing.Size(188, 108);
+            this.listBoxMatrices.TabIndex = 0;
+            // 
+            // buttonAdd
+            // 
+            this.buttonAdd.Image = global::SRVTracker.Properties.Resources.Add_16x;
+            this.buttonAdd.Location = new System.Drawing.Point(6, 128);
+            this.buttonAdd.Name = "buttonAdd";
+            this.buttonAdd.Size = new System.Drawing.Size(26, 23);
+            this.buttonAdd.TabIndex = 1;
+            this.buttonAdd.UseVisualStyleBackColor = true;
+            // 
+            // buttonDelete
+            // 
+            this.buttonDelete.Image = global::SRVTracker.Properties.Resources.Remove_color_16x;
+            this.buttonDelete.Location = new System.Drawing.Point(32, 128);
+            this.buttonDelete.Name = "buttonDelete";
+            this.buttonDelete.Size = new System.Drawing.Size(26, 23);
+            this.buttonDelete.TabIndex = 2;
+            this.buttonDelete.UseVisualStyleBackColor = true;
+            // 
+            // buttonSave
+            // 
+            this.buttonSave.Image = global::SRVTracker.Properties.Resources.Save_16x;
+            this.buttonSave.Location = new System.Drawing.Point(58, 128);
+            this.buttonSave.Name = "buttonSave";
+            this.buttonSave.Size = new System.Drawing.Size(26, 23);
+            this.buttonSave.TabIndex = 3;
+            this.buttonSave.UseVisualStyleBackColor = true;
+            // 
+            // textBoxMatrixName
+            // 
+            this.textBoxMatrixName.Location = new System.Drawing.Point(90, 130);
+            this.textBoxMatrixName.Name = "textBoxMatrixName";
+            this.textBoxMatrixName.Size = new System.Drawing.Size(104, 20);
+            this.textBoxMatrixName.TabIndex = 4;
+            // 
             // FormVRMatrixTest
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(282, 181);
+            this.ClientSize = new System.Drawing.Size(487, 181);
             this.ControlBox = false;
+            this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.numericUpDownOverlayWidth);
@@ -515,6 +582,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownm1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownm0)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownOverlayWidth)).EndInit();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -543,5 +612,11 @@
         private System.Windows.Forms.NumericUpDown numericUpDownOverlayWidth;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.TextBox textBoxMatrixName;
+        private System.Windows.Forms.Button buttonSave;
+        private System.Windows.Forms.Button buttonDelete;
+        private System.Windows.Forms.Button buttonAdd;
+        private System.Windows.Forms.ListBox listBoxMatrices;
     }
 }
