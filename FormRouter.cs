@@ -154,6 +154,8 @@ namespace SRVTracker
                             action();
                     }
                 }
+                else
+                    FormLocator.GetLocator().SetAdditionalInfo(GetBearingAfterNextWaypoint());
                 return;
             }
 

@@ -448,7 +448,7 @@ namespace SRVTracker
 
                 CommanderLocationChanged?.Invoke(null, null);
 
-                CurrentHeading = edEvent.Heading;
+                CurrentHeading = heading;
             }
 
             action = new Action(() => { labelLastUpdateTime.Text = DateTime.Now.ToString("HH:mm:ss"); });
@@ -488,7 +488,7 @@ namespace SRVTracker
                         action();
                 }
 
-            action = new Action(() => { textBoxHeading.Text = heading.ToString(); });
+            action = new Action(() => { textBoxHeading.Text = CurrentHeading.ToString(); });
             if (textBoxHeading.InvokeRequired)
                 textBoxHeading.Invoke(action);
             else

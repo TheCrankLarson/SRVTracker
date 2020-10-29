@@ -170,6 +170,11 @@ namespace SRVTracker
             UpdateTracking();
         }
 
+        public void SetAdditionalInfo(string additionalInfo)
+        {
+            locatorHUD1.SetAdditionalInfo(additionalInfo);
+        }
+
         public void SetTarget(string commander)
         {
             // Sets the tracking target to the specified commander
