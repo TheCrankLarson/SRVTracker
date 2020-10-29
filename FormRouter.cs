@@ -90,7 +90,29 @@ namespace SRVTracker
                     }
                     else
                     {
-                        FormLocator.GetLocator().SetTarget(_route.Waypoints[_nextWaypoint].Location);
+                        StringBuilder additionalInfo = new StringBuilder();
+                        if (checkBoxPlayIncudeDirection.Checked)
+                        {
+                            // We need to work out the direction change at the next waypoint, and add that to the description
+                            if (_nextWaypoint < _route.Waypoints.Count - 1)
+                            {
+                                double bearingFromNextWaypoint = EDLocation.BearingToLocation(_route.Waypoints[_nextWaypoint].Location, _route.Waypoints[_nextWaypoint + 1].Location);
+                                double bearingToNextWaypoint = EDLocation.BearingToLocation(_route.Waypoints[_nextWaypoint-1].Location, _route.Waypoints[_nextWaypoint].Location);
+                                double bearingChange = EDLocation.BearingDelta(bearingToNextWaypoint, bearingFromNextWaypoint);
+                                if (bearingChange > -5 && bearingChange < 5)
+                                    additionalInfo.Append("Straight on");
+                                else
+                                {
+                                    if (bearingChange < 0)
+                                        additionalInfo.Append("Left ");
+                                    else
+                                        additionalInfo.Append("Right ");
+                                    additionalInfo.Append(bearingChange.ToString("F1"));
+                                    additionalInfo.Append("°");
+                                }
+                            }
+                        }
+                        FormLocator.GetLocator().SetTarget(_route.Waypoints[_nextWaypoint].Location, additionalInfo.ToString());
                         Action action = new Action(() =>
                         {
                             listBoxWaypoints.SelectedIndex = _nextWaypoint;
@@ -118,17 +140,21 @@ namespace SRVTracker
             waypoint.MinimumAltitude = (double)numericUpDownMinAltitude.Value;
             waypoint.MaximumAltitude = (double)numericUpDownMaxAltitude.Value;
 
-            // If we have a name that ends in a number, then we take that name and increase the number by one
-            string waypointName = textBoxWaypointName.Text;
-            int postfix = waypointName.LastIndexOf(' ');
-            if (postfix>-1)
+            if (String.IsNullOrEmpty(location.Name))
             {
-                string waypointNum = waypointName.Substring(postfix).Trim();
-                int wpNum;
-                if (int.TryParse(waypointNum, out wpNum))
+                // If we have a name that ends in a number, then we take that name and increase the number by one
+                // Otherwise we don't do anything as the waypoint will be automatically generated if blank
+                string waypointName = textBoxWaypointName.Text;
+                int postfix = waypointName.LastIndexOf(' ');
+                if (postfix > -1)
                 {
-                    wpNum++;
-                    waypoint.Name = $"{waypointName.Substring(0, postfix)}{wpNum}";
+                    string waypointNum = waypointName.Substring(postfix).Trim();
+                    int wpNum;
+                    if (int.TryParse(waypointNum, out wpNum))
+                    {
+                        wpNum++;
+                        waypoint.Name = $"{waypointName.Substring(0, postfix)}{wpNum}";
+                    }
                 }
             }
 

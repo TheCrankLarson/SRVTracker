@@ -35,6 +35,7 @@
             this.pictureBoxDirection = new System.Windows.Forms.PictureBox();
             this.labelSpeedInMS = new System.Windows.Forms.Label();
             this.labelMs = new System.Windows.Forms.Label();
+            this.labelAdditionalInfo = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxDirection)).BeginInit();
             this.SuspendLayout();
             // 
@@ -63,7 +64,7 @@
             this.labelBearing.AutoSize = true;
             this.labelBearing.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelBearing.ForeColor = System.Drawing.Color.Yellow;
-            this.labelBearing.Location = new System.Drawing.Point(25, 20);
+            this.labelBearing.Location = new System.Drawing.Point(25, 26);
             this.labelBearing.Name = "labelBearing";
             this.labelBearing.Size = new System.Drawing.Size(36, 29);
             this.labelBearing.TabIndex = 2;
@@ -74,7 +75,7 @@
             this.labelDistance.AutoSize = true;
             this.labelDistance.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelDistance.ForeColor = System.Drawing.Color.Yellow;
-            this.labelDistance.Location = new System.Drawing.Point(92, 20);
+            this.labelDistance.Location = new System.Drawing.Point(92, 26);
             this.labelDistance.Name = "labelDistance";
             this.labelDistance.Size = new System.Drawing.Size(82, 29);
             this.labelDistance.TabIndex = 3;
@@ -112,11 +113,22 @@
             this.labelMs.TabIndex = 6;
             this.labelMs.Text = "m/s";
             // 
+            // labelAdditionalInfo
+            // 
+            this.labelAdditionalInfo.AutoSize = true;
+            this.labelAdditionalInfo.ForeColor = System.Drawing.Color.Yellow;
+            this.labelAdditionalInfo.Location = new System.Drawing.Point(40, 13);
+            this.labelAdditionalInfo.Name = "labelAdditionalInfo";
+            this.labelAdditionalInfo.Size = new System.Drawing.Size(78, 13);
+            this.labelAdditionalInfo.TabIndex = 7;
+            this.labelAdditionalInfo.Text = "(additional info)";
+            // 
             // LocatorHUD
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
+            this.Controls.Add(this.labelAdditionalInfo);
             this.Controls.Add(this.pictureBoxDirection);
             this.Controls.Add(this.labelSpeedInMS);
             this.Controls.Add(this.labelMs);
@@ -141,5 +153,6 @@
         private System.Windows.Forms.PictureBox pictureBoxDirection;
         private System.Windows.Forms.Label labelSpeedInMS;
         private System.Windows.Forms.Label labelMs;
+        private System.Windows.Forms.Label labelAdditionalInfo;
     }
 }

@@ -72,6 +72,11 @@ namespace SRVTracker
             return true;
         }
 
+        public String AdditionalInfo
+        {
+            get { return labelAdditionalInfo.Text; }
+        }
+
         public Bitmap GetBearingImage()
         {
             return (Bitmap)pictureBoxDirection.Image;
@@ -101,7 +106,7 @@ namespace SRVTracker
             return distanceText;
         }
 
-        public void SetTarget(string target)
+        public void SetTarget(string target, string additionalInfo = "")
         {
             if (labelTarget.Text.Equals(target))
                 return;
@@ -109,6 +114,20 @@ namespace SRVTracker
             Action action = new Action(() => { labelTarget.Text = target; });
             if (labelTarget.InvokeRequired)
                 labelTarget.Invoke(action);
+            else
+                action();
+            if (additionalInfo != null)
+                SetAdditionalInfo(additionalInfo);
+        }
+
+        public void SetAdditionalInfo(string additionalInfo)
+        {
+            if (labelAdditionalInfo.Text.Equals(additionalInfo))
+                return;
+
+            Action action = new Action(() => { labelAdditionalInfo.Text = additionalInfo; });
+            if (labelAdditionalInfo.InvokeRequired)
+                labelAdditionalInfo.Invoke(action);
             else
                 action();
         }

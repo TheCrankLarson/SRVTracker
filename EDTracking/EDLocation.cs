@@ -113,5 +113,19 @@ namespace EDTracking
             // convert radians to degrees (as bearing: 0...360)
             return (ConvertToDegrees(radians) + 360) % 360;
         }
+
+        public static double BearingDelta(double b1, double b2)
+        {
+            double d = 0;
+ 
+			d = (b2-b1)%360;
+ 
+			if(d>180)
+				d -= 360;
+			else if(d<-180)
+				d += 360;
+ 
+			return d;
+        }
     }
 }

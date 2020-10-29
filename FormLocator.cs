@@ -159,7 +159,7 @@ namespace SRVTracker
         public string TrackingTarget { get; private set; } = "";
 
 
-        public void SetTarget(EDLocation targetLocation)
+        public void SetTarget(EDLocation targetLocation, string additionalInfo = "")
         {
             // Sets the tracking target
             _targetPosition = targetLocation;
@@ -526,8 +526,13 @@ namespace SRVTracker
             // Tracking target
             Brush directionBrush = new SolidBrush(Color.White);
             Brush targetBrush = new SolidBrush(Color.Green);
+            Brush additionalInfoBrush = new SolidBrush(Color.LightGray);
             Font font = new Font("Arial", 24);
-            _vrgraphics.DrawString(TrackingTarget, font, targetBrush, new PointF(0, 80));
+            _vrgraphics.DrawString(TrackingTarget, font, targetBrush, new PointF(0, 40));
+
+            // Additional info
+            if (!String.IsNullOrEmpty(locatorHUD1.AdditionalInfo))
+                _vrgraphics.DrawString(locatorHUD1.AdditionalInfo, font, additionalInfoBrush, new PointF(0, 80));
 
             // Bearing
             font.Dispose();
@@ -545,6 +550,7 @@ namespace SRVTracker
             _vrgraphics.Save();
             directionBrush.Dispose();
             targetBrush.Dispose();
+            additionalInfoBrush.Dispose();
         }
 
         private void UpdateVRLocatorImage()
