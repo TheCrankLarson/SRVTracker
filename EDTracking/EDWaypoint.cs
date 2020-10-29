@@ -45,7 +45,7 @@ namespace EDTracking
             get {
                 if (!String.IsNullOrEmpty(Location.Name))
                     return Location.Name;
-                Location.Name = $"Waypoint {_nextWaypointNumber:000}";
+                Location.Name = $"Waypoint {_nextWaypointNumber}";
                 _nextWaypointNumber++;
                 return Location.Name;
             }
