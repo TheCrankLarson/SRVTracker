@@ -175,7 +175,7 @@ namespace SRVTracker
                     if (int.TryParse(waypointNum, out wpNum))
                     {
                         wpNum++;
-                        waypoint.Name = $"{waypointName.Substring(0, postfix)}{wpNum}";
+                        waypoint.Name = $"{waypointName.Substring(0, postfix)} {wpNum}";
                     }
                 }
             }
