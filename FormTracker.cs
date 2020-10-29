@@ -411,6 +411,7 @@ namespace SRVTracker
                     action();
             }
 
+            int heading = edEvent.Heading;
             if (edEvent.HasCoordinates())
             {
                 TimeSpan timeBetweenLocations = edEvent.TimeStamp.Subtract(_speedCalculationTimeStamp);
@@ -422,6 +423,12 @@ namespace SRVTracker
                     {
                         double distanceBetweenLocations = EDLocation.DistanceBetween(_speedCalculationLocation, edEvent.Location());
                         SpeedInMS = distanceBetweenLocations * (1000 / timeBetweenLocations.TotalMilliseconds);
+                        if (checkBoxUseDirectionOfTravelAsHeading.Checked)
+                        {
+                            // We ignore the heading given by E: D, as that is direction we are facing, not travelling
+                            // We calculate our direction based on previous location
+                            heading = (int)EDLocation.BearingToLocation(_speedCalculationLocation, edEvent.Location());
+                        }
                     }
                     _speedCalculationLocation = edEvent.Location();
                     if ((SpeedInMS - _lastSpeedInMs) > 20)
@@ -442,6 +449,7 @@ namespace SRVTracker
                     CurrentLocation.PlanetaryRadius = edEvent.PlanetRadius;
 
                 CommanderLocationChanged?.Invoke(null, null);
+
                 CurrentHeading = edEvent.Heading;
             }
 
@@ -482,7 +490,7 @@ namespace SRVTracker
                         action();
                 }
 
-            action = new Action(() => { textBoxHeading.Text = edEvent.Heading.ToString(); });
+            action = new Action(() => { textBoxHeading.Text = heading.ToString(); });
             if (textBoxHeading.InvokeRequired)
                 textBoxHeading.Invoke(action);
             else

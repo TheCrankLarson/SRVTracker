@@ -74,6 +74,7 @@
             this.buttonLocator = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.trackerHUD1 = new SRVTracker.TrackerHUD();
+            this.checkBoxUseDirectionOfTravelAsHeading = new System.Windows.Forms.CheckBox();
             this.groupBoxStatusLocation.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.statusFileWatcher)).BeginInit();
             this.groupBox5.SuspendLayout();
@@ -281,7 +282,7 @@
             // textBoxUploadServer
             // 
             this.textBoxUploadServer.Enabled = false;
-            this.textBoxUploadServer.Location = new System.Drawing.Point(140, 19);
+            this.textBoxUploadServer.Location = new System.Drawing.Point(140, 17);
             this.textBoxUploadServer.MaxLength = 100;
             this.textBoxUploadServer.Name = "textBoxUploadServer";
             this.textBoxUploadServer.Size = new System.Drawing.Size(109, 20);
@@ -331,7 +332,7 @@
             this.groupBox7.Controls.Add(this.textBoxUploadServer);
             this.groupBox7.Location = new System.Drawing.Point(281, 122);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(255, 50);
+            this.groupBox7.Size = new System.Drawing.Size(255, 44);
             this.groupBox7.TabIndex = 15;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "Server";
@@ -339,7 +340,7 @@
             // radioButtonUseCustomServer
             // 
             this.radioButtonUseCustomServer.AutoSize = true;
-            this.radioButtonUseCustomServer.Location = new System.Drawing.Point(71, 20);
+            this.radioButtonUseCustomServer.Location = new System.Drawing.Point(71, 18);
             this.radioButtonUseCustomServer.Name = "radioButtonUseCustomServer";
             this.radioButtonUseCustomServer.Size = new System.Drawing.Size(63, 17);
             this.radioButtonUseCustomServer.TabIndex = 3;
@@ -352,7 +353,7 @@
             // 
             this.radioButtonUseDefaultServer.AutoSize = true;
             this.radioButtonUseDefaultServer.Checked = true;
-            this.radioButtonUseDefaultServer.Location = new System.Drawing.Point(6, 20);
+            this.radioButtonUseDefaultServer.Location = new System.Drawing.Point(6, 18);
             this.radioButtonUseDefaultServer.Name = "radioButtonUseDefaultServer";
             this.radioButtonUseDefaultServer.Size = new System.Drawing.Size(59, 17);
             this.radioButtonUseDefaultServer.TabIndex = 2;
@@ -556,11 +557,22 @@
             this.trackerHUD1.TabIndex = 20;
             this.trackerHUD1.Visible = false;
             // 
+            // checkBoxUseDirectionOfTravelAsHeading
+            // 
+            this.checkBoxUseDirectionOfTravelAsHeading.AutoSize = true;
+            this.checkBoxUseDirectionOfTravelAsHeading.Location = new System.Drawing.Point(281, 172);
+            this.checkBoxUseDirectionOfTravelAsHeading.Name = "checkBoxUseDirectionOfTravelAsHeading";
+            this.checkBoxUseDirectionOfTravelAsHeading.Size = new System.Drawing.Size(184, 17);
+            this.checkBoxUseDirectionOfTravelAsHeading.TabIndex = 24;
+            this.checkBoxUseDirectionOfTravelAsHeading.Text = "Use direction of travel as heading";
+            this.checkBoxUseDirectionOfTravelAsHeading.UseVisualStyleBackColor = true;
+            // 
             // FormTracker
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(925, 481);
+            this.Controls.Add(this.checkBoxUseDirectionOfTravelAsHeading);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.checkBoxAutoUpdate);
             this.Controls.Add(this.trackerHUD1);
@@ -652,6 +664,7 @@
         private System.Windows.Forms.CheckBox checkBoxAutoUpdate;
         private System.Windows.Forms.CheckBox checkBoxIncludeBetaUpdates;
         private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.CheckBox checkBoxUseDirectionOfTravelAsHeading;
     }
 }
 
