@@ -63,6 +63,8 @@
             this.buttonStartRecording = new System.Windows.Forms.Button();
             this.buttonPlay = new System.Windows.Forms.Button();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.checkBoxPlayIncudeDirection = new System.Windows.Forms.CheckBox();
             this.groupBox2.SuspendLayout();
             this.groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRecordDistance)).BeginInit();
@@ -72,6 +74,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRadius)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox5.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox2
@@ -440,11 +443,34 @@
             this.groupBox5.TabIndex = 15;
             this.groupBox5.TabStop = false;
             // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.checkBoxPlayIncudeDirection);
+            this.groupBox3.Location = new System.Drawing.Point(292, 111);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(163, 51);
+            this.groupBox3.TabIndex = 16;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Play options";
+            // 
+            // checkBoxPlayIncudeDirection
+            // 
+            this.checkBoxPlayIncudeDirection.AutoSize = true;
+            this.checkBoxPlayIncudeDirection.Location = new System.Drawing.Point(9, 19);
+            this.checkBoxPlayIncudeDirection.Name = "checkBoxPlayIncudeDirection";
+            this.checkBoxPlayIncudeDirection.Size = new System.Drawing.Size(129, 17);
+            this.checkBoxPlayIncudeDirection.TabIndex = 0;
+            this.checkBoxPlayIncudeDirection.Text = "Include direction hints";
+            this.toolTip1.SetToolTip(this.checkBoxPlayIncudeDirection, "If enabled, direction indication is added to the\r\nwaypoint name to show which way" +
+        " you will\r\nneed to turn at that waypoint");
+            this.checkBoxPlayIncudeDirection.UseVisualStyleBackColor = true;
+            // 
             // FormRouter
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(760, 311);
+            this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.locationManager1);
             this.Controls.Add(this.groupBox2);
@@ -468,6 +494,8 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox5.ResumeLayout(false);
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -507,5 +535,7 @@
         private System.Windows.Forms.Button buttonMoveUp;
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.Button buttonDuplicateWaypoint;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.CheckBox checkBoxPlayIncudeDirection;
     }
 }

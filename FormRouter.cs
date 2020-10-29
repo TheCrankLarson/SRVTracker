@@ -118,6 +118,20 @@ namespace SRVTracker
             waypoint.MinimumAltitude = (double)numericUpDownMinAltitude.Value;
             waypoint.MaximumAltitude = (double)numericUpDownMaxAltitude.Value;
 
+            // If we have a name that ends in a number, then we take that name and increase the number by one
+            string waypointName = textBoxWaypointName.Text;
+            int postfix = waypointName.LastIndexOf(' ');
+            if (postfix>-1)
+            {
+                string waypointNum = waypointName.Substring(postfix).Trim();
+                int wpNum;
+                if (int.TryParse(waypointNum, out wpNum))
+                {
+                    wpNum++;
+                    waypoint.Name = $"{waypointName.Substring(0, postfix)}{wpNum}";
+                }
+            }
+
             AddWaypointToRoute(waypoint);
         }
 
@@ -127,6 +141,7 @@ namespace SRVTracker
             Action action = new Action(() =>
             {
                 listBoxWaypoints.Items.Add(waypoint.Name);
+                listBoxWaypoints.SelectedIndex = listBoxWaypoints.Items.Count - 1;
             });
             if (listBoxWaypoints.InvokeRequired)
                 listBoxWaypoints.Invoke(action);
