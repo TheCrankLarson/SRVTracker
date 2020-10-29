@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Valve.VR;
+using System.Text.Json;
 
 namespace SRVTracker
 {
@@ -16,13 +17,45 @@ namespace SRVTracker
     {
         private ulong _overlayHandle = 0;
         private HmdMatrix34_t _hmdMatrix;
+        private Dictionary<string, HmdMatrix34_t> _savedMatrices = null;
+        private string _matricesSaveFile = "hmd_matrices.json";
 
         public FormVRMatrixTest(ulong overlayHandle)
         {
             InitializeComponent();
+            InitMatrices();
             _overlayHandle = overlayHandle;
             _hmdMatrix = new HmdMatrix34_t();
             buttonApply.Enabled = !checkBoxAutoApply.Checked;
+        }
+
+        private void InitMatrices()
+        {          
+            try
+            {
+                if (File.Exists(_matricesSaveFile))
+                {
+                    string json = File.ReadAllText(_matricesSaveFile);
+                    _savedMatrices = (Dictionary<string, HmdMatrix34_t>)JsonSerializer.Deserialize(json, typeof(Dictionary<string, HmdMatrix34_t>));
+                }
+            }
+            catch
+            {
+                _savedMatrices = new Dictionary<string, HmdMatrix34_t>();
+            }
+
+            listBoxMatrices.Items.Clear();
+            foreach (string matrixName in _savedMatrices.Keys)
+                listBoxMatrices.Items.Add(matrixName);
+        }
+
+        private void SaveMatrices()
+        {
+            try
+            {
+                File.WriteAllText(_matricesSaveFile, JsonSerializer.Serialize(_savedMatrices));
+            }
+            catch { }
         }
 
         private void buttonClose_Click(object sender, EventArgs e)
@@ -196,6 +229,18 @@ namespace SRVTracker
         private void numericUpDownOverlayWidth_ValueChanged(object sender, EventArgs e)
         {
             buttonApply.Enabled = true;
+        }
+
+        private void buttonSave_Click(object sender, EventArgs e)
+        {
+            SaveMatrices();
+        }
+
+        private void listBoxMatrices_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            bool itemSelected = listBoxMatrices.SelectedIndex >= 0;
+            textBoxMatrixName.Enabled = itemSelected;
+            buttonDelete.Enabled = itemSelected;
         }
     }
 }

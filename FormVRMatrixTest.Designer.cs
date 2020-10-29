@@ -513,6 +513,7 @@
             this.listBoxMatrices.Name = "listBoxMatrices";
             this.listBoxMatrices.Size = new System.Drawing.Size(188, 108);
             this.listBoxMatrices.TabIndex = 0;
+            this.listBoxMatrices.SelectedIndexChanged += new System.EventHandler(this.listBoxMatrices_SelectedIndexChanged);
             // 
             // buttonAdd
             // 
@@ -540,9 +541,11 @@
             this.buttonSave.Size = new System.Drawing.Size(26, 23);
             this.buttonSave.TabIndex = 3;
             this.buttonSave.UseVisualStyleBackColor = true;
+            this.buttonSave.Click += new System.EventHandler(this.buttonSave_Click);
             // 
             // textBoxMatrixName
             // 
+            this.textBoxMatrixName.Enabled = false;
             this.textBoxMatrixName.Location = new System.Drawing.Point(90, 130);
             this.textBoxMatrixName.Name = "textBoxMatrixName";
             this.textBoxMatrixName.Size = new System.Drawing.Size(104, 20);

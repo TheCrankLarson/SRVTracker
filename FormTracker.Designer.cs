@@ -73,8 +73,8 @@
             this.buttonRoutePlanner = new System.Windows.Forms.Button();
             this.buttonLocator = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.trackerHUD1 = new SRVTracker.TrackerHUD();
             this.checkBoxUseDirectionOfTravelAsHeading = new System.Windows.Forms.CheckBox();
+            this.trackerHUD1 = new SRVTracker.TrackerHUD();
             this.groupBoxStatusLocation.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.statusFileWatcher)).BeginInit();
             this.groupBox5.SuspendLayout();
@@ -378,10 +378,12 @@
             // radioButtonWatchStatusFile
             // 
             this.radioButtonWatchStatusFile.AutoSize = true;
+            this.radioButtonWatchStatusFile.Checked = true;
             this.radioButtonWatchStatusFile.Location = new System.Drawing.Point(6, 20);
             this.radioButtonWatchStatusFile.Name = "radioButtonWatchStatusFile";
             this.radioButtonWatchStatusFile.Size = new System.Drawing.Size(53, 17);
             this.radioButtonWatchStatusFile.TabIndex = 9;
+            this.radioButtonWatchStatusFile.TabStop = true;
             this.radioButtonWatchStatusFile.Text = "Event";
             this.toolTip1.SetToolTip(this.radioButtonWatchStatusFile, "This method of monitoring the status.json file registers for\r\nnotifications of ch" +
         "anges to the file, and when it receives\r\nsuch a notification will read the updat" +
@@ -391,12 +393,10 @@
             // radioButtonUseTimer
             // 
             this.radioButtonUseTimer.AutoSize = true;
-            this.radioButtonUseTimer.Checked = true;
             this.radioButtonUseTimer.Location = new System.Drawing.Point(65, 20);
             this.radioButtonUseTimer.Name = "radioButtonUseTimer";
             this.radioButtonUseTimer.Size = new System.Drawing.Size(51, 17);
             this.radioButtonUseTimer.TabIndex = 8;
-            this.radioButtonUseTimer.TabStop = true;
             this.radioButtonUseTimer.Text = "Timer";
             this.toolTip1.SetToolTip(this.radioButtonUseTimer, "This method of Status.json monitoring simply checks whether the\r\nfile has been up" +
         "dated every 750ms.  If it has, it reads and processes\r\nit.");
@@ -548,15 +548,6 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Auto-update";
             // 
-            // trackerHUD1
-            // 
-            this.trackerHUD1.BackColor = System.Drawing.Color.Black;
-            this.trackerHUD1.Location = new System.Drawing.Point(0, 0);
-            this.trackerHUD1.Name = "trackerHUD1";
-            this.trackerHUD1.Size = new System.Drawing.Size(260, 40);
-            this.trackerHUD1.TabIndex = 20;
-            this.trackerHUD1.Visible = false;
-            // 
             // checkBoxUseDirectionOfTravelAsHeading
             // 
             this.checkBoxUseDirectionOfTravelAsHeading.AutoSize = true;
@@ -565,7 +556,18 @@
             this.checkBoxUseDirectionOfTravelAsHeading.Size = new System.Drawing.Size(184, 17);
             this.checkBoxUseDirectionOfTravelAsHeading.TabIndex = 24;
             this.checkBoxUseDirectionOfTravelAsHeading.Text = "Use direction of travel as heading";
+            this.toolTip1.SetToolTip(this.checkBoxUseDirectionOfTravelAsHeading, "When selected, direction of travel will be calculated and\r\nused as heading instea" +
+        "d of direction vehicle is facing\r\n(which is what E: D gives us)");
             this.checkBoxUseDirectionOfTravelAsHeading.UseVisualStyleBackColor = true;
+            // 
+            // trackerHUD1
+            // 
+            this.trackerHUD1.BackColor = System.Drawing.Color.Black;
+            this.trackerHUD1.Location = new System.Drawing.Point(0, 0);
+            this.trackerHUD1.Name = "trackerHUD1";
+            this.trackerHUD1.Size = new System.Drawing.Size(260, 40);
+            this.trackerHUD1.TabIndex = 20;
+            this.trackerHUD1.Visible = false;
             // 
             // FormTracker
             // 
