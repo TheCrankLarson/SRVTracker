@@ -122,6 +122,8 @@
             this.textBoxRaceStatusServerUrl = new System.Windows.Forms.TextBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.timerPreraceExport = new System.Windows.Forms.Timer(this.components);
+            this.checkBoxExportTrackedTargetDistance = new System.Windows.Forms.CheckBox();
+            this.textBoxExportTargetDistance = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -926,6 +928,8 @@
             // 
             // groupBoxTrackTarget
             // 
+            this.groupBoxTrackTarget.Controls.Add(this.textBoxExportTargetDistance);
+            this.groupBoxTrackTarget.Controls.Add(this.checkBoxExportTrackedTargetDistance);
             this.groupBoxTrackTarget.Controls.Add(this.textBoxExportTargetHull);
             this.groupBoxTrackTarget.Controls.Add(this.checkBoxExportTrackedTargetHull);
             this.groupBoxTrackTarget.Controls.Add(this.textBoxExportTargetPosition);
@@ -941,7 +945,7 @@
             this.groupBoxTrackTarget.Controls.Add(this.checkBoxClosestPlayerTarget);
             this.groupBoxTrackTarget.Location = new System.Drawing.Point(965, 6);
             this.groupBoxTrackTarget.Name = "groupBoxTrackTarget";
-            this.groupBoxTrackTarget.Size = new System.Drawing.Size(245, 188);
+            this.groupBoxTrackTarget.Size = new System.Drawing.Size(245, 204);
             this.groupBoxTrackTarget.TabIndex = 9;
             this.groupBoxTrackTarget.TabStop = false;
             this.groupBoxTrackTarget.Text = "Track target";
@@ -1109,6 +1113,24 @@
             this.timerPreraceExport.Interval = 2000;
             this.timerPreraceExport.Tick += new System.EventHandler(this.timerPreraceExport_Tick);
             // 
+            // checkBoxExportTrackedTargetDistance
+            // 
+            this.checkBoxExportTrackedTargetDistance.AutoSize = true;
+            this.checkBoxExportTrackedTargetDistance.Location = new System.Drawing.Point(6, 180);
+            this.checkBoxExportTrackedTargetDistance.Name = "checkBoxExportTrackedTargetDistance";
+            this.checkBoxExportTrackedTargetDistance.Size = new System.Drawing.Size(102, 17);
+            this.checkBoxExportTrackedTargetDistance.TabIndex = 25;
+            this.checkBoxExportTrackedTargetDistance.Text = "Export distance:";
+            this.checkBoxExportTrackedTargetDistance.UseVisualStyleBackColor = true;
+            // 
+            // textBoxExportTargetDistance
+            // 
+            this.textBoxExportTargetDistance.Location = new System.Drawing.Point(134, 178);
+            this.textBoxExportTargetDistance.Name = "textBoxExportTargetDistance";
+            this.textBoxExportTargetDistance.Size = new System.Drawing.Size(105, 20);
+            this.textBoxExportTargetDistance.TabIndex = 26;
+            this.textBoxExportTargetDistance.Text = "Tracking-Distance.txt";
+            // 
             // FormRaceManager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1254,5 +1276,7 @@
         private System.Windows.Forms.Timer timerPreraceExport;
         private System.Windows.Forms.TextBox textBoxExportTotalDistanceLeftFile;
         private System.Windows.Forms.CheckBox checkBoxExportTotalDistanceLeft;
+        private System.Windows.Forms.TextBox textBoxExportTargetDistance;
+        private System.Windows.Forms.CheckBox checkBoxExportTrackedTargetDistance;
     }
 }

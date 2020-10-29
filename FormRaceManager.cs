@@ -35,6 +35,7 @@ namespace SRVTracker
         private string _lastExportTargetMaxSpeed = "k";
         private string _lastExportTargetSpeed = "k";
         private string _lastExportTargetHull = "k";
+        private string _lastExportTargetDistance = "k";
         private string _lastHullValues = "k";
         private int _lastExportTargetRacePosition = 0;
         private string _saveFilename = "";
@@ -1589,6 +1590,20 @@ namespace SRVTracker
                     {
                         File.WriteAllText(textBoxExportTargetHull.Text, hullStrength);
                         _lastExportTargetHull = hullStrength;
+                    }
+                    catch { }
+                }
+            }
+
+            if (checkBoxExportTrackedTargetDistance.Checked)
+            {
+                string distanceLeft = commanderStatus.TotalDistanceLeftInKmDisplay;
+                if (!distanceLeft.Equals(_lastExportTargetDistance))
+                {
+                    try
+                    {
+                        File.WriteAllText(textBoxExportTargetDistance.Text, distanceLeft);
+                        _lastExportTargetDistance = distanceLeft;
                     }
                     catch { }
                 }
