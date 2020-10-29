@@ -165,6 +165,7 @@ namespace SRVTracker
             // Sets the tracking target
             _targetPosition = targetLocation;
             UpdateTrackingTarget(targetLocation.Name);
+            locatorHUD1.SetAdditionalInfo(additionalInfo);
             DisplayTarget();
             UpdateTracking();
         }

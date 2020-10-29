@@ -77,14 +77,29 @@ namespace SRVTracker
                     double bearingFromNextWaypoint = EDLocation.BearingToLocation(_route.Waypoints[_nextWaypoint].Location, _route.Waypoints[_nextWaypoint + 1].Location);
                     double bearingToNextWaypoint = EDLocation.BearingToLocation(FormTracker.CurrentLocation, _route.Waypoints[_nextWaypoint].Location);
                     double bearingChange = EDLocation.BearingDelta(bearingToNextWaypoint, bearingFromNextWaypoint);
+                    additionalInfo.Append("Then ");
                     if (bearingChange > -5 && bearingChange < 5)
-                        additionalInfo.Append("Straight on");
+                        additionalInfo.Append("straight on");
                     else
                     {
                         if (bearingChange < 0)
-                            additionalInfo.Append("Left ");
+                        {
+                            if (bearingChange < -90)
+                                additionalInfo.Append("sharp ");
+                            if (bearingChange > -45)
+                                additionalInfo.Append("bear left ");
+                            else
+                                additionalInfo.Append("turn left ");
+                        }
                         else
-                            additionalInfo.Append("Right ");
+                        {
+                            if (bearingChange > 90)
+                                additionalInfo.Append("sharp ");
+                            if (bearingChange < 45)
+                                additionalInfo.Append("bear right ");
+                            else
+                                additionalInfo.Append("turn right ");
+                        }
                         additionalInfo.Append(bearingChange.ToString("F1"));
                         additionalInfo.Append("°");
                     }
