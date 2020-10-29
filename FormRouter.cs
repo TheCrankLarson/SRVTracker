@@ -64,6 +64,35 @@ namespace SRVTracker
                 action();
         }
 
+        private string GetBearingAfterNextWaypoint()
+        {
+            if (!checkBoxPlayIncudeDirection.Checked)
+                return "";
+
+            StringBuilder additionalInfo = new StringBuilder();
+            if (_nextWaypoint < _route.Waypoints.Count - 1)
+            {
+                if (FormTracker.CurrentLocation != null)
+                {
+                    double bearingFromNextWaypoint = EDLocation.BearingToLocation(_route.Waypoints[_nextWaypoint].Location, _route.Waypoints[_nextWaypoint + 1].Location);
+                    double bearingToNextWaypoint = EDLocation.BearingToLocation(FormTracker.CurrentLocation, _route.Waypoints[_nextWaypoint].Location);
+                    double bearingChange = EDLocation.BearingDelta(bearingToNextWaypoint, bearingFromNextWaypoint);
+                    if (bearingChange > -5 && bearingChange < 5)
+                        additionalInfo.Append("Straight on");
+                    else
+                    {
+                        if (bearingChange < 0)
+                            additionalInfo.Append("Left ");
+                        else
+                            additionalInfo.Append("Right ");
+                        additionalInfo.Append(bearingChange.ToString("F1"));
+                        additionalInfo.Append("°");
+                    }
+                }
+            }
+            return additionalInfo.ToString();
+        }
+
         private void FormTracker_CommanderLocationChanged(object sender, EventArgs e)
         {
             if (buttonStartRecording.Enabled)
@@ -90,29 +119,7 @@ namespace SRVTracker
                     }
                     else
                     {
-                        StringBuilder additionalInfo = new StringBuilder();
-                        if (checkBoxPlayIncudeDirection.Checked)
-                        {
-                            // We need to work out the direction change at the next waypoint, and add that to the description
-                            if (_nextWaypoint < _route.Waypoints.Count - 1)
-                            {
-                                double bearingFromNextWaypoint = EDLocation.BearingToLocation(_route.Waypoints[_nextWaypoint].Location, _route.Waypoints[_nextWaypoint + 1].Location);
-                                double bearingToNextWaypoint = EDLocation.BearingToLocation(_route.Waypoints[_nextWaypoint-1].Location, _route.Waypoints[_nextWaypoint].Location);
-                                double bearingChange = EDLocation.BearingDelta(bearingToNextWaypoint, bearingFromNextWaypoint);
-                                if (bearingChange > -5 && bearingChange < 5)
-                                    additionalInfo.Append("Straight on");
-                                else
-                                {
-                                    if (bearingChange < 0)
-                                        additionalInfo.Append("Left ");
-                                    else
-                                        additionalInfo.Append("Right ");
-                                    additionalInfo.Append(bearingChange.ToString("F1"));
-                                    additionalInfo.Append("°");
-                                }
-                            }
-                        }
-                        FormLocator.GetLocator().SetTarget(_route.Waypoints[_nextWaypoint].Location, additionalInfo.ToString());
+                        FormLocator.GetLocator().SetTarget(_route.Waypoints[_nextWaypoint].Location, GetBearingAfterNextWaypoint());
                         Action action = new Action(() =>
                         {
                             listBoxWaypoints.SelectedIndex = _nextWaypoint;
@@ -337,7 +344,7 @@ namespace SRVTracker
             buttonStartRecording.Enabled = false;
             buttonStop.Enabled = true;
             _formTracker.StartTracking();
-            FormLocator.GetLocator().SetTarget(_route.Waypoints[_nextWaypoint].Location);
+            FormLocator.GetLocator().SetTarget(_route.Waypoints[_nextWaypoint].Location, GetBearingAfterNextWaypoint());
         }
 
         private void buttonDeleteWaypoint_Click(object sender, EventArgs e)

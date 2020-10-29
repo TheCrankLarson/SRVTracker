@@ -46,6 +46,7 @@ namespace SRVTracker
             FormTracker.CommanderLocationChanged += FormTracker_CommanderLocationChanged;
             InitVRMatrix();
             InitLocationCombo();
+            locatorHUD1.SetAdditionalInfo("");
         }
 
         private void CalculateWindowSizes()
