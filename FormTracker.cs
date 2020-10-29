@@ -64,8 +64,6 @@ namespace SRVTracker
             _formConfig.ExcludedControls.Add(textBoxHeading);
             _formConfig.ExcludedControls.Add(textBoxPlanetRadius);
             _formConfig.SaveEnabled = true;
-            _formConfig.StoreLabelInfo = false;
-            _formConfig.StoreButtonInfo = false;
             ConfigSaverClass.ApplyConfiguration();
 
             buttonTest.Visible = System.Diagnostics.Debugger.IsAttached;

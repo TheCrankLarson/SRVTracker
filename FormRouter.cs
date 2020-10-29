@@ -22,12 +22,21 @@ namespace SRVTracker
         private EDRoute _route = null;
         private string _saveFileName = "";
         private FormTracker _formTracker = null; // We need a reference to the tracker so that we can start tracking if necessary
+        private ConfigSaverClass _formConfig = null;
 
         public FormRouter(FormTracker formTracker)
         {
             InitializeComponent();
             CalculateWindowSizes();
             this.Size = _fullSize;
+
+            // Attach our form configuration saver
+            _formConfig = new ConfigSaverClass(this, true);
+            _formConfig.ExcludedControls.Add(textBoxWaypointName);
+            _formConfig.ExcludedControls.Add(textBoxRouteName);
+            _formConfig.SaveEnabled = true;
+            ConfigSaverClass.ApplyConfiguration();
+
             _route = new EDRoute();
             _formTracker = formTracker;
             FormTracker.CommanderLocationChanged += FormTracker_CommanderLocationChanged;
