@@ -15,6 +15,7 @@ namespace EDTracking
         public decimal Radius { get; set; } = 5000;
         public decimal MinimumAltitude { get; set; } = 0;
         public decimal MaximumAltitude { get; set; } = 100;
+        public bool AllowPassing { get; set; } = false;
         //public sbyte AltitudeTest { get; set; } = 0; // -1, must be below, +1 must be above, 0 not checked
         public int Direction { get; set; } = -1;
         public DateTime TimeTracked { get; internal set; }  // To store the time the location was recorded when route recording
@@ -61,6 +62,18 @@ namespace EDTracking
                 if (location.Altitude >= MinimumAltitude && location.Altitude <= MaximumAltitude)
                     return true;
             }
+            return false;
+        }
+
+        public bool WaypointIsBehind(EDLocation location, decimal DirectionOfTravel)
+        {
+            // Checks whether the waypoint is behind the given location (given the direction of travel)
+            // This allows moving on to the next waypoint even if we don't go through one
+
+            decimal bearingToWaypoint = EDLocation.BearingToLocation(location, Location);
+            decimal directionOfWaypoint = EDLocation.BearingDelta(bearingToWaypoint, DirectionOfTravel);
+            if (Math.Abs(directionOfWaypoint) > 90)
+                return true;
             return false;
         }
 

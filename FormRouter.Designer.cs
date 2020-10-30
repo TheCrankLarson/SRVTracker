@@ -62,9 +62,10 @@
             this.buttonStop = new System.Windows.Forms.Button();
             this.buttonStartRecording = new System.Windows.Forms.Button();
             this.buttonPlay = new System.Windows.Forms.Button();
+            this.checkBoxPlayIncudeDirection = new System.Windows.Forms.CheckBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.checkBoxPlayIncudeDirection = new System.Windows.Forms.CheckBox();
+            this.checkBoxAllowPassing = new System.Windows.Forms.CheckBox();
             this.groupBox2.SuspendLayout();
             this.groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRecordDistance)).BeginInit();
@@ -225,7 +226,7 @@
             this.groupBox4.Controls.Add(this.numericUpDownRecordDistance);
             this.groupBox4.Location = new System.Drawing.Point(292, 61);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(163, 49);
+            this.groupBox4.Size = new System.Drawing.Size(163, 44);
             this.groupBox4.TabIndex = 8;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Recording options";
@@ -273,6 +274,7 @@
             // 
             // groupBoxWaypointInfo
             // 
+            this.groupBoxWaypointInfo.Controls.Add(this.checkBoxAllowPassing);
             this.groupBoxWaypointInfo.Controls.Add(this.label6);
             this.groupBoxWaypointInfo.Controls.Add(this.label5);
             this.groupBoxWaypointInfo.Controls.Add(this.label4);
@@ -281,9 +283,9 @@
             this.groupBoxWaypointInfo.Controls.Add(this.label3);
             this.groupBoxWaypointInfo.Controls.Add(this.textBoxWaypointName);
             this.groupBoxWaypointInfo.Controls.Add(this.numericUpDownRadius);
-            this.groupBoxWaypointInfo.Location = new System.Drawing.Point(292, 168);
+            this.groupBoxWaypointInfo.Location = new System.Drawing.Point(292, 156);
             this.groupBoxWaypointInfo.Name = "groupBoxWaypointInfo";
-            this.groupBoxWaypointInfo.Size = new System.Drawing.Size(163, 125);
+            this.groupBoxWaypointInfo.Size = new System.Drawing.Size(163, 137);
             this.groupBoxWaypointInfo.TabIndex = 6;
             this.groupBoxWaypointInfo.TabStop = false;
             this.groupBoxWaypointInfo.Text = "Waypoint info";
@@ -432,6 +434,18 @@
             this.buttonPlay.UseVisualStyleBackColor = true;
             this.buttonPlay.Click += new System.EventHandler(this.buttonPlay_Click);
             // 
+            // checkBoxPlayIncudeDirection
+            // 
+            this.checkBoxPlayIncudeDirection.AutoSize = true;
+            this.checkBoxPlayIncudeDirection.Location = new System.Drawing.Point(9, 19);
+            this.checkBoxPlayIncudeDirection.Name = "checkBoxPlayIncudeDirection";
+            this.checkBoxPlayIncudeDirection.Size = new System.Drawing.Size(129, 17);
+            this.checkBoxPlayIncudeDirection.TabIndex = 0;
+            this.checkBoxPlayIncudeDirection.Text = "Include direction hints";
+            this.toolTip1.SetToolTip(this.checkBoxPlayIncudeDirection, "If enabled, direction indication is added to the\r\nwaypoint name to show which way" +
+        " you will\r\nneed to turn at that waypoint");
+            this.checkBoxPlayIncudeDirection.UseVisualStyleBackColor = true;
+            // 
             // groupBox5
             // 
             this.groupBox5.Controls.Add(this.buttonStop);
@@ -448,22 +462,24 @@
             this.groupBox3.Controls.Add(this.checkBoxPlayIncudeDirection);
             this.groupBox3.Location = new System.Drawing.Point(292, 111);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(163, 51);
+            this.groupBox3.Size = new System.Drawing.Size(163, 39);
             this.groupBox3.TabIndex = 16;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Play options";
             // 
-            // checkBoxPlayIncudeDirection
+            // checkBoxAllowPassing
             // 
-            this.checkBoxPlayIncudeDirection.AutoSize = true;
-            this.checkBoxPlayIncudeDirection.Location = new System.Drawing.Point(9, 19);
-            this.checkBoxPlayIncudeDirection.Name = "checkBoxPlayIncudeDirection";
-            this.checkBoxPlayIncudeDirection.Size = new System.Drawing.Size(129, 17);
-            this.checkBoxPlayIncudeDirection.TabIndex = 0;
-            this.checkBoxPlayIncudeDirection.Text = "Include direction hints";
-            this.toolTip1.SetToolTip(this.checkBoxPlayIncudeDirection, "If enabled, direction indication is added to the\r\nwaypoint name to show which way" +
-        " you will\r\nneed to turn at that waypoint");
-            this.checkBoxPlayIncudeDirection.UseVisualStyleBackColor = true;
+            this.checkBoxAllowPassing.AutoSize = true;
+            this.checkBoxAllowPassing.Location = new System.Drawing.Point(9, 114);
+            this.checkBoxAllowPassing.Name = "checkBoxAllowPassing";
+            this.checkBoxAllowPassing.Size = new System.Drawing.Size(90, 17);
+            this.checkBoxAllowPassing.TabIndex = 11;
+            this.checkBoxAllowPassing.Text = "Allow passing";
+            this.toolTip1.SetToolTip(this.checkBoxAllowPassing, "If selected, the waypoint can be passed without needing\r\nto be within a particula" +
+        "r radius.  If the waypoint is behind\r\nyou, then the router will move onto the ne" +
+        "xt.");
+            this.checkBoxAllowPassing.UseVisualStyleBackColor = true;
+            this.checkBoxAllowPassing.CheckedChanged += new System.EventHandler(this.checkBoxAllowPassing_CheckedChanged);
             // 
             // FormRouter
             // 
@@ -537,5 +553,6 @@
         private System.Windows.Forms.Button buttonDuplicateWaypoint;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.CheckBox checkBoxPlayIncudeDirection;
+        private System.Windows.Forms.CheckBox checkBoxAllowPassing;
     }
 }

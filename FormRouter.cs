@@ -23,6 +23,7 @@ namespace SRVTracker
         private string _saveFileName = "";
         private FormTracker _formTracker = null; // We need a reference to the tracker so that we can start tracking if necessary
         private ConfigSaverClass _formConfig = null;
+        private bool _updatingWaypointInfo = false;
 
         public FormRouter(FormTracker formTracker)
         {
@@ -61,10 +62,17 @@ namespace SRVTracker
         {
             Action action = new Action(() =>
             {
+                int selectedIndex = listBoxWaypoints.SelectedIndex;
                 listBoxWaypoints.BeginUpdate();
                 listBoxWaypoints.Items.Clear();
                 for (int i = 0; i < _route.Waypoints.Count; i++)
                     listBoxWaypoints.Items.Add(_route.Waypoints[i].Name);
+                if (selectedIndex > -1)
+                {
+                    if (selectedIndex >= listBoxWaypoints.Items.Count)
+                        selectedIndex = listBoxWaypoints.Items.Count - 1;
+                    listBoxWaypoints.SelectedIndex = selectedIndex;
+                }
                 listBoxWaypoints.EndUpdate();
             });
             if (listBoxWaypoints.InvokeRequired)
@@ -131,7 +139,10 @@ namespace SRVTracker
             if (buttonPlay.Enabled)
             {
                 // We are currently tracking
-                if (_route.Waypoints[_nextWaypoint].LocationIsWithinWaypoint(FormTracker.CurrentLocation))
+                bool moveToNextWaypoint = _route.Waypoints[_nextWaypoint].LocationIsWithinWaypoint(FormTracker.CurrentLocation);
+                if (!moveToNextWaypoint && (_route.Waypoints[_nextWaypoint].AllowPassing))
+                    moveToNextWaypoint = _route.Waypoints[_nextWaypoint].WaypointIsBehind(FormTracker.CurrentLocation, FormTracker.CurrentHeading);
+                if (moveToNextWaypoint)
                 {
                     // Arrived at the waypoint, target the next
                     _nextWaypoint++;
@@ -307,6 +318,7 @@ namespace SRVTracker
 
         private void listBoxWaypoints_SelectedIndexChanged(object sender, EventArgs e)
         {
+            _updatingWaypointInfo = true;
             if (listBoxWaypoints.SelectedIndex < 0)
             {
                 buttonDuplicateWaypoint.Enabled = false;
@@ -323,42 +335,49 @@ namespace SRVTracker
             numericUpDownRadius.Value = (decimal)waypoint.Radius;
             numericUpDownMinAltitude.Value = (decimal)waypoint.MinimumAltitude;
             numericUpDownMaxAltitude.Value = (decimal)waypoint.MaximumAltitude;
+            checkBoxAllowPassing.Checked = waypoint.AllowPassing;
             buttonDuplicateWaypoint.Enabled = true;
             buttonDeleteWaypoint.Enabled = true;
             buttonMoveDown.Enabled = true;
             buttonMoveUp.Enabled = true;
             buttonSetAsTarget.Enabled = true;
+            _updatingWaypointInfo = false;
         }
 
         private void numericUpDownRadius_ValueChanged(object sender, EventArgs e)
         {
-            if (listBoxWaypoints.SelectedIndex < 0)
+            if (listBoxWaypoints.SelectedIndex < 0 || _updatingWaypointInfo)
                 return;
             _route.Waypoints[listBoxWaypoints.SelectedIndex].Radius = numericUpDownRadius.Value;
         }
 
         private void numericUpDownMinAltitude_ValueChanged(object sender, EventArgs e)
         {
-            if (listBoxWaypoints.SelectedIndex < 0)
+            if (listBoxWaypoints.SelectedIndex < 0 || _updatingWaypointInfo)
                 return;
             _route.Waypoints[listBoxWaypoints.SelectedIndex].MinimumAltitude = numericUpDownMinAltitude.Value;
         }
 
         private void numericUpDownMaxAltitude_ValueChanged(object sender, EventArgs e)
         {
-            if (listBoxWaypoints.SelectedIndex < 0)
+            if (listBoxWaypoints.SelectedIndex < 0 || _updatingWaypointInfo)
                 return;
             _route.Waypoints[listBoxWaypoints.SelectedIndex].MaximumAltitude = numericUpDownMaxAltitude.Value;
         }
 
         private void textBoxWaypointName_TextChanged(object sender, EventArgs e)
         {
-            if (listBoxWaypoints.SelectedIndex < 0)
+            if (listBoxWaypoints.SelectedIndex < 0 || _updatingWaypointInfo)
                 return;
             _route.Waypoints[listBoxWaypoints.SelectedIndex].Name = textBoxWaypointName.Text;
-            int selectedIndex = listBoxWaypoints.SelectedIndex;
             DisplayRoute();
-            listBoxWaypoints.SelectedIndex = selectedIndex;
+        }
+
+        private void checkBoxAllowPassing_CheckedChanged(object sender, EventArgs e)
+        {
+            if (listBoxWaypoints.SelectedIndex < 0 || _updatingWaypointInfo)
+                return;
+            _route.Waypoints[listBoxWaypoints.SelectedIndex].AllowPassing = checkBoxAllowPassing.Checked;
         }
 
         private void buttonPlay_Click(object sender, EventArgs e)
@@ -466,5 +485,7 @@ namespace SRVTracker
             EDWaypoint newWaypoint = EDWaypoint.FromString(_route.Waypoints[listBoxWaypoints.SelectedIndex].ToString());
             AddWaypointToRoute(newWaypoint);
         }
+
+
     }
 }
