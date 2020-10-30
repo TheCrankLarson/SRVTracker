@@ -29,6 +29,24 @@ namespace SRVTracker
             buttonApply.Enabled = !checkBoxAutoApply.Checked;
         }
 
+        private static HmdMatrix34_t DefaultVRMatrix()
+        {
+            HmdMatrix34_t vrMatrix = new HmdMatrix34_t();
+            vrMatrix.m0 = 0.7F;
+            vrMatrix.m1 = 0.0F;
+            vrMatrix.m2 = 0.0F;
+            vrMatrix.m3 = 0.42F; // x
+            vrMatrix.m4 = 0.0F;
+            vrMatrix.m5 = -1.0F;
+            vrMatrix.m6 = 0.0F;
+            vrMatrix.m7 = 0.78F; // y
+            vrMatrix.m8 = 0F;
+            vrMatrix.m9 = 0.0F;
+            vrMatrix.m10 = 0.0F;
+            vrMatrix.m11 = -0.1F; // -z
+            return vrMatrix;
+        }
+
         private void InitMatrices()
         {          
             try
@@ -37,6 +55,12 @@ namespace SRVTracker
                 {
                     string json = File.ReadAllText(_matricesSaveFile);
                     _savedMatrices = (Dictionary<string, HmdMatrix34_t>)JsonSerializer.Deserialize(json, typeof(Dictionary<string, HmdMatrix34_t>));
+                }
+                else
+                {
+                    _savedMatrices = new Dictionary<string, HmdMatrix34_t>();
+                    _savedMatrices.Add("Default", DefaultVRMatrix());
+                    SaveMatrices();
                 }
             }
             catch
