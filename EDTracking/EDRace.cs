@@ -236,6 +236,7 @@ namespace EDTracking
             StringBuilder leaderBoardExport = new StringBuilder();
             StringBuilder speeds = new StringBuilder();
             StringBuilder maxSpeeds = new StringBuilder();
+            StringBuilder averageSpeeds = new StringBuilder();
             StringBuilder distanceToWaypoint = new StringBuilder();
             StringBuilder totalDistanceLeft = new StringBuilder();
             StringBuilder hullStrengths = new StringBuilder();
@@ -254,15 +255,22 @@ namespace EDTracking
                     maxSpeeds.AppendLine($"{Statuses[leaderBoard[i]].MaxSpeedInMS:F0}");
                     if (!Statuses[leaderBoard[i]].Eliminated && !Statuses[leaderBoard[i]].Finished)
                     {
+                        averageSpeeds.AppendLine($"{Statuses[leaderBoard[i]].AverageSpeedInMS:F0}");
                         speeds.AppendLine($"{Statuses[leaderBoard[i]].SpeedInMS:F0}");
                     }
                     else
+                    {
                         speeds.AppendLine();
+                        averageSpeeds.AppendLine();
+                    }
                 }
                 else
+                {
                     speeds.AppendLine();
+                    averageSpeeds.AppendLine();
+                }
 
-                if (Statuses != null && (Statuses.Count > 0))
+                if (Statuses != null && (Statuses.Count > i))
                 {
                     if (Statuses[leaderBoard[i]].Finished)
                     {
@@ -312,6 +320,7 @@ namespace EDTracking
             statsTable.Add("Positions", leaderBoardExport.ToString());
             statsTable.Add("Speeds", speeds.ToString());
             statsTable.Add("MaxSpeeds", maxSpeeds.ToString());
+            statsTable.Add("AverageSpeeds", averageSpeeds.ToString());
             statsTable.Add("Status", status.ToString());
             statsTable.Add("DistanceToWaypoint", distanceToWaypoint.ToString());
             statsTable.Add("TotalDistanceLeft", totalDistanceLeft.ToString());

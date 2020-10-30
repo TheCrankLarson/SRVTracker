@@ -443,7 +443,7 @@ namespace SRVTracker
                         // Update our average speed
                         _totalOfSpeedReadings += SpeedInMS;
                         _numberOfSpeedReadings++;
-                        AverageSpeedInMS = SpeedInMS / _numberOfSpeedReadings;
+                        AverageSpeedInMS = _totalOfSpeedReadings / _numberOfSpeedReadings;
                     }
                 }
                 _lastSpeedInMs = SpeedInMS;

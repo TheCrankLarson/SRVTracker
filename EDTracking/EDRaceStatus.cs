@@ -17,6 +17,7 @@ namespace EDTracking
         public int Heading { get; set; } = -1;
         public decimal SpeedInMS { get; set; } = 0;
         public decimal MaxSpeedInMS { get; set; } = 0;
+        public decimal AverageSpeedInMS { get; set; } = 0;
         public long Flags { get; set; } = -1;
         public double Hull { get; set; } = 1;
         public DateTime TimeStamp { get; set; } = DateTime.MinValue;
@@ -56,7 +57,9 @@ namespace EDTracking
         private int _oldestSpeedReading = 0;
         private string _status = "NA";
         private EDRace _race = null;
-        
+        private int _numberOfSpeedReadings = 0;
+        private decimal _totalOfSpeedReadings = 0;
+
         public EDRaceStatus()
         {
         }
@@ -323,6 +326,11 @@ namespace EDTracking
                         _speedCalculationLocation = updateEvent.Location();
                         _speedCalculationTimeStamp = updateEvent.TimeStamp;
                     }
+
+                    // Update the total average speed
+                    _totalOfSpeedReadings += speedInMS;
+                    _numberOfSpeedReadings++;
+                    AverageSpeedInMS = _totalOfSpeedReadings / _numberOfSpeedReadings;
 
                     _lastThreeSpeedReadings[_oldestSpeedReading] = speedInMS;
                     _oldestSpeedReading++;

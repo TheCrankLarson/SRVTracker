@@ -33,6 +33,7 @@ namespace SRVTracker
         private string _lastRacePositions = "k";
         private string _lastExportTargetPitstops = "k";
         private string _lastExportTargetMaxSpeed = "k";
+        private string _lastExportTargetAverageSpeed = "k";
         private string _lastExportTargetSpeed = "k";
         private string _lastExportTargetHull = "k";
         private string _lastExportTargetDistance = "k";
@@ -1046,6 +1047,8 @@ namespace SRVTracker
             checkBoxExportTrackedTargetPitstops.Enabled = checkBoxExportTrackedTarget.Checked;
             checkBoxExportTrackedTargetPosition.Enabled = checkBoxExportTrackedTarget.Checked;
             checkBoxExportTrackedTargetSpeed.Enabled = checkBoxExportTrackedTarget.Checked;
+            checkBoxExportTrackedTargetDistance.Enabled = checkBoxExportTrackedTarget.Checked;
+            checkBoxExportTrackedTargetAverageSpeed.Enabled = checkBoxExportTrackedTarget.Checked;
             checkBoxClosestPlayerTarget.Enabled = checkBoxExportTrackedTarget.Checked;
 
             textBoxExportTargetFile.Enabled = checkBoxExportTrackedTarget.Checked && checkBoxExportTrackedTarget.Enabled;
@@ -1054,6 +1057,9 @@ namespace SRVTracker
             textBoxExportTargetSpeedFile.Enabled = checkBoxExportTrackedTargetSpeed.Checked && checkBoxExportTrackedTargetSpeed.Enabled;
             textBoxExportTargetPosition.Enabled = checkBoxExportTrackedTargetPosition.Checked && checkBoxExportTrackedTargetPosition.Enabled;
             textBoxExportTargetHull.Enabled = checkBoxExportTrackedTargetHull.Checked && checkBoxExportTrackedTargetHull.Enabled;
+            textBoxExportTargetDistance.Enabled = checkBoxExportTrackedTargetDistance.Checked && checkBoxExportTrackedTargetDistance.Enabled;
+            textBoxExportTargetAverageSpeedFile.Enabled = checkBoxExportTrackedTargetAverageSpeed.Checked && checkBoxExportTrackedTargetAverageSpeed.Enabled;
+
         }
 
         private void listViewParticipants_SelectedIndexChanged(object sender, EventArgs e)
@@ -1539,6 +1545,21 @@ namespace SRVTracker
                 }
             }
 
+            if (checkBoxExportTrackedTargetAverageSpeed.Checked)
+            {
+                string exportAverageSpeed = commanderStatus.AverageSpeedInMS.ToString("F0");
+
+                if (!exportAverageSpeed.Equals(_lastExportTargetAverageSpeed))
+                {
+                    try
+                    {
+                        File.WriteAllText(textBoxExportTargetAverageSpeedFile.Text, exportAverageSpeed);
+                        _lastExportTargetAverageSpeed = exportAverageSpeed;
+                    }
+                    catch { }
+                }
+            }
+
             if (checkBoxExportTrackedTargetPosition.Checked)
             {
                 if (commanderStatus.RacePosition != _lastExportTargetRacePosition)
@@ -1672,5 +1693,14 @@ namespace SRVTracker
             UpdateButtons();
         }
 
+        private void checkBoxExportTrackedTargetDistance_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateButtons();
+        }
+
+        private void checkBoxExportTrackedTargetAverageSpeed_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateButtons();
+        }
     }
 }
