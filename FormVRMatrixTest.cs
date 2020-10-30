@@ -17,7 +17,7 @@ namespace SRVTracker
     {
         private ulong _overlayHandle = 0;
         private HmdMatrix34_t _hmdMatrix;
-        private Dictionary<string, HmdMatrix34_t> _savedMatrices = null;
+        private Dictionary<string, MatrixDefinition> _savedMatrices = null;
         private string _matricesSaveFile = "hmd_matrices.json";
 
         public FormVRMatrixTest(ulong overlayHandle)
@@ -29,9 +29,9 @@ namespace SRVTracker
             buttonApply.Enabled = !checkBoxAutoApply.Checked;
         }
 
-        private static HmdMatrix34_t DefaultVRMatrix()
+        private static MatrixDefinition DefaultVRMatrix()
         {
-            HmdMatrix34_t vrMatrix = new HmdMatrix34_t();
+            MatrixDefinition vrMatrix = new MatrixDefinition();
             vrMatrix.m0 = 0.7F;
             vrMatrix.m1 = 0.0F;
             vrMatrix.m2 = 0.0F;
@@ -54,18 +54,18 @@ namespace SRVTracker
                 if (File.Exists(_matricesSaveFile))
                 {
                     string json = File.ReadAllText(_matricesSaveFile);
-                    _savedMatrices = (Dictionary<string, HmdMatrix34_t>)JsonSerializer.Deserialize(json, typeof(Dictionary<string, HmdMatrix34_t>));
+                    _savedMatrices = (Dictionary<string, MatrixDefinition>)JsonSerializer.Deserialize(json, typeof(Dictionary<string, MatrixDefinition>));
                 }
                 else
                 {
-                    _savedMatrices = new Dictionary<string, HmdMatrix34_t>();
+                    _savedMatrices = new Dictionary<string, MatrixDefinition>();
                     _savedMatrices.Add("Default", DefaultVRMatrix());
                     SaveMatrices();
                 }
             }
             catch
             {
-                _savedMatrices = new Dictionary<string, HmdMatrix34_t>();
+                _savedMatrices = new Dictionary<string, MatrixDefinition>();
             }
 
             listBoxMatrices.Items.Clear();
@@ -87,28 +87,51 @@ namespace SRVTracker
             this.Close();
         }
 
+        private void DisplayMatrix()
+        {
+            numericUpDownm0.Value = (decimal)_hmdMatrix.m0;
+            numericUpDownm1.Value = (decimal)_hmdMatrix.m1;
+            numericUpDownm2.Value = (decimal)_hmdMatrix.m2;
+            numericUpDownm3.Value = (decimal)_hmdMatrix.m3;
+            numericUpDownm4.Value = (decimal)_hmdMatrix.m4;
+            numericUpDownm5.Value = (decimal)_hmdMatrix.m5;
+            numericUpDownm6.Value = (decimal)_hmdMatrix.m6;
+            numericUpDownm7.Value = (decimal)_hmdMatrix.m7;
+            numericUpDownm8.Value = (decimal)_hmdMatrix.m8;
+            numericUpDownm9.Value = (decimal)_hmdMatrix.m9;
+            numericUpDownm10.Value = (decimal)_hmdMatrix.m10;
+            numericUpDownm11.Value = (decimal)_hmdMatrix.m11;
+        }
+
         public void SetMatrix(ref HmdMatrix34_t hmdMatrix)
         {
             bool autoApply = checkBoxAutoApply.Checked;
             if (checkBoxAutoApply.Checked)
                 checkBoxAutoApply.Checked = false;
 
-            numericUpDownm0.Value = (decimal)hmdMatrix.m0;
-            numericUpDownm1.Value = (decimal)hmdMatrix.m1;
-            numericUpDownm2.Value = (decimal)hmdMatrix.m2;
-            numericUpDownm3.Value = (decimal)hmdMatrix.m3;
-            numericUpDownm4.Value = (decimal)hmdMatrix.m4;
-            numericUpDownm5.Value = (decimal)hmdMatrix.m5;
-            numericUpDownm6.Value = (decimal)hmdMatrix.m6;
-            numericUpDownm7.Value = (decimal)hmdMatrix.m7;
-            numericUpDownm8.Value = (decimal)hmdMatrix.m8;
-            numericUpDownm9.Value = (decimal)hmdMatrix.m9;
-            numericUpDownm10.Value = (decimal)hmdMatrix.m10;
-            numericUpDownm11.Value = (decimal)hmdMatrix.m11;
             _hmdMatrix = hmdMatrix;
+            DisplayMatrix();
 
             checkBoxAutoApply.Checked = autoApply;
             ApplyMatrixToOverlay(true);
+        }
+
+        private void ApplyMatrixDefinition(MatrixDefinition hmdMatrix)
+        {
+            // Apply the given matrix to our VR referenced matrix
+            _hmdMatrix.m0 = hmdMatrix.m0;
+            _hmdMatrix.m1 = hmdMatrix.m1;
+            _hmdMatrix.m2 = hmdMatrix.m2;
+            _hmdMatrix.m3 = hmdMatrix.m3;
+            _hmdMatrix.m4 = hmdMatrix.m4;
+            _hmdMatrix.m5 = hmdMatrix.m5;
+            _hmdMatrix.m6 = hmdMatrix.m6;
+            _hmdMatrix.m7 = hmdMatrix.m7;
+            _hmdMatrix.m8 = hmdMatrix.m8;
+            _hmdMatrix.m9 = hmdMatrix.m9;
+            _hmdMatrix.m10 = hmdMatrix.m10;
+            _hmdMatrix.m11 = hmdMatrix.m11;
+            DisplayMatrix();
         }
 
         public void SetOverlayWidth(Single WidthInMetres)
@@ -265,6 +288,80 @@ namespace SRVTracker
             bool itemSelected = listBoxMatrices.SelectedIndex >= 0;
             textBoxMatrixName.Enabled = itemSelected;
             buttonDelete.Enabled = itemSelected;
+            if (itemSelected)
+            {
+                textBoxMatrixName.Text = (string)listBoxMatrices.SelectedItem;
+                if (_savedMatrices.ContainsKey(textBoxMatrixName.Text))
+                {
+                    ApplyMatrixDefinition(_savedMatrices[textBoxMatrixName.Text]);
+                    ApplyMatrixToOverlay();
+                }
+            }
+        }
+
+        private void buttonAdd_Click(object sender, EventArgs e)
+        {
+            HmdMatrix34_t matrix = GetMatrix();
+            string matrixName = $"Matrix {_savedMatrices.Count + 1}";
+            _savedMatrices.Add(matrixName, MatrixDefinition.FromHmdMatrix34_t(ref matrix));
+            listBoxMatrices.Items.Add(matrixName);
+            listBoxMatrices.SelectedIndex = listBoxMatrices.Items.Count - 1;
+        }
+
+        private void buttonDelete_Click(object sender, EventArgs e)
+        {
+            if (listBoxMatrices.SelectedIndex < 0)
+                return;
+
+            string matrixToDelete = (string)listBoxMatrices.SelectedItem;
+            textBoxMatrixName.Text = "";
+            listBoxMatrices.Items.RemoveAt(listBoxMatrices.SelectedIndex);
+            if (_savedMatrices.ContainsKey(matrixToDelete))
+                _savedMatrices.Remove(matrixToDelete);
+        }
+    }
+
+    public class MatrixDefinition
+    {
+        public float m0 { get; set; } = 0;
+        public float m1 { get; set; } = 0;
+        public float m2 { get; set; } = 0;
+        public float m3 { get; set; } = 0;
+        public float m4 { get; set; } = 0;
+        public float m5 { get; set; } = 0;
+        public float m6 { get; set; } = 0;
+        public float m7 { get; set; } = 0;
+        public float m8 { get; set; } = 0;
+        public float m9 { get; set; } = 0;
+        public float m10 { get; set; } = 0;
+        public float m11 { get; set; } = 0;
+
+        public MatrixDefinition()
+        {
+
+        }
+
+        public MatrixDefinition(float m0, float m1, float m2, float m3, float m4, float m5, float m6, float m7, float m8, float m9, float m10, float m11)
+        {
+            this.m0 = m0;
+            this.m1 = m1;
+            this.m2 = m2;
+            this.m3 = m3;
+            this.m4 = m4;
+            this.m5 = m5;
+            this.m6 = m6;
+            this.m7 = m7;
+            this.m8 = m8;
+            this.m9 = m9;
+            this.m10 = m10;
+            this.m11 = m11;
+        }
+
+        public static MatrixDefinition FromHmdMatrix34_t(ref HmdMatrix34_t hmdMatrix)
+        {
+            // Create a new matrix defintion from the provided matrix
+            return new MatrixDefinition(hmdMatrix.m0, hmdMatrix.m1, hmdMatrix.m2, hmdMatrix.m3, hmdMatrix.m4, hmdMatrix.m5,
+                hmdMatrix.m6, hmdMatrix.m7, hmdMatrix.m8, hmdMatrix.m9, hmdMatrix.m10, hmdMatrix.m11);
         }
     }
 }

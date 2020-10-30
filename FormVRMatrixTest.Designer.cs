@@ -52,11 +52,11 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.listBoxMatrices = new System.Windows.Forms.ListBox();
-            this.buttonAdd = new System.Windows.Forms.Button();
-            this.buttonDelete = new System.Windows.Forms.Button();
-            this.buttonSave = new System.Windows.Forms.Button();
             this.textBoxMatrixName = new System.Windows.Forms.TextBox();
+            this.buttonSave = new System.Windows.Forms.Button();
+            this.buttonDelete = new System.Windows.Forms.Button();
+            this.buttonAdd = new System.Windows.Forms.Button();
+            this.listBoxMatrices = new System.Windows.Forms.ListBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownm11)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownm10)).BeginInit();
@@ -421,6 +421,7 @@
             // 
             // buttonExport
             // 
+            this.buttonExport.Enabled = false;
             this.buttonExport.Location = new System.Drawing.Point(70, 145);
             this.buttonExport.Name = "buttonExport";
             this.buttonExport.Size = new System.Drawing.Size(53, 23);
@@ -506,32 +507,13 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Saved Matrices";
             // 
-            // listBoxMatrices
+            // textBoxMatrixName
             // 
-            this.listBoxMatrices.FormattingEnabled = true;
-            this.listBoxMatrices.Location = new System.Drawing.Point(6, 19);
-            this.listBoxMatrices.Name = "listBoxMatrices";
-            this.listBoxMatrices.Size = new System.Drawing.Size(188, 108);
-            this.listBoxMatrices.TabIndex = 0;
-            this.listBoxMatrices.SelectedIndexChanged += new System.EventHandler(this.listBoxMatrices_SelectedIndexChanged);
-            // 
-            // buttonAdd
-            // 
-            this.buttonAdd.Image = global::SRVTracker.Properties.Resources.Add_16x;
-            this.buttonAdd.Location = new System.Drawing.Point(6, 128);
-            this.buttonAdd.Name = "buttonAdd";
-            this.buttonAdd.Size = new System.Drawing.Size(26, 23);
-            this.buttonAdd.TabIndex = 1;
-            this.buttonAdd.UseVisualStyleBackColor = true;
-            // 
-            // buttonDelete
-            // 
-            this.buttonDelete.Image = global::SRVTracker.Properties.Resources.Remove_color_16x;
-            this.buttonDelete.Location = new System.Drawing.Point(32, 128);
-            this.buttonDelete.Name = "buttonDelete";
-            this.buttonDelete.Size = new System.Drawing.Size(26, 23);
-            this.buttonDelete.TabIndex = 2;
-            this.buttonDelete.UseVisualStyleBackColor = true;
+            this.textBoxMatrixName.Enabled = false;
+            this.textBoxMatrixName.Location = new System.Drawing.Point(90, 130);
+            this.textBoxMatrixName.Name = "textBoxMatrixName";
+            this.textBoxMatrixName.Size = new System.Drawing.Size(104, 20);
+            this.textBoxMatrixName.TabIndex = 4;
             // 
             // buttonSave
             // 
@@ -543,13 +525,34 @@
             this.buttonSave.UseVisualStyleBackColor = true;
             this.buttonSave.Click += new System.EventHandler(this.buttonSave_Click);
             // 
-            // textBoxMatrixName
+            // buttonDelete
             // 
-            this.textBoxMatrixName.Enabled = false;
-            this.textBoxMatrixName.Location = new System.Drawing.Point(90, 130);
-            this.textBoxMatrixName.Name = "textBoxMatrixName";
-            this.textBoxMatrixName.Size = new System.Drawing.Size(104, 20);
-            this.textBoxMatrixName.TabIndex = 4;
+            this.buttonDelete.Image = global::SRVTracker.Properties.Resources.Remove_color_16x;
+            this.buttonDelete.Location = new System.Drawing.Point(32, 128);
+            this.buttonDelete.Name = "buttonDelete";
+            this.buttonDelete.Size = new System.Drawing.Size(26, 23);
+            this.buttonDelete.TabIndex = 2;
+            this.buttonDelete.UseVisualStyleBackColor = true;
+            this.buttonDelete.Click += new System.EventHandler(this.buttonDelete_Click);
+            // 
+            // buttonAdd
+            // 
+            this.buttonAdd.Image = global::SRVTracker.Properties.Resources.Add_16x;
+            this.buttonAdd.Location = new System.Drawing.Point(6, 128);
+            this.buttonAdd.Name = "buttonAdd";
+            this.buttonAdd.Size = new System.Drawing.Size(26, 23);
+            this.buttonAdd.TabIndex = 1;
+            this.buttonAdd.UseVisualStyleBackColor = true;
+            this.buttonAdd.Click += new System.EventHandler(this.buttonAdd_Click);
+            // 
+            // listBoxMatrices
+            // 
+            this.listBoxMatrices.FormattingEnabled = true;
+            this.listBoxMatrices.Location = new System.Drawing.Point(6, 19);
+            this.listBoxMatrices.Name = "listBoxMatrices";
+            this.listBoxMatrices.Size = new System.Drawing.Size(188, 108);
+            this.listBoxMatrices.TabIndex = 0;
+            this.listBoxMatrices.SelectedIndexChanged += new System.EventHandler(this.listBoxMatrices_SelectedIndexChanged);
             // 
             // FormVRMatrixTest
             // 
