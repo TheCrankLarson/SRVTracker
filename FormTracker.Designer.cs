@@ -72,8 +72,8 @@
             this.buttonExit = new System.Windows.Forms.Button();
             this.buttonRoutePlanner = new System.Windows.Forms.Button();
             this.buttonLocator = new System.Windows.Forms.Button();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.checkBoxUseDirectionOfTravelAsHeading = new System.Windows.Forms.CheckBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.trackerHUD1 = new SRVTracker.TrackerHUD();
             this.groupBoxStatusLocation.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.statusFileWatcher)).BeginInit();
@@ -378,12 +378,10 @@
             // radioButtonWatchStatusFile
             // 
             this.radioButtonWatchStatusFile.AutoSize = true;
-            this.radioButtonWatchStatusFile.Checked = true;
             this.radioButtonWatchStatusFile.Location = new System.Drawing.Point(6, 20);
             this.radioButtonWatchStatusFile.Name = "radioButtonWatchStatusFile";
             this.radioButtonWatchStatusFile.Size = new System.Drawing.Size(53, 17);
             this.radioButtonWatchStatusFile.TabIndex = 9;
-            this.radioButtonWatchStatusFile.TabStop = true;
             this.radioButtonWatchStatusFile.Text = "Event";
             this.toolTip1.SetToolTip(this.radioButtonWatchStatusFile, "This method of monitoring the status.json file registers for\r\nnotifications of ch" +
         "anges to the file, and when it receives\r\nsuch a notification will read the updat" +
@@ -393,10 +391,12 @@
             // radioButtonUseTimer
             // 
             this.radioButtonUseTimer.AutoSize = true;
+            this.radioButtonUseTimer.Checked = true;
             this.radioButtonUseTimer.Location = new System.Drawing.Point(65, 20);
             this.radioButtonUseTimer.Name = "radioButtonUseTimer";
             this.radioButtonUseTimer.Size = new System.Drawing.Size(51, 17);
             this.radioButtonUseTimer.TabIndex = 8;
+            this.radioButtonUseTimer.TabStop = true;
             this.radioButtonUseTimer.Text = "Timer";
             this.toolTip1.SetToolTip(this.radioButtonUseTimer, "This method of Status.json monitoring simply checks whether the\r\nfile has been up" +
         "dated every 750ms.  If it has, it reads and processes\r\nit.");
@@ -538,16 +538,6 @@
             this.buttonLocator.UseVisualStyleBackColor = true;
             this.buttonLocator.Click += new System.EventHandler(this.buttonLocator_Click);
             // 
-            // groupBox2
-            // 
-            this.groupBox2.Controls.Add(this.checkBoxIncludeBetaUpdates);
-            this.groupBox2.Location = new System.Drawing.Point(542, 122);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(170, 44);
-            this.groupBox2.TabIndex = 23;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Auto-update";
-            // 
             // checkBoxUseDirectionOfTravelAsHeading
             // 
             this.checkBoxUseDirectionOfTravelAsHeading.AutoSize = true;
@@ -559,6 +549,16 @@
             this.toolTip1.SetToolTip(this.checkBoxUseDirectionOfTravelAsHeading, "When selected, direction of travel will be calculated and\r\nused as heading instea" +
         "d of direction vehicle is facing\r\n(which is what E: D gives us)");
             this.checkBoxUseDirectionOfTravelAsHeading.UseVisualStyleBackColor = true;
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.checkBoxIncludeBetaUpdates);
+            this.groupBox2.Location = new System.Drawing.Point(542, 122);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(170, 44);
+            this.groupBox2.TabIndex = 23;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Auto-update";
             // 
             // trackerHUD1
             // 

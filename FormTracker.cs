@@ -75,6 +75,8 @@ namespace SRVTracker
 
             this.Size = _configHidden;
             this.Text = Application.ProductName + " v" + Application.ProductVersion;
+            if (checkBoxTrack.Checked)
+                StartTracking();  // We do this as sometimes the control restoration breaks the auto-start
         }
 
         private void CalculateWindowSizes()
@@ -412,7 +414,6 @@ namespace SRVTracker
                     action();
             }
 
-            int heading = edEvent.Heading;
             if (edEvent.HasCoordinates())
             {
                 TimeSpan timeBetweenLocations = edEvent.TimeStamp.Subtract(_speedCalculationTimeStamp);
@@ -428,8 +429,10 @@ namespace SRVTracker
                         {
                             // We ignore the heading given by E: D, as that is direction we are facing, not travelling
                             // We calculate our direction based on previous location
-                            heading = (int)EDLocation.BearingToLocation(_speedCalculationLocation, edEvent.Location());
+                            CurrentHeading = (int)EDLocation.BearingToLocation(_speedCalculationLocation, edEvent.Location());
                         }
+                        else
+                            CurrentHeading = edEvent.Heading;
                     }
                     _speedCalculationLocation = edEvent.Location();
                     if ((SpeedInMS - _lastSpeedInMs) > 20)
@@ -457,8 +460,6 @@ namespace SRVTracker
                     CurrentLocation.PlanetaryRadius = edEvent.PlanetRadius;
 
                 CommanderLocationChanged?.Invoke(null, null);
-
-                CurrentHeading = heading;
             }
 
             action = new Action(() => { labelLastUpdateTime.Text = DateTime.Now.ToString("HH:mm:ss"); });
@@ -486,6 +487,12 @@ namespace SRVTracker
                     textBoxAltitude.Invoke(action);
                 else
                     action();
+
+                action = new Action(() => { textBoxHeading.Text = CurrentHeading.ToString(); });
+                if (textBoxHeading.InvokeRequired)
+                    textBoxHeading.Invoke(action);
+                else
+                    action();
             }
 
             if (edEvent.PlanetRadius>0)
@@ -497,12 +504,6 @@ namespace SRVTracker
                     else
                         action();
                 }
-
-            action = new Action(() => { textBoxHeading.Text = CurrentHeading.ToString(); });
-            if (textBoxHeading.InvokeRequired)
-                textBoxHeading.Invoke(action);
-            else
-                action();
         }
 
         public void ResetAverageSpeed()
