@@ -541,6 +541,8 @@
             // checkBoxUseDirectionOfTravelAsHeading
             // 
             this.checkBoxUseDirectionOfTravelAsHeading.AutoSize = true;
+            this.checkBoxUseDirectionOfTravelAsHeading.Checked = true;
+            this.checkBoxUseDirectionOfTravelAsHeading.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxUseDirectionOfTravelAsHeading.Location = new System.Drawing.Point(281, 172);
             this.checkBoxUseDirectionOfTravelAsHeading.Name = "checkBoxUseDirectionOfTravelAsHeading";
             this.checkBoxUseDirectionOfTravelAsHeading.Size = new System.Drawing.Size(184, 17);
