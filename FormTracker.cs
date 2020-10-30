@@ -45,12 +45,13 @@ namespace SRVTracker
         private ConfigSaverClass _formConfig = null;
         private static int _numberOfSpeedReadings = 0;
         private static decimal _totalOfSpeedReadings = 0;
+        const double STATUS_JSON_CHECK_INTERVAL = 700;
 
         public FormTracker()
         {            
             InitializeComponent();
 
-            _statusTimer = new System.Timers.Timer(700);
+            _statusTimer = new System.Timers.Timer(STATUS_JSON_CHECK_INTERVAL);
             _statusTimer.Elapsed += _statusTimer_Elapsed;
             _journalReader = new JournalReader(EDJournalPath());
             _journalReader.InterestingEventOccurred += _journalReader_InterestingEventOccurred;
@@ -75,8 +76,6 @@ namespace SRVTracker
 
             this.Size = _configHidden;
             this.Text = Application.ProductName + " v" + Application.ProductVersion;
-            if (checkBoxTrack.Checked)
-                StartTracking();  // We do this as sometimes the control restoration breaks the auto-start
         }
 
         private void CalculateWindowSizes()
@@ -102,13 +101,21 @@ namespace SRVTracker
         {
             _statusTimer.Stop();
 
-            // If the file has been written, then process it
-            DateTime lastWriteTime = File.GetLastWriteTime(_statusFile);
-            if ( (lastWriteTime != _lastFileWrite) || ( DateTime.Now.Subtract(_lastStatusSend).TotalSeconds>5 ) )
+            if (!radioButtonWatchStatusFile.Checked)
             {
-                ProcessStatusFileUpdate(_statusFile);
-                _lastFileWrite = lastWriteTime;
-                _lastStatusSend = DateTime.Now;
+                // If the file has been written, then process it
+                DateTime lastWriteTime = File.GetLastWriteTime(_statusFile);
+                if ((lastWriteTime != _lastFileWrite) || (DateTime.Now.Subtract(_lastStatusSend).TotalSeconds > 5))
+                {
+                    ProcessStatusFileUpdate(_statusFile);
+                    _lastFileWrite = lastWriteTime;
+                }
+            }
+            else
+            {
+                // This is the five second ping when we are watching for file updates
+                if (!String.IsNullOrEmpty(_statusFile) && (DateTime.Now.Subtract(_lastStatusSend).TotalSeconds > 5) )
+                    ProcessStatusFileUpdate(_statusFile);
             }
             _statusTimer.Start();
         }
@@ -238,8 +245,10 @@ namespace SRVTracker
             try
             {
                 // Read the file - we open in file share mode as E: D will be constantly writing to this file
-                if (_statusFileStream == null )
+                if (_statusFileStream == null)
+                {
                     _statusFileStream = new FileStream(statusFile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                }
                 _statusFileStream.Seek(0, SeekOrigin.Begin);
 
                 using (StreamReader sr = new StreamReader(_statusFileStream, Encoding.Default, true, 1000, true))
@@ -540,6 +549,7 @@ namespace SRVTracker
                 try
                 {
                     _udpClient.Send(sendBytes, sendBytes.Length);
+                    _lastStatusSend = DateTime.Now;
                     if (checkBoxShowLive.Checked)
                         AddLog($"Send {eventData}");
                 }
@@ -685,6 +695,7 @@ namespace SRVTracker
         
         public void StartTracking()
         {
+            _statusFile = $"{textBoxStatusFile.Text}\\Status.json";
 
             if (radioButtonWatchStatusFile.Checked)
             {
@@ -703,12 +714,16 @@ namespace SRVTracker
                         return;
                     }
                 }
+                // File events enabled, but we also add a 5 second timer ping also
+                _statusTimer.Interval = 5000;
+                _statusTimer.Start();
+                AddLog("Status tracking started (file event method)");
             }
             else
             {
                 if (!_statusTimer.Enabled)
                 {
-                    _statusFile = $"{textBoxStatusFile.Text}\\Status.json";
+                    _statusTimer.Interval = STATUS_JSON_CHECK_INTERVAL;
                     if (File.Exists(_statusFile))
                     {
                         _statusTimer.Start();
@@ -720,12 +735,12 @@ namespace SRVTracker
                         checkBoxTrack.Checked = false;
                         return;
                     }
+                    AddLog("Status tracking started (timer method)");
                 }
             }
             if (!checkBoxTrack.Checked)
                 checkBoxTrack.Checked = true;
             _journalReader.StartMonitoring();
-            AddLog("Status tracking started");
         }
 
         private void StopTracking()
@@ -810,6 +825,17 @@ namespace SRVTracker
                 });
                 Task.Run(action);
             }
+        }
+
+        private void radioButtonWatchStatusFile_CheckedChanged(object sender, EventArgs e)
+        {
+            StopTracking();
+            StartTracking();
+        }
+
+        private void radioButtonUseTimer_CheckedChanged(object sender, EventArgs e)
+        {
+            // We only trap events in the other radio button (this is a pair), as they will always both change at the same time
         }
     }
 }

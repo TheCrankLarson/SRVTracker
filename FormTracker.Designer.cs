@@ -378,29 +378,31 @@
             // radioButtonWatchStatusFile
             // 
             this.radioButtonWatchStatusFile.AutoSize = true;
+            this.radioButtonWatchStatusFile.Checked = true;
             this.radioButtonWatchStatusFile.Location = new System.Drawing.Point(6, 20);
             this.radioButtonWatchStatusFile.Name = "radioButtonWatchStatusFile";
             this.radioButtonWatchStatusFile.Size = new System.Drawing.Size(53, 17);
             this.radioButtonWatchStatusFile.TabIndex = 9;
+            this.radioButtonWatchStatusFile.TabStop = true;
             this.radioButtonWatchStatusFile.Text = "Event";
             this.toolTip1.SetToolTip(this.radioButtonWatchStatusFile, "This method of monitoring the status.json file registers for\r\nnotifications of ch" +
         "anges to the file, and when it receives\r\nsuch a notification will read the updat" +
         "ed file.");
             this.radioButtonWatchStatusFile.UseVisualStyleBackColor = true;
+            this.radioButtonWatchStatusFile.CheckedChanged += new System.EventHandler(this.radioButtonWatchStatusFile_CheckedChanged);
             // 
             // radioButtonUseTimer
             // 
             this.radioButtonUseTimer.AutoSize = true;
-            this.radioButtonUseTimer.Checked = true;
             this.radioButtonUseTimer.Location = new System.Drawing.Point(65, 20);
             this.radioButtonUseTimer.Name = "radioButtonUseTimer";
             this.radioButtonUseTimer.Size = new System.Drawing.Size(51, 17);
             this.radioButtonUseTimer.TabIndex = 8;
-            this.radioButtonUseTimer.TabStop = true;
             this.radioButtonUseTimer.Text = "Timer";
             this.toolTip1.SetToolTip(this.radioButtonUseTimer, "This method of Status.json monitoring simply checks whether the\r\nfile has been up" +
         "dated every 750ms.  If it has, it reads and processes\r\nit.");
             this.radioButtonUseTimer.UseVisualStyleBackColor = true;
+            this.radioButtonUseTimer.CheckedChanged += new System.EventHandler(this.radioButtonUseTimer_CheckedChanged);
             // 
             // checkBoxTrack
             // 
