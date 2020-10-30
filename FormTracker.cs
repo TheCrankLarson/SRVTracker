@@ -34,13 +34,13 @@ namespace SRVTracker
         public static event EventHandler CommanderLocationChanged;
         public static EDLocation CurrentLocation { get; private set; } = new EDLocation();
         public static int CurrentHeading { get; private set; } = -1;
-        public static double SpeedInMS { get; internal set; } = 0;
+        public static decimal SpeedInMS { get; internal set; } = 0;
         FormRaceManager _formRaceMonitor = null;
 
         // Keep track of ground speed (E: D shows speed you are travelling in the direction you are facing, which is not ground speed)
         private EDLocation _speedCalculationLocation = null;
         private DateTime _speedCalculationTimeStamp = DateTime.UtcNow;
-        private double _lastSpeedInMs = 0;
+        private decimal _lastSpeedInMs = 0;
         private ConfigSaverClass _formConfig = null;
 
         public FormTracker()
@@ -419,8 +419,8 @@ namespace SRVTracker
                     _speedCalculationTimeStamp = edEvent.TimeStamp;
                     if (_speedCalculationLocation != null)
                     {
-                        double distanceBetweenLocations = EDLocation.DistanceBetween(_speedCalculationLocation, edEvent.Location());
-                        SpeedInMS = distanceBetweenLocations * (1000 / timeBetweenLocations.TotalMilliseconds);
+                        decimal distanceBetweenLocations = EDLocation.DistanceBetween(_speedCalculationLocation, edEvent.Location());
+                        SpeedInMS = distanceBetweenLocations * (1000 / (decimal)timeBetweenLocations.TotalMilliseconds);
                         if (checkBoxUseDirectionOfTravelAsHeading.Checked)
                         {
                             // We ignore the heading given by E: D, as that is direction we are facing, not travelling

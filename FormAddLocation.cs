@@ -69,18 +69,18 @@ namespace SRVTracker
                 if (updateLocation == null)
                 {
                     EDLocation newLocation = new EDLocation(textBoxLocationName.Text, textBoxSystem.Text, textBoxPlanet.Text,
-                        Convert.ToDouble(textBoxLatitude.Text), Convert.ToDouble(textBoxLongitude.Text), Convert.ToDouble(textBoxAltitude.Text),
-                        Convert.ToDouble(textBoxPlanetaryRadius.Text));
+                        Convert.ToDecimal(textBoxLatitude.Text), Convert.ToDecimal(textBoxLongitude.Text), Convert.ToDecimal(textBoxAltitude.Text),
+                        Convert.ToDecimal(textBoxPlanetaryRadius.Text));
                     return newLocation;
                 }
 
                 updateLocation.Name = textBoxLocationName.Text;
                 updateLocation.SystemName = textBoxSystem.Text;
                 updateLocation.PlanetName = textBoxPlanet.Text;
-                updateLocation.Latitude = Convert.ToDouble(textBoxLatitude.Text);
-                updateLocation.Longitude = Convert.ToDouble(textBoxLongitude.Text);
-                updateLocation.Altitude = Convert.ToDouble(textBoxAltitude.Text);
-                updateLocation.PlanetaryRadius = Convert.ToDouble(textBoxPlanetaryRadius.Text);
+                updateLocation.Latitude = Convert.ToDecimal(textBoxLatitude.Text);
+                updateLocation.Longitude = Convert.ToDecimal(textBoxLongitude.Text);
+                updateLocation.Altitude = Convert.ToDecimal(textBoxAltitude.Text);
+                updateLocation.PlanetaryRadius = Convert.ToDecimal(textBoxPlanetaryRadius.Text);
                 return updateLocation;
             }
             catch { }

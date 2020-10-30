@@ -12,9 +12,9 @@ namespace EDTracking
     public class EDWaypoint
     {
         public EDLocation Location { get; set; } = null;
-        public double Radius { get; set; } = 5000;
-        public double MinimumAltitude { get; set; } = 0;
-        public double MaximumAltitude { get; set; } = 100;
+        public decimal Radius { get; set; } = 5000;
+        public decimal MinimumAltitude { get; set; } = 0;
+        public decimal MaximumAltitude { get; set; } = 100;
         //public sbyte AltitudeTest { get; set; } = 0; // -1, must be below, +1 must be above, 0 not checked
         public int Direction { get; set; } = -1;
         public DateTime TimeTracked { get; internal set; }  // To store the time the location was recorded when route recording
@@ -28,13 +28,13 @@ namespace EDTracking
             Location = location;
         }
 
-        public EDWaypoint(EDLocation location, double hitRadius, int hitDirection): this(location)
+        public EDWaypoint(EDLocation location, decimal hitRadius, int hitDirection): this(location)
         {
             Radius = hitRadius;
             Direction = hitDirection;
         }
 
-        public EDWaypoint(EDLocation location, DateTime timeTracked, double radius): this(location)
+        public EDWaypoint(EDLocation location, DateTime timeTracked, decimal radius): this(location)
         {
             TimeTracked = timeTracked;
             Radius = radius;

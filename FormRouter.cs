@@ -83,9 +83,9 @@ namespace SRVTracker
             {
                 if (FormTracker.CurrentLocation != null)
                 {
-                    double bearingFromNextWaypoint = EDLocation.BearingToLocation(_route.Waypoints[_nextWaypoint].Location, _route.Waypoints[_nextWaypoint + 1].Location);
-                    double bearingToNextWaypoint = EDLocation.BearingToLocation(FormTracker.CurrentLocation, _route.Waypoints[_nextWaypoint].Location);
-                    double bearingChange = EDLocation.BearingDelta(bearingToNextWaypoint, bearingFromNextWaypoint);
+                    decimal bearingFromNextWaypoint = EDLocation.BearingToLocation(_route.Waypoints[_nextWaypoint].Location, _route.Waypoints[_nextWaypoint + 1].Location);
+                    decimal bearingToNextWaypoint = EDLocation.BearingToLocation(FormTracker.CurrentLocation, _route.Waypoints[_nextWaypoint].Location);
+                    decimal bearingChange = EDLocation.BearingDelta(bearingToNextWaypoint, bearingFromNextWaypoint);
                     additionalInfo.Append("Then ");
                     if (bearingChange > -5 && bearingChange < 5)
                         additionalInfo.Append("straight on");
@@ -159,7 +159,7 @@ namespace SRVTracker
                 return;
             }
 
-            if (EDLocation.DistanceBetween(_lastLoggedLocation, FormTracker.CurrentLocation) >= (double)numericUpDownRecordDistance.Value)
+            if (EDLocation.DistanceBetween(_lastLoggedLocation, FormTracker.CurrentLocation) >= (decimal)numericUpDownRecordDistance.Value)
             {
                 _lastLoggedLocation = FormTracker.CurrentLocation;
                 AddLocationToRoute(_lastLoggedLocation);
@@ -168,10 +168,10 @@ namespace SRVTracker
 
         private void AddLocationToRoute(EDLocation location)
         {
-            EDWaypoint waypoint = new EDWaypoint(location, DateTime.Now, (double)numericUpDownRadius.Value);
-            waypoint.Radius = (double)numericUpDownRadius.Value;
-            waypoint.MinimumAltitude = (double)numericUpDownMinAltitude.Value;
-            waypoint.MaximumAltitude = (double)numericUpDownMaxAltitude.Value;
+            EDWaypoint waypoint = new EDWaypoint(location, DateTime.Now, numericUpDownRadius.Value);
+            waypoint.Radius = numericUpDownRadius.Value;
+            waypoint.MinimumAltitude = numericUpDownMinAltitude.Value;
+            waypoint.MaximumAltitude = numericUpDownMaxAltitude.Value;
 
             if (String.IsNullOrEmpty(location.Name))
             {
@@ -334,21 +334,21 @@ namespace SRVTracker
         {
             if (listBoxWaypoints.SelectedIndex < 0)
                 return;
-            _route.Waypoints[listBoxWaypoints.SelectedIndex].Radius = (double)numericUpDownRadius.Value;
+            _route.Waypoints[listBoxWaypoints.SelectedIndex].Radius = numericUpDownRadius.Value;
         }
 
         private void numericUpDownMinAltitude_ValueChanged(object sender, EventArgs e)
         {
             if (listBoxWaypoints.SelectedIndex < 0)
                 return;
-            _route.Waypoints[listBoxWaypoints.SelectedIndex].MinimumAltitude = (double)numericUpDownMinAltitude.Value;
+            _route.Waypoints[listBoxWaypoints.SelectedIndex].MinimumAltitude = numericUpDownMinAltitude.Value;
         }
 
         private void numericUpDownMaxAltitude_ValueChanged(object sender, EventArgs e)
         {
             if (listBoxWaypoints.SelectedIndex < 0)
                 return;
-            _route.Waypoints[listBoxWaypoints.SelectedIndex].MaximumAltitude = (double)numericUpDownMaxAltitude.Value;
+            _route.Waypoints[listBoxWaypoints.SelectedIndex].MaximumAltitude = numericUpDownMaxAltitude.Value;
         }
 
         private void textBoxWaypointName_TextChanged(object sender, EventArgs e)

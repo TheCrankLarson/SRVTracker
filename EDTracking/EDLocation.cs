@@ -11,20 +11,20 @@ namespace EDTracking
 {
     public class EDLocation
     {
-        public double Latitude { get; set; } = 0;
-        public double Longitude { get; set; } = 0;
-        public double Altitude { get; set; } = 0;
-        public double PlanetaryRadius { get; set; } = 0;
+        public decimal Latitude { get; set; } = 0;
+        public decimal Longitude { get; set; } = 0;
+        public decimal Altitude { get; set; } = 0;
+        public decimal PlanetaryRadius { get; set; } = 0;
         public string Name { get; set; } = "";
         public string PlanetName { get; set; } = "";
         public string SystemName { get; set; } = "";
-        public static double DefaultPlanetaryRadius = 0;
+        public static decimal DefaultPlanetaryRadius = 0;
 
         public EDLocation()
         {
         }
 
-        public EDLocation(double latitude, double longitude, double altitude, double planetaryRadius)
+        public EDLocation(decimal latitude, decimal longitude, decimal altitude, decimal planetaryRadius)
         {
             Latitude = latitude;
             Longitude = longitude;
@@ -32,7 +32,7 @@ namespace EDTracking
             PlanetaryRadius = planetaryRadius;
         }
 
-        public EDLocation(string name, double latitude, double longitude, double planetaryRadius)
+        public EDLocation(string name, decimal latitude, decimal longitude, decimal planetaryRadius)
         {
             Name = name;
             Latitude = latitude;
@@ -40,7 +40,7 @@ namespace EDTracking
             PlanetaryRadius = planetaryRadius;
         }
 
-        public EDLocation(string name, string systemName, string planetName, double latitude, double longitude, double altitude, double planetaryRadius):
+        public EDLocation(string name, string systemName, string planetName, decimal latitude, decimal longitude, decimal altitude, decimal planetaryRadius):
             this(name, latitude,longitude, planetaryRadius)
         {
             SystemName = systemName;
@@ -70,53 +70,53 @@ namespace EDTracking
             return null;
         }
 
-        private static double ConvertToRadians(double angle)
+        private static decimal ConvertToRadians(decimal angle)
         {
-            return (Math.PI / 180) * angle;
+            return ((decimal)Math.PI / 180) * angle;
         }
 
-        public static double DistanceBetween(EDLocation location1, EDLocation location2)
+        public static decimal DistanceBetween(EDLocation location1, EDLocation location2)
         {
-            double R = location1.PlanetaryRadius;
+            decimal R = location1.PlanetaryRadius;
             if (R <= 0)
             {
                 R = location2.PlanetaryRadius;
                 if (R <= 0)
                     return 0;
             }
-            var lat = ConvertToRadians(location2.Latitude - location1.Latitude);
-            var lng = ConvertToRadians(location2.Longitude - location1.Longitude);
-            var h1 = Math.Sin(lat / 2) * Math.Sin(lat / 2) +
-                          Math.Cos(ConvertToRadians(location1.Latitude)) * Math.Cos(ConvertToRadians(location2.Latitude)) *
-                          Math.Sin(lng / 2) * Math.Sin(lng / 2);
-            var h2 = 2 * Math.Asin(Math.Min(1, Math.Sqrt(h1)));
+            decimal lat = ConvertToRadians(location2.Latitude - location1.Latitude);
+            decimal lng = ConvertToRadians(location2.Longitude - location1.Longitude);
+            decimal h1 = (decimal)(Math.Sin((double)lat / 2) * Math.Sin((double)lat / 2) +
+                          Math.Cos((double)ConvertToRadians(location1.Latitude)) * Math.Cos((double)ConvertToRadians(location2.Latitude)) *
+                          Math.Sin((double)lng / 2) * Math.Sin((double)lng / 2));
+            decimal h2 = (decimal)(2 * Math.Asin(Math.Min(1, Math.Sqrt((double)h1))));
             return Math.Abs(R * h2);
         }
 
-        public static double BearingToLocation(EDLocation sourceLocation, EDLocation targetLocation)
+        public static decimal BearingToLocation(EDLocation sourceLocation, EDLocation targetLocation)
         {
-            var dLon = ConvertToRadians(targetLocation.Longitude - sourceLocation.Longitude);
-            var dPhi = Math.Log(
-                Math.Tan(ConvertToRadians(targetLocation.Latitude) / 2 + Math.PI / 4) / Math.Tan(ConvertToRadians(sourceLocation.Latitude) / 2 + Math.PI / 4));
-            if (Math.Abs(dLon) > Math.PI)
-                dLon = dLon > 0 ? -(2 * Math.PI - dLon) : (2 * Math.PI + dLon);
-            return ConvertToBearing(Math.Atan2(dLon, dPhi));
+            decimal dLon = ConvertToRadians(targetLocation.Longitude - sourceLocation.Longitude);
+            decimal dPhi = (decimal)Math.Log(
+                Math.Tan((double)ConvertToRadians(targetLocation.Latitude) / 2 + Math.PI / 4) / Math.Tan((double)ConvertToRadians(sourceLocation.Latitude) / 2 + Math.PI / 4));
+            if (Math.Abs((double)dLon) > Math.PI)
+                dLon = dLon > 0 ? (decimal)-(2 * Math.PI - (double)dLon) : (decimal)(2 * Math.PI + (double)dLon);
+            return ConvertToBearing((decimal)(Math.Atan2((double)dLon, (double)dPhi)));
         }
 
-        public static double ConvertToDegrees(double radians)
+        public static decimal ConvertToDegrees(decimal radians)
         {
-            return radians * 180 / Math.PI;
+            return radians * 180 / (decimal)Math.PI;
         }
 
-        public static double ConvertToBearing(double radians)
+        public static decimal ConvertToBearing(decimal radians)
         {
             // convert radians to degrees (as bearing: 0...360)
             return (ConvertToDegrees(radians) + 360) % 360;
         }
 
-        public static double BearingDelta(double b1, double b2)
+        public static decimal BearingDelta(decimal b1, decimal b2)
         {
-            double d = 0;
+            decimal d = 0;
  
 			d = (b2-b1)%360;
  

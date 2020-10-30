@@ -476,7 +476,7 @@ namespace SRVTracker
                         {
                             if (checkBoxExportDistance.Checked && !_race.Statuses[leaderBoard[i]].Eliminated)
                             {
-                                if ((_race.Statuses[leaderBoard[i]].DistanceToWaypoint == double.MaxValue))
+                                if ((_race.Statuses[leaderBoard[i]].DistanceToWaypoint == decimal.MaxValue))
                                     status.AppendLine("NA");
                                 else
                                     status.AppendLine($"{_race.Statuses[leaderBoard[i]].DistanceToWaypointInKmDisplay}");

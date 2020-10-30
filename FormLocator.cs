@@ -30,9 +30,9 @@ namespace SRVTracker
         private static IntPtr? _intPtrOverlayImage = null;
         private static Bitmap _vrbitmap = null;
         private static Graphics _vrgraphics = null;
-        private double _trackedTargetDistance = double.MaxValue;
+        private decimal _trackedTargetDistance = decimal.MaxValue;
         private static EDEvent _closestCommander = null;
-        private static double _closestCommanderDistance = double.MaxValue;
+        private static decimal _closestCommanderDistance = decimal.MaxValue;
         private static FormLocator _activeLocator = null;
 
         public FormLocator()
@@ -119,9 +119,9 @@ namespace SRVTracker
                 // If we are tracking the closest commander to us, we need to check all updates and change our tracking target as necessary
                 // We just check if the distance from this commander is closer than our currently tracked target
 
-                double distanceToCommander = EDLocation.DistanceBetween(FormTracker.CurrentLocation, edEvent.Location());
+                decimal distanceToCommander = EDLocation.DistanceBetween(FormTracker.CurrentLocation, edEvent.Location());
                 if (distanceToCommander == 0) // This is impossible, and just means we haven't got data on the tracked target
-                    distanceToCommander = double.MaxValue;
+                    distanceToCommander = decimal.MaxValue;
                 if (distanceToCommander < _closestCommanderDistance)
                 {
                     _closestCommander = edEvent;
@@ -146,7 +146,7 @@ namespace SRVTracker
             UpdateTracking();
         }
 
-        public static double PlanetaryRadius { get; set; } = 0;
+        public static decimal PlanetaryRadius { get; set; } = 0;
         public static string ServerAddress { get; set; } = null;
         public static string ClosestCommander
         {
@@ -241,9 +241,9 @@ namespace SRVTracker
             bool displayChanged = false;
             try
             {
-                double distance = EDLocation.DistanceBetween(FormTracker.CurrentLocation, _targetPosition);
+                decimal distance = EDLocation.DistanceBetween(FormTracker.CurrentLocation, _targetPosition);
                 string d = locatorHUD1.SetDistance(distance);
-                double bearing = EDLocation.BearingToLocation(FormTracker.CurrentLocation, _targetPosition);
+                decimal bearing = EDLocation.BearingToLocation(FormTracker.CurrentLocation, _targetPosition);
                 if (locatorHUD1.SetBearing((int)bearing, FormTracker.CurrentHeading))
                     displayChanged = true;
                 string b = $"{Convert.ToInt32(bearing).ToString()}°";

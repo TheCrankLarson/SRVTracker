@@ -82,7 +82,7 @@ namespace SRVTracker
             return (Bitmap)pictureBoxDirection.Image;
         }
 
-        public string SetDistance(double distance)
+        public string SetDistance(decimal distance)
         {
             string distanceText;
             if (distance > 1000000)
@@ -132,7 +132,7 @@ namespace SRVTracker
                 action();
         }
 
-        public void SetSpeed(double speedInMs)
+        public void SetSpeed(decimal speedInMs)
         {
             string speed = speedInMs.ToString("F1");
             if (speed.Equals(_lastSpeed))
