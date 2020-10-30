@@ -1485,6 +1485,24 @@ namespace SRVTracker
                     }
                     catch { }
             }
+
+            if (checkBoxExportTrackedTargetDistance.Checked)
+            {
+                try
+                {
+                    File.WriteAllText(textBoxExportTargetDistance.Text, "");
+                }
+                catch { }
+            }
+
+            if (checkBoxExportTrackedTargetAverageSpeed.Checked)
+            {
+                try
+                {
+                    File.WriteAllText(textBoxExportTargetAverageSpeedFile.Text, "");
+                }
+                catch { }
+            }
         }
 
         private void ExportTrackingInfo()
