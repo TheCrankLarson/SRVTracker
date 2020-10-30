@@ -35,6 +35,7 @@ namespace SRVTracker
         public static EDLocation CurrentLocation { get; private set; } = new EDLocation();
         public static int CurrentHeading { get; private set; } = -1;
         public static decimal SpeedInMS { get; internal set; } = 0;
+        public static decimal AverageSpeedInMS { get; internal set; } = 0;
         FormRaceManager _formRaceMonitor = null;
 
         // Keep track of ground speed (E: D shows speed you are travelling in the direction you are facing, which is not ground speed)
@@ -42,6 +43,8 @@ namespace SRVTracker
         private DateTime _speedCalculationTimeStamp = DateTime.UtcNow;
         private decimal _lastSpeedInMs = 0;
         private ConfigSaverClass _formConfig = null;
+        private static int _numberOfSpeedReadings = 0;
+        private static decimal _totalOfSpeedReadings = 0;
 
         public FormTracker()
         {            
@@ -435,6 +438,13 @@ namespace SRVTracker
                         SpeedInMS = 0;
                         _speedCalculationLocation = null;
                     }
+                    else
+                    {
+                        // Update our average speed
+                        _totalOfSpeedReadings += SpeedInMS;
+                        _numberOfSpeedReadings++;
+                        AverageSpeedInMS = SpeedInMS / _numberOfSpeedReadings;
+                    }
                 }
                 _lastSpeedInMs = SpeedInMS;
 
@@ -493,6 +503,13 @@ namespace SRVTracker
                 textBoxHeading.Invoke(action);
             else
                 action();
+        }
+
+        public void ResetAverageSpeed()
+        {
+            _totalOfSpeedReadings = 0;
+            _numberOfSpeedReadings = 0;
+            AverageSpeedInMS = 0;
         }
 
         private void SaveToFile(EDEvent edEvent)
