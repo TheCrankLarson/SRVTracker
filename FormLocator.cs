@@ -666,9 +666,8 @@ namespace SRVTracker
                 if (newLocation != null)
                 {
                     LocationManager.AddLocation(newLocation);
-                    _targetPosition = newLocation;
-                    UpdateTrackingTarget(newLocation.Name);
-                    DisplayTarget();
+                    comboBoxLocation.Items.Add(newLocation.Name);
+                    comboBoxLocation.SelectedIndex = comboBoxLocation.Items.Count - 1;
                 }
                 formAddLocation.Dispose();
                 return;
@@ -681,6 +680,7 @@ namespace SRVTracker
                     {
                         _targetPosition = location;
                         UpdateTrackingTarget(location.Name);
+                        DisplayTarget();
                         break;
                     }
             locationManager.Dispose();

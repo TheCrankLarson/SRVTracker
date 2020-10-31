@@ -42,6 +42,7 @@ namespace SRVTracker
             FormTracker.CommanderLocationChanged += FormTracker_CommanderLocationChanged;
             buttonStop.Enabled = false;
             listBoxWaypoints_SelectedIndexChanged(null, null);
+            comboBoxWaypointType.SelectedIndex = 0;
         }
 
         private void CalculateWindowSizes()

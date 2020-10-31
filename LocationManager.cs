@@ -51,6 +51,7 @@ namespace SRVTracker
                 LoadLocations();
 
             _locations.Add(location);
+            SaveLocationsToFile();
             LocationAdded?.Invoke(null, location);
         }
 
@@ -67,7 +68,7 @@ namespace SRVTracker
                 {
                     if (listBoxLocations.SelectedIndex < 0)
                         return null;
-                    return (EDLocation)listBoxLocations.SelectedItem;
+                    return _locations[listBoxLocations.SelectedIndex];
                 }
                 catch { }
                 return null;
@@ -132,7 +133,7 @@ namespace SRVTracker
 
         private void buttonSaveLocations_Click(object sender, EventArgs e)
         {
-            SaveLocationsToFile(_saveFilename);
+            SaveLocationsToFile();
         }
 
         private static void LoadLocations()
@@ -179,7 +180,7 @@ namespace SRVTracker
             UpdateButtons();
         }
 
-        public void SaveLocationsToFile(string filename)
+        public static void SaveLocationsToFile()
         {
             try
             {
@@ -187,8 +188,7 @@ namespace SRVTracker
                 if (_locations.Count > 0)
                     for (int i = 0; i < _locations.Count; i++)
                         locations.AppendLine(_locations[i].ToString());
-                File.WriteAllText(filename, locations.ToString());
-                _saveFilename = filename;
+                File.WriteAllText(_saveFilename, locations.ToString());
             }
             catch { }
         }
@@ -244,7 +244,10 @@ namespace SRVTracker
                 {
                     try
                     {
-                        Task.Run(new Action(() => { SaveLocationsToFile(saveFileDialog.FileName); }));
+                        Task.Run(new Action(() => {
+                            _saveFilename = saveFileDialog.FileName;
+                            SaveLocationsToFile(); 
+                        }));
                     }
                     catch { }
                 }

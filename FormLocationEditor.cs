@@ -37,7 +37,8 @@ namespace SRVTracker
                 windowTopLeft.Y -= this.Height;
                 Location = (Point)windowTopLeft;
             }
-            
+
+            locationManager1.ClearSelection();
             if (this.ShowDialog(parent) == DialogResult.Cancel)
                 return null;
             return locationManager1.SelectedLocation;

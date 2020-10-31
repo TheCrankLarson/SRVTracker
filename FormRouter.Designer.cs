@@ -31,6 +31,16 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormRouter));
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.buttonDuplicateWaypoint = new System.Windows.Forms.Button();
+            this.buttonMoveDown = new System.Windows.Forms.Button();
+            this.buttonAddCurrentLocation = new System.Windows.Forms.Button();
+            this.buttonSaveRoute = new System.Windows.Forms.Button();
+            this.buttonMoveUp = new System.Windows.Forms.Button();
+            this.buttonSetAsTarget = new System.Windows.Forms.Button();
+            this.buttonSaveRouteAs = new System.Windows.Forms.Button();
+            this.buttonLoadRoute = new System.Windows.Forms.Button();
+            this.buttonDeleteWaypoint = new System.Windows.Forms.Button();
+            this.buttonAddWaypoint = new System.Windows.Forms.Button();
             this.listBoxWaypoints = new System.Windows.Forms.ListBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -50,21 +60,14 @@
             this.textBoxRouteName = new System.Windows.Forms.TextBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.checkBoxPlayIncudeDirection = new System.Windows.Forms.CheckBox();
-            this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.buttonStop = new System.Windows.Forms.Button();
             this.buttonStartRecording = new System.Windows.Forms.Button();
             this.buttonPlay = new System.Windows.Forms.Button();
-            this.buttonDuplicateWaypoint = new System.Windows.Forms.Button();
-            this.buttonMoveDown = new System.Windows.Forms.Button();
-            this.buttonAddCurrentLocation = new System.Windows.Forms.Button();
-            this.buttonSaveRoute = new System.Windows.Forms.Button();
-            this.buttonMoveUp = new System.Windows.Forms.Button();
-            this.buttonSetAsTarget = new System.Windows.Forms.Button();
-            this.buttonSaveRouteAs = new System.Windows.Forms.Button();
-            this.buttonLoadRoute = new System.Windows.Forms.Button();
-            this.buttonDeleteWaypoint = new System.Windows.Forms.Button();
-            this.buttonAddWaypoint = new System.Windows.Forms.Button();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.comboBoxWaypointType = new System.Windows.Forms.ComboBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.groupBoxBasic = new System.Windows.Forms.GroupBox();
             this.groupBox2.SuspendLayout();
             this.groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRecordDistance)).BeginInit();
@@ -75,6 +78,7 @@
             this.groupBox1.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.groupBox3.SuspendLayout();
+            this.groupBoxBasic.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox2
@@ -96,270 +100,6 @@
             this.groupBox2.TabIndex = 2;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Waypoints";
-            // 
-            // listBoxWaypoints
-            // 
-            this.listBoxWaypoints.DisplayMember = "Name";
-            this.listBoxWaypoints.FormattingEnabled = true;
-            this.listBoxWaypoints.Location = new System.Drawing.Point(9, 19);
-            this.listBoxWaypoints.Name = "listBoxWaypoints";
-            this.listBoxWaypoints.Size = new System.Drawing.Size(218, 173);
-            this.listBoxWaypoints.TabIndex = 0;
-            this.listBoxWaypoints.ValueMember = "Name";
-            this.listBoxWaypoints.SelectedIndexChanged += new System.EventHandler(this.listBoxWaypoints_SelectedIndexChanged);
-            // 
-            // groupBox4
-            // 
-            this.groupBox4.Controls.Add(this.label1);
-            this.groupBox4.Controls.Add(this.label2);
-            this.groupBox4.Controls.Add(this.numericUpDownRecordDistance);
-            this.groupBox4.Location = new System.Drawing.Point(461, 6);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(163, 49);
-            this.groupBox4.TabIndex = 8;
-            this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Recording options";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 21);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(57, 13);
-            this.label1.TabIndex = 10;
-            this.label1.Text = "Log every:";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(139, 21);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(15, 13);
-            this.label2.TabIndex = 9;
-            this.label2.Text = "m";
-            // 
-            // numericUpDownRecordDistance
-            // 
-            this.numericUpDownRecordDistance.Increment = new decimal(new int[] {
-            100,
-            0,
-            0,
-            0});
-            this.numericUpDownRecordDistance.Location = new System.Drawing.Point(69, 19);
-            this.numericUpDownRecordDistance.Maximum = new decimal(new int[] {
-            100000,
-            0,
-            0,
-            0});
-            this.numericUpDownRecordDistance.Name = "numericUpDownRecordDistance";
-            this.numericUpDownRecordDistance.Size = new System.Drawing.Size(64, 20);
-            this.numericUpDownRecordDistance.TabIndex = 8;
-            this.toolTip1.SetToolTip(this.numericUpDownRecordDistance, "At what distance to log locations while route recording");
-            this.numericUpDownRecordDistance.Value = new decimal(new int[] {
-            500,
-            0,
-            0,
-            0});
-            // 
-            // groupBoxWaypointInfo
-            // 
-            this.groupBoxWaypointInfo.Controls.Add(this.checkBoxAllowPassing);
-            this.groupBoxWaypointInfo.Controls.Add(this.label6);
-            this.groupBoxWaypointInfo.Controls.Add(this.label5);
-            this.groupBoxWaypointInfo.Controls.Add(this.label4);
-            this.groupBoxWaypointInfo.Controls.Add(this.numericUpDownMaxAltitude);
-            this.groupBoxWaypointInfo.Controls.Add(this.numericUpDownMinAltitude);
-            this.groupBoxWaypointInfo.Controls.Add(this.label3);
-            this.groupBoxWaypointInfo.Controls.Add(this.textBoxWaypointName);
-            this.groupBoxWaypointInfo.Controls.Add(this.numericUpDownRadius);
-            this.groupBoxWaypointInfo.Location = new System.Drawing.Point(292, 61);
-            this.groupBoxWaypointInfo.Name = "groupBoxWaypointInfo";
-            this.groupBoxWaypointInfo.Size = new System.Drawing.Size(501, 232);
-            this.groupBoxWaypointInfo.TabIndex = 6;
-            this.groupBoxWaypointInfo.TabStop = false;
-            this.groupBoxWaypointInfo.Text = "Waypoint Information";
-            // 
-            // checkBoxAllowPassing
-            // 
-            this.checkBoxAllowPassing.AutoSize = true;
-            this.checkBoxAllowPassing.Location = new System.Drawing.Point(15, 115);
-            this.checkBoxAllowPassing.Name = "checkBoxAllowPassing";
-            this.checkBoxAllowPassing.Size = new System.Drawing.Size(90, 17);
-            this.checkBoxAllowPassing.TabIndex = 11;
-            this.checkBoxAllowPassing.Text = "Allow passing";
-            this.toolTip1.SetToolTip(this.checkBoxAllowPassing, "If selected, the waypoint can be passed without needing\r\nto be within a particula" +
-        "r radius.  If the waypoint is behind\r\nyou, then the router will move onto the ne" +
-        "xt.");
-            this.checkBoxAllowPassing.UseVisualStyleBackColor = true;
-            this.checkBoxAllowPassing.CheckedChanged += new System.EventHandler(this.checkBoxAllowPassing_CheckedChanged);
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(12, 47);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(43, 13);
-            this.label6.TabIndex = 10;
-            this.label6.Text = "Radius:";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(12, 93);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(91, 13);
-            this.label5.TabIndex = 9;
-            this.label5.Text = "Maximum altitude:";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(12, 70);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(88, 13);
-            this.label4.TabIndex = 8;
-            this.label4.Text = "Minimum altitude:";
-            // 
-            // numericUpDownMaxAltitude
-            // 
-            this.numericUpDownMaxAltitude.Location = new System.Drawing.Point(104, 91);
-            this.numericUpDownMaxAltitude.Name = "numericUpDownMaxAltitude";
-            this.numericUpDownMaxAltitude.Size = new System.Drawing.Size(59, 20);
-            this.numericUpDownMaxAltitude.TabIndex = 7;
-            this.numericUpDownMaxAltitude.ValueChanged += new System.EventHandler(this.numericUpDownMaxAltitude_ValueChanged);
-            // 
-            // numericUpDownMinAltitude
-            // 
-            this.numericUpDownMinAltitude.Location = new System.Drawing.Point(104, 68);
-            this.numericUpDownMinAltitude.Name = "numericUpDownMinAltitude";
-            this.numericUpDownMinAltitude.Size = new System.Drawing.Size(59, 20);
-            this.numericUpDownMinAltitude.TabIndex = 5;
-            this.numericUpDownMinAltitude.ValueChanged += new System.EventHandler(this.numericUpDownMinAltitude_ValueChanged);
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 22);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(38, 13);
-            this.label3.TabIndex = 3;
-            this.label3.Text = "Name:";
-            // 
-            // textBoxWaypointName
-            // 
-            this.textBoxWaypointName.Location = new System.Drawing.Point(50, 19);
-            this.textBoxWaypointName.Name = "textBoxWaypointName";
-            this.textBoxWaypointName.Size = new System.Drawing.Size(182, 20);
-            this.textBoxWaypointName.TabIndex = 2;
-            this.toolTip1.SetToolTip(this.textBoxWaypointName, "Name of waypoint");
-            this.textBoxWaypointName.TextChanged += new System.EventHandler(this.textBoxWaypointName_TextChanged);
-            // 
-            // numericUpDownRadius
-            // 
-            this.numericUpDownRadius.Increment = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.numericUpDownRadius.Location = new System.Drawing.Point(104, 45);
-            this.numericUpDownRadius.Maximum = new decimal(new int[] {
-            10000,
-            0,
-            0,
-            0});
-            this.numericUpDownRadius.Name = "numericUpDownRadius";
-            this.numericUpDownRadius.Size = new System.Drawing.Size(59, 20);
-            this.numericUpDownRadius.TabIndex = 1;
-            this.numericUpDownRadius.Value = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.numericUpDownRadius.ValueChanged += new System.EventHandler(this.numericUpDownRadius_ValueChanged);
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.textBoxRouteName);
-            this.groupBox1.Location = new System.Drawing.Point(6, 6);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(280, 49);
-            this.groupBox1.TabIndex = 13;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Route name";
-            // 
-            // textBoxRouteName
-            // 
-            this.textBoxRouteName.Location = new System.Drawing.Point(6, 19);
-            this.textBoxRouteName.Name = "textBoxRouteName";
-            this.textBoxRouteName.Size = new System.Drawing.Size(268, 20);
-            this.textBoxRouteName.TabIndex = 0;
-            this.textBoxRouteName.TextChanged += new System.EventHandler(this.textBoxRouteName_TextChanged);
-            // 
-            // checkBoxPlayIncudeDirection
-            // 
-            this.checkBoxPlayIncudeDirection.AutoSize = true;
-            this.checkBoxPlayIncudeDirection.Location = new System.Drawing.Point(9, 19);
-            this.checkBoxPlayIncudeDirection.Name = "checkBoxPlayIncudeDirection";
-            this.checkBoxPlayIncudeDirection.Size = new System.Drawing.Size(129, 17);
-            this.checkBoxPlayIncudeDirection.TabIndex = 0;
-            this.checkBoxPlayIncudeDirection.Text = "Include direction hints";
-            this.toolTip1.SetToolTip(this.checkBoxPlayIncudeDirection, "If enabled, direction indication is added to the\r\nwaypoint name to show which way" +
-        " you will\r\nneed to turn at that waypoint");
-            this.checkBoxPlayIncudeDirection.UseVisualStyleBackColor = true;
-            // 
-            // groupBox5
-            // 
-            this.groupBox5.Controls.Add(this.buttonStop);
-            this.groupBox5.Controls.Add(this.buttonStartRecording);
-            this.groupBox5.Controls.Add(this.buttonPlay);
-            this.groupBox5.Location = new System.Drawing.Point(292, 6);
-            this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(163, 49);
-            this.groupBox5.TabIndex = 15;
-            this.groupBox5.TabStop = false;
-            // 
-            // groupBox3
-            // 
-            this.groupBox3.Controls.Add(this.checkBoxPlayIncudeDirection);
-            this.groupBox3.Location = new System.Drawing.Point(630, 6);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(163, 49);
-            this.groupBox3.TabIndex = 16;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Play options";
-            // 
-            // buttonStop
-            // 
-            this.buttonStop.Image = global::SRVTracker.Properties.Resources.Stop_16x;
-            this.buttonStop.Location = new System.Drawing.Point(106, 16);
-            this.buttonStop.Name = "buttonStop";
-            this.buttonStop.Size = new System.Drawing.Size(34, 23);
-            this.buttonStop.TabIndex = 10;
-            this.toolTip1.SetToolTip(this.buttonStop, "Stop (recording or playing)");
-            this.buttonStop.UseVisualStyleBackColor = true;
-            this.buttonStop.Click += new System.EventHandler(this.buttonStopRecording_Click);
-            // 
-            // buttonStartRecording
-            // 
-            this.buttonStartRecording.Image = global::SRVTracker.Properties.Resources.RecordDot_16x;
-            this.buttonStartRecording.Location = new System.Drawing.Point(26, 16);
-            this.buttonStartRecording.Name = "buttonStartRecording";
-            this.buttonStartRecording.Size = new System.Drawing.Size(34, 23);
-            this.buttonStartRecording.TabIndex = 7;
-            this.toolTip1.SetToolTip(this.buttonStartRecording, "Start recording route");
-            this.buttonStartRecording.UseVisualStyleBackColor = true;
-            this.buttonStartRecording.Click += new System.EventHandler(this.buttonStartRecording_Click);
-            // 
-            // buttonPlay
-            // 
-            this.buttonPlay.Image = global::SRVTracker.Properties.Resources.Run_16x1;
-            this.buttonPlay.Location = new System.Drawing.Point(66, 16);
-            this.buttonPlay.Name = "buttonPlay";
-            this.buttonPlay.Size = new System.Drawing.Size(34, 23);
-            this.buttonPlay.TabIndex = 11;
-            this.toolTip1.SetToolTip(this.buttonPlay, "Play route");
-            this.buttonPlay.UseVisualStyleBackColor = true;
-            this.buttonPlay.Click += new System.EventHandler(this.buttonPlay_Click);
             // 
             // buttonDuplicateWaypoint
             // 
@@ -471,6 +211,304 @@
             this.buttonAddWaypoint.UseVisualStyleBackColor = true;
             this.buttonAddWaypoint.Click += new System.EventHandler(this.buttonAddWaypoint_Click);
             // 
+            // listBoxWaypoints
+            // 
+            this.listBoxWaypoints.DisplayMember = "Name";
+            this.listBoxWaypoints.FormattingEnabled = true;
+            this.listBoxWaypoints.Location = new System.Drawing.Point(9, 19);
+            this.listBoxWaypoints.Name = "listBoxWaypoints";
+            this.listBoxWaypoints.Size = new System.Drawing.Size(218, 173);
+            this.listBoxWaypoints.TabIndex = 0;
+            this.listBoxWaypoints.ValueMember = "Name";
+            this.listBoxWaypoints.SelectedIndexChanged += new System.EventHandler(this.listBoxWaypoints_SelectedIndexChanged);
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.label1);
+            this.groupBox4.Controls.Add(this.label2);
+            this.groupBox4.Controls.Add(this.numericUpDownRecordDistance);
+            this.groupBox4.Location = new System.Drawing.Point(461, 6);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(163, 49);
+            this.groupBox4.TabIndex = 8;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Recording options";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(6, 21);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(57, 13);
+            this.label1.TabIndex = 10;
+            this.label1.Text = "Log every:";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(139, 21);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(15, 13);
+            this.label2.TabIndex = 9;
+            this.label2.Text = "m";
+            // 
+            // numericUpDownRecordDistance
+            // 
+            this.numericUpDownRecordDistance.Increment = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            this.numericUpDownRecordDistance.Location = new System.Drawing.Point(69, 19);
+            this.numericUpDownRecordDistance.Maximum = new decimal(new int[] {
+            100000,
+            0,
+            0,
+            0});
+            this.numericUpDownRecordDistance.Name = "numericUpDownRecordDistance";
+            this.numericUpDownRecordDistance.Size = new System.Drawing.Size(64, 20);
+            this.numericUpDownRecordDistance.TabIndex = 8;
+            this.toolTip1.SetToolTip(this.numericUpDownRecordDistance, "At what distance to log locations while route recording");
+            this.numericUpDownRecordDistance.Value = new decimal(new int[] {
+            500,
+            0,
+            0,
+            0});
+            // 
+            // groupBoxWaypointInfo
+            // 
+            this.groupBoxWaypointInfo.Controls.Add(this.groupBoxBasic);
+            this.groupBoxWaypointInfo.Controls.Add(this.label7);
+            this.groupBoxWaypointInfo.Controls.Add(this.comboBoxWaypointType);
+            this.groupBoxWaypointInfo.Controls.Add(this.label3);
+            this.groupBoxWaypointInfo.Controls.Add(this.textBoxWaypointName);
+            this.groupBoxWaypointInfo.Location = new System.Drawing.Point(292, 61);
+            this.groupBoxWaypointInfo.Name = "groupBoxWaypointInfo";
+            this.groupBoxWaypointInfo.Size = new System.Drawing.Size(501, 232);
+            this.groupBoxWaypointInfo.TabIndex = 6;
+            this.groupBoxWaypointInfo.TabStop = false;
+            this.groupBoxWaypointInfo.Text = "Waypoint Information";
+            // 
+            // checkBoxAllowPassing
+            // 
+            this.checkBoxAllowPassing.AutoSize = true;
+            this.checkBoxAllowPassing.Location = new System.Drawing.Point(9, 91);
+            this.checkBoxAllowPassing.Name = "checkBoxAllowPassing";
+            this.checkBoxAllowPassing.Size = new System.Drawing.Size(90, 17);
+            this.checkBoxAllowPassing.TabIndex = 11;
+            this.checkBoxAllowPassing.Text = "Allow passing";
+            this.toolTip1.SetToolTip(this.checkBoxAllowPassing, "If selected, the waypoint can be passed without needing\r\nto be within a particula" +
+        "r radius.  If the waypoint is behind\r\nyou, then the router will move onto the ne" +
+        "xt.");
+            this.checkBoxAllowPassing.UseVisualStyleBackColor = true;
+            this.checkBoxAllowPassing.CheckedChanged += new System.EventHandler(this.checkBoxAllowPassing_CheckedChanged);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(6, 23);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(43, 13);
+            this.label6.TabIndex = 10;
+            this.label6.Text = "Radius:";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(6, 69);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(91, 13);
+            this.label5.TabIndex = 9;
+            this.label5.Text = "Maximum altitude:";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(6, 46);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(88, 13);
+            this.label4.TabIndex = 8;
+            this.label4.Text = "Minimum altitude:";
+            // 
+            // numericUpDownMaxAltitude
+            // 
+            this.numericUpDownMaxAltitude.Location = new System.Drawing.Point(98, 67);
+            this.numericUpDownMaxAltitude.Name = "numericUpDownMaxAltitude";
+            this.numericUpDownMaxAltitude.Size = new System.Drawing.Size(59, 20);
+            this.numericUpDownMaxAltitude.TabIndex = 7;
+            this.numericUpDownMaxAltitude.ValueChanged += new System.EventHandler(this.numericUpDownMaxAltitude_ValueChanged);
+            // 
+            // numericUpDownMinAltitude
+            // 
+            this.numericUpDownMinAltitude.Location = new System.Drawing.Point(98, 44);
+            this.numericUpDownMinAltitude.Name = "numericUpDownMinAltitude";
+            this.numericUpDownMinAltitude.Size = new System.Drawing.Size(59, 20);
+            this.numericUpDownMinAltitude.TabIndex = 5;
+            this.numericUpDownMinAltitude.ValueChanged += new System.EventHandler(this.numericUpDownMinAltitude_ValueChanged);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(6, 22);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(38, 13);
+            this.label3.TabIndex = 3;
+            this.label3.Text = "Name:";
+            // 
+            // textBoxWaypointName
+            // 
+            this.textBoxWaypointName.Location = new System.Drawing.Point(50, 19);
+            this.textBoxWaypointName.Name = "textBoxWaypointName";
+            this.textBoxWaypointName.Size = new System.Drawing.Size(198, 20);
+            this.textBoxWaypointName.TabIndex = 2;
+            this.toolTip1.SetToolTip(this.textBoxWaypointName, "Name of waypoint");
+            this.textBoxWaypointName.TextChanged += new System.EventHandler(this.textBoxWaypointName_TextChanged);
+            // 
+            // numericUpDownRadius
+            // 
+            this.numericUpDownRadius.Increment = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numericUpDownRadius.Location = new System.Drawing.Point(98, 21);
+            this.numericUpDownRadius.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.numericUpDownRadius.Name = "numericUpDownRadius";
+            this.numericUpDownRadius.Size = new System.Drawing.Size(59, 20);
+            this.numericUpDownRadius.TabIndex = 1;
+            this.numericUpDownRadius.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numericUpDownRadius.ValueChanged += new System.EventHandler(this.numericUpDownRadius_ValueChanged);
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.textBoxRouteName);
+            this.groupBox1.Location = new System.Drawing.Point(6, 6);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(280, 49);
+            this.groupBox1.TabIndex = 13;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Route name";
+            // 
+            // textBoxRouteName
+            // 
+            this.textBoxRouteName.Location = new System.Drawing.Point(6, 19);
+            this.textBoxRouteName.Name = "textBoxRouteName";
+            this.textBoxRouteName.Size = new System.Drawing.Size(268, 20);
+            this.textBoxRouteName.TabIndex = 0;
+            this.textBoxRouteName.TextChanged += new System.EventHandler(this.textBoxRouteName_TextChanged);
+            // 
+            // checkBoxPlayIncudeDirection
+            // 
+            this.checkBoxPlayIncudeDirection.AutoSize = true;
+            this.checkBoxPlayIncudeDirection.Location = new System.Drawing.Point(9, 19);
+            this.checkBoxPlayIncudeDirection.Name = "checkBoxPlayIncudeDirection";
+            this.checkBoxPlayIncudeDirection.Size = new System.Drawing.Size(129, 17);
+            this.checkBoxPlayIncudeDirection.TabIndex = 0;
+            this.checkBoxPlayIncudeDirection.Text = "Include direction hints";
+            this.toolTip1.SetToolTip(this.checkBoxPlayIncudeDirection, "If enabled, direction indication is added to the\r\nwaypoint name to show which way" +
+        " you will\r\nneed to turn at that waypoint");
+            this.checkBoxPlayIncudeDirection.UseVisualStyleBackColor = true;
+            // 
+            // buttonStop
+            // 
+            this.buttonStop.Image = global::SRVTracker.Properties.Resources.Stop_16x;
+            this.buttonStop.Location = new System.Drawing.Point(106, 16);
+            this.buttonStop.Name = "buttonStop";
+            this.buttonStop.Size = new System.Drawing.Size(34, 23);
+            this.buttonStop.TabIndex = 10;
+            this.toolTip1.SetToolTip(this.buttonStop, "Stop (recording or playing)");
+            this.buttonStop.UseVisualStyleBackColor = true;
+            this.buttonStop.Click += new System.EventHandler(this.buttonStopRecording_Click);
+            // 
+            // buttonStartRecording
+            // 
+            this.buttonStartRecording.Image = global::SRVTracker.Properties.Resources.RecordDot_16x;
+            this.buttonStartRecording.Location = new System.Drawing.Point(26, 16);
+            this.buttonStartRecording.Name = "buttonStartRecording";
+            this.buttonStartRecording.Size = new System.Drawing.Size(34, 23);
+            this.buttonStartRecording.TabIndex = 7;
+            this.toolTip1.SetToolTip(this.buttonStartRecording, "Start recording route");
+            this.buttonStartRecording.UseVisualStyleBackColor = true;
+            this.buttonStartRecording.Click += new System.EventHandler(this.buttonStartRecording_Click);
+            // 
+            // buttonPlay
+            // 
+            this.buttonPlay.Image = global::SRVTracker.Properties.Resources.Run_16x1;
+            this.buttonPlay.Location = new System.Drawing.Point(66, 16);
+            this.buttonPlay.Name = "buttonPlay";
+            this.buttonPlay.Size = new System.Drawing.Size(34, 23);
+            this.buttonPlay.TabIndex = 11;
+            this.toolTip1.SetToolTip(this.buttonPlay, "Play route");
+            this.buttonPlay.UseVisualStyleBackColor = true;
+            this.buttonPlay.Click += new System.EventHandler(this.buttonPlay_Click);
+            // 
+            // groupBox5
+            // 
+            this.groupBox5.Controls.Add(this.buttonStop);
+            this.groupBox5.Controls.Add(this.buttonStartRecording);
+            this.groupBox5.Controls.Add(this.buttonPlay);
+            this.groupBox5.Location = new System.Drawing.Point(292, 6);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(163, 49);
+            this.groupBox5.TabIndex = 15;
+            this.groupBox5.TabStop = false;
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.checkBoxPlayIncudeDirection);
+            this.groupBox3.Location = new System.Drawing.Point(630, 6);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(163, 49);
+            this.groupBox3.TabIndex = 16;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Play options";
+            // 
+            // comboBoxWaypointType
+            // 
+            this.comboBoxWaypointType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxWaypointType.FormattingEnabled = true;
+            this.comboBoxWaypointType.Items.AddRange(new object[] {
+            "Basic (point with radius)"});
+            this.comboBoxWaypointType.Location = new System.Drawing.Point(338, 19);
+            this.comboBoxWaypointType.Name = "comboBoxWaypointType";
+            this.comboBoxWaypointType.Size = new System.Drawing.Size(157, 21);
+            this.comboBoxWaypointType.TabIndex = 12;
+            this.toolTip1.SetToolTip(this.comboBoxWaypointType, "The waypoint type.  This affects the criteria that are used\r\nto determine if a wa" +
+        "ypoint has been reached/passed.");
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(254, 22);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(78, 13);
+            this.label7.TabIndex = 13;
+            this.label7.Text = "Waypoint type:";
+            // 
+            // groupBoxBasic
+            // 
+            this.groupBoxBasic.Controls.Add(this.label4);
+            this.groupBoxBasic.Controls.Add(this.numericUpDownRadius);
+            this.groupBoxBasic.Controls.Add(this.numericUpDownMinAltitude);
+            this.groupBoxBasic.Controls.Add(this.checkBoxAllowPassing);
+            this.groupBoxBasic.Controls.Add(this.numericUpDownMaxAltitude);
+            this.groupBoxBasic.Controls.Add(this.label6);
+            this.groupBoxBasic.Controls.Add(this.label5);
+            this.groupBoxBasic.Location = new System.Drawing.Point(158, 60);
+            this.groupBoxBasic.Name = "groupBoxBasic";
+            this.groupBoxBasic.Size = new System.Drawing.Size(186, 156);
+            this.groupBoxBasic.TabIndex = 14;
+            this.groupBoxBasic.TabStop = false;
+            this.groupBoxBasic.Text = "Basic Waypoint Definition";
+            // 
             // FormRouter
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -501,6 +539,8 @@
             this.groupBox5.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
+            this.groupBoxBasic.ResumeLayout(false);
+            this.groupBoxBasic.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -542,5 +582,8 @@
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.CheckBox checkBoxPlayIncudeDirection;
         private System.Windows.Forms.CheckBox checkBoxAllowPassing;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.ComboBox comboBoxWaypointType;
+        private System.Windows.Forms.GroupBox groupBoxBasic;
     }
 }
