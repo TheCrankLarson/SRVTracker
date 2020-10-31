@@ -141,8 +141,8 @@ namespace SRVTracker
             {
                 // We are currently tracking
                 bool moveToNextWaypoint = _route.Waypoints[_nextWaypoint].LocationIsWithinWaypoint(FormTracker.CurrentLocation);
-                if (!moveToNextWaypoint && (_route.Waypoints[_nextWaypoint].AllowPassing))
-                    moveToNextWaypoint = _route.Waypoints[_nextWaypoint].WaypointIsBehind(FormTracker.CurrentLocation, FormTracker.CurrentHeading);
+                if (!moveToNextWaypoint && (_route.Waypoints[_nextWaypoint].AllowPassing) && (_nextWaypoint>0) )
+                    moveToNextWaypoint = _route.Waypoints[_nextWaypoint].WaypointIsBehind(FormTracker.CurrentLocation, EDLocation.BearingToLocation(_route.Waypoints[_nextWaypoint-1].Location, _route.Waypoints[_nextWaypoint].Location));
                 if (moveToNextWaypoint)
                 {
                     // Arrived at the waypoint, target the next
