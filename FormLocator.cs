@@ -665,6 +665,7 @@ namespace SRVTracker
                 EDLocation newLocation = formAddLocation.GetLocation(this);
                 if (newLocation != null)
                 {
+                    LocationManager.AddLocation(newLocation);
                     _targetPosition = newLocation;
                     UpdateTrackingTarget(newLocation.Name);
                     DisplayTarget();

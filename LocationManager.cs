@@ -19,6 +19,8 @@ namespace SRVTracker
         public FormLocator LocatorForm { get; set; } = null;
         private bool _allowSelectionOnly = false;
         private static List<EDLocation> _locations = null;
+        public delegate void LocationAddedEventHandler(object sender, EDLocation location);
+        public static event LocationAddedEventHandler LocationAdded;
 
         public LocationManager()
         {
@@ -27,6 +29,29 @@ namespace SRVTracker
                 LoadLocations();
             ShowLocations();
             ShowCancelButton(AllowSelectionOnly);
+
+            LocationAdded += LocationManager_LocationAdded;
+        }
+
+        private void LocationManager_LocationAdded(object sender, EDLocation location)
+        {
+            Action action = new Action(() =>
+            {
+                listBoxLocations.Items.Add(location);
+            });
+            if (listBoxLocations.InvokeRequired)
+                listBoxLocations.Invoke(action);
+            else
+                action();
+        }
+
+        public static void AddLocation(EDLocation location)
+        {
+            if (_locations == null)
+                LoadLocations();
+
+            _locations.Add(location);
+            LocationAdded?.Invoke(null, location);
         }
 
         protected virtual void OnSelectionChanged(EventArgs e)
@@ -110,7 +135,7 @@ namespace SRVTracker
             SaveLocationsToFile(_saveFilename);
         }
 
-        private void LoadLocations()
+        private static void LoadLocations()
         {
             _locations = new List<EDLocation>();
             if (String.IsNullOrEmpty(_saveFilename) || !File.Exists(_saveFilename))
