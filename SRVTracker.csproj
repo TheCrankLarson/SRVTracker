@@ -167,6 +167,12 @@
     <Compile Include="FormFlagsWatcher.Designer.cs">
       <DependentUpon>FormFlagsWatcher.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormLocationEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormLocationEditor.Designer.cs">
+      <DependentUpon>FormLocationEditor.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormLocator.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -252,6 +258,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormFlagsWatcher.resx">
       <DependentUpon>FormFlagsWatcher.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormLocationEditor.resx">
+      <DependentUpon>FormLocationEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormLocator.resx">
       <DependentUpon>FormLocator.cs</DependentUpon>

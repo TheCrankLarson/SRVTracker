@@ -19,10 +19,10 @@
                 <ListBox x:Name="listBoxLocations" Margin="10,10,10,43"/>
             </Grid>
         </GroupBox>
-        <GroupBox x:Name="groupBox1" Header="Racers" HorizontalAlignment="Left" Height="176" Margin="10,41,0,0" VerticalAlignment="Top" Width="215">
+        <GroupBox x:Name="groupBox1" Header="Racers" HorizontalAlignment="Left" Height="176" Margin="0,41,0,0" VerticalAlignment="Top" Width="225">
             <ListBox x:Name="listBox" HorizontalAlignment="Left" Height="153" VerticalAlignment="Center" Width="205"/>
         </GroupBox>
-        <GroupBox x:Name="groupBox2" Header="Leaderboard" HorizontalAlignment="Left" Height="202" Margin="10,222,0,0" VerticalAlignment="Top" Width="749" Grid.ColumnSpan="3">
+        <GroupBox x:Name="groupBox2" Header="Leaderboard" HorizontalAlignment="Left" Height="202" Margin="0,222,0,0" VerticalAlignment="Top" Width="759" Grid.ColumnSpan="3">
             <DataGrid x:Name="dataGridLeaderBoard" HorizontalAlignment="Center" Height="172" Width="741"/>
         </GroupBox>
 

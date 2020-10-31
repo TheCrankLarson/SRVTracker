@@ -87,11 +87,13 @@ namespace SRVTracker
             return null;
         }
 
-        public void AddLocation(ListBox locationListBox, IWin32Window owner = null)
+        public EDLocation AddLocation(ListBox locationListBox, IWin32Window owner = null)
         {
             _locationListBox = locationListBox;
             DisplayLocation();
-            this.Show(owner);
+            if (this.ShowDialog(owner)==DialogResult.Cancel)
+                return null;
+            return GetDisplayedLocation();
         }
 
         public void EditLocation(EDLocation location, IWin32Window owner = null)

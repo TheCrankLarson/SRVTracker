@@ -17,11 +17,16 @@ namespace SRVTracker
         private static string _saveFilename = "default.edlocations";
         public event EventHandler SelectionChanged;
         public FormLocator LocatorForm { get; set; } = null;
+        private bool _allowSelectionOnly = false;
+        private static List<EDLocation> _locations = null;
 
         public LocationManager()
         {
             InitializeComponent();
-            LoadLocationsFromFile(_saveFilename);
+            if (_locations == null)
+                LoadLocations();
+            ShowLocations();
+            ShowCancelButton(AllowSelectionOnly);
         }
 
         protected virtual void OnSelectionChanged(EventArgs e)
@@ -44,15 +49,29 @@ namespace SRVTracker
             }
         }
 
+        public bool AllowSelectionOnly
+        {
+            get { return _allowSelectionOnly; }
+            set
+            {
+                _allowSelectionOnly = value;
+                ShowCancelButton(value);
+            }
+        }
+
+        private void ShowCancelButton(bool show = true)
+        {
+            foreach (Control control in groupBox3.Controls)
+                if (control is Button)
+                    control.Visible = !show;
+            buttonCancel.Visible = show;
+        }
+
         public List<EDLocation> Locations
         {
             get
             {
-                List<EDLocation> locations = new List<EDLocation>();
-                if (listBoxLocations.Items.Count>0)
-                    foreach (EDLocation location in listBoxLocations.Items)
-                        locations.Add(location);
-                return locations;
+                return _locations;
             }
         }
 
@@ -74,7 +93,12 @@ namespace SRVTracker
                 {
                     try
                     {
-                        Task.Run(new Action(() => { LoadLocationsFromFile(openFileDialog.FileName); }));
+                        Task.Run(new Action(() =>
+                        {
+                            _saveFilename = openFileDialog.FileName;
+                            LoadLocations();
+                            ShowLocations();
+                        }));
                     }
                     catch { }
                 }
@@ -86,55 +110,47 @@ namespace SRVTracker
             SaveLocationsToFile(_saveFilename);
         }
 
-        public void LoadLocationsFromFile(string filename)
+        private void LoadLocations()
         {
-            Action action = new Action(() => { listBoxLocations.Items.Clear(); });
+            _locations = new List<EDLocation>();
+            if (String.IsNullOrEmpty(_saveFilename) || !File.Exists(_saveFilename))
+                return;
+
+            try
+            {
+                Stream statusStream = File.OpenRead(_saveFilename);
+                using (StreamReader reader = new StreamReader(statusStream))
+                {
+                    while (!reader.EndOfStream)
+                    {
+                        try
+                        {
+                            _locations.Add(EDLocation.FromString(reader.ReadLine()));
+                        }
+                        catch { }
+                    }
+                    reader.Close();
+                }
+            }
+            catch { }
+        }
+
+        private void ShowLocations()
+        {
+            Action action = new Action(() =>
+            {
+                listBoxLocations.BeginUpdate();
+                listBoxLocations.Items.Clear();
+                if (_locations.Count>0)
+                    for (int i = 0; i < _locations.Count; i++)
+                        listBoxLocations.Items.Add(_locations[i].Name);
+                listBoxLocations.EndUpdate();
+            });
+
             if (listBoxLocations.InvokeRequired)
                 listBoxLocations.Invoke(action);
             else
                 action();
-
-            if (File.Exists(filename))
-            {
-                try
-                {
-                    Stream statusStream = File.OpenRead(filename);
-                    action = new Action(() => { listBoxLocations.BeginUpdate(); });
-                    if (listBoxLocations.InvokeRequired)
-                        listBoxLocations.Invoke(action);
-                    else
-                        action();
-                    using (StreamReader reader = new StreamReader(statusStream))
-                    {
-                        while (!reader.EndOfStream)
-                        {
-                            try
-                            {
-                                EDLocation location = EDLocation.FromString(reader.ReadLine());
-                                if (location != null)
-                                {
-                                    action = new Action(() => { listBoxLocations.Items.Add(location); });
-                                    if (listBoxLocations.InvokeRequired)
-                                        listBoxLocations.Invoke(action);
-                                    else
-                                        action();
-                                }
-                            }
-                            catch { }
-                        }
-                        reader.Close();
-                    }
-                }
-                catch { }
-                finally
-                {
-                    action = new Action(() => { listBoxLocations.EndUpdate(); });
-                    if (listBoxLocations.InvokeRequired)
-                        listBoxLocations.Invoke(action);
-                    else
-                        action();
-                }
-            }
             UpdateButtons();
         }
 
@@ -143,8 +159,9 @@ namespace SRVTracker
             try
             {
                 StringBuilder locations = new StringBuilder();
-                foreach (EDLocation location in listBoxLocations.Items)
-                    locations.AppendLine(location.ToString());
+                if (_locations.Count > 0)
+                    for (int i = 0; i < _locations.Count; i++)
+                        locations.AppendLine(_locations[i].ToString());
                 File.WriteAllText(filename, locations.ToString());
                 _saveFilename = filename;
             }
@@ -154,7 +171,11 @@ namespace SRVTracker
         private void buttonAddLocation_Click(object sender, EventArgs e)
         {
             FormAddLocation formAddLocation = new FormAddLocation();
-            formAddLocation.AddLocation(listBoxLocations, this);
+            EDLocation newLocation = formAddLocation.AddLocation(listBoxLocations, this);
+            if (newLocation == null)
+                return;
+            _locations.Add(newLocation);
+            listBoxLocations.Items.Add(newLocation.Name);
         }
 
         private void buttonDeleteLocation_Click(object sender, EventArgs e)
@@ -163,6 +184,7 @@ namespace SRVTracker
                 return;
             try
             {
+                _locations.RemoveAt(listBoxLocations.SelectedIndex);
                 listBoxLocations.Items.RemoveAt(listBoxLocations.SelectedIndex);
             }
             catch { }
@@ -176,7 +198,10 @@ namespace SRVTracker
             try
             {
                 FormAddLocation formAddLocation = new FormAddLocation();
-                formAddLocation.EditLocation((EDLocation)listBoxLocations.SelectedItem, this);
+                EDLocation location = _locations[listBoxLocations.SelectedIndex];
+                formAddLocation.EditLocation(location, this);
+                if (!((string)listBoxLocations.SelectedItem).Equals(location.Name))
+                    listBoxLocations.Items[listBoxLocations.SelectedIndex] = location.Name;
             }
             catch { }
         }

@@ -15,8 +15,6 @@ namespace SRVTracker
     public partial class FormRouter : Form
     {
         static Size _fullSize = new Size(484, 350);
-        //static Size _miniSize = new Size(313, 291);
-        static Size _chooseLocation = new Size(774, 350);
         private EDLocation _lastLoggedLocation = null;
         private int _nextWaypoint = 0;
         private EDRoute _route = null;
@@ -24,6 +22,7 @@ namespace SRVTracker
         private FormTracker _formTracker = null; // We need a reference to the tracker so that we can start tracking if necessary
         private ConfigSaverClass _formConfig = null;
         private bool _updatingWaypointInfo = false;
+        private FormLocationEditor _formLocationEditor = null;
 
         public FormRouter(FormTracker formTracker)
         {
@@ -49,13 +48,10 @@ namespace SRVTracker
         {
             // Calculate size with locations hidden
             int leftBound = groupBoxWaypointInfo.Location.X + groupBoxWaypointInfo.Width;
-            _fullSize.Width = (this.Width - this.ClientRectangle.Width) + leftBound + ((locationManager1.Left - leftBound) / 2);
+            _fullSize.Width = (this.Width - this.ClientRectangle.Width) + leftBound + 6;
             int bottomBound = groupBoxWaypointInfo.Location.Y + groupBoxWaypointInfo.Height;
             _fullSize.Height = (this.Height - this.ClientRectangle.Height) + bottomBound + 6;
 
-            // Calculate size with locations displayed
-            _chooseLocation.Width = locationManager1.Location.X + locationManager1.Width + (this.Width - this.ClientRectangle.Width) + 6;
-            _chooseLocation.Height = locationManager1.Location.Y + locationManager1.Height + (this.Height - this.ClientRectangle.Height) + 6;
         }
 
         private void DisplayRoute()
@@ -101,7 +97,9 @@ namespace SRVTracker
                     {
                         if (bearingChange < 0)
                         {
-                            if (bearingChange < -90)
+                            if (bearingChange < -140)
+                                additionalInfo.Append("hairpin ");
+                            else if (bearingChange < -90)
                                 additionalInfo.Append("sharp ");
                             if (bearingChange > -45)
                                 additionalInfo.Append("bear left ");
@@ -110,14 +108,16 @@ namespace SRVTracker
                         }
                         else
                         {
-                            if (bearingChange > 90)
+                            if (bearingChange > 140)
+                                additionalInfo.Append("hairpin ");
+                            else if (bearingChange > 90)
                                 additionalInfo.Append("sharp ");
                             if (bearingChange < 45)
                                 additionalInfo.Append("bear right ");
                             else
                                 additionalInfo.Append("turn right ");
                         }
-                        additionalInfo.Append(bearingChange.ToString("F1"));
+                        additionalInfo.Append(Math.Abs(bearingChange).ToString("F1"));
                         additionalInfo.Append("°");
                     }
                 }
@@ -403,13 +403,12 @@ namespace SRVTracker
 
         private void buttonAddWaypoint_Click(object sender, EventArgs e)
         {
-            if (this.Size == _fullSize)
-            {
-                locationManager1.ClearSelection();
-                this.Size = _chooseLocation;
-            }
-            else
-                this.Size = _fullSize;
+            if (_formLocationEditor==null)
+                _formLocationEditor = new FormLocationEditor();
+
+            EDLocation locationToAdd = _formLocationEditor.SelectLocation(this, ((Control)sender).PointToScreen(new Point(buttonAddWaypoint.Width, buttonAddWaypoint.Height)));
+            if (locationToAdd != null)
+                AddLocationToRoute(locationToAdd);
         }
 
         private void buttonAddCurrentLocation_Click(object sender, EventArgs e)
@@ -423,15 +422,6 @@ namespace SRVTracker
             _route.Name = textBoxRouteName.Text;
         }
 
-        private void locationManager1_SelectionChanged(object sender, EventArgs e)
-        {
-            EDLocation selectedLocation = locationManager1.SelectedLocation;
-            if (selectedLocation != null)
-            {
-                AddLocationToRoute(locationManager1.SelectedLocation);
-                this.Size = _fullSize;
-            }
-        }
 
         private void buttonMoveUp_Click(object sender, EventArgs e)
         {

@@ -39,11 +39,13 @@
             this.buttonSaveLocations = new System.Windows.Forms.Button();
             this.listBoxLocations = new System.Windows.Forms.ListBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.buttonCancel = new System.Windows.Forms.Button();
             this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.buttonCancel);
             this.groupBox3.Controls.Add(this.buttonTrackLocation);
             this.groupBox3.Controls.Add(this.buttonSaveAs);
             this.groupBox3.Controls.Add(this.buttonEditLocation);
@@ -156,6 +158,16 @@
             this.listBoxLocations.ValueMember = "Name";
             this.listBoxLocations.SelectedIndexChanged += new System.EventHandler(this.listBoxLocations_SelectedIndexChanged);
             // 
+            // buttonCancel
+            // 
+            this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.buttonCancel.Location = new System.Drawing.Point(189, 258);
+            this.buttonCancel.Name = "buttonCancel";
+            this.buttonCancel.Size = new System.Drawing.Size(86, 23);
+            this.buttonCancel.TabIndex = 8;
+            this.buttonCancel.Text = "Cancel";
+            this.buttonCancel.UseVisualStyleBackColor = true;
+            // 
             // LocationManager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -180,5 +192,6 @@
         private System.Windows.Forms.Button buttonSaveAs;
         private System.Windows.Forms.Button buttonTrackLocation;
         private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.Button buttonCancel;
     }
 }
