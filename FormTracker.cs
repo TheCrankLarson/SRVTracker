@@ -33,6 +33,7 @@ namespace SRVTracker
         private JournalReader _journalReader = null;
         public static event EventHandler CommanderLocationChanged;
         public static EDLocation CurrentLocation { get; private set; } = new EDLocation();
+        public static EDLocation PreviousLocation { get; private set; } = new EDLocation();
         public static int CurrentHeading { get; private set; } = -1;
         public static decimal SpeedInMS { get; internal set; } = 0;
         public static decimal AverageSpeedInMS { get; internal set; } = 0;
@@ -460,6 +461,7 @@ namespace SRVTracker
                 }
                 _lastSpeedInMs = SpeedInMS;
 
+                PreviousLocation = CurrentLocation.Copy();
                 CurrentLocation.Latitude = edEvent.Latitude;
                 CurrentLocation.Longitude = edEvent.Longitude;
                 CurrentLocation.Altitude = edEvent.Altitude;
