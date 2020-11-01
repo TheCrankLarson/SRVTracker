@@ -217,6 +217,7 @@
             this.checkBoxTrackClosest.Size = new System.Drawing.Size(87, 17);
             this.checkBoxTrackClosest.TabIndex = 2;
             this.checkBoxTrackClosest.Text = "Track closest";
+            this.toolTip1.SetToolTip(this.checkBoxTrackClosest, "If selected, will track closest commander to current location");
             this.checkBoxTrackClosest.UseVisualStyleBackColor = true;
             // 
             // listBoxCommanders
@@ -228,6 +229,7 @@
             this.listBoxCommanders.Name = "listBoxCommanders";
             this.listBoxCommanders.Size = new System.Drawing.Size(188, 108);
             this.listBoxCommanders.TabIndex = 1;
+            this.toolTip1.SetToolTip(this.listBoxCommanders, "A list of other commanders currently (or recently) online");
             this.listBoxCommanders.SelectedIndexChanged += new System.EventHandler(this.listBoxCommanders_SelectedIndexChanged);
             // 
             // buttonTrackCommander
@@ -268,7 +270,7 @@
             this.comboBoxLocation.Name = "comboBoxLocation";
             this.comboBoxLocation.Size = new System.Drawing.Size(162, 21);
             this.comboBoxLocation.TabIndex = 11;
-            this.toolTip1.SetToolTip(this.comboBoxLocation, "Select a location to target (add locations in the Route Planner)");
+            this.toolTip1.SetToolTip(this.comboBoxLocation, "Select or add a location to target");
             this.comboBoxLocation.SelectedIndexChanged += new System.EventHandler(this.comboBoxLocation_SelectedIndexChanged);
             // 
             // toolTip1
