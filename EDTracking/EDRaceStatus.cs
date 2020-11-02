@@ -145,7 +145,11 @@ namespace EDTracking
             if (statusBuilder.Length == 0 && Started)
             {
                 if (_race?.Route != null)
+                {
                     statusBuilder.Append($"-> {_race.Route.Waypoints[WaypointIndex].Name}");
+                    if (_race?.Laps > 0)
+                        statusBuilder.Append($" (lap {Lap})");
+                }
                 if (_lowFuel)
                     statusBuilder.Append(" (low fuel)");
             }
@@ -372,7 +376,11 @@ namespace EDTracking
             if (_race.Route.Waypoints[WaypointIndex].LocationIsWithinWaypoint(Location))
             {
                 // Commander has reached the target waypoint
-                AddRaceHistory($"Arrived at {_race.Route.Waypoints[WaypointIndex].Name}");
+                if (_race.Laps > 0 && WaypointIndex!=0)
+                    AddRaceHistory($"Arrived at {_race.Route.Waypoints[WaypointIndex].Name} (lap {Lap})");
+                else if (_race.Laps==0)
+                    AddRaceHistory($"Arrived at {_race.Route.Waypoints[WaypointIndex].Name}");
+
                 WaypointIndex++;
                 if (WaypointIndex > _race.LeaderWaypoint)
                     _race.LeaderWaypoint = WaypointIndex;
