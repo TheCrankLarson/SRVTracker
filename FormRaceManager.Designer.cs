@@ -126,6 +126,8 @@
             this.textBoxRaceStatusServerUrl = new System.Windows.Forms.TextBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.timerPreraceExport = new System.Windows.Forms.Timer(this.components);
+            this.numericUpDownLapCount = new System.Windows.Forms.NumericUpDown();
+            this.checkBoxLappedRace = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -141,6 +143,7 @@
             this.groupBoxTrackTarget.SuspendLayout();
             this.groupBoxServerInfo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLapCount)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -586,6 +589,8 @@
             // 
             // groupBox6
             // 
+            this.groupBox6.Controls.Add(this.checkBoxLappedRace);
+            this.groupBox6.Controls.Add(this.numericUpDownLapCount);
             this.groupBox6.Controls.Add(this.checkBoxStreamInfo);
             this.groupBox6.Controls.Add(this.checkBoxAllowPitstops);
             this.groupBox6.Controls.Add(this.checkBoxSRVRace);
@@ -613,7 +618,7 @@
             this.checkBoxAllowPitstops.AutoSize = true;
             this.checkBoxAllowPitstops.Checked = true;
             this.checkBoxAllowPitstops.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxAllowPitstops.Location = new System.Drawing.Point(109, 42);
+            this.checkBoxAllowPitstops.Location = new System.Drawing.Point(85, 42);
             this.checkBoxAllowPitstops.Name = "checkBoxAllowPitstops";
             this.checkBoxAllowPitstops.Size = new System.Drawing.Size(90, 17);
             this.checkBoxAllowPitstops.TabIndex = 2;
@@ -630,9 +635,9 @@
             this.checkBoxSRVRace.Enabled = false;
             this.checkBoxSRVRace.Location = new System.Drawing.Point(9, 42);
             this.checkBoxSRVRace.Name = "checkBoxSRVRace";
-            this.checkBoxSRVRace.Size = new System.Drawing.Size(94, 17);
+            this.checkBoxSRVRace.Size = new System.Drawing.Size(70, 17);
             this.checkBoxSRVRace.TabIndex = 1;
-            this.checkBoxSRVRace.Text = "SRV only race";
+            this.checkBoxSRVRace.Text = "SRV only";
             this.toolTip1.SetToolTip(this.checkBoxSRVRace, "If enabled, competitors will be eliminated if they use their ship");
             this.checkBoxSRVRace.UseVisualStyleBackColor = true;
             this.checkBoxSRVRace.CheckedChanged += new System.EventHandler(this.checkBoxSRVRace_CheckedChanged);
@@ -1155,6 +1160,30 @@
             this.timerPreraceExport.Interval = 2000;
             this.timerPreraceExport.Tick += new System.EventHandler(this.timerPreraceExport_Tick);
             // 
+            // numericUpDownLapCount
+            // 
+            this.numericUpDownLapCount.Location = new System.Drawing.Point(239, 41);
+            this.numericUpDownLapCount.Name = "numericUpDownLapCount";
+            this.numericUpDownLapCount.Size = new System.Drawing.Size(54, 20);
+            this.numericUpDownLapCount.TabIndex = 5;
+            this.numericUpDownLapCount.Value = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            this.numericUpDownLapCount.ValueChanged += new System.EventHandler(this.numericUpDownLapCount_ValueChanged);
+            // 
+            // checkBoxLappedRace
+            // 
+            this.checkBoxLappedRace.AutoSize = true;
+            this.checkBoxLappedRace.Location = new System.Drawing.Point(181, 42);
+            this.checkBoxLappedRace.Name = "checkBoxLappedRace";
+            this.checkBoxLappedRace.Size = new System.Drawing.Size(52, 17);
+            this.checkBoxLappedRace.TabIndex = 6;
+            this.checkBoxLappedRace.Text = "Laps:";
+            this.checkBoxLappedRace.UseVisualStyleBackColor = true;
+            this.checkBoxLappedRace.CheckedChanged += new System.EventHandler(this.checkBoxLappedRace_CheckedChanged);
+            // 
             // FormRaceManager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1202,6 +1231,7 @@
             this.groupBoxServerInfo.ResumeLayout(false);
             this.groupBoxServerInfo.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLapCount)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1304,5 +1334,7 @@
         private System.Windows.Forms.CheckBox checkBoxExportTrackedTargetDistance;
         private System.Windows.Forms.TextBox textBoxExportTargetAverageSpeedFile;
         private System.Windows.Forms.CheckBox checkBoxExportTrackedTargetAverageSpeed;
+        private System.Windows.Forms.CheckBox checkBoxLappedRace;
+        private System.Windows.Forms.NumericUpDown numericUpDownLapCount;
     }
 }

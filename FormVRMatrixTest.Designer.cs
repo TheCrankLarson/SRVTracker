@@ -514,6 +514,7 @@
             this.textBoxMatrixName.Name = "textBoxMatrixName";
             this.textBoxMatrixName.Size = new System.Drawing.Size(104, 20);
             this.textBoxMatrixName.TabIndex = 4;
+            this.textBoxMatrixName.TextChanged += new System.EventHandler(this.textBoxMatrixName_TextChanged);
             // 
             // buttonSave
             // 

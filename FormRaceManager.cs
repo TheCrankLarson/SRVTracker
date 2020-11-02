@@ -1059,7 +1059,8 @@ namespace SRVTracker
             textBoxExportTargetHull.Enabled = checkBoxExportTrackedTargetHull.Checked && checkBoxExportTrackedTargetHull.Enabled;
             textBoxExportTargetDistance.Enabled = checkBoxExportTrackedTargetDistance.Checked && checkBoxExportTrackedTargetDistance.Enabled;
             textBoxExportTargetAverageSpeedFile.Enabled = checkBoxExportTrackedTargetAverageSpeed.Checked && checkBoxExportTrackedTargetAverageSpeed.Enabled;
-
+            
+            numericUpDownLapCount.Enabled = checkBoxLappedRace.Checked;
         }
 
         private void listViewParticipants_SelectedIndexChanged(object sender, EventArgs e)
@@ -1719,6 +1720,18 @@ namespace SRVTracker
         private void checkBoxExportTrackedTargetAverageSpeed_CheckedChanged(object sender, EventArgs e)
         {
             UpdateButtons();
+        }
+
+        private void checkBoxLappedRace_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateButtons();
+            if (!checkBoxLappedRace.Checked)
+                _race.Laps = 0;
+        }
+
+        private void numericUpDownLapCount_ValueChanged(object sender, EventArgs e)
+        {
+            _race.Laps = (int)numericUpDownLapCount.Value;
         }
     }
 }

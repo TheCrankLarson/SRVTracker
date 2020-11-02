@@ -25,6 +25,7 @@ namespace EDTracking
         public DateTime Start { get; set; } = DateTime.MinValue;
         private bool _raceStarted = false;
         public bool Finished { get; set; } = false;
+        public int Laps { get; set; } = 0;  // 0 means we are not using laps, any other number means we are
         public bool EliminateOnVehicleDestruction { get; set; } = true;
         public bool SRVOnly { get; set; } = true;
         public bool FighterOnly { get; set; } = false;
@@ -35,6 +36,7 @@ namespace EDTracking
                 {
                     { "Eliminated", "Eliminated" },
                     { "Completed", "Completed" },
+                    { "CompletedLap", " has completed lap" },
                     { "Pitstop", "Pitstop" },
                     { "EliminatedNotification", " has been eliminated" },
                     { "CompletedNotification", " has finished the race" },
@@ -118,6 +120,7 @@ namespace EDTracking
             {
                 EDRaceStatus raceStatus = new EDRaceStatus(contestant, this);
                 raceStatus.StartTime = Start;
+                raceStatus.LapStartTime = Start;
                 if (asServer)
                     raceStatus.notableEvents = _notableEvents;
                 Statuses.Add(contestant, raceStatus);
