@@ -1163,9 +1163,15 @@
             // numericUpDownLapCount
             // 
             this.numericUpDownLapCount.Location = new System.Drawing.Point(239, 41);
+            this.numericUpDownLapCount.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.numericUpDownLapCount.Name = "numericUpDownLapCount";
             this.numericUpDownLapCount.Size = new System.Drawing.Size(54, 20);
             this.numericUpDownLapCount.TabIndex = 5;
+            this.toolTip1.SetToolTip(this.numericUpDownLapCount, "The number of laps (must be at least one)");
             this.numericUpDownLapCount.Value = new decimal(new int[] {
             2,
             0,
@@ -1181,6 +1187,8 @@
             this.checkBoxLappedRace.Size = new System.Drawing.Size(52, 17);
             this.checkBoxLappedRace.TabIndex = 6;
             this.checkBoxLappedRace.Text = "Laps:";
+            this.toolTip1.SetToolTip(this.checkBoxLappedRace, "If enabled, the specified number of laps will be run.\r\nIn this case, the first wa" +
+        "ypoint is also the finish line.");
             this.checkBoxLappedRace.UseVisualStyleBackColor = true;
             this.checkBoxLappedRace.CheckedChanged += new System.EventHandler(this.checkBoxLappedRace_CheckedChanged);
             // 
