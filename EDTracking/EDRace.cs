@@ -126,6 +126,7 @@ namespace EDTracking
                 Statuses.Add(contestant, raceStatus);
                 _commanderEventHistory.Add(contestant, new List<EDEvent>());
             }
+            InitLapCalculations();
             if (!asServer)
             {
                 CommanderWatcher.UpdateReceived += CommanderWatcher_UpdateReceived;
@@ -370,6 +371,33 @@ namespace EDTracking
             if (_commanderEventHistory.ContainsKey(commander))
                 return _commanderEventHistory[commander];
             return null;
+        }
+
+        private decimal _lapLength = 0;
+        private decimal _totalRaceDistance = 0;
+        private decimal _distanceFromLastWPToFirst = 0;
+        private void InitLapCalculations()
+        {
+            if (Laps < 1)
+                return;
+
+            // For lap calculations, we need to work out the total length of the course
+            _lapLength = Route.TotalDistanceLeftAtWaypoint(0);
+            _distanceFromLastWPToFirst = EDLocation.DistanceBetween(Route.Waypoints[Route.Waypoints.Count - 1].Location, Route.Waypoints[0].Location); ;
+            _lapLength += _distanceFromLastWPToFirst;
+            _totalRaceDistance = _lapLength * Laps;
+        }
+
+        public decimal TotalDistanceLeftAtWaypoint(int WaypointIndex, int Lap)
+        {
+            if (Lap > Laps)
+                return 0;
+
+            decimal distanceLeft = (_lapLength * (Laps - Lap));
+            if (WaypointIndex < Route.Waypoints.Count)
+                distanceLeft += Route.TotalDistanceLeftAtWaypoint(WaypointIndex);
+            distanceLeft += _distanceFromLastWPToFirst;
+            return distanceLeft;
         }
     }
 }

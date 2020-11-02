@@ -797,6 +797,13 @@ namespace SRVTracker
                 return;
             }
 
+            if (checkBoxLappedRace.Checked)
+            {
+                _race.Laps = (int)numericUpDownLapCount.Value;
+            }
+            else
+                _race.Laps = 0;
+
             if (checkBoxServerMonitoring.Checked)
                 if (!StartServerMonitoredRace())
                     return;

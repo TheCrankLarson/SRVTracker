@@ -362,7 +362,15 @@ namespace EDTracking
             if (WaypointIndex > 0 || (_race.Laps>0 && Lap>1) )
             {
                 DistanceToWaypoint = EDLocation.DistanceBetween(Location, _race.Route.Waypoints[WaypointIndex].Location);
-                TotalDistanceLeft = _race.Route.TotalDistanceLeftAtWaypoint(WaypointIndex) + DistanceToWaypoint;
+
+                if (_race.Laps == 0)
+                    TotalDistanceLeft = _race.Route.TotalDistanceLeftAtWaypoint(WaypointIndex) + DistanceToWaypoint;
+                else
+                {
+                    // Total distance left needs to take into account the laps
+                    TotalDistanceLeft = _race.TotalDistanceLeftAtWaypoint(WaypointIndex, Lap) + DistanceToWaypoint;
+                }
+
                 if (_race.Route.Waypoints[WaypointIndex].LocationIsWithinWaypoint(Location))
                 {
                     // Commander has reached the target waypoint
