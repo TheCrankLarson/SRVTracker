@@ -128,6 +128,8 @@
             this.timerPreraceExport = new System.Windows.Forms.Timer(this.components);
             this.numericUpDownLapCount = new System.Windows.Forms.NumericUpDown();
             this.checkBoxLappedRace = new System.Windows.Forms.CheckBox();
+            this.checkBoxExportTrackedTargetLapNumber = new System.Windows.Forms.CheckBox();
+            this.textBoxExportTargetLapNumber = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -935,6 +937,8 @@
             // 
             // groupBoxTrackTarget
             // 
+            this.groupBoxTrackTarget.Controls.Add(this.textBoxExportTargetLapNumber);
+            this.groupBoxTrackTarget.Controls.Add(this.checkBoxExportTrackedTargetLapNumber);
             this.groupBoxTrackTarget.Controls.Add(this.textBoxExportTargetAverageSpeedFile);
             this.groupBoxTrackTarget.Controls.Add(this.checkBoxExportTrackedTargetAverageSpeed);
             this.groupBoxTrackTarget.Controls.Add(this.textBoxExportTargetDistance);
@@ -954,7 +958,7 @@
             this.groupBoxTrackTarget.Controls.Add(this.checkBoxClosestPlayerTarget);
             this.groupBoxTrackTarget.Location = new System.Drawing.Point(965, 6);
             this.groupBoxTrackTarget.Name = "groupBoxTrackTarget";
-            this.groupBoxTrackTarget.Size = new System.Drawing.Size(245, 231);
+            this.groupBoxTrackTarget.Size = new System.Drawing.Size(245, 258);
             this.groupBoxTrackTarget.TabIndex = 9;
             this.groupBoxTrackTarget.TabStop = false;
             this.groupBoxTrackTarget.Text = "Track target";
@@ -1148,9 +1152,9 @@
             this.pictureBox1.BackColor = System.Drawing.Color.White;
             this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pictureBox1.Image = global::SRVTracker.Properties.Resources.SRV_Targetted1;
-            this.pictureBox1.Location = new System.Drawing.Point(1004, 241);
+            this.pictureBox1.Location = new System.Drawing.Point(1031, 275);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(175, 175);
+            this.pictureBox1.Size = new System.Drawing.Size(120, 120);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 11;
             this.pictureBox1.TabStop = false;
@@ -1192,11 +1196,30 @@
             this.checkBoxLappedRace.UseVisualStyleBackColor = true;
             this.checkBoxLappedRace.CheckedChanged += new System.EventHandler(this.checkBoxLappedRace_CheckedChanged);
             // 
+            // checkBoxExportTrackedTargetLapNumber
+            // 
+            this.checkBoxExportTrackedTargetLapNumber.AutoSize = true;
+            this.checkBoxExportTrackedTargetLapNumber.Location = new System.Drawing.Point(6, 226);
+            this.checkBoxExportTrackedTargetLapNumber.Name = "checkBoxExportTrackedTargetLapNumber";
+            this.checkBoxExportTrackedTargetLapNumber.Size = new System.Drawing.Size(114, 17);
+            this.checkBoxExportTrackedTargetLapNumber.TabIndex = 29;
+            this.checkBoxExportTrackedTargetLapNumber.Text = "Export lap number:";
+            this.checkBoxExportTrackedTargetLapNumber.UseVisualStyleBackColor = true;
+            this.checkBoxExportTrackedTargetLapNumber.CheckedChanged += new System.EventHandler(this.checkBoxExportTrackedTargetLapNumber_CheckedChanged);
+            // 
+            // textBoxExportTargetLapNumber
+            // 
+            this.textBoxExportTargetLapNumber.Location = new System.Drawing.Point(134, 224);
+            this.textBoxExportTargetLapNumber.Name = "textBoxExportTargetLapNumber";
+            this.textBoxExportTargetLapNumber.Size = new System.Drawing.Size(105, 20);
+            this.textBoxExportTargetLapNumber.TabIndex = 30;
+            this.textBoxExportTargetLapNumber.Text = "Tracking-Lap.txt";
+            // 
             // FormRaceManager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1226, 429);
+            this.ClientSize = new System.Drawing.Size(1226, 421);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.groupBoxServerInfo);
             this.Controls.Add(this.groupBoxTrackTarget);
@@ -1344,5 +1367,7 @@
         private System.Windows.Forms.CheckBox checkBoxExportTrackedTargetAverageSpeed;
         private System.Windows.Forms.CheckBox checkBoxLappedRace;
         private System.Windows.Forms.NumericUpDown numericUpDownLapCount;
+        private System.Windows.Forms.TextBox textBoxExportTargetLapNumber;
+        private System.Windows.Forms.CheckBox checkBoxExportTrackedTargetLapNumber;
     }
 }

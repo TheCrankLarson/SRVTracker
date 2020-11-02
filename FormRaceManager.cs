@@ -37,6 +37,7 @@ namespace SRVTracker
         private string _lastExportTargetSpeed = "k";
         private string _lastExportTargetHull = "k";
         private string _lastExportTargetDistance = "k";
+        private int _lastExportTargetLapNumber = -1;
         private string _lastHullValues = "k";
         private int _lastExportTargetRacePosition = 0;
         private string _saveFilename = "";
@@ -1068,6 +1069,9 @@ namespace SRVTracker
             textBoxExportTargetAverageSpeedFile.Enabled = checkBoxExportTrackedTargetAverageSpeed.Checked && checkBoxExportTrackedTargetAverageSpeed.Enabled;
             
             numericUpDownLapCount.Enabled = checkBoxLappedRace.Checked;
+
+            checkBoxExportTrackedTargetLapNumber.Enabled = checkBoxLappedRace.Checked && checkBoxExportTrackedTarget.Checked;
+            textBoxExportTargetLapNumber.Enabled = checkBoxLappedRace.Checked && checkBoxExportTrackedTargetLapNumber.Checked && checkBoxExportTrackedTarget.Checked;
         }
 
         private void listViewParticipants_SelectedIndexChanged(object sender, EventArgs e)
@@ -1511,6 +1515,15 @@ namespace SRVTracker
                 }
                 catch { }
             }
+
+            if (File.Exists(textBoxExportTargetLapNumber.Text))
+            {
+                try
+                {
+                    File.WriteAllText(textBoxExportTargetLapNumber.Text, "");
+                }
+                catch { }
+            }
         }
 
         private void ExportTrackingInfo()
@@ -1655,6 +1668,19 @@ namespace SRVTracker
                     catch { }
                 }
             }
+
+            if (checkBoxExportTrackedTargetLapNumber.Checked)
+            {
+                if (!commanderStatus.Lap.Equals(_lastExportTargetLapNumber))
+                {
+                    try
+                    {
+                        File.WriteAllText(textBoxExportTargetLapNumber.Text, commanderStatus.Lap.ToString());
+                        _lastExportTargetLapNumber = commanderStatus.Lap;
+                    }
+                    catch { }
+                }
+            }
         }
 
         private void Resurrect(string commander)
@@ -1739,6 +1765,11 @@ namespace SRVTracker
         private void numericUpDownLapCount_ValueChanged(object sender, EventArgs e)
         {
             _race.Laps = (int)numericUpDownLapCount.Value;
+        }
+
+        private void checkBoxExportTrackedTargetLapNumber_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateButtons();
         }
     }
 }
