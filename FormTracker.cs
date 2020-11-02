@@ -63,11 +63,6 @@ namespace SRVTracker
             _formConfig = new ConfigSaverClass(this, true);
             _formConfig.ExcludedControls.Add(textBoxClientId);
             _formConfig.ExcludedControls.Add(textBoxStatusFile);
-            _formConfig.ExcludedControls.Add(textBoxLatitude);
-            _formConfig.ExcludedControls.Add(textBoxLongitude);
-            _formConfig.ExcludedControls.Add(textBoxAltitude);
-            _formConfig.ExcludedControls.Add(textBoxHeading);
-            _formConfig.ExcludedControls.Add(textBoxPlanetRadius);
             _formConfig.SaveEnabled = true;
             ConfigSaverClass.ApplyConfiguration();
 
@@ -82,7 +77,7 @@ namespace SRVTracker
         private void CalculateWindowSizes()
         {
             // Calculate size with setting hidden
-            int leftBound = groupBoxLocationData.Location.X + groupBoxLocationData.Width;
+            int leftBound = buttonShowConfig.Location.X + buttonShowConfig.Width;
             _configHidden.Width = (this.Width-this.ClientRectangle.Width) + leftBound + ((groupBoxStatusLocation.Left - leftBound) / 2);
             int bottomBound = buttonShowConfig.Location.Y + buttonShowConfig.Height;
             _configHidden.Height = (this.Height - this.ClientRectangle.Height) + bottomBound + 6;
@@ -480,41 +475,7 @@ namespace SRVTracker
                 action();
 
             if (edEvent.HasCoordinates())
-            {
-                action = new Action(() => { textBoxLatitude.Text = edEvent.Latitude.ToString(); });
-                if (textBoxLatitude.InvokeRequired)
-                    textBoxLatitude.Invoke(action);
-                else
-                    action();
-
-                action = new Action(() => { textBoxLongitude.Text = edEvent.Longitude.ToString(); });
-                if (textBoxLongitude.InvokeRequired)
-                    textBoxLongitude.Invoke(action);
-                else
-                    action();
-
-                action = new Action(() => { textBoxAltitude.Text = edEvent.Altitude.ToString(); });
-                if (textBoxAltitude.InvokeRequired)
-                    textBoxAltitude.Invoke(action);
-                else
-                    action();
-
-                action = new Action(() => { textBoxHeading.Text = CurrentHeading.ToString(); });
-                if (textBoxHeading.InvokeRequired)
-                    textBoxHeading.Invoke(action);
-                else
-                    action();
-            }
-
-            if (edEvent.PlanetRadius>0)
-                if (!edEvent.PlanetRadius.ToString().Equals(textBoxPlanetRadius.Text))
-                {
-                    action = new Action(() => { textBoxPlanetRadius.Text = edEvent.PlanetRadius.ToString(); });
-                    if (textBoxPlanetRadius.InvokeRequired)
-                        textBoxPlanetRadius.Invoke(action);
-                    else
-                        action();
-                }
+                trackerHUD1.UpdateLocation(CurrentLocation, CurrentHeading);
         }
 
         public void ResetAverageSpeed()

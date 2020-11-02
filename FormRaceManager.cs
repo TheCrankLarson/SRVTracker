@@ -1717,7 +1717,7 @@ namespace SRVTracker
 
         private void FormRaceMonitor_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (!String.IsNullOrEmpty(_serverRaceGuid))
+            if (buttonStopRace.Enabled && !String.IsNullOrEmpty(_serverRaceGuid))
                 if (MessageBox.Show(this, "Stop race on server?", "Race still running", MessageBoxButtons.YesNo, MessageBoxIcon.Question)==DialogResult.Yes)
                     buttonStopRace_Click(this, null);
         }

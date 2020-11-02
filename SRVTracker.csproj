@@ -375,6 +375,8 @@
     <Content Include="ReleaseNotes.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\Route planner 16x16wb.png" />
+    <None Include="Resources\race flag white 16x16.png" />
     <None Include="Resources\race flag16x16.png" />
     <None Include="Resources\Route planner 16x16bw.png" />
     <None Include="Resources\FolderOpened_16x.png" />
