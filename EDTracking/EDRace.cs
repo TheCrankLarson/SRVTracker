@@ -121,6 +121,7 @@ namespace EDTracking
                 EDRaceStatus raceStatus = new EDRaceStatus(contestant, this);
                 raceStatus.StartTime = Start;
                 raceStatus.LapStartTime = Start;
+                raceStatus.Lap = 1;
                 if (asServer)
                     raceStatus.notableEvents = _notableEvents;
                 Statuses.Add(contestant, raceStatus);

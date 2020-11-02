@@ -378,7 +378,7 @@ namespace EDTracking
                     WaypointIndex++;
                     if (WaypointIndex > _race.LeaderWaypoint)
                         _race.LeaderWaypoint = WaypointIndex;
-                    if ( (WaypointIndex >= _race.Route.Waypoints.Count) || (WaypointIndex==0) )
+                    if ( WaypointIndex >= _race.Route.Waypoints.Count || (WaypointIndex==1 && _race.Laps>0))
                     {
                         if (_race.Laps > 0)
                         {
