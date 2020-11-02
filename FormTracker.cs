@@ -72,6 +72,7 @@ namespace SRVTracker
 
             this.Size = _configHidden;
             this.Text = Application.ProductName + " v" + Application.ProductVersion;
+            trackerHUD1.AutoTrack();  // Tracker HUD listens for events that we generate when location changes
         }
 
         private void CalculateWindowSizes()
@@ -473,9 +474,6 @@ namespace SRVTracker
                 labelLastUpdateTime.Invoke(action);
             else
                 action();
-
-            if (edEvent.HasCoordinates())
-                trackerHUD1.UpdateLocation(CurrentLocation, CurrentHeading);
         }
 
         public void ResetAverageSpeed()
