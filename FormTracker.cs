@@ -78,7 +78,7 @@ namespace SRVTracker
         private void CalculateWindowSizes()
         {
             // Calculate size with setting hidden
-            int leftBound = buttonShowConfig.Location.X + buttonShowConfig.Width;
+            int leftBound = buttonShowConfig.Location.X + buttonShowConfig.Width - 1;
             _configHidden.Width = (this.Width-this.ClientRectangle.Width) + leftBound + ((groupBoxStatusLocation.Left - leftBound) / 2);
             int bottomBound = buttonShowConfig.Location.Y + buttonShowConfig.Height;
             _configHidden.Height = (this.Height - this.ClientRectangle.Height) + bottomBound + 6;

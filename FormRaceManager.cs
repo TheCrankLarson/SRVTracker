@@ -812,7 +812,6 @@ namespace SRVTracker
                 StartClientMonitoredRace();
 
             timerPreraceExport.Stop();
-            checkBoxAutoAddCommanders.Checked = false;
             buttonStartRace.Enabled = false;
             buttonStopRace.Enabled = true;
             buttonRemoveParticipant.Enabled = false;
@@ -909,7 +908,6 @@ namespace SRVTracker
                     }
                 }
                 catch { }
-                CommanderWatcher.UpdateReceived += CommanderWatcher_UpdateReceived; // Enable updates again
             }
 
             buttonStopRace.Enabled = false;

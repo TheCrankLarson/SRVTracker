@@ -72,6 +72,8 @@
             this.checkBoxEliminationOnDestruction = new System.Windows.Forms.CheckBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.checkBoxLappedRace = new System.Windows.Forms.CheckBox();
+            this.numericUpDownLapCount = new System.Windows.Forms.NumericUpDown();
             this.checkBoxStreamInfo = new System.Windows.Forms.CheckBox();
             this.checkBoxAllowPitstops = new System.Windows.Forms.CheckBox();
             this.checkBoxSRVRace = new System.Windows.Forms.CheckBox();
@@ -104,6 +106,8 @@
             this.label1 = new System.Windows.Forms.Label();
             this.textBoxHTMLTemplateFile = new System.Windows.Forms.TextBox();
             this.groupBoxTrackTarget = new System.Windows.Forms.GroupBox();
+            this.textBoxExportTargetLapNumber = new System.Windows.Forms.TextBox();
+            this.checkBoxExportTrackedTargetLapNumber = new System.Windows.Forms.CheckBox();
             this.textBoxExportTargetAverageSpeedFile = new System.Windows.Forms.TextBox();
             this.checkBoxExportTrackedTargetAverageSpeed = new System.Windows.Forms.CheckBox();
             this.textBoxExportTargetDistance = new System.Windows.Forms.TextBox();
@@ -126,10 +130,6 @@
             this.textBoxRaceStatusServerUrl = new System.Windows.Forms.TextBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.timerPreraceExport = new System.Windows.Forms.Timer(this.components);
-            this.numericUpDownLapCount = new System.Windows.Forms.NumericUpDown();
-            this.checkBoxLappedRace = new System.Windows.Forms.CheckBox();
-            this.checkBoxExportTrackedTargetLapNumber = new System.Windows.Forms.CheckBox();
-            this.textBoxExportTargetLapNumber = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -138,6 +138,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLeaderboardMaxLength)).BeginInit();
             this.groupBox5.SuspendLayout();
             this.groupBox6.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLapCount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownStatusMaxLength)).BeginInit();
             this.groupBoxTextExport.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownNotableEventDuration)).BeginInit();
@@ -145,7 +146,6 @@
             this.groupBoxTrackTarget.SuspendLayout();
             this.groupBoxServerInfo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLapCount)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -526,6 +526,8 @@
             this.checkBoxAutoAddCommanders.Size = new System.Drawing.Size(287, 17);
             this.checkBoxAutoAddCommanders.TabIndex = 4;
             this.checkBoxAutoAddCommanders.Text = "Automatically add commanders that are at first waypoint";
+            this.toolTip1.SetToolTip(this.checkBoxAutoAddCommanders, "When selected, any commanders detected at the first\r\nwaypoint will automatically " +
+        "be added as a contestant.\r\nThis only works pre-race.");
             this.checkBoxAutoAddCommanders.UseVisualStyleBackColor = true;
             // 
             // checkBoxExportDistance
@@ -603,6 +605,38 @@
             this.groupBox6.TabIndex = 5;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Race Settings";
+            // 
+            // checkBoxLappedRace
+            // 
+            this.checkBoxLappedRace.AutoSize = true;
+            this.checkBoxLappedRace.Location = new System.Drawing.Point(181, 42);
+            this.checkBoxLappedRace.Name = "checkBoxLappedRace";
+            this.checkBoxLappedRace.Size = new System.Drawing.Size(52, 17);
+            this.checkBoxLappedRace.TabIndex = 6;
+            this.checkBoxLappedRace.Text = "Laps:";
+            this.toolTip1.SetToolTip(this.checkBoxLappedRace, "If enabled, the specified number of laps will be run.\r\nIn this case, the first wa" +
+        "ypoint is also the finish line.");
+            this.checkBoxLappedRace.UseVisualStyleBackColor = true;
+            this.checkBoxLappedRace.CheckedChanged += new System.EventHandler(this.checkBoxLappedRace_CheckedChanged);
+            // 
+            // numericUpDownLapCount
+            // 
+            this.numericUpDownLapCount.Location = new System.Drawing.Point(239, 41);
+            this.numericUpDownLapCount.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDownLapCount.Name = "numericUpDownLapCount";
+            this.numericUpDownLapCount.Size = new System.Drawing.Size(54, 20);
+            this.numericUpDownLapCount.TabIndex = 5;
+            this.toolTip1.SetToolTip(this.numericUpDownLapCount, "The number of laps (must be at least one)");
+            this.numericUpDownLapCount.Value = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            this.numericUpDownLapCount.ValueChanged += new System.EventHandler(this.numericUpDownLapCount_ValueChanged);
             // 
             // checkBoxStreamInfo
             // 
@@ -963,6 +997,25 @@
             this.groupBoxTrackTarget.TabStop = false;
             this.groupBoxTrackTarget.Text = "Track target";
             // 
+            // textBoxExportTargetLapNumber
+            // 
+            this.textBoxExportTargetLapNumber.Location = new System.Drawing.Point(134, 224);
+            this.textBoxExportTargetLapNumber.Name = "textBoxExportTargetLapNumber";
+            this.textBoxExportTargetLapNumber.Size = new System.Drawing.Size(105, 20);
+            this.textBoxExportTargetLapNumber.TabIndex = 30;
+            this.textBoxExportTargetLapNumber.Text = "Tracking-Lap.txt";
+            // 
+            // checkBoxExportTrackedTargetLapNumber
+            // 
+            this.checkBoxExportTrackedTargetLapNumber.AutoSize = true;
+            this.checkBoxExportTrackedTargetLapNumber.Location = new System.Drawing.Point(6, 226);
+            this.checkBoxExportTrackedTargetLapNumber.Name = "checkBoxExportTrackedTargetLapNumber";
+            this.checkBoxExportTrackedTargetLapNumber.Size = new System.Drawing.Size(114, 17);
+            this.checkBoxExportTrackedTargetLapNumber.TabIndex = 29;
+            this.checkBoxExportTrackedTargetLapNumber.Text = "Export lap number:";
+            this.checkBoxExportTrackedTargetLapNumber.UseVisualStyleBackColor = true;
+            this.checkBoxExportTrackedTargetLapNumber.CheckedChanged += new System.EventHandler(this.checkBoxExportTrackedTargetLapNumber_CheckedChanged);
+            // 
             // textBoxExportTargetAverageSpeedFile
             // 
             this.textBoxExportTargetAverageSpeedFile.Location = new System.Drawing.Point(134, 201);
@@ -1164,57 +1217,6 @@
             this.timerPreraceExport.Interval = 2000;
             this.timerPreraceExport.Tick += new System.EventHandler(this.timerPreraceExport_Tick);
             // 
-            // numericUpDownLapCount
-            // 
-            this.numericUpDownLapCount.Location = new System.Drawing.Point(239, 41);
-            this.numericUpDownLapCount.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.numericUpDownLapCount.Name = "numericUpDownLapCount";
-            this.numericUpDownLapCount.Size = new System.Drawing.Size(54, 20);
-            this.numericUpDownLapCount.TabIndex = 5;
-            this.toolTip1.SetToolTip(this.numericUpDownLapCount, "The number of laps (must be at least one)");
-            this.numericUpDownLapCount.Value = new decimal(new int[] {
-            2,
-            0,
-            0,
-            0});
-            this.numericUpDownLapCount.ValueChanged += new System.EventHandler(this.numericUpDownLapCount_ValueChanged);
-            // 
-            // checkBoxLappedRace
-            // 
-            this.checkBoxLappedRace.AutoSize = true;
-            this.checkBoxLappedRace.Location = new System.Drawing.Point(181, 42);
-            this.checkBoxLappedRace.Name = "checkBoxLappedRace";
-            this.checkBoxLappedRace.Size = new System.Drawing.Size(52, 17);
-            this.checkBoxLappedRace.TabIndex = 6;
-            this.checkBoxLappedRace.Text = "Laps:";
-            this.toolTip1.SetToolTip(this.checkBoxLappedRace, "If enabled, the specified number of laps will be run.\r\nIn this case, the first wa" +
-        "ypoint is also the finish line.");
-            this.checkBoxLappedRace.UseVisualStyleBackColor = true;
-            this.checkBoxLappedRace.CheckedChanged += new System.EventHandler(this.checkBoxLappedRace_CheckedChanged);
-            // 
-            // checkBoxExportTrackedTargetLapNumber
-            // 
-            this.checkBoxExportTrackedTargetLapNumber.AutoSize = true;
-            this.checkBoxExportTrackedTargetLapNumber.Location = new System.Drawing.Point(6, 226);
-            this.checkBoxExportTrackedTargetLapNumber.Name = "checkBoxExportTrackedTargetLapNumber";
-            this.checkBoxExportTrackedTargetLapNumber.Size = new System.Drawing.Size(114, 17);
-            this.checkBoxExportTrackedTargetLapNumber.TabIndex = 29;
-            this.checkBoxExportTrackedTargetLapNumber.Text = "Export lap number:";
-            this.checkBoxExportTrackedTargetLapNumber.UseVisualStyleBackColor = true;
-            this.checkBoxExportTrackedTargetLapNumber.CheckedChanged += new System.EventHandler(this.checkBoxExportTrackedTargetLapNumber_CheckedChanged);
-            // 
-            // textBoxExportTargetLapNumber
-            // 
-            this.textBoxExportTargetLapNumber.Location = new System.Drawing.Point(134, 224);
-            this.textBoxExportTargetLapNumber.Name = "textBoxExportTargetLapNumber";
-            this.textBoxExportTargetLapNumber.Size = new System.Drawing.Size(105, 20);
-            this.textBoxExportTargetLapNumber.TabIndex = 30;
-            this.textBoxExportTargetLapNumber.Text = "Tracking-Lap.txt";
-            // 
             // FormRaceManager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1251,6 +1253,7 @@
             this.groupBox5.PerformLayout();
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLapCount)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownStatusMaxLength)).EndInit();
             this.groupBoxTextExport.ResumeLayout(false);
             this.groupBoxTextExport.PerformLayout();
@@ -1262,7 +1265,6 @@
             this.groupBoxServerInfo.ResumeLayout(false);
             this.groupBoxServerInfo.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLapCount)).EndInit();
             this.ResumeLayout(false);
 
         }
