@@ -322,6 +322,11 @@ namespace SRVTracker
 
         private void textBoxMatrixName_TextChanged(object sender, EventArgs e)
         {
+
+        }
+
+        private void textBoxMatrixName_Validating(object sender, CancelEventArgs e)
+        {
             if (listBoxMatrices.SelectedIndex < 0)
                 return;
 

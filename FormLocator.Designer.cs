@@ -52,10 +52,12 @@
             this.buttonAlwaysOnTop = new System.Windows.Forms.Button();
             this.buttonUseCurrentLocation = new System.Windows.Forms.Button();
             this.buttonClose = new System.Windows.Forms.Button();
+            this.pictureBoxMoveForm = new System.Windows.Forms.PictureBox();
             this.locatorHUD1 = new SRVTracker.LocatorHUD();
             this.groupBoxDestination.SuspendLayout();
             this.groupBoxBearing.SuspendLayout();
             this.groupBoxOtherCommanders.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxMoveForm)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBoxDestination
@@ -315,6 +317,19 @@
             this.buttonClose.UseVisualStyleBackColor = true;
             this.buttonClose.Click += new System.EventHandler(this.buttonClose_Click);
             // 
+            // pictureBoxMoveForm
+            // 
+            this.pictureBoxMoveForm.BackgroundImage = global::SRVTracker.Properties.Resources.MoveGlyph_16x;
+            this.pictureBoxMoveForm.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.pictureBoxMoveForm.Cursor = System.Windows.Forms.Cursors.SizeAll;
+            this.pictureBoxMoveForm.Location = new System.Drawing.Point(272, 30);
+            this.pictureBoxMoveForm.Name = "pictureBoxMoveForm";
+            this.pictureBoxMoveForm.Size = new System.Drawing.Size(65, 30);
+            this.pictureBoxMoveForm.TabIndex = 28;
+            this.pictureBoxMoveForm.TabStop = false;
+            this.toolTip1.SetToolTip(this.pictureBoxMoveForm, "Click and drag here to move the form");
+            this.pictureBoxMoveForm.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBoxMoveForm_MouseDown);
+            // 
             // locatorHUD1
             // 
             this.locatorHUD1.BackColor = System.Drawing.Color.Black;
@@ -330,6 +345,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.ClientSize = new System.Drawing.Size(562, 174);
+            this.Controls.Add(this.pictureBoxMoveForm);
             this.Controls.Add(this.buttonClose);
             this.Controls.Add(this.buttonAlwaysOnTop);
             this.Controls.Add(this.buttonShowHideTarget);
@@ -358,6 +374,7 @@
             this.groupBoxBearing.PerformLayout();
             this.groupBoxOtherCommanders.ResumeLayout(false);
             this.groupBoxOtherCommanders.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxMoveForm)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -388,5 +405,6 @@
         private LocatorHUD locatorHUD1;
         private System.Windows.Forms.Button buttonAlwaysOnTop;
         private System.Windows.Forms.Button buttonClose;
+        private System.Windows.Forms.PictureBox pictureBoxMoveForm;
     }
 }

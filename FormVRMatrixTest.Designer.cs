@@ -53,10 +53,10 @@
             this.label2 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.textBoxMatrixName = new System.Windows.Forms.TextBox();
+            this.listBoxMatrices = new System.Windows.Forms.ListBox();
             this.buttonSave = new System.Windows.Forms.Button();
             this.buttonDelete = new System.Windows.Forms.Button();
             this.buttonAdd = new System.Windows.Forms.Button();
-            this.listBoxMatrices = new System.Windows.Forms.ListBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownm11)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownm10)).BeginInit();
@@ -515,6 +515,16 @@
             this.textBoxMatrixName.Size = new System.Drawing.Size(104, 20);
             this.textBoxMatrixName.TabIndex = 4;
             this.textBoxMatrixName.TextChanged += new System.EventHandler(this.textBoxMatrixName_TextChanged);
+            this.textBoxMatrixName.Validating += new System.ComponentModel.CancelEventHandler(this.textBoxMatrixName_Validating);
+            // 
+            // listBoxMatrices
+            // 
+            this.listBoxMatrices.FormattingEnabled = true;
+            this.listBoxMatrices.Location = new System.Drawing.Point(6, 19);
+            this.listBoxMatrices.Name = "listBoxMatrices";
+            this.listBoxMatrices.Size = new System.Drawing.Size(188, 108);
+            this.listBoxMatrices.TabIndex = 0;
+            this.listBoxMatrices.SelectedIndexChanged += new System.EventHandler(this.listBoxMatrices_SelectedIndexChanged);
             // 
             // buttonSave
             // 
@@ -545,15 +555,6 @@
             this.buttonAdd.TabIndex = 1;
             this.buttonAdd.UseVisualStyleBackColor = true;
             this.buttonAdd.Click += new System.EventHandler(this.buttonAdd_Click);
-            // 
-            // listBoxMatrices
-            // 
-            this.listBoxMatrices.FormattingEnabled = true;
-            this.listBoxMatrices.Location = new System.Drawing.Point(6, 19);
-            this.listBoxMatrices.Name = "listBoxMatrices";
-            this.listBoxMatrices.Size = new System.Drawing.Size(188, 108);
-            this.listBoxMatrices.TabIndex = 0;
-            this.listBoxMatrices.SelectedIndexChanged += new System.EventHandler(this.listBoxMatrices_SelectedIndexChanged);
             // 
             // FormVRMatrixTest
             // 

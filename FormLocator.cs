@@ -35,6 +35,15 @@ namespace SRVTracker
         private static decimal _closestCommanderDistance = decimal.MaxValue;
         private static FormLocator _activeLocator = null;
 
+        public const int WM_NCLBUTTONDOWN = 0xA1;
+        public const int HT_CAPTION = 0x2;
+
+        [DllImportAttribute("user32.dll")]
+        public static extern int SendMessage(IntPtr hWnd,
+                         int Msg, int wParam, int lParam);
+        [DllImportAttribute("user32.dll")]
+        public static extern bool ReleaseCapture();
+
         public FormLocator()
         {
             InitializeComponent();
@@ -59,23 +68,6 @@ namespace SRVTracker
             _miniView.Width = locatorHUD1.Width;
             _normalView.Width = groupBoxOtherCommanders.Location.X + groupBoxOtherCommanders.Width + (this.Width - this.ClientRectangle.Width) + 6;
             _normalView.Height = groupBoxOtherCommanders.Location.Y + groupBoxOtherCommanders.Height + (this.Height - this.ClientRectangle.Height) + 6;
-        }
-
-        protected override void WndProc(ref Message m)
-        {
-            switch (m.Msg)
-            {
-                case 0x84: // WM_NCHITTEST
-                    base.WndProc(ref m);
-                    if ((int)m.Result == 0x1)
-                    {
-                        // This is a hit in the client area - but we return that it is a hit on the window bar
-                        m.Result = (IntPtr)0x2;
-                    }
-                    return;
-            }
-
-            base.WndProc(ref m);
         }
 
         private void FormTracker_CommanderLocationChanged(object sender, EventArgs e)
@@ -714,6 +706,15 @@ namespace SRVTracker
         private void buttonClose_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void pictureBoxMoveForm_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                ReleaseCapture();
+                SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
+            }
         }
     }
 }

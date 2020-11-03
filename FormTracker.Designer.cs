@@ -31,6 +31,7 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormTracker));
             this.groupBoxStatusLocation = new System.Windows.Forms.GroupBox();
+            this.buttonBrowseStatusFile = new System.Windows.Forms.Button();
             this.textBoxStatusFile = new System.Windows.Forms.TextBox();
             this.statusFileWatcher = new System.IO.FileSystemWatcher();
             this.listBoxLog = new System.Windows.Forms.ListBox();
@@ -56,14 +57,14 @@
             this.checkBoxAutoUpdate = new System.Windows.Forms.CheckBox();
             this.checkBoxIncludeBetaUpdates = new System.Windows.Forms.CheckBox();
             this.checkBoxUseDirectionOfTravelAsHeading = new System.Windows.Forms.CheckBox();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.buttonShowConfig = new System.Windows.Forms.Button();
             this.buttonRaceTracker = new System.Windows.Forms.Button();
             this.buttonExit = new System.Windows.Forms.Button();
             this.buttonRoutePlanner = new System.Windows.Forms.Button();
             this.buttonLocator = new System.Windows.Forms.Button();
-            this.buttonBrowseStatusFile = new System.Windows.Forms.Button();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.trackerHUD1 = new SRVTracker.TrackerHUD();
             this.groupBoxStatusLocation.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.statusFileWatcher)).BeginInit();
@@ -72,6 +73,7 @@
             this.groupBox7.SuspendLayout();
             this.groupBox8.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBoxStatusLocation
@@ -85,6 +87,16 @@
             this.groupBoxStatusLocation.TabIndex = 0;
             this.groupBoxStatusLocation.TabStop = false;
             this.groupBoxStatusLocation.Text = "Status.json location";
+            // 
+            // buttonBrowseStatusFile
+            // 
+            this.buttonBrowseStatusFile.Image = global::SRVTracker.Properties.Resources.FolderOpened_16x;
+            this.buttonBrowseStatusFile.Location = new System.Drawing.Point(270, 17);
+            this.buttonBrowseStatusFile.Name = "buttonBrowseStatusFile";
+            this.buttonBrowseStatusFile.Size = new System.Drawing.Size(27, 23);
+            this.buttonBrowseStatusFile.TabIndex = 1;
+            this.buttonBrowseStatusFile.UseVisualStyleBackColor = true;
+            this.buttonBrowseStatusFile.Click += new System.EventHandler(this.buttonBrowseStatusFile_Click);
             // 
             // textBoxStatusFile
             // 
@@ -130,7 +142,7 @@
             // 
             this.labelLastUpdateTime.AutoSize = true;
             this.labelLastUpdateTime.ForeColor = System.Drawing.Color.White;
-            this.labelLastUpdateTime.Location = new System.Drawing.Point(166, 127);
+            this.labelLastUpdateTime.Location = new System.Drawing.Point(166, 141);
             this.labelLastUpdateTime.Name = "labelLastUpdateTime";
             this.labelLastUpdateTime.Size = new System.Drawing.Size(49, 13);
             this.labelLastUpdateTime.TabIndex = 7;
@@ -361,11 +373,10 @@
             // 
             this.checkBoxAutoUpdate.AutoSize = true;
             this.checkBoxAutoUpdate.ForeColor = System.Drawing.Color.White;
-            this.checkBoxAutoUpdate.Location = new System.Drawing.Point(131, 77);
+            this.checkBoxAutoUpdate.Location = new System.Drawing.Point(9, 20);
             this.checkBoxAutoUpdate.Name = "checkBoxAutoUpdate";
-            this.checkBoxAutoUpdate.Size = new System.Drawing.Size(84, 17);
+            this.checkBoxAutoUpdate.Size = new System.Drawing.Size(15, 14);
             this.checkBoxAutoUpdate.TabIndex = 21;
-            this.checkBoxAutoUpdate.Text = "Auto-update";
             this.toolTip1.SetToolTip(this.checkBoxAutoUpdate, "If enabled, will automatically check for update on start-up.");
             this.checkBoxAutoUpdate.UseVisualStyleBackColor = true;
             this.checkBoxAutoUpdate.CheckedChanged += new System.EventHandler(this.checkBoxAutoUpdate_CheckedChanged);
@@ -374,7 +385,7 @@
             // 
             this.checkBoxIncludeBetaUpdates.AutoSize = true;
             this.checkBoxIncludeBetaUpdates.ForeColor = System.Drawing.Color.White;
-            this.checkBoxIncludeBetaUpdates.Location = new System.Drawing.Point(6, 19);
+            this.checkBoxIncludeBetaUpdates.Location = new System.Drawing.Point(37, 19);
             this.checkBoxIncludeBetaUpdates.Name = "checkBoxIncludeBetaUpdates";
             this.checkBoxIncludeBetaUpdates.Size = new System.Drawing.Size(127, 17);
             this.checkBoxIncludeBetaUpdates.TabIndex = 22;
@@ -390,7 +401,7 @@
             this.checkBoxUseDirectionOfTravelAsHeading.Checked = true;
             this.checkBoxUseDirectionOfTravelAsHeading.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxUseDirectionOfTravelAsHeading.ForeColor = System.Drawing.Color.White;
-            this.checkBoxUseDirectionOfTravelAsHeading.Location = new System.Drawing.Point(264, 160);
+            this.checkBoxUseDirectionOfTravelAsHeading.Location = new System.Drawing.Point(5, 100);
             this.checkBoxUseDirectionOfTravelAsHeading.Name = "checkBoxUseDirectionOfTravelAsHeading";
             this.checkBoxUseDirectionOfTravelAsHeading.Size = new System.Drawing.Size(184, 17);
             this.checkBoxUseDirectionOfTravelAsHeading.TabIndex = 24;
@@ -398,17 +409,6 @@
             this.toolTip1.SetToolTip(this.checkBoxUseDirectionOfTravelAsHeading, "When selected, direction of travel will be calculated and\r\nused as heading instea" +
         "d of direction vehicle is facing\r\n(which is what E: D gives us)");
             this.checkBoxUseDirectionOfTravelAsHeading.UseVisualStyleBackColor = true;
-            // 
-            // groupBox2
-            // 
-            this.groupBox2.Controls.Add(this.checkBoxIncludeBetaUpdates);
-            this.groupBox2.ForeColor = System.Drawing.Color.White;
-            this.groupBox2.Location = new System.Drawing.Point(525, 110);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(170, 44);
-            this.groupBox2.TabIndex = 23;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Auto-update";
             // 
             // buttonShowConfig
             // 
@@ -480,25 +480,39 @@
             this.buttonLocator.UseVisualStyleBackColor = false;
             this.buttonLocator.Click += new System.EventHandler(this.buttonLocator_Click);
             // 
-            // buttonBrowseStatusFile
+            // groupBox2
             // 
-            this.buttonBrowseStatusFile.Image = global::SRVTracker.Properties.Resources.FolderOpened_16x;
-            this.buttonBrowseStatusFile.Location = new System.Drawing.Point(270, 17);
-            this.buttonBrowseStatusFile.Name = "buttonBrowseStatusFile";
-            this.buttonBrowseStatusFile.Size = new System.Drawing.Size(27, 23);
-            this.buttonBrowseStatusFile.TabIndex = 1;
-            this.buttonBrowseStatusFile.UseVisualStyleBackColor = true;
-            this.buttonBrowseStatusFile.Click += new System.EventHandler(this.buttonBrowseStatusFile_Click);
+            this.groupBox2.Controls.Add(this.checkBoxIncludeBetaUpdates);
+            this.groupBox2.Controls.Add(this.checkBoxAutoUpdate);
+            this.groupBox2.ForeColor = System.Drawing.Color.White;
+            this.groupBox2.Location = new System.Drawing.Point(525, 110);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(170, 44);
+            this.groupBox2.TabIndex = 23;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Auto-update";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(42, 127);
+            this.label1.Location = new System.Drawing.Point(42, 141);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(118, 13);
             this.label1.TabIndex = 25;
             this.label1.Text = "Last update processed:";
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Cursor = System.Windows.Forms.Cursors.SizeAll;
+            this.pictureBox1.Image = global::SRVTracker.Properties.Resources.MoveGlyph_16x;
+            this.pictureBox1.Location = new System.Drawing.Point(160, 76);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(16, 16);
+            this.pictureBox1.TabIndex = 27;
+            this.pictureBox1.TabStop = false;
+            this.toolTip1.SetToolTip(this.pictureBox1, "Click and drag here to move the form");
+            this.pictureBox1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseDown);
             // 
             // trackerHUD1
             // 
@@ -514,10 +528,10 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.ClientSize = new System.Drawing.Size(925, 481);
+            this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.checkBoxUseDirectionOfTravelAsHeading);
             this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.checkBoxAutoUpdate);
             this.Controls.Add(this.trackerHUD1);
             this.Controls.Add(this.checkBoxTrack);
             this.Controls.Add(this.checkBoxUpload);
@@ -536,7 +550,7 @@
             this.Controls.Add(this.buttonTest);
             this.Controls.Add(this.listBoxLog);
             this.Controls.Add(this.groupBoxStatusLocation);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "FormTracker";
@@ -554,6 +568,7 @@
             this.groupBox8.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -596,6 +611,7 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.CheckBox checkBoxUseDirectionOfTravelAsHeading;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }
 

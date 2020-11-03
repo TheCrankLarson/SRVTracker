@@ -9,12 +9,14 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Net.Sockets;
 using System.IO;
+using System.Runtime.InteropServices;
 using EDTracking;
 using OpenVR = Valve.VR.OpenVR;
 using Valve.VR;
 
 namespace SRVTracker
 {
+
     public partial class FormTracker : Form
     {
         UdpClient _udpClient = null;
@@ -47,6 +49,15 @@ namespace SRVTracker
         private static int _numberOfSpeedReadings = 0;
         private static decimal _totalOfSpeedReadings = 0;
         const double STATUS_JSON_CHECK_INTERVAL = 700;
+
+        public const int WM_NCLBUTTONDOWN = 0xA1;
+        public const int HT_CAPTION = 0x2;
+
+        [DllImportAttribute("user32.dll")]
+        public static extern int SendMessage(IntPtr hWnd,
+                         int Msg, int wParam, int lParam);
+        [DllImportAttribute("user32.dll")]
+        public static extern bool ReleaseCapture();
 
         public FormTracker()
         {            
@@ -302,6 +313,10 @@ namespace SRVTracker
             //    return;
             _formFlagsWatcher = new FormFlagsWatcher();
             _formFlagsWatcher.Show();
+            //FormVRMatrixTest formVRMatrixTest = new FormVRMatrixTest(0);
+            //formVRMatrixTest.SetOverlayWidth(0.8f);
+            //formVRMatrixTest.Show();
+            //formVRMatrixTest.SetMatrix(ref _vrMatrix);
         }
 
         public static bool InitVR()
@@ -797,6 +812,15 @@ namespace SRVTracker
         private void radioButtonUseTimer_CheckedChanged(object sender, EventArgs e)
         {
             // We only trap events in the other radio button (this is a pair), as they will always both change at the same time
+        }
+
+        private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                ReleaseCapture();
+                SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
+            }
         }
     }
 }
