@@ -32,8 +32,8 @@ namespace SRVTracker
             if (labelLatitude.Text != location.Latitude.ToString())
                 labelLatitude.Text = location.Latitude.ToString();
 
-            if (labelAltitude.Text != location.Altitude.ToString())
-                labelAltitude.Text = location.Altitude.ToString();
+            if (labelAltitude.Text != location.Altitude.ToString("F1"))
+                labelAltitude.Text = location.Altitude.ToString("F1");
 
             if (heading > -1)
             {

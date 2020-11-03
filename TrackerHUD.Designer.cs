@@ -42,16 +42,16 @@
             this.labelTrackerLabels.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
             this.labelTrackerLabels.Location = new System.Drawing.Point(9, 6);
             this.labelTrackerLabels.Name = "labelTrackerLabels";
-            this.labelTrackerLabels.Size = new System.Drawing.Size(242, 13);
+            this.labelTrackerLabels.Size = new System.Drawing.Size(236, 13);
             this.labelTrackerLabels.TabIndex = 30;
-            this.labelTrackerLabels.Text = "Latitude           Longitude      Altitude        Heading";
+            this.labelTrackerLabels.Text = "Latitude           Longitude      Altitude      Heading";
             // 
             // labelHeading
             // 
             this.labelHeading.AutoSize = true;
             this.labelHeading.BackColor = System.Drawing.Color.Black;
             this.labelHeading.ForeColor = System.Drawing.Color.Yellow;
-            this.labelHeading.Location = new System.Drawing.Point(203, 21);
+            this.labelHeading.Location = new System.Drawing.Point(198, 21);
             this.labelHeading.Name = "labelHeading";
             this.labelHeading.Size = new System.Drawing.Size(25, 13);
             this.labelHeading.TabIndex = 29;
@@ -73,7 +73,7 @@
             this.labelLatitude.AutoSize = true;
             this.labelLatitude.BackColor = System.Drawing.Color.Black;
             this.labelLatitude.ForeColor = System.Drawing.Color.Yellow;
-            this.labelLatitude.Location = new System.Drawing.Point(9, 21);
+            this.labelLatitude.Location = new System.Drawing.Point(8, 21);
             this.labelLatitude.Name = "labelLatitude";
             this.labelLatitude.Size = new System.Drawing.Size(58, 13);
             this.labelLatitude.TabIndex = 27;
@@ -84,7 +84,7 @@
             this.labelLongitude.AutoSize = true;
             this.labelLongitude.BackColor = System.Drawing.Color.Black;
             this.labelLongitude.ForeColor = System.Drawing.Color.Yellow;
-            this.labelLongitude.Location = new System.Drawing.Point(80, 21);
+            this.labelLongitude.Location = new System.Drawing.Point(79, 21);
             this.labelLongitude.Name = "labelLongitude";
             this.labelLongitude.Size = new System.Drawing.Size(58, 13);
             this.labelLongitude.TabIndex = 26;

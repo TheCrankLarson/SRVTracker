@@ -63,10 +63,10 @@
             this.buttonRoutePlanner = new System.Windows.Forms.Button();
             this.buttonLocator = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.buttonToggleMiniView = new System.Windows.Forms.Button();
             this.buttonAlwaysOnTop = new System.Windows.Forms.Button();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.groupBoxSRVTracker = new System.Windows.Forms.GroupBox();
             this.trackerHUD1 = new SRVTracker.TrackerHUD();
             this.groupBoxStatusLocation.SuspendLayout();
@@ -488,35 +488,13 @@
             // 
             this.pictureBox1.Cursor = System.Windows.Forms.Cursors.SizeAll;
             this.pictureBox1.Image = global::SRVTracker.Properties.Resources.MoveGlyph_16x;
-            this.pictureBox1.Location = new System.Drawing.Point(160, 76);
+            this.pictureBox1.Location = new System.Drawing.Point(161, 74);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(16, 16);
             this.pictureBox1.TabIndex = 27;
             this.pictureBox1.TabStop = false;
             this.toolTip1.SetToolTip(this.pictureBox1, "Click and drag here to move the form");
             this.pictureBox1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseDown);
-            // 
-            // groupBox2
-            // 
-            this.groupBox2.Controls.Add(this.checkBoxIncludeBetaUpdates);
-            this.groupBox2.Controls.Add(this.checkBoxAutoUpdate);
-            this.groupBox2.ForeColor = System.Drawing.Color.White;
-            this.groupBox2.Location = new System.Drawing.Point(525, 110);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(170, 44);
-            this.groupBox2.TabIndex = 23;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Auto-update";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(40, 24);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(118, 13);
-            this.label1.TabIndex = 25;
-            this.label1.Text = "Last update processed:";
             // 
             // buttonToggleMiniView
             // 
@@ -542,6 +520,28 @@
             this.toolTip1.SetToolTip(this.buttonAlwaysOnTop, "Pin window topmost");
             this.buttonAlwaysOnTop.UseVisualStyleBackColor = true;
             this.buttonAlwaysOnTop.Click += new System.EventHandler(this.buttonAlwaysOnTop_Click);
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.checkBoxIncludeBetaUpdates);
+            this.groupBox2.Controls.Add(this.checkBoxAutoUpdate);
+            this.groupBox2.ForeColor = System.Drawing.Color.White;
+            this.groupBox2.Location = new System.Drawing.Point(525, 110);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(170, 44);
+            this.groupBox2.TabIndex = 23;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Auto-update";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.ForeColor = System.Drawing.Color.White;
+            this.label1.Location = new System.Drawing.Point(40, 24);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(118, 13);
+            this.label1.TabIndex = 25;
+            this.label1.Text = "Last update processed:";
             // 
             // groupBoxSRVTracker
             // 
