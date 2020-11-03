@@ -67,8 +67,8 @@
             this.label1 = new System.Windows.Forms.Label();
             this.buttonToggleMiniView = new System.Windows.Forms.Button();
             this.buttonAlwaysOnTop = new System.Windows.Forms.Button();
-            this.trackerHUD1 = new SRVTracker.TrackerHUD();
             this.groupBoxSRVTracker = new System.Windows.Forms.GroupBox();
+            this.trackerHUD1 = new SRVTracker.TrackerHUD();
             this.groupBoxStatusLocation.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.statusFileWatcher)).BeginInit();
             this.groupBox5.SuspendLayout();
@@ -520,10 +520,10 @@
             // 
             // buttonToggleMiniView
             // 
-            this.buttonToggleMiniView.BackColor = System.Drawing.Color.Yellow;
+            this.buttonToggleMiniView.BackColor = System.Drawing.Color.DimGray;
             this.buttonToggleMiniView.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonToggleMiniView.ForeColor = System.Drawing.Color.Black;
-            this.buttonToggleMiniView.Location = new System.Drawing.Point(247, 27);
+            this.buttonToggleMiniView.Location = new System.Drawing.Point(247, 0);
             this.buttonToggleMiniView.Name = "buttonToggleMiniView";
             this.buttonToggleMiniView.Size = new System.Drawing.Size(13, 13);
             this.buttonToggleMiniView.TabIndex = 28;
@@ -543,14 +543,6 @@
             this.buttonAlwaysOnTop.UseVisualStyleBackColor = true;
             this.buttonAlwaysOnTop.Click += new System.EventHandler(this.buttonAlwaysOnTop_Click);
             // 
-            // trackerHUD1
-            // 
-            this.trackerHUD1.BackColor = System.Drawing.Color.Black;
-            this.trackerHUD1.Location = new System.Drawing.Point(0, 0);
-            this.trackerHUD1.Name = "trackerHUD1";
-            this.trackerHUD1.Size = new System.Drawing.Size(260, 40);
-            this.trackerHUD1.TabIndex = 20;
-            // 
             // groupBoxSRVTracker
             // 
             this.groupBoxSRVTracker.Controls.Add(this.label1);
@@ -562,6 +554,14 @@
             this.groupBoxSRVTracker.TabIndex = 30;
             this.groupBoxSRVTracker.TabStop = false;
             this.groupBoxSRVTracker.Text = "SRVTracker";
+            // 
+            // trackerHUD1
+            // 
+            this.trackerHUD1.BackColor = System.Drawing.Color.Black;
+            this.trackerHUD1.Location = new System.Drawing.Point(0, 0);
+            this.trackerHUD1.Name = "trackerHUD1";
+            this.trackerHUD1.Size = new System.Drawing.Size(260, 40);
+            this.trackerHUD1.TabIndex = 20;
             // 
             // FormTracker
             // 

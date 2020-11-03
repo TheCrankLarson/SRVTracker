@@ -173,7 +173,7 @@
             // 
             // buttonShowHideTarget
             // 
-            this.buttonShowHideTarget.BackColor = System.Drawing.Color.Yellow;
+            this.buttonShowHideTarget.BackColor = System.Drawing.Color.DimGray;
             this.buttonShowHideTarget.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonShowHideTarget.ForeColor = System.Drawing.Color.Black;
             this.buttonShowHideTarget.Location = new System.Drawing.Point(247, 0);
@@ -203,7 +203,7 @@
             this.groupBoxOtherCommanders.Controls.Add(this.buttonTrackCommander);
             this.groupBoxOtherCommanders.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.groupBoxOtherCommanders.ForeColor = System.Drawing.Color.White;
-            this.groupBoxOtherCommanders.Location = new System.Drawing.Point(349, 5);
+            this.groupBoxOtherCommanders.Location = new System.Drawing.Point(349, 0);
             this.groupBoxOtherCommanders.Name = "groupBoxOtherCommanders";
             this.groupBoxOtherCommanders.Size = new System.Drawing.Size(200, 162);
             this.groupBoxOtherCommanders.TabIndex = 9;
