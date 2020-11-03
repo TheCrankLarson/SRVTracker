@@ -62,9 +62,11 @@
             this.buttonExit = new System.Windows.Forms.Button();
             this.buttonRoutePlanner = new System.Windows.Forms.Button();
             this.buttonLocator = new System.Windows.Forms.Button();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.buttonToggleMiniView = new System.Windows.Forms.Button();
+            this.buttonAlwaysOnTop = new System.Windows.Forms.Button();
             this.trackerHUD1 = new SRVTracker.TrackerHUD();
             this.groupBoxStatusLocation.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.statusFileWatcher)).BeginInit();
@@ -72,8 +74,8 @@
             this.groupBox6.SuspendLayout();
             this.groupBox7.SuspendLayout();
             this.groupBox8.SuspendLayout();
-            this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBoxStatusLocation
@@ -130,9 +132,9 @@
             this.buttonTest.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.buttonTest.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonTest.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.buttonTest.Location = new System.Drawing.Point(180, 44);
+            this.buttonTest.Location = new System.Drawing.Point(6, 154);
             this.buttonTest.Name = "buttonTest";
-            this.buttonTest.Size = new System.Drawing.Size(36, 23);
+            this.buttonTest.Size = new System.Drawing.Size(52, 23);
             this.buttonTest.TabIndex = 5;
             this.buttonTest.Text = "Test";
             this.buttonTest.UseVisualStyleBackColor = false;
@@ -416,7 +418,7 @@
             this.buttonShowConfig.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonShowConfig.ForeColor = System.Drawing.SystemColors.ControlText;
             this.buttonShowConfig.Image = global::SRVTracker.Properties.Resources.Settings_16x;
-            this.buttonShowConfig.Location = new System.Drawing.Point(219, 73);
+            this.buttonShowConfig.Location = new System.Drawing.Point(182, 44);
             this.buttonShowConfig.Name = "buttonShowConfig";
             this.buttonShowConfig.Size = new System.Drawing.Size(38, 23);
             this.buttonShowConfig.TabIndex = 12;
@@ -444,7 +446,7 @@
             this.buttonExit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonExit.ForeColor = System.Drawing.SystemColors.ControlText;
             this.buttonExit.Image = global::SRVTracker.Properties.Resources.Close_red_16x;
-            this.buttonExit.Location = new System.Drawing.Point(219, 44);
+            this.buttonExit.Location = new System.Drawing.Point(222, 71);
             this.buttonExit.Name = "buttonExit";
             this.buttonExit.Size = new System.Drawing.Size(38, 23);
             this.buttonExit.TabIndex = 11;
@@ -480,6 +482,18 @@
             this.buttonLocator.UseVisualStyleBackColor = false;
             this.buttonLocator.Click += new System.EventHandler(this.buttonLocator_Click);
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Cursor = System.Windows.Forms.Cursors.SizeAll;
+            this.pictureBox1.Image = global::SRVTracker.Properties.Resources.MoveGlyph_16x;
+            this.pictureBox1.Location = new System.Drawing.Point(160, 76);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(16, 16);
+            this.pictureBox1.TabIndex = 27;
+            this.pictureBox1.TabStop = false;
+            this.toolTip1.SetToolTip(this.pictureBox1, "Click and drag here to move the form");
+            this.pictureBox1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseDown);
+            // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.checkBoxIncludeBetaUpdates);
@@ -502,17 +516,30 @@
             this.label1.TabIndex = 25;
             this.label1.Text = "Last update processed:";
             // 
-            // pictureBox1
+            // buttonToggleMiniView
             // 
-            this.pictureBox1.Cursor = System.Windows.Forms.Cursors.SizeAll;
-            this.pictureBox1.Image = global::SRVTracker.Properties.Resources.MoveGlyph_16x;
-            this.pictureBox1.Location = new System.Drawing.Point(160, 76);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(16, 16);
-            this.pictureBox1.TabIndex = 27;
-            this.pictureBox1.TabStop = false;
-            this.toolTip1.SetToolTip(this.pictureBox1, "Click and drag here to move the form");
-            this.pictureBox1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseDown);
+            this.buttonToggleMiniView.BackColor = System.Drawing.Color.Yellow;
+            this.buttonToggleMiniView.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonToggleMiniView.ForeColor = System.Drawing.Color.Black;
+            this.buttonToggleMiniView.Location = new System.Drawing.Point(247, 27);
+            this.buttonToggleMiniView.Name = "buttonToggleMiniView";
+            this.buttonToggleMiniView.Size = new System.Drawing.Size(13, 13);
+            this.buttonToggleMiniView.TabIndex = 28;
+            this.toolTip1.SetToolTip(this.buttonToggleMiniView, "Shrink/expand the window");
+            this.buttonToggleMiniView.UseVisualStyleBackColor = false;
+            this.buttonToggleMiniView.Click += new System.EventHandler(this.buttonToggleMiniView_Click);
+            // 
+            // buttonAlwaysOnTop
+            // 
+            this.buttonAlwaysOnTop.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonAlwaysOnTop.Image = global::SRVTracker.Properties.Resources.PinnedItem_16x;
+            this.buttonAlwaysOnTop.Location = new System.Drawing.Point(232, 44);
+            this.buttonAlwaysOnTop.Name = "buttonAlwaysOnTop";
+            this.buttonAlwaysOnTop.Size = new System.Drawing.Size(28, 23);
+            this.buttonAlwaysOnTop.TabIndex = 29;
+            this.toolTip1.SetToolTip(this.buttonAlwaysOnTop, "Pin window topmost");
+            this.buttonAlwaysOnTop.UseVisualStyleBackColor = true;
+            this.buttonAlwaysOnTop.Click += new System.EventHandler(this.buttonAlwaysOnTop_Click);
             // 
             // trackerHUD1
             // 
@@ -528,6 +555,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.ClientSize = new System.Drawing.Size(925, 481);
+            this.Controls.Add(this.buttonAlwaysOnTop);
+            this.Controls.Add(this.buttonToggleMiniView);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.checkBoxUseDirectionOfTravelAsHeading);
@@ -566,9 +595,9 @@
             this.groupBox7.PerformLayout();
             this.groupBox8.ResumeLayout(false);
             this.groupBox8.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -612,6 +641,8 @@
         private System.Windows.Forms.CheckBox checkBoxUseDirectionOfTravelAsHeading;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Button buttonToggleMiniView;
+        private System.Windows.Forms.Button buttonAlwaysOnTop;
     }
 }
 

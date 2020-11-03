@@ -89,10 +89,10 @@ namespace SRVTracker
         private void CalculateWindowSizes()
         {
             // Calculate size with setting hidden
-            int leftBound = buttonShowConfig.Location.X + buttonShowConfig.Width - 1;
+            int leftBound = buttonExit.Location.X + buttonExit.Width - 1;
             _configHidden.Width = (this.Width-this.ClientRectangle.Width) + leftBound + ((groupBoxStatusLocation.Left - leftBound) / 2);
-            int bottomBound = buttonShowConfig.Location.Y + buttonShowConfig.Height;
-            _configHidden.Height = (this.Height - this.ClientRectangle.Height) + bottomBound + 6;
+            int bottomBound = buttonExit.Location.Y + buttonExit.Height;
+            _configHidden.Height = (this.Height - this.ClientRectangle.Height) + bottomBound + 2;
 
             // Calculate size with config displayed
             _configShowing.Width = listBoxLog.Location.X + listBoxLog.Width + (this.Width - this.ClientRectangle.Width) + 6;
@@ -820,6 +820,36 @@ namespace SRVTracker
             {
                 ReleaseCapture();
                 SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
+            }
+        }
+
+        private void buttonAlwaysOnTop_Click(object sender, EventArgs e)
+        {
+            if (this.TopMost)
+            {
+                this.TopMost = false;
+                buttonAlwaysOnTop.Image = Properties.Resources.PinnedItem_16x;
+            }
+            else
+            {
+                this.TopMost = true;
+                buttonAlwaysOnTop.Image = Properties.Resources.Pushpin_16x;
+            }
+        }
+
+        private void buttonToggleMiniView_Click(object sender, EventArgs e)
+        {
+            if (this.Height > trackerHUD1.Height)
+            {
+                // We are expanded, so shrink
+                this.Height = trackerHUD1.Height;
+                this.Width = trackerHUD1.Width;
+            }
+            else
+            {
+                //this.FormBorderStyle = FormBorderStyle.FixedToolWindow;
+                this.Height = _configHidden.Height;
+                this.Width = _configHidden.Width;
             }
         }
     }
