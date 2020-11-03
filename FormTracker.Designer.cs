@@ -68,6 +68,7 @@
             this.buttonToggleMiniView = new System.Windows.Forms.Button();
             this.buttonAlwaysOnTop = new System.Windows.Forms.Button();
             this.trackerHUD1 = new SRVTracker.TrackerHUD();
+            this.groupBoxSRVTracker = new System.Windows.Forms.GroupBox();
             this.groupBoxStatusLocation.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.statusFileWatcher)).BeginInit();
             this.groupBox5.SuspendLayout();
@@ -76,6 +77,7 @@
             this.groupBox8.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.groupBox2.SuspendLayout();
+            this.groupBoxSRVTracker.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBoxStatusLocation
@@ -132,7 +134,7 @@
             this.buttonTest.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.buttonTest.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonTest.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.buttonTest.Location = new System.Drawing.Point(6, 154);
+            this.buttonTest.Location = new System.Drawing.Point(206, 100);
             this.buttonTest.Name = "buttonTest";
             this.buttonTest.Size = new System.Drawing.Size(52, 23);
             this.buttonTest.TabIndex = 5;
@@ -144,7 +146,7 @@
             // 
             this.labelLastUpdateTime.AutoSize = true;
             this.labelLastUpdateTime.ForeColor = System.Drawing.Color.White;
-            this.labelLastUpdateTime.Location = new System.Drawing.Point(166, 141);
+            this.labelLastUpdateTime.Location = new System.Drawing.Point(164, 24);
             this.labelLastUpdateTime.Name = "labelLastUpdateTime";
             this.labelLastUpdateTime.Size = new System.Drawing.Size(49, 13);
             this.labelLastUpdateTime.TabIndex = 7;
@@ -446,7 +448,7 @@
             this.buttonExit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonExit.ForeColor = System.Drawing.SystemColors.ControlText;
             this.buttonExit.Image = global::SRVTracker.Properties.Resources.Close_red_16x;
-            this.buttonExit.Location = new System.Drawing.Point(222, 71);
+            this.buttonExit.Location = new System.Drawing.Point(220, 71);
             this.buttonExit.Name = "buttonExit";
             this.buttonExit.Size = new System.Drawing.Size(38, 23);
             this.buttonExit.TabIndex = 11;
@@ -510,7 +512,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(42, 141);
+            this.label1.Location = new System.Drawing.Point(40, 24);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(118, 13);
             this.label1.TabIndex = 25;
@@ -533,7 +535,7 @@
             // 
             this.buttonAlwaysOnTop.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonAlwaysOnTop.Image = global::SRVTracker.Properties.Resources.PinnedItem_16x;
-            this.buttonAlwaysOnTop.Location = new System.Drawing.Point(232, 44);
+            this.buttonAlwaysOnTop.Location = new System.Drawing.Point(230, 44);
             this.buttonAlwaysOnTop.Name = "buttonAlwaysOnTop";
             this.buttonAlwaysOnTop.Size = new System.Drawing.Size(28, 23);
             this.buttonAlwaysOnTop.TabIndex = 29;
@@ -549,16 +551,28 @@
             this.trackerHUD1.Size = new System.Drawing.Size(260, 40);
             this.trackerHUD1.TabIndex = 20;
             // 
+            // groupBoxSRVTracker
+            // 
+            this.groupBoxSRVTracker.Controls.Add(this.label1);
+            this.groupBoxSRVTracker.Controls.Add(this.labelLastUpdateTime);
+            this.groupBoxSRVTracker.ForeColor = System.Drawing.Color.White;
+            this.groupBoxSRVTracker.Location = new System.Drawing.Point(6, 123);
+            this.groupBoxSRVTracker.Name = "groupBoxSRVTracker";
+            this.groupBoxSRVTracker.Size = new System.Drawing.Size(252, 54);
+            this.groupBoxSRVTracker.TabIndex = 30;
+            this.groupBoxSRVTracker.TabStop = false;
+            this.groupBoxSRVTracker.Text = "SRVTracker";
+            // 
             // FormTracker
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.ClientSize = new System.Drawing.Size(925, 481);
+            this.Controls.Add(this.groupBoxSRVTracker);
             this.Controls.Add(this.buttonAlwaysOnTop);
             this.Controls.Add(this.buttonToggleMiniView);
             this.Controls.Add(this.pictureBox1);
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.checkBoxUseDirectionOfTravelAsHeading);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.trackerHUD1);
@@ -567,7 +581,6 @@
             this.Controls.Add(this.buttonShowConfig);
             this.Controls.Add(this.buttonRaceTracker);
             this.Controls.Add(this.checkBoxAutoScroll);
-            this.Controls.Add(this.labelLastUpdateTime);
             this.Controls.Add(this.groupBox8);
             this.Controls.Add(this.checkBoxShowLive);
             this.Controls.Add(this.groupBox7);
@@ -598,6 +611,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.groupBoxSRVTracker.ResumeLayout(false);
+            this.groupBoxSRVTracker.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -643,6 +658,7 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Button buttonToggleMiniView;
         private System.Windows.Forms.Button buttonAlwaysOnTop;
+        private System.Windows.Forms.GroupBox groupBoxSRVTracker;
     }
 }
 

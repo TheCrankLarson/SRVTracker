@@ -83,6 +83,7 @@ namespace SRVTracker
 
             this.Size = _configHidden;
             this.Text = Application.ProductName + " v" + Application.ProductVersion;
+            groupBoxSRVTracker.Text = this.Text;
             trackerHUD1.AutoTrack();  // Tracker HUD listens for events that we generate when location changes
         }
 
