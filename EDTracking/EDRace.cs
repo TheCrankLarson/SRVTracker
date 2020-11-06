@@ -14,7 +14,7 @@ namespace EDTracking
         private string _saveFilename = "";
         public string Name { get; set; } = null;
         public EDRoute Route { get; set; } = null;
-        public int LeaderWaypoint { get; set; } = 0;
+        public EDRaceStatus Leader { get; set; } = null;
         public List<string> Contestants { get; set; } = new List<string>();
 
         // For moving race monitoring away from the form.  Will be public once that work complete
@@ -245,6 +245,7 @@ namespace EDTracking
             StringBuilder distanceToWaypoint = new StringBuilder();
             StringBuilder totalDistanceLeft = new StringBuilder();
             StringBuilder hullStrengths = new StringBuilder();
+            StringBuilder currentLaps = new StringBuilder();
 
             for (int i = 0; i < leaderBoard.Count; i++)
             {
@@ -283,20 +284,23 @@ namespace EDTracking
                         status.AppendLine($" ({Statuses[leaderBoard[i]].FinishTime.Subtract(Start):hh\\:mm\\:ss})");
                         totalDistanceLeft.AppendLine(CustomStatusMessages["Completed"]);
                         distanceToWaypoint.AppendLine(CustomStatusMessages["Completed"]);
+                        currentLaps.AppendLine(CustomStatusMessages["Completed"]);
                     }
                     else
                     {
                         string s;
                         if (Statuses[leaderBoard[i]].Eliminated)
                         {
-                            distanceToWaypoint.AppendLine(CustomStatusMessages["Eliminated"]);
-                            totalDistanceLeft.AppendLine(CustomStatusMessages["Eliminated"]);
                             s = CustomStatusMessages["Eliminated"];
+                            distanceToWaypoint.AppendLine(s);
+                            totalDistanceLeft.AppendLine(s);
+                            currentLaps.AppendLine(s);
                         }
                         else
                         {
                             distanceToWaypoint.AppendLine(Statuses[leaderBoard[i]].DistanceToWaypointInKmDisplay);
                             totalDistanceLeft.AppendLine(Statuses[leaderBoard[i]].TotalDistanceLeftInKmDisplay);
+                            currentLaps.AppendLine(Statuses[leaderBoard[i]].Lap.ToString());
                             s = Statuses[leaderBoard[i]].ToString();
                         }
 
@@ -319,6 +323,7 @@ namespace EDTracking
                     distanceToWaypoint.AppendLine(CustomStatusMessages["Ready"]);
                     totalDistanceLeft.AppendLine(CustomStatusMessages["Ready"]);
                     hullStrengths.AppendLine(" ");
+                    currentLaps.AppendLine("0");
                 }
             }
 
@@ -331,10 +336,30 @@ namespace EDTracking
             statsTable.Add("TotalDistanceLeft", totalDistanceLeft.ToString());
             if (NotableEvents != null)
                 statsTable.Add("NotableEvents", String.Join(Environment.NewLine, NotableEvents.EventQueue));
-            statsTable.Add("HullStrengths", hullStrengths.ToString());
-            statsTable.Add("LeaderWaypoint", LeaderWaypoint.ToString());
+            statsTable.Add("Hull", hullStrengths.ToString());
+            statsTable.Add("Lap", currentLaps.ToString());
+            statsTable.Add("LeaderWaypoint", Leader.WaypointIndex.ToString());
+            statsTable.Add("LeaderLap", Leader.Lap.ToString());
 
             return statsTable;
+        }
+
+        public static Dictionary<string,string> RaceReportDescriptions()
+        {
+            return new Dictionary<string, string>()
+                {
+                    { "Positions", "Names of contestants in order of race position" },
+                    { "Speeds", "Current speeds" },
+                    { "MaxSpeeds", "Maximum speeds" },
+                    { "AverageSpeeds", "Average speeds" },
+                    { "Status", "Statuses" },
+                    { "DistanceToWaypoint", "Distances to the next waypoint" },
+                    { "TotalDistanceLeft", "Total distances left" },
+                    { "Hull", "Hull strengths left" },
+                    { "Lap", "Current laps" },
+                    { "LeaderWaypoint", "Waypoint the current leader is heading towards" },
+                    { "LeaderLap", "Lap number of the current leader" }
+                };
         }
 
         public string ExportRaceStatistics(int maxStatusLength = 20)

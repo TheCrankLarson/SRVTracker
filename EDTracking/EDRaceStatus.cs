@@ -87,6 +87,23 @@ namespace EDTracking
                 StartRace();
         }
 
+        public static Dictionary<string, string> RaceReportDescriptions()
+        {
+            return new Dictionary<string, string>()
+                {
+                    { "Commander", "Commander name" },
+                    { "Position", "Current position" },
+                    { "Speed", "Current speed" },
+                    { "MaxSpeed", "Maximum speed" },
+                    { "AverageSpeed", "Average speed" },
+                    { "Status", "Status" },
+                    { "DistanceToWaypoint", "Distance to the next waypoint" },
+                    { "TotalDistanceLeft", "Total distance left" },
+                    { "Hull", "Hull strength left" },
+                    { "Lap", "Current lap" }
+                };
+        }
+
         public void SetRace(EDRace race)
         {
             _race = race;
@@ -372,6 +389,8 @@ namespace EDTracking
                 // Total distance left needs to take into account the laps
                 TotalDistanceLeft = _race.TotalDistanceLeftAtWaypoint(WaypointIndex, Lap) + DistanceToWaypoint;
             }
+            if ( (_race.Leader == null) || (TotalDistanceLeft < _race.Leader.TotalDistanceLeft) )
+                _race.Leader = this;
 
             if (_race.Route.Waypoints[WaypointIndex].LocationIsWithinWaypoint(Location))
             {
@@ -382,8 +401,7 @@ namespace EDTracking
                     AddRaceHistory($"Arrived at {_race.Route.Waypoints[WaypointIndex].Name}");
 
                 WaypointIndex++;
-                if (WaypointIndex > _race.LeaderWaypoint)
-                    _race.LeaderWaypoint = WaypointIndex;
+
                 if ( WaypointIndex >= _race.Route.Waypoints.Count || (WaypointIndex==1 && _race.Laps>0))
                 {
                     if (_race.Laps > 0)
@@ -434,19 +452,19 @@ namespace EDTracking
                 AddRaceHistory("SRV destroyed");
                 notableEvents?.AddStatusEvent("EliminatedNotification", Commander);
                 DistanceToWaypoint = decimal.MaxValue;
-                if (_race != null && WaypointIndex == _race.LeaderWaypoint)
+                if (_race != null && _race.Leader.Eliminated)
                 {
-                    // We could have been the race leader, so we need to check that we still have the correct leader waypoint
-                    int leaderWaypoint = 0;
+                    // We were the race leader, so we need to work out the new leader
+                    EDRaceStatus leader = null;
                     foreach (EDRaceStatus status in _race.Statuses.Values)
                     {
                         if (!status.Eliminated)
-                            if (status.WaypointIndex > leaderWaypoint)
-                                leaderWaypoint = status.WaypointIndex;
+                            if (leader == null || status.TotalDistanceLeft < leader.TotalDistanceLeft)
+                                leader = status;
                         if (status.Finished)
                             break; // If someone has finished they'll be at the last waypoint, so no need to check further
                     }
-                    _race.LeaderWaypoint = leaderWaypoint;
+                    _race.Leader = leader;
                 }
                 SpeedInMS = 0;
                 _speedCalculationLocation = null;

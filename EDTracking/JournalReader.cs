@@ -19,7 +19,7 @@ namespace EDTracking
         private Dictionary<string, long> _filePointers;
         private DateTime _lastJournalEventTimeStamp = DateTime.MinValue;
         public string[] ReportEvents = { "DockSRV","SRVDestroyed", "FighterDestroyed","HullDamage","LaunchSRV", "Shutdown", "Continued", "Touchdown", "Liftoff", "Died",
-            "UnderAttack", "MaterialCollected", "DatalinkScan", "DataScanned", "ApproachSettlement", "ShipTargeted", "Commander"};
+            "UnderAttack", "MaterialCollected", "DatalinkScan", "DataScanned", "ApproachSettlement", "ShipTargeted", "Commander", "Synthesis"};
         public delegate void InterestingEventHandler(object sender, string eventJson);
         public event InterestingEventHandler InterestingEventOccurred;
         public string CommanderName = "";

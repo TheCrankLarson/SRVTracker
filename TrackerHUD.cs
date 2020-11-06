@@ -42,7 +42,7 @@ namespace SRVTracker
             }
             else
                 if (labelHeading.Text != "NA")
-                labelHeading.Text = "NA";
+                    labelHeading.Text = "NA";
         }
 
         public void AutoTrack()

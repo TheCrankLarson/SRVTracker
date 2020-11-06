@@ -763,13 +763,6 @@ namespace SRVTracker
             comboBoxAddCommander.Focus();
         }
 
-        private void textBoxAddCommander_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            // Check for <ENTER>
-
-            if (e.KeyChar == (char)Keys.Return)
-                buttonAddCommander_Click(sender, null);
-        }
 
         private void buttonAddCommander_Click(object sender, EventArgs e)
         {
