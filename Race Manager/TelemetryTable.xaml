@@ -4,25 +4,17 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Race_Manager"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <DataGrid x:Name="dataGridTelemetry" HorizontalAlignment="Left" VerticalAlignment="Top" Background="Black" BorderBrush="Black" Foreground="White" OpacityMask="Black" RowBackground="Black">
-            <DataGrid.Effect>
-                <DropShadowEffect/>
-            </DataGrid.Effect>
-            <DataGrid.Columns>
-                <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Position"/>
-                <DataGridTextColumn Header="Commander"/>
-                <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Distance Left"/>
-                <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Hull Strength"/>
-                <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Speed"/>
-                <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Maximum Speed"/>
-                <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Average Speed"/>
-            </DataGrid.Columns>
-            <TextBox Text="1"/>
-            <TextBox Text="Crank"/>
-        </DataGrid>
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <Style x:Key="ColumnHeaderStyleBW" TargetType="DataGridColumnHeader">
+            <Setter Property="Foreground" Value="Black"/>
+        </Style>
+    </UserControl.Resources>
+    
+    <DataGrid x:Name="dataGridTelemetry" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Top" HorizontalGridLinesBrush="White" VerticalGridLinesBrush="White" Foreground="White" Background="Black" AlternatingRowBackground="#FF323232" RowBackground="Black" SelectionMode="Single" SelectionUnit="Cell" RowDetailsVisibilityMode="Visible" ClipboardCopyMode="IncludeHeader" HeadersVisibility="Column" ColumnHeaderStyle="{DynamicResource ColumnHeaderStyleBW}" CanUserResizeRows="False" CanUserAddRows="False" CanUserDeleteRows="False">
+        <DataGrid.Effect>
+            <DropShadowEffect/>
+        </DataGrid.Effect>
+    </DataGrid>
 
-    </Grid>
 </UserControl>

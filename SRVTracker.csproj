@@ -375,6 +375,7 @@
     <Content Include="ReleaseNotes.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\Move %28wb%29.png" />
     <None Include="Resources\MoveGlyph_16x1.png" />
     <None Include="Resources\Route planner 16x16wb.png" />
     <None Include="Resources\race flag white 16x16.png" />

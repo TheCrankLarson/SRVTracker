@@ -36,7 +36,7 @@ namespace EDTracking
         public DateTime LapStartTime { get; set; } = DateTime.MinValue;
         public List<TimeSpan> LapTimes { get; set; } = new List<TimeSpan>();
 
-        public string Commander { get; } = "";
+        public string Commander { get; set; } = "";
         public static bool ShowDetailedStatus { get; set; } = false;
 
 
@@ -102,6 +102,22 @@ namespace EDTracking
                     { "Hull", "Hull strength left" },
                     { "Lap", "Current lap" }
                 };
+        }
+
+        public Dictionary<string,string> Telemetry()
+        {
+            Dictionary<string, string> telemetry = new Dictionary<string, string>();
+            telemetry.Add("Commander", Commander);
+            telemetry.Add("Position", RacePosition.ToString());
+            telemetry.Add("Speed", SpeedInMS.ToString("F1"));
+            telemetry.Add("MaxSpeed", MaxSpeedInMS.ToString("F1"));
+            telemetry.Add("AverageSpeed", AverageSpeedInMS.ToString("F1"));
+            telemetry.Add("Status", _status);
+            telemetry.Add("DistanceToWaypoint", DistanceToWaypointInKmDisplay);
+            telemetry.Add("TotalDistanceLeft", TotalDistanceLeftInKmDisplay);
+            telemetry.Add("Hull", HullDisplay);
+            telemetry.Add("Lap", Lap.ToString());
+            return telemetry;
         }
 
         public void SetRace(EDRace race)
@@ -297,23 +313,24 @@ namespace EDTracking
         {
             if (_race == null)
                 return false;
-            return _race.SRVOnly;
+            return !_race.ShipAllowed;
         }
 
         public void UpdateStatus(EDEvent updateEvent)
         {
             // Update our status based on the passed event
 
-            if ( (updateEvent.Flags > 0) && (Flags != updateEvent.Flags) )
-            {
-                _lastFlags = Flags;
-                Flags = updateEvent.Flags;
-            }
             if (updateEvent.TimeStamp>DateTime.MinValue)
                 TimeStamp = updateEvent.TimeStamp;
 
             if (Finished || Eliminated)
                 return;
+
+            if ((updateEvent.Flags > 0) && (Flags != updateEvent.Flags))
+            {
+                _lastFlags = Flags;
+                Flags = updateEvent.Flags;
+            }
 
             if (updateEvent.Health >= 0)
             {
@@ -379,71 +396,6 @@ namespace EDTracking
 
             if (!Started)
                 return;
-
-            DistanceToWaypoint = EDLocation.DistanceBetween(Location, _race.Route.Waypoints[WaypointIndex].Location);
-
-            if (_race.Laps == 0)
-                TotalDistanceLeft = _race.Route.TotalDistanceLeftAtWaypoint(WaypointIndex) + DistanceToWaypoint;
-            else
-            {
-                // Total distance left needs to take into account the laps
-                TotalDistanceLeft = _race.TotalDistanceLeftAtWaypoint(WaypointIndex, Lap) + DistanceToWaypoint;
-            }
-            if ( (_race.Leader == null) || (TotalDistanceLeft < _race.Leader.TotalDistanceLeft) )
-                _race.Leader = this;
-
-            if (_race.Route.Waypoints[WaypointIndex].LocationIsWithinWaypoint(Location))
-            {
-                // Commander has reached the target waypoint
-                if (_race.Laps > 0 && WaypointIndex!=0)
-                    AddRaceHistory($"Arrived at {_race.Route.Waypoints[WaypointIndex].Name} (lap {Lap})");
-                else if (_race.Laps==0)
-                    AddRaceHistory($"Arrived at {_race.Route.Waypoints[WaypointIndex].Name}");
-
-                WaypointIndex++;
-
-                if ( WaypointIndex >= _race.Route.Waypoints.Count || (WaypointIndex==1 && _race.Laps>0))
-                {
-                    if (_race.Laps > 0)
-                    {
-                        if (WaypointIndex >= _race.Route.Waypoints.Count)
-                            WaypointIndex = 0;
-                        else
-                        {
-                            // For lapped race, we need different logic as the finish is also the start
-                            Lap++;
-                            // We've only finished if this lap number is greater than the number of laps
-                            if (Lap>_race.Laps)
-                            {
-                                Finished = true;
-                                FinishTime = DateTime.Now;
-                                string raceTime = $"{FinishTime.Subtract(StartTime):hh\\:mm\\:ss}";
-                                notableEvents?.AddStatusEvent("CompletedLap", Commander, $" ({raceTime})");
-                                AddRaceHistory($"Completed in {raceTime}");
-                                WaypointIndex = 0;
-                                DistanceToWaypoint = 0;
-                            }
-                            else
-                            {
-                                LapTimes.Add(DateTime.Now.Subtract(LapStartTime));
-                                string lapTime = $"{LapTimes[LapTimes.Count-1]:hh\\:mm\\:ss}";
-                                notableEvents?.AddStatusEvent("CompletedLap", Commander, $" ({Lap-1}: {lapTime})");
-                                AddRaceHistory($"Completed lap {Lap-1} in {lapTime}");
-                            }
-                        }
-                    }
-                    else
-                    {
-                        Finished = true;
-                        FinishTime = DateTime.Now;
-                        string raceTime = $"{FinishTime.Subtract(StartTime):hh\\:mm\\:ss}";
-                        notableEvents?.AddStatusEvent("CompletedNotification", Commander, $" ({raceTime})");
-                        AddRaceHistory($"Completed in {raceTime}");
-                        WaypointIndex = 0;
-                        DistanceToWaypoint = 0;
-                    }
-                }
-            }
 
             if (updateEvent.EventName.Equals("SRVDestroyed") && EliminateOnDestruction())
             {
@@ -520,10 +472,78 @@ namespace EDTracking
                 Hull = 1; // Hull is repaired when in ship, so ensure we have this set
             }
 
-            if (DistanceToWaypoint<_nextLogDistanceToWaypoint)
+            if (updateEvent.HasCoordinates() && _race != null)
             {
-                AddRaceHistory($"{(DistanceToWaypoint / 1000):F1}km to {_race.Route.Waypoints[WaypointIndex].Name}");
-                _nextLogDistanceToWaypoint = DistanceToWaypoint - 5000;
+                DistanceToWaypoint = EDLocation.DistanceBetween(Location, _race.Route.Waypoints[WaypointIndex].Location);
+
+                if (_race.Laps == 0)
+                    TotalDistanceLeft = _race.Route.TotalDistanceLeftAtWaypoint(WaypointIndex) + DistanceToWaypoint;
+                else
+                {
+                    // Total distance left needs to take into account the laps
+                    TotalDistanceLeft = _race.TotalDistanceLeftAtWaypoint(WaypointIndex, Lap) + DistanceToWaypoint;
+                }
+                if ((_race.Leader == null) || (TotalDistanceLeft < _race.Leader.TotalDistanceLeft))
+                    _race.Leader = this;
+
+                if (_race.Route.Waypoints[WaypointIndex].LocationIsWithinWaypoint(Location))
+                {
+                    // Commander has reached the target waypoint
+                    if (_race.Laps > 0 && WaypointIndex != 0)
+                        AddRaceHistory($"Arrived at {_race.Route.Waypoints[WaypointIndex].Name} (lap {Lap})");
+                    else if (_race.Laps == 0)
+                        AddRaceHistory($"Arrived at {_race.Route.Waypoints[WaypointIndex].Name}");
+
+                    WaypointIndex++;
+
+                    if (WaypointIndex >= _race.Route.Waypoints.Count || (WaypointIndex == 1 && _race.Laps > 0))
+                    {
+                        if (_race.Laps > 0)
+                        {
+                            if (WaypointIndex >= _race.Route.Waypoints.Count)
+                                WaypointIndex = 0;
+                            else
+                            {
+                                // For lapped race, we need different logic as the finish is also the start
+                                Lap++;
+                                // We've only finished if this lap number is greater than the number of laps
+                                if (Lap > _race.Laps)
+                                {
+                                    Finished = true;
+                                    FinishTime = DateTime.Now;
+                                    string raceTime = $"{FinishTime.Subtract(StartTime):hh\\:mm\\:ss}";
+                                    notableEvents?.AddStatusEvent("CompletedLap", Commander, $" ({raceTime})");
+                                    AddRaceHistory($"Completed in {raceTime}");
+                                    WaypointIndex = 0;
+                                    DistanceToWaypoint = 0;
+                                }
+                                else
+                                {
+                                    LapTimes.Add(DateTime.Now.Subtract(LapStartTime));
+                                    string lapTime = $"{LapTimes[LapTimes.Count - 1]:hh\\:mm\\:ss}";
+                                    notableEvents?.AddStatusEvent("CompletedLap", Commander, $" ({Lap - 1}: {lapTime})");
+                                    AddRaceHistory($"Completed lap {Lap - 1} in {lapTime}");
+                                }
+                            }
+                        }
+                        else
+                        {
+                            Finished = true;
+                            FinishTime = DateTime.Now;
+                            string raceTime = $"{FinishTime.Subtract(StartTime):hh\\:mm\\:ss}";
+                            notableEvents?.AddStatusEvent("CompletedNotification", Commander, $" ({raceTime})");
+                            AddRaceHistory($"Completed in {raceTime}");
+                            WaypointIndex = 0;
+                            DistanceToWaypoint = 0;
+                        }
+                    }
+                }
+
+                if (DistanceToWaypoint < _nextLogDistanceToWaypoint)
+                {
+                    AddRaceHistory($"{(DistanceToWaypoint / 1000):F1}km to {_race.Route.Waypoints[WaypointIndex].Name}");
+                    _nextLogDistanceToWaypoint = DistanceToWaypoint - 5000;
+                }
             }
 
             if (Flags > 0)

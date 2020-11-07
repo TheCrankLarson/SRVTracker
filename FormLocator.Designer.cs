@@ -319,7 +319,7 @@
             // 
             // pictureBoxMoveForm
             // 
-            this.pictureBoxMoveForm.BackgroundImage = global::SRVTracker.Properties.Resources.MoveGlyph_16x;
+            this.pictureBoxMoveForm.BackgroundImage = global::SRVTracker.Properties.Resources.Move__wb_;
             this.pictureBoxMoveForm.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.pictureBoxMoveForm.Cursor = System.Windows.Forms.Cursors.SizeAll;
             this.pictureBoxMoveForm.Location = new System.Drawing.Point(272, 30);

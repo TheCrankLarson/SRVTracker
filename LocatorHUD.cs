@@ -87,7 +87,7 @@ namespace SRVTracker
             string distanceText;
             if (distance > 1000000)
             {
-                distanceText = $"({(distance / 1000000).ToString("F1")}Mm";
+                distanceText = $"{(distance / 1000000).ToString("F1")}Mm";
             }
             else if (distance > 1000)
             {

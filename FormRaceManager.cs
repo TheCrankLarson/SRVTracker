@@ -73,7 +73,7 @@ namespace SRVTracker
             textBoxNotableEventsFile.Enabled = checkBoxExportNotableEvents.Checked;
             numericUpDownNotableEventDuration.Enabled = checkBoxExportNotableEvents.Checked;
 
-            checkBoxSRVRace.Checked = _race.SRVOnly;
+            checkBoxSRVRace.Checked = _race.SRVAllowed && !_race.ShipAllowed && !_race.FighterAllowed;
             checkBoxAllowPitstops.Checked = _race.AllowPitstops;
             checkBoxEliminationOnDestruction.Checked = _race.EliminateOnVehicleDestruction;
             ShowHideStreamingOptions();
@@ -235,7 +235,7 @@ namespace SRVTracker
                     {
                         try
                         {
-                            if (checkBoxAutoAddCommanders.Checked && _race.Route.Waypoints[0].LocationIsWithinWaypoint(CommanderWatcher.GetCommanderStatus(commander).Location()))
+                            if (checkBoxAutoAddCommanders.Checked && _race.Route.Waypoints[0].LocationIsWithinWaypoint(CommanderWatcher.GetCommanderMostRecentEvent(commander).Location()))
                                 AddTrackedCommander(commander);
                         }
                         catch { }
@@ -951,7 +951,17 @@ namespace SRVTracker
 
         private void checkBoxSRVRace_CheckedChanged(object sender, EventArgs e)
         {
-            _race.SRVOnly = checkBoxSRVRace.Checked;
+            if (checkBoxSRVRace.Checked)
+            {
+                _race.SRVAllowed = true;
+                _race.ShipAllowed = false;
+                _race.FighterAllowed = false;
+            }
+            else
+            {
+                _race.ShipAllowed = true;
+                _race.FighterAllowed = true;
+            }
             checkBoxAllowPitstops.Enabled = checkBoxSRVRace.Checked;
         }
 

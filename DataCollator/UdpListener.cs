@@ -39,7 +39,7 @@ namespace DataCollator
         {
             // Receive a message and write it to the console.
             UdpState s = new UdpState();
-            s.e = new IPEndPoint(IPAddress.Any, 0);
+            s.e = new IPEndPoint(IPAddress.Any, ListenPort);
             s.u = new UdpClient();
             s.u.Client.ExclusiveAddressUse = false;
             s.u.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);

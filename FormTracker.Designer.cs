@@ -487,7 +487,7 @@
             // pictureBox1
             // 
             this.pictureBox1.Cursor = System.Windows.Forms.Cursors.SizeAll;
-            this.pictureBox1.Image = global::SRVTracker.Properties.Resources.MoveGlyph_16x;
+            this.pictureBox1.Image = global::SRVTracker.Properties.Resources.Move__wb_;
             this.pictureBox1.Location = new System.Drawing.Point(161, 74);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(16, 16);

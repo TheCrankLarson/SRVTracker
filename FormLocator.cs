@@ -392,7 +392,7 @@ namespace SRVTracker
 
             if (_targetPosition==null)
             {
-                EDEvent commanderEvent = CommanderWatcher.GetCommanderStatus(target);
+                EDEvent commanderEvent = CommanderWatcher.GetCommanderMostRecentEvent(target);
                 if (commanderEvent != null)
                     _targetPosition = commanderEvent.Location();
             }

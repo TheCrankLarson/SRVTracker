@@ -101,6 +101,25 @@ namespace EDTracking
             Commander = commander;
         }
 
+        public EDEvent Replay()
+        {
+            EDEvent edEvent = new EDEvent();
+            edEvent.Altitude = Altitude;
+            edEvent.BodyName = BodyName;
+            edEvent.Commander = Commander;
+            edEvent.EventName = EventName;
+            edEvent.Flags = Flags;
+            edEvent.Heading = Heading;
+            edEvent.Health = Health;
+            edEvent.Latitude = Latitude;
+            edEvent.Longitude = Longitude;
+            edEvent.PlanetRadius = PlanetRadius;
+            edEvent.PlayerControlled = PlayerControlled;
+            edEvent.TargetedShipName = TargetedShipName;
+            edEvent.TimeStamp = DateTime.Now;
+            return edEvent;
+        }
+
         public bool isInSRV()
         {
             return (this.Flags & (long)StatusFlags.In_SRV) == (long)StatusFlags.In_SRV;

@@ -70,37 +70,65 @@ namespace EDTracking
             return null;
         }
 
-        private static decimal ConvertToRadians(decimal angle)
+        private static double ConvertToRadians(double angle)
         {
-            return ((decimal)Math.PI / 180) * angle;
+            return (Math.PI / 180) * angle;
+        }
+
+        private static double ConvertToRadians(decimal angle)
+        {
+            return ConvertToRadians((double)angle);
         }
 
         public static decimal DistanceBetween(EDLocation location1, EDLocation location2)
         {
+            if (location1==null || location2==null || location1.PlanetaryRadius != location2.PlanetaryRadius)
+                return 0;
+
             decimal R = location1.PlanetaryRadius;
             if (R <= 0)
-            {
-                R = location2.PlanetaryRadius;
-                if (R <= 0)
                     return 0;
-            }
-            decimal lat = ConvertToRadians(location2.Latitude - location1.Latitude);
-            decimal lng = ConvertToRadians(location2.Longitude - location1.Longitude);
-            decimal h1 = (decimal)(Math.Sin((double)lat / 2) * Math.Sin((double)lat / 2) +
-                          Math.Cos((double)ConvertToRadians(location1.Latitude)) * Math.Cos((double)ConvertToRadians(location2.Latitude)) *
-                          Math.Sin((double)lng / 2) * Math.Sin((double)lng / 2));
-            decimal h2 = (decimal)(2 * Math.Asin(Math.Min(1, Math.Sqrt((double)h1))));
+
+            double lat = ConvertToRadians(location2.Latitude - location1.Latitude);
+            double lng = ConvertToRadians(location2.Longitude - location1.Longitude);
+            double h1 = Math.Sin(lat / 2) * Math.Sin(lat / 2) +
+                          Math.Cos(ConvertToRadians(location1.Latitude)) * Math.Cos(ConvertToRadians(location2.Latitude)) *
+                          Math.Sin(lng / 2) * Math.Sin(lng / 2);
+            decimal h2 = (decimal)(2 * Math.Asin(Math.Min(1, Math.Sqrt(h1))));
             return Math.Abs(R * h2);
+        }
+
+        public static decimal DistanceBetweenIncludingAltitude(EDLocation location1, EDLocation location2)
+        {
+            if (location1.PlanetaryRadius != location2.PlanetaryRadius)
+                return 0;
+
+            double R = (double)location1.PlanetaryRadius;
+            if (R <= 0)
+                    return 0;
+
+            double R1 = R + (double)location1.Altitude;
+            double x_1 = R1 * Math.Sin((double)location1.Longitude) * Math.Cos((double)location1.Latitude);
+            double y_1 = R1 * Math.Sin((double)location1.Longitude) * Math.Sin((double)location1.Latitude);
+            double z_1 = R1 * Math.Cos((double)location1.Longitude);
+
+            double R2 = R + (double)location2.Altitude;
+            double x_2 = R2 * Math.Sin((double)location2.Longitude) * Math.Cos((double)location2.Latitude);
+            double y_2 = R2 * Math.Sin((double)location2.Longitude) * Math.Sin((double)location2.Latitude);
+            double z_2 = R2 * Math.Cos((double)location2.Longitude);
+
+            return (decimal)Math.Sqrt((x_2 - x_1) * (x_2 - x_1) + (y_2 - y_1) *
+                               (y_2 - y_1) + (z_2 - z_1) * (z_2 - z_1));
         }
 
         public static decimal BearingToLocation(EDLocation sourceLocation, EDLocation targetLocation)
         {
-            decimal dLon = ConvertToRadians(targetLocation.Longitude - sourceLocation.Longitude);
-            decimal dPhi = (decimal)Math.Log(
-                Math.Tan((double)ConvertToRadians(targetLocation.Latitude) / 2 + Math.PI / 4) / Math.Tan((double)ConvertToRadians(sourceLocation.Latitude) / 2 + Math.PI / 4));
-            if (Math.Abs((double)dLon) > Math.PI)
-                dLon = dLon > 0 ? (decimal)-(2 * Math.PI - (double)dLon) : (decimal)(2 * Math.PI + (double)dLon);
-            return ConvertToBearing((decimal)(Math.Atan2((double)dLon, (double)dPhi)));
+            double dLon = (ConvertToRadians(targetLocation.Longitude - sourceLocation.Longitude));
+            double dPhi = Math.Log(
+                Math.Tan(ConvertToRadians(targetLocation.Latitude) / 2 + Math.PI / 4) / Math.Tan(ConvertToRadians(sourceLocation.Latitude) / 2 + Math.PI / 4));
+            if (Math.Abs(dLon) > Math.PI)
+                dLon = dLon > 0 ? -(2 * Math.PI - dLon) : (2 * Math.PI + dLon);
+            return ConvertToBearing((decimal)(Math.Atan2(dLon, dPhi)));
         }
 
         public static decimal ConvertToDegrees(decimal radians)

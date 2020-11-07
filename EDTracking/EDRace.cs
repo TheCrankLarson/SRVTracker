@@ -27,9 +27,9 @@ namespace EDTracking
         public bool Finished { get; set; } = false;
         public int Laps { get; set; } = 0;  // 0 means we are not using laps, any other number means we are
         public bool EliminateOnVehicleDestruction { get; set; } = true;
-        public bool SRVOnly { get; set; } = true;
-        public bool FighterOnly { get; set; } = false;
-        public bool ShipOnly { get; set; } = false;
+        public bool SRVAllowed { get; set; } = true;
+        public bool FighterAllowed { get; set; } = false;
+        public bool ShipAllowed { get; set; } = false;
         public bool AllowPitstops { get; set; } = true;
         public bool AllowNightVision { get; set; } = true;
         public static Dictionary<string, string> StatusMessages { get; set; } = new Dictionary<string, string>()
@@ -232,13 +232,14 @@ namespace EDTracking
             return true;
         }
 
-        public Dictionary<string, string> ExportRaceStatisticsDict(int maxStatusLength = 20)
+        public Dictionary<string, string> ExportRaceStatisticsDict(int maxStatusLength = 40)
         {
             List<string> leaderBoard = RacePositions();
             Dictionary<string, string> statsTable = new Dictionary<string, string>();
 
             StringBuilder status = new StringBuilder();
-            StringBuilder leaderBoardExport = new StringBuilder();
+            StringBuilder commandersExport = new StringBuilder();
+            StringBuilder positionsExport = new StringBuilder();
             StringBuilder speeds = new StringBuilder();
             StringBuilder maxSpeeds = new StringBuilder();
             StringBuilder averageSpeeds = new StringBuilder();
@@ -249,12 +250,13 @@ namespace EDTracking
 
             for (int i = 0; i < leaderBoard.Count; i++)
             {
+                positionsExport.AppendLine((i + 1).ToString());
                 if (leaderBoard[i] == null)
                     leaderBoard[i] = "Unknown error";
                 if (leaderBoard[i].Length > maxStatusLength)
-                    leaderBoardExport.AppendLine(leaderBoard[i].Substring(0, maxStatusLength));
+                    commandersExport.AppendLine(leaderBoard[i].Substring(0, maxStatusLength));
                 else
-                    leaderBoardExport.AppendLine(leaderBoard[i]);
+                    commandersExport.AppendLine(leaderBoard[i]);
 
                 if (this.Start > DateTime.MinValue && Statuses != null)
                 {
@@ -282,8 +284,8 @@ namespace EDTracking
                     {
                         status.Append(CustomStatusMessages["Completed"]);
                         status.AppendLine($" ({Statuses[leaderBoard[i]].FinishTime.Subtract(Start):hh\\:mm\\:ss})");
-                        totalDistanceLeft.AppendLine(CustomStatusMessages["Completed"]);
-                        distanceToWaypoint.AppendLine(CustomStatusMessages["Completed"]);
+                        totalDistanceLeft.AppendLine("0");
+                        distanceToWaypoint.AppendLine("0");
                         currentLaps.AppendLine(CustomStatusMessages["Completed"]);
                     }
                     else
@@ -291,9 +293,9 @@ namespace EDTracking
                         string s;
                         if (Statuses[leaderBoard[i]].Eliminated)
                         {
+                            distanceToWaypoint.AppendLine("-");
+                            totalDistanceLeft.AppendLine("-");
                             s = CustomStatusMessages["Eliminated"];
-                            distanceToWaypoint.AppendLine(s);
-                            totalDistanceLeft.AppendLine(s);
                             currentLaps.AppendLine(s);
                         }
                         else
@@ -307,8 +309,6 @@ namespace EDTracking
                         if (s.Length > maxStatusLength)
                             s = s.Substring(0, maxStatusLength);
                         status.AppendLine(s);
-
-
                     }
 
                     if (!Statuses[leaderBoard[i]].Eliminated)
@@ -320,14 +320,15 @@ namespace EDTracking
                 {
                     // We don't have any statuses, so this is pre-race
                     status.AppendLine(CustomStatusMessages["Ready"]);
-                    distanceToWaypoint.AppendLine(CustomStatusMessages["Ready"]);
-                    totalDistanceLeft.AppendLine(CustomStatusMessages["Ready"]);
-                    hullStrengths.AppendLine(" ");
+                    distanceToWaypoint.AppendLine("-");
+                    totalDistanceLeft.AppendLine("-");
+                    hullStrengths.AppendLine("-");
                     currentLaps.AppendLine("0");
                 }
             }
 
-            statsTable.Add("Positions", leaderBoardExport.ToString());
+            statsTable.Add("Positions", positionsExport.ToString());
+            statsTable.Add("Commanders", commandersExport.ToString());
             statsTable.Add("Speeds", speeds.ToString());
             statsTable.Add("MaxSpeeds", maxSpeeds.ToString());
             statsTable.Add("AverageSpeeds", averageSpeeds.ToString());
@@ -338,8 +339,11 @@ namespace EDTracking
                 statsTable.Add("NotableEvents", String.Join(Environment.NewLine, NotableEvents.EventQueue));
             statsTable.Add("Hull", hullStrengths.ToString());
             statsTable.Add("Lap", currentLaps.ToString());
-            statsTable.Add("LeaderWaypoint", Leader.WaypointIndex.ToString());
-            statsTable.Add("LeaderLap", Leader.Lap.ToString());
+            if (Leader != null)
+            {
+                statsTable.Add("LeaderWaypoint", Leader.WaypointIndex.ToString());
+                statsTable.Add("LeaderLap", Leader.Lap.ToString());
+            }
 
             return statsTable;
         }
@@ -348,7 +352,8 @@ namespace EDTracking
         {
             return new Dictionary<string, string>()
                 {
-                    { "Positions", "Names of contestants in order of race position" },
+                    { "Positions", "Positions of contestants" },
+                    { "Commanders", "Names of contestants" },
                     { "Speeds", "Current speeds" },
                     { "MaxSpeeds", "Maximum speeds" },
                     { "AverageSpeeds", "Average speeds" },

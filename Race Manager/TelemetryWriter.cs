@@ -13,6 +13,7 @@ namespace Race_Manager
         private Dictionary<string, string> _reportsToExport = new Dictionary<string, string>();
         private Dictionary<string, string> _lastReport = new Dictionary<string, string>();
         private string _exportDirectory = "";
+        public event EventHandler SelectionChanged;
 
         public bool ExportOnlyIfChanged { get; set; } = true;
 
@@ -27,6 +28,7 @@ namespace Race_Manager
                 _exportDirectory = _reportsToExport["ExportDirectory"];
                 _reportsToExport.Remove("ExportDirectory");
             }
+            ClearFiles();
         }
 
         public string ExportDirectory
@@ -68,6 +70,24 @@ namespace Race_Manager
                 }
         }
 
+        public void ClearFiles()
+        {
+            // Delete any files (do this at start or end of tracking)
+
+            foreach (string reportToExport in _reportsToExport.Keys)
+            {
+                string reportFile = $"{_exportDirectory}{_reportsToExport[reportToExport]}";
+                if (File.Exists(reportFile))
+                {
+                    try
+                    {
+                        File.Delete(reportFile);
+                    }
+                    catch { }
+                }
+            }
+        }
+
         public List<string> EnabledReports
         {
             get { return _reportsToExport.Keys.ToList<string>(); }
@@ -75,11 +95,19 @@ namespace Race_Manager
 
         public void EnableReport(string reportName, string exportFileName)
         {
+            bool changeMade = false;
             if (_reportsToExport.ContainsKey(reportName))
+            {
                 _reportsToExport.Remove(reportName);
-            if (String.IsNullOrEmpty(exportFileName))
-                return;
-            _reportsToExport.Add(reportName, exportFileName);
+                changeMade = true;
+            }
+            if (!String.IsNullOrEmpty(exportFileName))
+            {
+                _reportsToExport.Add(reportName, exportFileName);
+                changeMade = true;
+            }
+            if (changeMade)
+                SelectionChanged?.Invoke(null, null);
         }
 
         public string ToJson()

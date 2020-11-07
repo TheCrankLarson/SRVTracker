@@ -20,16 +20,30 @@ namespace Race_Manager
             _telemetryWriter = telemetryWriter;
             telemetryTable1.SetTelemetryWriter(_telemetryWriter);
             this.Text = windowTitle;
+            this.AutoSize = true;
+            this.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            this.elementHost1.AutoSize = true;
+            this.elementHost1.Dock = DockStyle.Fill;
         }
 
-        public void InitialiseColumns(Dictionary<string, string> columnHeaderNames)
+        public void InitialiseColumns(Dictionary<string, string> columnHeaderNames, int rowCount)
         {
-            telemetryTable1.InitialiseColumns(columnHeaderNames);
+            telemetryTable1.InitialiseColumns(columnHeaderNames, rowCount);
         }
 
-        public void UpdateData(Dictionary<string,string> ReportData)
+        public void InitialiseRows(Dictionary<string, string> rowNames)
         {
-            telemetryTable1.UpdateData(ReportData);
+            telemetryTable1.InitialiseRows(rowNames);
+        }
+
+        public void UpdateRaceData(Dictionary<string,string> ReportData)
+        {
+            telemetryTable1.UpdateRaceData(ReportData);
+        }
+
+        public void UpdateTargetData(Dictionary<string,string> TargetData)
+        {
+            telemetryTable1.UpdateTargetData(TargetData);
         }
     }
 }

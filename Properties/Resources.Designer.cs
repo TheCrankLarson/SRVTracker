@@ -183,6 +183,16 @@ namespace SRVTracker.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Move__wb_ {
+            get {
+                object obj = ResourceManager.GetObject("Move (wb)", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap MoveGlyph_16x {
             get {
                 object obj = ResourceManager.GetObject("MoveGlyph_16x", resourceCulture);

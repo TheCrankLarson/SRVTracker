@@ -21,12 +21,14 @@ namespace Race_Manager
         private string _saveFileName = "";
         private string _serverRaceGuid = "";
         private int _serverNotableEventsIndex = 0;
+        private bool _updatingTargets = false;
+        private string _targetCommander = "";
         private TelemetryWriter _raceTelemetryWriter = null;
         private TelemetryWriter _trackedTelemetryWriter = null;
         private FormTelemetryDisplay _raceTelemetryDisplay = null;
         private FormTelemetryDisplay _targetTelemetryDisplay = null;
-        private FormFileExportSettings _raceTelemetryExportSettings = null;
-        private FormFileExportSettings _targetTelemetryExportSettings = null;
+        private FormTelemetrySettings _raceTelemetrySettings = null;
+        private FormTelemetrySettings _targetTelemetrySettings = null;
 
         public FormRaceController()
         {
@@ -44,11 +46,66 @@ namespace Race_Manager
             groupBoxAddCommander.Visible = false;
 
             this.Text = Application.ProductName + " v" + Application.ProductVersion;
+            StartWatching();
             CommanderWatcher.UpdateReceived += CommanderWatcher_UpdateReceived;
-            if (!String.IsNullOrEmpty(ServerAddress()))
-                CommanderWatcher.Start($"http://{ServerAddress()}:11938/DataCollator/status");
+            CommanderWatcher.OnlineCountChanged += CommanderWatcher_OnlineCountChanged;
             InitTelemetryWriters();
             UpdateUI();
+            UpdateAvailableTargets();
+        }
+
+        private void StartWatching()
+        {
+            CommanderWatcher.Stop();
+            if (!String.IsNullOrEmpty(ServerAddress()))
+                CommanderWatcher.Start($"http://{ServerAddress()}:11938/DataCollator/status");
+        }
+
+        private void CommanderWatcher_OnlineCountChanged(object sender, EventArgs e)
+        {
+            UpdateAvailableTargets();
+        }
+
+        private void UpdateAvailableTargets()
+        {
+            Action action = new Action(() => {
+                _updatingTargets = true;
+                int selectedIndex = 0;
+                string selectedTarget = "";
+                if (comboBoxTarget.SelectedIndex > 0)
+                {
+                    selectedIndex = comboBoxTarget.SelectedIndex;
+                    selectedTarget = (string)comboBoxTarget.SelectedItem;
+                }
+
+                comboBoxTarget.Items.Clear();
+                comboBoxTarget.Items.Add("None");
+                foreach (string commander in CommanderWatcher.GetCommanders())
+                    comboBoxTarget.Items.Add(commander);
+
+                if (selectedIndex > 0)
+                {
+                    if (!selectedTarget.Equals((string)comboBoxTarget.Items[selectedIndex]))
+                    {
+                        // Check if target still available
+                        for (int i = 0; i < comboBoxTarget.Items.Count; i++)
+                            if (selectedTarget.Equals((string)comboBoxTarget.Items[i]))
+                            {
+                                selectedIndex = i;
+                                break;
+                            }
+                        if (!selectedTarget.Equals((string)comboBoxTarget.Items[selectedIndex]))
+                            selectedIndex = 0; // Target has disappeared, so reset to none
+                    }
+                }
+                comboBoxTarget.SelectedIndex = selectedIndex;
+                _updatingTargets = false;
+            });
+
+            if (comboBoxTarget.InvokeRequired)
+                comboBoxTarget.Invoke(action);
+            else
+                action();
         }
 
         private void CommanderWatcher_UpdateReceived(object sender, EDEvent edEvent)
@@ -65,6 +122,87 @@ namespace Race_Manager
                             AddTrackedCommander(edEvent.Commander);
             }
         }
+
+        private string FindClosestTo(string Commander)
+        {
+            // Find the closest commander to this commander
+
+            List<string> commanders;
+            if (!buttonStartRace.Enabled)
+            {
+                // Race is started, so closest are limited to only race entrants
+                commanders = _race.Contestants;
+            }
+            else
+                commanders = CommanderWatcher.GetCommanders();
+
+            decimal closestDistance = decimal.MaxValue;
+            string closestCommander = "";
+            EDEvent lastCommanderEvent = CommanderWatcher.GetCommanderMostRecentEvent(Commander);
+            if (lastCommanderEvent == null)
+                return "";
+
+            EDLocation commanderLocation = lastCommanderEvent.Location();
+            foreach (string commander in commanders)
+                if (!commander.Equals(Commander))
+                {
+                    EDEvent lastcommanderEvent = CommanderWatcher.GetCommanderMostRecentEvent(commander);
+                    if (lastcommanderEvent != null)
+                    {
+                        decimal distanceToCommander = EDLocation.DistanceBetween(commanderLocation, lastcommanderEvent.Location());
+                        if (distanceToCommander<closestDistance)
+                        {
+                            closestDistance = distanceToCommander;
+                            closestCommander = commander;
+                        }
+                    }
+                }
+
+            return closestCommander;
+        }
+
+        private DateTime _errorLastShown = DateTime.MinValue;
+        private EDRaceStatus GetCommanderRaceStatus(string commander)
+        {
+            if (String.IsNullOrEmpty(commander))
+                return null;
+
+            if (!String.IsNullOrEmpty(_serverRaceGuid))
+            {
+                // We need to retrieve the status from the server
+                string statusUrl = $"http://{ServerAddress()}:11938/DataCollator/getcommanderracestatus/{_serverRaceGuid}/{System.Web.HttpUtility.UrlEncode(commander)}";
+                try
+                {
+
+                    using (WebClient webClient = new WebClient())
+                    {
+                        string raceStatus = webClient.DownloadString(statusUrl);
+                        if (raceStatus.Length > 2)
+                            return EDRaceStatus.FromJson(raceStatus);
+                        throw new Exception($"Unexpected server response: {raceStatus}");
+                    }
+                }
+                catch //(Exception ex)
+                {
+                    /*if (false)//DateTime.Now.Subtract(_errorLastShown).TotalSeconds > 60)
+                    {
+                        MessageBox.Show($"Error retrieving tracked target:{Environment.NewLine}{ex.Message}{Environment.NewLine}{statusUrl}", "Tracking Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        _errorLastShown = DateTime.Now;
+                    }*/
+                }
+            }
+            else
+            {
+                if (DateTime.Now.Subtract(_errorLastShown).TotalSeconds > 60)
+                {
+                    MessageBox.Show($"Race Guid not set - cannot query server", "Tracking Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    _errorLastShown = DateTime.Now;
+                }
+            }
+
+            return null;
+        }
+
 
         private void InitTelemetryWriters()
         {
@@ -112,6 +250,8 @@ namespace Race_Manager
                 return;
 
             _race.Contestants.Add(commander);
+            if (_raceTelemetryDisplay != null && !_raceTelemetryDisplay.IsDisposed)
+                _raceTelemetryDisplay.InitialiseColumns(EDRace.RaceReportDescriptions(), _race.Contestants.Count);
             Action action = new Action(() => { listBoxParticipants.Items.Add(commander); });
             if (listBoxParticipants.InvokeRequired)
                 listBoxParticipants.Invoke(action);
@@ -168,6 +308,7 @@ namespace Race_Manager
 
                     _serverNotableEventsIndex = 0;
                     timerDownloadRaceTelemetry.Start();
+                    timerTrackTarget.Start();
                 }
                 return true;
             }
@@ -178,9 +319,24 @@ namespace Race_Manager
         private void UpdateFromServerStats(Dictionary<string, string> serverStats)
         {
             if (_raceTelemetryDisplay != null && _raceTelemetryDisplay.Visible)
-                _raceTelemetryDisplay.UpdateData(serverStats);
+                _raceTelemetryDisplay.UpdateRaceData(serverStats);
             if (_raceTelemetryWriter != null)
                 _raceTelemetryWriter.ExportFiles(serverStats);
+        }
+
+        private void DisplayRaceSettings()
+        {
+            if (_race == null)
+                return;
+
+            checkBoxAllowSRV.Checked = _race.SRVAllowed;
+            checkBoxAllowPitstops.Checked = _race.AllowPitstops;
+            checkBoxAllowMainShip.Checked = _race.ShipAllowed;
+            checkBoxAllowFighter.Checked = _race.FighterAllowed;
+            checkBoxEliminationOnDestruction.Checked = _race.EliminateOnVehicleDestruction;
+            checkBoxLappedRace.Checked = (_race.Laps > 1);
+            if (_race.Laps>0)
+                numericUpDownLapCount.Value = _race.Laps;
         }
 
         private void UpdateUI()
@@ -191,11 +347,42 @@ namespace Race_Manager
             buttonRemoveParticipant.Enabled = raceValid;
             buttonUneliminate.Enabled = raceValid && raceStarted;
             buttonTrackParticipant.Enabled = listBoxParticipants.SelectedIndex > -1;
-            checkBoxAutoAddCommanders.Enabled = raceValid && raceStarted;
+            checkBoxAutoAddCommanders.Enabled = raceValid && !raceStarted;
             buttonLoadRace.Enabled = !raceStarted;
             buttonSaveRaceAs.Enabled = raceValid;
             buttonSaveRace.Enabled = raceValid;
             buttonLoadRoute.Enabled = !raceStarted;
+            if (listBoxParticipants.SelectedIndex>-1)
+            {
+                buttonTrackParticipant.Enabled = false;
+                foreach (string availableTarget in comboBoxTarget.Items)
+                    if (availableTarget.Equals((string)listBoxParticipants.SelectedItem))
+                    {
+                        buttonTrackParticipant.Enabled = true;
+                        break;
+                    }
+            }
+            numericUpDownLapCount.Enabled = checkBoxLappedRace.Checked;
+        }
+
+        private void Resurrect(string commander)
+        {
+            // Need to send resurrection request to server
+            if (!String.IsNullOrEmpty(_serverRaceGuid))
+                using (WebClient webClient = new WebClient())
+                    _ = webClient.DownloadString($"http://{ServerAddress()}:11938/DataCollator/ResurrectCommander/{_serverRaceGuid}/{commander}");
+        }
+
+        private void UpdateAllowedVehicles()
+        {
+            if (_race == null)
+                return;
+            _race.SRVAllowed = checkBoxAllowSRV.Checked;
+            checkBoxAllowPitstops.Enabled = _race.SRVAllowed;
+            _race.FighterAllowed = checkBoxAllowFighter.Checked;
+            _race.ShipAllowed = checkBoxAllowMainShip.Checked;
+            checkBoxEliminationOnDestruction.Enabled = _race.SRVAllowed || _race.FighterAllowed || _race.ShipAllowed;
+            _race.EliminateOnVehicleDestruction = checkBoxEliminationOnDestruction.Checked;
         }
 
         private void buttonLoadRace_Click(object sender, EventArgs e)
@@ -209,7 +396,7 @@ namespace Race_Manager
             }
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
-                openFileDialog.Filter = "edrace files (*.edrace)|*.edrace|All files (*.*)|*.*";
+                openFileDialog.Filter = "edrace files (*.edrace)|*.edrace|Race.Start files|Race.Start|All files (*.*)|*.*";
                 openFileDialog.FilterIndex = 1;
                 openFileDialog.RestoreDirectory = true;
                 openFileDialog.FileName = _saveFileName;
@@ -226,9 +413,19 @@ namespace Race_Manager
 
                     _race = race;
                     listBoxParticipants.Items.Clear();
+                    if (_race.Contestants.Count>0)
+                    {
+                        // We have contestants - this will happen if we load the race from a saved race folder
+                        foreach (string contestant in _race.Contestants)
+                            listBoxParticipants.Items.Add(contestant);
+                        if (_raceTelemetryDisplay != null && !_raceTelemetryDisplay.IsDisposed)
+                            _raceTelemetryDisplay.InitialiseColumns(EDRace.RaceReportDescriptions(), _race.Contestants.Count);
+                    }
+
                     _saveFileName = openFileDialog.FileName;
                     textBoxRaceName.Text = _race.Name;
                     DisplayRoute();
+                    DisplayRaceSettings();
                     checkBoxAutoAddCommanders.Checked = true;
                 }
             }
@@ -237,12 +434,44 @@ namespace Race_Manager
 
         private void buttonStopRace_Click(object sender, EventArgs e)
         {
+            _race.Finished = true;
+            if (_race.Statuses != null)
+                foreach (EDRaceStatus status in _race.Statuses.Values)
+                    status.Finished = true;
 
+            if (!String.IsNullOrEmpty(_serverRaceGuid))
+            {
+                timerDownloadRaceTelemetry.Stop();
+                timerTrackTarget.Stop();
+                // Send notification to server that race is finished
+                try
+                {
+                    using (WebClient webClient = new WebClient())
+                    {
+                        string raceStatus = webClient.DownloadString($"http://{ServerAddress()}:11938/DataCollator/stoprace/{_serverRaceGuid}");
+                    }
+                }
+                catch { }
+            }
+
+            buttonStopRace.Enabled = false;
+            buttonReset.Enabled = true;
+            buttonUneliminate.Enabled = false;
         }
 
         private void buttonReset_Click(object sender, EventArgs e)
         {
-
+            EDRaceStatus.Started = false;
+            _race.Finished = false;
+            _serverRaceGuid = "";
+            textBoxServerRaceGuid.Text = "";
+            _race.Statuses = null;
+            _race.Start = DateTime.MinValue;
+            listBoxWaypoints.Refresh();
+            buttonStartRace.Enabled = true;
+            buttonReset.Enabled = false;
+            buttonRaceHistory.Enabled = false;
+            _skipAutoAdd = new List<string>();
         }
 
         private void buttonStartRace_Click(object sender, EventArgs e)
@@ -424,7 +653,11 @@ namespace Race_Manager
 
             string commanderToRemove = (string)listBoxParticipants.SelectedItem;
             if (_race.Contestants.Contains(commanderToRemove))
+            {
                 _race.Contestants.Remove(commanderToRemove);
+                if (_raceTelemetryDisplay != null && !_raceTelemetryDisplay.IsDisposed)
+                    _raceTelemetryDisplay.InitialiseColumns(EDRace.RaceReportDescriptions(), _race.Contestants.Count);
+            }
             listBoxParticipants.Items.RemoveAt(listBoxParticipants.SelectedIndex);
             _skipAutoAdd.Add(commanderToRemove);
         }
@@ -436,35 +669,33 @@ namespace Race_Manager
 
         private void buttonTest_Click(object sender, EventArgs e)
         {
-            FormTelemetryDisplay formTelemetry = new FormTelemetryDisplay(_raceTelemetryWriter);
-            formTelemetry.InitialiseColumns(EDRace.RaceReportDescriptions());
-            formTelemetry.Show();
+
         }
 
         private void buttonRaceTelemetryExportSettings_Click(object sender, EventArgs e)
         {
-            if (_raceTelemetryExportSettings != null && _raceTelemetryExportSettings.IsDisposed)
-                _raceTelemetryExportSettings = null;
+            if (_raceTelemetrySettings != null && _raceTelemetrySettings.IsDisposed)
+                _raceTelemetrySettings = null;
 
-            if (_raceTelemetryExportSettings == null)
+            if (_raceTelemetrySettings == null)
             {
-                _raceTelemetryExportSettings = new FormFileExportSettings(_raceTelemetryWriter,EDRace.RaceReportDescriptions(),"Race-", "Race Telemetry Settings");
-                _raceTelemetryExportSettings.ExportToControlTag(checkBoxExportRaceTelemetry);
+                _raceTelemetrySettings = new FormTelemetrySettings(_raceTelemetryWriter,EDRace.RaceReportDescriptions(),"Race-", "Race Telemetry Settings");
+                _raceTelemetrySettings.ExportToControlTag(checkBoxExportRaceTelemetry);
             }
-            _raceTelemetryExportSettings.Show(this);
+            _raceTelemetrySettings.Show(this);
         }
 
         private void buttonCommanderTelemetryExportSettings_Click(object sender, EventArgs e)
         {
-            if (_targetTelemetryExportSettings != null && _targetTelemetryExportSettings.IsDisposed)
-                _targetTelemetryExportSettings = null;
+            if (_targetTelemetrySettings != null && _targetTelemetrySettings.IsDisposed)
+                _targetTelemetrySettings = null;
 
-            if (_targetTelemetryExportSettings == null)
+            if (_targetTelemetrySettings == null)
             {
-                _targetTelemetryExportSettings = new FormFileExportSettings(_trackedTelemetryWriter, EDRaceStatus.RaceReportDescriptions(), "Target-", "Target Telemetry Settings");
-                _targetTelemetryExportSettings.ExportToControlTag(checkBoxExportTargetTelemetry);
+                _targetTelemetrySettings = new FormTelemetrySettings(_trackedTelemetryWriter, EDRaceStatus.RaceReportDescriptions(), "Target-", "Target Telemetry Settings");
+                _targetTelemetrySettings.ExportToControlTag(checkBoxExportTargetTelemetry);
             }
-            _targetTelemetryExportSettings.Show(this);
+            _targetTelemetrySettings.Show(this);
         }
 
         private void checkBoxShowRaceTelemetry_CheckedChanged(object sender, EventArgs e)
@@ -474,11 +705,14 @@ namespace Race_Manager
 
             if (checkBoxShowRaceTelemetry.Checked)
             {
-                if (_raceTelemetryDisplay == null)
+                if (_raceTelemetryDisplay == null || _raceTelemetryDisplay.IsDisposed)
                 {
                     _raceTelemetryDisplay = new FormTelemetryDisplay(_raceTelemetryWriter);
-                    _raceTelemetryDisplay.InitialiseColumns(EDRace.RaceReportDescriptions());
                     _raceTelemetryDisplay.Show(this);
+                    int rows = 0;
+                    if (_race != null)
+                        rows = _race.Contestants.Count;
+                    _raceTelemetryDisplay.InitialiseColumns(EDRace.RaceReportDescriptions(), rows);
                 }
                 else if (!_raceTelemetryDisplay.Visible)
                     _raceTelemetryDisplay.Show(this);
@@ -497,10 +731,10 @@ namespace Race_Manager
 
             if (checkBoxShowTargetTelemetry.Checked)
             {
-                if (_targetTelemetryDisplay == null)
+                if (_targetTelemetryDisplay == null || _targetTelemetryDisplay.IsDisposed)
                 {
                     _targetTelemetryDisplay = new FormTelemetryDisplay(_trackedTelemetryWriter);
-                    _targetTelemetryDisplay.InitialiseColumns(EDRaceStatus.RaceReportDescriptions());
+                    _targetTelemetryDisplay.InitialiseRows(EDRaceStatus.RaceReportDescriptions());
                     _targetTelemetryDisplay.Show(this);
                 }
                 else if (!_targetTelemetryDisplay.Visible)
@@ -513,6 +747,110 @@ namespace Race_Manager
                 _targetTelemetryDisplay.Hide();
         }
 
+        private void buttonUneliminate_Click(object sender, EventArgs e)
+        {
+            if (listBoxParticipants.SelectedIndex < 0)
+                return;
 
+            Resurrect((string)listBoxParticipants.SelectedItem);
+        }
+
+        private void buttonTrackParticipant_Click(object sender, EventArgs e)
+        {
+            if (listBoxParticipants.SelectedIndex < 0)
+                return;
+
+            for (int i=0; i<comboBoxTarget.Items.Count; i++)
+                if (((string)listBoxParticipants.SelectedItem).Equals((string)comboBoxTarget.Items[i]))
+                {
+                    comboBoxTarget.SelectedIndex = i;
+                    break;
+                }
+        }
+
+        private void radioButtonUseCustomServer_CheckedChanged(object sender, EventArgs e)
+        {
+            textBoxUploadServer.Enabled = radioButtonUseCustomServer.Checked;
+            StartWatching();
+        }
+
+        private void radioButtonUseDefaultServer_CheckedChanged(object sender, EventArgs e)
+        {
+            textBoxUploadServer.Enabled = radioButtonUseCustomServer.Checked;
+            StartWatching();
+        }
+
+        private void checkBoxAllowSRV_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateAllowedVehicles();
+        }
+
+        private void checkBoxAllowFighter_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateAllowedVehicles();
+        }
+
+        private void checkBoxAllowMainShip_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateAllowedVehicles();
+        }
+
+        private void checkBoxLappedRace_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBoxLappedRace.Checked)
+            {
+                numericUpDownLapCount.Enabled = true;
+                if (_race != null)
+                    _race.Laps = (int)numericUpDownLapCount.Value;
+            }
+            else
+            {
+                numericUpDownLapCount.Enabled = false;
+                if (_race != null)
+                    _race.Laps = 0;
+            }
+        }
+
+        private void buttonEditStatusMessages_Click(object sender, EventArgs e)
+        {
+            using (FormStatusMessages formStatusMessages = new FormStatusMessages())
+            {
+                if (formStatusMessages.ShowDialog(this) == DialogResult.OK)
+                    EDRace.StatusMessages = formStatusMessages.StatusMessages();
+            }
+        }
+
+        private void checkBoxCustomStatusMessages_CheckedChanged(object sender, EventArgs e)
+        {
+            buttonEditStatusMessages.Enabled = checkBoxCustomStatusMessages.Checked;
+        }
+
+        private void comboBoxTarget_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (_updatingTargets)
+                return;
+        }
+
+        private void timerTrackTarget_Tick(object sender, EventArgs e)
+        {
+            if (!checkBoxShowTargetTelemetry.Checked || comboBoxTarget.SelectedIndex<0)
+                return;
+
+            _targetCommander = (string)comboBoxTarget.SelectedItem;
+            if (checkBoxTargetClosestTo.Checked)
+                _targetCommander = FindClosestTo(_targetCommander);
+
+            Action action = new Action(() =>
+            {                
+                EDRaceStatus commanderStatus = GetCommanderRaceStatus(_targetCommander);
+                if (commanderStatus != null)
+                {
+                    Dictionary<string, string> commanderTelemetry = commanderStatus.Telemetry();
+                    _targetTelemetryDisplay.UpdateTargetData(commanderTelemetry);
+                    _trackedTelemetryWriter.ExportFiles(commanderTelemetry);
+                }
+            });
+            Task.Run(action);
+        }
     }
 }

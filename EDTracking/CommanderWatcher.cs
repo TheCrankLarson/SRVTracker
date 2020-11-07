@@ -20,6 +20,7 @@ namespace EDTracking
         private static string _lastStatus = "";
         private static string _serverUrl = "";
         private static byte _outstandingRequests = 0;
+        private static DateTime _lastCheckForStaleData = DateTime.MinValue;
 
         public delegate void UpdateReceivedEventHandler(object sender, EDEvent edEvent);
         public static event UpdateReceivedEventHandler UpdateReceived;
@@ -48,7 +49,7 @@ namespace EDTracking
             }
         }
 
-        public static EDEvent GetCommanderStatus(string commander)
+        public static EDEvent GetCommanderMostRecentEvent(string commander)
         {
             if (_commanderStatuses.ContainsKey(commander))
                 return _commanderStatuses[commander];
@@ -96,11 +97,13 @@ namespace EDTracking
 
                 if (commanders.Length > 0)
                 {
+                    List<string> receivedCommanders = new List<string>();
                     for (int i = 0; i < commanders.Length; i++)
                     {
                         EDEvent edEvent = EDEvent.FromJson(commanders[i]);
                         if (edEvent != null && !String.IsNullOrEmpty(edEvent.Commander))
                         {
+                            receivedCommanders.Add(edEvent.Commander);
                             if (_commanderStatuses.ContainsKey(edEvent.Commander))
                             {
                                 if (edEvent.TimeStamp > _commanderStatuses[edEvent.Commander].TimeStamp)
@@ -119,6 +122,25 @@ namespace EDTracking
                             }
                         }
                     }
+
+                    if (DateTime.Now.Subtract(_lastCheckForStaleData).TotalMinutes > 1)
+                    {
+                        List<string> missingCommanders = new List<string>();
+                        foreach (string storedCommander in _commanderStatuses.Keys)
+                            if (!receivedCommanders.Contains(storedCommander))
+                                missingCommanders.Add(storedCommander);
+
+                        if (missingCommanders.Count > 0)
+                        {
+                            lock (_lock)
+                            {
+                                foreach (string missingCommander in missingCommanders)
+                                    _commanderStatuses.Remove(missingCommander);
+                            }
+                            countChanged = true;
+                        }
+                    }
+
                     if (countChanged)
                         OnlineCountChanged?.Invoke(null, null);
                 }

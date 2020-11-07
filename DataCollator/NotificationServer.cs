@@ -26,6 +26,7 @@ namespace DataCollator
         private Dictionary<string, EDEvent> _playerStatus = new Dictionary<string, EDEvent>(); //  Store last known status (with coordinates) of client
         private Dictionary<string, EDRaceStatus> _commanderStatus = new Dictionary<string, EDRaceStatus>();
         private readonly object _notificationLock = new object();
+        private readonly object _logWriteLock = new object();
         private FileStream _logStream = null;
         private Dictionary<Guid, EDRace> _races;
         private DateTime _lastStaleDataCheck = DateTime.Now;
@@ -175,9 +176,9 @@ namespace DataCollator
 
             try
             {
-                if (!_commanderStatus.ContainsKey(updateEvent.Commander))
+                lock (_notificationLock)
                 {
-                    lock (_notificationLock)
+                    if (!_commanderStatus.ContainsKey(updateEvent.Commander))
                     {
                         _commanderStatus.Add(updateEvent.Commander, new EDRaceStatus(updateEvent));
                         if (_playerStatus.ContainsKey(updateEvent.Commander))
@@ -191,27 +192,23 @@ namespace DataCollator
                             Log($"Received status update for new commander: {updateEvent.Commander}", true);
                         }
                     }
-                    return;
-                }
-
-                if (_commanderStatus[updateEvent.Commander].TimeStamp > updateEvent.TimeStamp)
-                {
-                    Log($"Event timestamp ({updateEvent.TimeStamp}) older than existing timestamp ({_commanderStatus[updateEvent.Commander].TimeStamp}): {updateEvent.Commander}", true);
-                    return;
-                }
-
-                lock (_notificationLock)
-                {
-                    _commanderStatus[updateEvent.Commander].UpdateStatus(updateEvent);
-                    if (_playerStatus.ContainsKey(updateEvent.Commander))
+                    else if (_commanderStatus[updateEvent.Commander].TimeStamp > updateEvent.TimeStamp)
                     {
-                        _playerStatus[updateEvent.Commander] = updateEvent;
-                        Log($"Processed status update for commander: {updateEvent.Commander}", true);
+                        Log($"Event timestamp ({updateEvent.TimeStamp}) older than existing timestamp ({_commanderStatus[updateEvent.Commander].TimeStamp}): {updateEvent.Commander}", true);
                     }
                     else
                     {
-                        _playerStatus.Add(updateEvent.Commander, updateEvent);
-                        Log($"Received status update for new commander: {updateEvent.Commander}", true);
+                        _commanderStatus[updateEvent.Commander].UpdateStatus(updateEvent);
+                        if (_playerStatus.ContainsKey(updateEvent.Commander))
+                        {
+                            _playerStatus[updateEvent.Commander] = updateEvent;
+                            Log($"Processed status update for commander: {updateEvent.Commander}", true);
+                        }
+                        else
+                        {
+                            _playerStatus.Add(updateEvent.Commander, updateEvent);
+                            Log($"Received status update for new commander: {updateEvent.Commander}", true);
+                        }
                     }
                 }
             }
@@ -248,7 +245,11 @@ namespace DataCollator
 
         public void ListenerCallback(IAsyncResult result)
         {
-            _Listener.BeginGetContext(new AsyncCallback(ListenerCallback), _Listener);
+            try
+            {
+                _Listener.BeginGetContext(new AsyncCallback(ListenerCallback), _Listener);
+            }
+            catch { }
             try
             {
                 HttpListener listener = (HttpListener)result.AsyncState;
@@ -681,8 +682,11 @@ namespace DataCollator
             if (DateTime.Now.Subtract(_lastCommanderStatusBuilt).TotalMilliseconds > 750)
             {
                 StringBuilder status = new StringBuilder();
-                foreach (string id in _playerStatus.Keys)
-                    status.AppendLine(_playerStatus[id].ToJson());
+                lock (_notificationLock)
+                {
+                    foreach (string id in _playerStatus.Keys)
+                        status.AppendLine(_playerStatus[id].ToJson());
+                }
                 Log("All player status generated");
                 _lastCommanderStatus = status.ToString();
                 _lastCommanderStatusBuilt = DateTime.Now;
@@ -811,18 +815,21 @@ namespace DataCollator
             if ( (_logStream == null) || (Verbose && !VerboseDebugEnabled) )
                 return;
 
-            try
+            lock (_logWriteLock)
             {
-                byte[] buffer = System.Text.Encoding.UTF8.GetBytes($"{DateTime.Now:HH:mm:ss} {log}{Environment.NewLine}");
-                _logStream.Write(buffer, 0, buffer.Length);
-                _flushCount++;
-                if (_flushCount > 50)
+                try
                 {
-                    _logStream.Flush();
-                    _flushCount = 0;
+                    byte[] buffer = System.Text.Encoding.UTF8.GetBytes($"{DateTime.Now:HH:mm:ss} {log}{Environment.NewLine}");
+                    _logStream.Write(buffer, 0, buffer.Length);
+                    _flushCount++;
+                    if (_flushCount > 50)
+                    {
+                        _logStream.Flush();
+                        _flushCount = 0;
+                    }
                 }
+                catch { }
             }
-            catch { }
         }
     }
 }

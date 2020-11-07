@@ -50,6 +50,26 @@ namespace SRVTracker
             if (_locations == null)
                 LoadLocations();
 
+            if (String.IsNullOrEmpty(location.Name))
+            {
+                // This is grossly inefficient, and is a hopefully temporary way to ensure names are present and unique
+                int count = 1;
+                bool nameIsUnique = true;
+                string locationName;
+                do
+                {
+                    nameIsUnique = true;
+                    locationName = $"Location {count}";
+                    foreach (EDLocation l in _locations)
+                        if (l.Name.Equals(locationName))
+                        {
+                            nameIsUnique = false;
+                            break;
+                        }
+                    count++;
+                } while (!nameIsUnique);
+                location.Name = locationName;
+            }
             _locations.Add(location);
             SaveLocationsToFile();
             LocationAdded?.Invoke(null, location);

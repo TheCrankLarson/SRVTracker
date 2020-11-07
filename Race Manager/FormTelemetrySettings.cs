@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,14 +11,14 @@ using System.Windows.Forms;
 
 namespace Race_Manager
 {
-    public partial class FormFileExportSettings : Form
+    public partial class FormTelemetrySettings : Form
     {
         private TelemetryWriter _telemetryWriter = null;
         private Dictionary<string, String> _reportDescriptions = null;
         private string _filePrefix = "";
         private Control _exportControl = null;
 
-        public FormFileExportSettings(TelemetryWriter telemetryWriter, Dictionary<string, string> ReportDescriptions, string ExportFilePrefix="", string WindowTitle="")
+        public FormTelemetrySettings(TelemetryWriter telemetryWriter, Dictionary<string, string> ReportDescriptions, string ExportFilePrefix="", string WindowTitle="")
         {
             InitializeComponent();
             _telemetryWriter = telemetryWriter;
@@ -26,6 +27,17 @@ namespace Race_Manager
             if (!String.IsNullOrEmpty(WindowTitle))
                 this.Text = WindowTitle;
             InitialiseList();
+            if (String.IsNullOrEmpty(_telemetryWriter.ExportDirectory))
+            {
+                radioButtonExportToApplicationFolder.Checked = true;
+                textBoxExportFolder.Enabled = false;
+                buttonBrowseExportFolder.Enabled = false;
+            }
+            else
+            {
+                textBoxExportFolder.Text = _telemetryWriter.ExportDirectory;
+                radioButtonExportToOtherFolder.Checked = true;
+            }
         }
 
         public void ExportToControlTag(Control ExportControl)
@@ -105,6 +117,31 @@ namespace Race_Manager
                     _exportControl.Invoke(action);
                 else
                     action();
+            }
+        }
+
+        private void buttonBrowseExportFolder_Click(object sender, EventArgs e)
+        {
+            using (SaveFileDialog saveFileDialog = new SaveFileDialog())
+            {
+                saveFileDialog.InitialDirectory = textBoxExportFolder.Text;
+                saveFileDialog.Filter = "text files (*.txt)|*.edrace|All files (*.*)|*.*";
+                saveFileDialog.FilterIndex = 1;
+                saveFileDialog.RestoreDirectory = true;
+                saveFileDialog.FileName = "Race-Report.txt";
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        FileInfo fileInfo = new FileInfo(saveFileDialog.FileName);
+                        string directory = fileInfo.DirectoryName;
+                        if (!directory.EndsWith("\\"))
+                            directory = $"{directory}\\";
+                        textBoxExportFolder.Text=directory;
+                        _telemetryWriter.ExportDirectory = textBoxExportFolder.Text;
+                    }
+                    catch { }
+                }
             }
         }
     }
