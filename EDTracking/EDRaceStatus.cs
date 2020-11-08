@@ -316,6 +316,145 @@ namespace EDTracking
             return !_race.ShipAllowed;
         }
 
+        private void ValidateRaceLeader()
+        {
+            if (_race != null && _race.Leader.Eliminated)
+            {
+                // We were the race leader, so we need to work out the new leader
+                EDRaceStatus leader = null;
+                foreach (EDRaceStatus status in _race.Statuses.Values)
+                {
+                    if (!status.Eliminated)
+                        if (leader == null || status.TotalDistanceLeft < leader.TotalDistanceLeft)
+                            leader = status;
+                    if (status.Finished)
+                        break; // If someone has finished they'll be at the last waypoint, so no need to check further
+                }
+                _race.Leader = leader;
+            }
+        }
+
+        private void ProcessTouchdownEvent(EDEvent updateEvent)
+        {
+            _lastTouchDown = updateEvent.TimeStamp;
+            if (DateTime.Now.Subtract(_pitStopStartTime).TotalSeconds > 120)
+                _pitStopStartTime = _lastTouchDown;
+        }
+
+        private void ProcessShipTargetedEvent(EDEvent updateEvent)
+        {
+            string commanderName = Commander;
+            if (commanderName.StartsWith("cmdr", StringComparison.OrdinalIgnoreCase))
+                commanderName = commanderName.Substring(5);
+            if (updateEvent.TargetedShipName.EndsWith($"{commanderName};", StringComparison.OrdinalIgnoreCase) && (_pitStopStartTime == DateTime.MinValue))
+                _pitStopStartTime = updateEvent.TimeStamp;
+        }
+
+        private void ProcessSRVDestroyedEvent()
+        {
+            if (!EliminateOnDestruction())
+                return;
+
+            // Eliminated
+            Eliminated = true;
+            AddRaceHistory("SRV destroyed");
+            notableEvents?.AddStatusEvent("EliminatedNotification", Commander);
+            DistanceToWaypoint = decimal.MaxValue;
+            ValidateRaceLeader();
+            SpeedInMS = 0;
+            _speedCalculationLocation = null;
+            Hull = 0;
+        }
+
+        private void ProcessFighterDestroyedEvent()
+        {
+            if (!EliminateOnDestruction())
+                return;
+
+            // Eliminated
+            Eliminated = true;
+            AddRaceHistory("Fighter destroyed");
+            notableEvents?.AddStatusEvent("EliminatedNotification", Commander);
+            DistanceToWaypoint = decimal.MaxValue;
+            ValidateRaceLeader();
+            SpeedInMS = 0;
+            _speedCalculationLocation = null;
+            Hull = 0;
+        }
+
+        private void ProcessDockSRVEvent(EDEvent updateEvent)
+        {
+            if (!Finished && AllowPitStops())
+            {
+                // We only increase pitstop count on DockSRV
+                _lastDockSRV = updateEvent.TimeStamp;
+                PitStopCount++;
+                Hull = 1;
+                notableEvents?.AddStatusEvent("PitstopNotification", Commander);
+                _inPits = true;
+                if (_pitStopStartTime == DateTime.MinValue)
+                    _pitStopStartTime = _lastDockSRV;
+            }
+        }
+
+        private void ProcessSynthesisEvent(EDEvent updateEvent)
+        {
+        }
+
+        private void ProcessLaunchSRVEvent()
+        {
+            if (!Finished && AllowPitStops())
+            {
+                if (_pitStopStartTime > DateTime.MinValue)
+                    AddRaceHistory($"Pitstop {PitStopCount} took {DateTime.Now.Subtract(_pitStopStartTime):mm\\:ss}");
+                else if (PitStopCount > 0)
+                    AddRaceHistory($"Pitstop {PitStopCount} completed (time unknown)");
+
+                _pitStopStartTime = DateTime.MinValue;
+            }
+            _inPits = false;
+            Hull = 1; // Hull is repaired when in ship, so ensure we have this set
+        }
+
+        private void ProcessFlags()
+        {
+            if (Flags < 1)
+                return;
+
+            if (isFlagSet(StatusFlags.In_SRV) || isFlagSet(StatusFlags.In_MainShip) || isFlagSet(StatusFlags.In_Fighter))
+            {
+                // We have a valid vehicle flag, so check the vehicle is allowed
+                bool vehicleDisallowed = false;
+                if (!_race.SRVAllowed && isFlagSet(StatusFlags.In_SRV))
+                    vehicleDisallowed = true;
+                if (!_race.ShipAllowed && isFlagSet(StatusFlags.In_MainShip))
+                {
+                    if (_race.AllowPitstops)
+                        vehicleDisallowed = !isFlagSet(StatusFlags.Landed_on_planet_surface) && !isFlagSet(StatusFlags.Docked_on_a_landing_pad);
+                    else
+                        vehicleDisallowed = true;
+                }
+                if (!_race.FighterAllowed && isFlagSet(StatusFlags.In_Fighter))
+                    vehicleDisallowed = true;
+
+                if (vehicleDisallowed)
+                {
+                    Eliminated = true;
+                    notableEvents?.AddStatusEvent("EliminatedNotification", Commander);
+                    AddRaceHistory("Selected vehicle not allowed");
+                    DistanceToWaypoint = decimal.MaxValue;
+                    SpeedInMS = 0;
+                    _speedCalculationLocation = null;
+                }
+            }
+
+            if (_inPits)
+                if (isFlagSet(StatusFlags.In_SRV) && !isFlagSet(StatusFlags.Srv_UnderShip))
+                    _inPits = false;
+
+            _lowFuel = isFlagSet(StatusFlags.Low_Fuel);
+        }
+
         public void UpdateStatus(EDEvent updateEvent)
         {
             // Update our status based on the passed event
@@ -397,79 +536,42 @@ namespace EDTracking
             if (!Started)
                 return;
 
-            if (updateEvent.EventName.Equals("SRVDestroyed") && EliminateOnDestruction())
+            ProcessFlags();
+
+            switch (updateEvent.EventName)
             {
-                // Eliminated
-                Eliminated = true;
-                AddRaceHistory("SRV destroyed");
-                notableEvents?.AddStatusEvent("EliminatedNotification", Commander);
-                DistanceToWaypoint = decimal.MaxValue;
-                if (_race != null && _race.Leader.Eliminated)
-                {
-                    // We were the race leader, so we need to work out the new leader
-                    EDRaceStatus leader = null;
-                    foreach (EDRaceStatus status in _race.Statuses.Values)
-                    {
-                        if (!status.Eliminated)
-                            if (leader == null || status.TotalDistanceLeft < leader.TotalDistanceLeft)
-                                leader = status;
-                        if (status.Finished)
-                            break; // If someone has finished they'll be at the last waypoint, so no need to check further
-                    }
-                    _race.Leader = leader;
-                }
-                SpeedInMS = 0;
-                _speedCalculationLocation = null;
-                Hull = 0;
-            }
+                case "SRVDestroyed":
+                    ProcessSRVDestroyedEvent();
+                    break;
 
-            if (updateEvent.EventName.Equals("ShipTargeted"))  // "$RolePanel2_unmanned; $cmdr_decorate:#name=Crank Larson;"
-            {
-                string commanderName = Commander;
-                if (commanderName.StartsWith("cmdr", StringComparison.OrdinalIgnoreCase))
-                    commanderName = commanderName.Substring(5);
-                if (updateEvent.TargetedShipName.EndsWith($"{commanderName};", StringComparison.OrdinalIgnoreCase) && (_pitStopStartTime == DateTime.MinValue))
-                    _pitStopStartTime = updateEvent.TimeStamp;
-            }
+                case "FighterDestroyed":
+                    ProcessFighterDestroyedEvent();
+                    break;
 
-            if (updateEvent.EventName.Equals("Touchdown") && !updateEvent.PlayerControlled)
-            {
-                _lastTouchDown = updateEvent.TimeStamp;
-                if (DateTime.Now.Subtract(_pitStopStartTime).TotalSeconds > 120)
-                    _pitStopStartTime = _lastTouchDown;
-            }
+                case "ShipTargeted":
+                    ProcessShipTargetedEvent(updateEvent);
+                    break;
 
-            if (updateEvent.EventName.Equals("Liftoff"))
-                _lastTouchDown = DateTime.MinValue;
+                case "Touchdown":
+                    ProcessTouchdownEvent(updateEvent);
+                    break;
 
-            if (updateEvent.EventName.Equals("DockSRV"))
-            {
-                if (!Finished && AllowPitStops())
-                {
-                    // We only increase pitstop count on DockSRV
-                    _lastDockSRV = updateEvent.TimeStamp;
-                    PitStopCount++;
-                    Hull = 1;
-                    notableEvents?.AddStatusEvent("PitstopNotification", Commander);
-                    _inPits = true;
-                    if (_pitStopStartTime == DateTime.MinValue)
-                        _pitStopStartTime = _lastDockSRV;
-                }
-            }
+                case "Liftoff":
+                    _lastTouchDown = DateTime.MinValue;
+                    break;
 
-            if (updateEvent.EventName.Equals("LaunchSRV"))
-            {
-                if (!Finished && AllowPitStops())
-                {
-                    if (_pitStopStartTime > DateTime.MinValue)
-                        AddRaceHistory($"Pitstop {PitStopCount} took {DateTime.Now.Subtract(_pitStopStartTime):mm\\:ss}");
-                    else if (PitStopCount > 0)
-                        AddRaceHistory($"Pitstop {PitStopCount} completed (time unknown)");
+                case "DockSRV":
+                    ProcessDockSRVEvent(updateEvent);
+                    break;
 
-                    _pitStopStartTime = DateTime.MinValue;
-                }
-                _inPits = false;
-                Hull = 1; // Hull is repaired when in ship, so ensure we have this set
+                case "LaunchSRV":
+                    ProcessLaunchSRVEvent();
+                    break;
+
+                case "Synthesis":
+                    ProcessSynthesisEvent(updateEvent);
+                    break;
+                    
             }
 
             if (updateEvent.HasCoordinates() && _race != null)
@@ -544,28 +646,6 @@ namespace EDTracking
                     AddRaceHistory($"{(DistanceToWaypoint / 1000):F1}km to {_race.Route.Waypoints[WaypointIndex].Name}");
                     _nextLogDistanceToWaypoint = DistanceToWaypoint - 5000;
                 }
-            }
-
-            if (Flags > 0)
-            {
-                if (EliminateOnShipFlight())
-                {
-                    if (!isFlagSet(StatusFlags.In_SRV) && !isFlagSet(StatusFlags.Landed_on_planet_surface) && !isFlagSet(StatusFlags.Docked_on_a_landing_pad) )
-                    {
-                        Eliminated = true;
-                        notableEvents?.AddStatusEvent("EliminatedNotification", Commander);
-                        AddRaceHistory("Eliminated as detected not in SRV and not landed");
-                        DistanceToWaypoint = decimal.MaxValue;
-                        SpeedInMS = 0;
-                        _speedCalculationLocation = null; 
-                    }
-                }
-
-                if (_inPits)
-                    if (isFlagSet(StatusFlags.In_SRV) && !isFlagSet(StatusFlags.Srv_UnderShip))
-                        _inPits = false;
-
-                _lowFuel = isFlagSet(StatusFlags.Low_Fuel);
             }
 
             GenerateStatus();

@@ -735,7 +735,7 @@ namespace Race_Manager
             {
                 if (_targetTelemetryDisplay == null || _targetTelemetryDisplay.IsDisposed)
                 {
-                    _targetTelemetryDisplay = new FormTelemetryDisplay(_trackedTelemetryWriter);
+                    _targetTelemetryDisplay = new FormTelemetryDisplay(_trackedTelemetryWriter, "Commander Telemetry");
                     _targetTelemetryDisplay.InitialiseRows(EDRaceStatus.RaceReportDescriptions());
                     _targetTelemetryDisplay.Show(this);
                 }
