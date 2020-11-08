@@ -172,7 +172,7 @@ namespace EDTracking
             double lon1 = ConvertToRadians(SourceLocation.Longitude);
 
 
-            double lat2 = Math.Asin(Math.Sin(lat1) * Math.Cos(d / R) + Math.Cos(lat1) * Math.Sin((double)Distance / r) * Math.Cos((double)Bearing));
+            double lat2 = Math.Asin(Math.Sin(lat1) * Math.Cos((double)Distance / r) + Math.Cos(lat1) * Math.Sin((double)Distance / r) * Math.Cos((double)Bearing));
             double lon2 = lon1 + Math.Atan2(Math.Sin((double)Bearing) * Math.Sin((double)Distance / r) * Math.Cos(lat1),
                                 Math.Cos((double)Distance / r) - Math.Sin(lat1) * Math.Sin(lat2));
 
