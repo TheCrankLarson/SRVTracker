@@ -80,6 +80,27 @@ namespace EDTracking
             return ConvertToRadians((double)angle);
         }
 
+        public static decimal ConvertToDegrees(decimal radians)
+        {
+            return radians * 180 / (decimal)Math.PI;
+        }
+
+        public static decimal ConvertToDegrees(double radians)
+        {
+            return (decimal)(radians * 180 / Math.PI);
+        }
+
+        public static decimal ConvertToBearing(decimal radians)
+        {
+            return (ConvertToDegrees(radians) + 360) % 360;
+        }
+
+        public static decimal ConvertToBearing(double radians)
+        {
+            // convert radians to degrees (as bearing: 0...360)
+            return (ConvertToDegrees(radians) + 360) % 360;
+        }
+
         public static decimal DistanceBetween(EDLocation location1, EDLocation location2)
         {
             if (location1==null || location2==null || location1.PlanetaryRadius != location2.PlanetaryRadius)
@@ -128,23 +149,7 @@ namespace EDTracking
                 Math.Tan(ConvertToRadians(targetLocation.Latitude) / 2 + Math.PI / 4) / Math.Tan(ConvertToRadians(sourceLocation.Latitude) / 2 + Math.PI / 4));
             if (Math.Abs(dLon) > Math.PI)
                 dLon = dLon > 0 ? -(2 * Math.PI - dLon) : (2 * Math.PI + dLon);
-            return ConvertToBearing((decimal)(Math.Atan2(dLon, dPhi)));
-        }
-
-        public static decimal ConvertToDegrees(decimal radians)
-        {
-            return radians * 180 / (decimal)Math.PI;
-        }
-
-        public static decimal ConvertToDegrees(double radians)
-        {
-            return (decimal)(radians * 180 / Math.PI);
-        }
-
-        public static decimal ConvertToBearing(decimal radians)
-        {
-            // convert radians to degrees (as bearing: 0...360)
-            return (ConvertToDegrees(radians) + 360) % 360;
+            return ConvertToBearing(Math.Atan2(dLon, dPhi));
         }
 
         public static decimal BearingDelta(decimal b1, decimal b2)
@@ -177,7 +182,6 @@ namespace EDTracking
                                 Math.Cos((double)Distance / r) - Math.Sin(lat1) * Math.Sin(lat2));
 
             return new EDLocation(ConvertToDegrees(lat2), ConvertToDegrees(lon2), 0, SourceLocation.PlanetaryRadius);
-
         }
 
         public static bool PassedBetween(EDLocation GatePost1, EDLocation GatePost2, EDLocation PreviousLocation, EDLocation CurrentLocation)
