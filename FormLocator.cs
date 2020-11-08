@@ -101,6 +101,13 @@ namespace SRVTracker
             return _activeLocator;
         }
 
+        private decimal DistanceBetween(EDLocation location1, EDLocation location2)
+        {
+            if (checkBoxIncludeAltitudeInDistanceCalculations.Checked)
+                return EDLocation.DistanceBetweenIncludingAltitude(location1, location2);
+            return EDLocation.DistanceBetween(location1, location2);
+        }
+
         private void CommanderWatcher_UpdateReceived(object sender, EDEvent edEvent)
         {
             if (!edEvent.HasCoordinates() || edEvent.Commander.Equals(FormTracker.ClientId))
@@ -111,7 +118,7 @@ namespace SRVTracker
                 // If we are tracking the closest commander to us, we need to check all updates and change our tracking target as necessary
                 // We just check if the distance from this commander is closer than our currently tracked target
 
-                decimal distanceToCommander = EDLocation.DistanceBetween(FormTracker.CurrentLocation, edEvent.Location());
+                decimal distanceToCommander = DistanceBetween(FormTracker.CurrentLocation, edEvent.Location());
                 if (distanceToCommander == 0) // This is impossible, and just means we haven't got data on the tracked target
                     distanceToCommander = decimal.MaxValue;
                 if (distanceToCommander < _closestCommanderDistance)
@@ -233,7 +240,7 @@ namespace SRVTracker
             bool displayChanged = false;
             try
             {
-                decimal distance = EDLocation.DistanceBetween(FormTracker.CurrentLocation, _targetPosition);
+                decimal distance = DistanceBetween(FormTracker.CurrentLocation, _targetPosition);
                 string d = locatorHUD1.SetDistance(distance);
                 decimal bearing = EDLocation.BearingToLocation(FormTracker.CurrentLocation, _targetPosition);
                 if (locatorHUD1.SetBearing((int)bearing, FormTracker.CurrentHeading))
@@ -412,16 +419,7 @@ namespace SRVTracker
                     else
                         action();
                 }
-            }
-            /*
-            if (!groupBoxBearing.Text.Equals(bearingInfo))
-            {
-                action = new Action(() => { groupBoxBearing.Text = bearingInfo; });
-                if (groupBoxBearing.InvokeRequired)
-                    groupBoxBearing.Invoke(action);
-                else
-                    action();
-            } */          
+            }         
         }
 
         private void buttonTrackCommander_Click(object sender, EventArgs e)
@@ -715,11 +713,6 @@ namespace SRVTracker
                 ReleaseCapture();
                 SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
             }
-        }
-
-        private void checkBoxIncludeAltitudeInDistanceCalculations_CheckedChanged(object sender, EventArgs e)
-        {
-
         }
     }
 }

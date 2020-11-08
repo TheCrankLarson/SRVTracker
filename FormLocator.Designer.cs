@@ -31,7 +31,6 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormLocator));
             this.groupBoxDestination = new System.Windows.Forms.GroupBox();
-            this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.textBoxAltitude = new System.Windows.Forms.TextBox();
             this.textBoxLatitude = new System.Windows.Forms.TextBox();
@@ -53,8 +52,8 @@
             this.buttonUseCurrentLocation = new System.Windows.Forms.Button();
             this.buttonClose = new System.Windows.Forms.Button();
             this.pictureBoxMoveForm = new System.Windows.Forms.PictureBox();
-            this.locatorHUD1 = new SRVTracker.LocatorHUD();
             this.checkBoxIncludeAltitudeInDistanceCalculations = new System.Windows.Forms.CheckBox();
+            this.locatorHUD1 = new SRVTracker.LocatorHUD();
             this.groupBoxDestination.SuspendLayout();
             this.groupBoxBearing.SuspendLayout();
             this.groupBoxOtherCommanders.SuspendLayout();
@@ -65,7 +64,6 @@
             // 
             this.groupBoxDestination.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.groupBoxDestination.Controls.Add(this.checkBoxIncludeAltitudeInDistanceCalculations);
-            this.groupBoxDestination.Controls.Add(this.label3);
             this.groupBoxDestination.Controls.Add(this.label2);
             this.groupBoxDestination.Controls.Add(this.textBoxAltitude);
             this.groupBoxDestination.Controls.Add(this.textBoxLatitude);
@@ -79,15 +77,6 @@
             this.groupBoxDestination.TabIndex = 0;
             this.groupBoxDestination.TabStop = false;
             this.groupBoxDestination.Text = "Target location";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(220, 16);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(42, 13);
-            this.label3.TabIndex = 5;
-            this.label3.Text = "Altitude";
             // 
             // label2
             // 
@@ -105,7 +94,7 @@
             this.textBoxAltitude.Location = new System.Drawing.Point(223, 32);
             this.textBoxAltitude.Name = "textBoxAltitude";
             this.textBoxAltitude.ReadOnly = true;
-            this.textBoxAltitude.Size = new System.Drawing.Size(81, 20);
+            this.textBoxAltitude.Size = new System.Drawing.Size(102, 20);
             this.textBoxAltitude.TabIndex = 3;
             this.toolTip1.SetToolTip(this.textBoxAltitude, "The target\'s altitude");
             // 
@@ -332,6 +321,18 @@
             this.toolTip1.SetToolTip(this.pictureBoxMoveForm, "Click and drag here to move the form");
             this.pictureBoxMoveForm.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBoxMoveForm_MouseDown);
             // 
+            // checkBoxIncludeAltitudeInDistanceCalculations
+            // 
+            this.checkBoxIncludeAltitudeInDistanceCalculations.AutoSize = true;
+            this.checkBoxIncludeAltitudeInDistanceCalculations.Location = new System.Drawing.Point(223, 15);
+            this.checkBoxIncludeAltitudeInDistanceCalculations.Name = "checkBoxIncludeAltitudeInDistanceCalculations";
+            this.checkBoxIncludeAltitudeInDistanceCalculations.Size = new System.Drawing.Size(61, 17);
+            this.checkBoxIncludeAltitudeInDistanceCalculations.TabIndex = 6;
+            this.checkBoxIncludeAltitudeInDistanceCalculations.Text = "Altitude";
+            this.toolTip1.SetToolTip(this.checkBoxIncludeAltitudeInDistanceCalculations, "When selected, distance calculations take altitude into account.\r\nBy default, alt" +
+        "itude is ignored and ground distance is calculated.");
+            this.checkBoxIncludeAltitudeInDistanceCalculations.UseVisualStyleBackColor = true;
+            // 
             // locatorHUD1
             // 
             this.locatorHUD1.BackColor = System.Drawing.Color.Black;
@@ -340,18 +341,6 @@
             this.locatorHUD1.Name = "locatorHUD1";
             this.locatorHUD1.Size = new System.Drawing.Size(260, 60);
             this.locatorHUD1.TabIndex = 3;
-            // 
-            // checkBoxIncludeAltitudeInDistanceCalculations
-            // 
-            this.checkBoxIncludeAltitudeInDistanceCalculations.AutoSize = true;
-            this.checkBoxIncludeAltitudeInDistanceCalculations.Location = new System.Drawing.Point(310, 35);
-            this.checkBoxIncludeAltitudeInDistanceCalculations.Name = "checkBoxIncludeAltitudeInDistanceCalculations";
-            this.checkBoxIncludeAltitudeInDistanceCalculations.Size = new System.Drawing.Size(15, 14);
-            this.checkBoxIncludeAltitudeInDistanceCalculations.TabIndex = 6;
-            this.toolTip1.SetToolTip(this.checkBoxIncludeAltitudeInDistanceCalculations, "When selected, distance calculations take altitude into account.\r\nBy default, alt" +
-        "itude is ignored and ground distance is calculated.");
-            this.checkBoxIncludeAltitudeInDistanceCalculations.UseVisualStyleBackColor = true;
-            this.checkBoxIncludeAltitudeInDistanceCalculations.CheckedChanged += new System.EventHandler(this.checkBoxIncludeAltitudeInDistanceCalculations_CheckedChanged);
             // 
             // FormLocator
             // 
@@ -397,7 +386,6 @@
         #endregion
 
         private System.Windows.Forms.GroupBox groupBoxDestination;
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox textBoxAltitude;
         private System.Windows.Forms.TextBox textBoxLatitude;
