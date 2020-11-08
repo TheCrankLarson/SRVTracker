@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Text.Json;
+using EDTracking;
 
 namespace Race_Manager
 {
@@ -12,6 +13,7 @@ namespace Race_Manager
     {
         private Dictionary<string, string> _reportsToExport = new Dictionary<string, string>();
         private Dictionary<string, string> _lastReport = new Dictionary<string, string>();
+        private Dictionary<string, string> _lastHTMLData = new Dictionary<string, string>();
         private string _exportDirectory = "";
         public event EventHandler SelectionChanged;
 
@@ -116,6 +118,58 @@ namespace Race_Manager
             string json = JsonSerializer.Serialize(_reportsToExport);
             _reportsToExport.Remove("ExportDirectory");
             return json;
+        }
+
+        private string _htmlTemplateBeforeTable = "";
+        private string _htmlTemplateAfterTable = "";
+        private string _htmlRowTemplate = "";
+        private string _lastHtml = "";
+        private bool PrepareHTMLTemplate(string HTMLTemplate)
+        {
+            try
+            {
+                int tableStart = HTMLTemplate.IndexOf("<!-- #LEADERBOARD# -->");
+                int tableEnd = HTMLTemplate.IndexOf("<!-- #/LEADERBOARD# -->") + 23;
+                if (tableStart < 0 || tableEnd < 23)
+                    return false;
+                _htmlTemplateBeforeTable = HTMLTemplate.Substring(0, tableStart);
+                _htmlTemplateAfterTable = HTMLTemplate.Substring(tableEnd);
+                _htmlRowTemplate = HTMLTemplate.Substring(tableStart + 23, tableEnd - tableStart - 46);
+                return true;
+            }
+            catch
+            {
+                _htmlTemplateBeforeTable = "";  // Force reload if HTML export enabled again
+            }
+            return false;
+        }
+
+        public string GenerateLeaderboardAsHTML(Dictionary<string, string> ReportSource, string HTMLTemplate)
+        {
+            if (String.IsNullOrEmpty(_htmlTemplateBeforeTable))
+                if (!PrepareHTMLTemplate(HTMLTemplate))
+                    return null;
+
+            if (!ReportSource.ContainsKey("Positions"))
+                return null;
+
+            StringBuilder html = new StringBuilder(_htmlTemplateBeforeTable);
+
+            Dictionary<string, string[]> dataPoints = new Dictionary<string, string[]>();
+            foreach (string dataToExport in ReportSource.Keys)
+                dataPoints.Add(dataToExport, ReportSource[dataToExport].Split(new string[] { Environment.NewLine }, StringSplitOptions.None));
+
+            for (int i = 0; i < dataPoints["Positions"].Length; i++)
+            {
+                string rowHtml = _htmlRowTemplate;
+                foreach (string dataPoint in dataPoints.Keys)
+                    rowHtml = _htmlRowTemplate.Replace(dataPoint, dataPoints[dataPoint][i]);
+
+                html.AppendLine(rowHtml);
+            }
+            html.AppendLine(_htmlTemplateAfterTable);
+
+            return html.ToString();
         }
     }
 }
