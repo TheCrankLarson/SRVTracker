@@ -471,6 +471,8 @@ namespace Race_Manager
             buttonStartRace.Enabled = true;
             buttonReset.Enabled = false;
             buttonRaceHistory.Enabled = false;
+            _raceTelemetryWriter.ClearFiles();
+            _trackedTelemetryWriter.ClearFiles();
             _skipAutoAdd = new List<string>();
         }
 

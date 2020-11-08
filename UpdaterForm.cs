@@ -145,7 +145,7 @@ namespace SRVTracker
             DownloadAndExtractZip();
             AddLog($"Update complete.  Restarting application.");
             string appPath = $"{Application.ExecutablePath.Substring(0, Application.ExecutablePath.Length - 11)}.exe";
-            _updater.LaunchApplication(appPath);
+            Updater.LaunchApplication(appPath);
         }
 
         private void buttonNo_MouseClick(object sender, MouseEventArgs e)

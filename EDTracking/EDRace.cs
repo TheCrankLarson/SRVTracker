@@ -367,7 +367,7 @@ namespace EDTracking
                 };
         }
 
-        public string ExportRaceStatistics(int maxStatusLength = 20)
+        public string ExportRaceStatistics(int maxStatusLength = 40)
         {
             // Export the current leaderboard
 

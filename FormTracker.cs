@@ -758,6 +758,12 @@ namespace SRVTracker
 
         private void buttonRaceTracker_Click(object sender, EventArgs e)
         {
+            if (File.Exists("Race Manager.exe"))
+            {
+                // Use the external race manager if it is available
+                Updater.LaunchApplication("Race Manager.exe");
+                return;
+            }
             if (_formRaceMonitor != null)
             {
                 try

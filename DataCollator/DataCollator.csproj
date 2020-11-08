@@ -187,4 +187,8 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>powershell.exe $(SolutionDir)Deploy\Prepare-Deployment.ps1 -SolutionDir $(SolutionDir) -TargetPath $(TargetPath) -OutDir $(OutDir)
+</PostBuildEvent>
+  </PropertyGroup>
 </Project>

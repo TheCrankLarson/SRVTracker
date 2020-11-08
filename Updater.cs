@@ -267,7 +267,7 @@ namespace SRVTracker
             return false;
         }
 
-        public void LaunchApplication(string ApplicationPath)
+        public static void LaunchApplication(string ApplicationPath)
         {
             var psi = new ProcessStartInfo();
 
