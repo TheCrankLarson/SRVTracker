@@ -21,6 +21,7 @@ namespace EDTracking
         public DateTime TimeTracked { get; internal set; }  // To store the time the location was recorded when route recording
         private static int _nextWaypointNumber = 1;
         public Dictionary<string, string> ExtendedWaypointInformation { get; set; } = new Dictionary<string, string>();
+        public List<EDLocation> AdditionalLocations { get; set; } = new List<EDLocation>();
 
         public EDWaypoint()
         { }
@@ -40,6 +41,12 @@ namespace EDTracking
         {
             TimeTracked = timeTracked;
             Radius = radius;
+        }
+
+        public bool IsValid()
+        {
+            // Check if the waypoint has all the required parameters for its type
+            return true;
         }
 
         public string Name
@@ -78,6 +85,15 @@ namespace EDTracking
             return false;
         }
 
+        private bool GateHit(EDLocation currentLocation, EDLocation previousLocation)
+        {
+            //  We need to test if the line between current and last location intersects
+            // the line of the gate
+            if (AdditionalLocations.Count < 1)
+                return false;
+            return EDLocation.PassedBetween(Location, AdditionalLocations[0],previousLocation, currentLocation);
+        }
+
         public bool WaypointHit(EDLocation currentLocation, EDLocation previousLocation)
         {
             // Used for testing all waypoint types
@@ -85,13 +101,16 @@ namespace EDTracking
             if (!ExtendedWaypointInformation.ContainsKey("WaypointType"))
             {
                 // This is a basic waypoint
-                return LocationIsWithinWaypoint(currentLocation);
+                bool waypointHit = LocationIsWithinWaypoint(currentLocation);
+                if (!waypointHit && (AllowPassing))
+                    waypointHit = WaypointIsBehind(currentLocation, EDLocation.BearingToLocation(previousLocation, currentLocation));
+                return waypointHit;
             }
 
             switch (ExtendedWaypointInformation["WaypointType"])
             {
                 case "Gate": // This type of waypoint requires the target to pass between two points
-                    return false;
+                    return GateHit(currentLocation, previousLocation);
 
             }
             return false;

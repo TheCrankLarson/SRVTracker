@@ -343,6 +343,16 @@ namespace SRVTracker.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap ReversePath_16x {
+            get {
+                object obj = ResourceManager.GetObject("ReversePath_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Route_planner_16x16bw {
             get {
                 object obj = ResourceManager.GetObject("Route planner 16x16bw", resourceCulture);

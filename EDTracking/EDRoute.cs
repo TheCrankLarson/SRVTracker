@@ -32,9 +32,9 @@ namespace EDTracking
             Waypoints = waypoints;
         }
 
-        private void CalculateDistances()
+        private void CalculateDistances(bool force = false)
         {
-            if (Waypoints.Count == _lastWaypointCount)
+            if (!force || Waypoints.Count == _lastWaypointCount)
                 return;
 
             _distanceLeftAtWaypoint = new List<decimal>();
@@ -93,6 +93,10 @@ namespace EDTracking
             catch { }
         }
 
-
+        public void ReverseRoute()
+        {
+            Waypoints.Reverse();
+            CalculateDistances(true);
+        }
     }
 }

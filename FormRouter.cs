@@ -147,10 +147,8 @@ namespace SRVTracker
 
             if (buttonPlay.Enabled)
             {
-                // We are currently tracking
+                // We are currently replaying a route
                 bool moveToNextWaypoint = _route.Waypoints[_nextWaypoint].WaypointHit(FormTracker.CurrentLocation, FormTracker.PreviousLocation);
-                if (!moveToNextWaypoint && (_route.Waypoints[_nextWaypoint].AllowPassing) && (_nextWaypoint>0) )
-                    moveToNextWaypoint = _route.Waypoints[_nextWaypoint].WaypointIsBehind(FormTracker.CurrentLocation, EDLocation.BearingToLocation(_route.Waypoints[_nextWaypoint-1].Location, _route.Waypoints[_nextWaypoint].Location));
                 if (moveToNextWaypoint)
                 {
                     // Arrived at the waypoint, target the next
@@ -181,10 +179,11 @@ namespace SRVTracker
                 return;
             }
 
-            if (EDLocation.DistanceBetween(_lastLoggedLocation, FormTracker.CurrentLocation) >= (decimal)numericUpDownRecordDistance.Value)
+            if (EDLocation.DistanceBetween(_lastLoggedLocation, FormTracker.CurrentLocation) >= numericUpDownRecordDistance.Value)
             {
-                _lastLoggedLocation = FormTracker.CurrentLocation;
+                _lastLoggedLocation = FormTracker.CurrentLocation.Copy();
                 AddLocationToRoute(_lastLoggedLocation);
+                PlayEventSound("New waypoint recorded");
             }
         }
 
@@ -489,7 +488,7 @@ namespace SRVTracker
 
         private string[] SoundEvents()
         {
-            string[] soundEvents= { "Arrived at waypoint", "Route completed" };
+            string[] soundEvents= { "Arrived at waypoint", "Route completed", "New waypoint recorded" };
             return soundEvents;
         }
 
@@ -571,11 +570,9 @@ namespace SRVTracker
             UpdateSoundUI();
         }
 
-        private bool _internalComboUpdate = false;
         private void listBoxAudioEvents_SelectedIndexChanged(object sender, EventArgs e)
         {
             UpdateSoundUI();
-            _internalComboUpdate = true;
             for (int i=0; i<comboBoxChooseSound.Items.Count; i++)
                 if (((string)comboBoxChooseSound.Items[i]).Equals(_eventSounds[(string)listBoxAudioEvents.SelectedItem]))
                 {
@@ -602,12 +599,6 @@ namespace SRVTracker
 
         private void comboBoxChooseSound_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (_internalComboUpdate)
-            {
-                // Used to suppress action when we change the combobox
-                _internalComboUpdate = false;
-                return;
-            }
             if (comboBoxChooseSound.SelectedIndex<0 || listBoxAudioEvents.SelectedIndex<0)
             {
                 UpdateSoundUI();
@@ -628,7 +619,6 @@ namespace SRVTracker
                     {
                         _soundSources.Add(selectedSound);
                         comboBoxChooseSound.Items.Add(selectedSound);
-                        _internalComboUpdate = true;
                         comboBoxChooseSound.SelectedIndex = comboBoxChooseSound.Items.Count - 1;
                     }
                 }
@@ -648,36 +638,43 @@ namespace SRVTracker
 
             if (_eventSounds[eventName].StartsWith("System"))
             {
-                // System sound
-                switch (_eventSounds[eventName])
+                try
                 {
-                    case "System.Asterisk":
-                        System.Media.SystemSounds.Asterisk.Play();
-                        break;
+                    // System sound
+                    switch (_eventSounds[eventName])
+                    {
+                        case "System.Asterisk":
+                            System.Media.SystemSounds.Asterisk.Play();
+                            break;
 
-                    case "System.Beep":
-                        System.Media.SystemSounds.Beep.Play();
-                        break;
+                        case "System.Beep":
+                            System.Media.SystemSounds.Beep.Play();
+                            break;
 
-                    case "System.Exclamation":
-                        System.Media.SystemSounds.Exclamation.Play();
-                        break;
+                        case "System.Exclamation":
+                            System.Media.SystemSounds.Exclamation.Play();
+                            break;
 
-                    case "System.Hand":
-                        System.Media.SystemSounds.Hand.Play();
-                        break;
+                        case "System.Hand":
+                            System.Media.SystemSounds.Hand.Play();
+                            break;
 
-                    case "System.Question":
-                        System.Media.SystemSounds.Question.Play();
-                        break;
+                        case "System.Question":
+                            System.Media.SystemSounds.Question.Play();
+                            break;
+                    }
                 }
+                catch { }
                 return;
             }
 
             // Assume that the sound is an audio file
             if (!File.Exists(_eventSounds[eventName]))
             {
-                System.Media.SystemSounds.Exclamation.Play();
+                try
+                {
+                    System.Media.SystemSounds.Exclamation.Play();
+                } catch { }
                 return;
             }
 
@@ -687,6 +684,12 @@ namespace SRVTracker
                 _soundPlayer.Play();
             }
             catch { }
+        }
+
+        private void buttonReverseWaypointOrder_Click(object sender, EventArgs e)
+        {
+            _route.ReverseRoute();
+            DisplayRoute();
         }
     }
 }
