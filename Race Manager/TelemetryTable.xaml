@@ -17,6 +17,6 @@
                 <DropShadowEffect/>
             </DataGrid.Effect>
         </DataGrid>
-        <Image x:Name="Logo" Source="Cranky Metrics.png" Stretch="Fill" Width="4"/>
+        <Image x:Name="Logo" Source="Cranky Metrics.png"  Width="4"/>
     </StackPanel>
 </UserControl>

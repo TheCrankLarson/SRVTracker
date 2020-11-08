@@ -69,7 +69,7 @@
             this.checkBoxEnableAudio = new System.Windows.Forms.CheckBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.groupBoxAudioSettings = new System.Windows.Forms.GroupBox();
             this.listBoxAudioEvents = new System.Windows.Forms.ListBox();
             this.comboBoxChooseSound = new System.Windows.Forms.ComboBox();
             this.groupBox2.SuspendLayout();
@@ -83,7 +83,7 @@
             this.groupBox1.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.groupBox3.SuspendLayout();
-            this.groupBox6.SuspendLayout();
+            this.groupBoxAudioSettings.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox2
@@ -496,7 +496,6 @@
             // checkBoxEnableAudio
             // 
             this.checkBoxEnableAudio.AutoSize = true;
-            this.checkBoxEnableAudio.Enabled = false;
             this.checkBoxEnableAudio.Location = new System.Drawing.Point(6, 19);
             this.checkBoxEnableAudio.Name = "checkBoxEnableAudio";
             this.checkBoxEnableAudio.Size = new System.Drawing.Size(65, 17);
@@ -527,17 +526,17 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Play options";
             // 
-            // groupBox6
+            // groupBoxAudioSettings
             // 
-            this.groupBox6.Controls.Add(this.comboBoxChooseSound);
-            this.groupBox6.Controls.Add(this.listBoxAudioEvents);
-            this.groupBox6.Controls.Add(this.checkBoxEnableAudio);
-            this.groupBox6.Location = new System.Drawing.Point(630, 61);
-            this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(163, 231);
-            this.groupBox6.TabIndex = 17;
-            this.groupBox6.TabStop = false;
-            this.groupBox6.Text = "Audio Settings";
+            this.groupBoxAudioSettings.Controls.Add(this.comboBoxChooseSound);
+            this.groupBoxAudioSettings.Controls.Add(this.listBoxAudioEvents);
+            this.groupBoxAudioSettings.Controls.Add(this.checkBoxEnableAudio);
+            this.groupBoxAudioSettings.Location = new System.Drawing.Point(630, 61);
+            this.groupBoxAudioSettings.Name = "groupBoxAudioSettings";
+            this.groupBoxAudioSettings.Size = new System.Drawing.Size(163, 231);
+            this.groupBoxAudioSettings.TabIndex = 17;
+            this.groupBoxAudioSettings.TabStop = false;
+            this.groupBoxAudioSettings.Text = "Audio Settings";
             // 
             // listBoxAudioEvents
             // 
@@ -546,6 +545,7 @@
             this.listBoxAudioEvents.Name = "listBoxAudioEvents";
             this.listBoxAudioEvents.Size = new System.Drawing.Size(151, 160);
             this.listBoxAudioEvents.TabIndex = 2;
+            this.listBoxAudioEvents.SelectedIndexChanged += new System.EventHandler(this.listBoxAudioEvents_SelectedIndexChanged);
             // 
             // comboBoxChooseSound
             // 
@@ -556,13 +556,14 @@
             this.comboBoxChooseSound.Name = "comboBoxChooseSound";
             this.comboBoxChooseSound.Size = new System.Drawing.Size(151, 21);
             this.comboBoxChooseSound.TabIndex = 3;
+            this.comboBoxChooseSound.SelectedIndexChanged += new System.EventHandler(this.comboBoxChooseSound_SelectedIndexChanged);
             // 
             // FormRouter
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(806, 304);
-            this.Controls.Add(this.groupBox6);
+            this.Controls.Add(this.groupBoxAudioSettings);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox2);
@@ -590,8 +591,8 @@
             this.groupBox5.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
-            this.groupBox6.ResumeLayout(false);
-            this.groupBox6.PerformLayout();
+            this.groupBoxAudioSettings.ResumeLayout(false);
+            this.groupBoxAudioSettings.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -637,7 +638,7 @@
         private System.Windows.Forms.ComboBox comboBoxWaypointType;
         private System.Windows.Forms.GroupBox groupBoxBasic;
         private System.Windows.Forms.CheckBox checkBoxEnableAudio;
-        private System.Windows.Forms.GroupBox groupBox6;
+        private System.Windows.Forms.GroupBox groupBoxAudioSettings;
         private System.Windows.Forms.ComboBox comboBoxChooseSound;
         private System.Windows.Forms.ListBox listBoxAudioEvents;
     }

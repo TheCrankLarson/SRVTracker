@@ -149,7 +149,6 @@
     <Compile Include="FormAddLocation.Designer.cs">
       <DependentUpon>FormAddLocation.cs</DependentUpon>
     </Compile>
-    <Compile Include="ConfigSaverClass.cs" />
     <Compile Include="FormDrone.cs">
       <SubType>Form</SubType>
     </Compile>
