@@ -20,6 +20,7 @@ namespace EDTracking
         public int Direction { get; set; } = -1;
         public DateTime TimeTracked { get; internal set; }  // To store the time the location was recorded when route recording
         private static int _nextWaypointNumber = 1;
+        public Dictionary<string, string> ExtendedWaypointInformation { get; set; } = new Dictionary<string, string>();
 
         public EDWaypoint()
         { }
@@ -74,6 +75,25 @@ namespace EDTracking
             decimal directionOfWaypoint = EDLocation.BearingDelta(bearingToWaypoint, DirectionOfTravel);
             if (Math.Abs(directionOfWaypoint) > 90)
                 return true;
+            return false;
+        }
+
+        public bool WaypointHit(EDLocation currentLocation, EDLocation previousLocation)
+        {
+            // Used for testing all waypoint types
+
+            if (!ExtendedWaypointInformation.ContainsKey("WaypointType"))
+            {
+                // This is a basic waypoint
+                return LocationIsWithinWaypoint(currentLocation);
+            }
+
+            switch (ExtendedWaypointInformation["WaypointType"])
+            {
+                case "Gate": // This type of waypoint requires the target to pass between two points
+                    return false;
+
+            }
             return false;
         }
 

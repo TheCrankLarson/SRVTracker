@@ -148,7 +148,7 @@ namespace SRVTracker
             if (buttonPlay.Enabled)
             {
                 // We are currently tracking
-                bool moveToNextWaypoint = _route.Waypoints[_nextWaypoint].LocationIsWithinWaypoint(FormTracker.CurrentLocation);
+                bool moveToNextWaypoint = _route.Waypoints[_nextWaypoint].WaypointHit(FormTracker.CurrentLocation, FormTracker.PreviousLocation);
                 if (!moveToNextWaypoint && (_route.Waypoints[_nextWaypoint].AllowPassing) && (_nextWaypoint>0) )
                     moveToNextWaypoint = _route.Waypoints[_nextWaypoint].WaypointIsBehind(FormTracker.CurrentLocation, EDLocation.BearingToLocation(_route.Waypoints[_nextWaypoint-1].Location, _route.Waypoints[_nextWaypoint].Location));
                 if (moveToNextWaypoint)
@@ -681,8 +681,12 @@ namespace SRVTracker
                 return;
             }
 
-            _soundPlayer.SoundLocation=_eventSounds[eventName];
-            _soundPlayer.Play();
+            try
+            {
+                _soundPlayer.SoundLocation = _eventSounds[eventName];
+                _soundPlayer.Play();
+            }
+            catch { }
         }
     }
 }

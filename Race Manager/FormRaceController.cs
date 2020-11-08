@@ -118,7 +118,7 @@ namespace Race_Manager
                     return; // Already tracking this commander
                 if (checkBoxAutoAddCommanders.Checked && edEvent.HasCoordinates())
                     if (_race.Route.Waypoints.Count > 0)
-                        if (!_skipAutoAdd.Contains(edEvent.Commander) && _race.Route.Waypoints[0].LocationIsWithinWaypoint(edEvent.Location()))
+                        if (!_skipAutoAdd.Contains(edEvent.Commander) && _race.Route.Waypoints[0].WaypointHit(edEvent.Location(), null))
                             AddTrackedCommander(edEvent.Commander);
             }
         }

@@ -48,7 +48,7 @@ namespace EDTracking
         private bool _lowFuel = false;
         private StringBuilder _raceHistory = new StringBuilder();
         private decimal _nextLogDistanceToWaypoint = decimal.MaxValue;
-        private EDLocation _speedCalculationLocation = null;
+        private EDLocation _previousLocation = null;
         private DateTime _speedCalculationTimeStamp = DateTime.UtcNow;
         private decimal _lastSpeedInMs = 0;
         private decimal _lastLoggedMaxSpeed = 50;  // We don't log any maximum speeds below 50m/s
@@ -283,7 +283,7 @@ namespace EDTracking
                 TimeStamp = DateTime.Now;
                 Eliminated = false;
                 DistanceToWaypoint = decimal.MaxValue;
-                _speedCalculationLocation = null;
+                _previousLocation = null;
                 AddRaceHistory("Resurrected (elimination manually rescinded)");
                 return true;
             }
@@ -362,7 +362,7 @@ namespace EDTracking
             DistanceToWaypoint = decimal.MaxValue;
             ValidateRaceLeader();
             SpeedInMS = 0;
-            _speedCalculationLocation = null;
+            _previousLocation = null;
             Hull = 0;
         }
 
@@ -378,7 +378,7 @@ namespace EDTracking
             DistanceToWaypoint = decimal.MaxValue;
             ValidateRaceLeader();
             SpeedInMS = 0;
-            _speedCalculationLocation = null;
+            _previousLocation = null;
             Hull = 0;
         }
 
@@ -444,7 +444,7 @@ namespace EDTracking
                     AddRaceHistory("Selected vehicle not allowed");
                     DistanceToWaypoint = decimal.MaxValue;
                     SpeedInMS = 0;
-                    _speedCalculationLocation = null;
+                    _previousLocation = null;
                 }
             }
 
@@ -485,25 +485,25 @@ namespace EDTracking
                     // We take a speed calculation once every 750 milliseconds
 
                     decimal speedInMS = 0;
-                    if (_speedCalculationLocation != null)
+                    if (_previousLocation != null)
                     {
-                        decimal distanceBetweenLocations = EDLocation.DistanceBetween(_speedCalculationLocation, updateEvent.Location());
+                        decimal distanceBetweenLocations = EDLocation.DistanceBetween(_previousLocation, updateEvent.Location());
                         speedInMS = distanceBetweenLocations * 1000 / (decimal)timeBetweenLocations.TotalMilliseconds;
                         if ((speedInMS - _lastSpeedInMs) > 200 && (timeBetweenLocations.TotalMilliseconds < 3000))
                         {
                             // If the speed increases by more than 200m/s in three seconds, this is most likely due to respawn (i.e. invalid)
                             speedInMS = 0;
-                            _speedCalculationLocation = null;
+                            _previousLocation = null;
                         }
                         else
                         {
-                            _speedCalculationLocation = updateEvent.Location();
+                            _previousLocation = updateEvent.Location();
                             _speedCalculationTimeStamp = updateEvent.TimeStamp;
                         }
                     }
                     else
                     {
-                        _speedCalculationLocation = updateEvent.Location();
+                        _previousLocation = updateEvent.Location();
                         _speedCalculationTimeStamp = updateEvent.TimeStamp;
                     }
 
@@ -588,7 +588,7 @@ namespace EDTracking
                 if ((_race.Leader == null) || (TotalDistanceLeft < _race.Leader.TotalDistanceLeft))
                     _race.Leader = this;
 
-                if (_race.Route.Waypoints[WaypointIndex].LocationIsWithinWaypoint(Location))
+                if (_race.Route.Waypoints[WaypointIndex].WaypointHit(Location,_previousLocation))
                 {
                     // Commander has reached the target waypoint
                     if (_race.Laps > 0 && WaypointIndex != 0)
