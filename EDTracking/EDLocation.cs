@@ -136,6 +136,11 @@ namespace EDTracking
             return radians * 180 / (decimal)Math.PI;
         }
 
+        public static decimal ConvertToDegrees(double radians)
+        {
+            return (decimal)(radians * 180 / Math.PI);
+        }
+
         public static decimal ConvertToBearing(decimal radians)
         {
             // convert radians to degrees (as bearing: 0...360)
@@ -154,6 +159,25 @@ namespace EDTracking
 				d += 360;
  
 			return d;
+        }
+
+        public static EDLocation LocationFrom(EDLocation SourceLocation, decimal Bearing, decimal Distance)
+        {
+            // Return the location that is the specified distance away from source location at the given bearing
+
+            double r = (double)SourceLocation.PlanetaryRadius;
+            if (r < 1)
+                return null;
+            double lat1 = ConvertToRadians(SourceLocation.Latitude);
+            double lon1 = ConvertToRadians(SourceLocation.Longitude);
+
+
+            double lat2 = Math.Asin(Math.Sin(lat1) * Math.Cos(d / R) + Math.Cos(lat1) * Math.Sin((double)Distance / r) * Math.Cos((double)Bearing));
+            double lon2 = lon1 + Math.Atan2(Math.Sin((double)Bearing) * Math.Sin((double)Distance / r) * Math.Cos(lat1),
+                                Math.Cos((double)Distance / r) - Math.Sin(lat1) * Math.Sin(lat2));
+
+            return new EDLocation(ConvertToDegrees(lat2), ConvertToDegrees(lon2), 0, SourceLocation.PlanetaryRadius);
+
         }
 
         public static bool PassedBetween(EDLocation GatePost1, EDLocation GatePost2, EDLocation PreviousLocation, EDLocation CurrentLocation)

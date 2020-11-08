@@ -366,13 +366,15 @@
             this.comboBoxWaypointType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxWaypointType.FormattingEnabled = true;
             this.comboBoxWaypointType.Items.AddRange(new object[] {
-            "Basic (point with radius)"});
+            "Basic (point with radius)",
+            "Gate (pass between two points)"});
             this.comboBoxWaypointType.Location = new System.Drawing.Point(90, 45);
             this.comboBoxWaypointType.Name = "comboBoxWaypointType";
             this.comboBoxWaypointType.Size = new System.Drawing.Size(236, 21);
             this.comboBoxWaypointType.TabIndex = 12;
             this.toolTip1.SetToolTip(this.comboBoxWaypointType, "The waypoint type.  This affects the criteria that are used\r\nto determine if a wa" +
         "ypoint has been reached/passed.");
+            this.comboBoxWaypointType.SelectedIndexChanged += new System.EventHandler(this.comboBoxWaypointType_SelectedIndexChanged);
             // 
             // label3
             // 
@@ -649,6 +651,7 @@
             this.buttonEditGateLocation2.Size = new System.Drawing.Size(22, 22);
             this.buttonEditGateLocation2.TabIndex = 5;
             this.buttonEditGateLocation2.UseVisualStyleBackColor = true;
+            this.buttonEditGateLocation2.Click += new System.EventHandler(this.buttonEditGateLocation2_Click);
             // 
             // buttonEditGateLocation1
             // 
@@ -658,6 +661,7 @@
             this.buttonEditGateLocation1.Size = new System.Drawing.Size(22, 22);
             this.buttonEditGateLocation1.TabIndex = 4;
             this.buttonEditGateLocation1.UseVisualStyleBackColor = true;
+            this.buttonEditGateLocation1.Click += new System.EventHandler(this.buttonEditGateLocation1_Click);
             // 
             // FormRouter
             // 

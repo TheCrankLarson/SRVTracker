@@ -13,6 +13,7 @@ using System.Media;
 using System.Speech.Synthesis;
 using System.Text.Json;
 using System.IO;
+using Valve.VR;
 
 namespace SRVTracker
 {
@@ -690,6 +691,85 @@ namespace SRVTracker
         {
             _route.ReverseRoute();
             DisplayRoute();
+        }
+
+        private void CalculateGateTarget(EDWaypoint gateWaypoint)
+        {
+            // Calculates the target location for the Gate waypoint
+            // Target will be mid-point between the two gates
+
+            if (gateWaypoint.AdditionalLocations.Count == 0)
+                return;
+            if (gateWaypoint.AdditionalLocations.Count == 1)
+                gateWaypoint.Location = gateWaypoint.AdditionalLocations[0];
+            else  if (gateWaypoint.AdditionalLocations[0] == null)
+                gateWaypoint.Location = gateWaypoint.AdditionalLocations[1];
+            else
+            {
+                // We work out the midpoint between the two locations
+                decimal distanceBetweenLocations = EDLocation.DistanceBetween(gateWaypoint.AdditionalLocations[0], gateWaypoint.AdditionalLocations[1]);
+                decimal bearingToLocation = EDLocation.BearingToLocation(gateWaypoint.AdditionalLocations[0], gateWaypoint.AdditionalLocations[1]);
+                gateWaypoint.Location = EDLocation.LocationFrom(gateWaypoint.AdditionalLocations[0], bearingToLocation, distanceBetweenLocations / 2);
+            }
+        }
+
+        private void buttonEditGateLocation1_Click(object sender, EventArgs e)
+        {
+            if (listBoxWaypoints.SelectedIndex < 0)
+                return;
+            EDLocation gateLocation = FormTracker.CurrentLocation?.Copy();
+            gateLocation.Name = "Gate 1";
+            if (gateLocation == null)
+                return;
+
+            EDWaypoint thisWaypoint = _route.Waypoints[listBoxWaypoints.SelectedIndex];
+            if (thisWaypoint.AdditionalLocations.Count > 0)
+                thisWaypoint.AdditionalLocations[0] = gateLocation;
+            else
+                thisWaypoint.AdditionalLocations.Add(gateLocation);
+            CalculateGateTarget(thisWaypoint);
+            comboBoxGateLocation1.Text = gateLocation.Name;
+        }
+
+        private void buttonEditGateLocation2_Click(object sender, EventArgs e)
+        {
+            if (listBoxWaypoints.SelectedIndex < 0)
+                return;
+            EDLocation gateLocation = FormTracker.CurrentLocation?.Copy();
+            gateLocation.Name = "Gate 2";
+            if (gateLocation == null)
+                return;
+            EDWaypoint thisWaypoint = _route.Waypoints[listBoxWaypoints.SelectedIndex];
+            if (thisWaypoint.AdditionalLocations.Count < 1)
+                thisWaypoint.AdditionalLocations.Add(null);
+            if (thisWaypoint.AdditionalLocations.Count > 1)
+                thisWaypoint.AdditionalLocations[1] = gateLocation;
+            else
+                thisWaypoint.AdditionalLocations.Add(gateLocation);
+            CalculateGateTarget(thisWaypoint);
+            comboBoxGateLocation2.Text = gateLocation.Name;
+        }
+
+        private void ShowWaypointEditor(GroupBox ActiveEditor)
+        {
+            groupBoxBasic.Visible = false;
+            groupBoxGate.Visible = false;
+
+            ActiveEditor.Visible = true;
+        }
+
+        private void comboBoxWaypointType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            switch (comboBoxWaypointType.SelectedIndex)
+            {
+                case 0: // This is basic waypoint
+                    ShowWaypointEditor(groupBoxBasic);
+                    break;
+
+                case 1: // This is a gate
+                    ShowWaypointEditor(groupBoxGate);
+                    break;
+            }
         }
     }
 }

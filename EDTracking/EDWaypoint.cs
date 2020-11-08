@@ -98,11 +98,16 @@ namespace EDTracking
         {
             // Used for testing all waypoint types
 
+            if (MaximumAltitude > 0 && currentLocation.Altitude > MaximumAltitude)
+                return false;
+            if (currentLocation.Altitude < MinimumAltitude)
+                return false;
+
             if (!ExtendedWaypointInformation.ContainsKey("WaypointType"))
             {
                 // This is a basic waypoint
                 bool waypointHit = LocationIsWithinWaypoint(currentLocation);
-                if (!waypointHit && (AllowPassing))
+                if (!waypointHit && AllowPassing)
                     waypointHit = WaypointIsBehind(currentLocation, EDLocation.BearingToLocation(previousLocation, currentLocation));
                 return waypointHit;
             }
