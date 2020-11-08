@@ -149,7 +149,10 @@ namespace SRVTracker
             if (buttonPlay.Enabled)
             {
                 // We are currently replaying a route
-                bool moveToNextWaypoint = _route.Waypoints[_nextWaypoint].WaypointHit(FormTracker.CurrentLocation, FormTracker.PreviousLocation);
+                EDLocation previousWaypointLocation = null;
+                if (_nextWaypoint > 0)
+                    previousWaypointLocation = _route.Waypoints[_nextWaypoint - 1].Location;
+                bool moveToNextWaypoint = _route.Waypoints[_nextWaypoint].WaypointHit(FormTracker.CurrentLocation, FormTracker.PreviousLocation, previousWaypointLocation);
                 if (moveToNextWaypoint)
                 {
                     // Arrived at the waypoint, target the next

@@ -89,12 +89,12 @@ namespace EDTracking
         {
             //  We need to test if the line between current and last location intersects
             // the line of the gate
-            if (AdditionalLocations.Count < 1)
+            if ( AdditionalLocations.Count < 2 || AdditionalLocations[0]==null )
                 return false;
-            return EDLocation.PassedBetween(Location, AdditionalLocations[0],previousLocation, currentLocation);
+            return EDLocation.PassedBetween(AdditionalLocations[0], AdditionalLocations[1],previousLocation, currentLocation);
         }
 
-        public bool WaypointHit(EDLocation currentLocation, EDLocation previousLocation)
+        public bool WaypointHit(EDLocation currentLocation, EDLocation previousLocation, EDLocation previousWaypointLocation = null)
         {
             // Used for testing all waypoint types
 
@@ -107,8 +107,8 @@ namespace EDTracking
             {
                 // This is a basic waypoint
                 bool waypointHit = LocationIsWithinWaypoint(currentLocation);
-                if (!waypointHit && AllowPassing)
-                    waypointHit = WaypointIsBehind(currentLocation, EDLocation.BearingToLocation(previousLocation, currentLocation));
+                if (!waypointHit && AllowPassing && previousWaypointLocation != null)
+                    waypointHit = WaypointIsBehind(currentLocation, EDLocation.BearingToLocation(previousWaypointLocation, Location));
                 return waypointHit;
             }
 
