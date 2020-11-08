@@ -338,6 +338,7 @@
             // 
             // comboBoxGateLocation2
             // 
+            this.comboBoxGateLocation2.Enabled = false;
             this.comboBoxGateLocation2.FormattingEnabled = true;
             this.comboBoxGateLocation2.Location = new System.Drawing.Point(72, 46);
             this.comboBoxGateLocation2.Name = "comboBoxGateLocation2";
@@ -346,6 +347,7 @@
             // 
             // comboBoxGateLocation1
             // 
+            this.comboBoxGateLocation1.Enabled = false;
             this.comboBoxGateLocation1.FormattingEnabled = true;
             this.comboBoxGateLocation1.Location = new System.Drawing.Point(72, 19);
             this.comboBoxGateLocation1.Name = "comboBoxGateLocation1";
@@ -650,6 +652,7 @@
             this.buttonEditGateLocation2.Name = "buttonEditGateLocation2";
             this.buttonEditGateLocation2.Size = new System.Drawing.Size(22, 22);
             this.buttonEditGateLocation2.TabIndex = 5;
+            this.toolTip1.SetToolTip(this.buttonEditGateLocation2, "Add current location as gate marker 2");
             this.buttonEditGateLocation2.UseVisualStyleBackColor = true;
             this.buttonEditGateLocation2.Click += new System.EventHandler(this.buttonEditGateLocation2_Click);
             // 
@@ -660,6 +663,7 @@
             this.buttonEditGateLocation1.Name = "buttonEditGateLocation1";
             this.buttonEditGateLocation1.Size = new System.Drawing.Size(22, 22);
             this.buttonEditGateLocation1.TabIndex = 4;
+            this.toolTip1.SetToolTip(this.buttonEditGateLocation1, "Add current location as gate marker 1");
             this.buttonEditGateLocation1.UseVisualStyleBackColor = true;
             this.buttonEditGateLocation1.Click += new System.EventHandler(this.buttonEditGateLocation1_Click);
             // 

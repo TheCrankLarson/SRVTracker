@@ -219,10 +219,19 @@ namespace SRVTracker
         private void AddWaypointToRoute(EDWaypoint waypoint)
         {
             _route.Waypoints.Add(waypoint);
+            if (comboBoxWaypointType.SelectedIndex == 1)
+            {
+                waypoint.AdditionalLocations.Add(waypoint.Location.Copy());
+                waypoint.AdditionalLocations[0].Name = "Gate marker 1";
+            }
+
             Action action = new Action(() =>
             {
+
                 listBoxWaypoints.Items.Add(waypoint.Name);
                 listBoxWaypoints.SelectedIndex = listBoxWaypoints.Items.Count - 1;
+                comboBoxWaypointType_SelectedIndexChanged(null, null); // This ensures that the correct waypoint type is applied
+
             });
             if (listBoxWaypoints.InvokeRequired)
                 listBoxWaypoints.Invoke(action);
@@ -342,6 +351,21 @@ namespace SRVTracker
             }
 
             EDWaypoint waypoint = _route.Waypoints[listBoxWaypoints.SelectedIndex];
+            if (waypoint.ExtendedWaypointInformation.ContainsKey("WaypointType"))
+            {
+                switch (waypoint.ExtendedWaypointInformation["WaypointType"])
+                {
+                    case "Gate":
+                        comboBoxWaypointType.SelectedIndex = 1;
+                        if (waypoint.AdditionalLocations.Count > 0 && waypoint.AdditionalLocations[0] != null)
+                            comboBoxGateLocation1.Text = waypoint.AdditionalLocations[0].Name;
+                        if (waypoint.AdditionalLocations.Count > 1 && waypoint.AdditionalLocations[1] != null)
+                            comboBoxGateLocation2.Text = waypoint.AdditionalLocations[1].Name;
+                        break;
+                }
+            }
+            else
+                comboBoxWaypointType.SelectedIndex = 0;
             textBoxWaypointName.Text = waypoint.Name;
             numericUpDownRadius.Value = (decimal)waypoint.Radius;
             numericUpDownMinAltitude.Value = (decimal)waypoint.MinimumAltitude;
@@ -718,7 +742,7 @@ namespace SRVTracker
             if (listBoxWaypoints.SelectedIndex < 0)
                 return;
             EDLocation gateLocation = FormTracker.CurrentLocation?.Copy();
-            gateLocation.Name = "Gate 1";
+            gateLocation.Name = "Gate marker 1";
             if (gateLocation == null)
                 return;
 
@@ -736,7 +760,7 @@ namespace SRVTracker
             if (listBoxWaypoints.SelectedIndex < 0)
                 return;
             EDLocation gateLocation = FormTracker.CurrentLocation?.Copy();
-            gateLocation.Name = "Gate 2";
+            gateLocation.Name = "Gate marker 2";
             if (gateLocation == null)
                 return;
             EDWaypoint thisWaypoint = _route.Waypoints[listBoxWaypoints.SelectedIndex];
@@ -758,16 +782,41 @@ namespace SRVTracker
             ActiveEditor.Visible = true;
         }
 
+        private void SetWaypointType(string WaypointType=null)
+        {
+            if (listBoxWaypoints.SelectedIndex < 0)
+                return;
+
+            EDWaypoint waypoint = _route.Waypoints[listBoxWaypoints.SelectedIndex];
+            if (WaypointType == null)
+            {
+                if (waypoint.ExtendedWaypointInformation.ContainsKey("WaypointType"))
+                    waypoint.ExtendedWaypointInformation.Remove("WaypointType");
+                return;
+            }
+
+            if (waypoint.ExtendedWaypointInformation.ContainsKey("WaypointType"))
+            {
+                if (!waypoint.ExtendedWaypointInformation["WaypointType"].Equals(WaypointType))
+                    waypoint.ExtendedWaypointInformation["WaypointType"] = WaypointType;
+                return;
+            }
+                
+            waypoint.ExtendedWaypointInformation.Add("WaypointType", WaypointType);
+        }
+
         private void comboBoxWaypointType_SelectedIndexChanged(object sender, EventArgs e)
         {
             switch (comboBoxWaypointType.SelectedIndex)
             {
                 case 0: // This is basic waypoint
                     ShowWaypointEditor(groupBoxBasic);
+                    SetWaypointType(null);
                     break;
 
                 case 1: // This is a gate
                     ShowWaypointEditor(groupBoxGate);
+                    SetWaypointType("Gate");
                     break;
             }
         }
