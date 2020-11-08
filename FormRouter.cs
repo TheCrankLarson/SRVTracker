@@ -9,6 +9,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Media;
 using System.Speech.Synthesis;
 
 namespace SRVTracker
@@ -478,6 +479,14 @@ namespace SRVTracker
             AddWaypointToRoute(newWaypoint);
         }
 
+        public void InitSoundsList()
+        {
 
+        }
+
+        private void checkBoxEnableAudio_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

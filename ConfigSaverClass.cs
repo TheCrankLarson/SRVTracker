@@ -133,7 +133,7 @@ namespace SRVTracker
         public bool StoreButtonInfo { get; set; } = false;
 
         public bool StoreLabelInfo { get; set; } = false;
-        
+
         public bool StoreGroupboxInfo { get; set; } = false;
 
         public bool SaveConfiguration()
@@ -391,20 +391,12 @@ namespace SRVTracker
             if ((control is Button) && !StoreButtonInfo) return;
             if ((control is GroupBox) && !StoreGroupboxInfo) return;
             if (ExcludedControls.Contains(control)) return;
-            if (control.Tag != null)
-            {
-                if (control.Tag.Equals("NoConfigSave"))
-                    return;  // This control isn't being stored
-            }
 
-            if (control.Tag != null)
-            {
-                if (!control.Tag.Equals("NoTextSave"))
-                    appSettings.AppendLine(control.Name + ":Text:" + Encode(control.Text));
-            }
-            else
-                if( !(control is CheckBox) && !(control is RadioButton))
-                    appSettings.AppendLine(control.Name + ":Text:" + Encode(control.Text));
+            if (!(control is CheckBox) && !(control is RadioButton))
+                appSettings.AppendLine(control.Name + ":Text:" + Encode(control.Text));
+
+            if (!String.IsNullOrEmpty((string)control.Tag))
+                appSettings.AppendLine(control.Name + ":Tag:" + Encode((string)control.Tag));
 
             PropertyInfo prop = control.GetType().GetProperty("SelectedIndex", BindingFlags.Public | BindingFlags.Instance);
             if (prop != null && prop.CanWrite)
@@ -504,7 +496,7 @@ namespace SRVTracker
 
                         Control control = null;
                         if (!String.IsNullOrEmpty(controlSetting[0]))
-                        { 
+                        {
                             try
                             {
                                 Control[] matchingControls = _form.Controls.Find(controlSetting[0].Trim(), true);
@@ -539,15 +531,11 @@ namespace SRVTracker
                                     bRestore = false;
                                 else if (!StoreButtonInfo && (control is Button))
                                     bRestore = false;
-                                else if (control.Tag != null)
-                                {
-                                    bRestore = !control.Tag.Equals("NoConfigSave");
-                                }
                             }
                             if (bRestore)
                             {
                                 PropertyInfo prop = control.GetType().GetProperty(controlSetting[1].Trim(), BindingFlags.Public | BindingFlags.Instance);
-                                if (controlSetting[1].Trim().Equals("Text"))
+                                if (controlSetting[1].Trim().Equals("Text") || controlSetting[1].Trim().Equals("Tag"))
                                 {
                                     controlSetting[2] = Decode(controlSetting[2]);
                                 }

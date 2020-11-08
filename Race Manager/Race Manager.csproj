@@ -104,7 +104,6 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConfigSaverClass.cs" />
     <Compile Include="FormStatusMessages.cs">
       <SubType>Form</SubType>
     </Compile>

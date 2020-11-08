@@ -54,6 +54,7 @@
             this.buttonClose = new System.Windows.Forms.Button();
             this.pictureBoxMoveForm = new System.Windows.Forms.PictureBox();
             this.locatorHUD1 = new SRVTracker.LocatorHUD();
+            this.checkBoxIncludeAltitudeInDistanceCalculations = new System.Windows.Forms.CheckBox();
             this.groupBoxDestination.SuspendLayout();
             this.groupBoxBearing.SuspendLayout();
             this.groupBoxOtherCommanders.SuspendLayout();
@@ -63,6 +64,7 @@
             // groupBoxDestination
             // 
             this.groupBoxDestination.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.groupBoxDestination.Controls.Add(this.checkBoxIncludeAltitudeInDistanceCalculations);
             this.groupBoxDestination.Controls.Add(this.label3);
             this.groupBoxDestination.Controls.Add(this.label2);
             this.groupBoxDestination.Controls.Add(this.textBoxAltitude);
@@ -103,7 +105,7 @@
             this.textBoxAltitude.Location = new System.Drawing.Point(223, 32);
             this.textBoxAltitude.Name = "textBoxAltitude";
             this.textBoxAltitude.ReadOnly = true;
-            this.textBoxAltitude.Size = new System.Drawing.Size(102, 20);
+            this.textBoxAltitude.Size = new System.Drawing.Size(81, 20);
             this.textBoxAltitude.TabIndex = 3;
             this.toolTip1.SetToolTip(this.textBoxAltitude, "The target\'s altitude");
             // 
@@ -339,6 +341,18 @@
             this.locatorHUD1.Size = new System.Drawing.Size(260, 60);
             this.locatorHUD1.TabIndex = 3;
             // 
+            // checkBoxIncludeAltitudeInDistanceCalculations
+            // 
+            this.checkBoxIncludeAltitudeInDistanceCalculations.AutoSize = true;
+            this.checkBoxIncludeAltitudeInDistanceCalculations.Location = new System.Drawing.Point(310, 35);
+            this.checkBoxIncludeAltitudeInDistanceCalculations.Name = "checkBoxIncludeAltitudeInDistanceCalculations";
+            this.checkBoxIncludeAltitudeInDistanceCalculations.Size = new System.Drawing.Size(15, 14);
+            this.checkBoxIncludeAltitudeInDistanceCalculations.TabIndex = 6;
+            this.toolTip1.SetToolTip(this.checkBoxIncludeAltitudeInDistanceCalculations, "When selected, distance calculations take altitude into account.\r\nBy default, alt" +
+        "itude is ignored and ground distance is calculated.");
+            this.checkBoxIncludeAltitudeInDistanceCalculations.UseVisualStyleBackColor = true;
+            this.checkBoxIncludeAltitudeInDistanceCalculations.CheckedChanged += new System.EventHandler(this.checkBoxIncludeAltitudeInDistanceCalculations_CheckedChanged);
+            // 
             // FormLocator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -406,5 +420,6 @@
         private System.Windows.Forms.Button buttonAlwaysOnTop;
         private System.Windows.Forms.Button buttonClose;
         private System.Windows.Forms.PictureBox pictureBoxMoveForm;
+        private System.Windows.Forms.CheckBox checkBoxIncludeAltitudeInDistanceCalculations;
     }
 }

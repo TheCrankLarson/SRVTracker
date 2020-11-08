@@ -7,9 +7,9 @@ using System.Reflection;
 using System.IO;
 using System.Security.Cryptography;
 
-namespace Race_Manager
+namespace EDTracking
 {
-    class ConfigSaverClass
+    public class ConfigSaverClass
     {
         private Form _form = null;
         private string _configFile = String.Empty;
@@ -133,7 +133,7 @@ namespace Race_Manager
         public bool StoreButtonInfo { get; set; } = false;
 
         public bool StoreLabelInfo { get; set; } = false;
-        
+
         public bool StoreGroupboxInfo { get; set; } = false;
 
         public bool SaveConfiguration()
@@ -175,13 +175,13 @@ namespace Race_Manager
             {
                 if (String.IsNullOrEmpty(_configFile))
                 {
-                    _configFile = @".\" + System.Security.Principal.WindowsIdentity.GetCurrent().User.Value + ".dat";
+                    _configFile = $".\\{Application.ProductName}-{System.Security.Principal.WindowsIdentity.GetCurrent().User.Value}.dat";
                 }
             }
             catch { }
             // If we can't get user's SID, then we just use a generic name
             if (String.IsNullOrEmpty(_configFile))
-                _configFile = @".\config.dat";
+                _configFile = $".\\{Application.ProductName}-config.dat";
             if (_formsConfig == null)
                 ReadFormDataFromFile(_configFile);
             if (!DoNotApply)
@@ -392,7 +392,7 @@ namespace Race_Manager
             if ((control is GroupBox) && !StoreGroupboxInfo) return;
             if (ExcludedControls.Contains(control)) return;
 
-            if( !(control is CheckBox) && !(control is RadioButton))
+            if (!(control is CheckBox) && !(control is RadioButton))
                 appSettings.AppendLine(control.Name + ":Text:" + Encode(control.Text));
 
             if (!String.IsNullOrEmpty((string)control.Tag))
@@ -496,7 +496,7 @@ namespace Race_Manager
 
                         Control control = null;
                         if (!String.IsNullOrEmpty(controlSetting[0]))
-                        { 
+                        {
                             try
                             {
                                 Control[] matchingControls = _form.Controls.Find(controlSetting[0].Trim(), true);

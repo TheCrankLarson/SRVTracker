@@ -66,10 +66,12 @@
             this.buttonStop = new System.Windows.Forms.Button();
             this.buttonStartRecording = new System.Windows.Forms.Button();
             this.buttonPlay = new System.Windows.Forms.Button();
+            this.checkBoxEnableAudio = new System.Windows.Forms.CheckBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.checkBoxEnableAudio = new System.Windows.Forms.CheckBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.listBoxAudioEvents = new System.Windows.Forms.ListBox();
+            this.comboBoxChooseSound = new System.Windows.Forms.ComboBox();
             this.groupBox2.SuspendLayout();
             this.groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRecordDistance)).BeginInit();
@@ -491,6 +493,19 @@
             this.buttonPlay.UseVisualStyleBackColor = true;
             this.buttonPlay.Click += new System.EventHandler(this.buttonPlay_Click);
             // 
+            // checkBoxEnableAudio
+            // 
+            this.checkBoxEnableAudio.AutoSize = true;
+            this.checkBoxEnableAudio.Enabled = false;
+            this.checkBoxEnableAudio.Location = new System.Drawing.Point(6, 19);
+            this.checkBoxEnableAudio.Name = "checkBoxEnableAudio";
+            this.checkBoxEnableAudio.Size = new System.Drawing.Size(65, 17);
+            this.checkBoxEnableAudio.TabIndex = 1;
+            this.checkBoxEnableAudio.Text = "Enabled";
+            this.toolTip1.SetToolTip(this.checkBoxEnableAudio, "Enable or disable audio feedback while traveling a route");
+            this.checkBoxEnableAudio.UseVisualStyleBackColor = true;
+            this.checkBoxEnableAudio.CheckedChanged += new System.EventHandler(this.checkBoxEnableAudio_CheckedChanged);
+            // 
             // groupBox5
             // 
             this.groupBox5.Controls.Add(this.buttonStop);
@@ -512,20 +527,10 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Play options";
             // 
-            // checkBoxEnableAudio
-            // 
-            this.checkBoxEnableAudio.AutoSize = true;
-            this.checkBoxEnableAudio.Enabled = false;
-            this.checkBoxEnableAudio.Location = new System.Drawing.Point(6, 19);
-            this.checkBoxEnableAudio.Name = "checkBoxEnableAudio";
-            this.checkBoxEnableAudio.Size = new System.Drawing.Size(65, 17);
-            this.checkBoxEnableAudio.TabIndex = 1;
-            this.checkBoxEnableAudio.Text = "Enabled";
-            this.toolTip1.SetToolTip(this.checkBoxEnableAudio, "Enable or disable audio feedback while traveling a route");
-            this.checkBoxEnableAudio.UseVisualStyleBackColor = true;
-            // 
             // groupBox6
             // 
+            this.groupBox6.Controls.Add(this.comboBoxChooseSound);
+            this.groupBox6.Controls.Add(this.listBoxAudioEvents);
             this.groupBox6.Controls.Add(this.checkBoxEnableAudio);
             this.groupBox6.Location = new System.Drawing.Point(630, 61);
             this.groupBox6.Name = "groupBox6";
@@ -533,6 +538,24 @@
             this.groupBox6.TabIndex = 17;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Audio Settings";
+            // 
+            // listBoxAudioEvents
+            // 
+            this.listBoxAudioEvents.FormattingEnabled = true;
+            this.listBoxAudioEvents.Location = new System.Drawing.Point(6, 42);
+            this.listBoxAudioEvents.Name = "listBoxAudioEvents";
+            this.listBoxAudioEvents.Size = new System.Drawing.Size(151, 160);
+            this.listBoxAudioEvents.TabIndex = 2;
+            // 
+            // comboBoxChooseSound
+            // 
+            this.comboBoxChooseSound.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxChooseSound.Enabled = false;
+            this.comboBoxChooseSound.FormattingEnabled = true;
+            this.comboBoxChooseSound.Location = new System.Drawing.Point(6, 204);
+            this.comboBoxChooseSound.Name = "comboBoxChooseSound";
+            this.comboBoxChooseSound.Size = new System.Drawing.Size(151, 21);
+            this.comboBoxChooseSound.TabIndex = 3;
             // 
             // FormRouter
             // 
@@ -615,5 +638,7 @@
         private System.Windows.Forms.GroupBox groupBoxBasic;
         private System.Windows.Forms.CheckBox checkBoxEnableAudio;
         private System.Windows.Forms.GroupBox groupBox6;
+        private System.Windows.Forms.ComboBox comboBoxChooseSound;
+        private System.Windows.Forms.ListBox listBoxAudioEvents;
     }
 }

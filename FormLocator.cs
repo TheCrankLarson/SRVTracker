@@ -716,5 +716,10 @@ namespace SRVTracker
                 SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
             }
         }
+
+        private void checkBoxIncludeAltitudeInDistanceCalculations_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
