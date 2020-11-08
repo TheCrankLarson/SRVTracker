@@ -47,15 +47,18 @@
             this.label2 = new System.Windows.Forms.Label();
             this.numericUpDownRecordDistance = new System.Windows.Forms.NumericUpDown();
             this.groupBoxWaypointInfo = new System.Windows.Forms.GroupBox();
+            this.groupBoxBasic = new System.Windows.Forms.GroupBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.numericUpDownRadius = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDownMinAltitude = new System.Windows.Forms.NumericUpDown();
             this.checkBoxAllowPassing = new System.Windows.Forms.CheckBox();
+            this.numericUpDownMaxAltitude = new System.Windows.Forms.NumericUpDown();
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.numericUpDownMaxAltitude = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDownMinAltitude = new System.Windows.Forms.NumericUpDown();
+            this.label7 = new System.Windows.Forms.Label();
+            this.comboBoxWaypointType = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.textBoxWaypointName = new System.Windows.Forms.TextBox();
-            this.numericUpDownRadius = new System.Windows.Forms.NumericUpDown();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.textBoxRouteName = new System.Windows.Forms.TextBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
@@ -65,20 +68,20 @@
             this.buttonPlay = new System.Windows.Forms.Button();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.comboBoxWaypointType = new System.Windows.Forms.ComboBox();
-            this.label7 = new System.Windows.Forms.Label();
-            this.groupBoxBasic = new System.Windows.Forms.GroupBox();
+            this.checkBoxEnableAudio = new System.Windows.Forms.CheckBox();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.groupBox2.SuspendLayout();
             this.groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRecordDistance)).BeginInit();
             this.groupBoxWaypointInfo.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMaxAltitude)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMinAltitude)).BeginInit();
+            this.groupBoxBasic.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRadius)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMinAltitude)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMaxAltitude)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.groupBox3.SuspendLayout();
-            this.groupBoxBasic.SuspendLayout();
+            this.groupBox6.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox2
@@ -284,42 +287,26 @@
             this.groupBoxWaypointInfo.Controls.Add(this.textBoxWaypointName);
             this.groupBoxWaypointInfo.Location = new System.Drawing.Point(292, 61);
             this.groupBoxWaypointInfo.Name = "groupBoxWaypointInfo";
-            this.groupBoxWaypointInfo.Size = new System.Drawing.Size(501, 232);
+            this.groupBoxWaypointInfo.Size = new System.Drawing.Size(332, 231);
             this.groupBoxWaypointInfo.TabIndex = 6;
             this.groupBoxWaypointInfo.TabStop = false;
             this.groupBoxWaypointInfo.Text = "Waypoint Information";
             // 
-            // checkBoxAllowPassing
+            // groupBoxBasic
             // 
-            this.checkBoxAllowPassing.AutoSize = true;
-            this.checkBoxAllowPassing.Location = new System.Drawing.Point(9, 91);
-            this.checkBoxAllowPassing.Name = "checkBoxAllowPassing";
-            this.checkBoxAllowPassing.Size = new System.Drawing.Size(90, 17);
-            this.checkBoxAllowPassing.TabIndex = 11;
-            this.checkBoxAllowPassing.Text = "Allow passing";
-            this.toolTip1.SetToolTip(this.checkBoxAllowPassing, "If selected, the waypoint can be passed without needing\r\nto be within a particula" +
-        "r radius.  If the waypoint is behind\r\nyou, then the router will move onto the ne" +
-        "xt.");
-            this.checkBoxAllowPassing.UseVisualStyleBackColor = true;
-            this.checkBoxAllowPassing.CheckedChanged += new System.EventHandler(this.checkBoxAllowPassing_CheckedChanged);
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(6, 23);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(43, 13);
-            this.label6.TabIndex = 10;
-            this.label6.Text = "Radius:";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(6, 69);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(91, 13);
-            this.label5.TabIndex = 9;
-            this.label5.Text = "Maximum altitude:";
+            this.groupBoxBasic.Controls.Add(this.label4);
+            this.groupBoxBasic.Controls.Add(this.numericUpDownRadius);
+            this.groupBoxBasic.Controls.Add(this.numericUpDownMinAltitude);
+            this.groupBoxBasic.Controls.Add(this.checkBoxAllowPassing);
+            this.groupBoxBasic.Controls.Add(this.numericUpDownMaxAltitude);
+            this.groupBoxBasic.Controls.Add(this.label6);
+            this.groupBoxBasic.Controls.Add(this.label5);
+            this.groupBoxBasic.Location = new System.Drawing.Point(76, 87);
+            this.groupBoxBasic.Name = "groupBoxBasic";
+            this.groupBoxBasic.Size = new System.Drawing.Size(186, 119);
+            this.groupBoxBasic.TabIndex = 14;
+            this.groupBoxBasic.TabStop = false;
+            this.groupBoxBasic.Text = "Basic Waypoint Definition";
             // 
             // label4
             // 
@@ -329,40 +316,6 @@
             this.label4.Size = new System.Drawing.Size(88, 13);
             this.label4.TabIndex = 8;
             this.label4.Text = "Minimum altitude:";
-            // 
-            // numericUpDownMaxAltitude
-            // 
-            this.numericUpDownMaxAltitude.Location = new System.Drawing.Point(98, 67);
-            this.numericUpDownMaxAltitude.Name = "numericUpDownMaxAltitude";
-            this.numericUpDownMaxAltitude.Size = new System.Drawing.Size(59, 20);
-            this.numericUpDownMaxAltitude.TabIndex = 7;
-            this.numericUpDownMaxAltitude.ValueChanged += new System.EventHandler(this.numericUpDownMaxAltitude_ValueChanged);
-            // 
-            // numericUpDownMinAltitude
-            // 
-            this.numericUpDownMinAltitude.Location = new System.Drawing.Point(98, 44);
-            this.numericUpDownMinAltitude.Name = "numericUpDownMinAltitude";
-            this.numericUpDownMinAltitude.Size = new System.Drawing.Size(59, 20);
-            this.numericUpDownMinAltitude.TabIndex = 5;
-            this.numericUpDownMinAltitude.ValueChanged += new System.EventHandler(this.numericUpDownMinAltitude_ValueChanged);
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 22);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(38, 13);
-            this.label3.TabIndex = 3;
-            this.label3.Text = "Name:";
-            // 
-            // textBoxWaypointName
-            // 
-            this.textBoxWaypointName.Location = new System.Drawing.Point(50, 19);
-            this.textBoxWaypointName.Name = "textBoxWaypointName";
-            this.textBoxWaypointName.Size = new System.Drawing.Size(198, 20);
-            this.textBoxWaypointName.TabIndex = 2;
-            this.toolTip1.SetToolTip(this.textBoxWaypointName, "Name of waypoint");
-            this.textBoxWaypointName.TextChanged += new System.EventHandler(this.textBoxWaypointName_TextChanged);
             // 
             // numericUpDownRadius
             // 
@@ -386,6 +339,94 @@
             0,
             0});
             this.numericUpDownRadius.ValueChanged += new System.EventHandler(this.numericUpDownRadius_ValueChanged);
+            // 
+            // numericUpDownMinAltitude
+            // 
+            this.numericUpDownMinAltitude.Location = new System.Drawing.Point(98, 44);
+            this.numericUpDownMinAltitude.Name = "numericUpDownMinAltitude";
+            this.numericUpDownMinAltitude.Size = new System.Drawing.Size(59, 20);
+            this.numericUpDownMinAltitude.TabIndex = 5;
+            this.numericUpDownMinAltitude.ValueChanged += new System.EventHandler(this.numericUpDownMinAltitude_ValueChanged);
+            // 
+            // checkBoxAllowPassing
+            // 
+            this.checkBoxAllowPassing.AutoSize = true;
+            this.checkBoxAllowPassing.Location = new System.Drawing.Point(9, 91);
+            this.checkBoxAllowPassing.Name = "checkBoxAllowPassing";
+            this.checkBoxAllowPassing.Size = new System.Drawing.Size(90, 17);
+            this.checkBoxAllowPassing.TabIndex = 11;
+            this.checkBoxAllowPassing.Text = "Allow passing";
+            this.toolTip1.SetToolTip(this.checkBoxAllowPassing, "If selected, the waypoint can be passed without needing\r\nto be within a particula" +
+        "r radius.  If the waypoint is behind\r\nyou, then the router will move onto the ne" +
+        "xt.");
+            this.checkBoxAllowPassing.UseVisualStyleBackColor = true;
+            this.checkBoxAllowPassing.CheckedChanged += new System.EventHandler(this.checkBoxAllowPassing_CheckedChanged);
+            // 
+            // numericUpDownMaxAltitude
+            // 
+            this.numericUpDownMaxAltitude.Location = new System.Drawing.Point(98, 67);
+            this.numericUpDownMaxAltitude.Name = "numericUpDownMaxAltitude";
+            this.numericUpDownMaxAltitude.Size = new System.Drawing.Size(59, 20);
+            this.numericUpDownMaxAltitude.TabIndex = 7;
+            this.numericUpDownMaxAltitude.ValueChanged += new System.EventHandler(this.numericUpDownMaxAltitude_ValueChanged);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(6, 23);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(43, 13);
+            this.label6.TabIndex = 10;
+            this.label6.Text = "Radius:";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(6, 69);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(91, 13);
+            this.label5.TabIndex = 9;
+            this.label5.Text = "Maximum altitude:";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(6, 48);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(78, 13);
+            this.label7.TabIndex = 13;
+            this.label7.Text = "Waypoint type:";
+            // 
+            // comboBoxWaypointType
+            // 
+            this.comboBoxWaypointType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxWaypointType.FormattingEnabled = true;
+            this.comboBoxWaypointType.Items.AddRange(new object[] {
+            "Basic (point with radius)"});
+            this.comboBoxWaypointType.Location = new System.Drawing.Point(90, 45);
+            this.comboBoxWaypointType.Name = "comboBoxWaypointType";
+            this.comboBoxWaypointType.Size = new System.Drawing.Size(236, 21);
+            this.comboBoxWaypointType.TabIndex = 12;
+            this.toolTip1.SetToolTip(this.comboBoxWaypointType, "The waypoint type.  This affects the criteria that are used\r\nto determine if a wa" +
+        "ypoint has been reached/passed.");
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(6, 22);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(38, 13);
+            this.label3.TabIndex = 3;
+            this.label3.Text = "Name:";
+            // 
+            // textBoxWaypointName
+            // 
+            this.textBoxWaypointName.Location = new System.Drawing.Point(50, 19);
+            this.textBoxWaypointName.Name = "textBoxWaypointName";
+            this.textBoxWaypointName.Size = new System.Drawing.Size(276, 20);
+            this.textBoxWaypointName.TabIndex = 2;
+            this.toolTip1.SetToolTip(this.textBoxWaypointName, "Name of waypoint");
+            this.textBoxWaypointName.TextChanged += new System.EventHandler(this.textBoxWaypointName_TextChanged);
             // 
             // groupBox1
             // 
@@ -471,49 +512,34 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Play options";
             // 
-            // comboBoxWaypointType
+            // checkBoxEnableAudio
             // 
-            this.comboBoxWaypointType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxWaypointType.FormattingEnabled = true;
-            this.comboBoxWaypointType.Items.AddRange(new object[] {
-            "Basic (point with radius)"});
-            this.comboBoxWaypointType.Location = new System.Drawing.Point(338, 19);
-            this.comboBoxWaypointType.Name = "comboBoxWaypointType";
-            this.comboBoxWaypointType.Size = new System.Drawing.Size(157, 21);
-            this.comboBoxWaypointType.TabIndex = 12;
-            this.toolTip1.SetToolTip(this.comboBoxWaypointType, "The waypoint type.  This affects the criteria that are used\r\nto determine if a wa" +
-        "ypoint has been reached/passed.");
+            this.checkBoxEnableAudio.AutoSize = true;
+            this.checkBoxEnableAudio.Enabled = false;
+            this.checkBoxEnableAudio.Location = new System.Drawing.Point(6, 19);
+            this.checkBoxEnableAudio.Name = "checkBoxEnableAudio";
+            this.checkBoxEnableAudio.Size = new System.Drawing.Size(65, 17);
+            this.checkBoxEnableAudio.TabIndex = 1;
+            this.checkBoxEnableAudio.Text = "Enabled";
+            this.toolTip1.SetToolTip(this.checkBoxEnableAudio, "Enable or disable audio feedback while traveling a route");
+            this.checkBoxEnableAudio.UseVisualStyleBackColor = true;
             // 
-            // label7
+            // groupBox6
             // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(254, 22);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(78, 13);
-            this.label7.TabIndex = 13;
-            this.label7.Text = "Waypoint type:";
-            // 
-            // groupBoxBasic
-            // 
-            this.groupBoxBasic.Controls.Add(this.label4);
-            this.groupBoxBasic.Controls.Add(this.numericUpDownRadius);
-            this.groupBoxBasic.Controls.Add(this.numericUpDownMinAltitude);
-            this.groupBoxBasic.Controls.Add(this.checkBoxAllowPassing);
-            this.groupBoxBasic.Controls.Add(this.numericUpDownMaxAltitude);
-            this.groupBoxBasic.Controls.Add(this.label6);
-            this.groupBoxBasic.Controls.Add(this.label5);
-            this.groupBoxBasic.Location = new System.Drawing.Point(158, 60);
-            this.groupBoxBasic.Name = "groupBoxBasic";
-            this.groupBoxBasic.Size = new System.Drawing.Size(186, 156);
-            this.groupBoxBasic.TabIndex = 14;
-            this.groupBoxBasic.TabStop = false;
-            this.groupBoxBasic.Text = "Basic Waypoint Definition";
+            this.groupBox6.Controls.Add(this.checkBoxEnableAudio);
+            this.groupBox6.Location = new System.Drawing.Point(630, 61);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(163, 231);
+            this.groupBox6.TabIndex = 17;
+            this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "Audio Settings";
             // 
             // FormRouter
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(806, 304);
+            this.Controls.Add(this.groupBox6);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox2);
@@ -531,16 +557,18 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRecordDistance)).EndInit();
             this.groupBoxWaypointInfo.ResumeLayout(false);
             this.groupBoxWaypointInfo.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMaxAltitude)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMinAltitude)).EndInit();
+            this.groupBoxBasic.ResumeLayout(false);
+            this.groupBoxBasic.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRadius)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMinAltitude)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMaxAltitude)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox5.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
-            this.groupBoxBasic.ResumeLayout(false);
-            this.groupBoxBasic.PerformLayout();
+            this.groupBox6.ResumeLayout(false);
+            this.groupBox6.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -585,5 +613,7 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.ComboBox comboBoxWaypointType;
         private System.Windows.Forms.GroupBox groupBoxBasic;
+        private System.Windows.Forms.CheckBox checkBoxEnableAudio;
+        private System.Windows.Forms.GroupBox groupBox6;
     }
 }
