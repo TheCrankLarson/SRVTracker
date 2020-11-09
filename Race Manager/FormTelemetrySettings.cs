@@ -139,5 +139,15 @@ namespace Race_Manager
                 }
             }
         }
+
+        private void checkBoxSelectAll_CheckedChanged(object sender, EventArgs e)
+        {
+            foreach (ListViewItem item in listViewTextExportSettings.Items)
+                item.Checked = checkBoxSelectAll.Checked;
+            if (checkBoxSelectAll.Checked)
+                checkBoxSelectAll.Text = "Deselect all";
+            else
+                checkBoxSelectAll.Text = "Select all";
+        }
     }
 }

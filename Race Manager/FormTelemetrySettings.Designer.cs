@@ -75,6 +75,7 @@
             this.radioButtonExportToOtherFolder = new System.Windows.Forms.RadioButton();
             this.radioButtonExportToApplicationFolder = new System.Windows.Forms.RadioButton();
             this.buttonClose = new System.Windows.Forms.Button();
+            this.checkBoxSelectAll = new System.Windows.Forms.CheckBox();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -206,11 +207,23 @@
             this.buttonClose.UseVisualStyleBackColor = true;
             this.buttonClose.Click += new System.EventHandler(this.buttonClose_Click);
             // 
+            // checkBoxSelectAll
+            // 
+            this.checkBoxSelectAll.AutoSize = true;
+            this.checkBoxSelectAll.Location = new System.Drawing.Point(21, 291);
+            this.checkBoxSelectAll.Name = "checkBoxSelectAll";
+            this.checkBoxSelectAll.Size = new System.Drawing.Size(69, 17);
+            this.checkBoxSelectAll.TabIndex = 17;
+            this.checkBoxSelectAll.Text = "Select all";
+            this.checkBoxSelectAll.UseVisualStyleBackColor = true;
+            this.checkBoxSelectAll.CheckedChanged += new System.EventHandler(this.checkBoxSelectAll_CheckedChanged);
+            // 
             // FormTelemetrySettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(589, 327);
+            this.Controls.Add(this.checkBoxSelectAll);
             this.Controls.Add(this.buttonClose);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.groupBox2);
@@ -222,6 +235,7 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -237,5 +251,6 @@
         private System.Windows.Forms.RadioButton radioButtonExportToApplicationFolder;
         private System.Windows.Forms.Button buttonBrowseExportFolder;
         private System.Windows.Forms.Button buttonClose;
+        private System.Windows.Forms.CheckBox checkBoxSelectAll;
     }
 }
