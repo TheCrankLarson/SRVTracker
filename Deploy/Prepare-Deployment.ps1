@@ -24,7 +24,7 @@ if (Test-Path $deployFolder)
 New-Item $deployFolder -ItemType Directory
 
 # Copy and .exe and .dll from source $OutDir
-Copy-Item * $deployFolder -Include @("*.exe", "*.dll")
+Copy-Item * $deployFolder -Include @("*.exe", "*.dll", "*.config")
 if (Test-Path "ReleaseNotes.txt")
 {
     Copy-Item "ReleaseNotes.txt" $deployFolder
