@@ -30,6 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.buttonCancel = new System.Windows.Forms.Button();
             this.buttonTrackLocation = new System.Windows.Forms.Button();
             this.buttonSaveAs = new System.Windows.Forms.Button();
             this.buttonEditLocation = new System.Windows.Forms.Button();
@@ -39,13 +40,11 @@
             this.buttonSaveLocations = new System.Windows.Forms.Button();
             this.listBoxLocations = new System.Windows.Forms.ListBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.buttonCancel = new System.Windows.Forms.Button();
             this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox3
             // 
-            this.groupBox3.Controls.Add(this.buttonCancel);
             this.groupBox3.Controls.Add(this.buttonTrackLocation);
             this.groupBox3.Controls.Add(this.buttonSaveAs);
             this.groupBox3.Controls.Add(this.buttonEditLocation);
@@ -54,6 +53,7 @@
             this.groupBox3.Controls.Add(this.buttonLoadLocations);
             this.groupBox3.Controls.Add(this.buttonSaveLocations);
             this.groupBox3.Controls.Add(this.listBoxLocations);
+            this.groupBox3.Controls.Add(this.buttonCancel);
             this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox3.Location = new System.Drawing.Point(0, 0);
             this.groupBox3.Name = "groupBox3";
@@ -61,6 +61,16 @@
             this.groupBox3.TabIndex = 3;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Known Locations";
+            // 
+            // buttonCancel
+            // 
+            this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.buttonCancel.Location = new System.Drawing.Point(6, 258);
+            this.buttonCancel.Name = "buttonCancel";
+            this.buttonCancel.Size = new System.Drawing.Size(86, 23);
+            this.buttonCancel.TabIndex = 8;
+            this.buttonCancel.Text = "Cancel";
+            this.buttonCancel.UseVisualStyleBackColor = true;
             // 
             // buttonTrackLocation
             // 
@@ -157,16 +167,6 @@
             this.listBoxLocations.TabIndex = 0;
             this.listBoxLocations.ValueMember = "Name";
             this.listBoxLocations.SelectedIndexChanged += new System.EventHandler(this.listBoxLocations_SelectedIndexChanged);
-            // 
-            // buttonCancel
-            // 
-            this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.buttonCancel.Location = new System.Drawing.Point(6, 258);
-            this.buttonCancel.Name = "buttonCancel";
-            this.buttonCancel.Size = new System.Drawing.Size(86, 23);
-            this.buttonCancel.TabIndex = 8;
-            this.buttonCancel.Text = "Cancel";
-            this.buttonCancel.UseVisualStyleBackColor = true;
             // 
             // LocationManager
             // 

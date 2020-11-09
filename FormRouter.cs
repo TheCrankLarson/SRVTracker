@@ -218,7 +218,7 @@ namespace SRVTracker
             if (comboBoxWaypointType.SelectedIndex == 1)
             {
                 // This is a gate, so initialise it if necessary
-                SetWaypointType("Gate");
+                SetWaypointType("Gate", waypoint);
                 if (waypoint.AdditionalLocations.Count < 1)
                 {
                     waypoint.AdditionalLocations.Add(waypoint.Location.Copy());
@@ -482,7 +482,7 @@ namespace SRVTracker
 
         private void buttonAddWaypoint_Click(object sender, EventArgs e)
         {
-            if (_formLocationEditor==null)
+            if (_formLocationEditor==null || _formLocationEditor.IsDisposed)
                 _formLocationEditor = new FormLocationEditor();
 
             EDLocation locationToAdd = _formLocationEditor.SelectLocation(this, ((Control)sender).PointToScreen(new Point(buttonAddWaypoint.Width, buttonAddWaypoint.Height)));
@@ -788,6 +788,7 @@ namespace SRVTracker
                 decimal distanceBetweenLocations = EDLocation.DistanceBetween(gateWaypoint.AdditionalLocations[0], gateWaypoint.AdditionalLocations[1]);
                 decimal bearingToLocation = EDLocation.BearingToLocation(gateWaypoint.AdditionalLocations[0], gateWaypoint.AdditionalLocations[1]);
                 gateWaypoint.Location = EDLocation.LocationFrom(gateWaypoint.AdditionalLocations[0], bearingToLocation, distanceBetweenLocations / 2);
+                gateWaypoint.Location.Name = "Midpoint";
             }
         }
 
@@ -845,10 +846,10 @@ namespace SRVTracker
             return _route.Waypoints[listBoxWaypoints.SelectedIndex];
         }
 
-        private void SetWaypointType(string WaypointType=null)
+        private void SetWaypointType(string WaypointType=null, EDWaypoint waypoint = null)
         {
-
-            EDWaypoint waypoint = GetSelectedWaypoint();
+            if (waypoint==null)
+                waypoint = GetSelectedWaypoint();
             if (waypoint == null)
                 return;
 
@@ -963,6 +964,13 @@ namespace SRVTracker
 
             CalculateGateTarget(thisWaypoint);
             comboBoxGateTarget.Text = thisWaypoint.Location.Name;
+        }
+
+        private void buttonEditLocations_Click(object sender, EventArgs e)
+        {
+            if (_formLocationEditor == null || _formLocationEditor.IsDisposed)
+                _formLocationEditor = new FormLocationEditor();
+            _formLocationEditor.ShowWithBorder(this);
         }
     }
 }

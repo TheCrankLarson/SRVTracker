@@ -588,7 +588,10 @@ namespace EDTracking
                 if ((_race.Leader == null) || (TotalDistanceLeft < _race.Leader.TotalDistanceLeft))
                     _race.Leader = this;
 
-                if (_race.Route.Waypoints[WaypointIndex].WaypointHit(Location,_previousLocation))
+                EDWaypoint previousWaypoint = null;
+                if (WaypointIndex > 0)
+                    previousWaypoint = _race.Route.Waypoints[WaypointIndex - 1];
+                if (_race.Route.Waypoints[WaypointIndex].WaypointHit(Location, _previousLocation, previousWaypoint.Location))
                 {
                     // Commander has reached the target waypoint
                     if (_race.Laps > 0 && WaypointIndex != 0)

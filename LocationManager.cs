@@ -220,7 +220,6 @@ namespace SRVTracker
             if (newLocation == null)
                 return;
             _locations.Add(newLocation);
-            listBoxLocations.Items.Add(newLocation.Name);
         }
 
         private void buttonDeleteLocation_Click(object sender, EventArgs e)
@@ -293,8 +292,8 @@ namespace SRVTracker
                 return;
 
             if (LocatorForm == null)
-                return;
-            LocatorForm.SetTarget((EDLocation)listBoxLocations.SelectedItem);
+                LocatorForm = FormLocator.GetLocator();
+            LocatorForm?.SetTarget(_locations[listBoxLocations.SelectedIndex]);
         }
     }
 }

@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormRouter));
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.listBoxWaypoints = new System.Windows.Forms.ListBox();
@@ -58,7 +59,7 @@
             this.textBoxWaypointName = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.textBoxRouteName = new System.Windows.Forms.TextBox();
-            this.toolTip1 = new System.Windows.Forms.ToolTip();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.checkBoxPlayIncudeDirection = new System.Windows.Forms.CheckBox();
             this.checkBoxEnableAudio = new System.Windows.Forms.CheckBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
@@ -69,6 +70,7 @@
             this.buttonStop = new System.Windows.Forms.Button();
             this.buttonStartRecording = new System.Windows.Forms.Button();
             this.buttonPlay = new System.Windows.Forms.Button();
+            this.buttonEditLocations = new System.Windows.Forms.Button();
             this.buttonReverseWaypointOrder = new System.Windows.Forms.Button();
             this.buttonDuplicateWaypoint = new System.Windows.Forms.Button();
             this.buttonMoveDown = new System.Windows.Forms.Button();
@@ -105,6 +107,7 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.buttonEditLocations);
             this.groupBox2.Controls.Add(this.buttonReverseWaypointOrder);
             this.groupBox2.Controls.Add(this.buttonDuplicateWaypoint);
             this.groupBox2.Controls.Add(this.buttonMoveDown);
@@ -555,6 +558,16 @@
             this.buttonPlay.UseVisualStyleBackColor = true;
             this.buttonPlay.Click += new System.EventHandler(this.buttonPlay_Click);
             // 
+            // buttonEditLocations
+            // 
+            this.buttonEditLocations.Image = global::SRVTracker.Properties.Resources.AddressEditor_16x;
+            this.buttonEditLocations.Location = new System.Drawing.Point(233, 169);
+            this.buttonEditLocations.Name = "buttonEditLocations";
+            this.buttonEditLocations.Size = new System.Drawing.Size(34, 23);
+            this.buttonEditLocations.TabIndex = 21;
+            this.buttonEditLocations.UseVisualStyleBackColor = true;
+            this.buttonEditLocations.Click += new System.EventHandler(this.buttonEditLocations_Click);
+            // 
             // buttonReverseWaypointOrder
             // 
             this.buttonReverseWaypointOrder.Image = global::SRVTracker.Properties.Resources.ReversePath_16x;
@@ -623,7 +636,7 @@
             // buttonSetAsTarget
             // 
             this.buttonSetAsTarget.Image = global::SRVTracker.Properties.Resources.Target_16x;
-            this.buttonSetAsTarget.Location = new System.Drawing.Point(233, 129);
+            this.buttonSetAsTarget.Location = new System.Drawing.Point(233, 123);
             this.buttonSetAsTarget.Name = "buttonSetAsTarget";
             this.buttonSetAsTarget.Size = new System.Drawing.Size(34, 23);
             this.buttonSetAsTarget.TabIndex = 5;
@@ -852,5 +865,6 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.ComboBox comboBoxGateTarget;
         private System.Windows.Forms.Button buttonCalculateGateTarget;
+        private System.Windows.Forms.Button buttonEditLocations;
     }
 }

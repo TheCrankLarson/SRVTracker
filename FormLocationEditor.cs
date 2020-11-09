@@ -30,6 +30,14 @@ namespace SRVTracker
 
         public EDLocation SelectLocation(IWin32Window parent, Point? windowBottomLeft = null)
         {
+            Point previousWindowLocation = this.Location;
+            bool wasVisible = false;
+            if (this.Visible)
+            {
+                this.Hide();
+                wasVisible = true;
+            }
+            this.FormBorderStyle = FormBorderStyle.None;
             locationManager1.AllowSelectionOnly = true;
             if (windowBottomLeft != null)
             {
@@ -39,9 +47,23 @@ namespace SRVTracker
             }
 
             locationManager1.ClearSelection();
-            if (this.ShowDialog(parent) == DialogResult.Cancel)
+            DialogResult result = this.ShowDialog(parent);
+
+            if (wasVisible)
+            {
+                this.Location = previousWindowLocation;
+                ShowWithBorder();
+            }
+            if (result == DialogResult.Cancel)
                 return null;
             return locationManager1.SelectedLocation;
+        }
+
+        public void ShowWithBorder(IWin32Window owner = null)
+        {
+            this.FormBorderStyle = FormBorderStyle.FixedToolWindow;
+            locationManager1.AllowSelectionOnly = false;
+            this.Show(owner);
         }
     }
 }

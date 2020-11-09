@@ -1,14 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Globalization;
 using System.Text.Json;
 
 namespace EDTracking
 {
-
     public class EDWaypoint
     {
         public String Name { get; set; } = "Waypoint";
