@@ -177,7 +177,7 @@
             this.numericUpDownRecordDistance.TabIndex = 8;
             this.toolTip1.SetToolTip(this.numericUpDownRecordDistance, "At what distance to log locations while route recording");
             this.numericUpDownRecordDistance.Value = new decimal(new int[] {
-            500,
+            250,
             0,
             0,
             0});

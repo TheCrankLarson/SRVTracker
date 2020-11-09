@@ -187,7 +187,6 @@ namespace SRVTracker
             {
                 _lastLoggedLocation = FormTracker.CurrentLocation.Copy();
                 AddLocationToRoute(_lastLoggedLocation);
-                PlayEventSound("New waypoint recorded");
             }
         }
 
@@ -227,6 +226,7 @@ namespace SRVTracker
                 waypoint.AdditionalLocations.Add(waypoint.Location.Copy());
                 waypoint.AdditionalLocations[0].Name = "Gate marker 1";
             }
+            PlayEventSound("Waypoint added");
 
             Action action = new Action(() =>
             {
@@ -516,7 +516,13 @@ namespace SRVTracker
 
         private string[] SoundEvents()
         {
-            string[] soundEvents= { "Arrived at waypoint", "Route completed", "New waypoint recorded" };
+            string[] soundEvents= { "Arrived at waypoint", "Route completed", "Waypoint added" };
+            return soundEvents;
+        }
+
+        private string[] RemovedSoundEvents()
+        {
+            string[] soundEvents = { "New waypoint recorded" };
             return soundEvents;
         }
 
@@ -572,6 +578,10 @@ namespace SRVTracker
                 foreach (string soundEvent in SoundEvents())
                     if (!_eventSounds.ContainsKey(soundEvent))
                         _eventSounds.Add(soundEvent, "");
+                // And remove any old ones (happens if they are renamed or removed)
+                foreach (string soundEvent in RemovedSoundEvents())
+                    if (_eventSounds.ContainsKey(soundEvent))
+                        _eventSounds.Remove(soundEvent);
             }
 
             // Add the events to our event sound list
