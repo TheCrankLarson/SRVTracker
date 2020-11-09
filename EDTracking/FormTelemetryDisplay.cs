@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Race_Manager
+namespace EDTracking
 {
     public partial class FormTelemetryDisplay : Form
     {

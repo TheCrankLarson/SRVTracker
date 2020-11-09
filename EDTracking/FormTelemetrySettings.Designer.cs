@@ -1,4 +1,4 @@
-﻿namespace Race_Manager
+﻿namespace EDTracking
 {
     partial class FormTelemetrySettings
     {
@@ -160,7 +160,7 @@
             // 
             // buttonBrowseExportFolder
             // 
-            this.buttonBrowseExportFolder.Image = global::Race_Manager.Properties.Resources.OpenFolder_16x;
+            this.buttonBrowseExportFolder.Image = global::EDTracking.Properties.Resources.FolderOpened_16x;
             this.buttonBrowseExportFolder.Location = new System.Drawing.Point(531, 39);
             this.buttonBrowseExportFolder.Name = "buttonBrowseExportFolder";
             this.buttonBrowseExportFolder.Size = new System.Drawing.Size(27, 23);

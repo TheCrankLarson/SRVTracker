@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Windows.Forms;
 
-namespace Race_Manager
+namespace EDTracking
 {
     public partial class FormTelemetrySettings : Form
     {

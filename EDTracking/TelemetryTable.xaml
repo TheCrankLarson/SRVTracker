@@ -1,9 +1,9 @@
-﻿<UserControl x:Class="Race_Manager.TelemetryTable"
+﻿<UserControl x:Class="EDTracking.TelemetryTable"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Race_Manager"
+             xmlns:local="clr-namespace:EDTracking"
              mc:Ignorable="d">
     <UserControl.Resources>
         <Style x:Key="ColumnHeaderStyleBW" TargetType="DataGridColumnHeader">
@@ -17,6 +17,5 @@
                 <DropShadowEffect/>
             </DataGrid.Effect>
         </DataGrid>
-        <Image x:Name="Logo" Source="Cranky Metrics.png"  Width="4"/>
     </StackPanel>
 </UserControl>

@@ -1,25 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
-namespace Race_Manager
+namespace EDTracking
 {
     /// <summary>
     /// Interaction logic for TelemetryTable.xaml
     /// </summary>
-    public partial class TelemetryTable : UserControl
+    public partial class TelemetryTable : System.Windows.Controls.UserControl
     {
         private TelemetryWriter _telemetryWriter = null;
         private DataTable _telemetryTable = null;

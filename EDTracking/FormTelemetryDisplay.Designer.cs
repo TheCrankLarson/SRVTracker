@@ -1,4 +1,4 @@
-﻿namespace Race_Manager
+﻿namespace EDTracking
 {
     partial class FormTelemetryDisplay
     {
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.elementHost1 = new System.Windows.Forms.Integration.ElementHost();
-            this.telemetryTable1 = new Race_Manager.TelemetryTable();
+            this.telemetryTable1 = new EDTracking.TelemetryTable();
             this.SuspendLayout();
             // 
             // elementHost1

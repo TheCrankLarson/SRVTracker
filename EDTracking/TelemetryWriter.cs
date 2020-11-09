@@ -7,7 +7,7 @@ using System.IO;
 using System.Text.Json;
 using EDTracking;
 
-namespace Race_Manager
+namespace EDTracking
 {
     public class TelemetryWriter
     {
