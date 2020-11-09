@@ -52,11 +52,15 @@
             this.radioButtonUseCustomServer = new System.Windows.Forms.RadioButton();
             this.radioButtonUseDefaultServer = new System.Windows.Forms.RadioButton();
             this.textBoxUploadServer = new System.Windows.Forms.TextBox();
+            this.numericUpDownPlaybackSpeed = new System.Windows.Forms.NumericUpDown();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.groupBox8.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownPlaybackSpeed)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -109,12 +113,15 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.label5);
+            this.groupBox3.Controls.Add(this.label4);
+            this.groupBox3.Controls.Add(this.numericUpDownPlaybackSpeed);
             this.groupBox3.Controls.Add(this.buttonStop);
             this.groupBox3.Controls.Add(this.buttonPause);
             this.groupBox3.Controls.Add(this.buttonPlay);
-            this.groupBox3.Location = new System.Drawing.Point(239, 293);
+            this.groupBox3.Location = new System.Drawing.Point(245, 263);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(133, 51);
+            this.groupBox3.Size = new System.Drawing.Size(133, 80);
             this.groupBox3.TabIndex = 3;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Playback";
@@ -221,7 +228,7 @@
             // 
             // buttonClose
             // 
-            this.buttonClose.Location = new System.Drawing.Point(400, 312);
+            this.buttonClose.Location = new System.Drawing.Point(406, 320);
             this.buttonClose.Name = "buttonClose";
             this.buttonClose.Size = new System.Drawing.Size(75, 23);
             this.buttonClose.TabIndex = 5;
@@ -284,6 +291,47 @@
             this.textBoxUploadServer.Size = new System.Drawing.Size(161, 20);
             this.textBoxUploadServer.TabIndex = 1;
             // 
+            // numericUpDownPlaybackSpeed
+            // 
+            this.numericUpDownPlaybackSpeed.Location = new System.Drawing.Point(53, 48);
+            this.numericUpDownPlaybackSpeed.Maximum = new decimal(new int[] {
+            60,
+            0,
+            0,
+            0});
+            this.numericUpDownPlaybackSpeed.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDownPlaybackSpeed.Name = "numericUpDownPlaybackSpeed";
+            this.numericUpDownPlaybackSpeed.Size = new System.Drawing.Size(58, 20);
+            this.numericUpDownPlaybackSpeed.TabIndex = 18;
+            this.numericUpDownPlaybackSpeed.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.numericUpDownPlaybackSpeed.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(114, 50);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(12, 13);
+            this.label4.TabIndex = 19;
+            this.label4.Text = "x";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(6, 50);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(41, 13);
+            this.label5.TabIndex = 20;
+            this.label5.Text = "Speed:";
+            // 
             // FormRaceReplay
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -304,10 +352,12 @@
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
             this.groupBox8.ResumeLayout(false);
             this.groupBox8.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownPlaybackSpeed)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -336,6 +386,9 @@
         private System.Windows.Forms.RadioButton radioButtonUseCustomServer;
         private System.Windows.Forms.RadioButton radioButtonUseDefaultServer;
         private System.Windows.Forms.TextBox textBoxUploadServer;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.NumericUpDown numericUpDownPlaybackSpeed;
     }
 }
 

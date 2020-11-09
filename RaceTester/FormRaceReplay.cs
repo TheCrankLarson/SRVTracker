@@ -169,11 +169,20 @@ namespace RaceTester
         private void timerPlaybackEvents_Tick(object sender, EventArgs e)
         {
             // Send any events
-            if (_orderedRaceTracking[_raceTrackingIndex].TimeStamp.Add(_raceTimeOffset) > DateTime.Now)
+            if (_raceTrackingIndex >= _orderedRaceTracking.Count)
+            {
+                buttonStop_Click(null, null);
+                return;
+            }
+            TimeSpan elapsedTime = DateTime.Now - _playbackStartTime;
+            elapsedTime = new TimeSpan(elapsedTime.Ticks * (long)numericUpDownPlaybackSpeed.Value);
+            DateTime projectedNow = _playbackStartTime.Add(elapsedTime);
+
+            if (_orderedRaceTracking[_raceTrackingIndex].TimeStamp.Add(_raceTimeOffset) > projectedNow)
                 return;  // Next event isn't due yet
 
             Action action;
-            while (_orderedRaceTracking[_raceTrackingIndex].TimeStamp.Add(_raceTimeOffset) <= DateTime.Now)
+            while (_raceTrackingIndex < _orderedRaceTracking.Count && _orderedRaceTracking[_raceTrackingIndex].TimeStamp.Add(_raceTimeOffset) <= projectedNow)
             {
                 action = new Action(() =>
                 {
