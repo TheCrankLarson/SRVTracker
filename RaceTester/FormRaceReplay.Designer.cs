@@ -36,6 +36,9 @@
             this.listBoxParticipants = new System.Windows.Forms.ListBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.numericUpDownPlaybackSpeed = new System.Windows.Forms.NumericUpDown();
             this.buttonStop = new System.Windows.Forms.Button();
             this.buttonPause = new System.Windows.Forms.Button();
             this.buttonPlay = new System.Windows.Forms.Button();
@@ -52,15 +55,12 @@
             this.radioButtonUseCustomServer = new System.Windows.Forms.RadioButton();
             this.radioButtonUseDefaultServer = new System.Windows.Forms.RadioButton();
             this.textBoxUploadServer = new System.Windows.Forms.TextBox();
-            this.numericUpDownPlaybackSpeed = new System.Windows.Forms.NumericUpDown();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownPlaybackSpeed)).BeginInit();
             this.groupBox4.SuspendLayout();
             this.groupBox8.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownPlaybackSpeed)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -126,6 +126,47 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Playback";
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(6, 50);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(41, 13);
+            this.label5.TabIndex = 20;
+            this.label5.Text = "Speed:";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(114, 50);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(12, 13);
+            this.label4.TabIndex = 19;
+            this.label4.Text = "x";
+            // 
+            // numericUpDownPlaybackSpeed
+            // 
+            this.numericUpDownPlaybackSpeed.Location = new System.Drawing.Point(53, 48);
+            this.numericUpDownPlaybackSpeed.Maximum = new decimal(new int[] {
+            60,
+            0,
+            0,
+            0});
+            this.numericUpDownPlaybackSpeed.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDownPlaybackSpeed.Name = "numericUpDownPlaybackSpeed";
+            this.numericUpDownPlaybackSpeed.Size = new System.Drawing.Size(58, 20);
+            this.numericUpDownPlaybackSpeed.TabIndex = 18;
+            this.numericUpDownPlaybackSpeed.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.numericUpDownPlaybackSpeed.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
             // buttonStop
             // 
             this.buttonStop.Enabled = false;
@@ -146,6 +187,7 @@
             this.buttonPause.Size = new System.Drawing.Size(36, 23);
             this.buttonPause.TabIndex = 1;
             this.buttonPause.UseVisualStyleBackColor = true;
+            this.buttonPause.Click += new System.EventHandler(this.buttonPause_Click);
             // 
             // buttonPlay
             // 
@@ -291,47 +333,6 @@
             this.textBoxUploadServer.Size = new System.Drawing.Size(161, 20);
             this.textBoxUploadServer.TabIndex = 1;
             // 
-            // numericUpDownPlaybackSpeed
-            // 
-            this.numericUpDownPlaybackSpeed.Location = new System.Drawing.Point(53, 48);
-            this.numericUpDownPlaybackSpeed.Maximum = new decimal(new int[] {
-            60,
-            0,
-            0,
-            0});
-            this.numericUpDownPlaybackSpeed.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.numericUpDownPlaybackSpeed.Name = "numericUpDownPlaybackSpeed";
-            this.numericUpDownPlaybackSpeed.Size = new System.Drawing.Size(58, 20);
-            this.numericUpDownPlaybackSpeed.TabIndex = 18;
-            this.numericUpDownPlaybackSpeed.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.numericUpDownPlaybackSpeed.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(114, 50);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(12, 13);
-            this.label4.TabIndex = 19;
-            this.label4.Text = "x";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(6, 50);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(41, 13);
-            this.label5.TabIndex = 20;
-            this.label5.Text = "Speed:";
-            // 
             // FormRaceReplay
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -353,11 +354,11 @@
             this.groupBox2.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownPlaybackSpeed)).EndInit();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
             this.groupBox8.ResumeLayout(false);
             this.groupBox8.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownPlaybackSpeed)).EndInit();
             this.ResumeLayout(false);
 
         }

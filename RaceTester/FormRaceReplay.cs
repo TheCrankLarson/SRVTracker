@@ -56,12 +56,18 @@ namespace RaceTester
                     listBoxParticipants.Items.Add(contestant);
 
             // Now combine all the events into one list, ordered by event time
+            CreateOrderedTrackingData();
+        }
+
+        private void CreateOrderedTrackingData()
+        {
             _orderedRaceTracking = new List<EDEvent>();
             foreach (string trackedCommander in _commanderTracking.Keys)
                 _orderedRaceTracking.AddRange(_commanderTracking[trackedCommander]);
             _orderedRaceTracking.Sort(new EDEventTimeComparer());
             //File.WriteAllText("events.json", JsonSerializer.Serialize(_orderedRaceTracking));
             textBoxTotalNumberOfEvents.Text = _orderedRaceTracking.Count.ToString();
+
         }
 
         private bool LoadTrackingData(string commander)
@@ -158,6 +164,10 @@ namespace RaceTester
         {
             if (!CreateUdpClient())
                 return;
+
+            if (!buttonPause.Enabled)
+                CreateOrderedTrackingData();  // New run - so reset the data
+
             buttonPlay.Enabled = false;
             buttonPause.Enabled = true;
             buttonStop.Enabled = true;
@@ -222,6 +232,14 @@ namespace RaceTester
         private void radioButtonUseCustomServer_CheckedChanged(object sender, EventArgs e)
         {
             UpdateServerUI();
+        }
+
+        private void buttonPause_Click(object sender, EventArgs e)
+        {
+            timerPlaybackEvents.Stop();
+            _orderedRaceTracking.RemoveRange(0, _raceTrackingIndex);
+            _raceTrackingIndex = 0;
+            buttonPlay.Enabled = true;
         }
     }
 
