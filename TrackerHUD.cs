@@ -26,23 +26,47 @@ namespace SRVTracker
 
         public void UpdateLocation(EDLocation location, int heading = -1)
         {
+            Action action;
+
             if (labelLongitude.Text != location.Longitude.ToString())
-                labelLongitude.Text = location.Longitude.ToString();
+            {
+                action = new Action(() => { labelLongitude.Text = location.Longitude.ToString(); });
+                if (labelLongitude.InvokeRequired)
+                    labelLongitude.Invoke(action);
+                else
+                    action();                
+            }
 
             if (labelLatitude.Text != location.Latitude.ToString())
-                labelLatitude.Text = location.Latitude.ToString();
+            {
+                action = new Action(() => { labelLatitude.Text = location.Latitude.ToString(); });
+                if (labelLatitude.InvokeRequired)
+                    labelLatitude.Invoke(action);
+                else
+                    action();
+            }
+            
 
             if (labelAltitude.Text != location.Altitude.ToString("F1"))
-                labelAltitude.Text = location.Altitude.ToString("F1");
-
-            if (heading > -1)
             {
-                if (labelHeading.Text != heading.ToString())
-                    labelHeading.Text = heading.ToString();
+                action = new Action(() => { labelAltitude.Text = location.Altitude.ToString("F1"); });
+                if (labelAltitude.InvokeRequired)
+                    labelAltitude.Invoke(action);
+                else
+                    action();
             }
-            else
-                if (labelHeading.Text != "NA")
-                    labelHeading.Text = "NA";
+
+            string sHeading = heading.ToString();
+            if (heading < 0)
+                sHeading = "NA";
+            if (!labelHeading.Text.Equals(sHeading))
+            {
+                action = new Action(() => { labelHeading.Text = sHeading; });
+                if (labelHeading.InvokeRequired)
+                    labelHeading.Invoke(action);
+                else
+                    action();
+            }
         }
 
         public void AutoTrack()

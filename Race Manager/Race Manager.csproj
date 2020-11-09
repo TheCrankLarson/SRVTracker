@@ -155,16 +155,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Cranky Metrics.png" />
-    <Content Include="Report Templates\LeaderBoard Template.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Report Templates\Race Telemetry.rtf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <None Include="Report Templates\EUROCAPS.TTF">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="Resources\Settings_16x.png" />
   </ItemGroup>
   <ItemGroup>

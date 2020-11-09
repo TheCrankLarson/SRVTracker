@@ -137,6 +137,12 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+    <None Include="Report Templates\EUROCAPS.TTF">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <Content Include="Report Templates\Race Telemetry.rtf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Page Include="TelemetryTable.xaml">
@@ -158,6 +164,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\FolderOpened_16x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Report Templates\LeaderBoard Template.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

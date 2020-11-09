@@ -11,6 +11,7 @@ namespace EDTracking
 
     public class EDWaypoint
     {
+        public String Name { get; set; } = "Waypoint";
         public EDLocation Location { get; set; } = null;
         public decimal Radius { get; set; } = 5000;
         public decimal MinimumAltitude { get; set; } = 0;
@@ -29,36 +30,30 @@ namespace EDTracking
         public EDWaypoint(EDLocation location)
         {
             Location = location;
+            if (!String.IsNullOrEmpty(location.Name))
+                Name = location.Name;
         }
 
         public EDWaypoint(EDLocation location, decimal hitRadius, int hitDirection): this(location)
         {
             Radius = hitRadius;
             Direction = hitDirection;
+            if (!String.IsNullOrEmpty(location.Name))
+                Name = location.Name;
         }
 
         public EDWaypoint(EDLocation location, DateTime timeTracked, decimal radius): this(location)
         {
             TimeTracked = timeTracked;
             Radius = radius;
+            if (!String.IsNullOrEmpty(location.Name))
+                Name = location.Name;
         }
 
         public bool IsValid()
         {
             // Check if the waypoint has all the required parameters for its type
             return true;
-        }
-
-        public string Name
-        {
-            get {
-                if (!String.IsNullOrEmpty(Location.Name))
-                    return Location.Name;
-                Location.Name = $"Waypoint {_nextWaypointNumber}";
-                _nextWaypointNumber++;
-                return Location.Name;
-            }
-            set { Location.Name = value; }
         }
 
         public bool LocationIsWithinWaypoint(EDLocation location)

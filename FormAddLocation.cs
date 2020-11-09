@@ -96,12 +96,15 @@ namespace SRVTracker
             return GetDisplayedLocation();
         }
 
-        public void EditLocation(EDLocation location, IWin32Window owner = null)
+        public void EditLocation(EDLocation location, IWin32Window owner = null, bool asDialog = false)
         {
             _location = location;
             DisplayLocation();
             buttonAdd.Text = "Update";
-            this.Show(owner);
+            if (asDialog)
+                this.ShowDialog();
+            else
+                this.Show(owner);
         }
 
         private void buttonAdd_Click(object sender, EventArgs e)

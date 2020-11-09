@@ -103,6 +103,16 @@ namespace SRVTracker.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Calculator_16x {
+            get {
+                object obj = ResourceManager.GetObject("Calculator_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Close_red_16x {
             get {
                 object obj = ResourceManager.GetObject("Close_red_16x", resourceCulture);
