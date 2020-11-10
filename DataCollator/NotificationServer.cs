@@ -660,7 +660,7 @@ namespace DataCollator
         private void SendStatus(HttpListenerContext Context)
         {
             // Send Commander status
-            if (DateTime.Now.Subtract(_lastStaleDataCheck).TotalMinutes > 120)
+            if (DateTime.Now.Subtract(_lastStaleDataCheck).TotalMinutes > 30)
                 ClearStaleData();
 
             // Check if a client Id was specified
