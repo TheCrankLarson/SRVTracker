@@ -660,7 +660,8 @@ namespace DataCollator
         private void SendStatus(HttpListenerContext Context)
         {
             // Send Commander status
-
+            if (DateTime.Now.Subtract(_lastStaleDataCheck).TotalMinutes > 120)
+                ClearStaleData();
 
             // Check if a client Id was specified
             if (Context.Request.RawUrl.Length > 20)
@@ -695,8 +696,6 @@ namespace DataCollator
                 Log("All player status returned from cache");
 
             WriteResponse(Context, _lastCommanderStatus);
-            if (DateTime.Now.Subtract(_lastStaleDataCheck).TotalMinutes > 120)
-                ClearStaleData();
         }
 
         private void ClearStaleData()
