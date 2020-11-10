@@ -51,6 +51,7 @@
             this.Name = "FormLocationEditor";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Locations Editor";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormLocationEditor_FormClosing);
             this.ResumeLayout(false);
 
         }

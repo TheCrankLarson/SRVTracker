@@ -596,6 +596,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "FormTracker";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Vehicle Tracker";
             this.groupBoxStatusLocation.ResumeLayout(false);
             this.groupBoxStatusLocation.PerformLayout();

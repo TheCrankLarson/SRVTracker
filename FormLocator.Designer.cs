@@ -31,6 +31,7 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormLocator));
             this.groupBoxDestination = new System.Windows.Forms.GroupBox();
+            this.checkBoxIncludeAltitudeInDistanceCalculations = new System.Windows.Forms.CheckBox();
             this.label2 = new System.Windows.Forms.Label();
             this.textBoxAltitude = new System.Windows.Forms.TextBox();
             this.textBoxLatitude = new System.Windows.Forms.TextBox();
@@ -52,7 +53,7 @@
             this.buttonUseCurrentLocation = new System.Windows.Forms.Button();
             this.buttonClose = new System.Windows.Forms.Button();
             this.pictureBoxMoveForm = new System.Windows.Forms.PictureBox();
-            this.checkBoxIncludeAltitudeInDistanceCalculations = new System.Windows.Forms.CheckBox();
+            this.buttonOpenLocationEditor = new System.Windows.Forms.Button();
             this.locatorHUD1 = new SRVTracker.LocatorHUD();
             this.groupBoxDestination.SuspendLayout();
             this.groupBoxBearing.SuspendLayout();
@@ -77,6 +78,18 @@
             this.groupBoxDestination.TabIndex = 0;
             this.groupBoxDestination.TabStop = false;
             this.groupBoxDestination.Text = "Target location";
+            // 
+            // checkBoxIncludeAltitudeInDistanceCalculations
+            // 
+            this.checkBoxIncludeAltitudeInDistanceCalculations.AutoSize = true;
+            this.checkBoxIncludeAltitudeInDistanceCalculations.Location = new System.Drawing.Point(223, 15);
+            this.checkBoxIncludeAltitudeInDistanceCalculations.Name = "checkBoxIncludeAltitudeInDistanceCalculations";
+            this.checkBoxIncludeAltitudeInDistanceCalculations.Size = new System.Drawing.Size(61, 17);
+            this.checkBoxIncludeAltitudeInDistanceCalculations.TabIndex = 6;
+            this.checkBoxIncludeAltitudeInDistanceCalculations.Text = "Altitude";
+            this.toolTip1.SetToolTip(this.checkBoxIncludeAltitudeInDistanceCalculations, "When selected, distance calculations take altitude into account.\r\nBy default, alt" +
+        "itude is ignored and ground distance is calculated.");
+            this.checkBoxIncludeAltitudeInDistanceCalculations.UseVisualStyleBackColor = true;
             // 
             // label2
             // 
@@ -178,7 +191,7 @@
             // buttonPlayers
             // 
             this.buttonPlayers.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonPlayers.Location = new System.Drawing.Point(262, 138);
+            this.buttonPlayers.Location = new System.Drawing.Point(262, 137);
             this.buttonPlayers.Name = "buttonPlayers";
             this.buttonPlayers.Size = new System.Drawing.Size(75, 23);
             this.buttonPlayers.TabIndex = 8;
@@ -261,7 +274,7 @@
             this.comboBoxLocation.FormattingEnabled = true;
             this.comboBoxLocation.Location = new System.Drawing.Point(94, 138);
             this.comboBoxLocation.Name = "comboBoxLocation";
-            this.comboBoxLocation.Size = new System.Drawing.Size(162, 21);
+            this.comboBoxLocation.Size = new System.Drawing.Size(127, 21);
             this.comboBoxLocation.TabIndex = 11;
             this.toolTip1.SetToolTip(this.comboBoxLocation, "Select or add a location to target");
             this.comboBoxLocation.SelectedIndexChanged += new System.EventHandler(this.comboBoxLocation_SelectedIndexChanged);
@@ -288,7 +301,7 @@
             // 
             this.buttonUseCurrentLocation.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonUseCurrentLocation.Image = global::SRVTracker.Properties.Resources.Home_16x;
-            this.buttonUseCurrentLocation.Location = new System.Drawing.Point(6, 136);
+            this.buttonUseCurrentLocation.Location = new System.Drawing.Point(6, 137);
             this.buttonUseCurrentLocation.Name = "buttonUseCurrentLocation";
             this.buttonUseCurrentLocation.Size = new System.Drawing.Size(35, 23);
             this.buttonUseCurrentLocation.TabIndex = 6;
@@ -321,17 +334,17 @@
             this.toolTip1.SetToolTip(this.pictureBoxMoveForm, "Click and drag here to move the form");
             this.pictureBoxMoveForm.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBoxMoveForm_MouseDown);
             // 
-            // checkBoxIncludeAltitudeInDistanceCalculations
+            // buttonOpenLocationEditor
             // 
-            this.checkBoxIncludeAltitudeInDistanceCalculations.AutoSize = true;
-            this.checkBoxIncludeAltitudeInDistanceCalculations.Location = new System.Drawing.Point(223, 15);
-            this.checkBoxIncludeAltitudeInDistanceCalculations.Name = "checkBoxIncludeAltitudeInDistanceCalculations";
-            this.checkBoxIncludeAltitudeInDistanceCalculations.Size = new System.Drawing.Size(61, 17);
-            this.checkBoxIncludeAltitudeInDistanceCalculations.TabIndex = 6;
-            this.checkBoxIncludeAltitudeInDistanceCalculations.Text = "Altitude";
-            this.toolTip1.SetToolTip(this.checkBoxIncludeAltitudeInDistanceCalculations, "When selected, distance calculations take altitude into account.\r\nBy default, alt" +
-        "itude is ignored and ground distance is calculated.");
-            this.checkBoxIncludeAltitudeInDistanceCalculations.UseVisualStyleBackColor = true;
+            this.buttonOpenLocationEditor.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonOpenLocationEditor.Image = global::SRVTracker.Properties.Resources.AddressEditor_16x;
+            this.buttonOpenLocationEditor.Location = new System.Drawing.Point(221, 137);
+            this.buttonOpenLocationEditor.Name = "buttonOpenLocationEditor";
+            this.buttonOpenLocationEditor.Size = new System.Drawing.Size(35, 23);
+            this.buttonOpenLocationEditor.TabIndex = 29;
+            this.toolTip1.SetToolTip(this.buttonOpenLocationEditor, "Set as home (track current location)");
+            this.buttonOpenLocationEditor.UseVisualStyleBackColor = true;
+            this.buttonOpenLocationEditor.Click += new System.EventHandler(this.buttonOpenLocationEditor_Click);
             // 
             // locatorHUD1
             // 
@@ -348,6 +361,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.ClientSize = new System.Drawing.Size(562, 174);
+            this.Controls.Add(this.buttonOpenLocationEditor);
             this.Controls.Add(this.pictureBoxMoveForm);
             this.Controls.Add(this.buttonClose);
             this.Controls.Add(this.buttonAlwaysOnTop);
@@ -368,6 +382,7 @@
             this.MinimizeBox = false;
             this.Name = "FormLocator";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Waypoint Locator";
             this.toolTip1.SetToolTip(this, "Click and drag the form background to move");
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormLocator_FormClosing);
@@ -409,5 +424,6 @@
         private System.Windows.Forms.Button buttonClose;
         private System.Windows.Forms.PictureBox pictureBoxMoveForm;
         private System.Windows.Forms.CheckBox checkBoxIncludeAltitudeInDistanceCalculations;
+        private System.Windows.Forms.Button buttonOpenLocationEditor;
     }
 }

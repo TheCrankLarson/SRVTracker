@@ -34,6 +34,7 @@ namespace SRVTracker
         private static EDEvent _closestCommander = null;
         private static decimal _closestCommanderDistance = decimal.MaxValue;
         private static FormLocator _activeLocator = null;
+        private ConfigSaverClass _formConfig = null;
 
         public const int WM_NCLBUTTONDOWN = 0xA1;
         public const int HT_CAPTION = 0x2;
@@ -48,6 +49,13 @@ namespace SRVTracker
         {
             InitializeComponent();
             CalculateWindowSizes();
+
+            // Attach our form configuration saver
+            _formConfig = new ConfigSaverClass(this, true);
+            _formConfig.StoreControlInfo = false;
+            _formConfig.SaveEnabled = true;
+            ConfigSaverClass.ApplyConfiguration();
+
             this.Size = _normalView;
             this.Width = _commanderListHiddenWidth;
             buttonUseCurrentLocation.Enabled = false;  // We'll enable it when we have a location
@@ -77,27 +85,12 @@ namespace SRVTracker
 
         public static FormLocator GetLocator(bool focus = false)
         {
-            if (_activeLocator != null)
+            if (_activeLocator == null || _activeLocator.IsDisposed)
             {
-                try
-                {
-                    if (_activeLocator.Visible)
-                    {
-                        if (focus)
-                            _activeLocator.Focus();
-                        return _activeLocator;
-                    }
-                }
-                catch { }
+                _activeLocator = new FormLocator();
             }
-
-            try
-            {
-                _activeLocator?.Dispose();
-            }
-            catch { }
-            _activeLocator = new FormLocator();
-            _activeLocator.Show();
+            if (!_activeLocator.Visible)
+                _activeLocator.Show();
             return _activeLocator;
         }
 
@@ -713,6 +706,11 @@ namespace SRVTracker
                 ReleaseCapture();
                 SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
             }
+        }
+
+        private void buttonOpenLocationEditor_Click(object sender, EventArgs e)
+        {
+            FormLocationEditor.GetFormLocationEditor().ShowWithBorder(this);
         }
     }
 }

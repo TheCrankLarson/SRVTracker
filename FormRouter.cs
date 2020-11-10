@@ -27,7 +27,6 @@ namespace SRVTracker
         private FormTracker _formTracker = null; // We need a reference to the tracker so that we can start tracking if necessary
         private ConfigSaverClass _formConfig = null;
         private bool _updatingWaypointInfo = false;
-        private FormLocationEditor _formLocationEditor = null;
         private Dictionary<string, string> _eventSounds = null;
         private List<string> _soundSources = null;
         private SoundPlayer _soundPlayer = new SoundPlayer();
@@ -482,10 +481,7 @@ namespace SRVTracker
 
         private void buttonAddWaypoint_Click(object sender, EventArgs e)
         {
-            if (_formLocationEditor==null || _formLocationEditor.IsDisposed)
-                _formLocationEditor = new FormLocationEditor();
-
-            EDLocation locationToAdd = _formLocationEditor.SelectLocation(this, ((Control)sender).PointToScreen(new Point(buttonAddWaypoint.Width, buttonAddWaypoint.Height)));
+            EDLocation locationToAdd = FormLocationEditor.GetFormLocationEditor().SelectLocation(this, ((Control)sender).PointToScreen(new Point(buttonAddWaypoint.Width, buttonAddWaypoint.Height)));
             if (locationToAdd != null)
                 AddLocationToRoute(locationToAdd);
         }
@@ -968,9 +964,7 @@ namespace SRVTracker
 
         private void buttonEditLocations_Click(object sender, EventArgs e)
         {
-            if (_formLocationEditor == null || _formLocationEditor.IsDisposed)
-                _formLocationEditor = new FormLocationEditor();
-            _formLocationEditor.ShowWithBorder(this);
+            FormLocationEditor.GetFormLocationEditor().ShowWithBorder(this);
         }
     }
 }

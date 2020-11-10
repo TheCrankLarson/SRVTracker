@@ -13,10 +13,24 @@ namespace SRVTracker
 {
     public partial class FormLocationEditor : Form
     {
+        private static FormLocationEditor _formInstance = null;
+        private static Point _formLocation;
+
         public FormLocationEditor()
         {
             InitializeComponent();
             locationManager1.SelectionChanged += LocationManager1_SelectionChanged;
+        }
+
+        public static FormLocationEditor GetFormLocationEditor()
+        {
+            if (_formInstance == null || _formInstance.IsDisposed)
+            {
+                _formInstance = new FormLocationEditor();
+                if (_formLocation != null)
+                    _formInstance.Location = _formLocation;
+            }
+            return _formInstance;
         }
 
         private void LocationManager1_SelectionChanged(object sender, EventArgs e)
@@ -61,9 +75,16 @@ namespace SRVTracker
 
         public void ShowWithBorder(IWin32Window owner = null)
         {
+            if (this.Visible)
+                this.Hide();
             this.FormBorderStyle = FormBorderStyle.FixedToolWindow;
             locationManager1.AllowSelectionOnly = false;
             this.Show(owner);
+        }
+
+        private void FormLocationEditor_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            _formLocation = this.Location;
         }
     }
 }

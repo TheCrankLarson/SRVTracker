@@ -23,6 +23,8 @@ namespace EDTracking
         public static event EventHandler UpdateConfig = delegate { };
         public static event EventHandler UpdateAndSaveConfig = delegate { };
 
+        public bool StoreControlInfo { get; set; } = true;
+
         public ConfigSaverClass(System.Windows.Forms.Form form, bool DoNotApply = false)
         {
             Initialise(form, DoNotApply);
@@ -449,11 +451,12 @@ namespace EDTracking
         {
             // Read and save all our control's values
 
-            StringBuilder appSettings = new StringBuilder("FormConfig:");
+            StringBuilder appSettings = new StringBuilder($"FormConfig:{_form.Location.X}:{_form.Location.Y}");
             appSettings.AppendLine();
 
-            foreach (Control control in _form.Controls)
-                RecurseControls(control, ref appSettings);
+            if (StoreControlInfo)
+                foreach (Control control in _form.Controls)
+                    RecurseControls(control, ref appSettings);
 
             if (_formsConfig.ContainsKey(_form.Name))
                 _formsConfig.Remove(_form.Name);
@@ -486,6 +489,20 @@ namespace EDTracking
                     if (!String.IsNullOrEmpty(sLine))
                     {
                         string[] controlSetting = sLine.Split(':');
+                        if (controlSetting[0].Equals("FormConfig"))
+                        {
+                            if (controlSetting.Length > 1)
+                            {
+                                // Read and restore the form position
+                                try
+                                {
+                                    System.Drawing.Point formLocation = new System.Drawing.Point(int.Parse(controlSetting[1]), int.Parse(controlSetting[2]));
+                                    _form.Location = formLocation;
+                                }
+                                catch { }
+                            }
+                            controlSetting[0] = "";
+                        }
                         if (controlSetting.Length > 3)
                         {
                             for (int i = 3; i < controlSetting.Length; i++)
