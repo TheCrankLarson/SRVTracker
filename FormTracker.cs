@@ -36,7 +36,6 @@ namespace SRVTracker
         public static int CurrentHeading { get; private set; } = -1;
         public static decimal SpeedInMS { get; internal set; } = 0;
         public static decimal AverageSpeedInMS { get; internal set; } = 0;
-        FormRaceManager _formRaceMonitor = null;
 
         // Keep track of ground speed (E: D shows speed you are travelling in the direction you are facing, which is not ground speed)
         private EDLocation _speedCalculationLocation = null;
@@ -73,7 +72,7 @@ namespace SRVTracker
             _formConfig.ExcludedControls.Add(textBoxClientId);
             _formConfig.ExcludedControls.Add(textBoxStatusFile);
             _formConfig.SaveEnabled = true;
-            ConfigSaverClass.ApplyConfiguration();
+            _formConfig.RestoreFormValues();
 
             buttonTest.Visible = System.Diagnostics.Debugger.IsAttached;
             CalculateWindowSizes();
@@ -82,6 +81,8 @@ namespace SRVTracker
             this.Text = Application.ProductName + " v" + Application.ProductVersion;
             groupBoxSRVTracker.Text = this.Text;
             trackerHUD1.AutoTrack();  // Tracker HUD listens for events that we generate when location changes
+            if (!File.Exists("Race Manager.exe"))
+                buttonRaceTracker.Enabled = false;
         }
 
         private void CalculateWindowSizes()
@@ -117,12 +118,10 @@ namespace SRVTracker
                     _lastFileWrite = lastWriteTime;
                 }
             }
-            else
-            {
-                // This is the five second ping when we are watching for file updates
-                if (!String.IsNullOrEmpty(_statusFile) && (DateTime.Now.Subtract(_lastStatusSend).TotalSeconds > 5) )
-                    ProcessStatusFileUpdate(_statusFile);
-            }
+
+            // This is the five second ping when we are watching for file updates
+            if (!String.IsNullOrEmpty(_statusFile) && (DateTime.Now.Subtract(_lastStatusSend).TotalSeconds > 5) )
+                ProcessStatusFileUpdate(_statusFile);
             _statusTimer.Start();
         }
 
@@ -761,19 +760,7 @@ namespace SRVTracker
                 Updater.LaunchApplication("Race Manager.exe");
                 return;
             }
-            if (_formRaceMonitor != null)
-            {
-                try
-                {
-                    _formRaceMonitor.Show();
-                    _formRaceMonitor.Focus();
-                    return;
-                }
-                catch { }
-            }
-
-            _formRaceMonitor = new FormRaceManager();
-            _formRaceMonitor.Show();
+            buttonRaceTracker.Enabled = false; // Manager doesn't exist
         }
 
         private void checkBoxAutoUpdate_CheckedChanged(object sender, EventArgs e)

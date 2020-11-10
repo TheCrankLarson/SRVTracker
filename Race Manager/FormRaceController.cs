@@ -42,7 +42,8 @@ namespace Race_Manager
             _formConfig.ExcludedControls.Add(textBoxSystem);
             _formConfig.ExcludedControls.Add(textBoxPlanet);
             _formConfig.SaveEnabled = true;
-            ConfigSaverClass.ApplyConfiguration();
+            _formConfig.RestorePreviousSize = false;
+            _formConfig.RestoreFormValues();
             groupBoxAddCommander.Visible = false;
 
             this.Text = Application.ProductName + " v" + Application.ProductVersion;
@@ -434,10 +435,10 @@ namespace Race_Manager
 
         private void buttonStopRace_Click(object sender, EventArgs e)
         {
-            _race.Finished = true;
-            if (_race.Statuses != null)
-                foreach (EDRaceStatus status in _race.Statuses.Values)
-                    status.Finished = true;
+            //_race.Finished = true;
+            //if (_race.Statuses != null)
+            //    foreach (EDRaceStatus status in _race.Statuses.Values)
+            //        status.Finished = true;
 
             if (!String.IsNullOrEmpty(_serverRaceGuid))
             {
@@ -684,7 +685,8 @@ namespace Race_Manager
                 _raceTelemetrySettings = new FormTelemetrySettings(_raceTelemetryWriter,EDRace.RaceReportDescriptions(),"Race-", "Race Telemetry Settings");
                 _raceTelemetrySettings.ExportToControlTag(checkBoxExportRaceTelemetry);
             }
-            _raceTelemetrySettings.Show(this);
+            if (!_raceTelemetrySettings.Visible)
+                _raceTelemetrySettings.Show(this);
         }
 
         private void buttonCommanderTelemetryExportSettings_Click(object sender, EventArgs e)
@@ -697,7 +699,8 @@ namespace Race_Manager
                 _targetTelemetrySettings = new FormTelemetrySettings(_trackedTelemetryWriter, EDRaceStatus.RaceReportDescriptions(), "Target-", "Target Telemetry Settings");
                 _targetTelemetrySettings.ExportToControlTag(checkBoxExportTargetTelemetry);
             }
-            _targetTelemetrySettings.Show(this);
+            if (!_targetTelemetrySettings.Visible)
+                _targetTelemetrySettings.Show(this);
         }
 
         private void checkBoxShowRaceTelemetry_CheckedChanged(object sender, EventArgs e)

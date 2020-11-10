@@ -51,7 +51,7 @@ namespace SRVTracker
             if (_raceStatuses == null)
             {
                 // Need to retrieve race history from the server
-                string statusUrl = $"http://{FormLocator.ServerAddress}:11938/DataCollator/getcommanderracereport/{_serverRaceGuid}/{commander}";
+                string statusUrl = $"http://<server>:11938/DataCollator/getcommanderracereport/{_serverRaceGuid}/{commander}";
                 try
                 {
                     using (WebClient webClient = new WebClient())

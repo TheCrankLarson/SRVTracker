@@ -57,6 +57,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "FormTelemetryDisplay";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Race Telemetry";
             this.ResumeLayout(false);
 

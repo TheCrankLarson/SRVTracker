@@ -54,7 +54,8 @@ namespace SRVTracker
             _formConfig = new ConfigSaverClass(this, true);
             _formConfig.StoreControlInfo = false;
             _formConfig.SaveEnabled = true;
-            ConfigSaverClass.ApplyConfiguration();
+            _formConfig.RestorePreviousSize = false;
+            _formConfig.RestoreFormValues();
 
             this.Size = _normalView;
             this.Width = _commanderListHiddenWidth;

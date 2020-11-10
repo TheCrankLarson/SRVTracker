@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Valve.VR;
 using System.Text.Json;
+using EDTracking;
 
 namespace SRVTracker
 {
@@ -19,10 +20,17 @@ namespace SRVTracker
         private HmdMatrix34_t _hmdMatrix;
         private Dictionary<string, MatrixDefinition> _savedMatrices = null;
         private string _matricesSaveFile = "hmd_matrices.json";
+        private ConfigSaverClass _formConfig = null;
 
         public FormVRMatrixTest(ulong overlayHandle)
         {
             InitializeComponent();
+            // Attach our form configuration saver
+            _formConfig = new ConfigSaverClass(this, true);
+            _formConfig.StoreControlInfo = false;
+            _formConfig.SaveEnabled = true;
+            _formConfig.RestoreFormValues();
+
             InitMatrices();
             _overlayHandle = overlayHandle;
             _hmdMatrix = new HmdMatrix34_t();

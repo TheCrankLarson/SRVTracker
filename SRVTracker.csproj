@@ -179,18 +179,6 @@
     <Compile Include="FormLocator.Designer.cs">
       <DependentUpon>FormLocator.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormRaceHistory.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormRaceHistory.Designer.cs">
-      <DependentUpon>FormRaceHistory.cs</DependentUpon>
-    </Compile>
-    <Compile Include="FormRaceManager.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormRaceManager.Designer.cs">
-      <DependentUpon>FormRaceManager.cs</DependentUpon>
-    </Compile>
     <Compile Include="FormRouter.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -264,12 +252,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormLocator.resx">
       <DependentUpon>FormLocator.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FormRaceHistory.resx">
-      <DependentUpon>FormRaceHistory.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FormRaceManager.resx">
-      <DependentUpon>FormRaceManager.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormRouter.resx">
       <DependentUpon>FormRouter.cs</DependentUpon>

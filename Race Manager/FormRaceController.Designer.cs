@@ -34,12 +34,12 @@
             this.checkBoxAllowMainShip = new System.Windows.Forms.CheckBox();
             this.checkBoxAllowFighter = new System.Windows.Forms.CheckBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.checkBoxLappedRace = new System.Windows.Forms.CheckBox();
-            this.numericUpDownLapCount = new System.Windows.Forms.NumericUpDown();
             this.checkBoxAllowPitstops = new System.Windows.Forms.CheckBox();
             this.checkBoxAllowSRV = new System.Windows.Forms.CheckBox();
             this.checkBoxEliminationOnDestruction = new System.Windows.Forms.CheckBox();
             this.buttonEditStatusMessages = new System.Windows.Forms.Button();
+            this.checkBoxLappedRace = new System.Windows.Forms.CheckBox();
+            this.numericUpDownLapCount = new System.Windows.Forms.NumericUpDown();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -168,37 +168,6 @@
             this.label1.TabIndex = 8;
             this.label1.Text = "Allowed vehicles:";
             // 
-            // checkBoxLappedRace
-            // 
-            this.checkBoxLappedRace.AutoSize = true;
-            this.checkBoxLappedRace.Location = new System.Drawing.Point(95, 158);
-            this.checkBoxLappedRace.Name = "checkBoxLappedRace";
-            this.checkBoxLappedRace.Size = new System.Drawing.Size(52, 17);
-            this.checkBoxLappedRace.TabIndex = 6;
-            this.checkBoxLappedRace.Text = "Laps:";
-            this.toolTip1.SetToolTip(this.checkBoxLappedRace, "Whether this is a lapped race or not.\r\nFor a lapped race, the first waypoint is b" +
-        "oth\r\nstart and finish.");
-            this.checkBoxLappedRace.UseVisualStyleBackColor = true;
-            this.checkBoxLappedRace.CheckedChanged += new System.EventHandler(this.checkBoxLappedRace_CheckedChanged);
-            // 
-            // numericUpDownLapCount
-            // 
-            this.numericUpDownLapCount.Location = new System.Drawing.Point(153, 157);
-            this.numericUpDownLapCount.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.numericUpDownLapCount.Name = "numericUpDownLapCount";
-            this.numericUpDownLapCount.Size = new System.Drawing.Size(54, 20);
-            this.numericUpDownLapCount.TabIndex = 5;
-            this.toolTip1.SetToolTip(this.numericUpDownLapCount, "Total number of laps in the race");
-            this.numericUpDownLapCount.Value = new decimal(new int[] {
-            2,
-            0,
-            0,
-            0});
-            // 
             // checkBoxAllowPitstops
             // 
             this.checkBoxAllowPitstops.AutoSize = true;
@@ -251,6 +220,37 @@
             this.toolTip1.SetToolTip(this.buttonEditStatusMessages, "Edit the status messages");
             this.buttonEditStatusMessages.UseVisualStyleBackColor = true;
             this.buttonEditStatusMessages.Click += new System.EventHandler(this.buttonEditStatusMessages_Click);
+            // 
+            // checkBoxLappedRace
+            // 
+            this.checkBoxLappedRace.AutoSize = true;
+            this.checkBoxLappedRace.Location = new System.Drawing.Point(95, 158);
+            this.checkBoxLappedRace.Name = "checkBoxLappedRace";
+            this.checkBoxLappedRace.Size = new System.Drawing.Size(52, 17);
+            this.checkBoxLappedRace.TabIndex = 6;
+            this.checkBoxLappedRace.Text = "Laps:";
+            this.toolTip1.SetToolTip(this.checkBoxLappedRace, "Whether this is a lapped race or not.\r\nFor a lapped race, the first waypoint is b" +
+        "oth\r\nstart and finish.");
+            this.checkBoxLappedRace.UseVisualStyleBackColor = true;
+            this.checkBoxLappedRace.CheckedChanged += new System.EventHandler(this.checkBoxLappedRace_CheckedChanged);
+            // 
+            // numericUpDownLapCount
+            // 
+            this.numericUpDownLapCount.Location = new System.Drawing.Point(153, 157);
+            this.numericUpDownLapCount.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDownLapCount.Name = "numericUpDownLapCount";
+            this.numericUpDownLapCount.Size = new System.Drawing.Size(54, 20);
+            this.numericUpDownLapCount.TabIndex = 5;
+            this.toolTip1.SetToolTip(this.numericUpDownLapCount, "Total number of laps in the race");
+            this.numericUpDownLapCount.Value = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
             // 
             // groupBox5
             // 
@@ -509,7 +509,7 @@
             this.groupBox4.Controls.Add(this.checkBoxExportRaceTelemetry);
             this.groupBox4.Location = new System.Drawing.Point(495, 110);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(170, 66);
+            this.groupBox4.Size = new System.Drawing.Size(186, 66);
             this.groupBox4.TabIndex = 12;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Telemetry";
@@ -517,7 +517,7 @@
             // buttonCommanderTelemetryExportSettings
             // 
             this.buttonCommanderTelemetryExportSettings.Image = global::Race_Manager.Properties.Resources.Settings_16x;
-            this.buttonCommanderTelemetryExportSettings.Location = new System.Drawing.Point(143, 38);
+            this.buttonCommanderTelemetryExportSettings.Location = new System.Drawing.Point(158, 37);
             this.buttonCommanderTelemetryExportSettings.Name = "buttonCommanderTelemetryExportSettings";
             this.buttonCommanderTelemetryExportSettings.Size = new System.Drawing.Size(22, 22);
             this.buttonCommanderTelemetryExportSettings.TabIndex = 3;
@@ -530,9 +530,9 @@
             this.checkBoxShowTargetTelemetry.AutoSize = true;
             this.checkBoxShowTargetTelemetry.Location = new System.Drawing.Point(5, 42);
             this.checkBoxShowTargetTelemetry.Name = "checkBoxShowTargetTelemetry";
-            this.checkBoxShowTargetTelemetry.Size = new System.Drawing.Size(57, 17);
+            this.checkBoxShowTargetTelemetry.Size = new System.Drawing.Size(83, 17);
             this.checkBoxShowTargetTelemetry.TabIndex = 1;
-            this.checkBoxShowTargetTelemetry.Text = "Target";
+            this.checkBoxShowTargetTelemetry.Text = "Show target";
             this.toolTip1.SetToolTip(this.checkBoxShowTargetTelemetry, "Enable target telemetry display.\r\nTelemetry is shown in its own window.\r\n");
             this.checkBoxShowTargetTelemetry.UseVisualStyleBackColor = true;
             this.checkBoxShowTargetTelemetry.CheckedChanged += new System.EventHandler(this.checkBoxShowTargetTelemetry_CheckedChanged);
@@ -540,7 +540,7 @@
             // buttonRaceTelemetryExportSettings
             // 
             this.buttonRaceTelemetryExportSettings.Image = global::Race_Manager.Properties.Resources.Settings_16x;
-            this.buttonRaceTelemetryExportSettings.Location = new System.Drawing.Point(143, 15);
+            this.buttonRaceTelemetryExportSettings.Location = new System.Drawing.Point(158, 14);
             this.buttonRaceTelemetryExportSettings.Name = "buttonRaceTelemetryExportSettings";
             this.buttonRaceTelemetryExportSettings.Size = new System.Drawing.Size(22, 22);
             this.buttonRaceTelemetryExportSettings.TabIndex = 2;
@@ -551,11 +551,11 @@
             // checkBoxShowRaceTelemetry
             // 
             this.checkBoxShowRaceTelemetry.AutoSize = true;
-            this.checkBoxShowRaceTelemetry.Location = new System.Drawing.Point(6, 19);
+            this.checkBoxShowRaceTelemetry.Location = new System.Drawing.Point(5, 19);
             this.checkBoxShowRaceTelemetry.Name = "checkBoxShowRaceTelemetry";
-            this.checkBoxShowRaceTelemetry.Size = new System.Drawing.Size(52, 17);
+            this.checkBoxShowRaceTelemetry.Size = new System.Drawing.Size(77, 17);
             this.checkBoxShowRaceTelemetry.TabIndex = 0;
-            this.checkBoxShowRaceTelemetry.Text = "Race";
+            this.checkBoxShowRaceTelemetry.Text = "Show race";
             this.toolTip1.SetToolTip(this.checkBoxShowRaceTelemetry, "\r\n");
             this.checkBoxShowRaceTelemetry.UseVisualStyleBackColor = true;
             this.checkBoxShowRaceTelemetry.CheckedChanged += new System.EventHandler(this.checkBoxShowRaceTelemetry_CheckedChanged);
@@ -563,7 +563,7 @@
             // checkBoxExportTargetTelemetry
             // 
             this.checkBoxExportTargetTelemetry.AutoSize = true;
-            this.checkBoxExportTargetTelemetry.Location = new System.Drawing.Point(81, 42);
+            this.checkBoxExportTargetTelemetry.Location = new System.Drawing.Point(92, 42);
             this.checkBoxExportTargetTelemetry.Name = "checkBoxExportTargetTelemetry";
             this.checkBoxExportTargetTelemetry.Size = new System.Drawing.Size(56, 17);
             this.checkBoxExportTargetTelemetry.TabIndex = 1;
@@ -574,7 +574,7 @@
             // checkBoxExportRaceTelemetry
             // 
             this.checkBoxExportRaceTelemetry.AutoSize = true;
-            this.checkBoxExportRaceTelemetry.Location = new System.Drawing.Point(81, 19);
+            this.checkBoxExportRaceTelemetry.Location = new System.Drawing.Point(92, 19);
             this.checkBoxExportRaceTelemetry.Name = "checkBoxExportRaceTelemetry";
             this.checkBoxExportRaceTelemetry.Size = new System.Drawing.Size(56, 17);
             this.checkBoxExportRaceTelemetry.TabIndex = 0;
@@ -674,7 +674,7 @@
             this.comboBoxTarget.FormattingEnabled = true;
             this.comboBoxTarget.Location = new System.Drawing.Point(6, 19);
             this.comboBoxTarget.Name = "comboBoxTarget";
-            this.comboBoxTarget.Size = new System.Drawing.Size(158, 21);
+            this.comboBoxTarget.Size = new System.Drawing.Size(174, 21);
             this.comboBoxTarget.TabIndex = 2;
             this.toolTip1.SetToolTip(this.comboBoxTarget, "Target to display telemetry for");
             this.comboBoxTarget.SelectedIndexChanged += new System.EventHandler(this.comboBoxTarget_SelectedIndexChanged);
@@ -682,7 +682,7 @@
             // checkBoxTargetClosestTo
             // 
             this.checkBoxTargetClosestTo.AutoSize = true;
-            this.checkBoxTargetClosestTo.Location = new System.Drawing.Point(92, 46);
+            this.checkBoxTargetClosestTo.Location = new System.Drawing.Point(108, 46);
             this.checkBoxTargetClosestTo.Name = "checkBoxTargetClosestTo";
             this.checkBoxTargetClosestTo.Size = new System.Drawing.Size(72, 17);
             this.checkBoxTargetClosestTo.TabIndex = 3;
@@ -771,7 +771,7 @@
             this.groupBox10.Controls.Add(this.comboBoxTarget);
             this.groupBox10.Location = new System.Drawing.Point(495, 182);
             this.groupBox10.Name = "groupBox10";
-            this.groupBox10.Size = new System.Drawing.Size(170, 71);
+            this.groupBox10.Size = new System.Drawing.Size(186, 71);
             this.groupBox10.TabIndex = 19;
             this.groupBox10.TabStop = false;
             this.groupBox10.Text = "Target";
@@ -808,6 +808,7 @@
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.Name = "FormRaceController";
             this.Text = "Form1";

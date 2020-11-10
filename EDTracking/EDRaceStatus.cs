@@ -421,30 +421,33 @@ namespace EDTracking
             if (Flags < 1)
                 return;
 
-            if (isFlagSet(StatusFlags.In_SRV) || isFlagSet(StatusFlags.In_MainShip) || isFlagSet(StatusFlags.In_Fighter))
+            if (_race != null)
             {
-                // We have a valid vehicle flag, so check the vehicle is allowed
-                bool vehicleDisallowed = false;
-                if (!_race.SRVAllowed && isFlagSet(StatusFlags.In_SRV))
-                    vehicleDisallowed = true;
-                if (!_race.ShipAllowed && isFlagSet(StatusFlags.In_MainShip))
+                if (isFlagSet(StatusFlags.In_SRV) || isFlagSet(StatusFlags.In_MainShip) || isFlagSet(StatusFlags.In_Fighter))
                 {
-                    if (_race.AllowPitstops)
-                        vehicleDisallowed = !isFlagSet(StatusFlags.Landed_on_planet_surface) && !isFlagSet(StatusFlags.Docked_on_a_landing_pad);
-                    else
+                    // We have a valid vehicle flag, so check the vehicle is allowed
+                    bool vehicleDisallowed = false;
+                    if (!_race.SRVAllowed && isFlagSet(StatusFlags.In_SRV))
                         vehicleDisallowed = true;
-                }
-                if (!_race.FighterAllowed && isFlagSet(StatusFlags.In_Fighter))
-                    vehicleDisallowed = true;
+                    if (!_race.ShipAllowed && isFlagSet(StatusFlags.In_MainShip))
+                    {
+                        if (_race.AllowPitstops)
+                            vehicleDisallowed = !isFlagSet(StatusFlags.Landed_on_planet_surface) && !isFlagSet(StatusFlags.Docked_on_a_landing_pad);
+                        else
+                            vehicleDisallowed = true;
+                    }
+                    if (!_race.FighterAllowed && isFlagSet(StatusFlags.In_Fighter))
+                        vehicleDisallowed = true;
 
-                if (vehicleDisallowed)
-                {
-                    Eliminated = true;
-                    notableEvents?.AddStatusEvent("EliminatedNotification", Commander);
-                    AddRaceHistory("Selected vehicle not allowed");
-                    DistanceToWaypoint = decimal.MaxValue;
-                    SpeedInMS = 0;
-                    _previousLocation = null;
+                    if (vehicleDisallowed)
+                    {
+                        Eliminated = true;
+                        notableEvents?.AddStatusEvent("EliminatedNotification", Commander);
+                        AddRaceHistory("Selected vehicle not allowed");
+                        DistanceToWaypoint = decimal.MaxValue;
+                        SpeedInMS = 0;
+                        _previousLocation = null;
+                    }
                 }
             }
 

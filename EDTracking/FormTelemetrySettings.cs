@@ -12,6 +12,7 @@ namespace EDTracking
         private Dictionary<string, String> _reportDescriptions = null;
         private string _filePrefix = "";
         private Control _exportControl = null;
+        private ConfigSaverClass _formConfig = null;
 
         public FormTelemetrySettings(TelemetryWriter telemetryWriter, Dictionary<string, string> ReportDescriptions, string ExportFilePrefix="", string WindowTitle="")
         {
@@ -19,8 +20,14 @@ namespace EDTracking
             _telemetryWriter = telemetryWriter;
             _reportDescriptions = ReportDescriptions;
             _filePrefix = ExportFilePrefix;
+            
             if (!String.IsNullOrEmpty(WindowTitle))
                 this.Text = WindowTitle;
+            _formConfig = new ConfigSaverClass(this, true, true);
+            _formConfig.StoreControlInfo = false;
+            _formConfig.SaveEnabled = true;
+            _formConfig.RestoreFormValues();
+
             InitialiseList();
             if (String.IsNullOrEmpty(_telemetryWriter.ExportDirectory))
             {

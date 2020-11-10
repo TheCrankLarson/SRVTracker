@@ -13,13 +13,20 @@ namespace EDTracking
     public partial class FormTelemetryDisplay : Form
     {
         private TelemetryWriter _telemetryWriter = null;
+        private ConfigSaverClass _formConfig = null;
 
         public FormTelemetryDisplay(TelemetryWriter telemetryWriter, string windowTitle = "Race Telemetry")
         {
             InitializeComponent();
+            // Attach our form configuration saver
+            this.Text = windowTitle;
+            _formConfig = new ConfigSaverClass(this, true, true);
+            _formConfig.StoreControlInfo = false;
+            _formConfig.SaveEnabled = true;
+            _formConfig.RestorePreviousSize = false;
+            _formConfig.RestoreFormValues();
             _telemetryWriter = telemetryWriter;
             telemetryTable1.SetTelemetryWriter(_telemetryWriter);
-            this.Text = windowTitle;
             this.AutoSize = true;
             this.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             this.elementHost1.AutoSize = true;

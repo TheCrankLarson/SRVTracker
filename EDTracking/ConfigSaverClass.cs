@@ -15,6 +15,7 @@ namespace EDTracking
         private string _configFile = String.Empty;
         private bool _encryptData = true;
         private bool _doNotStoreConfig = false;  // Used to control whether we want to store anything at all
+        private bool _matchFormNameAndText = false;
         private static Dictionary<string, string> _formsConfig = null;
         private static Dictionary<string, Dictionary<string, string>> _configurationSets = null;
         private static string _selectedConfiguration = "Default";
@@ -24,15 +25,18 @@ namespace EDTracking
         public static event EventHandler UpdateAndSaveConfig = delegate { };
 
         public bool StoreControlInfo { get; set; } = true;
+        public bool RestorePreviousLocation { get; set; } = true;
+        public bool RestorePreviousSize { get; set; } = true;
 
-        public ConfigSaverClass(System.Windows.Forms.Form form, bool DoNotApply = false)
+        public ConfigSaverClass(System.Windows.Forms.Form form, bool DoNotApply)
         {
             Initialise(form, DoNotApply);
         }
 
-        public ConfigSaverClass(Form form, bool Encrypt, bool DoNotApply = false)
+        public ConfigSaverClass(Form form, bool DoNotApply, bool MatchFormTextAndName, bool Encrypt = true)
         {
             _encryptData = Encrypt;
+            _matchFormNameAndText = MatchFormTextAndName;
             Initialise(form, DoNotApply);
         }
 
@@ -197,8 +201,8 @@ namespace EDTracking
 
         private void _form_Deactivate(object sender, EventArgs e)
         {
-            if (!_doNotStoreConfig)
-                SaveConfiguration(_configFile);
+            //if (!_doNotStoreConfig)
+            //    SaveConfiguration(_configFile);
         }
 
         private void ClassFormConfig_UpdateAndSaveConfig(object sender, EventArgs e)
@@ -400,11 +404,11 @@ namespace EDTracking
             if (!String.IsNullOrEmpty((string)control.Tag))
                 appSettings.AppendLine(control.Name + ":Tag:" + Encode((string)control.Tag));
 
-            PropertyInfo prop = control.GetType().GetProperty("SelectedIndex", BindingFlags.Public | BindingFlags.Instance);
-            if (prop != null && prop.CanWrite)
-                appSettings.AppendLine(control.Name + ":SelectedIndex:" + prop.GetValue(control));
+            //PropertyInfo prop = control.GetType().GetProperty("SelectedIndex", BindingFlags.Public | BindingFlags.Instance);
+            //if (prop != null && prop.CanWrite)
+            //    appSettings.AppendLine(control.Name + ":SelectedIndex:" + prop.GetValue(control));
 
-            prop = control.GetType().GetProperty("Checked", BindingFlags.Public | BindingFlags.Instance);
+            PropertyInfo prop = control.GetType().GetProperty("Checked", BindingFlags.Public | BindingFlags.Instance);
             if (prop != null && prop.CanWrite)
                 appSettings.AppendLine(control.Name + ":Checked:" + prop.GetValue(control));
         }
@@ -451,28 +455,39 @@ namespace EDTracking
         {
             // Read and save all our control's values
 
-            StringBuilder appSettings = new StringBuilder($"FormConfig:{_form.Location.X}:{_form.Location.Y}");
+            StringBuilder appSettings = new StringBuilder($"FormConfig:{_form.Location.X}:{_form.Location.Y}:{_form.Size.Width}:{_form.Size.Height}");
             appSettings.AppendLine();
 
             if (StoreControlInfo)
                 foreach (Control control in _form.Controls)
                     RecurseControls(control, ref appSettings);
 
-            if (_formsConfig.ContainsKey(_form.Name))
-                _formsConfig.Remove(_form.Name);
+            string formName = FormName();
+            if (_formsConfig.ContainsKey(formName))
+                _formsConfig.Remove(formName);
 
-            _formsConfig.Add(_form.Name, Encode(appSettings.ToString()));
+            _formsConfig.Add(formName, Encode(appSettings.ToString()));
             _configurationSets[_selectedConfiguration] = _formsConfig;
 
         }
 
-        private void RestoreFormValues()
+        private string FormName()
+        {
+            string formName = _form.Name;
+            if (_matchFormNameAndText)
+                formName += _form.Text.Replace(" ", "");
+            return formName;
+        }
+
+        public void RestoreFormValues()
         {
             // Read our saved control values from the file, and restore
 
             String appSettings = String.Empty;
-            if (_formsConfig.ContainsKey(_form.Name))
-                appSettings = Decode(_formsConfig[_form.Name]);
+
+            string formName = FormName();
+            if (_formsConfig.ContainsKey(formName))
+                appSettings = Decode(_formsConfig[formName]);
             if (String.IsNullOrEmpty(appSettings)) return;
 
             if (!appSettings.StartsWith("FormConfig:"))
@@ -493,13 +508,27 @@ namespace EDTracking
                         {
                             if (controlSetting.Length > 1)
                             {
-                                // Read and restore the form position
-                                try
+                                if (RestorePreviousLocation)
                                 {
-                                    System.Drawing.Point formLocation = new System.Drawing.Point(int.Parse(controlSetting[1]), int.Parse(controlSetting[2]));
-                                    _form.Location = formLocation;
+                                    // Read and restore the form position
+                                    try
+                                    {
+                                        System.Drawing.Point formLocation = new System.Drawing.Point(int.Parse(controlSetting[1]), int.Parse(controlSetting[2]));
+                                        _form.StartPosition = FormStartPosition.Manual;
+                                        _form.Location = formLocation;
+                                    }
+                                    catch { }
                                 }
-                                catch { }
+                                if (RestorePreviousSize)
+                                {
+                                    // Read and restore the form size
+                                    try
+                                    {
+                                        System.Drawing.Size formSize = new System.Drawing.Size(int.Parse(controlSetting[3]), int.Parse(controlSetting[4]));
+                                        _form.Size = formSize;
+                                    }
+                                    catch { }
+                                }
                             }
                             controlSetting[0] = "";
                         }

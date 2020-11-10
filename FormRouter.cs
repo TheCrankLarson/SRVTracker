@@ -42,7 +42,7 @@ namespace SRVTracker
             _formConfig.ExcludedControls.Add(textBoxWaypointName);
             _formConfig.ExcludedControls.Add(textBoxRouteName);
             _formConfig.SaveEnabled = true;
-            ConfigSaverClass.ApplyConfiguration();
+            _formConfig.RestoreFormValues();
 
             _route = new EDRoute();
             _formTracker = formTracker;
