@@ -58,14 +58,10 @@
             this.comboBoxWaypointType = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.textBoxWaypointName = new System.Windows.Forms.TextBox();
-            this.groupBoxBasic = new System.Windows.Forms.GroupBox();
-            this.label11 = new System.Windows.Forms.Label();
-            this.comboBoxBasicLocation = new System.Windows.Forms.ComboBox();
-            this.buttonEditBasicLocation = new System.Windows.Forms.Button();
-            this.numericUpDownRadius = new System.Windows.Forms.NumericUpDown();
-            this.checkBoxAllowPassing = new System.Windows.Forms.CheckBox();
-            this.label6 = new System.Windows.Forms.Label();
             this.groupBoxGate = new System.Windows.Forms.GroupBox();
+            this.buttonTargetGateTarget = new System.Windows.Forms.Button();
+            this.buttonTargetGateMarker2 = new System.Windows.Forms.Button();
+            this.buttonTargetGateMarker1 = new System.Windows.Forms.Button();
             this.buttonCalculateGateTarget = new System.Windows.Forms.Button();
             this.buttonEditGateTarget = new System.Windows.Forms.Button();
             this.buttonSetGateTargetToCurrentLocation = new System.Windows.Forms.Button();
@@ -79,6 +75,13 @@
             this.label8 = new System.Windows.Forms.Label();
             this.comboBoxGateLocation2 = new System.Windows.Forms.ComboBox();
             this.comboBoxGateLocation1 = new System.Windows.Forms.ComboBox();
+            this.groupBoxBasic = new System.Windows.Forms.GroupBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.comboBoxBasicLocation = new System.Windows.Forms.ComboBox();
+            this.buttonEditBasicLocation = new System.Windows.Forms.Button();
+            this.numericUpDownRadius = new System.Windows.Forms.NumericUpDown();
+            this.checkBoxAllowPassing = new System.Windows.Forms.CheckBox();
+            this.label6 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.textBoxRouteName = new System.Windows.Forms.TextBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
@@ -92,9 +95,7 @@
             this.groupBoxAudioSettings = new System.Windows.Forms.GroupBox();
             this.comboBoxChooseSound = new System.Windows.Forms.ComboBox();
             this.listBoxAudioEvents = new System.Windows.Forms.ListBox();
-            this.buttonTargetGateMarker1 = new System.Windows.Forms.Button();
-            this.buttonTargetGateMarker2 = new System.Windows.Forms.Button();
-            this.buttonTargetGateTarget = new System.Windows.Forms.Button();
+            this.checkBoxLoop = new System.Windows.Forms.CheckBox();
             this.groupBox2.SuspendLayout();
             this.groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRecordDistance)).BeginInit();
@@ -102,9 +103,9 @@
             this.groupBoxAltitude.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMinAltitude)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMaxAltitude)).BeginInit();
+            this.groupBoxGate.SuspendLayout();
             this.groupBoxBasic.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRadius)).BeginInit();
-            this.groupBoxGate.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -433,93 +434,6 @@
             this.toolTip1.SetToolTip(this.textBoxWaypointName, "Name of waypoint");
             this.textBoxWaypointName.TextChanged += new System.EventHandler(this.textBoxWaypointName_TextChanged);
             // 
-            // groupBoxBasic
-            // 
-            this.groupBoxBasic.Controls.Add(this.label11);
-            this.groupBoxBasic.Controls.Add(this.comboBoxBasicLocation);
-            this.groupBoxBasic.Controls.Add(this.buttonEditBasicLocation);
-            this.groupBoxBasic.Controls.Add(this.numericUpDownRadius);
-            this.groupBoxBasic.Controls.Add(this.checkBoxAllowPassing);
-            this.groupBoxBasic.Controls.Add(this.label6);
-            this.groupBoxBasic.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.groupBoxBasic.Location = new System.Drawing.Point(32, 77);
-            this.groupBoxBasic.Name = "groupBoxBasic";
-            this.groupBoxBasic.Size = new System.Drawing.Size(270, 92);
-            this.groupBoxBasic.TabIndex = 14;
-            this.groupBoxBasic.TabStop = false;
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(6, 23);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(51, 13);
-            this.label11.TabIndex = 15;
-            this.label11.Text = "Location:";
-            // 
-            // comboBoxBasicLocation
-            // 
-            this.comboBoxBasicLocation.Enabled = false;
-            this.comboBoxBasicLocation.FormattingEnabled = true;
-            this.comboBoxBasicLocation.Location = new System.Drawing.Point(74, 20);
-            this.comboBoxBasicLocation.Name = "comboBoxBasicLocation";
-            this.comboBoxBasicLocation.Size = new System.Drawing.Size(150, 21);
-            this.comboBoxBasicLocation.TabIndex = 14;
-            // 
-            // buttonEditBasicLocation
-            // 
-            this.buttonEditBasicLocation.Image = global::SRVTracker.Properties.Resources.Edit_16x;
-            this.buttonEditBasicLocation.Location = new System.Drawing.Point(230, 19);
-            this.buttonEditBasicLocation.Name = "buttonEditBasicLocation";
-            this.buttonEditBasicLocation.Size = new System.Drawing.Size(22, 22);
-            this.buttonEditBasicLocation.TabIndex = 13;
-            this.buttonEditBasicLocation.UseVisualStyleBackColor = true;
-            this.buttonEditBasicLocation.Click += new System.EventHandler(this.buttonEditBasicLocation_Click);
-            // 
-            // numericUpDownRadius
-            // 
-            this.numericUpDownRadius.Increment = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.numericUpDownRadius.Location = new System.Drawing.Point(74, 47);
-            this.numericUpDownRadius.Maximum = new decimal(new int[] {
-            10000,
-            0,
-            0,
-            0});
-            this.numericUpDownRadius.Name = "numericUpDownRadius";
-            this.numericUpDownRadius.Size = new System.Drawing.Size(59, 20);
-            this.numericUpDownRadius.TabIndex = 1;
-            this.numericUpDownRadius.Value = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.numericUpDownRadius.ValueChanged += new System.EventHandler(this.numericUpDownRadius_ValueChanged);
-            // 
-            // checkBoxAllowPassing
-            // 
-            this.checkBoxAllowPassing.AutoSize = true;
-            this.checkBoxAllowPassing.Location = new System.Drawing.Point(173, 50);
-            this.checkBoxAllowPassing.Name = "checkBoxAllowPassing";
-            this.checkBoxAllowPassing.Size = new System.Drawing.Size(90, 17);
-            this.checkBoxAllowPassing.TabIndex = 11;
-            this.checkBoxAllowPassing.Text = "Allow passing";
-            this.toolTip1.SetToolTip(this.checkBoxAllowPassing, resources.GetString("checkBoxAllowPassing.ToolTip"));
-            this.checkBoxAllowPassing.UseVisualStyleBackColor = true;
-            this.checkBoxAllowPassing.CheckedChanged += new System.EventHandler(this.checkBoxAllowPassing_CheckedChanged);
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(6, 49);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(43, 13);
-            this.label6.TabIndex = 10;
-            this.label6.Text = "Radius:";
-            // 
             // groupBoxGate
             // 
             this.groupBoxGate.Controls.Add(this.buttonTargetGateTarget);
@@ -544,6 +458,39 @@
             this.groupBoxGate.TabIndex = 18;
             this.groupBoxGate.TabStop = false;
             this.groupBoxGate.Visible = false;
+            // 
+            // buttonTargetGateTarget
+            // 
+            this.buttonTargetGateTarget.Image = global::SRVTracker.Properties.Resources.Target_16x;
+            this.buttonTargetGateTarget.Location = new System.Drawing.Point(200, 67);
+            this.buttonTargetGateTarget.Name = "buttonTargetGateTarget";
+            this.buttonTargetGateTarget.Size = new System.Drawing.Size(22, 22);
+            this.buttonTargetGateTarget.TabIndex = 20;
+            this.toolTip1.SetToolTip(this.buttonTargetGateTarget, "Target currently selected location");
+            this.buttonTargetGateTarget.UseVisualStyleBackColor = true;
+            this.buttonTargetGateTarget.Click += new System.EventHandler(this.buttonTargetGateTarget_Click);
+            // 
+            // buttonTargetGateMarker2
+            // 
+            this.buttonTargetGateMarker2.Image = global::SRVTracker.Properties.Resources.Target_16x;
+            this.buttonTargetGateMarker2.Location = new System.Drawing.Point(200, 41);
+            this.buttonTargetGateMarker2.Name = "buttonTargetGateMarker2";
+            this.buttonTargetGateMarker2.Size = new System.Drawing.Size(22, 22);
+            this.buttonTargetGateMarker2.TabIndex = 19;
+            this.toolTip1.SetToolTip(this.buttonTargetGateMarker2, "Target currently selected location");
+            this.buttonTargetGateMarker2.UseVisualStyleBackColor = true;
+            this.buttonTargetGateMarker2.Click += new System.EventHandler(this.buttonTargetGateMarker2_Click);
+            // 
+            // buttonTargetGateMarker1
+            // 
+            this.buttonTargetGateMarker1.Image = global::SRVTracker.Properties.Resources.Target_16x;
+            this.buttonTargetGateMarker1.Location = new System.Drawing.Point(200, 13);
+            this.buttonTargetGateMarker1.Name = "buttonTargetGateMarker1";
+            this.buttonTargetGateMarker1.Size = new System.Drawing.Size(22, 22);
+            this.buttonTargetGateMarker1.TabIndex = 18;
+            this.toolTip1.SetToolTip(this.buttonTargetGateMarker1, "Target currently selected location");
+            this.buttonTargetGateMarker1.UseVisualStyleBackColor = true;
+            this.buttonTargetGateMarker1.Click += new System.EventHandler(this.buttonTargetGateMarker1_Click);
             // 
             // buttonCalculateGateTarget
             // 
@@ -672,6 +619,93 @@
             this.comboBoxGateLocation1.Size = new System.Drawing.Size(122, 21);
             this.comboBoxGateLocation1.TabIndex = 0;
             // 
+            // groupBoxBasic
+            // 
+            this.groupBoxBasic.Controls.Add(this.label11);
+            this.groupBoxBasic.Controls.Add(this.comboBoxBasicLocation);
+            this.groupBoxBasic.Controls.Add(this.buttonEditBasicLocation);
+            this.groupBoxBasic.Controls.Add(this.numericUpDownRadius);
+            this.groupBoxBasic.Controls.Add(this.checkBoxAllowPassing);
+            this.groupBoxBasic.Controls.Add(this.label6);
+            this.groupBoxBasic.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.groupBoxBasic.Location = new System.Drawing.Point(32, 77);
+            this.groupBoxBasic.Name = "groupBoxBasic";
+            this.groupBoxBasic.Size = new System.Drawing.Size(270, 92);
+            this.groupBoxBasic.TabIndex = 14;
+            this.groupBoxBasic.TabStop = false;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(6, 23);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(51, 13);
+            this.label11.TabIndex = 15;
+            this.label11.Text = "Location:";
+            // 
+            // comboBoxBasicLocation
+            // 
+            this.comboBoxBasicLocation.Enabled = false;
+            this.comboBoxBasicLocation.FormattingEnabled = true;
+            this.comboBoxBasicLocation.Location = new System.Drawing.Point(74, 20);
+            this.comboBoxBasicLocation.Name = "comboBoxBasicLocation";
+            this.comboBoxBasicLocation.Size = new System.Drawing.Size(150, 21);
+            this.comboBoxBasicLocation.TabIndex = 14;
+            // 
+            // buttonEditBasicLocation
+            // 
+            this.buttonEditBasicLocation.Image = global::SRVTracker.Properties.Resources.Edit_16x;
+            this.buttonEditBasicLocation.Location = new System.Drawing.Point(230, 19);
+            this.buttonEditBasicLocation.Name = "buttonEditBasicLocation";
+            this.buttonEditBasicLocation.Size = new System.Drawing.Size(22, 22);
+            this.buttonEditBasicLocation.TabIndex = 13;
+            this.buttonEditBasicLocation.UseVisualStyleBackColor = true;
+            this.buttonEditBasicLocation.Click += new System.EventHandler(this.buttonEditBasicLocation_Click);
+            // 
+            // numericUpDownRadius
+            // 
+            this.numericUpDownRadius.Increment = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numericUpDownRadius.Location = new System.Drawing.Point(74, 47);
+            this.numericUpDownRadius.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.numericUpDownRadius.Name = "numericUpDownRadius";
+            this.numericUpDownRadius.Size = new System.Drawing.Size(59, 20);
+            this.numericUpDownRadius.TabIndex = 1;
+            this.numericUpDownRadius.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numericUpDownRadius.ValueChanged += new System.EventHandler(this.numericUpDownRadius_ValueChanged);
+            // 
+            // checkBoxAllowPassing
+            // 
+            this.checkBoxAllowPassing.AutoSize = true;
+            this.checkBoxAllowPassing.Location = new System.Drawing.Point(173, 50);
+            this.checkBoxAllowPassing.Name = "checkBoxAllowPassing";
+            this.checkBoxAllowPassing.Size = new System.Drawing.Size(90, 17);
+            this.checkBoxAllowPassing.TabIndex = 11;
+            this.checkBoxAllowPassing.Text = "Allow passing";
+            this.toolTip1.SetToolTip(this.checkBoxAllowPassing, resources.GetString("checkBoxAllowPassing.ToolTip"));
+            this.checkBoxAllowPassing.UseVisualStyleBackColor = true;
+            this.checkBoxAllowPassing.CheckedChanged += new System.EventHandler(this.checkBoxAllowPassing_CheckedChanged);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(6, 49);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(43, 13);
+            this.label6.TabIndex = 10;
+            this.label6.Text = "Radius:";
+            // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.textBoxRouteName);
@@ -760,10 +794,11 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.checkBoxLoop);
             this.groupBox3.Controls.Add(this.checkBoxPlayIncudeDirection);
             this.groupBox3.Location = new System.Drawing.Point(630, 6);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(163, 49);
+            this.groupBox3.Size = new System.Drawing.Size(163, 68);
             this.groupBox3.TabIndex = 16;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Play options";
@@ -773,9 +808,9 @@
             this.groupBoxAudioSettings.Controls.Add(this.comboBoxChooseSound);
             this.groupBoxAudioSettings.Controls.Add(this.listBoxAudioEvents);
             this.groupBoxAudioSettings.Controls.Add(this.checkBoxEnableAudio);
-            this.groupBoxAudioSettings.Location = new System.Drawing.Point(630, 61);
+            this.groupBoxAudioSettings.Location = new System.Drawing.Point(630, 80);
             this.groupBoxAudioSettings.Name = "groupBoxAudioSettings";
-            this.groupBoxAudioSettings.Size = new System.Drawing.Size(163, 231);
+            this.groupBoxAudioSettings.Size = new System.Drawing.Size(163, 212);
             this.groupBoxAudioSettings.TabIndex = 17;
             this.groupBoxAudioSettings.TabStop = false;
             this.groupBoxAudioSettings.Text = "Audio Settings";
@@ -785,7 +820,7 @@
             this.comboBoxChooseSound.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxChooseSound.Enabled = false;
             this.comboBoxChooseSound.FormattingEnabled = true;
-            this.comboBoxChooseSound.Location = new System.Drawing.Point(6, 204);
+            this.comboBoxChooseSound.Location = new System.Drawing.Point(6, 182);
             this.comboBoxChooseSound.Name = "comboBoxChooseSound";
             this.comboBoxChooseSound.Size = new System.Drawing.Size(151, 21);
             this.comboBoxChooseSound.TabIndex = 3;
@@ -796,42 +831,20 @@
             this.listBoxAudioEvents.FormattingEnabled = true;
             this.listBoxAudioEvents.Location = new System.Drawing.Point(6, 42);
             this.listBoxAudioEvents.Name = "listBoxAudioEvents";
-            this.listBoxAudioEvents.Size = new System.Drawing.Size(151, 160);
+            this.listBoxAudioEvents.Size = new System.Drawing.Size(151, 134);
             this.listBoxAudioEvents.TabIndex = 2;
             this.listBoxAudioEvents.SelectedIndexChanged += new System.EventHandler(this.listBoxAudioEvents_SelectedIndexChanged);
             // 
-            // buttonTargetGateMarker1
+            // checkBoxLoop
             // 
-            this.buttonTargetGateMarker1.Image = global::SRVTracker.Properties.Resources.Target_16x;
-            this.buttonTargetGateMarker1.Location = new System.Drawing.Point(200, 13);
-            this.buttonTargetGateMarker1.Name = "buttonTargetGateMarker1";
-            this.buttonTargetGateMarker1.Size = new System.Drawing.Size(22, 22);
-            this.buttonTargetGateMarker1.TabIndex = 18;
-            this.toolTip1.SetToolTip(this.buttonTargetGateMarker1, "Target currently selected location");
-            this.buttonTargetGateMarker1.UseVisualStyleBackColor = true;
-            this.buttonTargetGateMarker1.Click += new System.EventHandler(this.buttonTargetGateMarker1_Click);
-            // 
-            // buttonTargetGateMarker2
-            // 
-            this.buttonTargetGateMarker2.Image = global::SRVTracker.Properties.Resources.Target_16x;
-            this.buttonTargetGateMarker2.Location = new System.Drawing.Point(200, 41);
-            this.buttonTargetGateMarker2.Name = "buttonTargetGateMarker2";
-            this.buttonTargetGateMarker2.Size = new System.Drawing.Size(22, 22);
-            this.buttonTargetGateMarker2.TabIndex = 19;
-            this.toolTip1.SetToolTip(this.buttonTargetGateMarker2, "Target currently selected location");
-            this.buttonTargetGateMarker2.UseVisualStyleBackColor = true;
-            this.buttonTargetGateMarker2.Click += new System.EventHandler(this.buttonTargetGateMarker2_Click);
-            // 
-            // buttonTargetGateTarget
-            // 
-            this.buttonTargetGateTarget.Image = global::SRVTracker.Properties.Resources.Target_16x;
-            this.buttonTargetGateTarget.Location = new System.Drawing.Point(200, 67);
-            this.buttonTargetGateTarget.Name = "buttonTargetGateTarget";
-            this.buttonTargetGateTarget.Size = new System.Drawing.Size(22, 22);
-            this.buttonTargetGateTarget.TabIndex = 20;
-            this.toolTip1.SetToolTip(this.buttonTargetGateTarget, "Target currently selected location");
-            this.buttonTargetGateTarget.UseVisualStyleBackColor = true;
-            this.buttonTargetGateTarget.Click += new System.EventHandler(this.buttonTargetGateTarget_Click);
+            this.checkBoxLoop.AutoSize = true;
+            this.checkBoxLoop.Location = new System.Drawing.Point(9, 42);
+            this.checkBoxLoop.Name = "checkBoxLoop";
+            this.checkBoxLoop.Size = new System.Drawing.Size(50, 17);
+            this.checkBoxLoop.TabIndex = 1;
+            this.checkBoxLoop.Text = "Loop";
+            this.toolTip1.SetToolTip(this.checkBoxLoop, "When the final waypoint is reached, the first\r\nwaypoint is targeted again.");
+            this.checkBoxLoop.UseVisualStyleBackColor = true;
             // 
             // FormRouter
             // 
@@ -861,11 +874,11 @@
             this.groupBoxAltitude.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMinAltitude)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMaxAltitude)).EndInit();
+            this.groupBoxGate.ResumeLayout(false);
+            this.groupBoxGate.PerformLayout();
             this.groupBoxBasic.ResumeLayout(false);
             this.groupBoxBasic.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRadius)).EndInit();
-            this.groupBoxGate.ResumeLayout(false);
-            this.groupBoxGate.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox5.ResumeLayout(false);
@@ -944,5 +957,6 @@
         private System.Windows.Forms.Button buttonTargetGateTarget;
         private System.Windows.Forms.Button buttonTargetGateMarker2;
         private System.Windows.Forms.Button buttonTargetGateMarker1;
+        private System.Windows.Forms.CheckBox checkBoxLoop;
     }
 }

@@ -594,46 +594,46 @@ namespace EDTracking
                 EDWaypoint previousWaypoint = null;
                 if (WaypointIndex > 0)
                     previousWaypoint = _race.Route.Waypoints[WaypointIndex - 1];
-                if (_race.Route.Waypoints[WaypointIndex].WaypointHit(Location, _previousLocation, previousWaypoint.Location))
+                if (_race.Route.Waypoints[WaypointIndex].WaypointHit(Location, _previousLocation, previousWaypoint?.Location))
                 {
                     // Commander has reached the target waypoint
-                    if (_race.Laps > 0 && WaypointIndex != 0)
-                        AddRaceHistory($"Arrived at {_race.Route.Waypoints[WaypointIndex].Name} (lap {Lap})");
-                    else if (_race.Laps == 0)
+                    if (_race.Laps > 0)
+                    {
+                        if (WaypointIndex != 0)
+                            AddRaceHistory($"Arrived at {_race.Route.Waypoints[WaypointIndex].Name} (lap {Lap})");
+                        else
+                        {
+                            // This is a completed lap as we've arrived back at Waypoint 0
+                            Lap++;
+                            // We've only finished if this lap number is greater than the number of laps
+                            if (Lap > _race.Laps)
+                            {
+                                Finished = true;
+                                FinishTime = DateTime.Now;
+                                string raceTime = $"{FinishTime.Subtract(StartTime):hh\\:mm\\:ss}";
+                                notableEvents?.AddStatusEvent("CompletedNotification", Commander, $" ({raceTime})");
+                                AddRaceHistory($"Completed in {raceTime}");
+                                WaypointIndex = 0;
+                                DistanceToWaypoint = 0;
+                            }
+                            else
+                            {
+                                LapTimes.Add(DateTime.Now.Subtract(LapStartTime));
+                                string lapTime = $"{LapTimes[LapTimes.Count - 1]:hh\\:mm\\:ss}";
+                                notableEvents?.AddStatusEvent("CompletedLap", Commander, $" ({Lap - 1}: {lapTime})");
+                                AddRaceHistory($"Completed lap {Lap - 1} in {lapTime}");
+                            }
+                        }
+                    }
+                    else
                         AddRaceHistory($"Arrived at {_race.Route.Waypoints[WaypointIndex].Name}");
 
                     WaypointIndex++;
 
-                    if (WaypointIndex >= _race.Route.Waypoints.Count || (WaypointIndex == 1 && _race.Laps > 0))
+                    if (WaypointIndex >= _race.Route.Waypoints.Count)
                     {
                         if (_race.Laps > 0)
-                        {
-                            if (WaypointIndex >= _race.Route.Waypoints.Count)
-                                WaypointIndex = 0;
-                            else
-                            {
-                                // For lapped race, we need different logic as the finish is also the start
-                                Lap++;
-                                // We've only finished if this lap number is greater than the number of laps
-                                if (Lap > _race.Laps)
-                                {
-                                    Finished = true;
-                                    FinishTime = DateTime.Now;
-                                    string raceTime = $"{FinishTime.Subtract(StartTime):hh\\:mm\\:ss}";
-                                    notableEvents?.AddStatusEvent("CompletedLap", Commander, $" ({raceTime})");
-                                    AddRaceHistory($"Completed in {raceTime}");
-                                    WaypointIndex = 0;
-                                    DistanceToWaypoint = 0;
-                                }
-                                else
-                                {
-                                    LapTimes.Add(DateTime.Now.Subtract(LapStartTime));
-                                    string lapTime = $"{LapTimes[LapTimes.Count - 1]:hh\\:mm\\:ss}";
-                                    notableEvents?.AddStatusEvent("CompletedLap", Commander, $" ({Lap - 1}: {lapTime})");
-                                    AddRaceHistory($"Completed lap {Lap - 1} in {lapTime}");
-                                }
-                            }
-                        }
+                            WaypointIndex = 0;
                         else
                         {
                             Finished = true;

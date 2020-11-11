@@ -156,7 +156,7 @@ namespace SRVTracker
                 {
                     // Arrived at the waypoint, target the next
                     _nextWaypoint++;
-                    if (_nextWaypoint >= _route.Waypoints.Count)
+                    if (_nextWaypoint >= _route.Waypoints.Count && !checkBoxLoop.Checked)
                     {
                         // End of route
                         buttonStop.Enabled = false;
@@ -165,6 +165,8 @@ namespace SRVTracker
                     }
                     else
                     {
+                        if (_nextWaypoint >= _route.Waypoints.Count)
+                            _nextWaypoint = 0;
                         PlayEventSound("Arrived at waypoint");
                         FormLocator.GetLocator().SetTarget(_route.Waypoints[_nextWaypoint].Location, GetBearingAfterNextWaypoint());
                         Action action = new Action(() =>
@@ -274,7 +276,11 @@ namespace SRVTracker
             if (waypoint != null)
             {
                 if (waypoint.Location != null)
+                {
+                    if (String.IsNullOrEmpty(waypoint.Location.Name))
+                        waypoint.Location.Name = waypoint.Name;
                     comboBoxBasicLocation.Text = waypoint.Location.Name;
+                }
                 checkBoxAllowPassing.Checked = waypoint.AllowPassing;
                 numericUpDownRadius.Value = (decimal)waypoint.Radius;
             }
