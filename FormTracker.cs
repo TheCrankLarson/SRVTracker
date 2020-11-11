@@ -34,16 +34,16 @@ namespace SRVTracker
         public static EDLocation CurrentLocation { get; private set; } = new EDLocation();
         public static EDLocation PreviousLocation { get; private set; } = new EDLocation();
         public static int CurrentHeading { get; private set; } = -1;
-        public static decimal SpeedInMS { get; internal set; } = 0;
-        public static decimal AverageSpeedInMS { get; internal set; } = 0;
+        public static double SpeedInMS { get; internal set; } = 0;
+        public static double AverageSpeedInMS { get; internal set; } = 0;
 
         // Keep track of ground speed (E: D shows speed you are travelling in the direction you are facing, which is not ground speed)
         private EDLocation _speedCalculationLocation = null;
         private DateTime _speedCalculationTimeStamp = DateTime.UtcNow;
-        private decimal _lastSpeedInMs = 0;
+        private double _lastSpeedInMs = 0;
         private ConfigSaverClass _formConfig = null;
         private static int _numberOfSpeedReadings = 0;
-        private static decimal _totalOfSpeedReadings = 0;
+        private static double _totalOfSpeedReadings = 0;
         const double STATUS_JSON_CHECK_INTERVAL = 700;
 
         public const int WM_NCLBUTTONDOWN = 0xA1;
@@ -441,13 +441,14 @@ namespace SRVTracker
                     _speedCalculationTimeStamp = edEvent.TimeStamp;
                     if (_speedCalculationLocation != null)
                     {
-                        decimal distanceBetweenLocations = EDLocation.DistanceBetween(_speedCalculationLocation, edEvent.Location());
-                        SpeedInMS = distanceBetweenLocations * (1000 / (decimal)timeBetweenLocations.TotalMilliseconds);
+                        double distanceBetweenLocations = EDLocation.DistanceBetween(_speedCalculationLocation, edEvent.Location());
+                        SpeedInMS = distanceBetweenLocations * (1000 / (double)timeBetweenLocations.TotalMilliseconds);
                         if (checkBoxUseDirectionOfTravelAsHeading.Checked)
                         {
                             // We ignore the heading given by E: D, as that is direction we are facing, not travelling
                             // We calculate our direction based on previous location
-                            CurrentHeading = (int)EDLocation.BearingToLocation(_speedCalculationLocation, edEvent.Location());
+                            if (distanceBetweenLocations>1)
+                                CurrentHeading = (int)EDLocation.BearingToLocation(_speedCalculationLocation, edEvent.Location());
                         }
                         else
                             CurrentHeading = edEvent.Heading;

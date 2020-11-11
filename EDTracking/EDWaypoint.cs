@@ -8,9 +8,9 @@ namespace EDTracking
     {
         public String Name { get; set; } = "Waypoint";
         public EDLocation Location { get; set; } = null;
-        public decimal Radius { get; set; } = 5000;
-        public decimal MinimumAltitude { get; set; } = 0;
-        public decimal MaximumAltitude { get; set; } = 100;
+        public double Radius { get; set; } = 5000;
+        public double MinimumAltitude { get; set; } = 0;
+        public double MaximumAltitude { get; set; } = 100;
         public bool AllowPassing { get; set; } = false;
         //public sbyte AltitudeTest { get; set; } = 0; // -1, must be below, +1 must be above, 0 not checked
         public int Direction { get; set; } = -1;
@@ -29,7 +29,7 @@ namespace EDTracking
                 Name = location.Name;
         }
 
-        public EDWaypoint(EDLocation location, decimal hitRadius, int hitDirection): this(location)
+        public EDWaypoint(EDLocation location, double hitRadius, int hitDirection): this(location)
         {
             Radius = hitRadius;
             Direction = hitDirection;
@@ -37,7 +37,7 @@ namespace EDTracking
                 Name = location.Name;
         }
 
-        public EDWaypoint(EDLocation location, DateTime timeTracked, decimal radius): this(location)
+        public EDWaypoint(EDLocation location, DateTime timeTracked, double radius): this(location)
         {
             TimeTracked = timeTracked;
             Radius = radius;
@@ -51,25 +51,23 @@ namespace EDTracking
             return true;
         }
 
-        public bool LocationIsWithinWaypoint(EDLocation location)
+        private bool LocationIsWithinWaypoint(EDLocation location)
         {
+            if (location.PlanetaryRadius != Location.PlanetaryRadius)
+                return false;
             if (EDLocation.DistanceBetween(Location, location) < Radius)
-            {
-                if (MinimumAltitude == 0 && MaximumAltitude == 0)
-                    return true;
-                if (location.Altitude >= MinimumAltitude && location.Altitude <= MaximumAltitude)
-                    return true;
-            }
+                return true;
+
             return false;
         }
 
-        public bool WaypointIsBehind(EDLocation location, decimal DirectionOfTravel)
+        public bool WaypointIsBehind(EDLocation location, double DirectionOfTravel)
         {
             // Checks whether the waypoint is behind the given location (given the direction of travel)
             // This allows moving on to the next waypoint even if we don't go through one
 
-            decimal bearingToWaypoint = EDLocation.BearingToLocation(location, Location);
-            decimal directionOfWaypoint = EDLocation.BearingDelta(bearingToWaypoint, DirectionOfTravel);
+            double bearingToWaypoint = EDLocation.BearingToLocation(location, Location);
+            double directionOfWaypoint = EDLocation.BearingDelta(bearingToWaypoint, DirectionOfTravel);
             if (Math.Abs(directionOfWaypoint) > 90)
                 return true;
             return false;

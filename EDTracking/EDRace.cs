@@ -404,9 +404,9 @@ namespace EDTracking
             return null;
         }
 
-        private decimal _lapLength = 0;
-        private decimal _totalRaceDistance = 0;
-        private decimal _distanceFromLastWPToFirst = 0;
+        private double _lapLength = 0;
+        private double _totalRaceDistance = 0;
+        private double _distanceFromLastWPToFirst = 0;
         private void InitLapCalculations()
         {
             if (Laps < 1)
@@ -419,12 +419,12 @@ namespace EDTracking
             _totalRaceDistance = _lapLength * Laps;
         }
 
-        public decimal TotalDistanceLeftAtWaypoint(int WaypointIndex, int Lap)
+        public double TotalDistanceLeftAtWaypoint(int WaypointIndex, int Lap)
         {
             if (Lap > Laps)
                 return 0;
 
-            decimal distanceLeft = (_lapLength * (Laps - Lap));
+            double distanceLeft = (_lapLength * (Laps - Lap));
             if (WaypointIndex < Route.Waypoints.Count)
                 distanceLeft += Route.TotalDistanceLeftAtWaypoint(WaypointIndex);
             distanceLeft += _distanceFromLastWPToFirst;

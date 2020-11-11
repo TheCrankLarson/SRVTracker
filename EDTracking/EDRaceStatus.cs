@@ -15,9 +15,9 @@ namespace EDTracking
     public class EDRaceStatus
     {        
         public int Heading { get; set; } = -1;
-        public decimal SpeedInMS { get; set; } = 0;
-        public decimal MaxSpeedInMS { get; set; } = 0;
-        public decimal AverageSpeedInMS { get; set; } = 0;
+        public double SpeedInMS { get; set; } = 0;
+        public double MaxSpeedInMS { get; set; } = 0;
+        public double AverageSpeedInMS { get; set; } = 0;
         public long Flags { get; set; } = -1;
         public double Hull { get; set; } = 1;
         public DateTime TimeStamp { get; set; } = DateTime.MinValue;
@@ -25,8 +25,8 @@ namespace EDTracking
         public EDLocation Location { get; set; } = null;
         public int WaypointIndex { get; set; } = 0;
         public int Lap { get; set; } = 1;
-        public decimal DistanceToWaypoint { get; set; } = decimal.MaxValue;
-        public decimal TotalDistanceLeft { get; set; } = decimal.MaxValue;
+        public double DistanceToWaypoint { get; set; } = double.MaxValue;
+        public double TotalDistanceLeft { get; set; } = double.MaxValue;
         public static bool Started { get; set; } = false;
         public bool Finished { get; set; } = false;
         public int PitStopCount { get; set; } = 0;
@@ -47,21 +47,21 @@ namespace EDTracking
         private bool _inPits = false;
         private bool _lowFuel = false;
         private StringBuilder _raceHistory = new StringBuilder();
-        private decimal _nextLogDistanceToWaypoint = decimal.MaxValue;
+        private double _nextLogDistanceToWaypoint = double.MaxValue;
         private EDLocation _previousLocation = null;
         private DateTime _speedCalculationTimeStamp = DateTime.UtcNow;
-        private decimal _lastSpeedInMs = 0;
-        private decimal _lastLoggedMaxSpeed = 50;  // We don't log any maximum speeds below 50m/s
+        private double _lastSpeedInMs = 0;
+        private double _lastLoggedMaxSpeed = 50;  // We don't log any maximum speeds below 50m/s
         private DateTime _pitStopStartTime = DateTime.MinValue;
         private DateTime _lastTouchDown = DateTime.MinValue;
         private DateTime _lastDockSRV = DateTime.MinValue;
         public NotableEvents notableEvents = null;
-        private decimal[] _lastThreeSpeedReadings = new decimal[] { 0, 0, 0 };
+        private double[] _lastThreeSpeedReadings = new double[] { 0, 0, 0 };
         private int _oldestSpeedReading = 0;
         private string _status = "NA";
         private EDRace _race = null;
         private int _numberOfSpeedReadings = 0;
-        private decimal _totalOfSpeedReadings = 0;
+        private double _totalOfSpeedReadings = 0;
 
         public EDRaceStatus()
         {
@@ -241,7 +241,7 @@ namespace EDTracking
         {
             get
             {
-                if (Eliminated || (DistanceToWaypoint == decimal.MaxValue))
+                if (Eliminated || (DistanceToWaypoint == double.MaxValue))
                     return "NA";
                 if (Finished) return "0";
                 return $"{(DistanceToWaypoint/1000):F1}";
@@ -252,7 +252,7 @@ namespace EDTracking
         {
             get
             {
-                if (Eliminated || (DistanceToWaypoint == decimal.MaxValue))
+                if (Eliminated || (DistanceToWaypoint == double.MaxValue))
                     return "NA";
                 if (Finished) return "0";
                 return $"{(TotalDistanceLeft / 1000):F1}";
@@ -282,7 +282,7 @@ namespace EDTracking
             {
                 TimeStamp = DateTime.Now;
                 Eliminated = false;
-                DistanceToWaypoint = decimal.MaxValue;
+                DistanceToWaypoint = double.MaxValue;
                 _previousLocation = null;
                 AddRaceHistory("Resurrected (elimination manually rescinded)");
                 return true;
@@ -359,7 +359,7 @@ namespace EDTracking
             Eliminated = true;
             AddRaceHistory("SRV destroyed");
             notableEvents?.AddStatusEvent("EliminatedNotification", Commander);
-            DistanceToWaypoint = decimal.MaxValue;
+            DistanceToWaypoint = double.MaxValue;
             ValidateRaceLeader();
             SpeedInMS = 0;
             _previousLocation = null;
@@ -375,7 +375,7 @@ namespace EDTracking
             Eliminated = true;
             AddRaceHistory("Fighter destroyed");
             notableEvents?.AddStatusEvent("EliminatedNotification", Commander);
-            DistanceToWaypoint = decimal.MaxValue;
+            DistanceToWaypoint = double.MaxValue;
             ValidateRaceLeader();
             SpeedInMS = 0;
             _previousLocation = null;
@@ -444,7 +444,7 @@ namespace EDTracking
                         Eliminated = true;
                         notableEvents?.AddStatusEvent("EliminatedNotification", Commander);
                         AddRaceHistory("Selected vehicle not allowed");
-                        DistanceToWaypoint = decimal.MaxValue;
+                        DistanceToWaypoint = double.MaxValue;
                         SpeedInMS = 0;
                         _previousLocation = null;
                     }
@@ -487,11 +487,11 @@ namespace EDTracking
                 {
                     // We take a speed calculation once every 750 milliseconds
 
-                    decimal speedInMS = 0;
+                    double speedInMS = 0;
                     if (_previousLocation != null)
                     {
-                        decimal distanceBetweenLocations = EDLocation.DistanceBetween(_previousLocation, updateEvent.Location());
-                        speedInMS = distanceBetweenLocations * 1000 / (decimal)timeBetweenLocations.TotalMilliseconds;
+                        double distanceBetweenLocations = EDLocation.DistanceBetween(_previousLocation, updateEvent.Location());
+                        speedInMS = distanceBetweenLocations * 1000 / (double)timeBetweenLocations.TotalMilliseconds;
                         if ((speedInMS - _lastSpeedInMs) > 200 && (timeBetweenLocations.TotalMilliseconds < 3000))
                         {
                             // If the speed increases by more than 200m/s in three seconds, this is most likely due to respawn (i.e. invalid)

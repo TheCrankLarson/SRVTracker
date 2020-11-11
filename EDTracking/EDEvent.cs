@@ -17,14 +17,14 @@ namespace EDTracking
         //{ "timestamp":"2020-07-28T17:52:25Z", "event":"Status", "Flags":341852424, "Pips":[4,8,0], "FireGroup":0, "GuiFocus":0, "Fuel":{ "FuelMain":0.000000, "FuelReservoir":0.444637 }, "Cargo":0.000000, "LegalState":"Clean", "Latitude":-14.055647, "Longitude":-31.176170, "Heading":24, "Altitude":0, "BodyName":"Synuefe DJ-G b44-3 A 5", "PlanetRadius":1311227.875000 }
         //
 
-        public decimal Latitude { get; set; } = 0;
-        public decimal Longitude { get; set; } = 0;
+        public double Latitude { get; set; } = 0;
+        public double Longitude { get; set; } = 0;
         public int Heading { get; set; } = -1;
         public long Flags { get; set; } = 0;
         public DateTime TimeStamp { get; set; } = DateTime.MinValue;
         public string BodyName { get; set; } = "";
-        public decimal PlanetRadius { get;  set; } = 0;
-        public decimal Altitude { get; set; } = 0;
+        public double PlanetRadius { get;  set; } = 0;
+        public double Altitude { get; set; } = 0;
         public string Commander { get; set; } = "";
         public string EventName { get; set; } = "";
         public double Health { get; set; } = -1;
@@ -82,13 +82,13 @@ namespace EDTracking
                 if (root.TryGetProperty("Flags", out property))
                     Flags = property.GetInt64();
                 if (root.TryGetProperty("Latitude", out property))
-                    Latitude = property.GetDecimal();
+                    Latitude = property.GetDouble();
                 if (root.TryGetProperty("Longitude", out property))
-                    Longitude = property.GetDecimal();
+                    Longitude = property.GetDouble();
                 if (root.TryGetProperty("Altitude", out property))
-                    Altitude = property.GetDecimal();
+                    Altitude = property.GetDouble();
                 if (root.TryGetProperty("PlanetRadius", out property))
-                    PlanetRadius = property.GetDecimal();
+                    PlanetRadius = property.GetDouble();
                 if (root.TryGetProperty("Health", out property))
                     Health = property.GetDouble();
                 if (root.TryGetProperty("BodyName", out property))

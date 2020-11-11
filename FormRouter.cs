@@ -96,9 +96,9 @@ namespace SRVTracker
             {
                 if (FormTracker.CurrentLocation != null)
                 {
-                    decimal bearingFromNextWaypoint = EDLocation.BearingToLocation(_route.Waypoints[_nextWaypoint].Location, _route.Waypoints[_nextWaypoint + 1].Location);
-                    decimal bearingToNextWaypoint = EDLocation.BearingToLocation(FormTracker.CurrentLocation, _route.Waypoints[_nextWaypoint].Location);
-                    decimal bearingChange = EDLocation.BearingDelta(bearingToNextWaypoint, bearingFromNextWaypoint);
+                    double bearingFromNextWaypoint = EDLocation.BearingToLocation(_route.Waypoints[_nextWaypoint].Location, _route.Waypoints[_nextWaypoint + 1].Location);
+                    double bearingToNextWaypoint = EDLocation.BearingToLocation(FormTracker.CurrentLocation, _route.Waypoints[_nextWaypoint].Location);
+                    double bearingChange = EDLocation.BearingDelta(bearingToNextWaypoint, bearingFromNextWaypoint);
                     additionalInfo.Append("Then ");
                     if (bearingChange > -5 && bearingChange < 5)
                         additionalInfo.Append("straight on");
@@ -182,7 +182,7 @@ namespace SRVTracker
                 return;
             }
 
-            if (EDLocation.DistanceBetween(_lastLoggedLocation, FormTracker.CurrentLocation) >= numericUpDownRecordDistance.Value)
+            if (EDLocation.DistanceBetween(_lastLoggedLocation, FormTracker.CurrentLocation) >= (double)numericUpDownRecordDistance.Value)
             {
                 _lastLoggedLocation = FormTracker.CurrentLocation.Copy();
                 AddLocationToRoute(_lastLoggedLocation);
@@ -191,10 +191,10 @@ namespace SRVTracker
 
         private void AddLocationToRoute(EDLocation location)
         {
-            EDWaypoint waypoint = new EDWaypoint(location, DateTime.Now, numericUpDownRadius.Value);
-            waypoint.Radius = numericUpDownRadius.Value;
-            waypoint.MinimumAltitude = numericUpDownMinAltitude.Value;
-            waypoint.MaximumAltitude = numericUpDownMaxAltitude.Value;
+            EDWaypoint waypoint = new EDWaypoint(location, DateTime.Now, (double)numericUpDownRadius.Value);
+            waypoint.Radius = (double)numericUpDownRadius.Value;
+            waypoint.MinimumAltitude = (double)numericUpDownMinAltitude.Value;
+            waypoint.MaximumAltitude = (double)numericUpDownMaxAltitude.Value;
 
             if (String.IsNullOrEmpty(location.Name))
             {
@@ -231,6 +231,7 @@ namespace SRVTracker
 
         private void DisplayGate()
         {
+            ShowWaypointEditor(groupBoxGate);
             EDWaypoint waypoint = GetSelectedWaypoint();
 
             comboBoxGateTarget.Text = "";
@@ -263,6 +264,24 @@ namespace SRVTracker
                 if (waypoint.AdditionalLocations.Count > 1 && waypoint.AdditionalLocations[1] != null)
                     comboBoxGateLocation2.Text = waypoint.AdditionalLocations[1].Name;
             }
+        }
+
+
+        private void DisplayBasic()
+        {
+            ShowWaypointEditor(groupBoxBasic);
+            EDWaypoint waypoint = GetSelectedWaypoint();
+            if (waypoint != null)
+            {
+                if (waypoint.Location != null)
+                    comboBoxBasicLocation.Text = waypoint.Location.Name;
+                checkBoxAllowPassing.Checked = waypoint.AllowPassing;
+                numericUpDownRadius.Value = (decimal)waypoint.Radius;
+            }
+            else
+            {
+                comboBoxBasicLocation.Text = "";
+            }    
         }
 
         private void AddWaypointToRoute(EDWaypoint waypoint)
@@ -408,12 +427,13 @@ namespace SRVTracker
                 }
             }
             else
+            {
+                DisplayBasic();
                 comboBoxWaypointType.SelectedIndex = 0;
+            }
             textBoxWaypointName.Text = waypoint.Name;
-            numericUpDownRadius.Value = (decimal)waypoint.Radius;
             numericUpDownMinAltitude.Value = (decimal)waypoint.MinimumAltitude;
             numericUpDownMaxAltitude.Value = (decimal)waypoint.MaximumAltitude;
-            checkBoxAllowPassing.Checked = waypoint.AllowPassing;
             buttonDuplicateWaypoint.Enabled = true;
             buttonDeleteWaypoint.Enabled = true;
             buttonMoveDown.Enabled = true;
@@ -426,21 +446,21 @@ namespace SRVTracker
         {
             if (listBoxWaypoints.SelectedIndex < 0 || _updatingWaypointInfo)
                 return;
-            _route.Waypoints[listBoxWaypoints.SelectedIndex].Radius = numericUpDownRadius.Value;
+            _route.Waypoints[listBoxWaypoints.SelectedIndex].Radius = (double)numericUpDownRadius.Value;
         }
 
         private void numericUpDownMinAltitude_ValueChanged(object sender, EventArgs e)
         {
             if (listBoxWaypoints.SelectedIndex < 0 || _updatingWaypointInfo)
                 return;
-            _route.Waypoints[listBoxWaypoints.SelectedIndex].MinimumAltitude = numericUpDownMinAltitude.Value;
+            _route.Waypoints[listBoxWaypoints.SelectedIndex].MinimumAltitude = (double)numericUpDownMinAltitude.Value;
         }
 
         private void numericUpDownMaxAltitude_ValueChanged(object sender, EventArgs e)
         {
             if (listBoxWaypoints.SelectedIndex < 0 || _updatingWaypointInfo)
                 return;
-            _route.Waypoints[listBoxWaypoints.SelectedIndex].MaximumAltitude = numericUpDownMaxAltitude.Value;
+            _route.Waypoints[listBoxWaypoints.SelectedIndex].MaximumAltitude = (double)numericUpDownMaxAltitude.Value;
         }
 
         private void textBoxWaypointName_TextChanged(object sender, EventArgs e)
@@ -781,10 +801,11 @@ namespace SRVTracker
             else
             {
                 // We work out the midpoint between the two locations
-                decimal distanceBetweenLocations = EDLocation.DistanceBetween(gateWaypoint.AdditionalLocations[0], gateWaypoint.AdditionalLocations[1]);
-                decimal bearingToLocation = EDLocation.BearingToLocation(gateWaypoint.AdditionalLocations[0], gateWaypoint.AdditionalLocations[1]);
-                gateWaypoint.Location = EDLocation.LocationFrom(gateWaypoint.AdditionalLocations[0], bearingToLocation, distanceBetweenLocations / 2);
-                gateWaypoint.Location.Name = "Midpoint";
+                gateWaypoint.Location = EDLocation.MidpointBetween(gateWaypoint.AdditionalLocations);
+                if (!String.IsNullOrEmpty(gateWaypoint.Name))
+                    gateWaypoint.Location.Name = gateWaypoint.Name;
+                else
+                    gateWaypoint.Location.Name = "Midpoint";
             }
         }
 
@@ -871,12 +892,12 @@ namespace SRVTracker
             switch (comboBoxWaypointType.SelectedIndex)
             {
                 case 0: // This is basic waypoint
-                    ShowWaypointEditor(groupBoxBasic);
                     SetWaypointType(null);
+                    DisplayBasic();
                     break;
 
                 case 1: // This is a gate
-                    ShowWaypointEditor(groupBoxGate);
+                    
                     SetWaypointType("Gate");
                     DisplayGate();
                     break;
@@ -885,6 +906,8 @@ namespace SRVTracker
 
         private void buttonEditGateMarker1_Click(object sender, EventArgs e)
         {
+            EditAdditionalLocation(0, comboBoxGateLocation1);
+            /*
             EDWaypoint waypoint = GetSelectedWaypoint();
             if (waypoint == null)
                 return;
@@ -898,11 +921,13 @@ namespace SRVTracker
                 waypoint.AdditionalLocations.Add(location);
             }
             formAddLocation.EditLocation(location, this, true);
-            comboBoxGateLocation1.Text = location.Name;
+            comboBoxGateLocation1.Text = location.Name;*/
         }
 
         private void buttonEditGateMarker2_Click(object sender, EventArgs e)
         {
+            EditAdditionalLocation(1, comboBoxGateLocation2);
+            /*
             EDWaypoint waypoint = GetSelectedWaypoint();
             if (waypoint == null)
                 return;
@@ -924,19 +949,12 @@ namespace SRVTracker
                 waypoint.AdditionalLocations.Add(location);
             }
             formAddLocation.EditLocation(location, this,true);
-            comboBoxGateLocation2.Text = location.Name;
+            comboBoxGateLocation2.Text = location.Name;*/
         }
 
         private void buttonEditGateTarget_Click(object sender, EventArgs e)
         {
-            EDWaypoint waypoint = GetSelectedWaypoint();
-            if (waypoint == null)
-                return;
-            FormAddLocation formAddLocation = new FormAddLocation();
-            if (waypoint.Location == null)
-                waypoint.Location = new EDLocation();
-            formAddLocation.EditLocation(waypoint.Location, this,true);
-            comboBoxGateTarget.Text = waypoint.Location.Name;
+            EditMainLocation(comboBoxGateTarget);
         }
 
         private void buttonSetGateTargetToCurrentLocation_Click(object sender, EventArgs e)
@@ -965,6 +983,72 @@ namespace SRVTracker
         private void buttonEditLocations_Click(object sender, EventArgs e)
         {
             FormLocationEditor.GetFormLocationEditor().ShowWithBorder(this);
+        }
+
+        private void EditMainLocation(Control TargetControl = null)
+        {
+            EDWaypoint waypoint = GetSelectedWaypoint();
+            if (waypoint == null)
+                return;
+            FormAddLocation formAddLocation = new FormAddLocation();
+            if (waypoint.Location == null)
+                waypoint.Location = new EDLocation();
+            formAddLocation.EditLocation(waypoint.Location, this, true);
+            if (TargetControl != null)
+                TargetControl.Text = waypoint.Location.Name;
+        }
+
+        private void EditAdditionalLocation(int AdditionalLocationIndex, Control TargetControl = null)
+        {
+            EDWaypoint waypoint = GetSelectedWaypoint();
+            if (waypoint == null)
+                return;
+            FormAddLocation formAddLocation = new FormAddLocation();
+            EDLocation location;
+            if (waypoint.AdditionalLocations.Count > AdditionalLocationIndex)
+                location = waypoint.AdditionalLocations[AdditionalLocationIndex];
+            else
+            {
+                while (waypoint.AdditionalLocations.Count < AdditionalLocationIndex-2)
+                    waypoint.AdditionalLocations.Add(null);
+                location = new EDLocation();
+                waypoint.AdditionalLocations.Add(location);
+            }
+            formAddLocation.EditLocation(location, this, true);
+            if (TargetControl != null)
+                TargetControl.Text = location.Name;
+        }
+
+        private void buttonEditBasicLocation_Click(object sender, EventArgs e)
+        {
+            EditMainLocation(comboBoxBasicLocation);
+        }
+
+        private void buttonTargetGateMarker1_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                FormLocator.GetLocator().SetTarget(GetSelectedWaypoint().AdditionalLocations[0]);
+            }
+            catch { }
+        }
+
+        private void buttonTargetGateMarker2_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                FormLocator.GetLocator().SetTarget(GetSelectedWaypoint().AdditionalLocations[1]);
+            }
+            catch { }
+        }
+
+        private void buttonTargetGateTarget_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                FormLocator.GetLocator().SetTarget(GetSelectedWaypoint().Location);
+            }
+            catch { }
         }
     }
 }

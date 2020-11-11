@@ -137,7 +137,7 @@ namespace Race_Manager
             else
                 commanders = CommanderWatcher.GetCommanders();
 
-            decimal closestDistance = decimal.MaxValue;
+            double closestDistance = double.MaxValue;
             string closestCommander = "";
             EDEvent lastCommanderEvent = CommanderWatcher.GetCommanderMostRecentEvent(Commander);
             if (lastCommanderEvent == null)
@@ -150,7 +150,7 @@ namespace Race_Manager
                     EDEvent lastcommanderEvent = CommanderWatcher.GetCommanderMostRecentEvent(commander);
                     if (lastcommanderEvent != null)
                     {
-                        decimal distanceToCommander = EDLocation.DistanceBetween(commanderLocation, lastcommanderEvent.Location());
+                        double distanceToCommander = EDLocation.DistanceBetween(commanderLocation, lastcommanderEvent.Location());
                         if (distanceToCommander<closestDistance)
                         {
                             closestDistance = distanceToCommander;
@@ -251,13 +251,13 @@ namespace Race_Manager
                 return;
 
             _race.Contestants.Add(commander);
-            if (_raceTelemetryDisplay != null && !_raceTelemetryDisplay.IsDisposed)
-                _raceTelemetryDisplay.InitialiseColumns(EDRace.RaceReportDescriptions(), _race.Contestants.Count);
             Action action = new Action(() => { listBoxParticipants.Items.Add(commander); });
             if (listBoxParticipants.InvokeRequired)
                 listBoxParticipants.Invoke(action);
             else
                 action();
+            if (_raceTelemetryDisplay != null && !_raceTelemetryDisplay.IsDisposed)
+                _raceTelemetryDisplay.InitialiseColumns(EDRace.RaceReportDescriptions(), _race.Contestants.Count);
         }
 
         private string ServerAddress()
@@ -414,13 +414,17 @@ namespace Race_Manager
 
                     _race = race;
                     listBoxParticipants.Items.Clear();
-                    if (_race.Contestants.Count>0)
+                    if (_race.Contestants.Count > 0)
                     {
                         // We have contestants - this will happen if we load the race from a saved race folder
-                        foreach (string contestant in _race.Contestants)
-                            listBoxParticipants.Items.Add(contestant);
-                        if (_raceTelemetryDisplay != null && !_raceTelemetryDisplay.IsDisposed)
-                            _raceTelemetryDisplay.InitialiseColumns(EDRace.RaceReportDescriptions(), _race.Contestants.Count);
+                        if (MessageBox.Show($"{_race.Contestants.Count} contestants listed in race file.{Environment.NewLine}{Environment.NewLine}Restore them?",
+                            "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                        {
+                            foreach (string contestant in _race.Contestants)
+                                listBoxParticipants.Items.Add(contestant);
+                            if (_raceTelemetryDisplay != null && !_raceTelemetryDisplay.IsDisposed)
+                                _raceTelemetryDisplay.InitialiseColumns(EDRace.RaceReportDescriptions(), _race.Contestants.Count);
+                        }
                     }
 
                     _saveFileName = openFileDialog.FileName;

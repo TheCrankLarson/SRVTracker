@@ -8,9 +8,9 @@ namespace EDTracking
     {
         public string Name { get; set; } = null;
         public List<EDWaypoint> Waypoints { get; set; } = null;
-        private decimal _totalWaypointDistance = 0;
-        private List<decimal> _waypointDistances = new List<decimal>();
-        private List<decimal> _distanceLeftAtWaypoint = new List<decimal>();
+        private double _totalWaypointDistance = 0;
+        private List<double> _waypointDistances = new List<double>();
+        private List<double> _distanceLeftAtWaypoint = new List<double>();
         private int _lastWaypointCount = 0;
         private string _saveFilename = "";
 
@@ -37,8 +37,8 @@ namespace EDTracking
             if (!force || Waypoints.Count == _lastWaypointCount)
                 return;
 
-            _distanceLeftAtWaypoint = new List<decimal>();
-            _waypointDistances = new List<decimal>();
+            _distanceLeftAtWaypoint = new List<double>();
+            _waypointDistances = new List<double>();
             _totalWaypointDistance = 0;
             if (Waypoints.Count < 2)
                 return;
@@ -54,7 +54,7 @@ namespace EDTracking
                 _distanceLeftAtWaypoint.Add(_distanceLeftAtWaypoint[i] - _waypointDistances[i]);
         }
 
-        public decimal TotalDistanceLeftAtWaypoint(int WaypointIndex)
+        public double TotalDistanceLeftAtWaypoint(int WaypointIndex)
         {
             CalculateDistances();
             if (WaypointIndex < _distanceLeftAtWaypoint.Count)
