@@ -43,11 +43,19 @@ namespace EDTracking
 
         private void UpdateDataGrid(bool includeLayout)
         {
-            if (dataGridTelemetry.ItemsSource==null)
-                dataGridTelemetry.ItemsSource = _telemetryTable.DefaultView;
-            if (includeLayout)
-                dataGridTelemetry.UpdateLayout();
-            dataGridTelemetry.Items.Refresh();
+            Action action = new Action(() =>
+            {
+                if (dataGridTelemetry.ItemsSource == null)
+                    dataGridTelemetry.ItemsSource = _telemetryTable.DefaultView;
+                if (includeLayout)
+                    dataGridTelemetry.UpdateLayout();
+                dataGridTelemetry.Items.Refresh();
+            });
+
+            if (dataGridTelemetry.Dispatcher.CheckAccess())
+                action();
+            else
+                dataGridTelemetry.Dispatcher.Invoke(action);
         }
 
         private void InitialiseColumns(int RowCount)
@@ -91,13 +99,7 @@ namespace EDTracking
                     InitialiseColumns(rowCount);
                 });
 
-            if (dataGridTelemetry.Dispatcher.CheckAccess())
-                UpdateDataGrid(true);
-            else
-                dataGridTelemetry.Dispatcher.Invoke(() =>
-                {
-                    UpdateDataGrid(true);
-                });
+            UpdateDataGrid(true);
         }
 
         private void InitialiseRows()
@@ -140,13 +142,7 @@ namespace EDTracking
                     InitialiseRows();
                 });
 
-            if (dataGridTelemetry.Dispatcher.CheckAccess())
-                UpdateDataGrid(false);
-            else
-                dataGridTelemetry.Dispatcher.Invoke(() =>
-                {
-                    UpdateDataGrid(false);
-                });
+            UpdateDataGrid(false);
         }
 
         public void AddRow(string Title, string Description)
@@ -163,13 +159,30 @@ namespace EDTracking
             else
                 this.Dispatcher.Invoke(action);
 
-            if (dataGridTelemetry.Dispatcher.CheckAccess())
-                UpdateDataGrid(false);
-            else
-                dataGridTelemetry.Dispatcher.Invoke(() =>
+            UpdateDataGrid(false);
+        }
+
+        public void UpdateCell(int Column, int Row, string CellContent)
+        {
+            Action action = new Action(() =>
+            {
+                if (_telemetryTable.Rows.Count < Row)
                 {
-                    UpdateDataGrid(false);
-                });
+                    // If the row is one above our count, then we add a new row - otherwise, we do nothing
+                    if (_telemetryTable.Rows.Count == Row - 1)
+                        _telemetryTable.Rows.Add(_telemetryTable.NewRow());
+                    else
+                        return;
+                }
+                _telemetryTable.Rows[Row][Column] = CellContent;
+            });
+
+            if (this.Dispatcher.CheckAccess())
+                action();
+            else
+                this.Dispatcher.Invoke(action);
+
+            UpdateDataGrid(false);
         }
 
         private void UpdateRaceData()

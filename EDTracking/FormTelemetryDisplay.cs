@@ -70,5 +70,10 @@ namespace EDTracking
         {
             telemetryTable1.AddRow(Title, Description);
         }
+
+        public void UpdateCell(int Column, int Row, string CellContent)
+        {
+            telemetryTable1.UpdateCell(Column, Row, CellContent);
+        }
     }
 }

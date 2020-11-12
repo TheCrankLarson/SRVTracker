@@ -12,7 +12,7 @@
     </UserControl.Resources>
 
     <StackPanel x:Name="StackPanelLayout" Orientation="Vertical">
-        <DataGrid x:Name="dataGridTelemetry" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Top" HorizontalGridLinesBrush="White" VerticalGridLinesBrush="White" Foreground="White" Background="Black" AlternatingRowBackground="#FF323232" RowBackground="Black" SelectionMode="Single" SelectionUnit="Cell" RowDetailsVisibilityMode="Visible" ClipboardCopyMode="IncludeHeader" HeadersVisibility="Column" ColumnHeaderStyle="{DynamicResource ColumnHeaderStyleBW}" CanUserResizeRows="False" CanUserAddRows="False" CanUserDeleteRows="False">
+        <DataGrid x:Name="dataGridTelemetry" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Top" HorizontalGridLinesBrush="White" VerticalGridLinesBrush="White" Foreground="White" Background="Black" AlternatingRowBackground="#FF323232" RowBackground="Black" SelectionMode="Single" SelectionUnit="Cell" RowDetailsVisibilityMode="Visible" ClipboardCopyMode="IncludeHeader" HeadersVisibility="Column" ColumnHeaderStyle="{DynamicResource ColumnHeaderStyleBW}" CanUserResizeRows="False" CanUserAddRows="False" CanUserDeleteRows="False" FontSize="14">
             <DataGrid.Effect>
                 <DropShadowEffect/>
             </DataGrid.Effect>

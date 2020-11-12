@@ -32,10 +32,10 @@ namespace SRVTracker
         private static extern IntPtr GetForegroundWindow();
 
 
-        private IntPtr _eliteGameWindow;
-        private bool _foundWindow = false;
+        private static IntPtr _eliteGameWindow;
+        private static bool _foundWindow = false;
         System.Timers.Timer _timer = new System.Timers.Timer();
-        Keyboard.DirectXKeyStrokes? _activeKey = null;
+        static Keyboard.DirectXKeyStrokes? _activeKey = null;
 
         public FormDrone()
         {
@@ -99,7 +99,7 @@ namespace SRVTracker
                 SendKey((Keyboard.DirectXKeyStrokes)_activeKey);
         }
 
-        private void SendKey(Keyboard.DirectXKeyStrokes key, bool Release = false)
+        public static void SendKey(Keyboard.DirectXKeyStrokes key, bool Release = false)
         {
             if (!_foundWindow)
             {

@@ -30,6 +30,7 @@ namespace SRVTracker
         private Dictionary<string, string> _eventSounds = null;
         private List<string> _soundSources = null;
         private SoundPlayer _soundPlayer = new SoundPlayer();
+        private int _lapNumber = 1;
         private DateTime _timeTrialStart = DateTime.MinValue;
         private List<DateTime> _timeTrialWaypointTimes = null;
         private FormTelemetryDisplay _timeTrialTelemetryDisplay = null;
@@ -157,7 +158,8 @@ namespace SRVTracker
                     _timeTrialStart = DateTime.Now;
                     _timeTrialWaypointTimes = new List<DateTime>();
                     _timeTrialWaypointTimes.Add(_timeTrialStart);
-                    _timeTrialTelemetryDisplay.AddRow("Start", "00:00:00");
+                    _timeTrialTelemetryDisplay.AddRow("Start", "00:00:00.00");
+                    _lapNumber = 1;
                 }
 
             if (buttonPlay.Enabled)
@@ -166,15 +168,30 @@ namespace SRVTracker
                 EDLocation previousWaypointLocation = null;
                 if (_nextWaypoint > 0)
                     previousWaypointLocation = _route.Waypoints[_nextWaypoint - 1].Location;
+                else if (numericUpDownTotalLaps.Value > 1)
+                    previousWaypointLocation = _route.Waypoints[_route.Waypoints.Count - 1].Location;
+
+
                 bool moveToNextWaypoint = _route.Waypoints[_nextWaypoint].WaypointHit(FormTracker.CurrentLocation, FormTracker.PreviousLocation, previousWaypointLocation);
                 if (moveToNextWaypoint)
                 {
                     // Arrived at the waypoint, target the next
                     _timeTrialWaypointTimes?.Add(DateTime.Now);
-                    _timeTrialTelemetryDisplay?.AddRow(_route.Waypoints[_nextWaypoint].Name,
-                        _timeTrialWaypointTimes[_timeTrialWaypointTimes.Count-1].Subtract(_timeTrialWaypointTimes[0]).ToString());
+                    if (_nextWaypoint==0 && (numericUpDownTotalLaps.Value>1))
+                        _timeTrialTelemetryDisplay?.AddRow($"LAP {_lapNumber++}: {_route.Waypoints[_nextWaypoint].Name}",
+                            _timeTrialWaypointTimes[_timeTrialWaypointTimes.Count - 1].Subtract(_timeTrialWaypointTimes[0]).ToString(@"hh\:mm\:ss\.ff"));
+                    else
+                        _timeTrialTelemetryDisplay?.AddRow(_route.Waypoints[_nextWaypoint].Name,
+                        _timeTrialWaypointTimes[_timeTrialWaypointTimes.Count-1].Subtract(_timeTrialWaypointTimes[0]).ToString(@"hh\:mm\:ss\.ff"));
+
+                    if (checkBoxScreenshot.Checked)
+                        FormDrone.SendKey(Keyboard.DirectXKeyStrokes.DIK_F10);
+
                     _nextWaypoint++;
-                    if (_nextWaypoint >= _route.Waypoints.Count && !checkBoxLoop.Checked)
+                    if (_nextWaypoint >= _route.Waypoints.Count && numericUpDownTotalLaps.Value > 1)
+                        _nextWaypoint = 0;
+
+                    if (_nextWaypoint >= _route.Waypoints.Count || (_nextWaypoint==1 && numericUpDownTotalLaps.Value<_lapNumber))
                     {
                         // End of route
                         buttonStop.Enabled = false;
@@ -182,12 +199,11 @@ namespace SRVTracker
                         PlayEventSound("Route completed");
                         _timeTrialWaypointTimes?.Add(DateTime.Now);
                         _timeTrialTelemetryDisplay?.AddRow("Finished",
-                            _timeTrialWaypointTimes[_timeTrialWaypointTimes.Count - 1].Subtract(_timeTrialWaypointTimes[0]).ToString());
+                            _timeTrialWaypointTimes[_timeTrialWaypointTimes.Count - 1].Subtract(_timeTrialWaypointTimes[0]).ToString(@"hh\:mm\:ss\.ff"));
+                        FormLocator.GetLocator().SetTarget("");
                     }
                     else
                     {
-                        if (_nextWaypoint >= _route.Waypoints.Count)
-                            _nextWaypoint = 0;
                         PlayEventSound("Arrived at waypoint");
                         FormLocator.GetLocator().SetTarget(_route.Waypoints[_nextWaypoint].Location, GetBearingAfterNextWaypoint());
                         Action action = new Action(() =>
@@ -199,6 +215,9 @@ namespace SRVTracker
                         else
                             action();
                     }
+
+                    if (checkBoxScreenshot.Checked)
+                        FormDrone.SendKey(Keyboard.DirectXKeyStrokes.DIK_F10, true);
                 }
                 else
                     FormLocator.GetLocator().SetAdditionalInfo(GetBearingAfterNextWaypoint());
@@ -397,6 +416,7 @@ namespace SRVTracker
                             _saveFileName = openFileDialog.FileName;
                             buttonSaveRoute.Enabled = true;
                             DisplayRoute();
+                            _timeTrialTelemetryDisplay?.UpdateCell(1, 0, _route.Name);
                         }
                     }
                     catch { }
@@ -508,6 +528,8 @@ namespace SRVTracker
         private void buttonPlay_Click(object sender, EventArgs e)
         {
             _nextWaypoint = 0;
+            if (numericUpDownTotalLaps.Value > 1)
+                _nextWaypoint = 1;  // Lapped circuits have the first waypoint as the Start/Finish
             _timeTrialStart = DateTime.MinValue;
             if (listBoxWaypoints.SelectedIndex > 0)
                 _nextWaypoint = listBoxWaypoints.SelectedIndex;
@@ -543,6 +565,7 @@ namespace SRVTracker
         private void textBoxRouteName_TextChanged(object sender, EventArgs e)
         {
             _route.Name = textBoxRouteName.Text;
+            _timeTrialTelemetryDisplay?.UpdateCell(1, 0, _route.Name);
         }
 
 
