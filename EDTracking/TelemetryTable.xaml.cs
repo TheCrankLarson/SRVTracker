@@ -27,6 +27,8 @@ namespace EDTracking
             _telemetryWriter = telemetryWriter;
         }
 
+
+
         public void SetTelemetryWriter(TelemetryWriter telemetryWriter)
         {
             _telemetryWriter = telemetryWriter;
@@ -39,92 +41,149 @@ namespace EDTracking
             UpdateRaceData();
         }
 
+        private void UpdateDataGrid(bool includeLayout)
+        {
+            if (dataGridTelemetry.ItemsSource==null)
+                dataGridTelemetry.ItemsSource = _telemetryTable.DefaultView;
+            if (includeLayout)
+                dataGridTelemetry.UpdateLayout();
+            dataGridTelemetry.Items.Refresh();
+        }
+
+        private void InitialiseColumns(int RowCount)
+        {
+            List<string> enabledReports = _telemetryWriter.EnabledReports;
+            _telemetryTable.Columns.Clear();
+            // Enabled reports will not be in order, and we want to maintain the order in which reports are listed
+            foreach (string columnHeader in _columnHeaderNames.Keys)
+            {
+                if (enabledReports.Contains(columnHeader))
+                {
+                    DataColumn dataColumn = new DataColumn(columnHeader, typeof(string));
+                    _telemetryTable.Columns.Add(dataColumn);
+                }
+            }
+
+            while (_telemetryTable.Rows.Count > RowCount)
+                _telemetryTable.Rows[_telemetryTable.Rows.Count - 1].Delete();
+
+            while (_telemetryTable.Rows.Count < RowCount)
+                _telemetryTable.Rows.Add(_telemetryTable.NewRow());
+        }
+
         public void InitialiseColumns(Dictionary<string,string> columnHeaderNames = null, int rowCount = 20)
         {
-            this.Dispatcher.Invoke(() =>
+            if (columnHeaderNames == null)
             {
-                if (columnHeaderNames == null)
+                rowCount = 0;
+                if (_columnHeaderNames == null)
+                    return;
+                columnHeaderNames = _columnHeaderNames;
+            }
+            else
+                _columnHeaderNames = columnHeaderNames;
+
+            if (this.Dispatcher.CheckAccess())
+                InitialiseColumns(rowCount);
+            else
+                this.Dispatcher.Invoke(() =>
                 {
-                    rowCount = 0;
-                    if (_columnHeaderNames == null)
-                        return;
-                    columnHeaderNames = _columnHeaderNames;
-                }
-                else
-                    _columnHeaderNames = columnHeaderNames;
+                    InitialiseColumns(rowCount);
+                });
 
-                _telemetryTable.Columns.Clear();
-                List<string> enabledReports = _telemetryWriter.EnabledReports;
-                // Enabled reports will not be in order, and we want to maintain the order in which reports are listed
-                foreach (string columnHeader in columnHeaderNames.Keys)
+            if (dataGridTelemetry.Dispatcher.CheckAccess())
+                UpdateDataGrid(true);
+            else
+                dataGridTelemetry.Dispatcher.Invoke(() =>
                 {
-                    if (enabledReports.Contains(columnHeader))
-                    {
-                        DataColumn dataColumn = new DataColumn(columnHeader, typeof(string));
-                        _telemetryTable.Columns.Add(dataColumn);
-                    }
-                }
+                    UpdateDataGrid(true);
+                });
+        }
 
-                while (_telemetryTable.Rows.Count > rowCount)
-                    _telemetryTable.Rows[_telemetryTable.Rows.Count - 1].Delete();
+        private void InitialiseRows()
+        {
+            if (_telemetryTable.Columns.Count == 0)
+            {
+                _telemetryTable.Columns.Add(new DataColumn("Target", typeof(string)));
+                _telemetryTable.Columns.Add(new DataColumn("Metric", typeof(string)));
+            }
+            dataGridTelemetry.HeadersVisibility = DataGridHeadersVisibility.None;
 
-                while (_telemetryTable.Rows.Count < rowCount)
+            List<string> enabledReports = _telemetryWriter.EnabledReports;
+            _telemetryTable.Rows.Clear();
+            foreach (string rowName in _rowHeaderNames.Keys)
+            {
+                if (enabledReports.Contains(rowName))
+                {
                     _telemetryTable.Rows.Add(_telemetryTable.NewRow());
-
-                dataGridTelemetry.ItemsSource = _telemetryTable.DefaultView;
-            });
+                    _telemetryTable.Rows[_telemetryTable.Rows.Count - 1][0] = rowName;
+                }
+            }
         }
 
         public void InitialiseRows(Dictionary<string,string> rowNames = null)
         {
-            this.Dispatcher.Invoke(() =>
+            if (rowNames == null)
             {
-                if (rowNames == null)
-                {
-                    if (_columnHeaderNames == null)
-                        return;
-                    rowNames = _rowHeaderNames;
-                }
-                else
-                    _rowHeaderNames = rowNames;
-
-                _telemetryTable.Columns.Clear();
-                _telemetryTable.Columns.Add(new DataColumn("Target", typeof(string)));
-                _telemetryTable.Columns.Add(new DataColumn("Metric", typeof(string)));
-                dataGridTelemetry.HeadersVisibility = DataGridHeadersVisibility.None;
-
-                List<string> enabledReports = _telemetryWriter.EnabledReports;
-                foreach (string rowName in rowNames.Keys)
-                {
-                    if (enabledReports.Contains(rowName))
-                    {
-                        _telemetryTable.Rows.Add(_telemetryTable.NewRow());
-                        _telemetryTable.Rows[_telemetryTable.Rows.Count - 1][0] = rowName;
-                    }
-                }
-
-                dataGridTelemetry.ItemsSource = _telemetryTable.DefaultView;
-            });
-        }
-
-        public void UpdateRaceData(Dictionary<string, string> telemetryData = null)
-        {
-            if (telemetryData == null)
-            {
-                if (_telemetryData == null)
+                if (_rowHeaderNames == null)
                     return;
-                telemetryData = _telemetryData;
+                rowNames = _rowHeaderNames;
             }
             else
-                _telemetryData = telemetryData;
+                _rowHeaderNames = rowNames;
+
+            if (this.Dispatcher.CheckAccess())
+                InitialiseRows();
+            else
+                this.Dispatcher.Invoke(() =>
+                {
+                    InitialiseRows();
+                });
+
+            if (dataGridTelemetry.Dispatcher.CheckAccess())
+                UpdateDataGrid(false);
+            else
+                dataGridTelemetry.Dispatcher.Invoke(() =>
+                {
+                    UpdateDataGrid(false);
+                });
+        }
+
+        public void AddRow(string Title, string Description)
+        {
+            Action action = new Action(() =>
+            {
+                _telemetryTable.Rows.Add(_telemetryTable.NewRow());
+                _telemetryTable.Rows[_telemetryTable.Rows.Count - 1][0] = Title;
+                _telemetryTable.Rows[_telemetryTable.Rows.Count - 1][1] = Description;
+            });
+
+            if (this.Dispatcher.CheckAccess())
+                action();
+            else
+                this.Dispatcher.Invoke(action);
+
+            if (dataGridTelemetry.Dispatcher.CheckAccess())
+                UpdateDataGrid(false);
+            else
+                dataGridTelemetry.Dispatcher.Invoke(() =>
+                {
+                    UpdateDataGrid(false);
+                });
+        }
+
+        private void UpdateRaceData()
+        {
+            if (_telemetryData == null)
+                return;
 
             Dictionary<string, string[]> rowData = new Dictionary<string, string[]>();
             int numRows = 0;
-            for (int i=0; i<_telemetryTable.Columns.Count; i++)
+            for (int i = 0; i < _telemetryTable.Columns.Count; i++)
             {
-                if (telemetryData.ContainsKey(_telemetryTable.Columns[i].ColumnName))
+                if (_telemetryData.ContainsKey(_telemetryTable.Columns[i].ColumnName))
                 {
-                    string[] rowText = telemetryData[_telemetryTable.Columns[i].ColumnName].Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+                    string[] rowText = _telemetryData[_telemetryTable.Columns[i].ColumnName].Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
                     if (rowText.Length > numRows)
                         numRows = rowText.Length;
                     rowData.Add(_telemetryTable.Columns[i].ColumnName, rowText);
@@ -141,24 +200,51 @@ namespace EDTracking
                 DataRow dataRow = _telemetryTable.Rows[j];
                 for (int i = 0; i < _telemetryTable.Columns.Count; i++)
                 {
-                    if (rowData[_telemetryTable.Columns[i].ColumnName].Length > j)
-                        dataRow[i] = rowData[_telemetryTable.Columns[i].ColumnName][j];
-                    else
-                        dataRow[i] = "";
+                    if (rowData.ContainsKey(_telemetryTable.Columns[i].ColumnName))
+                    {
+                        if (rowData[_telemetryTable.Columns[i].ColumnName].Length > j)
+                            dataRow[i] = rowData[_telemetryTable.Columns[i].ColumnName][j];
+                        else
+                            dataRow[i] = "";
+                    }
                 }
             }
         }
 
+        public void UpdateRaceData(Dictionary<string, string> telemetryData = null)
+        {
+
+            if (telemetryData == null)
+            {
+                if (_telemetryData == null)
+                    return;
+            }
+            else
+                _telemetryData = telemetryData;
+
+            if (this.Dispatcher.CheckAccess())
+                UpdateRaceData();
+            else
+                this.Dispatcher.Invoke(() =>
+                {
+                    UpdateRaceData();
+                });
+
+        }
+
         public void UpdateTargetData(Dictionary<string, string> TargetData)
         {
-            if (_telemetryTable.Rows.Count < 0)
-                return;
-
-            for (int i=0; i<_telemetryTable.Rows.Count; i++)
+            this.Dispatcher.Invoke(() =>
             {
-                if (TargetData.ContainsKey(_telemetryTable.Rows[i][0].ToString()))
-                    _telemetryTable.Rows[i][1] = TargetData[_telemetryTable.Rows[i][0].ToString()];
-            }
+                if (_telemetryTable.Rows.Count < 0)
+                    return;
+
+                for (int i = 0; i < _telemetryTable.Rows.Count; i++)
+                {
+                    if (TargetData.ContainsKey(_telemetryTable.Rows[i][0].ToString()))
+                        _telemetryTable.Rows[i][1] = TargetData[_telemetryTable.Rows[i][0].ToString()];
+                }
+            });
         }
 
         public System.Drawing.Size DataGridSize

@@ -556,7 +556,9 @@
             this.checkBoxShowRaceTelemetry.Size = new System.Drawing.Size(77, 17);
             this.checkBoxShowRaceTelemetry.TabIndex = 0;
             this.checkBoxShowRaceTelemetry.Text = "Show race";
-            this.toolTip1.SetToolTip(this.checkBoxShowRaceTelemetry, "\r\n");
+            this.toolTip1.SetToolTip(this.checkBoxShowRaceTelemetry, "Enable race telemetry display.\r\nTelemetry is shown in its own window.\r\nThe Race T" +
+        "elemetry window is unavailable when the \r\nRace Telemetry Settings window is open" +
+        ".");
             this.checkBoxShowRaceTelemetry.UseVisualStyleBackColor = true;
             this.checkBoxShowRaceTelemetry.CheckedChanged += new System.EventHandler(this.checkBoxShowRaceTelemetry_CheckedChanged);
             // 

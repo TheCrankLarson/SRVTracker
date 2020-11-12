@@ -58,6 +58,13 @@ namespace EDTracking
             return JsonSerializer.Serialize(this);// $"{Name}║{SystemName}║{PlanetName}║{Latitude.ToString(_enGB)}║{Longitude.ToString(_enGB)}║{Altitude.ToString(_enGB)}║{PlanetaryRadius.ToString(_enGB)}";
         }
 
+        public bool Equals(EDLocation location)
+        {
+            if (Latitude != location.Latitude) return false;
+            if (Longitude != location.Longitude) return false;
+            return true;
+        }
+
         public static EDLocation FromString(string location)
         {
             try

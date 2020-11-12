@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormRouter));
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.buttonEditLocations = new System.Windows.Forms.Button();
@@ -84,7 +83,7 @@
             this.label6 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.textBoxRouteName = new System.Windows.Forms.TextBox();
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.toolTip1 = new System.Windows.Forms.ToolTip();
             this.checkBoxPlayIncudeDirection = new System.Windows.Forms.CheckBox();
             this.checkBoxEnableAudio = new System.Windows.Forms.CheckBox();
             this.buttonStop = new System.Windows.Forms.Button();
@@ -96,6 +95,8 @@
             this.comboBoxChooseSound = new System.Windows.Forms.ComboBox();
             this.listBoxAudioEvents = new System.Windows.Forms.ListBox();
             this.checkBoxLoop = new System.Windows.Forms.CheckBox();
+            this.checkBoxTimeTrial = new System.Windows.Forms.CheckBox();
+            this.checkBoxScreenshot = new System.Windows.Forms.CheckBox();
             this.groupBox2.SuspendLayout();
             this.groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRecordDistance)).BeginInit();
@@ -794,11 +795,13 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.checkBoxScreenshot);
+            this.groupBox3.Controls.Add(this.checkBoxTimeTrial);
             this.groupBox3.Controls.Add(this.checkBoxLoop);
             this.groupBox3.Controls.Add(this.checkBoxPlayIncudeDirection);
             this.groupBox3.Location = new System.Drawing.Point(630, 6);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(163, 68);
+            this.groupBox3.Size = new System.Drawing.Size(163, 90);
             this.groupBox3.TabIndex = 16;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Play options";
@@ -808,9 +811,9 @@
             this.groupBoxAudioSettings.Controls.Add(this.comboBoxChooseSound);
             this.groupBoxAudioSettings.Controls.Add(this.listBoxAudioEvents);
             this.groupBoxAudioSettings.Controls.Add(this.checkBoxEnableAudio);
-            this.groupBoxAudioSettings.Location = new System.Drawing.Point(630, 80);
+            this.groupBoxAudioSettings.Location = new System.Drawing.Point(630, 108);
             this.groupBoxAudioSettings.Name = "groupBoxAudioSettings";
-            this.groupBoxAudioSettings.Size = new System.Drawing.Size(163, 212);
+            this.groupBoxAudioSettings.Size = new System.Drawing.Size(163, 185);
             this.groupBoxAudioSettings.TabIndex = 17;
             this.groupBoxAudioSettings.TabStop = false;
             this.groupBoxAudioSettings.Text = "Audio Settings";
@@ -820,7 +823,7 @@
             this.comboBoxChooseSound.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxChooseSound.Enabled = false;
             this.comboBoxChooseSound.FormattingEnabled = true;
-            this.comboBoxChooseSound.Location = new System.Drawing.Point(6, 182);
+            this.comboBoxChooseSound.Location = new System.Drawing.Point(6, 156);
             this.comboBoxChooseSound.Name = "comboBoxChooseSound";
             this.comboBoxChooseSound.Size = new System.Drawing.Size(151, 21);
             this.comboBoxChooseSound.TabIndex = 3;
@@ -831,7 +834,7 @@
             this.listBoxAudioEvents.FormattingEnabled = true;
             this.listBoxAudioEvents.Location = new System.Drawing.Point(6, 42);
             this.listBoxAudioEvents.Name = "listBoxAudioEvents";
-            this.listBoxAudioEvents.Size = new System.Drawing.Size(151, 134);
+            this.listBoxAudioEvents.Size = new System.Drawing.Size(151, 108);
             this.listBoxAudioEvents.TabIndex = 2;
             this.listBoxAudioEvents.SelectedIndexChanged += new System.EventHandler(this.listBoxAudioEvents_SelectedIndexChanged);
             // 
@@ -845,6 +848,30 @@
             this.checkBoxLoop.Text = "Loop";
             this.toolTip1.SetToolTip(this.checkBoxLoop, "When the final waypoint is reached, the first\r\nwaypoint is targeted again.");
             this.checkBoxLoop.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxTimeTrial
+            // 
+            this.checkBoxTimeTrial.AutoSize = true;
+            this.checkBoxTimeTrial.Location = new System.Drawing.Point(65, 42);
+            this.checkBoxTimeTrial.Name = "checkBoxTimeTrial";
+            this.checkBoxTimeTrial.Size = new System.Drawing.Size(68, 17);
+            this.checkBoxTimeTrial.TabIndex = 2;
+            this.checkBoxTimeTrial.Text = "Time trial";
+            this.toolTip1.SetToolTip(this.checkBoxTimeTrial, "If enabled, the telemetry window will be displayed\r\nand timer will start on first" +
+        " movement.");
+            this.checkBoxTimeTrial.UseVisualStyleBackColor = true;
+            this.checkBoxTimeTrial.CheckedChanged += new System.EventHandler(this.checkBoxTimeTrial_CheckedChanged);
+            // 
+            // checkBoxScreenshot
+            // 
+            this.checkBoxScreenshot.AutoSize = true;
+            this.checkBoxScreenshot.Enabled = false;
+            this.checkBoxScreenshot.Location = new System.Drawing.Point(9, 65);
+            this.checkBoxScreenshot.Name = "checkBoxScreenshot";
+            this.checkBoxScreenshot.Size = new System.Drawing.Size(152, 17);
+            this.checkBoxScreenshot.TabIndex = 3;
+            this.checkBoxScreenshot.Text = "Screenshot each waypoint";
+            this.checkBoxScreenshot.UseVisualStyleBackColor = true;
             // 
             // FormRouter
             // 
@@ -958,5 +985,7 @@
         private System.Windows.Forms.Button buttonTargetGateMarker2;
         private System.Windows.Forms.Button buttonTargetGateMarker1;
         private System.Windows.Forms.CheckBox checkBoxLoop;
+        private System.Windows.Forms.CheckBox checkBoxTimeTrial;
+        private System.Windows.Forms.CheckBox checkBoxScreenshot;
     }
 }

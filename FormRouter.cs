@@ -30,12 +30,17 @@ namespace SRVTracker
         private Dictionary<string, string> _eventSounds = null;
         private List<string> _soundSources = null;
         private SoundPlayer _soundPlayer = new SoundPlayer();
+        private DateTime _timeTrialStart = DateTime.MinValue;
+        private List<DateTime> _timeTrialWaypointTimes = null;
+        private FormTelemetryDisplay _timeTrialTelemetryDisplay = null;
+        private TelemetryWriter _timeTrialTelemetryWriter = null;
 
         public FormRouter(FormTracker formTracker)
         {
             InitializeComponent();
             CalculateWindowSizes();
             this.Size = _fullSize;
+            _timeTrialTelemetryWriter = new TelemetryWriter();
 
             // Attach our form configuration saver
             _formConfig = new ConfigSaverClass(this, true);
@@ -145,6 +150,16 @@ namespace SRVTracker
                 return;
             }
 
+            // Start the time trial timer only on first movement
+            if (checkBoxTimeTrial.Checked && _timeTrialStart == DateTime.MinValue)
+                if (!_lastLoggedLocation.Equals(FormTracker.CurrentLocation))
+                {
+                    _timeTrialStart = DateTime.Now;
+                    _timeTrialWaypointTimes = new List<DateTime>();
+                    _timeTrialWaypointTimes.Add(_timeTrialStart);
+                    _timeTrialTelemetryDisplay.AddRow("Start", "00:00:00");
+                }
+
             if (buttonPlay.Enabled)
             {
                 // We are currently replaying a route
@@ -155,6 +170,9 @@ namespace SRVTracker
                 if (moveToNextWaypoint)
                 {
                     // Arrived at the waypoint, target the next
+                    _timeTrialWaypointTimes?.Add(DateTime.Now);
+                    _timeTrialTelemetryDisplay?.AddRow(_route.Waypoints[_nextWaypoint].Name,
+                        _timeTrialWaypointTimes[_timeTrialWaypointTimes.Count-1].Subtract(_timeTrialWaypointTimes[0]).ToString());
                     _nextWaypoint++;
                     if (_nextWaypoint >= _route.Waypoints.Count && !checkBoxLoop.Checked)
                     {
@@ -162,6 +180,9 @@ namespace SRVTracker
                         buttonStop.Enabled = false;
                         buttonStartRecording.Enabled = true;
                         PlayEventSound("Route completed");
+                        _timeTrialWaypointTimes?.Add(DateTime.Now);
+                        _timeTrialTelemetryDisplay?.AddRow("Finished",
+                            _timeTrialWaypointTimes[_timeTrialWaypointTimes.Count - 1].Subtract(_timeTrialWaypointTimes[0]).ToString());
                     }
                     else
                     {
@@ -487,6 +508,7 @@ namespace SRVTracker
         private void buttonPlay_Click(object sender, EventArgs e)
         {
             _nextWaypoint = 0;
+            _timeTrialStart = DateTime.MinValue;
             if (listBoxWaypoints.SelectedIndex > 0)
                 _nextWaypoint = listBoxWaypoints.SelectedIndex;
 
@@ -1055,6 +1077,27 @@ namespace SRVTracker
                 FormLocator.GetLocator().SetTarget(GetSelectedWaypoint().Location);
             }
             catch { }
+        }
+
+        private void checkBoxTimeTrial_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBoxTimeTrial.Checked)
+            {
+                if (_timeTrialTelemetryDisplay == null || _timeTrialTelemetryDisplay.IsDisposed)
+                {
+                    _timeTrialTelemetryDisplay = new FormTelemetryDisplay(_timeTrialTelemetryWriter, " Time Trial Telemetry");
+                    _timeTrialTelemetryDisplay.InitialiseRows(new Dictionary<string, string>());
+                    _timeTrialTelemetryDisplay.AddRow("Time Trial Telemetry", textBoxRouteName.Text);
+                    _timeTrialTelemetryDisplay.Show(this);
+                }
+                else if (!_timeTrialTelemetryDisplay.Visible)
+                    _timeTrialTelemetryDisplay.Show(this);
+                else
+                    _timeTrialTelemetryDisplay.Focus();
+                return;
+            }
+            if (_timeTrialTelemetryDisplay != null && _timeTrialTelemetryDisplay.Visible)
+                _timeTrialTelemetryDisplay.Hide();
         }
     }
 }

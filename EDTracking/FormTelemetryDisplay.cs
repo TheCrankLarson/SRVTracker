@@ -14,6 +14,7 @@ namespace EDTracking
     {
         private TelemetryWriter _telemetryWriter = null;
         private ConfigSaverClass _formConfig = null;
+        private bool _colConfig = false;
 
         public FormTelemetryDisplay(TelemetryWriter telemetryWriter, string windowTitle = "Race Telemetry")
         {
@@ -26,6 +27,7 @@ namespace EDTracking
             _formConfig.RestorePreviousSize = false;
             _formConfig.RestoreFormValues();
             _telemetryWriter = telemetryWriter;
+            _telemetryWriter.SelectionChanged += _telemetryWriter_SelectionChanged;
             telemetryTable1.SetTelemetryWriter(_telemetryWriter);
             this.AutoSize = true;
             this.AutoSizeMode = AutoSizeMode.GrowAndShrink;
@@ -33,9 +35,20 @@ namespace EDTracking
             this.elementHost1.Dock = DockStyle.Fill;
         }
 
+        private void _telemetryWriter_SelectionChanged(object sender, EventArgs e)
+        {
+            if (_colConfig)
+                telemetryTable1.InitialiseColumns();
+            else
+                telemetryTable1.InitialiseRows();
+            elementHost1.OnPropertyChanged("dataGridTelemetry", telemetryTable1.dataGridTelemetry);
+            elementHost1.Refresh();
+        }
+
         public void InitialiseColumns(Dictionary<string, string> columnHeaderNames, int rowCount)
         {
             telemetryTable1.InitialiseColumns(columnHeaderNames, rowCount);
+            _colConfig = true;
         }
 
         public void InitialiseRows(Dictionary<string, string> rowNames)
@@ -51,6 +64,11 @@ namespace EDTracking
         public void UpdateTargetData(Dictionary<string,string> TargetData)
         {
             telemetryTable1.UpdateTargetData(TargetData);
+        }
+
+        public void AddRow(string Title, string Description)
+        {
+            telemetryTable1.AddRow(Title, Description);
         }
     }
 }

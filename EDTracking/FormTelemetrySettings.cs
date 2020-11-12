@@ -13,6 +13,7 @@ namespace EDTracking
         private string _filePrefix = "";
         private Control _exportControl = null;
         private ConfigSaverClass _formConfig = null;
+        public event EventHandler SelectedReportsChanged;
 
         public FormTelemetrySettings(TelemetryWriter telemetryWriter, Dictionary<string, string> ReportDescriptions, string ExportFilePrefix="", string WindowTitle="")
         {
@@ -20,7 +21,7 @@ namespace EDTracking
             _telemetryWriter = telemetryWriter;
             _reportDescriptions = ReportDescriptions;
             _filePrefix = ExportFilePrefix;
-            
+
             if (!String.IsNullOrEmpty(WindowTitle))
                 this.Text = WindowTitle;
             _formConfig = new ConfigSaverClass(this, true, true);
@@ -52,6 +53,7 @@ namespace EDTracking
         private void InitialiseList()
         {
             // Show the current export settings in the ListView
+
             listViewTextExportSettings.Items.Clear();
             foreach (string report in _reportDescriptions.Keys)
             {
@@ -80,11 +82,19 @@ namespace EDTracking
 
         private void listViewTextExportSettings_ItemChecked(object sender, ItemCheckedEventArgs e)
         {
+            if (!this.CanFocus)
+                return;
             string reportName = e.Item.SubItems[1].Text;
             if (e.Item.Checked && !_telemetryWriter.EnabledReports.Contains(reportName))
+            {
                 _telemetryWriter.EnableReport(reportName, e.Item.SubItems[2].Text);
+                SelectedReportsChanged?.Invoke(this, null);
+            }
             else if (!e.Item.Checked && _telemetryWriter.EnabledReports.Contains(reportName))
+            {
                 _telemetryWriter.EnableReport(reportName, null);
+                SelectedReportsChanged?.Invoke(this, null);
+            }
         }
 
         private void buttonClose_Click(object sender, EventArgs e)

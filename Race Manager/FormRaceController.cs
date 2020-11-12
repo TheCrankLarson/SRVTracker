@@ -29,6 +29,8 @@ namespace Race_Manager
         private FormTelemetryDisplay _targetTelemetryDisplay = null;
         private FormTelemetrySettings _raceTelemetrySettings = null;
         private FormTelemetrySettings _targetTelemetrySettings = null;
+        private bool _showRaceDisplayOnSettingsClose = false;
+        private bool _raceTelemetrySettingsClosing = false;
 
         public FormRaceController()
         {
@@ -258,6 +260,10 @@ namespace Race_Manager
                 action();
             if (_raceTelemetryDisplay != null && !_raceTelemetryDisplay.IsDisposed)
                 _raceTelemetryDisplay.InitialiseColumns(EDRace.RaceReportDescriptions(), _race.Contestants.Count);
+            Dictionary<string, string> exportContestants = new Dictionary<string, string>();
+            exportContestants.Add("Commanders", String.Join(Environment.NewLine,_race.Contestants));
+            _raceTelemetryWriter.ExportFiles(exportContestants);
+            _raceTelemetryDisplay.UpdateRaceData(exportContestants);
         }
 
         private string ServerAddress()
@@ -687,10 +693,40 @@ namespace Race_Manager
             if (_raceTelemetrySettings == null)
             {
                 _raceTelemetrySettings = new FormTelemetrySettings(_raceTelemetryWriter,EDRace.RaceReportDescriptions(),"Race-", "Race Telemetry Settings");
+                _raceTelemetrySettings.SelectedReportsChanged += _raceTelemetrySettings_SelectionChanged;
                 _raceTelemetrySettings.ExportToControlTag(checkBoxExportRaceTelemetry);
+                if (_raceTelemetryDisplay != null && !_raceTelemetryDisplay.IsDisposed)
+                {
+                    _raceTelemetryDisplay.Close();
+                    checkBoxShowRaceTelemetry.Checked = false;
+                    _showRaceDisplayOnSettingsClose = true;
+                    _raceTelemetrySettings.FormClosed += _raceTelemetrySettings_FormClosed;
+                }
             }
             if (!_raceTelemetrySettings.Visible)
                 _raceTelemetrySettings.Show(this);
+        }
+
+        private void _raceTelemetrySettings_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            if (_showRaceDisplayOnSettingsClose)
+            {
+                _showRaceDisplayOnSettingsClose = false;
+                _raceTelemetrySettingsClosing = true;
+                checkBoxShowRaceTelemetry.Checked = true;
+            }
+        }
+
+        private void _raceTelemetrySettings_SelectionChanged(object sender, EventArgs e)
+        {
+            // We cannot update columns once first initialised, for some reason
+            // So as a hack we'll just close and reopen the form
+            if (_raceTelemetryDisplay!= null && !_raceTelemetryDisplay.IsDisposed)
+            {
+                _raceTelemetryDisplay.Close();
+                checkBoxShowRaceTelemetry.Checked = false;
+                checkBoxShowRaceTelemetry.Checked = true;
+            }
         }
 
         private void buttonCommanderTelemetryExportSettings_Click(object sender, EventArgs e)
@@ -714,9 +750,20 @@ namespace Race_Manager
 
             if (checkBoxShowRaceTelemetry.Checked)
             {
+                if (_raceTelemetrySettings != null && !_raceTelemetrySettings.IsDisposed)
+                {
+                    // We close the display form while editing these settings, as it doesn't update properly
+                    if (!_raceTelemetrySettingsClosing)
+                    {
+                        checkBoxShowRaceTelemetry.Checked = false;
+                        return;
+                    }
+                    _raceTelemetrySettingsClosing = false;
+                }
                 if (_raceTelemetryDisplay == null || _raceTelemetryDisplay.IsDisposed)
                 {
                     _raceTelemetryDisplay = new FormTelemetryDisplay(_raceTelemetryWriter);
+                    _raceTelemetryDisplay.FormClosing += _raceTelemetryDisplay_FormClosing;
                     _raceTelemetryDisplay.Show(this);
                     int rows = 0;
                     if (_race != null)
@@ -733,6 +780,12 @@ namespace Race_Manager
                 _raceTelemetryDisplay.Hide();
         }
 
+        private void _raceTelemetryDisplay_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (e.CloseReason == CloseReason.UserClosing)
+                checkBoxShowRaceTelemetry.Checked = false;
+        }
+
         private void checkBoxShowTargetTelemetry_CheckedChanged(object sender, EventArgs e)
         {
             if (_trackedTelemetryWriter == null)
@@ -743,6 +796,7 @@ namespace Race_Manager
                 if (_targetTelemetryDisplay == null || _targetTelemetryDisplay.IsDisposed)
                 {
                     _targetTelemetryDisplay = new FormTelemetryDisplay(_trackedTelemetryWriter, "Commander Telemetry");
+                    _targetTelemetryDisplay.FormClosing += _targetTelemetryDisplay_FormClosing;
                     _targetTelemetryDisplay.InitialiseRows(EDRaceStatus.RaceReportDescriptions());
                     _targetTelemetryDisplay.Show(this);
                 }
@@ -754,6 +808,12 @@ namespace Race_Manager
             }
             if (_targetTelemetryDisplay != null && _targetTelemetryDisplay.Visible)
                 _targetTelemetryDisplay.Hide();
+        }
+
+        private void _targetTelemetryDisplay_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (e.CloseReason == CloseReason.UserClosing)
+                checkBoxShowTargetTelemetry.Checked = false;
         }
 
         private void buttonUneliminate_Click(object sender, EventArgs e)
