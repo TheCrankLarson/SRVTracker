@@ -98,44 +98,76 @@ namespace SRVTracker
                 return "";
 
             StringBuilder additionalInfo = new StringBuilder();
-            if (_nextWaypoint < _route.Waypoints.Count - 1)
+
+            if (_route.Waypoints[_nextWaypoint] != null && FormTracker.CurrentLocation != null)
             {
-                if (FormTracker.CurrentLocation != null)
+                bool finalWaypoint = false;
+                EDWaypoint nextNextWaypoint = null;
+                if (numericUpDownTotalLaps.Value > 1)
                 {
-                    double bearingFromNextWaypoint = EDLocation.BearingToLocation(_route.Waypoints[_nextWaypoint].Location, _route.Waypoints[_nextWaypoint + 1].Location);
-                    double bearingToNextWaypoint = EDLocation.BearingToLocation(FormTracker.CurrentLocation, _route.Waypoints[_nextWaypoint].Location);
-                    double bearingChange = EDLocation.BearingDelta(bearingToNextWaypoint, bearingFromNextWaypoint);
-                    additionalInfo.Append("Then ");
-                    if (bearingChange > -5 && bearingChange < 5)
-                        additionalInfo.Append("straight on");
+                    // More than one lap, so start/finish is first waypoint
+                    if (_nextWaypoint == _route.Waypoints.Count - 1)
+                        nextNextWaypoint = _route.Waypoints[0];
                     else
+                        nextNextWaypoint = _route.Waypoints[_nextWaypoint + 1];
+
+                    if ((_nextWaypoint == 0) && (_lapNumber == numericUpDownTotalLaps.Value))
+                        finalWaypoint = true;
+                }
+                else
+                {
+                    // One lap, finish is final waypoint
+                    if (_nextWaypoint<_route.Waypoints.Count-1)
+                        nextNextWaypoint = _route.Waypoints[_nextWaypoint + 1];
+                    else
+                        finalWaypoint = true;
+                }
+
+                if (!finalWaypoint)
+                {
+                    try
                     {
-                        if (bearingChange < 0)
-                        {
-                            if (bearingChange < -140)
-                                additionalInfo.Append("hairpin ");
-                            else if (bearingChange < -90)
-                                additionalInfo.Append("sharp ");
-                            if (bearingChange > -45)
-                                additionalInfo.Append("bear left ");
-                            else
-                                additionalInfo.Append("turn left ");
-                        }
+                        double bearingFromNextWaypoint = EDLocation.BearingToLocation(_route.Waypoints[_nextWaypoint].Location, nextNextWaypoint.Location);
+                        double bearingToNextWaypoint = EDLocation.BearingToLocation(FormTracker.CurrentLocation, _route.Waypoints[_nextWaypoint].Location);
+                        double bearingChange = EDLocation.BearingDelta(bearingToNextWaypoint, bearingFromNextWaypoint);
+                        additionalInfo.Append("Then ");
+                        if (bearingChange > -5 && bearingChange < 5)
+                            additionalInfo.Append("straight on");
                         else
                         {
-                            if (bearingChange > 140)
-                                additionalInfo.Append("hairpin ");
-                            else if (bearingChange > 90)
-                                additionalInfo.Append("sharp ");
-                            if (bearingChange < 45)
-                                additionalInfo.Append("bear right ");
+                            if (bearingChange < 0)
+                            {
+                                if (bearingChange < -140)
+                                    additionalInfo.Append("hairpin ");
+                                else if (bearingChange < -80)
+                                    additionalInfo.Append("sharp ");
+                                if (bearingChange > -45)
+                                    additionalInfo.Append("bear left ");
+                                else
+                                    additionalInfo.Append("turn left ");
+                            }
                             else
-                                additionalInfo.Append("turn right ");
+                            {
+                                if (bearingChange > 140)
+                                    additionalInfo.Append("hairpin ");
+                                else if (bearingChange > 80)
+                                    additionalInfo.Append("sharp ");
+                                if (bearingChange < 45)
+                                    additionalInfo.Append("bear right ");
+                                else
+                                    additionalInfo.Append("turn right ");
+                            }
+                            additionalInfo.Append(Math.Abs(bearingChange).ToString("F1"));
+                            additionalInfo.Append("°");
                         }
-                        additionalInfo.Append(Math.Abs(bearingChange).ToString("F1"));
-                        additionalInfo.Append("°");
+                    }
+                    catch (Exception ex)
+                    {
+                        return ex.Message;
                     }
                 }
+                else
+                    additionalInfo.Append("Finish");
             }
             return additionalInfo.ToString();
         }
@@ -158,7 +190,10 @@ namespace SRVTracker
                     _timeTrialStart = DateTime.Now;
                     _timeTrialWaypointTimes = new List<DateTime>();
                     _timeTrialWaypointTimes.Add(_timeTrialStart);
-                    _timeTrialTelemetryDisplay.AddRow("Start", "00:00:00.00");
+                    if (numericUpDownTotalLaps.Value>1)
+                        _timeTrialTelemetryDisplay.AddRow("LAP 1 Start", "00:00:00.00");
+                    else
+                        _timeTrialTelemetryDisplay.AddRow("Start", "00:00:00.00");
                     _lapNumber = 1;
                 }
 
@@ -175,14 +210,19 @@ namespace SRVTracker
                 bool moveToNextWaypoint = _route.Waypoints[_nextWaypoint].WaypointHit(FormTracker.CurrentLocation, FormTracker.PreviousLocation, previousWaypointLocation);
                 if (moveToNextWaypoint)
                 {
-                    // Arrived at the waypoint, target the next
+                    // Arrived at the waypoint
                     _timeTrialWaypointTimes?.Add(DateTime.Now);
-                    if (_nextWaypoint==0 && (numericUpDownTotalLaps.Value>1))
-                        _timeTrialTelemetryDisplay?.AddRow($"LAP {_lapNumber++}: {_route.Waypoints[_nextWaypoint].Name}",
-                            _timeTrialWaypointTimes[_timeTrialWaypointTimes.Count - 1].Subtract(_timeTrialWaypointTimes[0]).ToString(@"hh\:mm\:ss\.ff"));
+                    if (_nextWaypoint == 0 && (numericUpDownTotalLaps.Value > 1))
+                    {
+                        // We've arrived back at start, so have completed a lap
+                        _lapNumber++;
+                        if (_lapNumber<=numericUpDownTotalLaps.Value)
+                            _timeTrialTelemetryDisplay?.AddRow($"LAP {_lapNumber}: {_route.Waypoints[_nextWaypoint].Name}",
+                                _timeTrialWaypointTimes[_timeTrialWaypointTimes.Count - 1].Subtract(_timeTrialWaypointTimes[0]).ToString(@"hh\:mm\:ss\.ff"));
+                    }
                     else
                         _timeTrialTelemetryDisplay?.AddRow(_route.Waypoints[_nextWaypoint].Name,
-                        _timeTrialWaypointTimes[_timeTrialWaypointTimes.Count-1].Subtract(_timeTrialWaypointTimes[0]).ToString(@"hh\:mm\:ss\.ff"));
+                            _timeTrialWaypointTimes[_timeTrialWaypointTimes.Count - 1].Subtract(_timeTrialWaypointTimes[0]).ToString(@"hh\:mm\:ss\.ff"));
 
                     if (checkBoxScreenshot.Checked)
                         FormDrone.SendKey(Keyboard.DirectXKeyStrokes.DIK_F10);
