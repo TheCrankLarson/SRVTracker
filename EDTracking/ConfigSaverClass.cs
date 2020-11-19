@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using System.Reflection;
 using System.IO;
 using System.Security.Cryptography;
+using System.Drawing;
 
 namespace EDTracking
 {
@@ -479,6 +480,15 @@ namespace EDTracking
             return formName;
         }
 
+        public bool IsFullyOnScreen(Rectangle rectangle)
+        {
+            Screen[] screens = Screen.AllScreens;
+            foreach (Screen screen in screens)
+                if (screen.WorkingArea.Contains(rectangle))
+                    return true;
+            return false;
+        }
+
         public void RestoreFormValues()
         {
             // Read our saved control values from the file, and restore
@@ -514,8 +524,11 @@ namespace EDTracking
                                     try
                                     {
                                         System.Drawing.Point formLocation = new System.Drawing.Point(int.Parse(controlSetting[1]), int.Parse(controlSetting[2]));
-                                        _form.StartPosition = FormStartPosition.Manual;
-                                        _form.Location = formLocation;
+                                        if (IsFullyOnScreen(new Rectangle(formLocation.X, formLocation.Y, _form.Width, _form.Height)))
+                                        {
+                                            _form.StartPosition = FormStartPosition.Manual;
+                                            _form.Location = formLocation;
+                                        }
                                     }
                                     catch { }
                                 }

@@ -28,56 +28,17 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem(new string[] {
-            "Contestants (in leaderboard order)",
-            "Positions",
-            "Names-Position.txt"}, -1);
-            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem(new string[] {
-            "Current statuses of contestants",
-            "Status",
-            "Statuses.txt"}, -1);
-            System.Windows.Forms.ListViewItem listViewItem3 = new System.Windows.Forms.ListViewItem(new string[] {
-            "Distances to next waypoint",
-            "DistanceToWaypoint",
-            "WPDistances.txt"}, -1);
-            System.Windows.Forms.ListViewItem listViewItem4 = new System.Windows.Forms.ListViewItem(new string[] {
-            "Total distances left",
-            "TotalDistanceLeft",
-            "DistancesLeft.txt"}, -1);
-            System.Windows.Forms.ListViewItem listViewItem5 = new System.Windows.Forms.ListViewItem(new string[] {
-            "Current hull statuses",
-            "HullStrengths",
-            "Hulls.txt"}, -1);
-            System.Windows.Forms.ListViewItem listViewItem6 = new System.Windows.Forms.ListViewItem(new string[] {
-            "Current speeds",
-            "Speeds",
-            "Speeds.txt"}, -1);
-            System.Windows.Forms.ListViewItem listViewItem7 = new System.Windows.Forms.ListViewItem(new string[] {
-            "Maximum speeds",
-            "MaxSpeeds",
-            "MaxSpeeds.txt"}, -1);
-            System.Windows.Forms.ListViewItem listViewItem8 = new System.Windows.Forms.ListViewItem(new string[] {
-            "Average Speeds",
-            "AverageSpeeds",
-            "AvgSpeeds.txt"}, -1);
-            System.Windows.Forms.ListViewItem listViewItem9 = new System.Windows.Forms.ListViewItem(new string[] {
-            "Current laps",
-            "CurrentLap",
-            "CurrentLaps.txt"}, -1);
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.listViewTextExportSettings = new System.Windows.Forms.ListView();
-            this.columnExportDescription = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeaderReportName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnExportFile = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.buttonBrowseExportFolder = new System.Windows.Forms.Button();
             this.textBoxExportFolder = new System.Windows.Forms.TextBox();
             this.radioButtonExportToOtherFolder = new System.Windows.Forms.RadioButton();
             this.radioButtonExportToApplicationFolder = new System.Windows.Forms.RadioButton();
             this.buttonClose = new System.Windows.Forms.Button();
-            this.checkBoxSelectAll = new System.Windows.Forms.CheckBox();
+            this.dataGridViewExportSettings = new System.Windows.Forms.DataGridView();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewExportSettings)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox2
@@ -85,65 +46,13 @@
             this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox2.Controls.Add(this.listViewTextExportSettings);
+            this.groupBox2.Controls.Add(this.dataGridViewExportSettings);
             this.groupBox2.Location = new System.Drawing.Point(12, 78);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(565, 210);
+            this.groupBox2.Size = new System.Drawing.Size(590, 372);
             this.groupBox2.TabIndex = 14;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Available reports";
-            // 
-            // listViewTextExportSettings
-            // 
-            this.listViewTextExportSettings.CheckBoxes = true;
-            this.listViewTextExportSettings.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnExportDescription,
-            this.columnHeaderReportName,
-            this.columnExportFile});
-            this.listViewTextExportSettings.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listViewTextExportSettings.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
-            this.listViewTextExportSettings.HideSelection = false;
-            listViewItem1.StateImageIndex = 0;
-            listViewItem2.StateImageIndex = 0;
-            listViewItem3.StateImageIndex = 0;
-            listViewItem4.StateImageIndex = 0;
-            listViewItem5.StateImageIndex = 0;
-            listViewItem6.StateImageIndex = 0;
-            listViewItem7.StateImageIndex = 0;
-            listViewItem8.StateImageIndex = 0;
-            listViewItem9.StateImageIndex = 0;
-            this.listViewTextExportSettings.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem1,
-            listViewItem2,
-            listViewItem3,
-            listViewItem4,
-            listViewItem5,
-            listViewItem6,
-            listViewItem7,
-            listViewItem8,
-            listViewItem9});
-            this.listViewTextExportSettings.Location = new System.Drawing.Point(3, 16);
-            this.listViewTextExportSettings.Name = "listViewTextExportSettings";
-            this.listViewTextExportSettings.Size = new System.Drawing.Size(559, 191);
-            this.listViewTextExportSettings.TabIndex = 11;
-            this.listViewTextExportSettings.UseCompatibleStateImageBehavior = false;
-            this.listViewTextExportSettings.View = System.Windows.Forms.View.Details;
-            this.listViewTextExportSettings.ItemChecked += new System.Windows.Forms.ItemCheckedEventHandler(this.listViewTextExportSettings_ItemChecked);
-            // 
-            // columnExportDescription
-            // 
-            this.columnExportDescription.Text = "Telemetry";
-            this.columnExportDescription.Width = 200;
-            // 
-            // columnHeaderReportName
-            // 
-            this.columnHeaderReportName.Text = "Report Name";
-            this.columnHeaderReportName.Width = 100;
-            // 
-            // columnExportFile
-            // 
-            this.columnExportFile.Text = "Export to file";
-            this.columnExportFile.Width = 180;
             // 
             // groupBox1
             // 
@@ -203,7 +112,7 @@
             // buttonClose
             // 
             this.buttonClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonClose.Location = new System.Drawing.Point(502, 294);
+            this.buttonClose.Location = new System.Drawing.Point(527, 456);
             this.buttonClose.Name = "buttonClose";
             this.buttonClose.Size = new System.Drawing.Size(75, 23);
             this.buttonClose.TabIndex = 16;
@@ -211,24 +120,29 @@
             this.buttonClose.UseVisualStyleBackColor = true;
             this.buttonClose.Click += new System.EventHandler(this.buttonClose_Click);
             // 
-            // checkBoxSelectAll
+            // dataGridViewExportSettings
             // 
-            this.checkBoxSelectAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.checkBoxSelectAll.AutoSize = true;
-            this.checkBoxSelectAll.Location = new System.Drawing.Point(21, 291);
-            this.checkBoxSelectAll.Name = "checkBoxSelectAll";
-            this.checkBoxSelectAll.Size = new System.Drawing.Size(69, 17);
-            this.checkBoxSelectAll.TabIndex = 17;
-            this.checkBoxSelectAll.Text = "Select all";
-            this.checkBoxSelectAll.UseVisualStyleBackColor = true;
-            this.checkBoxSelectAll.CheckedChanged += new System.EventHandler(this.checkBoxSelectAll_CheckedChanged);
+            this.dataGridViewExportSettings.AllowUserToAddRows = false;
+            this.dataGridViewExportSettings.AllowUserToDeleteRows = false;
+            this.dataGridViewExportSettings.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewExportSettings.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridViewExportSettings.Location = new System.Drawing.Point(3, 16);
+            this.dataGridViewExportSettings.MultiSelect = false;
+            this.dataGridViewExportSettings.Name = "dataGridViewExportSettings";
+            this.dataGridViewExportSettings.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
+            this.dataGridViewExportSettings.ShowEditingIcon = false;
+            this.dataGridViewExportSettings.Size = new System.Drawing.Size(584, 353);
+            this.dataGridViewExportSettings.TabIndex = 12;
+            this.dataGridViewExportSettings.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewExportSettings_CellContentClick);
+            this.dataGridViewExportSettings.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewExportSettings_CellEndEdit);
+            this.dataGridViewExportSettings.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewExportSettings_CellValueChanged);
+            this.dataGridViewExportSettings.CurrentCellDirtyStateChanged += new System.EventHandler(this.dataGridViewExportSettings_CurrentCellDirtyStateChanged);
             // 
             // FormTelemetrySettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(589, 327);
-            this.Controls.Add(this.checkBoxSelectAll);
+            this.ClientSize = new System.Drawing.Size(614, 489);
             this.Controls.Add(this.buttonClose);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.groupBox2);
@@ -242,23 +156,19 @@
             this.groupBox2.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewExportSettings)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.ListView listViewTextExportSettings;
-        private System.Windows.Forms.ColumnHeader columnExportDescription;
-        private System.Windows.Forms.ColumnHeader columnExportFile;
-        private System.Windows.Forms.ColumnHeader columnHeaderReportName;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.TextBox textBoxExportFolder;
         private System.Windows.Forms.RadioButton radioButtonExportToOtherFolder;
         private System.Windows.Forms.RadioButton radioButtonExportToApplicationFolder;
         private System.Windows.Forms.Button buttonBrowseExportFolder;
         private System.Windows.Forms.Button buttonClose;
-        private System.Windows.Forms.CheckBox checkBoxSelectAll;
+        private System.Windows.Forms.DataGridView dataGridViewExportSettings;
     }
 }

@@ -12,6 +12,7 @@ namespace EDTracking
     public class TelemetryWriter
     {
         private Dictionary<string, string> _reportsToExport = new Dictionary<string, string>();
+        private Dictionary<string, string> _reportsToDisplay = new Dictionary<string, string>();
         private Dictionary<string, string> _lastReport = new Dictionary<string, string>();
         private Dictionary<string, string> _lastHTMLData = new Dictionary<string, string>();
         private string _exportDirectory = "";
@@ -29,6 +30,11 @@ namespace EDTracking
             {
                 _exportDirectory = _reportsToExport["ExportDirectory"];
                 _reportsToExport.Remove("ExportDirectory");
+            }
+            if (_reportsToExport.ContainsKey("DisplayedReports"))
+            {
+                _reportsToDisplay = JsonSerializer.Deserialize<Dictionary<string, string>>(_reportsToExport["DisplayedReports"]);
+                _reportsToExport.Remove("DisplayedReports");
             }
             ClearFiles();
         }
@@ -95,7 +101,26 @@ namespace EDTracking
             get { return _reportsToExport.Keys.ToList<string>(); }
         }
 
-        public void EnableReport(string reportName, string exportFileName)
+        public string ReportFileName(string reportName)
+        {
+            if (_reportsToExport.ContainsKey(reportName))
+                return _reportsToExport[reportName];
+            return "";
+        }
+
+        public List<string> DisplayedReports
+        {
+            get { return _reportsToDisplay.Keys.ToList<string>(); }
+        }
+
+        public string ReportDisplayName(string reportName)
+        {
+            if (_reportsToDisplay.ContainsKey(reportName))
+                return _reportsToDisplay[reportName];
+            return "";
+        }
+
+        public void EnableReportExport(string reportName, string exportFileName)
         {
             bool changeMade = false;
             if (_reportsToExport.ContainsKey(reportName))
@@ -112,18 +137,36 @@ namespace EDTracking
                 SelectionChanged?.Invoke(null, null);
         }
 
+        public void EnableReportDisplay(string reportName, string displayName)
+        {
+            bool changeMade = false;
+            if (_reportsToDisplay.ContainsKey(reportName))
+            {
+                _reportsToDisplay.Remove(reportName);
+                changeMade = true;
+            }
+            if (!String.IsNullOrEmpty(displayName))
+            {
+                _reportsToDisplay.Add(reportName, displayName);
+                changeMade = true;
+            }
+            if (changeMade)
+                SelectionChanged?.Invoke(null, null);
+        }
+
         public string ToJson()
         {
             _reportsToExport.Add("ExportDirectory", _exportDirectory);
+            _reportsToExport.Add("DisplayedReports", JsonSerializer.Serialize(_reportsToDisplay));
             string json = JsonSerializer.Serialize(_reportsToExport);
             _reportsToExport.Remove("ExportDirectory");
+            _reportsToExport.Remove("DisplayedReports");
             return json;
         }
 
         private string _htmlTemplateBeforeTable = "";
         private string _htmlTemplateAfterTable = "";
         private string _htmlRowTemplate = "";
-        private string _lastHtml = "";
         private bool PrepareHTMLTemplate(string HTMLTemplate)
         {
             try

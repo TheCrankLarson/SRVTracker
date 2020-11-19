@@ -25,6 +25,7 @@ namespace EDTracking
         public EDLocation Location { get; set; } = null;
         public int WaypointIndex { get; set; } = 0;
         public int Lap { get; set; } = 1;
+        public List<DateTime> LapEndTimes { get; set; } = new List<DateTime>();
         public double DistanceToWaypoint { get; set; } = double.MaxValue;
         public double TotalDistanceLeft { get; set; } = double.MaxValue;
         public static bool Started { get; set; } = false;
@@ -35,6 +36,7 @@ namespace EDTracking
         public DateTime FinishTime { get; set; } = DateTime.MaxValue;
         public DateTime LapStartTime { get; set; } = DateTime.MinValue;
         public List<TimeSpan> LapTimes { get; set; } = new List<TimeSpan>();
+        public int FastestLap { get; set; } = 0;
 
         public string Commander { get; set; } = "";
         public static bool ShowDetailedStatus { get; set; } = false;
@@ -49,6 +51,7 @@ namespace EDTracking
         private StringBuilder _raceHistory = new StringBuilder();
         private double _nextLogDistanceToWaypoint = double.MaxValue;
         private EDLocation _previousLocation = null;
+        private EDLocation _speedCalculationPreviousLocation = null;
         private DateTime _speedCalculationTimeStamp = DateTime.UtcNow;
         private double _lastSpeedInMs = 0;
         private double _lastLoggedMaxSpeed = 50;  // We don't log any maximum speeds below 50m/s
@@ -100,7 +103,10 @@ namespace EDTracking
                     { "DistanceToWaypoint", "Distance to the next waypoint" },
                     { "TotalDistanceLeft", "Total distance left" },
                     { "Hull", "Hull strength left" },
-                    { "Lap", "Current lap" }
+                    { "Lap", "Current lap" },
+                    { "LastLapTime", "Time taken for last complete lap" },
+                    { "FastestLap", "Fastest lap" },
+                    { "FastestLapTime", "Fastest lap time" }
                 };
         }
 
@@ -117,12 +123,36 @@ namespace EDTracking
             telemetry.Add("TotalDistanceLeft", TotalDistanceLeftInKmDisplay);
             telemetry.Add("Hull", HullDisplay);
             telemetry.Add("Lap", Lap.ToString());
+            telemetry.Add("LastLapTime", LastLapTime().ToString("g"));
+            if (FastestLap > 0)
+            {
+                telemetry.Add("FastestLap", FastestLap.ToString());
+                telemetry.Add("FastestLapTime", FastestLapTime().ToString());
+            }
             return telemetry;
         }
 
         public void SetRace(EDRace race)
         {
             _race = race;
+        }
+
+        public TimeSpan LastLapTime()
+        {
+            if (LapEndTimes.Count < 1)
+                return new TimeSpan(0);
+            else if (LapEndTimes.Count == 1)
+                return LapEndTimes[0].Subtract(StartTime);
+            return LapEndTimes[LapEndTimes.Count - 1].Subtract(LapEndTimes[LapEndTimes.Count - 2]);
+        }
+
+        public TimeSpan FastestLapTime()
+        {
+            if (FastestLap < 1)
+                return new TimeSpan(0);
+            else if (FastestLap == 1)
+                return LapEndTimes[0].Subtract(StartTime);
+            return LapEndTimes[FastestLap - 1].Subtract(LapEndTimes[FastestLap - 2]);
         }
 
         private string _lastHistoryLog = "";
@@ -283,7 +313,7 @@ namespace EDTracking
                 TimeStamp = DateTime.Now;
                 Eliminated = false;
                 DistanceToWaypoint = double.MaxValue;
-                _previousLocation = null;
+                _speedCalculationPreviousLocation = null;
                 AddRaceHistory("Resurrected (elimination manually rescinded)");
                 return true;
             }
@@ -362,7 +392,7 @@ namespace EDTracking
             DistanceToWaypoint = double.MaxValue;
             ValidateRaceLeader();
             SpeedInMS = 0;
-            _previousLocation = null;
+            _speedCalculationPreviousLocation = null;
             Hull = 0;
         }
 
@@ -378,7 +408,7 @@ namespace EDTracking
             DistanceToWaypoint = double.MaxValue;
             ValidateRaceLeader();
             SpeedInMS = 0;
-            _previousLocation = null;
+            _speedCalculationPreviousLocation = null;
             Hull = 0;
         }
 
@@ -446,7 +476,7 @@ namespace EDTracking
                         AddRaceHistory("Selected vehicle not allowed");
                         DistanceToWaypoint = double.MaxValue;
                         SpeedInMS = 0;
-                        _previousLocation = null;
+                        _speedCalculationPreviousLocation = null;
                     }
                 }
             }
@@ -456,6 +486,155 @@ namespace EDTracking
                     _inPits = false;
 
             _lowFuel = isFlagSet(StatusFlags.Low_Fuel);
+        }
+
+        private void ProcessLocationChange()
+        {
+            if (_race == null)
+                return;
+            
+            DistanceToWaypoint = EDLocation.DistanceBetween(Location, _race.Route.Waypoints[WaypointIndex].Location);
+
+            if (_race.Laps == 0)
+                TotalDistanceLeft = _race.Route.TotalDistanceLeftAtWaypoint(WaypointIndex) + DistanceToWaypoint;
+            else
+            {
+                // Total distance left needs to take into account the laps
+                TotalDistanceLeft = _race.TotalDistanceLeftAtWaypoint(WaypointIndex, Lap) + DistanceToWaypoint;
+            }
+            if ((_race.Leader == null) || (TotalDistanceLeft < _race.Leader.TotalDistanceLeft))
+                _race.Leader = this;
+
+            EDWaypoint previousWaypoint = null;
+            if (WaypointIndex > 0)
+                previousWaypoint = _race.Route.Waypoints[WaypointIndex - 1];
+            else if (_race.Laps > 0)
+                previousWaypoint = _race.Route.Waypoints[_race.Route.Waypoints.Count - 1];
+
+            if (_race.Route.Waypoints[WaypointIndex].WaypointHit(Location, _previousLocation, previousWaypoint?.Location))
+            {
+                // Commander has reached the target waypoint
+                if (_race.Laps > 0)
+                {
+                    if (WaypointIndex != 0)
+                        AddRaceHistory($"Arrived at {_race.Route.Waypoints[WaypointIndex].Name} (lap {Lap})");
+                    else
+                    {
+                        // This is a completed lap as we've arrived back at Waypoint 0
+                        LapEndTimes.Add(TimeStamp);
+                        if (Lap == 1)
+                            FastestLap = 1;
+                        else
+                        {
+                            TimeSpan thisLapTime = LapEndTimes[Lap - 1].Subtract(LapEndTimes[Lap - 2]);
+                            if (thisLapTime > FastestLapTime())
+                                FastestLap = Lap;
+                        }
+
+                        Lap++;
+
+                        // We've only finished if this lap number is greater than the number of laps
+                        if (Lap > _race.Laps)
+                        {
+                            Finished = true;
+                            FinishTime = DateTime.Now;
+                            string raceTime = $"{FinishTime.Subtract(StartTime):hh\\:mm\\:ss}";
+                            notableEvents?.AddStatusEvent("CompletedNotification", Commander, $" ({raceTime})");
+                            AddRaceHistory($"Completed in {raceTime}");
+                            WaypointIndex = 0;
+                            DistanceToWaypoint = 0;
+                        }
+                        else
+                        {
+                            LapTimes.Add(DateTime.Now.Subtract(LapStartTime));
+                            string lapTime = $"{LapTimes[LapTimes.Count - 1]:hh\\:mm\\:ss}";
+                            notableEvents?.AddStatusEvent("CompletedLap", Commander, $" ({Lap - 1}: {lapTime})");
+                            AddRaceHistory($"Completed lap {Lap - 1} in {lapTime}");
+                        }
+                    }
+                }
+                else
+                    AddRaceHistory($"Arrived at {_race.Route.Waypoints[WaypointIndex].Name}");
+
+                WaypointIndex++;
+
+                if (WaypointIndex >= _race.Route.Waypoints.Count)
+                {
+                    if (_race.Laps > 0)
+                        WaypointIndex = 0;
+                    else
+                    {
+                        Finished = true;
+                        FinishTime = DateTime.Now;
+                        string raceTime = $"{FinishTime.Subtract(StartTime):hh\\:mm\\:ss}";
+                        notableEvents?.AddStatusEvent("CompletedNotification", Commander, $" ({raceTime})");
+                        AddRaceHistory($"Completed in {raceTime}");
+                        WaypointIndex = 0;
+                        DistanceToWaypoint = 0;
+                    }
+                }
+            }
+
+            if (DistanceToWaypoint < _nextLogDistanceToWaypoint)
+            {
+                AddRaceHistory($"{(DistanceToWaypoint / 1000):F1}km to {_race.Route.Waypoints[WaypointIndex].Name}");
+                _nextLogDistanceToWaypoint = DistanceToWaypoint - 5000;
+            }            
+        }
+
+        private void CalculateSpeed()
+        {
+            TimeSpan timeBetweenLocations = TimeStamp.Subtract(_speedCalculationTimeStamp);
+            if (timeBetweenLocations.TotalMilliseconds > 750)
+            {
+                // We take a speed calculation once every 750 milliseconds
+
+                double speedInMS = 0;
+                if (_speedCalculationPreviousLocation != null)
+                {
+                    double distanceBetweenLocations = EDLocation.DistanceBetween(_speedCalculationPreviousLocation, Location);
+                    speedInMS = distanceBetweenLocations * 1000 / (double)timeBetweenLocations.TotalMilliseconds;
+                    if (isFlagSet(StatusFlags.In_SRV) && (speedInMS - _lastSpeedInMs) > 200 && (timeBetweenLocations.TotalMilliseconds < 3000))
+                    {
+                        // If the speed increases by more than 200m/s in three seconds, this is most likely due to respawn (i.e. invalid)
+                        speedInMS = 0;
+                        _speedCalculationPreviousLocation = null;
+                    }
+                    else
+                    {
+                        _speedCalculationPreviousLocation = Location.Copy();
+                        _speedCalculationTimeStamp = TimeStamp;
+                    }
+                }
+                else
+                {
+                    _speedCalculationPreviousLocation = Location.Copy();
+                    _speedCalculationTimeStamp = TimeStamp;
+                }
+
+                // Update the total average speed
+                _totalOfSpeedReadings += speedInMS;
+                _numberOfSpeedReadings++;
+                AverageSpeedInMS = _totalOfSpeedReadings / _numberOfSpeedReadings;
+
+                _lastThreeSpeedReadings[_oldestSpeedReading] = speedInMS;
+                _oldestSpeedReading++;
+                if (_oldestSpeedReading > 2)
+                    _oldestSpeedReading = 0;
+                SpeedInMS = (_lastThreeSpeedReadings[0] + _lastThreeSpeedReadings[1] + _lastThreeSpeedReadings[2]) / 3; // Returning an average of the last three readings should prevent blips
+            }
+
+            if (SpeedInMS > MaxSpeedInMS)
+            {
+                MaxSpeedInMS = SpeedInMS;
+                if (MaxSpeedInMS > _lastLoggedMaxSpeed + 5)
+                {
+                    AddRaceHistory($"New maximum speed: {MaxSpeedInMS:F1}m/s");
+                    _lastLoggedMaxSpeed = MaxSpeedInMS;
+                }
+            }
+
+            _lastSpeedInMs = SpeedInMS;
         }
 
         public void UpdateStatus(EDEvent updateEvent)
@@ -482,58 +661,10 @@ namespace EDTracking
 
             if (updateEvent.HasCoordinates())
             {
-                TimeSpan timeBetweenLocations = updateEvent.TimeStamp.Subtract(_speedCalculationTimeStamp);
-                if (timeBetweenLocations.TotalMilliseconds > 750)
-                {
-                    // We take a speed calculation once every 750 milliseconds
-
-                    double speedInMS = 0;
-                    if (_previousLocation != null)
-                    {
-                        double distanceBetweenLocations = EDLocation.DistanceBetween(_previousLocation, updateEvent.Location());
-                        speedInMS = distanceBetweenLocations * 1000 / (double)timeBetweenLocations.TotalMilliseconds;
-                        if ((speedInMS - _lastSpeedInMs) > 200 && (timeBetweenLocations.TotalMilliseconds < 3000))
-                        {
-                            // If the speed increases by more than 200m/s in three seconds, this is most likely due to respawn (i.e. invalid)
-                            speedInMS = 0;
-                            _previousLocation = null;
-                        }
-                        else
-                        {
-                            _previousLocation = updateEvent.Location();
-                            _speedCalculationTimeStamp = updateEvent.TimeStamp;
-                        }
-                    }
-                    else
-                    {
-                        _previousLocation = updateEvent.Location();
-                        _speedCalculationTimeStamp = updateEvent.TimeStamp;
-                    }
-
-                    // Update the total average speed
-                    _totalOfSpeedReadings += speedInMS;
-                    _numberOfSpeedReadings++;
-                    AverageSpeedInMS = _totalOfSpeedReadings / _numberOfSpeedReadings;
-
-                    _lastThreeSpeedReadings[_oldestSpeedReading] = speedInMS;
-                    _oldestSpeedReading++;
-                    if (_oldestSpeedReading > 2)
-                        _oldestSpeedReading = 0;
-                    SpeedInMS = (_lastThreeSpeedReadings[0] + _lastThreeSpeedReadings[1] + _lastThreeSpeedReadings[2]) / 3; // Returning an average of the last three readings should prevent blips
-                }
-
-                if (SpeedInMS > MaxSpeedInMS)
-                {
-                    MaxSpeedInMS = SpeedInMS;
-                    if (MaxSpeedInMS > _lastLoggedMaxSpeed + 5)
-                    {
-                        AddRaceHistory($"New maximum speed: {MaxSpeedInMS:F1}m/s");
-                        _lastLoggedMaxSpeed = MaxSpeedInMS;
-                    }
-                }
-
-                _lastSpeedInMs = SpeedInMS;
+                _previousLocation = Location;
                 Location = updateEvent.Location();
+                ProcessLocationChange();
+                CalculateSpeed();
             }
 
             if (!Started)
@@ -575,83 +706,6 @@ namespace EDTracking
                     ProcessSynthesisEvent(updateEvent);
                     break;
                     
-            }
-
-            if (updateEvent.HasCoordinates() && _race != null)
-            {
-                DistanceToWaypoint = EDLocation.DistanceBetween(Location, _race.Route.Waypoints[WaypointIndex].Location);
-
-                if (_race.Laps == 0)
-                    TotalDistanceLeft = _race.Route.TotalDistanceLeftAtWaypoint(WaypointIndex) + DistanceToWaypoint;
-                else
-                {
-                    // Total distance left needs to take into account the laps
-                    TotalDistanceLeft = _race.TotalDistanceLeftAtWaypoint(WaypointIndex, Lap) + DistanceToWaypoint;
-                }
-                if ((_race.Leader == null) || (TotalDistanceLeft < _race.Leader.TotalDistanceLeft))
-                    _race.Leader = this;
-
-                EDWaypoint previousWaypoint = null;
-                if (WaypointIndex > 0)
-                    previousWaypoint = _race.Route.Waypoints[WaypointIndex - 1];
-                if (_race.Route.Waypoints[WaypointIndex].WaypointHit(Location, _previousLocation, previousWaypoint?.Location))
-                {
-                    // Commander has reached the target waypoint
-                    if (_race.Laps > 0)
-                    {
-                        if (WaypointIndex != 0)
-                            AddRaceHistory($"Arrived at {_race.Route.Waypoints[WaypointIndex].Name} (lap {Lap})");
-                        else
-                        {
-                            // This is a completed lap as we've arrived back at Waypoint 0
-                            Lap++;
-                            // We've only finished if this lap number is greater than the number of laps
-                            if (Lap > _race.Laps)
-                            {
-                                Finished = true;
-                                FinishTime = DateTime.Now;
-                                string raceTime = $"{FinishTime.Subtract(StartTime):hh\\:mm\\:ss}";
-                                notableEvents?.AddStatusEvent("CompletedNotification", Commander, $" ({raceTime})");
-                                AddRaceHistory($"Completed in {raceTime}");
-                                WaypointIndex = 0;
-                                DistanceToWaypoint = 0;
-                            }
-                            else
-                            {
-                                LapTimes.Add(DateTime.Now.Subtract(LapStartTime));
-                                string lapTime = $"{LapTimes[LapTimes.Count - 1]:hh\\:mm\\:ss}";
-                                notableEvents?.AddStatusEvent("CompletedLap", Commander, $" ({Lap - 1}: {lapTime})");
-                                AddRaceHistory($"Completed lap {Lap - 1} in {lapTime}");
-                            }
-                        }
-                    }
-                    else
-                        AddRaceHistory($"Arrived at {_race.Route.Waypoints[WaypointIndex].Name}");
-
-                    WaypointIndex++;
-
-                    if (WaypointIndex >= _race.Route.Waypoints.Count)
-                    {
-                        if (_race.Laps > 0)
-                            WaypointIndex = 0;
-                        else
-                        {
-                            Finished = true;
-                            FinishTime = DateTime.Now;
-                            string raceTime = $"{FinishTime.Subtract(StartTime):hh\\:mm\\:ss}";
-                            notableEvents?.AddStatusEvent("CompletedNotification", Commander, $" ({raceTime})");
-                            AddRaceHistory($"Completed in {raceTime}");
-                            WaypointIndex = 0;
-                            DistanceToWaypoint = 0;
-                        }
-                    }
-                }
-
-                if (DistanceToWaypoint < _nextLogDistanceToWaypoint)
-                {
-                    AddRaceHistory($"{(DistanceToWaypoint / 1000):F1}km to {_race.Route.Waypoints[WaypointIndex].Name}");
-                    _nextLogDistanceToWaypoint = DistanceToWaypoint - 5000;
-                }
             }
 
             GenerateStatus();

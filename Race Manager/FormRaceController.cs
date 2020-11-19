@@ -55,6 +55,7 @@ namespace Race_Manager
             InitTelemetryWriters();
             UpdateUI();
             UpdateAvailableTargets();
+            timerDownloadRaceTelemetry.Start();
         }
 
         private void StartWatching()
@@ -260,10 +261,20 @@ namespace Race_Manager
                 action();
             if (_raceTelemetryDisplay != null && !_raceTelemetryDisplay.IsDisposed)
                 _raceTelemetryDisplay.InitialiseColumns(EDRace.RaceReportDescriptions(), _race.Contestants.Count);
-            Dictionary<string, string> exportContestants = new Dictionary<string, string>();
-            exportContestants.Add("Commanders", String.Join(Environment.NewLine,_race.Contestants));
-            _raceTelemetryWriter.ExportFiles(exportContestants);
-            _raceTelemetryDisplay.UpdateRaceData(exportContestants);
+            GeneratePreraceExports();
+        }
+
+        private void GeneratePreraceExports()
+        {
+            if (_race == null)
+                return;
+
+            Dictionary<string, string> raceStats = new Dictionary<string, string>();
+            raceStats.Add("Commanders", String.Join(Environment.NewLine, _race.Contestants));
+            raceStats.Add("RaceName", _race.Name);
+            if (checkBoxExportRaceTelemetry.Checked)
+                _raceTelemetryWriter?.ExportFiles(raceStats);
+            _raceTelemetryDisplay?.UpdateRaceData(raceStats);
         }
 
         private string ServerAddress()
@@ -314,7 +325,6 @@ namespace Race_Manager
                     }
 
                     _serverNotableEventsIndex = 0;
-                    timerDownloadRaceTelemetry.Start();
                     timerTrackTarget.Start();
                 }
                 return true;
@@ -327,8 +337,8 @@ namespace Race_Manager
         {
             if (_raceTelemetryDisplay != null && _raceTelemetryDisplay.Visible)
                 _raceTelemetryDisplay.UpdateRaceData(serverStats);
-            if (_raceTelemetryWriter != null)
-                _raceTelemetryWriter.ExportFiles(serverStats);
+            if (checkBoxExportRaceTelemetry.Checked)
+                _raceTelemetryWriter?.ExportFiles(serverStats);
         }
 
         private void DisplayRaceSettings()
@@ -590,7 +600,11 @@ namespace Race_Manager
         private void timerDownloadRaceTelemetry_Tick(object sender, EventArgs e)
         {
             if (String.IsNullOrEmpty(_serverRaceGuid))
+            {
+                // No race running, so we just deal with pre-race exports
+                GeneratePreraceExports();
                 return;
+            }
 
             if (_refreshFromServerTask != null)
             {
@@ -898,11 +912,19 @@ namespace Race_Manager
         {
             if (_updatingTargets)
                 return;
+
+            if (comboBoxTarget.SelectedIndex == 0)
+            {
+                // Select none, so clear exports and display
+                _targetTelemetryDisplay.UpdateTargetData(null);
+                _trackedTelemetryWriter.ClearFiles();
+                return;
+            }
         }
 
         private void timerTrackTarget_Tick(object sender, EventArgs e)
         {
-            if (!checkBoxShowTargetTelemetry.Checked || comboBoxTarget.SelectedIndex<0)
+            if ((!checkBoxShowTargetTelemetry.Checked && !checkBoxExportTargetTelemetry.Checked) || comboBoxTarget.SelectedIndex<1)
                 return;
 
             _targetCommander = (string)comboBoxTarget.SelectedItem;
@@ -915,8 +937,9 @@ namespace Race_Manager
                 if (commanderStatus != null)
                 {
                     Dictionary<string, string> commanderTelemetry = commanderStatus.Telemetry();
-                    _targetTelemetryDisplay.UpdateTargetData(commanderTelemetry);
-                    _trackedTelemetryWriter.ExportFiles(commanderTelemetry);
+                    _targetTelemetryDisplay?.UpdateTargetData(commanderTelemetry);
+                    if (checkBoxExportTargetTelemetry.Checked)
+                        _trackedTelemetryWriter?.ExportFiles(commanderTelemetry);
                 }
             });
             Task.Run(action);

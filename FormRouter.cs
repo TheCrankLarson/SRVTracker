@@ -348,6 +348,24 @@ namespace SRVTracker
             }
         }
 
+        private void DisplayPolygon()
+        {
+            ShowWaypointEditor(groupBoxPolygon);
+            EDWaypoint waypoint = GetSelectedWaypoint();
+
+            comboBoxPolygonTarget.Text = "";
+            listBoxPolygonMarkers.Items.Clear();
+
+            if (waypoint != null)
+            {
+                for (int i = 0; i < waypoint.AdditionalLocations.Count; i++)
+                    listBoxPolygonMarkers.Items.Add(waypoint.AdditionalLocations[i].Name);
+                comboBoxPolygonTarget.Text = waypoint.Location.Name;
+            }
+
+            UpdatePolygonButtons();
+        }
+
 
         private void DisplayBasic()
         {
@@ -942,6 +960,7 @@ namespace SRVTracker
         {
             groupBoxBasic.Visible = false;
             groupBoxGate.Visible = false;
+            groupBoxPolygon.Visible = false;
 
             ActiveEditor.Visible = true;
         }
@@ -987,10 +1006,14 @@ namespace SRVTracker
                     DisplayBasic();
                     break;
 
-                case 1: // This is a gate
-                    
+                case 1: // This is a gate                    
                     SetWaypointType("Gate");
                     DisplayGate();
+                    break;
+
+                case 2: // This is a polygon
+                    SetWaypointType("Polygon");
+                    DisplayPolygon();
                     break;
             }
         }
@@ -998,49 +1021,11 @@ namespace SRVTracker
         private void buttonEditGateMarker1_Click(object sender, EventArgs e)
         {
             EditAdditionalLocation(0, comboBoxGateLocation1);
-            /*
-            EDWaypoint waypoint = GetSelectedWaypoint();
-            if (waypoint == null)
-                return;
-            FormAddLocation formAddLocation = new FormAddLocation();
-            EDLocation location;
-            if (waypoint.AdditionalLocations.Count > 0)
-                location = waypoint.AdditionalLocations[0];
-            else
-            {
-                location = waypoint.Location.Copy();
-                waypoint.AdditionalLocations.Add(location);
-            }
-            formAddLocation.EditLocation(location, this, true);
-            comboBoxGateLocation1.Text = location.Name;*/
         }
 
         private void buttonEditGateMarker2_Click(object sender, EventArgs e)
         {
             EditAdditionalLocation(1, comboBoxGateLocation2);
-            /*
-            EDWaypoint waypoint = GetSelectedWaypoint();
-            if (waypoint == null)
-                return;
-            FormAddLocation formAddLocation = new FormAddLocation();
-            EDLocation location;
-            if (waypoint.AdditionalLocations.Count > 1)
-                location = waypoint.AdditionalLocations[1];
-            else
-            {
-                if (waypoint.AdditionalLocations.Count > 0)
-                {
-                    location = waypoint.AdditionalLocations[0].Copy();
-                }
-                else
-                {
-                    location = waypoint.Location.Copy();
-                    waypoint.AdditionalLocations.Add(null);
-                }
-                waypoint.AdditionalLocations.Add(location);
-            }
-            formAddLocation.EditLocation(location, this,true);
-            comboBoxGateLocation2.Text = location.Name;*/
         }
 
         private void buttonEditGateTarget_Click(object sender, EventArgs e)
@@ -1161,6 +1146,20 @@ namespace SRVTracker
             }
             if (_timeTrialTelemetryDisplay != null && _timeTrialTelemetryDisplay.Visible)
                 _timeTrialTelemetryDisplay.Hide();
+        }
+
+        private void UpdatePolygonButtons()
+        {
+            bool markerSelected = listBoxPolygonMarkers.SelectedIndex > -1;
+            buttonPolygonMarkerEdit.Enabled = markerSelected;
+            buttonPolygonMarkerTarget.Enabled = markerSelected;
+            buttonPolygonMarkerUseCurrentLocation.Enabled = markerSelected;
+            buttonPolygonMarkerDelete.Enabled = markerSelected;
+        }
+
+        private void listBoxPolygonMarkers_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            UpdatePolygonButtons();
         }
     }
 }

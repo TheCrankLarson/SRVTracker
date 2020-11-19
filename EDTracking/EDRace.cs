@@ -247,6 +247,7 @@ namespace EDTracking
             StringBuilder totalDistanceLeft = new StringBuilder();
             StringBuilder hullStrengths = new StringBuilder();
             StringBuilder currentLaps = new StringBuilder();
+            StringBuilder lapCounter = new StringBuilder();
 
             for (int i = 0; i < leaderBoard.Count; i++)
             {
@@ -287,6 +288,7 @@ namespace EDTracking
                         totalDistanceLeft.AppendLine("0");
                         distanceToWaypoint.AppendLine("0");
                         currentLaps.AppendLine(CustomStatusMessages["Completed"]);
+                        lapCounter.AppendLine(" ");
                     }
                     else
                     {
@@ -297,12 +299,14 @@ namespace EDTracking
                             totalDistanceLeft.AppendLine("-");
                             s = CustomStatusMessages["Eliminated"];
                             currentLaps.AppendLine(s);
+                            lapCounter.AppendLine(s);
                         }
                         else
                         {
                             distanceToWaypoint.AppendLine(Statuses[leaderBoard[i]].DistanceToWaypointInKmDisplay);
                             totalDistanceLeft.AppendLine(Statuses[leaderBoard[i]].TotalDistanceLeftInKmDisplay);
                             currentLaps.AppendLine(Statuses[leaderBoard[i]].Lap.ToString());
+                            lapCounter.AppendLine($"{Statuses[leaderBoard[i]].Lap}/{Laps}");
                             s = Statuses[leaderBoard[i]].ToString();
                         }
 
@@ -327,6 +331,7 @@ namespace EDTracking
                 }
             }
 
+            statsTable.Add("RaceName", Name);
             statsTable.Add("Positions", positionsExport.ToString());
             statsTable.Add("Commanders", commandersExport.ToString());
             statsTable.Add("Speeds", speeds.ToString());
@@ -339,6 +344,7 @@ namespace EDTracking
                 statsTable.Add("NotableEvents", String.Join(Environment.NewLine, NotableEvents.EventQueue));
             statsTable.Add("Hull", hullStrengths.ToString());
             statsTable.Add("Lap", currentLaps.ToString());
+            statsTable.Add("LapCounter", lapCounter.ToString());
             if (Leader != null)
             {
                 statsTable.Add("LeaderWaypoint", Leader.WaypointIndex.ToString());
@@ -352,6 +358,7 @@ namespace EDTracking
         {
             return new Dictionary<string, string>()
                 {
+                    { "RaceName", "Race name" },
                     { "Positions", "Positions of contestants" },
                     { "Commanders", "Names of contestants" },
                     { "Speeds", "Current speeds" },
@@ -362,6 +369,7 @@ namespace EDTracking
                     { "TotalDistanceLeft", "Total distances left" },
                     { "Hull", "Hull strengths left" },
                     { "Lap", "Current laps" },
+                    { "LapCounter", "Current laps/total laps" },
                     { "LeaderWaypoint", "Waypoint the current leader is heading towards" },
                     { "LeaderLap", "Lap number of the current leader" }
                 };

@@ -187,7 +187,7 @@ namespace SRVTracker
             {
                 listBoxLocations.BeginUpdate();
                 listBoxLocations.Items.Clear();
-                if (_locations.Count>0)
+                if (_locations != null)
                     for (int i = 0; i < _locations.Count; i++)
                         listBoxLocations.Items.Add(_locations[i].Name);
                 listBoxLocations.EndUpdate();

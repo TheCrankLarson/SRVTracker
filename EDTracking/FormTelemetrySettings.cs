@@ -29,7 +29,7 @@ namespace EDTracking
             _formConfig.SaveEnabled = true;
             _formConfig.RestoreFormValues();
 
-            InitialiseList();
+            InitialiseGrid();
             if (String.IsNullOrEmpty(_telemetryWriter.ExportDirectory))
             {
                 radioButtonExportToApplicationFolder.Checked = true;
@@ -50,19 +50,46 @@ namespace EDTracking
             _exportControl = ExportControl;
         }
 
-        private void InitialiseList()
+        private void InitialiseGrid()
         {
             // Show the current export settings in the ListView
+            // Description, ReportName, Export File, Export Enabled, Display enabled
 
-            listViewTextExportSettings.Items.Clear();
+            dataGridViewExportSettings.Columns.Clear();
+            dataGridViewExportSettings.ColumnCount = 6;
+            dataGridViewExportSettings.Columns[0].Name = "Description";
+            dataGridViewExportSettings.Columns[0].ReadOnly = true;
+            dataGridViewExportSettings.Columns[0].Width = dataGridViewExportSettings.Columns[0].Width * 2;
+
+            dataGridViewExportSettings.Columns[1].Name = "Report Name";
+            dataGridViewExportSettings.Columns[1].ReadOnly = true;
+
+            dataGridViewExportSettings.Columns[2].Name = "Export File";
+
+            dataGridViewExportSettings.Columns[3].Name = "Export Enabled";
+            dataGridViewExportSettings.Columns[3].Width = dataGridViewExportSettings.Columns[3].Width / 2;
+
+            dataGridViewExportSettings.Columns[4].Name = "Display Name";
+
+            dataGridViewExportSettings.Columns[5].Name = "Display Enabled";
+            dataGridViewExportSettings.Columns[5].Width = dataGridViewExportSettings.Columns[5].Width / 2;
+
             foreach (string report in _reportDescriptions.Keys)
             {
-                ListViewItem lvItem = new ListViewItem(_reportDescriptions[report]);
-                lvItem.SubItems.Add(report);
-                lvItem.SubItems.Add($"{_filePrefix}{report}.txt");
-                if (_telemetryWriter.EnabledReports.Contains(report))
-                    lvItem.Checked = true;
-                listViewTextExportSettings.Items.Add(lvItem);
+                DataGridViewRow row = new DataGridViewRow();
+                row.Cells.Add(new DataGridViewTextBoxCell());
+                row.Cells.Add(new DataGridViewTextBoxCell());
+                row.Cells.Add(new DataGridViewTextBoxCell());
+                row.Cells.Add(new DataGridViewCheckBoxCell());
+                row.Cells.Add(new DataGridViewTextBoxCell());
+                row.Cells.Add(new DataGridViewCheckBoxCell());
+                row.Cells[0].Value = _reportDescriptions[report];
+                row.Cells[1].Value = report;
+                row.Cells[2].Value = _telemetryWriter.ReportFileName(report);
+                row.Cells[3].Value = _telemetryWriter.EnabledReports.Contains(report);
+                row.Cells[4].Value = _telemetryWriter.ReportDisplayName(report);
+                row.Cells[5].Value = _telemetryWriter.DisplayedReports.Contains(report);
+                dataGridViewExportSettings.Rows.Add(row);
             }
         }
 
@@ -87,12 +114,12 @@ namespace EDTracking
             string reportName = e.Item.SubItems[1].Text;
             if (e.Item.Checked && !_telemetryWriter.EnabledReports.Contains(reportName))
             {
-                _telemetryWriter.EnableReport(reportName, e.Item.SubItems[2].Text);
+                _telemetryWriter.EnableReportExport(reportName, e.Item.SubItems[2].Text);
                 SelectedReportsChanged?.Invoke(this, null);
             }
             else if (!e.Item.Checked && _telemetryWriter.EnabledReports.Contains(reportName))
             {
-                _telemetryWriter.EnableReport(reportName, null);
+                _telemetryWriter.EnableReportExport(reportName, null);
                 SelectedReportsChanged?.Invoke(this, null);
             }
         }
@@ -157,14 +184,72 @@ namespace EDTracking
             }
         }
 
-        private void checkBoxSelectAll_CheckedChanged(object sender, EventArgs e)
+        private void dataGridViewExportSettings_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
-            foreach (ListViewItem item in listViewTextExportSettings.Items)
-                item.Checked = checkBoxSelectAll.Checked;
-            if (checkBoxSelectAll.Checked)
-                checkBoxSelectAll.Text = "Deselect all";
-            else
-                checkBoxSelectAll.Text = "Select all";
+            if (!this.CanFocus || e.RowIndex>=dataGridViewExportSettings.Rows.Count)
+                return;
+
+            string reportName = (string)dataGridViewExportSettings.Rows[e.RowIndex].Cells[1].Value;
+            string reportFileName = "";
+            string reportDisplayName = "";
+            switch (e.ColumnIndex)
+            {
+                case 2: // Report filename changed
+                    reportFileName = (string)dataGridViewExportSettings.Rows[e.RowIndex].Cells[2].Value;
+                    _telemetryWriter.EnableReportExport(reportName, reportFileName);
+                    break;
+
+                case 3: // Report enabled status changed
+                    bool reportEnabled = (bool)dataGridViewExportSettings.Rows[e.RowIndex].Cells[3].Value;
+                    if (reportEnabled)
+                    {
+                        reportFileName = $"{_filePrefix}{reportName}.txt";
+                        dataGridViewExportSettings.Rows[e.RowIndex].Cells[2].Value = reportFileName;
+                    }
+                    else
+                        dataGridViewExportSettings.Rows[e.RowIndex].Cells[2].Value = "";
+                    _telemetryWriter.EnableReportExport(reportName, reportFileName);
+                    break;
+
+                case 4: // Report display name changed
+                    reportDisplayName = (string)dataGridViewExportSettings.Rows[e.RowIndex].Cells[4].Value;
+                    _telemetryWriter.EnableReportDisplay(reportName, reportDisplayName);
+                    break;
+
+                case 5: // Report display enabled changed
+                    bool reportDisplayEnabled = (bool)dataGridViewExportSettings.Rows[e.RowIndex].Cells[5].Value;
+                    if (reportDisplayEnabled)
+                    {
+                        reportDisplayName = reportName;
+                        dataGridViewExportSettings.Rows[e.RowIndex].Cells[4].Value = reportDisplayName;
+                    }
+                    else
+                        dataGridViewExportSettings.Rows[e.RowIndex].Cells[4].Value = "";
+                    _telemetryWriter.EnableReportDisplay(reportName, reportDisplayName);
+                    break;
+            }
+            SelectedReportsChanged?.Invoke(this, null);
+        }
+
+        private void dataGridViewExportSettings_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex == 3 || e.ColumnIndex == 5)
+            {
+                dataGridViewExportSettings.CommitEdit(DataGridViewDataErrorContexts.Commit);
+                dataGridViewExportSettings_CellValueChanged(sender, e);
+            }
+        }
+
+        private void dataGridViewExportSettings_CurrentCellDirtyStateChanged(object sender, EventArgs e)
+        {
+            if (dataGridViewExportSettings.IsCurrentCellDirty && 
+                (dataGridViewExportSettings.CurrentCell.ColumnIndex == 3 || dataGridViewExportSettings.CurrentCell.ColumnIndex == 5))
+                dataGridViewExportSettings.CommitEdit(DataGridViewDataErrorContexts.Commit);
+        }
+
+        private void dataGridViewExportSettings_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            //dataGridViewExportSettings_CellValueChanged(sender, e);
         }
     }
 }

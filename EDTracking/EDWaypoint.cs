@@ -15,7 +15,6 @@ namespace EDTracking
         //public sbyte AltitudeTest { get; set; } = 0; // -1, must be below, +1 must be above, 0 not checked
         public int Direction { get; set; } = -1;
         public DateTime TimeTracked { get; internal set; }  // To store the time the location was recorded when route recording
-        private static int _nextWaypointNumber = 1;
         public Dictionary<string, string> ExtendedWaypointInformation { get; set; } = new Dictionary<string, string>();
         public List<EDLocation> AdditionalLocations { get; set; } = new List<EDLocation>();
 
@@ -77,7 +76,7 @@ namespace EDTracking
         {
             //  We need to test if the line between current and last location intersects
             // the line of the gate
-            if ( AdditionalLocations.Count < 2 || AdditionalLocations[0]==null )
+            if ( AdditionalLocations.Count < 2 || AdditionalLocations[0]==null || previousLocation==null)
                 return false;
             return EDLocation.PassedBetween(AdditionalLocations[0], AdditionalLocations[1],previousLocation, currentLocation);
         }

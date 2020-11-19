@@ -13,6 +13,8 @@ namespace EDTracking
         private TelemetryWriter _telemetryWriter = null;
         private DataTable _telemetryTable = null;
         private Dictionary<string, string> _columnHeaderNames = null;
+        private Dictionary<string, string> _columnHeaderNameToReportName = null;
+        private Dictionary<string, string> _rowNameToReportName = null;
         private Dictionary<string, string> _rowHeaderNames = null;
         private Dictionary<string, string> _telemetryData = null;
 
@@ -60,15 +62,17 @@ namespace EDTracking
 
         private void InitialiseColumns(int RowCount)
         {
-            List<string> enabledReports = _telemetryWriter.EnabledReports;
+            List<string> displayedReports = _telemetryWriter.DisplayedReports;
             _telemetryTable.Columns.Clear();
+            _columnHeaderNameToReportName = new Dictionary<string, string>();
             // Enabled reports will not be in order, and we want to maintain the order in which reports are listed
             foreach (string columnHeader in _columnHeaderNames.Keys)
             {
-                if (enabledReports.Contains(columnHeader))
+                if (displayedReports.Contains(columnHeader))
                 {
-                    DataColumn dataColumn = new DataColumn(columnHeader, typeof(string));
+                    DataColumn dataColumn = new DataColumn(_telemetryWriter.ReportDisplayName(columnHeader), typeof(string));
                     _telemetryTable.Columns.Add(dataColumn);
+                    _columnHeaderNameToReportName.Add(dataColumn.ColumnName, columnHeader);
                 }
             }
 
@@ -111,14 +115,16 @@ namespace EDTracking
             }
             dataGridTelemetry.HeadersVisibility = DataGridHeadersVisibility.None;
 
-            List<string> enabledReports = _telemetryWriter.EnabledReports;
+            List<string> displayedReports = _telemetryWriter.DisplayedReports;
             _telemetryTable.Rows.Clear();
+            _rowNameToReportName = new Dictionary<string, string>();
             foreach (string rowName in _rowHeaderNames.Keys)
             {
-                if (enabledReports.Contains(rowName))
+                if (displayedReports.Contains(rowName))
                 {
                     _telemetryTable.Rows.Add(_telemetryTable.NewRow());
-                    _telemetryTable.Rows[_telemetryTable.Rows.Count - 1][0] = rowName;
+                    _telemetryTable.Rows[_telemetryTable.Rows.Count - 1][0] = _telemetryWriter.ReportDisplayName(rowName);
+                    _rowNameToReportName.Add(_telemetryWriter.ReportDisplayName(rowName), rowName);
                 }
             }
         }
@@ -194,9 +200,9 @@ namespace EDTracking
             int numRows = 0;
             for (int i = 0; i < _telemetryTable.Columns.Count; i++)
             {
-                if (_telemetryData.ContainsKey(_telemetryTable.Columns[i].ColumnName))
+                if (_telemetryData.ContainsKey(_columnHeaderNameToReportName[_telemetryTable.Columns[i].ColumnName]))
                 {
-                    string[] rowText = _telemetryData[_telemetryTable.Columns[i].ColumnName].Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+                    string[] rowText = _telemetryData[_columnHeaderNameToReportName[_telemetryTable.Columns[i].ColumnName]].Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
                     if (rowText.Length > numRows)
                         numRows = rowText.Length;
                     rowData.Add(_telemetryTable.Columns[i].ColumnName, rowText);
@@ -254,8 +260,11 @@ namespace EDTracking
 
                 for (int i = 0; i < _telemetryTable.Rows.Count; i++)
                 {
-                    if (TargetData.ContainsKey(_telemetryTable.Rows[i][0].ToString()))
-                        _telemetryTable.Rows[i][1] = TargetData[_telemetryTable.Rows[i][0].ToString()];
+                    if (TargetData==null)
+                        _telemetryTable.Rows[i][1] = "";
+                    else if (_rowNameToReportName.ContainsKey(_telemetryTable.Rows[i][0].ToString()) &&
+                        TargetData.ContainsKey(_rowNameToReportName[_telemetryTable.Rows[i][0].ToString()]))
+                        _telemetryTable.Rows[i][1] = TargetData[_rowNameToReportName[_telemetryTable.Rows[i][0].ToString()]];
                 }
             });
         }
