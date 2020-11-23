@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.radioButtonRaceTypeTimeTrial = new System.Windows.Forms.RadioButton();
             this.radioButtonRaceTypeStandard = new System.Windows.Forms.RadioButton();
             this.label4 = new System.Windows.Forms.Label();
@@ -43,13 +42,11 @@
             this.buttonEditStatusMessages = new System.Windows.Forms.Button();
             this.checkBoxLappedRace = new System.Windows.Forms.CheckBox();
             this.numericUpDownLapCount = new System.Windows.Forms.NumericUpDown();
-            this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.textBoxSystem = new System.Windows.Forms.TextBox();
             this.textBoxPlanet = new System.Windows.Forms.TextBox();
             this.checkBoxAutoAddCommanders = new System.Windows.Forms.CheckBox();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.groupBoxAddCommander = new System.Windows.Forms.GroupBox();
             this.comboBoxAddCommander = new System.Windows.Forms.ComboBox();
             this.buttonAddCommander = new System.Windows.Forms.Button();
@@ -63,11 +60,9 @@
             this.buttonSaveRaceAs = new System.Windows.Forms.Button();
             this.buttonSaveRace = new System.Windows.Forms.Button();
             this.textBoxRaceName = new System.Windows.Forms.TextBox();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.listBoxWaypoints = new System.Windows.Forms.ListBox();
             this.buttonLoadRoute = new System.Windows.Forms.Button();
             this.textBoxRouteName = new System.Windows.Forms.TextBox();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.buttonCommanderTelemetryExportSettings = new System.Windows.Forms.Button();
             this.checkBoxShowTargetTelemetry = new System.Windows.Forms.CheckBox();
             this.buttonRaceTelemetryExportSettings = new System.Windows.Forms.Button();
@@ -90,57 +85,43 @@
             this.textBoxServerRaceGuid = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.textBoxRaceStatusServerUrl = new System.Windows.Forms.TextBox();
-            this.groupBox8 = new System.Windows.Forms.GroupBox();
             this.timerDownloadRaceTelemetry = new System.Windows.Forms.Timer(this.components);
             this.buttonTest = new System.Windows.Forms.Button();
             this.groupBox10 = new System.Windows.Forms.GroupBox();
             this.timerTrackTarget = new System.Windows.Forms.Timer(this.components);
             this.buttonRaceHistory = new System.Windows.Forms.Button();
-            this.groupBox9 = new System.Windows.Forms.GroupBox();
             this.comboBoxTimeTrialRacer = new System.Windows.Forms.ComboBox();
-            this.radioButtonTimeTrialManualStart = new System.Windows.Forms.RadioButton();
-            this.radioButtonTimeTrialAutoStart = new System.Windows.Forms.RadioButton();
-            this.label5 = new System.Windows.Forms.Label();
-            this.groupBox6.SuspendLayout();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.buttonTimeTrialTelemetryExportSettings = new System.Windows.Forms.Button();
+            this.label10 = new System.Windows.Forms.Label();
+            this.checkBoxShowTimeTrialTelemetry = new System.Windows.Forms.CheckBox();
+            this.checkBoxExportTimeTrialTelemetry = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLapCount)).BeginInit();
-            this.groupBox5.SuspendLayout();
-            this.groupBox3.SuspendLayout();
             this.groupBoxAddCommander.SuspendLayout();
             this.groupBox2.SuspendLayout();
-            this.groupBox1.SuspendLayout();
-            this.groupBox4.SuspendLayout();
             this.groupBox7.SuspendLayout();
             this.groupBoxServerInfo.SuspendLayout();
-            this.groupBox8.SuspendLayout();
             this.groupBox10.SuspendLayout();
-            this.groupBox9.SuspendLayout();
+            this.tabControl1.SuspendLayout();
+            this.tabPage1.SuspendLayout();
+            this.tabPage2.SuspendLayout();
+            this.tabPage3.SuspendLayout();
+            this.tabPage4.SuspendLayout();
+            this.tabPage5.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // groupBox6
-            // 
-            this.groupBox6.Controls.Add(this.radioButtonRaceTypeTimeTrial);
-            this.groupBox6.Controls.Add(this.radioButtonRaceTypeStandard);
-            this.groupBox6.Controls.Add(this.label4);
-            this.groupBox6.Controls.Add(this.checkBoxCustomStatusMessages);
-            this.groupBox6.Controls.Add(this.checkBoxAllowMainShip);
-            this.groupBox6.Controls.Add(this.checkBoxAllowFighter);
-            this.groupBox6.Controls.Add(this.label1);
-            this.groupBox6.Controls.Add(this.checkBoxAllowPitstops);
-            this.groupBox6.Controls.Add(this.checkBoxAllowSRV);
-            this.groupBox6.Controls.Add(this.checkBoxEliminationOnDestruction);
-            this.groupBox6.Controls.Add(this.buttonEditStatusMessages);
-            this.groupBox6.Location = new System.Drawing.Point(6, 245);
-            this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(449, 146);
-            this.groupBox6.TabIndex = 11;
-            this.groupBox6.TabStop = false;
-            this.groupBox6.Text = "Race Settings";
             // 
             // radioButtonRaceTypeTimeTrial
             // 
             this.radioButtonRaceTypeTimeTrial.AutoSize = true;
             this.radioButtonRaceTypeTimeTrial.Enabled = false;
-            this.radioButtonRaceTypeTimeTrial.Location = new System.Drawing.Point(169, 90);
+            this.radioButtonRaceTypeTimeTrial.Location = new System.Drawing.Point(167, 6);
             this.radioButtonRaceTypeTimeTrial.Name = "radioButtonRaceTypeTimeTrial";
             this.radioButtonRaceTypeTimeTrial.Size = new System.Drawing.Size(67, 17);
             this.radioButtonRaceTypeTimeTrial.TabIndex = 14;
@@ -151,7 +132,7 @@
             // 
             this.radioButtonRaceTypeStandard.AutoSize = true;
             this.radioButtonRaceTypeStandard.Checked = true;
-            this.radioButtonRaceTypeStandard.Location = new System.Drawing.Point(71, 90);
+            this.radioButtonRaceTypeStandard.Location = new System.Drawing.Point(69, 6);
             this.radioButtonRaceTypeStandard.Name = "radioButtonRaceTypeStandard";
             this.radioButtonRaceTypeStandard.Size = new System.Drawing.Size(92, 17);
             this.radioButtonRaceTypeStandard.TabIndex = 13;
@@ -162,7 +143,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(6, 92);
+            this.label4.Location = new System.Drawing.Point(4, 8);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(59, 13);
             this.label4.TabIndex = 12;
@@ -171,7 +152,7 @@
             // checkBoxCustomStatusMessages
             // 
             this.checkBoxCustomStatusMessages.AutoSize = true;
-            this.checkBoxCustomStatusMessages.Location = new System.Drawing.Point(6, 65);
+            this.checkBoxCustomStatusMessages.Location = new System.Drawing.Point(7, 92);
             this.checkBoxCustomStatusMessages.Name = "checkBoxCustomStatusMessages";
             this.checkBoxCustomStatusMessages.Size = new System.Drawing.Size(142, 17);
             this.checkBoxCustomStatusMessages.TabIndex = 11;
@@ -183,7 +164,7 @@
             // checkBoxAllowMainShip
             // 
             this.checkBoxAllowMainShip.AutoSize = true;
-            this.checkBoxAllowMainShip.Location = new System.Drawing.Point(219, 19);
+            this.checkBoxAllowMainShip.Location = new System.Drawing.Point(99, 41);
             this.checkBoxAllowMainShip.Name = "checkBoxAllowMainShip";
             this.checkBoxAllowMainShip.Size = new System.Drawing.Size(71, 17);
             this.checkBoxAllowMainShip.TabIndex = 10;
@@ -195,7 +176,7 @@
             // checkBoxAllowFighter
             // 
             this.checkBoxAllowFighter.AutoSize = true;
-            this.checkBoxAllowFighter.Location = new System.Drawing.Point(155, 19);
+            this.checkBoxAllowFighter.Location = new System.Drawing.Point(176, 41);
             this.checkBoxAllowFighter.Name = "checkBoxAllowFighter";
             this.checkBoxAllowFighter.Size = new System.Drawing.Size(58, 17);
             this.checkBoxAllowFighter.TabIndex = 9;
@@ -207,7 +188,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 20);
+            this.label1.Location = new System.Drawing.Point(4, 42);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(89, 13);
             this.label1.TabIndex = 8;
@@ -218,7 +199,7 @@
             this.checkBoxAllowPitstops.AutoSize = true;
             this.checkBoxAllowPitstops.Checked = true;
             this.checkBoxAllowPitstops.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxAllowPitstops.Location = new System.Drawing.Point(101, 42);
+            this.checkBoxAllowPitstops.Location = new System.Drawing.Point(240, 65);
             this.checkBoxAllowPitstops.Name = "checkBoxAllowPitstops";
             this.checkBoxAllowPitstops.Size = new System.Drawing.Size(102, 17);
             this.checkBoxAllowPitstops.TabIndex = 2;
@@ -233,7 +214,7 @@
             this.checkBoxAllowSRV.AutoSize = true;
             this.checkBoxAllowSRV.Checked = true;
             this.checkBoxAllowSRV.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxAllowSRV.Location = new System.Drawing.Point(101, 19);
+            this.checkBoxAllowSRV.Location = new System.Drawing.Point(240, 42);
             this.checkBoxAllowSRV.Name = "checkBoxAllowSRV";
             this.checkBoxAllowSRV.Size = new System.Drawing.Size(48, 17);
             this.checkBoxAllowSRV.TabIndex = 1;
@@ -247,7 +228,7 @@
             this.checkBoxEliminationOnDestruction.AutoSize = true;
             this.checkBoxEliminationOnDestruction.Checked = true;
             this.checkBoxEliminationOnDestruction.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxEliminationOnDestruction.Location = new System.Drawing.Point(210, 42);
+            this.checkBoxEliminationOnDestruction.Location = new System.Drawing.Point(7, 65);
             this.checkBoxEliminationOnDestruction.Name = "checkBoxEliminationOnDestruction";
             this.checkBoxEliminationOnDestruction.Size = new System.Drawing.Size(175, 17);
             this.checkBoxEliminationOnDestruction.TabIndex = 0;
@@ -258,7 +239,7 @@
             // buttonEditStatusMessages
             // 
             this.buttonEditStatusMessages.Image = global::Race_Manager.Properties.Resources.Text_16x;
-            this.buttonEditStatusMessages.Location = new System.Drawing.Point(154, 61);
+            this.buttonEditStatusMessages.Location = new System.Drawing.Point(155, 88);
             this.buttonEditStatusMessages.Name = "buttonEditStatusMessages";
             this.buttonEditStatusMessages.Size = new System.Drawing.Size(29, 23);
             this.buttonEditStatusMessages.TabIndex = 7;
@@ -269,7 +250,7 @@
             // checkBoxLappedRace
             // 
             this.checkBoxLappedRace.AutoSize = true;
-            this.checkBoxLappedRace.Location = new System.Drawing.Point(95, 158);
+            this.checkBoxLappedRace.Location = new System.Drawing.Point(259, 149);
             this.checkBoxLappedRace.Name = "checkBoxLappedRace";
             this.checkBoxLappedRace.Size = new System.Drawing.Size(52, 17);
             this.checkBoxLappedRace.TabIndex = 6;
@@ -281,7 +262,7 @@
             // 
             // numericUpDownLapCount
             // 
-            this.numericUpDownLapCount.Location = new System.Drawing.Point(153, 157);
+            this.numericUpDownLapCount.Location = new System.Drawing.Point(317, 148);
             this.numericUpDownLapCount.Minimum = new decimal(new int[] {
             1,
             0,
@@ -297,23 +278,10 @@
             0,
             0});
             // 
-            // groupBox5
-            // 
-            this.groupBox5.Controls.Add(this.label2);
-            this.groupBox5.Controls.Add(this.label3);
-            this.groupBox5.Controls.Add(this.textBoxSystem);
-            this.groupBox5.Controls.Add(this.textBoxPlanet);
-            this.groupBox5.Location = new System.Drawing.Point(397, 6);
-            this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(384, 48);
-            this.groupBox5.TabIndex = 10;
-            this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "Location";
-            // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 22);
+            this.label2.Location = new System.Drawing.Point(6, 13);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(44, 13);
             this.label2.TabIndex = 4;
@@ -322,7 +290,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(195, 22);
+            this.label3.Location = new System.Drawing.Point(6, 52);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(40, 13);
             this.label3.TabIndex = 5;
@@ -330,7 +298,7 @@
             // 
             // textBoxSystem
             // 
-            this.textBoxSystem.Location = new System.Drawing.Point(56, 19);
+            this.textBoxSystem.Location = new System.Drawing.Point(6, 29);
             this.textBoxSystem.Name = "textBoxSystem";
             this.textBoxSystem.ReadOnly = true;
             this.textBoxSystem.Size = new System.Drawing.Size(133, 20);
@@ -338,7 +306,7 @@
             // 
             // textBoxPlanet
             // 
-            this.textBoxPlanet.Location = new System.Drawing.Point(241, 19);
+            this.textBoxPlanet.Location = new System.Drawing.Point(6, 68);
             this.textBoxPlanet.Name = "textBoxPlanet";
             this.textBoxPlanet.ReadOnly = true;
             this.textBoxPlanet.Size = new System.Drawing.Size(133, 20);
@@ -349,7 +317,7 @@
             this.checkBoxAutoAddCommanders.AutoSize = true;
             this.checkBoxAutoAddCommanders.Checked = true;
             this.checkBoxAutoAddCommanders.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxAutoAddCommanders.Location = new System.Drawing.Point(6, 162);
+            this.checkBoxAutoAddCommanders.Location = new System.Drawing.Point(63, 143);
             this.checkBoxAutoAddCommanders.Name = "checkBoxAutoAddCommanders";
             this.checkBoxAutoAddCommanders.Size = new System.Drawing.Size(246, 17);
             this.checkBoxAutoAddCommanders.TabIndex = 4;
@@ -357,28 +325,12 @@
             this.toolTip1.SetToolTip(this.checkBoxAutoAddCommanders, "Add any commanders to the race that are detected at the first waypoint");
             this.checkBoxAutoAddCommanders.UseVisualStyleBackColor = true;
             // 
-            // groupBox3
-            // 
-            this.groupBox3.Controls.Add(this.groupBoxAddCommander);
-            this.groupBox3.Controls.Add(this.listBoxParticipants);
-            this.groupBox3.Controls.Add(this.buttonUneliminate);
-            this.groupBox3.Controls.Add(this.checkBoxAutoAddCommanders);
-            this.groupBox3.Controls.Add(this.buttonTrackParticipant);
-            this.groupBox3.Controls.Add(this.buttonRemoveParticipant);
-            this.groupBox3.Controls.Add(this.buttonAddParticipant);
-            this.groupBox3.Location = new System.Drawing.Point(6, 60);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(264, 183);
-            this.groupBox3.TabIndex = 8;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Participants";
-            // 
             // groupBoxAddCommander
             // 
             this.groupBoxAddCommander.Controls.Add(this.comboBoxAddCommander);
             this.groupBoxAddCommander.Controls.Add(this.buttonAddCommander);
             this.groupBoxAddCommander.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.groupBoxAddCommander.Location = new System.Drawing.Point(54, 3);
+            this.groupBoxAddCommander.Location = new System.Drawing.Point(105, -13);
             this.groupBoxAddCommander.Name = "groupBoxAddCommander";
             this.groupBoxAddCommander.Size = new System.Drawing.Size(211, 51);
             this.groupBoxAddCommander.TabIndex = 5;
@@ -408,7 +360,7 @@
             // listBoxParticipants
             // 
             this.listBoxParticipants.FormattingEnabled = true;
-            this.listBoxParticipants.Location = new System.Drawing.Point(6, 19);
+            this.listBoxParticipants.Location = new System.Drawing.Point(57, 3);
             this.listBoxParticipants.Name = "listBoxParticipants";
             this.listBoxParticipants.Size = new System.Drawing.Size(217, 134);
             this.listBoxParticipants.TabIndex = 11;
@@ -417,7 +369,7 @@
             // buttonUneliminate
             // 
             this.buttonUneliminate.Image = global::Race_Manager.Properties.Resources.AdvancedBreakpointDisabled_16x;
-            this.buttonUneliminate.Location = new System.Drawing.Point(229, 130);
+            this.buttonUneliminate.Location = new System.Drawing.Point(280, 114);
             this.buttonUneliminate.Name = "buttonUneliminate";
             this.buttonUneliminate.Size = new System.Drawing.Size(29, 23);
             this.buttonUneliminate.TabIndex = 10;
@@ -427,7 +379,7 @@
             // buttonTrackParticipant
             // 
             this.buttonTrackParticipant.Image = global::Race_Manager.Properties.Resources.Target_16x;
-            this.buttonTrackParticipant.Location = new System.Drawing.Point(229, 77);
+            this.buttonTrackParticipant.Location = new System.Drawing.Point(280, 61);
             this.buttonTrackParticipant.Name = "buttonTrackParticipant";
             this.buttonTrackParticipant.Size = new System.Drawing.Size(29, 23);
             this.buttonTrackParticipant.TabIndex = 3;
@@ -437,7 +389,7 @@
             // buttonRemoveParticipant
             // 
             this.buttonRemoveParticipant.Image = global::Race_Manager.Properties.Resources.Remove_color_16x;
-            this.buttonRemoveParticipant.Location = new System.Drawing.Point(229, 48);
+            this.buttonRemoveParticipant.Location = new System.Drawing.Point(280, 32);
             this.buttonRemoveParticipant.Name = "buttonRemoveParticipant";
             this.buttonRemoveParticipant.Size = new System.Drawing.Size(29, 23);
             this.buttonRemoveParticipant.TabIndex = 2;
@@ -447,7 +399,7 @@
             // buttonAddParticipant
             // 
             this.buttonAddParticipant.Image = global::Race_Manager.Properties.Resources.Add_16x;
-            this.buttonAddParticipant.Location = new System.Drawing.Point(229, 19);
+            this.buttonAddParticipant.Location = new System.Drawing.Point(280, 3);
             this.buttonAddParticipant.Name = "buttonAddParticipant";
             this.buttonAddParticipant.Size = new System.Drawing.Size(29, 23);
             this.buttonAddParticipant.TabIndex = 1;
@@ -504,24 +456,10 @@
             this.textBoxRaceName.Size = new System.Drawing.Size(268, 20);
             this.textBoxRaceName.TabIndex = 2;
             // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.listBoxWaypoints);
-            this.groupBox1.Controls.Add(this.buttonLoadRoute);
-            this.groupBox1.Controls.Add(this.textBoxRouteName);
-            this.groupBox1.Controls.Add(this.numericUpDownLapCount);
-            this.groupBox1.Controls.Add(this.checkBoxLappedRace);
-            this.groupBox1.Location = new System.Drawing.Point(276, 60);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(213, 183);
-            this.groupBox1.TabIndex = 6;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Route";
-            // 
             // listBoxWaypoints
             // 
             this.listBoxWaypoints.FormattingEnabled = true;
-            this.listBoxWaypoints.Location = new System.Drawing.Point(6, 45);
+            this.listBoxWaypoints.Location = new System.Drawing.Point(170, 36);
             this.listBoxWaypoints.Name = "listBoxWaypoints";
             this.listBoxWaypoints.Size = new System.Drawing.Size(201, 108);
             this.listBoxWaypoints.TabIndex = 2;
@@ -529,7 +467,7 @@
             // buttonLoadRoute
             // 
             this.buttonLoadRoute.Image = global::Race_Manager.Properties.Resources.OpenFolder_16x;
-            this.buttonLoadRoute.Location = new System.Drawing.Point(169, 17);
+            this.buttonLoadRoute.Location = new System.Drawing.Point(333, 8);
             this.buttonLoadRoute.Name = "buttonLoadRoute";
             this.buttonLoadRoute.Size = new System.Drawing.Size(38, 23);
             this.buttonLoadRoute.TabIndex = 1;
@@ -538,31 +476,16 @@
             // 
             // textBoxRouteName
             // 
-            this.textBoxRouteName.Location = new System.Drawing.Point(6, 19);
+            this.textBoxRouteName.Location = new System.Drawing.Point(170, 10);
             this.textBoxRouteName.Name = "textBoxRouteName";
             this.textBoxRouteName.ReadOnly = true;
             this.textBoxRouteName.Size = new System.Drawing.Size(157, 20);
             this.textBoxRouteName.TabIndex = 0;
             // 
-            // groupBox4
-            // 
-            this.groupBox4.Controls.Add(this.buttonCommanderTelemetryExportSettings);
-            this.groupBox4.Controls.Add(this.checkBoxShowTargetTelemetry);
-            this.groupBox4.Controls.Add(this.buttonRaceTelemetryExportSettings);
-            this.groupBox4.Controls.Add(this.checkBoxShowRaceTelemetry);
-            this.groupBox4.Controls.Add(this.checkBoxExportTargetTelemetry);
-            this.groupBox4.Controls.Add(this.checkBoxExportRaceTelemetry);
-            this.groupBox4.Location = new System.Drawing.Point(495, 110);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(186, 66);
-            this.groupBox4.TabIndex = 12;
-            this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Telemetry";
-            // 
             // buttonCommanderTelemetryExportSettings
             // 
             this.buttonCommanderTelemetryExportSettings.Image = global::Race_Manager.Properties.Resources.Settings_16x;
-            this.buttonCommanderTelemetryExportSettings.Location = new System.Drawing.Point(158, 37);
+            this.buttonCommanderTelemetryExportSettings.Location = new System.Drawing.Point(46, 69);
             this.buttonCommanderTelemetryExportSettings.Name = "buttonCommanderTelemetryExportSettings";
             this.buttonCommanderTelemetryExportSettings.Size = new System.Drawing.Size(22, 22);
             this.buttonCommanderTelemetryExportSettings.TabIndex = 3;
@@ -573,11 +496,11 @@
             // checkBoxShowTargetTelemetry
             // 
             this.checkBoxShowTargetTelemetry.AutoSize = true;
-            this.checkBoxShowTargetTelemetry.Location = new System.Drawing.Point(5, 42);
+            this.checkBoxShowTargetTelemetry.Location = new System.Drawing.Point(247, 73);
             this.checkBoxShowTargetTelemetry.Name = "checkBoxShowTargetTelemetry";
-            this.checkBoxShowTargetTelemetry.Size = new System.Drawing.Size(83, 17);
+            this.checkBoxShowTargetTelemetry.Size = new System.Drawing.Size(60, 17);
             this.checkBoxShowTargetTelemetry.TabIndex = 1;
-            this.checkBoxShowTargetTelemetry.Text = "Show target";
+            this.checkBoxShowTargetTelemetry.Text = "Display";
             this.toolTip1.SetToolTip(this.checkBoxShowTargetTelemetry, "Enable target telemetry display.\r\nTelemetry is shown in its own window.\r\n");
             this.checkBoxShowTargetTelemetry.UseVisualStyleBackColor = true;
             this.checkBoxShowTargetTelemetry.CheckedChanged += new System.EventHandler(this.checkBoxShowTargetTelemetry_CheckedChanged);
@@ -585,7 +508,7 @@
             // buttonRaceTelemetryExportSettings
             // 
             this.buttonRaceTelemetryExportSettings.Image = global::Race_Manager.Properties.Resources.Settings_16x;
-            this.buttonRaceTelemetryExportSettings.Location = new System.Drawing.Point(158, 14);
+            this.buttonRaceTelemetryExportSettings.Location = new System.Drawing.Point(46, 41);
             this.buttonRaceTelemetryExportSettings.Name = "buttonRaceTelemetryExportSettings";
             this.buttonRaceTelemetryExportSettings.Size = new System.Drawing.Size(22, 22);
             this.buttonRaceTelemetryExportSettings.TabIndex = 2;
@@ -596,11 +519,11 @@
             // checkBoxShowRaceTelemetry
             // 
             this.checkBoxShowRaceTelemetry.AutoSize = true;
-            this.checkBoxShowRaceTelemetry.Location = new System.Drawing.Point(5, 19);
+            this.checkBoxShowRaceTelemetry.Location = new System.Drawing.Point(247, 45);
             this.checkBoxShowRaceTelemetry.Name = "checkBoxShowRaceTelemetry";
-            this.checkBoxShowRaceTelemetry.Size = new System.Drawing.Size(77, 17);
+            this.checkBoxShowRaceTelemetry.Size = new System.Drawing.Size(60, 17);
             this.checkBoxShowRaceTelemetry.TabIndex = 0;
-            this.checkBoxShowRaceTelemetry.Text = "Show race";
+            this.checkBoxShowRaceTelemetry.Text = "Display";
             this.toolTip1.SetToolTip(this.checkBoxShowRaceTelemetry, "Enable race telemetry display.\r\nTelemetry is shown in its own window.\r\nThe Race T" +
         "elemetry window is unavailable when the \r\nRace Telemetry Settings window is open" +
         ".");
@@ -610,7 +533,7 @@
             // checkBoxExportTargetTelemetry
             // 
             this.checkBoxExportTargetTelemetry.AutoSize = true;
-            this.checkBoxExportTargetTelemetry.Location = new System.Drawing.Point(92, 42);
+            this.checkBoxExportTargetTelemetry.Location = new System.Drawing.Point(185, 73);
             this.checkBoxExportTargetTelemetry.Name = "checkBoxExportTargetTelemetry";
             this.checkBoxExportTargetTelemetry.Size = new System.Drawing.Size(56, 17);
             this.checkBoxExportTargetTelemetry.TabIndex = 1;
@@ -621,7 +544,7 @@
             // checkBoxExportRaceTelemetry
             // 
             this.checkBoxExportRaceTelemetry.AutoSize = true;
-            this.checkBoxExportRaceTelemetry.Location = new System.Drawing.Point(92, 19);
+            this.checkBoxExportRaceTelemetry.Location = new System.Drawing.Point(185, 45);
             this.checkBoxExportRaceTelemetry.Name = "checkBoxExportRaceTelemetry";
             this.checkBoxExportRaceTelemetry.Size = new System.Drawing.Size(56, 17);
             this.checkBoxExportRaceTelemetry.TabIndex = 0;
@@ -631,19 +554,21 @@
             // 
             // groupBox7
             // 
+            this.groupBox7.Controls.Add(this.comboBoxTimeTrialRacer);
             this.groupBox7.Controls.Add(this.buttonPause);
             this.groupBox7.Controls.Add(this.buttonStartRace);
             this.groupBox7.Controls.Add(this.buttonStopRace);
             this.groupBox7.Controls.Add(this.buttonReset);
-            this.groupBox7.Location = new System.Drawing.Point(461, 249);
+            this.groupBox7.Location = new System.Drawing.Point(415, 60);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(148, 51);
+            this.groupBox7.Size = new System.Drawing.Size(148, 80);
             this.groupBox7.TabIndex = 13;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "Race Control";
             // 
             // buttonPause
             // 
+            this.buttonPause.Enabled = false;
             this.buttonPause.Image = global::Race_Manager.Properties.Resources.Pause_16x;
             this.buttonPause.Location = new System.Drawing.Point(41, 19);
             this.buttonPause.Name = "buttonPause";
@@ -688,7 +613,7 @@
             // 
             this.radioButtonUseCustomServer.AutoSize = true;
             this.radioButtonUseCustomServer.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.radioButtonUseCustomServer.Location = new System.Drawing.Point(71, 18);
+            this.radioButtonUseCustomServer.Location = new System.Drawing.Point(57, 70);
             this.radioButtonUseCustomServer.Name = "radioButtonUseCustomServer";
             this.radioButtonUseCustomServer.Size = new System.Drawing.Size(63, 17);
             this.radioButtonUseCustomServer.TabIndex = 3;
@@ -702,7 +627,7 @@
             this.radioButtonUseDefaultServer.AutoSize = true;
             this.radioButtonUseDefaultServer.Checked = true;
             this.radioButtonUseDefaultServer.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.radioButtonUseDefaultServer.Location = new System.Drawing.Point(6, 18);
+            this.radioButtonUseDefaultServer.Location = new System.Drawing.Point(57, 47);
             this.radioButtonUseDefaultServer.Name = "radioButtonUseDefaultServer";
             this.radioButtonUseDefaultServer.Size = new System.Drawing.Size(59, 17);
             this.radioButtonUseDefaultServer.TabIndex = 2;
@@ -718,10 +643,10 @@
             this.textBoxUploadServer.BackColor = System.Drawing.SystemColors.Window;
             this.textBoxUploadServer.Enabled = false;
             this.textBoxUploadServer.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.textBoxUploadServer.Location = new System.Drawing.Point(140, 17);
+            this.textBoxUploadServer.Location = new System.Drawing.Point(57, 93);
             this.textBoxUploadServer.MaxLength = 100;
             this.textBoxUploadServer.Name = "textBoxUploadServer";
-            this.textBoxUploadServer.Size = new System.Drawing.Size(140, 20);
+            this.textBoxUploadServer.Size = new System.Drawing.Size(254, 20);
             this.textBoxUploadServer.TabIndex = 1;
             this.toolTip1.SetToolTip(this.textBoxUploadServer, "The server to send the status updates to");
             // 
@@ -729,9 +654,9 @@
             // 
             this.comboBoxTarget.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxTarget.FormattingEnabled = true;
-            this.comboBoxTarget.Location = new System.Drawing.Point(6, 32);
+            this.comboBoxTarget.Location = new System.Drawing.Point(33, 32);
             this.comboBoxTarget.Name = "comboBoxTarget";
-            this.comboBoxTarget.Size = new System.Drawing.Size(174, 21);
+            this.comboBoxTarget.Size = new System.Drawing.Size(147, 21);
             this.comboBoxTarget.TabIndex = 2;
             this.toolTip1.SetToolTip(this.comboBoxTarget, "Target to display telemetry for");
             this.comboBoxTarget.SelectedIndexChanged += new System.EventHandler(this.comboBoxTarget_SelectedIndexChanged);
@@ -794,19 +719,6 @@
             this.textBoxRaceStatusServerUrl.Size = new System.Drawing.Size(230, 20);
             this.textBoxRaceStatusServerUrl.TabIndex = 0;
             // 
-            // groupBox8
-            // 
-            this.groupBox8.Controls.Add(this.radioButtonUseCustomServer);
-            this.groupBox8.Controls.Add(this.radioButtonUseDefaultServer);
-            this.groupBox8.Controls.Add(this.textBoxUploadServer);
-            this.groupBox8.ForeColor = System.Drawing.Color.Black;
-            this.groupBox8.Location = new System.Drawing.Point(495, 60);
-            this.groupBox8.Name = "groupBox8";
-            this.groupBox8.Size = new System.Drawing.Size(286, 44);
-            this.groupBox8.TabIndex = 16;
-            this.groupBox8.TabStop = false;
-            this.groupBox8.Text = "Server";
-            // 
             // timerDownloadRaceTelemetry
             // 
             this.timerDownloadRaceTelemetry.Interval = 700;
@@ -814,7 +726,7 @@
             // 
             // buttonTest
             // 
-            this.buttonTest.Location = new System.Drawing.Point(981, 307);
+            this.buttonTest.Location = new System.Drawing.Point(1039, 310);
             this.buttonTest.Name = "buttonTest";
             this.buttonTest.Size = new System.Drawing.Size(75, 23);
             this.buttonTest.TabIndex = 18;
@@ -825,8 +737,9 @@
             // groupBox10
             // 
             this.groupBox10.Controls.Add(this.checkBoxTargetClosestTo);
+            this.groupBox10.Controls.Add(this.buttonRaceHistory);
             this.groupBox10.Controls.Add(this.comboBoxTarget);
-            this.groupBox10.Location = new System.Drawing.Point(495, 182);
+            this.groupBox10.Location = new System.Drawing.Point(397, 197);
             this.groupBox10.Name = "groupBox10";
             this.groupBox10.Size = new System.Drawing.Size(186, 61);
             this.groupBox10.TabIndex = 19;
@@ -842,130 +755,241 @@
             // 
             this.buttonRaceHistory.Enabled = false;
             this.buttonRaceHistory.Image = global::Race_Manager.Properties.Resources.History_16x;
-            this.buttonRaceHistory.Location = new System.Drawing.Point(969, 190);
+            this.buttonRaceHistory.Location = new System.Drawing.Point(6, 32);
             this.buttonRaceHistory.Name = "buttonRaceHistory";
-            this.buttonRaceHistory.Size = new System.Drawing.Size(29, 23);
+            this.buttonRaceHistory.Size = new System.Drawing.Size(21, 21);
             this.buttonRaceHistory.TabIndex = 9;
+            this.toolTip1.SetToolTip(this.buttonRaceHistory, "Show race history for currently targeted commander\r\n(opens in a new window)");
             this.buttonRaceHistory.UseVisualStyleBackColor = true;
-            // 
-            // groupBox9
-            // 
-            this.groupBox9.Controls.Add(this.comboBoxTimeTrialRacer);
-            this.groupBox9.Controls.Add(this.radioButtonTimeTrialManualStart);
-            this.groupBox9.Controls.Add(this.radioButtonTimeTrialAutoStart);
-            this.groupBox9.Controls.Add(this.label5);
-            this.groupBox9.Location = new System.Drawing.Point(461, 326);
-            this.groupBox9.Name = "groupBox9";
-            this.groupBox9.Size = new System.Drawing.Size(163, 65);
-            this.groupBox9.TabIndex = 20;
-            this.groupBox9.TabStop = false;
-            this.groupBox9.Text = "Time Trial";
             // 
             // comboBoxTimeTrialRacer
             // 
             this.comboBoxTimeTrialRacer.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxTimeTrialRacer.Enabled = false;
             this.comboBoxTimeTrialRacer.FormattingEnabled = true;
-            this.comboBoxTimeTrialRacer.Location = new System.Drawing.Point(6, 37);
+            this.comboBoxTimeTrialRacer.Location = new System.Drawing.Point(6, 48);
             this.comboBoxTimeTrialRacer.Name = "comboBoxTimeTrialRacer";
-            this.comboBoxTimeTrialRacer.Size = new System.Drawing.Size(151, 21);
+            this.comboBoxTimeTrialRacer.Size = new System.Drawing.Size(133, 21);
             this.comboBoxTimeTrialRacer.TabIndex = 3;
+            this.toolTip1.SetToolTip(this.comboBoxTimeTrialRacer, "For time trial races, this selects the racer being tracked");
             // 
-            // radioButtonTimeTrialManualStart
+            // tabControl1
             // 
-            this.radioButtonTimeTrialManualStart.AutoSize = true;
-            this.radioButtonTimeTrialManualStart.Checked = true;
-            this.radioButtonTimeTrialManualStart.Location = new System.Drawing.Point(97, 19);
-            this.radioButtonTimeTrialManualStart.Name = "radioButtonTimeTrialManualStart";
-            this.radioButtonTimeTrialManualStart.Size = new System.Drawing.Size(60, 17);
-            this.radioButtonTimeTrialManualStart.TabIndex = 2;
-            this.radioButtonTimeTrialManualStart.TabStop = true;
-            this.radioButtonTimeTrialManualStart.Text = "Manual";
-            this.radioButtonTimeTrialManualStart.UseVisualStyleBackColor = true;
+            this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Controls.Add(this.tabPage3);
+            this.tabControl1.Controls.Add(this.tabPage4);
+            this.tabControl1.Controls.Add(this.tabPage5);
+            this.tabControl1.Location = new System.Drawing.Point(6, 60);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(385, 198);
+            this.tabControl1.TabIndex = 21;
             // 
-            // radioButtonTimeTrialAutoStart
+            // tabPage1
             // 
-            this.radioButtonTimeTrialAutoStart.AutoSize = true;
-            this.radioButtonTimeTrialAutoStart.Enabled = false;
-            this.radioButtonTimeTrialAutoStart.Location = new System.Drawing.Point(44, 19);
-            this.radioButtonTimeTrialAutoStart.Name = "radioButtonTimeTrialAutoStart";
-            this.radioButtonTimeTrialAutoStart.Size = new System.Drawing.Size(47, 17);
-            this.radioButtonTimeTrialAutoStart.TabIndex = 1;
-            this.radioButtonTimeTrialAutoStart.Text = "Auto";
-            this.radioButtonTimeTrialAutoStart.UseVisualStyleBackColor = true;
+            this.tabPage1.Controls.Add(this.groupBoxAddCommander);
+            this.tabPage1.Controls.Add(this.listBoxParticipants);
+            this.tabPage1.Controls.Add(this.buttonAddParticipant);
+            this.tabPage1.Controls.Add(this.buttonUneliminate);
+            this.tabPage1.Controls.Add(this.buttonRemoveParticipant);
+            this.tabPage1.Controls.Add(this.checkBoxAutoAddCommanders);
+            this.tabPage1.Controls.Add(this.buttonTrackParticipant);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(377, 172);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "Participants";
+            this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // label5
+            // tabPage2
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(6, 21);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(32, 13);
-            this.label5.TabIndex = 0;
-            this.label5.Text = "Start:";
+            this.tabPage2.Controls.Add(this.textBoxPlanet);
+            this.tabPage2.Controls.Add(this.label3);
+            this.tabPage2.Controls.Add(this.label2);
+            this.tabPage2.Controls.Add(this.textBoxSystem);
+            this.tabPage2.Controls.Add(this.listBoxWaypoints);
+            this.tabPage2.Controls.Add(this.textBoxRouteName);
+            this.tabPage2.Controls.Add(this.buttonLoadRoute);
+            this.tabPage2.Controls.Add(this.checkBoxLappedRace);
+            this.tabPage2.Controls.Add(this.numericUpDownLapCount);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(377, 172);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "Route";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.radioButtonRaceTypeTimeTrial);
+            this.tabPage3.Controls.Add(this.label1);
+            this.tabPage3.Controls.Add(this.radioButtonRaceTypeStandard);
+            this.tabPage3.Controls.Add(this.label4);
+            this.tabPage3.Controls.Add(this.checkBoxAllowMainShip);
+            this.tabPage3.Controls.Add(this.checkBoxAllowSRV);
+            this.tabPage3.Controls.Add(this.buttonEditStatusMessages);
+            this.tabPage3.Controls.Add(this.checkBoxCustomStatusMessages);
+            this.tabPage3.Controls.Add(this.checkBoxAllowFighter);
+            this.tabPage3.Controls.Add(this.checkBoxEliminationOnDestruction);
+            this.tabPage3.Controls.Add(this.checkBoxAllowPitstops);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(377, 172);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "Race Settings";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // tabPage4
+            // 
+            this.tabPage4.Controls.Add(this.checkBoxShowTimeTrialTelemetry);
+            this.tabPage4.Controls.Add(this.checkBoxExportTimeTrialTelemetry);
+            this.tabPage4.Controls.Add(this.label10);
+            this.tabPage4.Controls.Add(this.buttonTimeTrialTelemetryExportSettings);
+            this.tabPage4.Controls.Add(this.label9);
+            this.tabPage4.Controls.Add(this.label6);
+            this.tabPage4.Controls.Add(this.buttonCommanderTelemetryExportSettings);
+            this.tabPage4.Controls.Add(this.checkBoxExportRaceTelemetry);
+            this.tabPage4.Controls.Add(this.checkBoxShowTargetTelemetry);
+            this.tabPage4.Controls.Add(this.checkBoxExportTargetTelemetry);
+            this.tabPage4.Controls.Add(this.buttonRaceTelemetryExportSettings);
+            this.tabPage4.Controls.Add(this.checkBoxShowRaceTelemetry);
+            this.tabPage4.Location = new System.Drawing.Point(4, 22);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage4.Size = new System.Drawing.Size(377, 172);
+            this.tabPage4.TabIndex = 3;
+            this.tabPage4.Text = "Telemetry Settings";
+            this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // tabPage5
+            // 
+            this.tabPage5.Controls.Add(this.textBoxUploadServer);
+            this.tabPage5.Controls.Add(this.radioButtonUseCustomServer);
+            this.tabPage5.Controls.Add(this.radioButtonUseDefaultServer);
+            this.tabPage5.Location = new System.Drawing.Point(4, 22);
+            this.tabPage5.Name = "tabPage5";
+            this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage5.Size = new System.Drawing.Size(377, 172);
+            this.tabPage5.TabIndex = 4;
+            this.tabPage5.Text = "Server Settings";
+            this.tabPage5.UseVisualStyleBackColor = true;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(74, 46);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(85, 13);
+            this.label6.TabIndex = 4;
+            this.label6.Text = "Race Telemetry:";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(74, 74);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(90, 13);
+            this.label9.TabIndex = 5;
+            this.label9.Text = "Target Telemetry:";
+            // 
+            // buttonTimeTrialTelemetryExportSettings
+            // 
+            this.buttonTimeTrialTelemetryExportSettings.Enabled = false;
+            this.buttonTimeTrialTelemetryExportSettings.Image = global::Race_Manager.Properties.Resources.Settings_16x;
+            this.buttonTimeTrialTelemetryExportSettings.Location = new System.Drawing.Point(46, 97);
+            this.buttonTimeTrialTelemetryExportSettings.Name = "buttonTimeTrialTelemetryExportSettings";
+            this.buttonTimeTrialTelemetryExportSettings.Size = new System.Drawing.Size(22, 22);
+            this.buttonTimeTrialTelemetryExportSettings.TabIndex = 6;
+            this.toolTip1.SetToolTip(this.buttonTimeTrialTelemetryExportSettings, "Edit target telemetry collection settings");
+            this.buttonTimeTrialTelemetryExportSettings.UseVisualStyleBackColor = true;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(74, 102);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(105, 13);
+            this.label10.TabIndex = 7;
+            this.label10.Text = "Time Trial Telemetry:";
+            // 
+            // checkBoxShowTimeTrialTelemetry
+            // 
+            this.checkBoxShowTimeTrialTelemetry.AutoSize = true;
+            this.checkBoxShowTimeTrialTelemetry.Enabled = false;
+            this.checkBoxShowTimeTrialTelemetry.Location = new System.Drawing.Point(247, 101);
+            this.checkBoxShowTimeTrialTelemetry.Name = "checkBoxShowTimeTrialTelemetry";
+            this.checkBoxShowTimeTrialTelemetry.Size = new System.Drawing.Size(60, 17);
+            this.checkBoxShowTimeTrialTelemetry.TabIndex = 8;
+            this.checkBoxShowTimeTrialTelemetry.Text = "Display";
+            this.toolTip1.SetToolTip(this.checkBoxShowTimeTrialTelemetry, "Enable target telemetry display.\r\nTelemetry is shown in its own window.\r\n");
+            this.checkBoxShowTimeTrialTelemetry.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxExportTimeTrialTelemetry
+            // 
+            this.checkBoxExportTimeTrialTelemetry.AutoSize = true;
+            this.checkBoxExportTimeTrialTelemetry.Enabled = false;
+            this.checkBoxExportTimeTrialTelemetry.Location = new System.Drawing.Point(185, 101);
+            this.checkBoxExportTimeTrialTelemetry.Name = "checkBoxExportTimeTrialTelemetry";
+            this.checkBoxExportTimeTrialTelemetry.Size = new System.Drawing.Size(56, 17);
+            this.checkBoxExportTimeTrialTelemetry.TabIndex = 9;
+            this.checkBoxExportTimeTrialTelemetry.Text = "Export";
+            this.toolTip1.SetToolTip(this.checkBoxExportTimeTrialTelemetry, "If selected, any enabled target telemetry will be exported to text files.");
+            this.checkBoxExportTimeTrialTelemetry.UseVisualStyleBackColor = true;
             // 
             // FormRaceController
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(785, 398);
-            this.Controls.Add(this.groupBox9);
-            this.Controls.Add(this.buttonRaceHistory);
+            this.ClientSize = new System.Drawing.Size(589, 264);
+            this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.groupBox10);
             this.Controls.Add(this.buttonTest);
-            this.Controls.Add(this.groupBox8);
             this.Controls.Add(this.groupBoxServerInfo);
             this.Controls.Add(this.groupBox7);
-            this.Controls.Add(this.groupBox4);
-            this.Controls.Add(this.groupBox6);
-            this.Controls.Add(this.groupBox5);
-            this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.groupBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.Name = "FormRaceController";
             this.Text = "Form1";
-            this.groupBox6.ResumeLayout(false);
-            this.groupBox6.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLapCount)).EndInit();
-            this.groupBox5.ResumeLayout(false);
-            this.groupBox5.PerformLayout();
-            this.groupBox3.ResumeLayout(false);
-            this.groupBox3.PerformLayout();
             this.groupBoxAddCommander.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
-            this.groupBox4.ResumeLayout(false);
-            this.groupBox4.PerformLayout();
             this.groupBox7.ResumeLayout(false);
             this.groupBoxServerInfo.ResumeLayout(false);
             this.groupBoxServerInfo.PerformLayout();
-            this.groupBox8.ResumeLayout(false);
-            this.groupBox8.PerformLayout();
             this.groupBox10.ResumeLayout(false);
             this.groupBox10.PerformLayout();
-            this.groupBox9.ResumeLayout(false);
-            this.groupBox9.PerformLayout();
+            this.tabControl1.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
+            this.tabPage1.PerformLayout();
+            this.tabPage2.ResumeLayout(false);
+            this.tabPage2.PerformLayout();
+            this.tabPage3.ResumeLayout(false);
+            this.tabPage3.PerformLayout();
+            this.tabPage4.ResumeLayout(false);
+            this.tabPage4.PerformLayout();
+            this.tabPage5.ResumeLayout(false);
+            this.tabPage5.PerformLayout();
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
-        private System.Windows.Forms.GroupBox groupBox6;
         private System.Windows.Forms.CheckBox checkBoxLappedRace;
         private System.Windows.Forms.NumericUpDown numericUpDownLapCount;
         private System.Windows.Forms.CheckBox checkBoxAllowPitstops;
         private System.Windows.Forms.CheckBox checkBoxAllowSRV;
         private System.Windows.Forms.CheckBox checkBoxEliminationOnDestruction;
-        private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox textBoxSystem;
         private System.Windows.Forms.TextBox textBoxPlanet;
         private System.Windows.Forms.CheckBox checkBoxAutoAddCommanders;
-        private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Button buttonUneliminate;
         private System.Windows.Forms.Button buttonRaceHistory;
         private System.Windows.Forms.Button buttonReset;
@@ -983,11 +1007,9 @@
         private System.Windows.Forms.Button buttonSaveRaceAs;
         private System.Windows.Forms.Button buttonSaveRace;
         private System.Windows.Forms.TextBox textBoxRaceName;
-        private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.ListBox listBoxWaypoints;
         private System.Windows.Forms.Button buttonLoadRoute;
         private System.Windows.Forms.TextBox textBoxRouteName;
-        private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.Button buttonCommanderTelemetryExportSettings;
         private System.Windows.Forms.Button buttonRaceTelemetryExportSettings;
         private System.Windows.Forms.CheckBox checkBoxExportTargetTelemetry;
@@ -1000,7 +1022,6 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox textBoxRaceStatusServerUrl;
         private System.Windows.Forms.ListBox listBoxParticipants;
-        private System.Windows.Forms.GroupBox groupBox8;
         private System.Windows.Forms.RadioButton radioButtonUseCustomServer;
         private System.Windows.Forms.RadioButton radioButtonUseDefaultServer;
         private System.Windows.Forms.TextBox textBoxUploadServer;
@@ -1020,11 +1041,19 @@
         private System.Windows.Forms.RadioButton radioButtonRaceTypeTimeTrial;
         private System.Windows.Forms.RadioButton radioButtonRaceTypeStandard;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.GroupBox groupBox9;
         private System.Windows.Forms.ComboBox comboBoxTimeTrialRacer;
-        private System.Windows.Forms.RadioButton radioButtonTimeTrialManualStart;
-        private System.Windows.Forms.RadioButton radioButtonTimeTrialAutoStart;
-        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.TabPage tabPage4;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TabPage tabPage5;
+        private System.Windows.Forms.CheckBox checkBoxShowTimeTrialTelemetry;
+        private System.Windows.Forms.CheckBox checkBoxExportTimeTrialTelemetry;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Button buttonTimeTrialTelemetryExportSettings;
     }
 }
 

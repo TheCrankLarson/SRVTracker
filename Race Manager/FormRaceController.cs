@@ -441,6 +441,8 @@ namespace Race_Manager
                             if (_raceTelemetryDisplay != null && !_raceTelemetryDisplay.IsDisposed)
                                 _raceTelemetryDisplay.InitialiseColumns(EDRace.RaceReportDescriptions(), _race.Contestants.Count);
                         }
+                        else
+                            _race.Contestants = new List<string>();
                     }
 
                     _saveFileName = openFileDialog.FileName;
@@ -916,8 +918,8 @@ namespace Race_Manager
             if (comboBoxTarget.SelectedIndex == 0)
             {
                 // Select none, so clear exports and display
-                _targetTelemetryDisplay.UpdateTargetData(null);
-                _trackedTelemetryWriter.ClearFiles();
+                _targetTelemetryDisplay?.UpdateTargetData(null);
+                _trackedTelemetryWriter?.ClearFiles();
                 return;
             }
         }

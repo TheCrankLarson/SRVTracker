@@ -16,8 +16,6 @@ namespace EDTracking
         public EDRoute Route { get; set; } = null;
         public EDRaceStatus Leader { get; set; } = null;
         public List<string> Contestants { get; set; } = new List<string>();
-
-        // For moving race monitoring away from the form.  Will be public once that work complete
         public Dictionary<string, EDRaceStatus> Statuses { get; set; } = new Dictionary<string, EDRaceStatus>();
         private NotableEvents _notableEvents;
         private Dictionary<string, List<EDEvent>> _commanderEventHistory = new Dictionary<string, List<EDEvent>>();
@@ -248,6 +246,8 @@ namespace EDTracking
             StringBuilder hullStrengths = new StringBuilder();
             StringBuilder currentLaps = new StringBuilder();
             StringBuilder lapCounter = new StringBuilder();
+            StringBuilder lastLapTime = new StringBuilder();
+            StringBuilder fastestLapTime = new StringBuilder();
 
             for (int i = 0; i < leaderBoard.Count; i++)
             {
@@ -281,6 +281,8 @@ namespace EDTracking
 
                 if (Statuses != null && (Statuses.Count > i))
                 {
+                    lastLapTime.AppendLine(Statuses[leaderBoard[i]].LastLapTime().ToString("g"));
+                    fastestLapTime.AppendLine(Statuses[leaderBoard[i]].FastestLapTime().ToString("g"));
                     if (Statuses[leaderBoard[i]].Finished)
                     {
                         status.Append(CustomStatusMessages["Completed"]);
@@ -289,6 +291,7 @@ namespace EDTracking
                         distanceToWaypoint.AppendLine("0");
                         currentLaps.AppendLine(CustomStatusMessages["Completed"]);
                         lapCounter.AppendLine(" ");
+                        
                     }
                     else
                     {
@@ -344,6 +347,8 @@ namespace EDTracking
                 statsTable.Add("NotableEvents", String.Join(Environment.NewLine, NotableEvents.EventQueue));
             statsTable.Add("Hull", hullStrengths.ToString());
             statsTable.Add("Lap", currentLaps.ToString());
+            statsTable.Add("LastLapTime", lastLapTime.ToString());
+            statsTable.Add("FastestLapTime", fastestLapTime.ToString());
             statsTable.Add("LapCounter", lapCounter.ToString());
             if (Leader != null)
             {
@@ -369,6 +374,8 @@ namespace EDTracking
                     { "TotalDistanceLeft", "Total distances left" },
                     { "Hull", "Hull strengths left" },
                     { "Lap", "Current laps" },
+                    { "LastLapTime", "Last lap time" },
+                    { "FastestLapTime", "Fastest lap time" },
                     { "LapCounter", "Current laps/total laps" },
                     { "LeaderWaypoint", "Waypoint the current leader is heading towards" },
                     { "LeaderLap", "Lap number of the current leader" }

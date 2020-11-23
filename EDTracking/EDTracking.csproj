@@ -133,6 +133,7 @@
       <DependentUpon>TelemetryTable.xaml</DependentUpon>
     </Compile>
     <Compile Include="TelemetryWriter.cs" />
+    <Compile Include="TimeTrialLeaderboard.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
