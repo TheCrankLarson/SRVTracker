@@ -103,6 +103,9 @@
             this.label10 = new System.Windows.Forms.Label();
             this.checkBoxShowTimeTrialTelemetry = new System.Windows.Forms.CheckBox();
             this.checkBoxExportTimeTrialTelemetry = new System.Windows.Forms.CheckBox();
+            this.numericUpDownLapStartWaypoint = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDownLapEndWaypoint = new System.Windows.Forms.NumericUpDown();
+            this.checkBoxLapCustomWaypoints = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLapCount)).BeginInit();
             this.groupBoxAddCommander.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -115,6 +118,8 @@
             this.tabPage3.SuspendLayout();
             this.tabPage4.SuspendLayout();
             this.tabPage5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLapStartWaypoint)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLapEndWaypoint)).BeginInit();
             this.SuspendLayout();
             // 
             // radioButtonRaceTypeTimeTrial
@@ -250,7 +255,7 @@
             // checkBoxLappedRace
             // 
             this.checkBoxLappedRace.AutoSize = true;
-            this.checkBoxLappedRace.Location = new System.Drawing.Point(259, 149);
+            this.checkBoxLappedRace.Location = new System.Drawing.Point(6, 97);
             this.checkBoxLappedRace.Name = "checkBoxLappedRace";
             this.checkBoxLappedRace.Size = new System.Drawing.Size(52, 17);
             this.checkBoxLappedRace.TabIndex = 6;
@@ -262,7 +267,7 @@
             // 
             // numericUpDownLapCount
             // 
-            this.numericUpDownLapCount.Location = new System.Drawing.Point(317, 148);
+            this.numericUpDownLapCount.Location = new System.Drawing.Point(110, 94);
             this.numericUpDownLapCount.Minimum = new decimal(new int[] {
             1,
             0,
@@ -301,7 +306,7 @@
             this.textBoxSystem.Location = new System.Drawing.Point(6, 29);
             this.textBoxSystem.Name = "textBoxSystem";
             this.textBoxSystem.ReadOnly = true;
-            this.textBoxSystem.Size = new System.Drawing.Size(133, 20);
+            this.textBoxSystem.Size = new System.Drawing.Size(158, 20);
             this.textBoxSystem.TabIndex = 0;
             // 
             // textBoxPlanet
@@ -309,7 +314,7 @@
             this.textBoxPlanet.Location = new System.Drawing.Point(6, 68);
             this.textBoxPlanet.Name = "textBoxPlanet";
             this.textBoxPlanet.ReadOnly = true;
-            this.textBoxPlanet.Size = new System.Drawing.Size(133, 20);
+            this.textBoxPlanet.Size = new System.Drawing.Size(158, 20);
             this.textBoxPlanet.TabIndex = 1;
             // 
             // checkBoxAutoAddCommanders
@@ -317,7 +322,7 @@
             this.checkBoxAutoAddCommanders.AutoSize = true;
             this.checkBoxAutoAddCommanders.Checked = true;
             this.checkBoxAutoAddCommanders.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxAutoAddCommanders.Location = new System.Drawing.Point(63, 143);
+            this.checkBoxAutoAddCommanders.Location = new System.Drawing.Point(125, 143);
             this.checkBoxAutoAddCommanders.Name = "checkBoxAutoAddCommanders";
             this.checkBoxAutoAddCommanders.Size = new System.Drawing.Size(246, 17);
             this.checkBoxAutoAddCommanders.TabIndex = 4;
@@ -330,7 +335,7 @@
             this.groupBoxAddCommander.Controls.Add(this.comboBoxAddCommander);
             this.groupBoxAddCommander.Controls.Add(this.buttonAddCommander);
             this.groupBoxAddCommander.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.groupBoxAddCommander.Location = new System.Drawing.Point(105, -13);
+            this.groupBoxAddCommander.Location = new System.Drawing.Point(167, -13);
             this.groupBoxAddCommander.Name = "groupBoxAddCommander";
             this.groupBoxAddCommander.Size = new System.Drawing.Size(211, 51);
             this.groupBoxAddCommander.TabIndex = 5;
@@ -360,16 +365,16 @@
             // listBoxParticipants
             // 
             this.listBoxParticipants.FormattingEnabled = true;
-            this.listBoxParticipants.Location = new System.Drawing.Point(57, 3);
+            this.listBoxParticipants.Location = new System.Drawing.Point(6, 3);
             this.listBoxParticipants.Name = "listBoxParticipants";
-            this.listBoxParticipants.Size = new System.Drawing.Size(217, 134);
+            this.listBoxParticipants.Size = new System.Drawing.Size(330, 134);
             this.listBoxParticipants.TabIndex = 11;
             this.listBoxParticipants.SelectedIndexChanged += new System.EventHandler(this.listBoxParticipants_SelectedIndexChanged);
             // 
             // buttonUneliminate
             // 
             this.buttonUneliminate.Image = global::Race_Manager.Properties.Resources.AdvancedBreakpointDisabled_16x;
-            this.buttonUneliminate.Location = new System.Drawing.Point(280, 114);
+            this.buttonUneliminate.Location = new System.Drawing.Point(342, 114);
             this.buttonUneliminate.Name = "buttonUneliminate";
             this.buttonUneliminate.Size = new System.Drawing.Size(29, 23);
             this.buttonUneliminate.TabIndex = 10;
@@ -379,7 +384,7 @@
             // buttonTrackParticipant
             // 
             this.buttonTrackParticipant.Image = global::Race_Manager.Properties.Resources.Target_16x;
-            this.buttonTrackParticipant.Location = new System.Drawing.Point(280, 61);
+            this.buttonTrackParticipant.Location = new System.Drawing.Point(342, 61);
             this.buttonTrackParticipant.Name = "buttonTrackParticipant";
             this.buttonTrackParticipant.Size = new System.Drawing.Size(29, 23);
             this.buttonTrackParticipant.TabIndex = 3;
@@ -389,7 +394,7 @@
             // buttonRemoveParticipant
             // 
             this.buttonRemoveParticipant.Image = global::Race_Manager.Properties.Resources.Remove_color_16x;
-            this.buttonRemoveParticipant.Location = new System.Drawing.Point(280, 32);
+            this.buttonRemoveParticipant.Location = new System.Drawing.Point(342, 32);
             this.buttonRemoveParticipant.Name = "buttonRemoveParticipant";
             this.buttonRemoveParticipant.Size = new System.Drawing.Size(29, 23);
             this.buttonRemoveParticipant.TabIndex = 2;
@@ -399,7 +404,7 @@
             // buttonAddParticipant
             // 
             this.buttonAddParticipant.Image = global::Race_Manager.Properties.Resources.Add_16x;
-            this.buttonAddParticipant.Location = new System.Drawing.Point(280, 3);
+            this.buttonAddParticipant.Location = new System.Drawing.Point(342, 3);
             this.buttonAddParticipant.Name = "buttonAddParticipant";
             this.buttonAddParticipant.Size = new System.Drawing.Size(29, 23);
             this.buttonAddParticipant.TabIndex = 1;
@@ -461,7 +466,7 @@
             this.listBoxWaypoints.FormattingEnabled = true;
             this.listBoxWaypoints.Location = new System.Drawing.Point(170, 36);
             this.listBoxWaypoints.Name = "listBoxWaypoints";
-            this.listBoxWaypoints.Size = new System.Drawing.Size(201, 108);
+            this.listBoxWaypoints.Size = new System.Drawing.Size(201, 134);
             this.listBoxWaypoints.TabIndex = 2;
             // 
             // buttonLoadRoute
@@ -805,6 +810,9 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.checkBoxLapCustomWaypoints);
+            this.tabPage2.Controls.Add(this.numericUpDownLapEndWaypoint);
+            this.tabPage2.Controls.Add(this.numericUpDownLapStartWaypoint);
             this.tabPage2.Controls.Add(this.textBoxPlanet);
             this.tabPage2.Controls.Add(this.label3);
             this.tabPage2.Controls.Add(this.label2);
@@ -940,6 +948,65 @@
             this.toolTip1.SetToolTip(this.checkBoxExportTimeTrialTelemetry, "If selected, any enabled target telemetry will be exported to text files.");
             this.checkBoxExportTimeTrialTelemetry.UseVisualStyleBackColor = true;
             // 
+            // numericUpDownLapStartWaypoint
+            // 
+            this.numericUpDownLapStartWaypoint.Location = new System.Drawing.Point(54, 143);
+            this.numericUpDownLapStartWaypoint.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.numericUpDownLapStartWaypoint.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDownLapStartWaypoint.Name = "numericUpDownLapStartWaypoint";
+            this.numericUpDownLapStartWaypoint.Size = new System.Drawing.Size(52, 20);
+            this.numericUpDownLapStartWaypoint.TabIndex = 7;
+            this.numericUpDownLapStartWaypoint.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDownLapStartWaypoint.ValueChanged += new System.EventHandler(this.numericUpDownLapStartWaypoint_ValueChanged);
+            this.numericUpDownLapStartWaypoint.Enter += new System.EventHandler(this.numericUpDownLapStartWaypoint_Enter);
+            // 
+            // numericUpDownLapEndWaypoint
+            // 
+            this.numericUpDownLapEndWaypoint.Location = new System.Drawing.Point(112, 143);
+            this.numericUpDownLapEndWaypoint.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.numericUpDownLapEndWaypoint.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDownLapEndWaypoint.Name = "numericUpDownLapEndWaypoint";
+            this.numericUpDownLapEndWaypoint.Size = new System.Drawing.Size(52, 20);
+            this.numericUpDownLapEndWaypoint.TabIndex = 8;
+            this.numericUpDownLapEndWaypoint.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDownLapEndWaypoint.ValueChanged += new System.EventHandler(this.numericUpDownLapEndWaypoint_ValueChanged);
+            this.numericUpDownLapEndWaypoint.Enter += new System.EventHandler(this.numericUpDownLapEndWaypoint_Enter);
+            // 
+            // checkBoxLapCustomWaypoints
+            // 
+            this.checkBoxLapCustomWaypoints.AutoSize = true;
+            this.checkBoxLapCustomWaypoints.Location = new System.Drawing.Point(6, 120);
+            this.checkBoxLapCustomWaypoints.Name = "checkBoxLapCustomWaypoints";
+            this.checkBoxLapCustomWaypoints.Size = new System.Drawing.Size(153, 17);
+            this.checkBoxLapCustomWaypoints.TabIndex = 9;
+            this.checkBoxLapCustomWaypoints.Text = "Start/end waypoints for lap";
+            this.checkBoxLapCustomWaypoints.UseVisualStyleBackColor = true;
+            this.checkBoxLapCustomWaypoints.CheckedChanged += new System.EventHandler(this.checkBoxLapCustomWaypoints_CheckedChanged);
+            // 
             // FormRaceController
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -975,6 +1042,8 @@
             this.tabPage4.PerformLayout();
             this.tabPage5.ResumeLayout(false);
             this.tabPage5.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLapStartWaypoint)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLapEndWaypoint)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1054,6 +1123,9 @@
         private System.Windows.Forms.CheckBox checkBoxExportTimeTrialTelemetry;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Button buttonTimeTrialTelemetryExportSettings;
+        private System.Windows.Forms.NumericUpDown numericUpDownLapEndWaypoint;
+        private System.Windows.Forms.NumericUpDown numericUpDownLapStartWaypoint;
+        private System.Windows.Forms.CheckBox checkBoxLapCustomWaypoints;
     }
 }
 

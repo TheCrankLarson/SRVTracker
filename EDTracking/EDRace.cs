@@ -24,6 +24,8 @@ namespace EDTracking
         private bool _raceStarted = false;
         public bool Finished { get; set; } = false;
         public int Laps { get; set; } = 0;  // 0 means we are not using laps, any other number means we are
+        public int LapStartWaypoint { get; set; } = 0;
+        public int LapEndWaypoint { get; set; } = 0;
         public bool EliminateOnVehicleDestruction { get; set; } = true;
         public bool SRVAllowed { get; set; } = true;
         public bool FighterAllowed { get; set; } = false;
@@ -119,7 +121,9 @@ namespace EDTracking
                 EDRaceStatus raceStatus = new EDRaceStatus(contestant, this);
                 raceStatus.StartTime = Start;
                 raceStatus.LapStartTime = Start;
-                raceStatus.Lap = 1;
+                raceStatus.Lap = 0;
+                if (LapStartWaypoint == 0)
+                    LapEndWaypoint = Route.Waypoints.Count - 1;
                 if (asServer)
                     raceStatus.notableEvents = _notableEvents;
                 Statuses.Add(contestant, raceStatus);
@@ -290,8 +294,7 @@ namespace EDTracking
                         totalDistanceLeft.AppendLine("0");
                         distanceToWaypoint.AppendLine("0");
                         currentLaps.AppendLine(CustomStatusMessages["Completed"]);
-                        lapCounter.AppendLine(" ");
-                        
+                        lapCounter.AppendLine(" ");                       
                     }
                     else
                     {
@@ -419,9 +422,10 @@ namespace EDTracking
             return null;
         }
 
+        private double _preLapLength = 0;
         private double _lapLength = 0;
         private double _totalRaceDistance = 0;
-        private double _distanceFromLastWPToFirst = 0;
+        private double _distanceFromLastLapWPToFirst = 0;
         private void InitLapCalculations()
         {
             if (Laps < 1)
@@ -429,9 +433,24 @@ namespace EDTracking
 
             // For lap calculations, we need to work out the total length of the course
             _lapLength = Route.TotalDistanceLeftAtWaypoint(0);
-            _distanceFromLastWPToFirst = EDLocation.DistanceBetween(Route.Waypoints[Route.Waypoints.Count - 1].Location, Route.Waypoints[0].Location); ;
-            _lapLength += _distanceFromLastWPToFirst;
-            _totalRaceDistance = _lapLength * Laps;
+            _preLapLength = 0;
+            if (LapStartWaypoint>0)
+            {
+                // We have custom laps, so need to work out lap length differently
+                _preLapLength = _lapLength - Route.TotalDistanceLeftAtWaypoint(LapStartWaypoint - 1);
+                _lapLength -= Route.TotalDistanceLeftAtWaypoint(LapEndWaypoint - 1);
+                _lapLength -= _preLapLength;
+                _distanceFromLastLapWPToFirst = EDLocation.DistanceBetween(Route.Waypoints[LapEndWaypoint - 1].Location, Route.Waypoints[LapStartWaypoint-1].Location);
+            }
+            else
+                _distanceFromLastLapWPToFirst = EDLocation.DistanceBetween(Route.Waypoints[Route.Waypoints.Count - 1].Location, Route.Waypoints[0].Location);
+            _lapLength += _distanceFromLastLapWPToFirst;
+            if (LapStartWaypoint>0)
+            {
+                _totalRaceDistance = (_lapLength * Laps) + _preLapLength + Route.TotalDistanceLeftAtWaypoint(LapEndWaypoint-1);
+            }
+            else
+                _totalRaceDistance = _lapLength * Laps;
         }
 
         public double TotalDistanceLeftAtWaypoint(int WaypointIndex, int Lap)
@@ -439,10 +458,29 @@ namespace EDTracking
             if (Lap > Laps)
                 return 0;
 
-            double distanceLeft = (_lapLength * (Laps - Lap));
-            if (WaypointIndex < Route.Waypoints.Count)
-                distanceLeft += Route.TotalDistanceLeftAtWaypoint(WaypointIndex);
-            distanceLeft += _distanceFromLastWPToFirst;
+            double distanceLeft = 0;
+            if (LapStartWaypoint == 0)
+            {
+                distanceLeft = _lapLength * (Laps - Lap);
+                if (WaypointIndex < Route.Waypoints.Count)
+                    distanceLeft += Route.TotalDistanceLeftAtWaypoint(WaypointIndex);
+                distanceLeft += _distanceFromLastLapWPToFirst;
+                return distanceLeft;
+            }
+
+            // Custom laps
+            if (Lap == 0) // We haven't reached the start lap waypoint yet
+            {
+                distanceLeft = _totalRaceDistance;
+                for (int i = 1; i < LapStartWaypoint; i++)
+                    distanceLeft -= EDLocation.DistanceBetween(Route.Waypoints[i - 1].Location, Route.Waypoints[i].Location);
+                return distanceLeft;
+            }
+
+            distanceLeft = _lapLength * (Laps - Lap) + Route.TotalDistanceLeftAtWaypoint(LapEndWaypoint-1);
+            if (WaypointIndex < LapEndWaypoint - 1)
+                for (int i = WaypointIndex + 1; i < LapEndWaypoint; i++)
+                    distanceLeft += EDLocation.DistanceBetween(Route.Waypoints[i-1].Location, Route.Waypoints[i].Location);
             return distanceLeft;
         }
     }

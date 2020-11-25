@@ -380,6 +380,8 @@ namespace Race_Manager
                     }
             }
             numericUpDownLapCount.Enabled = checkBoxLappedRace.Checked;
+            numericUpDownLapStartWaypoint.Enabled = checkBoxLapCustomWaypoints.Checked;
+            numericUpDownLapEndWaypoint.Enabled = checkBoxLapCustomWaypoints.Checked;
         }
 
         private void Resurrect(string commander)
@@ -450,6 +452,17 @@ namespace Race_Manager
                     DisplayRoute();
                     DisplayRaceSettings();
                     checkBoxAutoAddCommanders.Checked = true;
+                    if (_race.Route != null & _race.Route.Waypoints != null)
+                    {
+                        numericUpDownLapStartWaypoint.Maximum = _race.Route.Waypoints.Count;
+                        numericUpDownLapEndWaypoint.Maximum = _race.Route.Waypoints.Count;
+                    }
+                    checkBoxLapCustomWaypoints.Checked = _race.LapStartWaypoint > 0;
+                    if (checkBoxLapCustomWaypoints.Checked)
+                    {
+                        numericUpDownLapStartWaypoint.Value = _race.LapStartWaypoint;
+                        numericUpDownLapEndWaypoint.Value = _race.LapEndWaypoint;
+                    }
                 }
             }
             UpdateUI();
@@ -488,7 +501,7 @@ namespace Race_Manager
             _race.Finished = false;
             _serverRaceGuid = "";
             textBoxServerRaceGuid.Text = "";
-            _race.Statuses = null;
+            _race.Statuses = new Dictionary<string, EDRaceStatus>();
             _race.Start = DateTime.MinValue;
             listBoxWaypoints.Refresh();
             buttonStartRace.Enabled = true;
@@ -551,6 +564,8 @@ namespace Race_Manager
                         textBoxRouteName.Text = route.Name;
                         DisplayRoute();
                         UpdateUI();
+                        numericUpDownLapStartWaypoint.Maximum = route.Waypoints.Count;
+                        numericUpDownLapEndWaypoint.Maximum = route.Waypoints.Count;
                     }
                     catch { }
                 }
@@ -945,6 +960,73 @@ namespace Race_Manager
                 }
             });
             Task.Run(action);
+        }
+
+        private void checkBoxLapCustomWaypoints_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateUI();
+            if (_race == null)
+                return;
+
+            if (checkBoxLapCustomWaypoints.Checked)
+            {
+                _race.LapStartWaypoint = (int)numericUpDownLapStartWaypoint.Value;
+                _race.LapEndWaypoint = (int)numericUpDownLapEndWaypoint.Value;
+            }
+            else
+                _race.LapStartWaypoint = 0;
+        }
+
+        private void numericUpDownLapStartWaypoint_ValueChanged(object sender, EventArgs e)
+        {
+            if (_race == null || !checkBoxLapCustomWaypoints.Checked)
+                return;
+
+            if (_race.LapStartWaypoint != (int)numericUpDownLapStartWaypoint.Value)
+            {
+                if ((int)numericUpDownLapStartWaypoint.Value > listBoxWaypoints.Items.Count)
+                {
+                    numericUpDownLapStartWaypoint.Value = listBoxWaypoints.Items.Count;
+                    numericUpDownLapStartWaypoint.Maximum = listBoxWaypoints.Items.Count;
+                }
+                _race.LapStartWaypoint = (int)numericUpDownLapStartWaypoint.Value;
+                listBoxWaypoints.SelectedIndex = _race.LapStartWaypoint - 1;
+            }
+        }
+
+        private void numericUpDownLapEndWaypoint_ValueChanged(object sender, EventArgs e)
+        {
+            if (_race == null || !checkBoxLapCustomWaypoints.Checked)
+                return;
+
+            if (_race.LapEndWaypoint != (int)numericUpDownLapEndWaypoint.Value)
+            {
+                if ((int)numericUpDownLapEndWaypoint.Value > listBoxWaypoints.Items.Count)
+                {
+                    numericUpDownLapEndWaypoint.Value = listBoxWaypoints.Items.Count;
+                    numericUpDownLapEndWaypoint.Maximum = listBoxWaypoints.Items.Count;
+                }
+                _race.LapEndWaypoint = (int)numericUpDownLapEndWaypoint.Value;
+                listBoxWaypoints.SelectedIndex = _race.LapEndWaypoint - 1;
+            }
+        }
+
+        private void numericUpDownLapStartWaypoint_Enter(object sender, EventArgs e)
+        {
+            if (_race == null)
+                return;
+
+            if ((int)numericUpDownLapStartWaypoint.Value <= listBoxWaypoints.Items.Count)
+                listBoxWaypoints.SelectedIndex = _race.LapStartWaypoint - 1;
+        }
+
+        private void numericUpDownLapEndWaypoint_Enter(object sender, EventArgs e)
+        {
+            if (_race == null)
+                return;
+
+            if ((int)numericUpDownLapEndWaypoint.Value <= listBoxWaypoints.Items.Count)
+                listBoxWaypoints.SelectedIndex = _race.LapEndWaypoint - 1;
         }
     }
 }
