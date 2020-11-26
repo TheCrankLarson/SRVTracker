@@ -21,6 +21,8 @@ namespace EDTracking
         private Dictionary<string, List<EDEvent>> _commanderEventHistory = new Dictionary<string, List<EDEvent>>();
 
         public DateTime Start { get; set; } = DateTime.MinValue;
+        public bool StartTimeFromFirstWaypoint { get; set; } = false;
+        private bool _firstWaypointPassed = false;
         private bool _raceStarted = false;
         public bool Finished { get; set; } = false;
         public int Laps { get; set; } = 0;  // 0 means we are not using laps, any other number means we are
@@ -357,6 +359,10 @@ namespace EDTracking
             {
                 statsTable.Add("LeaderWaypoint", Leader.WaypointIndex.ToString());
                 statsTable.Add("LeaderLap", Leader.Lap.ToString());
+                if (Leader.Finished)
+                    statsTable.Add("LeaderLapCount", "Finished");
+                else
+                    statsTable.Add("LeaderLapCount", $"Lap {Leader.Lap}/{Laps}");
             }
 
             return statsTable;
@@ -381,7 +387,8 @@ namespace EDTracking
                     { "FastestLapTime", "Fastest lap time" },
                     { "LapCounter", "Current laps/total laps" },
                     { "LeaderWaypoint", "Waypoint the current leader is heading towards" },
-                    { "LeaderLap", "Lap number of the current leader" }
+                    { "LeaderLap", "Lap number of the current leader" },
+                    { "LeaderLapCount", "Lap number of the current leader in format Lap 1/2" }
                 };
         }
 
@@ -408,6 +415,12 @@ namespace EDTracking
                 if (Statuses.ContainsKey(edEvent.Commander))
                 {
                     Statuses[edEvent.Commander].UpdateStatus(edEvent);
+                    if (StartTimeFromFirstWaypoint && !_firstWaypointPassed)
+                        if (Statuses[edEvent.Commander].WaypointIndex>0)
+                        {
+                            _firstWaypointPassed = true;
+                            Start = edEvent.TimeStamp;
+                        }
                     if (!_commanderEventHistory.ContainsKey(edEvent.Commander))
                         _commanderEventHistory.Add(edEvent.Commander, new List<EDEvent>());
                     _commanderEventHistory[edEvent.Commander].Add(edEvent);

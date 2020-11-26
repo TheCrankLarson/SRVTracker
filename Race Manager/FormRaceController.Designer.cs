@@ -106,6 +106,7 @@
             this.numericUpDownLapStartWaypoint = new System.Windows.Forms.NumericUpDown();
             this.numericUpDownLapEndWaypoint = new System.Windows.Forms.NumericUpDown();
             this.checkBoxLapCustomWaypoints = new System.Windows.Forms.CheckBox();
+            this.checkBoxStartRaceTimerAtFirstWaypoint = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLapCount)).BeginInit();
             this.groupBoxAddCommander.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -282,6 +283,7 @@
             0,
             0,
             0});
+            this.numericUpDownLapCount.ValueChanged += new System.EventHandler(this.numericUpDownLapCount_ValueChanged);
             // 
             // label2
             // 
@@ -832,6 +834,7 @@
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.checkBoxStartRaceTimerAtFirstWaypoint);
             this.tabPage3.Controls.Add(this.radioButtonRaceTypeTimeTrial);
             this.tabPage3.Controls.Add(this.label1);
             this.tabPage3.Controls.Add(this.radioButtonRaceTypeStandard);
@@ -1007,6 +1010,20 @@
             this.checkBoxLapCustomWaypoints.UseVisualStyleBackColor = true;
             this.checkBoxLapCustomWaypoints.CheckedChanged += new System.EventHandler(this.checkBoxLapCustomWaypoints_CheckedChanged);
             // 
+            // checkBoxStartRaceTimerAtFirstWaypoint
+            // 
+            this.checkBoxStartRaceTimerAtFirstWaypoint.AutoSize = true;
+            this.checkBoxStartRaceTimerAtFirstWaypoint.Location = new System.Drawing.Point(7, 115);
+            this.checkBoxStartRaceTimerAtFirstWaypoint.Name = "checkBoxStartRaceTimerAtFirstWaypoint";
+            this.checkBoxStartRaceTimerAtFirstWaypoint.Size = new System.Drawing.Size(302, 17);
+            this.checkBoxStartRaceTimerAtFirstWaypoint.TabIndex = 15;
+            this.checkBoxStartRaceTimerAtFirstWaypoint.Text = "Start race timer when first participant reaches first waypoint";
+            this.toolTip1.SetToolTip(this.checkBoxStartRaceTimerAtFirstWaypoint, "If selected, the race start time will be recorded as the time\r\nthat the first rac" +
+        "er passes the first waypoint.\r\nOtherwise, timer starts as soon as race is starte" +
+        "d.");
+            this.checkBoxStartRaceTimerAtFirstWaypoint.UseVisualStyleBackColor = true;
+            this.checkBoxStartRaceTimerAtFirstWaypoint.CheckedChanged += new System.EventHandler(this.checkBoxStartRaceTimerAtFirstWaypoint_CheckedChanged);
+            // 
             // FormRaceController
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1126,6 +1143,7 @@
         private System.Windows.Forms.NumericUpDown numericUpDownLapEndWaypoint;
         private System.Windows.Forms.NumericUpDown numericUpDownLapStartWaypoint;
         private System.Windows.Forms.CheckBox checkBoxLapCustomWaypoints;
+        private System.Windows.Forms.CheckBox checkBoxStartRaceTimerAtFirstWaypoint;
     }
 }
 

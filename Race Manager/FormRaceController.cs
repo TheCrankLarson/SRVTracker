@@ -1028,5 +1028,23 @@ namespace Race_Manager
             if ((int)numericUpDownLapEndWaypoint.Value <= listBoxWaypoints.Items.Count)
                 listBoxWaypoints.SelectedIndex = _race.LapEndWaypoint - 1;
         }
+
+        private void numericUpDownLapCount_ValueChanged(object sender, EventArgs e)
+        {
+            if (_race == null)
+                return;
+
+            if ((int)numericUpDownLapCount.Value != _race.Laps)
+                _race.Laps = (int)numericUpDownLapCount.Value;
+        }
+
+        private void checkBoxStartRaceTimerAtFirstWaypoint_CheckedChanged(object sender, EventArgs e)
+        {
+            if (_race == null)
+                return;
+
+            if (_race.StartTimeFromFirstWaypoint != checkBoxStartRaceTimerAtFirstWaypoint.Checked)
+                _race.StartTimeFromFirstWaypoint = checkBoxStartRaceTimerAtFirstWaypoint.Checked;
+        }
     }
 }
