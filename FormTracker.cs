@@ -83,6 +83,7 @@ namespace SRVTracker
             trackerHUD1.AutoTrack();  // Tracker HUD listens for events that we generate when location changes
             if (!File.Exists("Race Manager.exe"))
                 buttonRaceTracker.Enabled = false;
+            radioButtonUseTimer.Checked = true;
         }
 
         private void CalculateWindowSizes()

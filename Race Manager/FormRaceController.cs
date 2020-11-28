@@ -477,7 +477,6 @@ namespace Race_Manager
 
             if (!String.IsNullOrEmpty(_serverRaceGuid))
             {
-                timerDownloadRaceTelemetry.Stop();
                 timerTrackTarget.Stop();
                 // Send notification to server that race is finished
                 try
@@ -664,7 +663,13 @@ namespace Race_Manager
         private void buttonAddCommander_Click(object sender, EventArgs e)
         {
             groupBoxAddCommander.Visible = false;
-            if (!String.IsNullOrEmpty(comboBoxAddCommander.Text))
+            if (comboBoxAddCommander.SelectedIndex==0)
+            {
+                // Add all online commanders
+                foreach (string commander in CommanderWatcher.GetCommanders())
+                    AddTrackedCommander(commander,"");
+            }
+            else if (!String.IsNullOrEmpty(comboBoxAddCommander.Text))
                 AddTrackedCommander(comboBoxAddCommander.Text, "");
             comboBoxAddCommander.Text = "";
         }
@@ -672,8 +677,11 @@ namespace Race_Manager
         private void buttonAddParticipant_Click(object sender, EventArgs e)
         {
             comboBoxAddCommander.Items.Clear();
+            comboBoxAddCommander.Items.Add("Add all");
             foreach (string commander in CommanderWatcher.GetCommanders())
                 comboBoxAddCommander.Items.Add(commander);
+            if (comboBoxAddCommander.Items.Count == 1)
+                comboBoxAddCommander.Items.Clear();
             groupBoxAddCommander.Visible = true;
             comboBoxAddCommander.Focus();
         }

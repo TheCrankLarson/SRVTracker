@@ -122,12 +122,18 @@ namespace EDTracking
             telemetry.Add("DistanceToWaypoint", DistanceToWaypointInKmDisplay);
             telemetry.Add("TotalDistanceLeft", TotalDistanceLeftInKmDisplay);
             telemetry.Add("Hull", HullDisplay);
-            telemetry.Add("Lap", Lap.ToString());
-            telemetry.Add("LastLapTime", LastLapTime().ToString("g"));
-            if (FastestLap > 0)
+            if (_race?.Laps > 0)
             {
-                telemetry.Add("FastestLap", FastestLap.ToString());
-                telemetry.Add("FastestLapTime", FastestLapTime().ToString());
+                if (Lap>0)
+                    telemetry.Add("Lap", Lap.ToString());
+                else
+                    telemetry.Add("Lap", "1");
+                telemetry.Add("LastLapTime", LastLapTime().ToString("g"));
+                if (FastestLap > 0)
+                {
+                    telemetry.Add("FastestLap", FastestLap.ToString());
+                    telemetry.Add("FastestLapTime", FastestLapTime().ToString());
+                }
             }
             return telemetry;
         }
@@ -211,7 +217,12 @@ namespace EDTracking
                 {
                     statusBuilder.Append($"-> {_race.Route.Waypoints[WaypointIndex].Name}");
                     if (_race?.Laps > 0)
-                        statusBuilder.Append($" (lap {Lap})");
+                    {
+                        if (Lap > 0)
+                            statusBuilder.Append($" (lap {Lap})");
+                        else
+                            statusBuilder.Append($" (lap 1)");
+                    }
                 }
                 if (_lowFuel)
                     statusBuilder.Append(" (low fuel)");

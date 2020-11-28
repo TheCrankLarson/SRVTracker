@@ -34,7 +34,7 @@ namespace EDTracking
 
         private void CalculateDistances(bool force = false)
         {
-            if (!force || Waypoints.Count == _lastWaypointCount)
+            if (!force && Waypoints.Count == _distanceLeftAtWaypoint.Count)
                 return;
 
             _distanceLeftAtWaypoint = new List<double>();
