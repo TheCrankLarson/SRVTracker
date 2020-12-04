@@ -331,9 +331,7 @@
             this.radioButtonWatchStatusFile.Size = new System.Drawing.Size(53, 17);
             this.radioButtonWatchStatusFile.TabIndex = 9;
             this.radioButtonWatchStatusFile.Text = "Event";
-            this.toolTip1.SetToolTip(this.radioButtonWatchStatusFile, "This method of monitoring the status.json file registers for\r\nnotifications of ch" +
-        "anges to the file, and when it receives\r\nsuch a notification will read the updat" +
-        "ed file.");
+            this.toolTip1.SetToolTip(this.radioButtonWatchStatusFile, resources.GetString("radioButtonWatchStatusFile.ToolTip"));
             this.radioButtonWatchStatusFile.UseVisualStyleBackColor = true;
             this.radioButtonWatchStatusFile.CheckedChanged += new System.EventHandler(this.radioButtonWatchStatusFile_CheckedChanged);
             // 
@@ -348,8 +346,8 @@
             this.radioButtonUseTimer.TabIndex = 8;
             this.radioButtonUseTimer.TabStop = true;
             this.radioButtonUseTimer.Text = "Timer";
-            this.toolTip1.SetToolTip(this.radioButtonUseTimer, "This method of Status.json monitoring simply checks whether the\r\nfile has been up" +
-        "dated every 750ms.  If it has, it reads and processes\r\nit.");
+            this.toolTip1.SetToolTip(this.radioButtonUseTimer, "This method of Status.json monitoring checks whether the file\r\nhas been updated e" +
+        "very 700ms.  If it has, it reads and processes\r\nit.");
             this.radioButtonUseTimer.UseVisualStyleBackColor = true;
             this.radioButtonUseTimer.CheckedChanged += new System.EventHandler(this.radioButtonUseTimer_CheckedChanged);
             // 
