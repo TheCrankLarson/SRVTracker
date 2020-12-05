@@ -470,11 +470,6 @@ namespace Race_Manager
 
         private void buttonStopRace_Click(object sender, EventArgs e)
         {
-            //_race.Finished = true;
-            //if (_race.Statuses != null)
-            //    foreach (EDRaceStatus status in _race.Statuses.Values)
-            //        status.Finished = true;
-
             if (!String.IsNullOrEmpty(_serverRaceGuid))
             {
                 timerTrackTarget.Stop();
@@ -502,6 +497,8 @@ namespace Race_Manager
             textBoxServerRaceGuid.Text = "";
             _race.Statuses = new Dictionary<string, EDRaceStatus>();
             _race.Start = DateTime.MinValue;
+            _race.Contestants = new List<String>();
+            listBoxParticipants.Items.Clear();
             listBoxWaypoints.Refresh();
             buttonStartRace.Enabled = true;
             buttonReset.Enabled = false;
@@ -509,6 +506,9 @@ namespace Race_Manager
             _raceTelemetryWriter.ClearFiles();
             _trackedTelemetryWriter.ClearFiles();
             _skipAutoAdd = new List<string>();
+            if (_raceTelemetryDisplay != null && !_raceTelemetryDisplay.IsDisposed)
+                _raceTelemetryDisplay.InitialiseColumns(EDRace.RaceReportDescriptions(), _race.Contestants.Count);
+            GeneratePreraceExports();
         }
 
         private void buttonStartRace_Click(object sender, EventArgs e)

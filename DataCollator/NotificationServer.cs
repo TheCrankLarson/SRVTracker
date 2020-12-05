@@ -579,7 +579,7 @@ namespace DataCollator
 
         private void GetCommanderRaceStatus(Guid raceGuid, string commander, HttpListenerContext Context)
         {
-            if (raceGuid != Guid.Empty && _races.ContainsKey(raceGuid) && _races[raceGuid].Statuses.ContainsKey(commander))
+            if (_races.ContainsKey(raceGuid) && _races[raceGuid].Statuses.ContainsKey(commander))
                 WriteResponse(Context, _races[raceGuid].Statuses[commander].ToJson());
             else
             {

@@ -125,7 +125,10 @@ namespace EDTracking
                 raceStatus.LapStartTime = Start;
                 raceStatus.Lap = 0;
                 if (LapStartWaypoint == 0)
+                {
+                    raceStatus.Lap = 1;
                     LapEndWaypoint = Route.Waypoints.Count - 1;
+                }
                 if (asServer)
                     raceStatus.notableEvents = _notableEvents;
                 Statuses.Add(contestant, raceStatus);
@@ -313,11 +316,17 @@ namespace EDTracking
                         {
                             distanceToWaypoint.AppendLine(Statuses[leaderBoard[i]].DistanceToWaypointInKmDisplay);
                             totalDistanceLeft.AppendLine(Statuses[leaderBoard[i]].TotalDistanceLeftInKmDisplay);
-                            if (Statuses[leaderBoard[i]].Lap>0)
+                            if (Statuses[leaderBoard[i]].Lap > 0)
+                            {
                                 currentLaps.AppendLine(Statuses[leaderBoard[i]].Lap.ToString());
+                                lapCounter.AppendLine($"{Statuses[leaderBoard[i]].Lap}/{Laps}");
+                            }
                             else
+                            {
                                 currentLaps.AppendLine("1");
-                            lapCounter.AppendLine($"{Statuses[leaderBoard[i]].Lap}/{Laps}");
+                                lapCounter.AppendLine($"1/{Laps}");
+                            }
+                            
                             s = Statuses[leaderBoard[i]].ToString();
                         }
 
