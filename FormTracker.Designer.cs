@@ -325,6 +325,7 @@
             // radioButtonWatchStatusFile
             // 
             this.radioButtonWatchStatusFile.AutoSize = true;
+            this.radioButtonWatchStatusFile.Enabled = false;
             this.radioButtonWatchStatusFile.ForeColor = System.Drawing.Color.White;
             this.radioButtonWatchStatusFile.Location = new System.Drawing.Point(6, 20);
             this.radioButtonWatchStatusFile.Name = "radioButtonWatchStatusFile";

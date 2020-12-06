@@ -197,85 +197,64 @@ namespace EDTracking
 
         private string GenerateStatus()
         {
+            if (Eliminated)
+                _status = StatusMessage("Eliminated");
+            else if (Finished)
+                _status = StatusMessage("Finished");
+            else if (_inPits)
+                _status = StatusMessage("Pitstop");
+            else
+                _status = "";
+
+            return _status;           
+        }
+
+        public string StatusFlagsPanel()
+        {
             StringBuilder statusBuilder = new StringBuilder();
 
-            if (Eliminated)
-                statusBuilder.Append(StatusMessage("Eliminated"));
-            else if (Finished)
-            {
-                TimeSpan timeSpan = FinishTime.Subtract(StartTime);
-                statusBuilder.Append($"{StatusMessage("Completed")} ({timeSpan.ToString("hh\\:mm\\:ss")})");
-            }           
-            else if (_inPits)
-            {
-                statusBuilder.Append(StatusMessage("Pitstop"));
-            }         
+            // Flags that apply to all vehicles
+            if (isFlagSet(StatusFlags.Night_Vision_Active))
+                statusBuilder.Append(" NV");
 
-            if (statusBuilder.Length == 0 && Started)
+            if (isFlagSet(StatusFlags.LightsOn))
+                statusBuilder.Append(" L");
+
+            if (isFlagSet(StatusFlags.In_SRV))
             {
-                if (_race?.Route != null)
-                {
-                    statusBuilder.Append($"-> {_race.Route.Waypoints[WaypointIndex].Name}");
-                    if (_race?.Laps > 0)
-                    {
-                        if (Lap > 0)
-                            statusBuilder.Append($" (lap {Lap})");
-                        else
-                            statusBuilder.Append($" (lap 1)");
-                    }
-                }
-                if (_lowFuel)
-                    statusBuilder.Append(" (low fuel)");
+                // SRV only flags
+
+                if (isFlagSet(StatusFlags.srvHighBeam))
+                    statusBuilder.Append("H");
+                else
+                    statusBuilder.Append("L");
+
+                if (isFlagSet(StatusFlags.Srv_Handbrake))
+                    statusBuilder.Append(" HB");
+
+                if (isFlagSet(StatusFlags.Srv_DriveAssist))
+                    statusBuilder.Append(" DA");
+            }
+            else if (isFlagSet(StatusFlags.In_MainShip))
+            {
+                // Ship only flags
+                if (isFlagSet(StatusFlags.Landing_Gear_Down))
+                    statusBuilder.Append(" LG");
+
+                if (!isFlagSet(StatusFlags.FlightAssist_Off))
+                    statusBuilder.Append(" FA");
+
+                if (isFlagSet(StatusFlags.Silent_Running))
+                    statusBuilder.Append(" SR");
+
+                if (isFlagSet(StatusFlags.Cargo_Scoop_Deployed))
+                    statusBuilder.Append(" C");
+
+                if (isFlagSet(StatusFlags.Being_Interdicted))
+                    statusBuilder.Append(" I");
             }
 
-            if (ShowDetailedStatus)
-            {
-                // Flags that apply to all vehicles
-                if (isFlagSet(StatusFlags.Night_Vision_Active))
-                    statusBuilder.Append(" NV");
-
-                if (isFlagSet(StatusFlags.LightsOn))
-                    statusBuilder.Append(" L");
-
-                if (isFlagSet(StatusFlags.In_SRV))
-                {
-                    // SRV only flags
-
-                    if (isFlagSet(StatusFlags.srvHighBeam))
-                        statusBuilder.Append("H");
-                    else
-                        statusBuilder.Append("L");
-
-                    if (isFlagSet(StatusFlags.Srv_Handbrake))
-                        statusBuilder.Append(" HB");
-
-                    if (isFlagSet(StatusFlags.Srv_DriveAssist))
-                        statusBuilder.Append(" DA");
-                }
-                else if (isFlagSet(StatusFlags.In_MainShip))
-                {
-                    // Ship only flags
-                    if (isFlagSet(StatusFlags.Landing_Gear_Down))
-                        statusBuilder.Append(" LG");
-
-                    if (!isFlagSet(StatusFlags.FlightAssist_Off))
-                        statusBuilder.Append(" FA");
-
-                    if (isFlagSet(StatusFlags.Silent_Running))
-                        statusBuilder.Append(" SR");
-
-                    if (isFlagSet(StatusFlags.Cargo_Scoop_Deployed))
-                        statusBuilder.Append(" C");
-
-                    if (isFlagSet(StatusFlags.Being_Interdicted))
-                        statusBuilder.Append(" I");
-                }
-            }
-            if (statusBuilder.Length == 0)
-                statusBuilder.Append("NA");
-
-            _status = statusBuilder.ToString();
-            return _status;
+            return statusBuilder.ToString();
         }
 
         public String DistanceToWaypointInKmDisplay

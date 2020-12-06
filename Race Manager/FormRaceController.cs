@@ -361,7 +361,7 @@ namespace Race_Manager
             bool raceValid = (_race != null);
             bool raceStarted = _race?.Start > DateTime.MinValue;
             buttonAddParticipant.Enabled = raceValid;
-            buttonRemoveParticipant.Enabled = raceValid;
+            buttonRemoveParticipant.Enabled = raceValid && !raceStarted;
             buttonUneliminate.Enabled = raceValid && raceStarted;
             buttonTrackParticipant.Enabled = listBoxParticipants.SelectedIndex > -1;
             checkBoxAutoAddCommanders.Enabled = raceValid && !raceStarted;
@@ -700,7 +700,7 @@ namespace Race_Manager
 
         private void buttonRemoveParticipant_Click(object sender, EventArgs e)
         {
-            if ((listBoxParticipants.SelectedItems.Count != 1) || (_race.Start > DateTime.MinValue))
+            if ( (listBoxParticipants.SelectedItems.Count != 1) || (_race.Start > DateTime.MinValue) || (!String.IsNullOrEmpty(_serverRaceGuid)) )
                 return;
 
             string commanderToRemove = (string)listBoxParticipants.SelectedItem;
@@ -1053,6 +1053,34 @@ namespace Race_Manager
 
             if (_race.StartTimeFromFirstWaypoint != checkBoxStartRaceTimerAtFirstWaypoint.Checked)
                 _race.StartTimeFromFirstWaypoint = checkBoxStartRaceTimerAtFirstWaypoint.Checked;
+        }
+
+        private void buttonConnectToRace_Click(object sender, EventArgs e)
+        {
+            if (comboBoxConnectToRace.Visible)
+            {
+                comboBoxConnectToRace.Visible = false;
+                return;
+            }
+
+            // Retrieve list of races on server and show them in the list
+            string response = "";
+            try
+            {
+                using (WebClient webClient = new WebClient())
+                    response = webClient.DownloadString($"http://{ServerAddress()}:11938/DataCollator/getactiveraces");
+            }
+            catch { }
+
+            if (String.IsNullOrEmpty(response))
+                return;
+
+            // Races are returned in format guid,Name
+            using (System.IO.StringReader reader = new System.IO.StringReader(response))
+            {
+                string activeRace = reader.ReadLine();
+
+            }
         }
     }
 }

@@ -63,7 +63,7 @@
             this.textBoxReleaseNotes.Name = "textBoxReleaseNotes";
             this.textBoxReleaseNotes.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.textBoxReleaseNotes.Size = new System.Drawing.Size(783, 404);
-            this.textBoxReleaseNotes.TabIndex = 1;
+            this.textBoxReleaseNotes.TabIndex = 2;
             // 
             // buttonClose
             // 
@@ -71,7 +71,7 @@
             this.buttonClose.Location = new System.Drawing.Point(366, 480);
             this.buttonClose.Name = "buttonClose";
             this.buttonClose.Size = new System.Drawing.Size(75, 23);
-            this.buttonClose.TabIndex = 2;
+            this.buttonClose.TabIndex = 1;
             this.buttonClose.Text = "Ok";
             this.buttonClose.UseVisualStyleBackColor = true;
             this.buttonClose.Click += new System.EventHandler(this.buttonClose_Click);

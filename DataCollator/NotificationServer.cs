@@ -268,25 +268,28 @@ namespace DataCollator
                 if (requestUri.StartsWith("status"))
                 {
                     // This is a request for all known locations/statuses of clients 
-                    action = (() => {
+                    action = (() =>
+                    {
                         SendStatus(context);
                     });
                 }
                 else if (requestUri.StartsWith("racestatus"))
                 {
-                    action = (() => {
+                    action = (() =>
+                    {
                         SendRaceStatus(requestUri, context, sRequest);
                     });
                 }
                 else if (requestUri.StartsWith("startrace"))
                 {
-                    action = (() => {
+                    action = (() =>
+                    {
                         StartRace(sRequest, context);
                     });
                 }
                 else if (requestUri.StartsWith("resurrectcommander"))
                 {
-                    if (requestUri.Length>19)
+                    if (requestUri.Length > 19)
                     {
                         action = (() =>
                         {
@@ -301,13 +304,24 @@ namespace DataCollator
                         });
                     }
                 }
+                else if (requestUri.StartsWith("getactiveraces"))
+                {
+                    action = (() =>
+                    {
+                        StringBuilder activeRaces = new StringBuilder();
+                        foreach (Guid guid in _races.Keys)
+                            if (!_races[guid].Finished)
+                                activeRaces.AppendLine($"{guid},{_races[guid].Name}");
+                        WriteResponse(context, activeRaces.ToString());
+                    });
+                }
                 else if (requestUri.StartsWith("getrace"))
                 {
                     if (requestUri.Length > 8)
                     {
                         // Guid can be specified in the Url or in POST data.  This one has something in the Url
                         Guid raceGuid = Guid.Empty;
-                        Guid.TryParse(requestUri.Substring(8), out raceGuid); 
+                        Guid.TryParse(requestUri.Substring(8), out raceGuid);
                         action = (() =>
                         {
                             GetRace(raceGuid, context);
@@ -437,7 +451,8 @@ namespace DataCollator
                     }
                 }
                 else
-                    action = (() => {
+                    action = (() =>
+                    {
                         WriteResponse(context, $"{Application.ProductName} v{Application.ProductVersion}");
                     });
                 Task.Run(action);
@@ -660,7 +675,7 @@ namespace DataCollator
         private void SendStatus(HttpListenerContext Context)
         {
             // Send Commander status
-            if (DateTime.Now.Subtract(_lastStaleDataCheck).TotalMinutes > 30)
+            if (DateTime.Now.Subtract(_lastStaleDataCheck).TotalSeconds > 60)
                 ClearStaleData();
 
             // Check if a client Id was specified
@@ -706,25 +721,28 @@ namespace DataCollator
             if (_playerStatus != null)
             {
                 foreach (string commander in _playerStatus.Keys)
-                    if (DateTime.Now.Subtract(_playerStatus[commander].TimeStamp).TotalMinutes > 120)
+                    if (DateTime.Now.Subtract(_playerStatus[commander].TimeStamp).TotalSeconds > 60)
                         playersToRemove.Add(commander);
-                foreach(string commander in playersToRemove)
+                if (playersToRemove.Count > 0)
+                {
+                    foreach (string commander in playersToRemove)
                     {
                         _playerStatus.Remove(commander);
-                        Log($"{commander}: deleted tracking data as last update over 2 hours ago", true);
+                        Log($"{commander}: deleted tracking data as last update over 1 minute ago", true);
                     }
-                playersToRemove = new List<string>();
+                    playersToRemove = new List<string>();
+                }
             }
 
             if (_commanderStatus != null)
             {
                 foreach (string commander in _commanderStatus.Keys)
-                    if (DateTime.Now.Subtract(_commanderStatus[commander].TimeStamp).TotalMinutes > 120)
+                    if (DateTime.Now.Subtract(_commanderStatus[commander].TimeStamp).TotalMinutes > 30)
                         playersToRemove.Add(commander);
                 foreach (string commander in playersToRemove)
                 {
                     _commanderStatus.Remove(commander);
-                    Log($"{commander}: deleted race status data as last update over 2 hours ago", true);
+                    Log($"{commander}: deleted race status data as last update over 30 minutes ago", true);
                 }
             }
 

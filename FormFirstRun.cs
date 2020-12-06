@@ -21,10 +21,16 @@ namespace SRVTracker
                 textBoxReleaseNotes.Text = File.ReadAllText("ReleaseNotes.txt");
             }
             catch { }
+            textBoxCommanderName.Focus();
         }
 
         private void buttonClose_Click(object sender, EventArgs e)
         {
+            if (String.IsNullOrEmpty(textBoxCommanderName.Text))
+            {
+                textBoxCommanderName.Focus();
+                return;
+            }
             this.Hide();
         }
 
@@ -37,8 +43,11 @@ namespace SRVTracker
         {
             if (e.KeyCode==Keys.Return || e.KeyCode==Keys.Enter)
             {
-                e.Handled = true;
-                this.Hide();
+                if (!String.IsNullOrEmpty(textBoxCommanderName.Text))
+                {
+                    e.Handled = true;
+                    this.Hide();
+                }
             }
         }
     }

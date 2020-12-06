@@ -109,20 +109,16 @@ namespace SRVTracker
         {
             _statusTimer.Stop();
 
-            if (!radioButtonWatchStatusFile.Checked)
+            // If the file has been written, then process it
+            DateTime lastWriteTime = File.GetLastWriteTime(_statusFile);
+            if ((lastWriteTime != _lastFileWrite) || (DateTime.Now.Subtract(_lastStatusSend).TotalSeconds > 5))
             {
-                // If the file has been written, then process it
-                DateTime lastWriteTime = File.GetLastWriteTime(_statusFile);
-                if ((lastWriteTime != _lastFileWrite) || (DateTime.Now.Subtract(_lastStatusSend).TotalSeconds > 5))
-                {
-                    ProcessStatusFileUpdate(_statusFile);
-                    _lastFileWrite = lastWriteTime;
-                }
-            }
-
-            // This is the five second ping when we are watching for file updates
-            if (!String.IsNullOrEmpty(_statusFile) && (DateTime.Now.Subtract(_lastStatusSend).TotalSeconds > 5) )
                 ProcessStatusFileUpdate(_statusFile);
+                _lastFileWrite = lastWriteTime;
+            }
+            else if ( DateTime.Now.Subtract(_lastStatusSend).TotalSeconds > 5 )
+                ProcessStatusFileUpdate(_statusFile); // This is the five second ping when we are watching for file updates
+
             _statusTimer.Start();
         }
 
@@ -247,6 +243,9 @@ namespace SRVTracker
         private void ProcessStatusFileUpdate(string statusFile)
         {
             // Read the status from the file and update the UI
+            if (String.IsNullOrEmpty(statusFile))
+                return;
+
             string status = "";
             try
             {
