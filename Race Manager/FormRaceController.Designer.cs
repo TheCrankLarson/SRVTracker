@@ -109,6 +109,7 @@
             this.buttonSaveRaceAs = new System.Windows.Forms.Button();
             this.buttonSaveRace = new System.Windows.Forms.Button();
             this.comboBoxConnectToRace = new System.Windows.Forms.ComboBox();
+            this.checkBoxShowRaceTimer = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLapCount)).BeginInit();
             this.groupBoxAddCommander.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -780,6 +781,7 @@
             // 
             // tabPage4
             // 
+            this.tabPage4.Controls.Add(this.checkBoxShowRaceTimer);
             this.tabPage4.Controls.Add(this.checkBoxShowTimeTrialTelemetry);
             this.tabPage4.Controls.Add(this.checkBoxExportTimeTrialTelemetry);
             this.tabPage4.Controls.Add(this.label10);
@@ -1048,6 +1050,18 @@
             this.comboBoxConnectToRace.Size = new System.Drawing.Size(174, 21);
             this.comboBoxConnectToRace.TabIndex = 23;
             this.comboBoxConnectToRace.Visible = false;
+            this.comboBoxConnectToRace.SelectedIndexChanged += new System.EventHandler(this.comboBoxConnectToRace_SelectedIndexChanged);
+            this.comboBoxConnectToRace.Leave += new System.EventHandler(this.comboBoxConnectToRace_Leave);
+            // 
+            // checkBoxShowRaceTimer
+            // 
+            this.checkBoxShowRaceTimer.AutoSize = true;
+            this.checkBoxShowRaceTimer.Location = new System.Drawing.Point(185, 127);
+            this.checkBoxShowRaceTimer.Name = "checkBoxShowRaceTimer";
+            this.checkBoxShowRaceTimer.Size = new System.Drawing.Size(102, 17);
+            this.checkBoxShowRaceTimer.TabIndex = 10;
+            this.checkBoxShowRaceTimer.Text = "Show race timer";
+            this.checkBoxShowRaceTimer.UseVisualStyleBackColor = true;
             // 
             // FormRaceController
             // 
@@ -1171,6 +1185,7 @@
         private System.Windows.Forms.CheckBox checkBoxStartRaceTimerAtFirstWaypoint;
         private System.Windows.Forms.Button buttonConnectToRace;
         private System.Windows.Forms.ComboBox comboBoxConnectToRace;
+        private System.Windows.Forms.CheckBox checkBoxShowRaceTimer;
     }
 }
 

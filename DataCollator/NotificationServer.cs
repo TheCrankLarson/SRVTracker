@@ -725,10 +725,13 @@ namespace DataCollator
                         playersToRemove.Add(commander);
                 if (playersToRemove.Count > 0)
                 {
-                    foreach (string commander in playersToRemove)
+                    lock (_notificationLock)
                     {
-                        _playerStatus.Remove(commander);
-                        Log($"{commander}: deleted tracking data as last update over 1 minute ago", true);
+                        foreach (string commander in playersToRemove)
+                        {
+                            _playerStatus.Remove(commander);
+                            Log($"{commander}: deleted tracking data as last update over 1 minute ago", true);
+                        }
                     }
                     playersToRemove = new List<string>();
                 }
@@ -739,23 +742,32 @@ namespace DataCollator
                 foreach (string commander in _commanderStatus.Keys)
                     if (DateTime.Now.Subtract(_commanderStatus[commander].TimeStamp).TotalMinutes > 30)
                         playersToRemove.Add(commander);
-                foreach (string commander in playersToRemove)
+
+                if (playersToRemove.Count > 0)
                 {
-                    _commanderStatus.Remove(commander);
-                    Log($"{commander}: deleted race status data as last update over 30 minutes ago", true);
+                    lock (_notificationLock)
+                    {
+                        foreach (string commander in playersToRemove)
+                        {
+                            _commanderStatus.Remove(commander);
+                            Log($"{commander}: deleted race status data as last update over 30 minutes ago", true);
+                        }
+                    }
                 }
             }
 
             if (_races.Count > 0) // We remove old races after 72 hours
+            {
+                List<Guid> racesToRemove = new List<Guid>();
                 foreach (Guid raceGuid in _races.Keys)
                 {
                     TimeSpan timeSinceStart = DateTime.Now.Subtract(_races[raceGuid].Start);
                     if (timeSinceStart.TotalDays > 3)
                     {
-                        _races.Remove(raceGuid);
-                        Log($"{raceGuid}: deleted race as older than three days");
+                        racesToRemove.Add(raceGuid);
+                        Log($"{raceGuid}: deleting race as older than three days");
                     }
-                    else if ( !_races[raceGuid].Finished && (_races[raceGuid].Start != DateTime.MinValue) )
+                    else if (!_races[raceGuid].Finished && (_races[raceGuid].Start > DateTime.MinValue))
                     {
                         if (timeSinceStart.TotalHours > 24)
                         {
@@ -782,6 +794,11 @@ namespace DataCollator
                         }
                     }
                 }
+
+                if (racesToRemove.Count > 0)
+                    foreach (Guid raceToRemove in racesToRemove)
+                        _races.Remove(raceToRemove);
+            }
 
             _lastStaleDataCheck = DateTime.Now;
         }

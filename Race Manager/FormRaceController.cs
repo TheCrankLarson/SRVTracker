@@ -31,6 +31,7 @@ namespace Race_Manager
         private FormTelemetrySettings _targetTelemetrySettings = null;
         private bool _showRaceDisplayOnSettingsClose = false;
         private bool _raceTelemetrySettingsClosing = false;
+        private Dictionary<string, string> _activeServerRaces = null;
 
         public FormRaceController()
         {
@@ -1065,6 +1066,9 @@ namespace Race_Manager
 
             // Retrieve list of races on server and show them in the list
             string response = "";
+            comboBoxConnectToRace.Items.Clear();
+            comboBoxConnectToRace.Items.Add("Select race:");
+            _activeServerRaces = new Dictionary<string, string>();
             try
             {
                 using (WebClient webClient = new WebClient())
@@ -1079,8 +1083,30 @@ namespace Race_Manager
             using (System.IO.StringReader reader = new System.IO.StringReader(response))
             {
                 string activeRace = reader.ReadLine();
-
+                int commaPos = activeRace.IndexOf(',');
+                if (commaPos>0)
+                {
+                    string activeRaceGuid = activeRace.Substring(0, commaPos - 1);
+                    string activeRaceName = activeRace.Substring(commaPos + 1);
+                    _activeServerRaces.Add(activeRaceName, activeRaceGuid);
+                    comboBoxConnectToRace.Items.Add(activeRaceName);
+                }
             }
+            if (_activeServerRaces.Count > 0)
+                comboBoxConnectToRace.Visible = true;
+        }
+
+        private void comboBoxConnectToRace_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (comboBoxConnectToRace.SelectedIndex < 1 || !_activeServerRaces.ContainsKey((string)comboBoxConnectToRace.SelectedItem))
+                return;
+
+            string selectedRaceGuid = _activeServerRaces[(string)comboBoxConnectToRace.SelectedItem];
+        }
+
+        private void comboBoxConnectToRace_Leave(object sender, EventArgs e)
+        {
+            comboBoxConnectToRace.Visible = false;
         }
     }
 }

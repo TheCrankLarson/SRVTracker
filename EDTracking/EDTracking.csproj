@@ -129,6 +129,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="RaceTimer.xaml.cs">
+      <DependentUpon>RaceTimer.xaml</DependentUpon>
+    </Compile>
     <Compile Include="TelemetryTable.xaml.cs">
       <DependentUpon>TelemetryTable.xaml</DependentUpon>
     </Compile>
@@ -146,6 +149,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="RaceTimer.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="TelemetryTable.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
