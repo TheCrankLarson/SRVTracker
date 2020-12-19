@@ -375,9 +375,14 @@ namespace EDTracking
                 else
                     statsTable.Add("LeaderLap", "1");
                 if (Leader.Finished)
-                    statsTable.Add("LeaderLapCount", "FINISH");
+                    statsTable.Add("LeaderLapCount", CustomStatusMessages["Completed"]);
                 else
-                    statsTable.Add("LeaderLapCount", $"Lap {Leader.Lap}/{Laps}");
+                {
+                    if (Leader.Lap>0)
+                        statsTable.Add("LeaderLapCount", $"Lap {Leader.Lap}/{Laps}");
+                    else
+                        statsTable.Add("LeaderLapCount", $"Lap 1/{Laps}");
+                }
             }
 
             return statsTable;

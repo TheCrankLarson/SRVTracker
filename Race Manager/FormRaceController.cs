@@ -58,6 +58,11 @@ namespace Race_Manager
             UpdateUI();
             UpdateAvailableTargets();
             timerDownloadRaceTelemetry.Start();
+
+            using (FormStatusMessages formStatusMessages = new FormStatusMessages())
+            {
+                EDRace.StatusMessages = formStatusMessages.StatusMessages();
+            }
         }
 
         private void StartWatching()

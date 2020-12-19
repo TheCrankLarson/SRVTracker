@@ -22,6 +22,7 @@ namespace EDTracking
     {
         public event EventHandler MouseIsOver;
         public event EventHandler MouseIsNotOver;
+        public event EventHandler MouseClicked;
 
         public RaceTimer()
         {
@@ -53,6 +54,16 @@ namespace EDTracking
                 MouseIsOver?.Invoke(this, null);
             else
                 MouseIsNotOver?.Invoke(this, null);
+        }
+
+        private void textBlock_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            MouseClicked?.Invoke(this, null);
+        }
+
+        private void Grid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            MouseClicked?.Invoke(this, null);
         }
     }
 }
