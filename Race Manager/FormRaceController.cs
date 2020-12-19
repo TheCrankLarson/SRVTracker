@@ -29,6 +29,7 @@ namespace Race_Manager
         private FormTelemetryDisplay _targetTelemetryDisplay = null;
         private FormTelemetrySettings _raceTelemetrySettings = null;
         private FormTelemetrySettings _targetTelemetrySettings = null;
+        private FormTimer _raceTimer = null;
         private bool _showRaceDisplayOnSettingsClose = false;
         private bool _raceTelemetrySettingsClosing = false;
         private Dictionary<string, string> _activeServerRaces = null;
@@ -1107,6 +1108,21 @@ namespace Race_Manager
         private void comboBoxConnectToRace_Leave(object sender, EventArgs e)
         {
             comboBoxConnectToRace.Visible = false;
+        }
+
+        private void checkBoxShowRaceTimer_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBoxShowRaceTimer.Checked)
+            {
+                _raceTimer = new FormTimer();
+                _raceTimer.Show();
+            }
+            else if (_raceTimer != null)
+            {
+                if (!_raceTimer.IsDisposed)
+                    _raceTimer.Close();
+                _raceTimer = null;
+            }
         }
     }
 }

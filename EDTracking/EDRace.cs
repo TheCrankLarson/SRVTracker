@@ -299,7 +299,7 @@ namespace EDTracking
                         totalDistanceLeft.AppendLine("0");
                         distanceToWaypoint.AppendLine("0");
                         currentLaps.AppendLine(CustomStatusMessages["Completed"]);
-                        lapCounter.AppendLine(" ");                       
+                        lapCounter.AppendLine(CustomStatusMessages["Completed"]);                       
                     }
                     else
                     {
@@ -375,7 +375,7 @@ namespace EDTracking
                 else
                     statsTable.Add("LeaderLap", "1");
                 if (Leader.Finished)
-                    statsTable.Add("LeaderLapCount", "Finished");
+                    statsTable.Add("LeaderLapCount", "FINISH");
                 else
                     statsTable.Add("LeaderLapCount", $"Lap {Leader.Lap}/{Laps}");
             }

@@ -217,6 +217,12 @@
   <ItemGroup>
     <None Include="Resources\Connect_16x.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Close_red_16x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\MoveGlyph_16x.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>powershell.exe $(SolutionDir)Deploy\Prepare-Deployment.ps1 -SolutionDir $(SolutionDir) -TargetPath $(TargetPath) -OutDir $(OutDir)

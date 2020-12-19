@@ -6,8 +6,8 @@
              xmlns:local="clr-namespace:EDTracking"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Opacity="0">
-        <TextBlock x:Name="textBlock" HorizontalAlignment="Center" Margin="0,0,0,0" TextWrapping="Wrap" Text="00:00:00" VerticalAlignment="Center"/>
+    <Grid Background="Black" IsMouseDirectlyOverChanged="Grid_IsMouseDirectlyOverChanged">
+        <TextBlock x:Name="textBlock" HorizontalAlignment="Center" Margin="0,0,0,0" TextWrapping="Wrap" Text="00:00:00" VerticalAlignment="Center" Height="59" Width="196" FontSize="48" TextAlignment="Center" Background="Black" Foreground="White" IsMouseDirectlyOverChanged="textBlock_IsMouseDirectlyOverChanged"/>
 
     </Grid>
 </UserControl>

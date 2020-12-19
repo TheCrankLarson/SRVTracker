@@ -48,8 +48,14 @@
             this.checkBoxAutoAddCommanders = new System.Windows.Forms.CheckBox();
             this.groupBoxAddCommander = new System.Windows.Forms.GroupBox();
             this.comboBoxAddCommander = new System.Windows.Forms.ComboBox();
+            this.buttonAddCommander = new System.Windows.Forms.Button();
             this.listBoxParticipants = new System.Windows.Forms.ListBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.comboBoxConnectToRace = new System.Windows.Forms.ComboBox();
+            this.buttonConnectToRace = new System.Windows.Forms.Button();
+            this.buttonLoadRace = new System.Windows.Forms.Button();
+            this.buttonSaveRaceAs = new System.Windows.Forms.Button();
+            this.buttonSaveRace = new System.Windows.Forms.Button();
             this.textBoxRaceName = new System.Windows.Forms.TextBox();
             this.listBoxWaypoints = new System.Windows.Forms.ListBox();
             this.textBoxRouteName = new System.Windows.Forms.TextBox();
@@ -59,6 +65,10 @@
             this.checkBoxExportRaceTelemetry = new System.Windows.Forms.CheckBox();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.comboBoxTimeTrialRacer = new System.Windows.Forms.ComboBox();
+            this.buttonPause = new System.Windows.Forms.Button();
+            this.buttonStartRace = new System.Windows.Forms.Button();
+            this.buttonStopRace = new System.Windows.Forms.Button();
+            this.buttonReset = new System.Windows.Forms.Button();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.radioButtonUseCustomServer = new System.Windows.Forms.RadioButton();
             this.radioButtonUseDefaultServer = new System.Windows.Forms.RadioButton();
@@ -68,6 +78,11 @@
             this.checkBoxShowTimeTrialTelemetry = new System.Windows.Forms.CheckBox();
             this.checkBoxExportTimeTrialTelemetry = new System.Windows.Forms.CheckBox();
             this.checkBoxStartRaceTimerAtFirstWaypoint = new System.Windows.Forms.CheckBox();
+            this.buttonEditStatusMessages = new System.Windows.Forms.Button();
+            this.buttonTimeTrialTelemetryExportSettings = new System.Windows.Forms.Button();
+            this.buttonCommanderTelemetryExportSettings = new System.Windows.Forms.Button();
+            this.buttonRaceTelemetryExportSettings = new System.Windows.Forms.Button();
+            this.buttonRaceHistory = new System.Windows.Forms.Button();
             this.groupBoxServerInfo = new System.Windows.Forms.GroupBox();
             this.label8 = new System.Windows.Forms.Label();
             this.textBoxServerRaceGuid = new System.Windows.Forms.TextBox();
@@ -79,37 +94,22 @@
             this.timerTrackTarget = new System.Windows.Forms.Timer(this.components);
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.checkBoxLapCustomWaypoints = new System.Windows.Forms.CheckBox();
-            this.numericUpDownLapEndWaypoint = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDownLapStartWaypoint = new System.Windows.Forms.NumericUpDown();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.label10 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.tabPage5 = new System.Windows.Forms.TabPage();
-            this.buttonConnectToRace = new System.Windows.Forms.Button();
-            this.buttonAddCommander = new System.Windows.Forms.Button();
             this.buttonAddParticipant = new System.Windows.Forms.Button();
             this.buttonUneliminate = new System.Windows.Forms.Button();
             this.buttonRemoveParticipant = new System.Windows.Forms.Button();
             this.buttonTrackParticipant = new System.Windows.Forms.Button();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.checkBoxLapCustomWaypoints = new System.Windows.Forms.CheckBox();
+            this.numericUpDownLapEndWaypoint = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDownLapStartWaypoint = new System.Windows.Forms.NumericUpDown();
             this.buttonLoadRoute = new System.Windows.Forms.Button();
-            this.buttonEditStatusMessages = new System.Windows.Forms.Button();
-            this.buttonTimeTrialTelemetryExportSettings = new System.Windows.Forms.Button();
-            this.buttonCommanderTelemetryExportSettings = new System.Windows.Forms.Button();
-            this.buttonRaceTelemetryExportSettings = new System.Windows.Forms.Button();
-            this.buttonRaceHistory = new System.Windows.Forms.Button();
-            this.buttonPause = new System.Windows.Forms.Button();
-            this.buttonStartRace = new System.Windows.Forms.Button();
-            this.buttonStopRace = new System.Windows.Forms.Button();
-            this.buttonReset = new System.Windows.Forms.Button();
-            this.buttonLoadRace = new System.Windows.Forms.Button();
-            this.buttonSaveRaceAs = new System.Windows.Forms.Button();
-            this.buttonSaveRace = new System.Windows.Forms.Button();
-            this.comboBoxConnectToRace = new System.Windows.Forms.ComboBox();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
             this.checkBoxShowRaceTimer = new System.Windows.Forms.CheckBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.tabPage5 = new System.Windows.Forms.TabPage();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLapCount)).BeginInit();
             this.groupBoxAddCommander.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -346,6 +346,16 @@
             this.comboBoxAddCommander.SelectedIndexChanged += new System.EventHandler(this.comboBoxAddCommander_SelectedIndexChanged);
             this.comboBoxAddCommander.Leave += new System.EventHandler(this.comboBoxAddCommander_Leave);
             // 
+            // buttonAddCommander
+            // 
+            this.buttonAddCommander.Image = global::Race_Manager.Properties.Resources.Add_16x;
+            this.buttonAddCommander.Location = new System.Drawing.Point(175, 16);
+            this.buttonAddCommander.Name = "buttonAddCommander";
+            this.buttonAddCommander.Size = new System.Drawing.Size(29, 23);
+            this.buttonAddCommander.TabIndex = 8;
+            this.buttonAddCommander.UseVisualStyleBackColor = true;
+            this.buttonAddCommander.Click += new System.EventHandler(this.buttonAddCommander_Click);
+            // 
             // listBoxParticipants
             // 
             this.listBoxParticipants.FormattingEnabled = true;
@@ -369,6 +379,59 @@
             this.groupBox2.TabIndex = 7;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Event";
+            // 
+            // comboBoxConnectToRace
+            // 
+            this.comboBoxConnectToRace.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxConnectToRace.FormattingEnabled = true;
+            this.comboBoxConnectToRace.Location = new System.Drawing.Point(177, 18);
+            this.comboBoxConnectToRace.Name = "comboBoxConnectToRace";
+            this.comboBoxConnectToRace.Size = new System.Drawing.Size(174, 21);
+            this.comboBoxConnectToRace.TabIndex = 23;
+            this.comboBoxConnectToRace.Visible = false;
+            this.comboBoxConnectToRace.SelectedIndexChanged += new System.EventHandler(this.comboBoxConnectToRace_SelectedIndexChanged);
+            this.comboBoxConnectToRace.Leave += new System.EventHandler(this.comboBoxConnectToRace_Leave);
+            // 
+            // buttonConnectToRace
+            // 
+            this.buttonConnectToRace.Image = global::Race_Manager.Properties.Resources.Connect_16x;
+            this.buttonConnectToRace.Location = new System.Drawing.Point(350, 17);
+            this.buttonConnectToRace.Name = "buttonConnectToRace";
+            this.buttonConnectToRace.Size = new System.Drawing.Size(29, 23);
+            this.buttonConnectToRace.TabIndex = 22;
+            this.toolTip1.SetToolTip(this.buttonConnectToRace, "Connect to race that is already running");
+            this.buttonConnectToRace.UseVisualStyleBackColor = true;
+            this.buttonConnectToRace.Click += new System.EventHandler(this.buttonConnectToRace_Click);
+            // 
+            // buttonLoadRace
+            // 
+            this.buttonLoadRace.Image = global::Race_Manager.Properties.Resources.OpenFolder_16x;
+            this.buttonLoadRace.Location = new System.Drawing.Point(257, 17);
+            this.buttonLoadRace.Name = "buttonLoadRace";
+            this.buttonLoadRace.Size = new System.Drawing.Size(29, 23);
+            this.buttonLoadRace.TabIndex = 10;
+            this.buttonLoadRace.UseVisualStyleBackColor = true;
+            this.buttonLoadRace.Click += new System.EventHandler(this.buttonLoadRace_Click);
+            // 
+            // buttonSaveRaceAs
+            // 
+            this.buttonSaveRaceAs.Image = global::Race_Manager.Properties.Resources.SaveAs_16x;
+            this.buttonSaveRaceAs.Location = new System.Drawing.Point(288, 17);
+            this.buttonSaveRaceAs.Name = "buttonSaveRaceAs";
+            this.buttonSaveRaceAs.Size = new System.Drawing.Size(29, 23);
+            this.buttonSaveRaceAs.TabIndex = 9;
+            this.buttonSaveRaceAs.UseVisualStyleBackColor = true;
+            this.buttonSaveRaceAs.Click += new System.EventHandler(this.buttonSaveRaceAs_Click);
+            // 
+            // buttonSaveRace
+            // 
+            this.buttonSaveRace.Image = global::Race_Manager.Properties.Resources.Save_16x;
+            this.buttonSaveRace.Location = new System.Drawing.Point(319, 17);
+            this.buttonSaveRace.Name = "buttonSaveRace";
+            this.buttonSaveRace.Size = new System.Drawing.Size(29, 23);
+            this.buttonSaveRace.TabIndex = 8;
+            this.buttonSaveRace.UseVisualStyleBackColor = true;
+            this.buttonSaveRace.Click += new System.EventHandler(this.buttonSaveRace_Click);
             // 
             // textBoxRaceName
             // 
@@ -465,6 +528,49 @@
             this.comboBoxTimeTrialRacer.Size = new System.Drawing.Size(133, 21);
             this.comboBoxTimeTrialRacer.TabIndex = 3;
             this.toolTip1.SetToolTip(this.comboBoxTimeTrialRacer, "For time trial races, this selects the racer being tracked");
+            // 
+            // buttonPause
+            // 
+            this.buttonPause.Enabled = false;
+            this.buttonPause.Image = global::Race_Manager.Properties.Resources.Pause_16x;
+            this.buttonPause.Location = new System.Drawing.Point(41, 19);
+            this.buttonPause.Name = "buttonPause";
+            this.buttonPause.Size = new System.Drawing.Size(28, 23);
+            this.buttonPause.TabIndex = 9;
+            this.buttonPause.UseVisualStyleBackColor = true;
+            // 
+            // buttonStartRace
+            // 
+            this.buttonStartRace.Enabled = false;
+            this.buttonStartRace.Image = global::Race_Manager.Properties.Resources.Run_16x;
+            this.buttonStartRace.Location = new System.Drawing.Point(6, 19);
+            this.buttonStartRace.Name = "buttonStartRace";
+            this.buttonStartRace.Size = new System.Drawing.Size(29, 23);
+            this.buttonStartRace.TabIndex = 5;
+            this.buttonStartRace.UseVisualStyleBackColor = true;
+            this.buttonStartRace.Click += new System.EventHandler(this.buttonStartRace_Click);
+            // 
+            // buttonStopRace
+            // 
+            this.buttonStopRace.Enabled = false;
+            this.buttonStopRace.Image = global::Race_Manager.Properties.Resources.Stop_16x;
+            this.buttonStopRace.Location = new System.Drawing.Point(75, 19);
+            this.buttonStopRace.Name = "buttonStopRace";
+            this.buttonStopRace.Size = new System.Drawing.Size(29, 23);
+            this.buttonStopRace.TabIndex = 6;
+            this.buttonStopRace.UseVisualStyleBackColor = true;
+            this.buttonStopRace.Click += new System.EventHandler(this.buttonStopRace_Click);
+            // 
+            // buttonReset
+            // 
+            this.buttonReset.Enabled = false;
+            this.buttonReset.Image = global::Race_Manager.Properties.Resources.Restart_16x;
+            this.buttonReset.Location = new System.Drawing.Point(110, 19);
+            this.buttonReset.Name = "buttonReset";
+            this.buttonReset.Size = new System.Drawing.Size(29, 23);
+            this.buttonReset.TabIndex = 8;
+            this.buttonReset.UseVisualStyleBackColor = true;
+            this.buttonReset.Click += new System.EventHandler(this.buttonReset_Click);
             // 
             // radioButtonUseCustomServer
             // 
@@ -567,6 +673,61 @@
         "d.");
             this.checkBoxStartRaceTimerAtFirstWaypoint.UseVisualStyleBackColor = true;
             this.checkBoxStartRaceTimerAtFirstWaypoint.CheckedChanged += new System.EventHandler(this.checkBoxStartRaceTimerAtFirstWaypoint_CheckedChanged);
+            // 
+            // buttonEditStatusMessages
+            // 
+            this.buttonEditStatusMessages.Image = global::Race_Manager.Properties.Resources.Text_16x;
+            this.buttonEditStatusMessages.Location = new System.Drawing.Point(155, 88);
+            this.buttonEditStatusMessages.Name = "buttonEditStatusMessages";
+            this.buttonEditStatusMessages.Size = new System.Drawing.Size(29, 23);
+            this.buttonEditStatusMessages.TabIndex = 7;
+            this.toolTip1.SetToolTip(this.buttonEditStatusMessages, "Edit the status messages");
+            this.buttonEditStatusMessages.UseVisualStyleBackColor = true;
+            this.buttonEditStatusMessages.Click += new System.EventHandler(this.buttonEditStatusMessages_Click);
+            // 
+            // buttonTimeTrialTelemetryExportSettings
+            // 
+            this.buttonTimeTrialTelemetryExportSettings.Enabled = false;
+            this.buttonTimeTrialTelemetryExportSettings.Image = global::Race_Manager.Properties.Resources.Settings_16x;
+            this.buttonTimeTrialTelemetryExportSettings.Location = new System.Drawing.Point(46, 97);
+            this.buttonTimeTrialTelemetryExportSettings.Name = "buttonTimeTrialTelemetryExportSettings";
+            this.buttonTimeTrialTelemetryExportSettings.Size = new System.Drawing.Size(22, 22);
+            this.buttonTimeTrialTelemetryExportSettings.TabIndex = 6;
+            this.toolTip1.SetToolTip(this.buttonTimeTrialTelemetryExportSettings, "Edit target telemetry collection settings");
+            this.buttonTimeTrialTelemetryExportSettings.UseVisualStyleBackColor = true;
+            // 
+            // buttonCommanderTelemetryExportSettings
+            // 
+            this.buttonCommanderTelemetryExportSettings.Image = global::Race_Manager.Properties.Resources.Settings_16x;
+            this.buttonCommanderTelemetryExportSettings.Location = new System.Drawing.Point(46, 69);
+            this.buttonCommanderTelemetryExportSettings.Name = "buttonCommanderTelemetryExportSettings";
+            this.buttonCommanderTelemetryExportSettings.Size = new System.Drawing.Size(22, 22);
+            this.buttonCommanderTelemetryExportSettings.TabIndex = 3;
+            this.toolTip1.SetToolTip(this.buttonCommanderTelemetryExportSettings, "Edit target telemetry collection settings");
+            this.buttonCommanderTelemetryExportSettings.UseVisualStyleBackColor = true;
+            this.buttonCommanderTelemetryExportSettings.Click += new System.EventHandler(this.buttonCommanderTelemetryExportSettings_Click);
+            // 
+            // buttonRaceTelemetryExportSettings
+            // 
+            this.buttonRaceTelemetryExportSettings.Image = global::Race_Manager.Properties.Resources.Settings_16x;
+            this.buttonRaceTelemetryExportSettings.Location = new System.Drawing.Point(46, 41);
+            this.buttonRaceTelemetryExportSettings.Name = "buttonRaceTelemetryExportSettings";
+            this.buttonRaceTelemetryExportSettings.Size = new System.Drawing.Size(22, 22);
+            this.buttonRaceTelemetryExportSettings.TabIndex = 2;
+            this.toolTip1.SetToolTip(this.buttonRaceTelemetryExportSettings, "Edit race telemetry collection settings");
+            this.buttonRaceTelemetryExportSettings.UseVisualStyleBackColor = true;
+            this.buttonRaceTelemetryExportSettings.Click += new System.EventHandler(this.buttonRaceTelemetryExportSettings_Click);
+            // 
+            // buttonRaceHistory
+            // 
+            this.buttonRaceHistory.Enabled = false;
+            this.buttonRaceHistory.Image = global::Race_Manager.Properties.Resources.History_16x;
+            this.buttonRaceHistory.Location = new System.Drawing.Point(6, 32);
+            this.buttonRaceHistory.Name = "buttonRaceHistory";
+            this.buttonRaceHistory.Size = new System.Drawing.Size(21, 21);
+            this.buttonRaceHistory.TabIndex = 9;
+            this.toolTip1.SetToolTip(this.buttonRaceHistory, "Show race history for currently targeted commander\r\n(opens in a new window)");
+            this.buttonRaceHistory.UseVisualStyleBackColor = true;
             // 
             // groupBoxServerInfo
             // 
@@ -676,6 +837,46 @@
             this.tabPage1.Text = "Participants";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // buttonAddParticipant
+            // 
+            this.buttonAddParticipant.Image = global::Race_Manager.Properties.Resources.Add_16x;
+            this.buttonAddParticipant.Location = new System.Drawing.Point(342, 3);
+            this.buttonAddParticipant.Name = "buttonAddParticipant";
+            this.buttonAddParticipant.Size = new System.Drawing.Size(29, 23);
+            this.buttonAddParticipant.TabIndex = 1;
+            this.buttonAddParticipant.UseVisualStyleBackColor = true;
+            this.buttonAddParticipant.Click += new System.EventHandler(this.buttonAddParticipant_Click);
+            // 
+            // buttonUneliminate
+            // 
+            this.buttonUneliminate.Image = global::Race_Manager.Properties.Resources.AdvancedBreakpointDisabled_16x;
+            this.buttonUneliminate.Location = new System.Drawing.Point(342, 114);
+            this.buttonUneliminate.Name = "buttonUneliminate";
+            this.buttonUneliminate.Size = new System.Drawing.Size(29, 23);
+            this.buttonUneliminate.TabIndex = 10;
+            this.buttonUneliminate.UseVisualStyleBackColor = true;
+            this.buttonUneliminate.Click += new System.EventHandler(this.buttonUneliminate_Click);
+            // 
+            // buttonRemoveParticipant
+            // 
+            this.buttonRemoveParticipant.Image = global::Race_Manager.Properties.Resources.Remove_color_16x;
+            this.buttonRemoveParticipant.Location = new System.Drawing.Point(342, 32);
+            this.buttonRemoveParticipant.Name = "buttonRemoveParticipant";
+            this.buttonRemoveParticipant.Size = new System.Drawing.Size(29, 23);
+            this.buttonRemoveParticipant.TabIndex = 2;
+            this.buttonRemoveParticipant.UseVisualStyleBackColor = true;
+            this.buttonRemoveParticipant.Click += new System.EventHandler(this.buttonRemoveParticipant_Click);
+            // 
+            // buttonTrackParticipant
+            // 
+            this.buttonTrackParticipant.Image = global::Race_Manager.Properties.Resources.Target_16x;
+            this.buttonTrackParticipant.Location = new System.Drawing.Point(342, 61);
+            this.buttonTrackParticipant.Name = "buttonTrackParticipant";
+            this.buttonTrackParticipant.Size = new System.Drawing.Size(29, 23);
+            this.buttonTrackParticipant.TabIndex = 3;
+            this.buttonTrackParticipant.UseVisualStyleBackColor = true;
+            this.buttonTrackParticipant.Click += new System.EventHandler(this.buttonTrackParticipant_Click);
+            // 
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this.checkBoxLapCustomWaypoints);
@@ -757,6 +958,16 @@
             this.numericUpDownLapStartWaypoint.ValueChanged += new System.EventHandler(this.numericUpDownLapStartWaypoint_ValueChanged);
             this.numericUpDownLapStartWaypoint.Enter += new System.EventHandler(this.numericUpDownLapStartWaypoint_Enter);
             // 
+            // buttonLoadRoute
+            // 
+            this.buttonLoadRoute.Image = global::Race_Manager.Properties.Resources.OpenFolder_16x;
+            this.buttonLoadRoute.Location = new System.Drawing.Point(333, 8);
+            this.buttonLoadRoute.Name = "buttonLoadRoute";
+            this.buttonLoadRoute.Size = new System.Drawing.Size(38, 23);
+            this.buttonLoadRoute.TabIndex = 1;
+            this.buttonLoadRoute.UseVisualStyleBackColor = true;
+            this.buttonLoadRoute.Click += new System.EventHandler(this.buttonLoadRoute_Click);
+            // 
             // tabPage3
             // 
             this.tabPage3.Controls.Add(this.checkBoxStartRaceTimerAtFirstWaypoint);
@@ -802,6 +1013,17 @@
             this.tabPage4.Text = "Telemetry Settings";
             this.tabPage4.UseVisualStyleBackColor = true;
             // 
+            // checkBoxShowRaceTimer
+            // 
+            this.checkBoxShowRaceTimer.AutoSize = true;
+            this.checkBoxShowRaceTimer.Location = new System.Drawing.Point(185, 127);
+            this.checkBoxShowRaceTimer.Name = "checkBoxShowRaceTimer";
+            this.checkBoxShowRaceTimer.Size = new System.Drawing.Size(102, 17);
+            this.checkBoxShowRaceTimer.TabIndex = 10;
+            this.checkBoxShowRaceTimer.Text = "Show race timer";
+            this.checkBoxShowRaceTimer.UseVisualStyleBackColor = true;
+            this.checkBoxShowRaceTimer.CheckedChanged += new System.EventHandler(this.checkBoxShowRaceTimer_CheckedChanged);
+            // 
             // label10
             // 
             this.label10.AutoSize = true;
@@ -841,227 +1063,6 @@
             this.tabPage5.TabIndex = 4;
             this.tabPage5.Text = "Server Settings";
             this.tabPage5.UseVisualStyleBackColor = true;
-            // 
-            // buttonConnectToRace
-            // 
-            this.buttonConnectToRace.Image = global::Race_Manager.Properties.Resources.Connect_16x;
-            this.buttonConnectToRace.Location = new System.Drawing.Point(350, 17);
-            this.buttonConnectToRace.Name = "buttonConnectToRace";
-            this.buttonConnectToRace.Size = new System.Drawing.Size(29, 23);
-            this.buttonConnectToRace.TabIndex = 22;
-            this.toolTip1.SetToolTip(this.buttonConnectToRace, "Connect to race that is already running");
-            this.buttonConnectToRace.UseVisualStyleBackColor = true;
-            this.buttonConnectToRace.Click += new System.EventHandler(this.buttonConnectToRace_Click);
-            // 
-            // buttonAddCommander
-            // 
-            this.buttonAddCommander.Image = global::Race_Manager.Properties.Resources.Add_16x;
-            this.buttonAddCommander.Location = new System.Drawing.Point(175, 16);
-            this.buttonAddCommander.Name = "buttonAddCommander";
-            this.buttonAddCommander.Size = new System.Drawing.Size(29, 23);
-            this.buttonAddCommander.TabIndex = 8;
-            this.buttonAddCommander.UseVisualStyleBackColor = true;
-            this.buttonAddCommander.Click += new System.EventHandler(this.buttonAddCommander_Click);
-            // 
-            // buttonAddParticipant
-            // 
-            this.buttonAddParticipant.Image = global::Race_Manager.Properties.Resources.Add_16x;
-            this.buttonAddParticipant.Location = new System.Drawing.Point(342, 3);
-            this.buttonAddParticipant.Name = "buttonAddParticipant";
-            this.buttonAddParticipant.Size = new System.Drawing.Size(29, 23);
-            this.buttonAddParticipant.TabIndex = 1;
-            this.buttonAddParticipant.UseVisualStyleBackColor = true;
-            this.buttonAddParticipant.Click += new System.EventHandler(this.buttonAddParticipant_Click);
-            // 
-            // buttonUneliminate
-            // 
-            this.buttonUneliminate.Image = global::Race_Manager.Properties.Resources.AdvancedBreakpointDisabled_16x;
-            this.buttonUneliminate.Location = new System.Drawing.Point(342, 114);
-            this.buttonUneliminate.Name = "buttonUneliminate";
-            this.buttonUneliminate.Size = new System.Drawing.Size(29, 23);
-            this.buttonUneliminate.TabIndex = 10;
-            this.buttonUneliminate.UseVisualStyleBackColor = true;
-            this.buttonUneliminate.Click += new System.EventHandler(this.buttonUneliminate_Click);
-            // 
-            // buttonRemoveParticipant
-            // 
-            this.buttonRemoveParticipant.Image = global::Race_Manager.Properties.Resources.Remove_color_16x;
-            this.buttonRemoveParticipant.Location = new System.Drawing.Point(342, 32);
-            this.buttonRemoveParticipant.Name = "buttonRemoveParticipant";
-            this.buttonRemoveParticipant.Size = new System.Drawing.Size(29, 23);
-            this.buttonRemoveParticipant.TabIndex = 2;
-            this.buttonRemoveParticipant.UseVisualStyleBackColor = true;
-            this.buttonRemoveParticipant.Click += new System.EventHandler(this.buttonRemoveParticipant_Click);
-            // 
-            // buttonTrackParticipant
-            // 
-            this.buttonTrackParticipant.Image = global::Race_Manager.Properties.Resources.Target_16x;
-            this.buttonTrackParticipant.Location = new System.Drawing.Point(342, 61);
-            this.buttonTrackParticipant.Name = "buttonTrackParticipant";
-            this.buttonTrackParticipant.Size = new System.Drawing.Size(29, 23);
-            this.buttonTrackParticipant.TabIndex = 3;
-            this.buttonTrackParticipant.UseVisualStyleBackColor = true;
-            this.buttonTrackParticipant.Click += new System.EventHandler(this.buttonTrackParticipant_Click);
-            // 
-            // buttonLoadRoute
-            // 
-            this.buttonLoadRoute.Image = global::Race_Manager.Properties.Resources.OpenFolder_16x;
-            this.buttonLoadRoute.Location = new System.Drawing.Point(333, 8);
-            this.buttonLoadRoute.Name = "buttonLoadRoute";
-            this.buttonLoadRoute.Size = new System.Drawing.Size(38, 23);
-            this.buttonLoadRoute.TabIndex = 1;
-            this.buttonLoadRoute.UseVisualStyleBackColor = true;
-            this.buttonLoadRoute.Click += new System.EventHandler(this.buttonLoadRoute_Click);
-            // 
-            // buttonEditStatusMessages
-            // 
-            this.buttonEditStatusMessages.Image = global::Race_Manager.Properties.Resources.Text_16x;
-            this.buttonEditStatusMessages.Location = new System.Drawing.Point(155, 88);
-            this.buttonEditStatusMessages.Name = "buttonEditStatusMessages";
-            this.buttonEditStatusMessages.Size = new System.Drawing.Size(29, 23);
-            this.buttonEditStatusMessages.TabIndex = 7;
-            this.toolTip1.SetToolTip(this.buttonEditStatusMessages, "Edit the status messages");
-            this.buttonEditStatusMessages.UseVisualStyleBackColor = true;
-            this.buttonEditStatusMessages.Click += new System.EventHandler(this.buttonEditStatusMessages_Click);
-            // 
-            // buttonTimeTrialTelemetryExportSettings
-            // 
-            this.buttonTimeTrialTelemetryExportSettings.Enabled = false;
-            this.buttonTimeTrialTelemetryExportSettings.Image = global::Race_Manager.Properties.Resources.Settings_16x;
-            this.buttonTimeTrialTelemetryExportSettings.Location = new System.Drawing.Point(46, 97);
-            this.buttonTimeTrialTelemetryExportSettings.Name = "buttonTimeTrialTelemetryExportSettings";
-            this.buttonTimeTrialTelemetryExportSettings.Size = new System.Drawing.Size(22, 22);
-            this.buttonTimeTrialTelemetryExportSettings.TabIndex = 6;
-            this.toolTip1.SetToolTip(this.buttonTimeTrialTelemetryExportSettings, "Edit target telemetry collection settings");
-            this.buttonTimeTrialTelemetryExportSettings.UseVisualStyleBackColor = true;
-            // 
-            // buttonCommanderTelemetryExportSettings
-            // 
-            this.buttonCommanderTelemetryExportSettings.Image = global::Race_Manager.Properties.Resources.Settings_16x;
-            this.buttonCommanderTelemetryExportSettings.Location = new System.Drawing.Point(46, 69);
-            this.buttonCommanderTelemetryExportSettings.Name = "buttonCommanderTelemetryExportSettings";
-            this.buttonCommanderTelemetryExportSettings.Size = new System.Drawing.Size(22, 22);
-            this.buttonCommanderTelemetryExportSettings.TabIndex = 3;
-            this.toolTip1.SetToolTip(this.buttonCommanderTelemetryExportSettings, "Edit target telemetry collection settings");
-            this.buttonCommanderTelemetryExportSettings.UseVisualStyleBackColor = true;
-            this.buttonCommanderTelemetryExportSettings.Click += new System.EventHandler(this.buttonCommanderTelemetryExportSettings_Click);
-            // 
-            // buttonRaceTelemetryExportSettings
-            // 
-            this.buttonRaceTelemetryExportSettings.Image = global::Race_Manager.Properties.Resources.Settings_16x;
-            this.buttonRaceTelemetryExportSettings.Location = new System.Drawing.Point(46, 41);
-            this.buttonRaceTelemetryExportSettings.Name = "buttonRaceTelemetryExportSettings";
-            this.buttonRaceTelemetryExportSettings.Size = new System.Drawing.Size(22, 22);
-            this.buttonRaceTelemetryExportSettings.TabIndex = 2;
-            this.toolTip1.SetToolTip(this.buttonRaceTelemetryExportSettings, "Edit race telemetry collection settings");
-            this.buttonRaceTelemetryExportSettings.UseVisualStyleBackColor = true;
-            this.buttonRaceTelemetryExportSettings.Click += new System.EventHandler(this.buttonRaceTelemetryExportSettings_Click);
-            // 
-            // buttonRaceHistory
-            // 
-            this.buttonRaceHistory.Enabled = false;
-            this.buttonRaceHistory.Image = global::Race_Manager.Properties.Resources.History_16x;
-            this.buttonRaceHistory.Location = new System.Drawing.Point(6, 32);
-            this.buttonRaceHistory.Name = "buttonRaceHistory";
-            this.buttonRaceHistory.Size = new System.Drawing.Size(21, 21);
-            this.buttonRaceHistory.TabIndex = 9;
-            this.toolTip1.SetToolTip(this.buttonRaceHistory, "Show race history for currently targeted commander\r\n(opens in a new window)");
-            this.buttonRaceHistory.UseVisualStyleBackColor = true;
-            // 
-            // buttonPause
-            // 
-            this.buttonPause.Enabled = false;
-            this.buttonPause.Image = global::Race_Manager.Properties.Resources.Pause_16x;
-            this.buttonPause.Location = new System.Drawing.Point(41, 19);
-            this.buttonPause.Name = "buttonPause";
-            this.buttonPause.Size = new System.Drawing.Size(28, 23);
-            this.buttonPause.TabIndex = 9;
-            this.buttonPause.UseVisualStyleBackColor = true;
-            // 
-            // buttonStartRace
-            // 
-            this.buttonStartRace.Enabled = false;
-            this.buttonStartRace.Image = global::Race_Manager.Properties.Resources.Run_16x;
-            this.buttonStartRace.Location = new System.Drawing.Point(6, 19);
-            this.buttonStartRace.Name = "buttonStartRace";
-            this.buttonStartRace.Size = new System.Drawing.Size(29, 23);
-            this.buttonStartRace.TabIndex = 5;
-            this.buttonStartRace.UseVisualStyleBackColor = true;
-            this.buttonStartRace.Click += new System.EventHandler(this.buttonStartRace_Click);
-            // 
-            // buttonStopRace
-            // 
-            this.buttonStopRace.Enabled = false;
-            this.buttonStopRace.Image = global::Race_Manager.Properties.Resources.Stop_16x;
-            this.buttonStopRace.Location = new System.Drawing.Point(75, 19);
-            this.buttonStopRace.Name = "buttonStopRace";
-            this.buttonStopRace.Size = new System.Drawing.Size(29, 23);
-            this.buttonStopRace.TabIndex = 6;
-            this.buttonStopRace.UseVisualStyleBackColor = true;
-            this.buttonStopRace.Click += new System.EventHandler(this.buttonStopRace_Click);
-            // 
-            // buttonReset
-            // 
-            this.buttonReset.Enabled = false;
-            this.buttonReset.Image = global::Race_Manager.Properties.Resources.Restart_16x;
-            this.buttonReset.Location = new System.Drawing.Point(110, 19);
-            this.buttonReset.Name = "buttonReset";
-            this.buttonReset.Size = new System.Drawing.Size(29, 23);
-            this.buttonReset.TabIndex = 8;
-            this.buttonReset.UseVisualStyleBackColor = true;
-            this.buttonReset.Click += new System.EventHandler(this.buttonReset_Click);
-            // 
-            // buttonLoadRace
-            // 
-            this.buttonLoadRace.Image = global::Race_Manager.Properties.Resources.OpenFolder_16x;
-            this.buttonLoadRace.Location = new System.Drawing.Point(257, 17);
-            this.buttonLoadRace.Name = "buttonLoadRace";
-            this.buttonLoadRace.Size = new System.Drawing.Size(29, 23);
-            this.buttonLoadRace.TabIndex = 10;
-            this.buttonLoadRace.UseVisualStyleBackColor = true;
-            this.buttonLoadRace.Click += new System.EventHandler(this.buttonLoadRace_Click);
-            // 
-            // buttonSaveRaceAs
-            // 
-            this.buttonSaveRaceAs.Image = global::Race_Manager.Properties.Resources.SaveAs_16x;
-            this.buttonSaveRaceAs.Location = new System.Drawing.Point(288, 17);
-            this.buttonSaveRaceAs.Name = "buttonSaveRaceAs";
-            this.buttonSaveRaceAs.Size = new System.Drawing.Size(29, 23);
-            this.buttonSaveRaceAs.TabIndex = 9;
-            this.buttonSaveRaceAs.UseVisualStyleBackColor = true;
-            this.buttonSaveRaceAs.Click += new System.EventHandler(this.buttonSaveRaceAs_Click);
-            // 
-            // buttonSaveRace
-            // 
-            this.buttonSaveRace.Image = global::Race_Manager.Properties.Resources.Save_16x;
-            this.buttonSaveRace.Location = new System.Drawing.Point(319, 17);
-            this.buttonSaveRace.Name = "buttonSaveRace";
-            this.buttonSaveRace.Size = new System.Drawing.Size(29, 23);
-            this.buttonSaveRace.TabIndex = 8;
-            this.buttonSaveRace.UseVisualStyleBackColor = true;
-            this.buttonSaveRace.Click += new System.EventHandler(this.buttonSaveRace_Click);
-            // 
-            // comboBoxConnectToRace
-            // 
-            this.comboBoxConnectToRace.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxConnectToRace.FormattingEnabled = true;
-            this.comboBoxConnectToRace.Location = new System.Drawing.Point(177, 18);
-            this.comboBoxConnectToRace.Name = "comboBoxConnectToRace";
-            this.comboBoxConnectToRace.Size = new System.Drawing.Size(174, 21);
-            this.comboBoxConnectToRace.TabIndex = 23;
-            this.comboBoxConnectToRace.Visible = false;
-            this.comboBoxConnectToRace.SelectedIndexChanged += new System.EventHandler(this.comboBoxConnectToRace_SelectedIndexChanged);
-            this.comboBoxConnectToRace.Leave += new System.EventHandler(this.comboBoxConnectToRace_Leave);
-            // 
-            // checkBoxShowRaceTimer
-            // 
-            this.checkBoxShowRaceTimer.AutoSize = true;
-            this.checkBoxShowRaceTimer.Location = new System.Drawing.Point(185, 127);
-            this.checkBoxShowRaceTimer.Name = "checkBoxShowRaceTimer";
-            this.checkBoxShowRaceTimer.Size = new System.Drawing.Size(102, 17);
-            this.checkBoxShowRaceTimer.TabIndex = 10;
-            this.checkBoxShowRaceTimer.Text = "Show race timer";
-            this.checkBoxShowRaceTimer.UseVisualStyleBackColor = true;
             // 
             // FormRaceController
             // 

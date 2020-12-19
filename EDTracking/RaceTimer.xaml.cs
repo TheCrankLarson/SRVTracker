@@ -20,9 +20,39 @@ namespace EDTracking
     /// </summary>
     public partial class RaceTimer : UserControl
     {
+        public event EventHandler MouseIsOver;
+        public event EventHandler MouseIsNotOver;
+
         public RaceTimer()
         {
             InitializeComponent();
+        }
+
+        public void SetTimer(TimeSpan time)
+        {           
+            if (this.Dispatcher.CheckAccess())
+                textBlock.Text = time.ToString(@"mm\:ss\:ff");
+            else
+                this.Dispatcher.Invoke(() =>
+                {
+                    textBlock.Text = time.ToString(@"mm\:ss\:ff");
+                });
+        }
+
+        private void textBlock_IsMouseDirectlyOverChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if ((bool)e.NewValue)
+                MouseIsOver?.Invoke(this, null);
+            else
+                MouseIsNotOver?.Invoke(this, null);
+        }
+
+        private void Grid_IsMouseDirectlyOverChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if ((bool)e.NewValue)
+                MouseIsOver?.Invoke(this, null);
+            else
+                MouseIsNotOver?.Invoke(this, null);
         }
     }
 }

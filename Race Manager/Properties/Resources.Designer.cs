@@ -83,6 +83,16 @@ namespace Race_Manager.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Close_red_16x {
+            get {
+                object obj = ResourceManager.GetObject("Close_red_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Connect_16x {
             get {
                 object obj = ResourceManager.GetObject("Connect_16x", resourceCulture);
@@ -96,6 +106,16 @@ namespace Race_Manager.Properties {
         internal static System.Drawing.Bitmap History_16x {
             get {
                 object obj = ResourceManager.GetObject("History_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap MoveGlyph_16x {
+            get {
+                object obj = ResourceManager.GetObject("MoveGlyph_16x", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
