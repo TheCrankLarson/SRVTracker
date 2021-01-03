@@ -109,6 +109,12 @@
     <Compile Include="EDRaceStatus.cs" />
     <Compile Include="EDWaypoint.cs" />
     <Compile Include="Flags.cs" />
+    <Compile Include="FormAppearanceEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormAppearanceEditor.Designer.cs">
+      <DependentUpon>FormAppearanceEditor.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormTelemetryDisplay.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -159,6 +165,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="FormAppearanceEditor.resx">
+      <DependentUpon>FormAppearanceEditor.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormTelemetryDisplay.resx">
       <DependentUpon>FormTelemetryDisplay.cs</DependentUpon>
     </EmbeddedResource>

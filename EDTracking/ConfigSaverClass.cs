@@ -14,6 +14,7 @@ namespace EDTracking
     {
         private Form _form = null;
         private string _configFile = String.Empty;
+        private string _lastSavedConfig = "";
         private bool _encryptData = true;
         private bool _doNotStoreConfig = false;  // Used to control whether we want to store anything at all
         private bool _matchFormNameAndText = false;
@@ -202,8 +203,7 @@ namespace EDTracking
 
         private void _form_Deactivate(object sender, EventArgs e)
         {
-            //if (!_doNotStoreConfig)
-            //    SaveConfiguration(_configFile);
+            SaveConfiguration();
         }
 
         private void ClassFormConfig_UpdateAndSaveConfig(object sender, EventArgs e)
@@ -444,12 +444,17 @@ namespace EDTracking
                 allAppConfig.AppendLine(Encode(_configurationSets[configSetName]));
             }
 
+            if (!String.IsNullOrEmpty(_lastSavedConfig))
+                if (_lastSavedConfig.Equals(allAppConfig.ToString()))
+                    return; // No change since last write
+
+            _lastSavedConfig = allAppConfig.ToString();
             if (_encryptData)
             {
-                File.WriteAllBytes(Filename, ProtectedData.Protect(System.Text.Encoding.Unicode.GetBytes(allAppConfig.ToString()), null, DataProtectionScope.CurrentUser));
+                File.WriteAllBytes(Filename, ProtectedData.Protect(System.Text.Encoding.Unicode.GetBytes(_lastSavedConfig), null, DataProtectionScope.CurrentUser));
             }
             else
-                File.WriteAllBytes(Filename, System.Text.Encoding.Unicode.GetBytes(allAppConfig.ToString()));
+                File.WriteAllBytes(Filename, System.Text.Encoding.Unicode.GetBytes(_lastSavedConfig));
         }
 
         private void UpdateFormValues()

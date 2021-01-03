@@ -1,2 +1,2 @@
 ﻿Release 1.2.0 https://github.com/TheCrankLarson/SRVTracker/releases/download/1.2.0/SRVTracker_1.2.0.0.zip
-Beta 1.2.0.9 https://cdn.discordapp.com/attachments/177742696297922561/789864447404802078/SRVTracker_1.2.0.9.zip
+Beta 1.2.0.10 https://cdn.discordapp.com/attachments/177742696297922561/795084087869046784/SRVTracker_1.2.0.10.zip

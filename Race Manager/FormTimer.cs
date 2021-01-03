@@ -31,14 +31,10 @@ namespace Race_Manager
             _formConfig.RestorePreviousSize = false;
             _formConfig.RestoreFormValues();
 
-            raceTimer1.MouseClicked += RaceTimer1_MouseClicked;
             _timerControls = new FormTimerControls(this);
             _timerControls.Show(this);
         }
 
-        private void RaceTimer1_MouseClicked(object sender, EventArgs e)
-        {
-        }
 
         public void Play()
         {
@@ -66,9 +62,12 @@ namespace Race_Manager
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            TimeSpan timerTime = DateTime.Now.Subtract(_startTime).Add(_pauseCorrection);
-            raceTimer1.SetTimer(timerTime);
+            raceTimer1.SetTimer(TimerValue());
         }
 
+        public TimeSpan TimerValue()
+        {
+            return DateTime.Now.Subtract(_startTime).Add(_pauseCorrection);
+        }
     }
 }

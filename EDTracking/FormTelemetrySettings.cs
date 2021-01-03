@@ -186,7 +186,7 @@ namespace EDTracking
 
         private void dataGridViewExportSettings_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
-            if (!this.CanFocus || e.RowIndex>=dataGridViewExportSettings.Rows.Count)
+            if (!this.CanFocus || e.RowIndex>=dataGridViewExportSettings.Rows.Count || e.RowIndex<0)
                 return;
 
             string reportName = (string)dataGridViewExportSettings.Rows[e.RowIndex].Cells[1].Value;

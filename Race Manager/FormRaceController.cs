@@ -541,6 +541,8 @@ namespace Race_Manager
             if (!StartServerMonitoredRace())
                 return;
 
+            if (_raceTimer != null && !_raceTimer.IsDisposed)
+                _raceTimer.Play();
             buttonStartRace.Enabled = false;
             buttonStopRace.Enabled = true;
             buttonRemoveParticipant.Enabled = false;
@@ -1128,6 +1130,12 @@ namespace Race_Manager
                     _raceTimer.Close();
                 _raceTimer = null;
             }
+        }
+
+        private void buttonPause_Click(object sender, EventArgs e)
+        {
+            if (_raceTimer != null && !_raceTimer.IsDisposed)
+                _raceTimer.Pause();
         }
     }
 }

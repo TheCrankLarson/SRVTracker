@@ -316,16 +316,11 @@ namespace EDTracking
                         {
                             distanceToWaypoint.AppendLine(Statuses[leaderBoard[i]].DistanceToWaypointInKmDisplay);
                             totalDistanceLeft.AppendLine(Statuses[leaderBoard[i]].TotalDistanceLeftInKmDisplay);
-                            if (Statuses[leaderBoard[i]].Lap > 0)
-                            {
-                                currentLaps.AppendLine(Statuses[leaderBoard[i]].Lap.ToString());
-                                lapCounter.AppendLine($"{Statuses[leaderBoard[i]].Lap}/{Laps}");
-                            }
-                            else
-                            {
-                                currentLaps.AppendLine("1");
-                                lapCounter.AppendLine($"1/{Laps}");
-                            }
+                            int lapNumber = Statuses[leaderBoard[i]].Lap;
+                            if (lapNumber < 1)
+                                lapNumber = 1;
+                            currentLaps.AppendLine(lapNumber.ToString());
+                            lapCounter.AppendLine($"{lapNumber}/{Laps}");
                             
                             s = Statuses[leaderBoard[i]].ToString();
                         }
@@ -360,31 +355,31 @@ namespace EDTracking
             statsTable.Add("Status", status.ToString());
             statsTable.Add("DistanceToWaypoint", distanceToWaypoint.ToString());
             statsTable.Add("TotalDistanceLeft", totalDistanceLeft.ToString());
+            statsTable.Add("Hull", hullStrengths.ToString());
+
             if (NotableEvents != null)
                 statsTable.Add("NotableEvents", String.Join(Environment.NewLine, NotableEvents.EventQueue));
-            statsTable.Add("Hull", hullStrengths.ToString());
-            statsTable.Add("Lap", currentLaps.ToString());
-            statsTable.Add("LastLapTime", lastLapTime.ToString());
-            statsTable.Add("FastestLapTime", fastestLapTime.ToString());
-            statsTable.Add("LapCounter", lapCounter.ToString());
             if (Leader != null)
-            {
                 statsTable.Add("LeaderWaypoint", Leader.WaypointIndex.ToString());
-                if (Leader.Lap>0)
-                    statsTable.Add("LeaderLap", Leader.Lap.ToString());
-                else
-                    statsTable.Add("LeaderLap", "1");
-                if (Leader.Finished)
-                    statsTable.Add("LeaderLapCount", CustomStatusMessages["Completed"]);
-                else
+
+            if (Laps > 0)
+            {
+                statsTable.Add("Lap", currentLaps.ToString());
+                statsTable.Add("LastLapTime", lastLapTime.ToString());
+                statsTable.Add("FastestLapTime", fastestLapTime.ToString());
+                statsTable.Add("LapCounter", lapCounter.ToString());
+                if (Leader != null)
                 {
-                    if (Leader.Lap>0)
-                        statsTable.Add("LeaderLapCount", $"Lap {Leader.Lap}/{Laps}");
+                    int leaderLap = Leader.Lap;
+                    if (leaderLap < 1)
+                        leaderLap = 1;
+                    statsTable.Add("LeaderLap", leaderLap.ToString());
+                    if (Leader.Finished)
+                        statsTable.Add("LeaderLapCount", CustomStatusMessages["Completed"]);
                     else
-                        statsTable.Add("LeaderLapCount", $"Lap 1/{Laps}");
+                        statsTable.Add("LeaderLapCount", $"Lap {leaderLap}/{Laps}");
                 }
             }
-
             return statsTable;
         }
 
