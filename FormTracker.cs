@@ -310,9 +310,9 @@ namespace SRVTracker
             //    return;
             _formFlagsWatcher = new FormFlagsWatcher();
             _formFlagsWatcher.Show();
-            //FormVRMatrixTest formVRMatrixTest = new FormVRMatrixTest(0);
-            //formVRMatrixTest.SetOverlayWidth(0.8f);
-            //formVRMatrixTest.Show();
+            FormVRMatrixTest formVRMatrixTest = new FormVRMatrixTest(0);
+            formVRMatrixTest.SetOverlayWidth(0.8f);
+            formVRMatrixTest.Show();
             //formVRMatrixTest.SetMatrix(ref _vrMatrix);
         }
 

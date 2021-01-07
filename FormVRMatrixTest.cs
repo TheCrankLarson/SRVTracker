@@ -43,15 +43,15 @@ namespace SRVTracker
             vrMatrix.m0 = 0.7F;
             vrMatrix.m1 = 0.0F;
             vrMatrix.m2 = 0.0F;
-            vrMatrix.m3 = 0.42F; // x
+            vrMatrix.m3 = 1.0F; // x
             vrMatrix.m4 = 0.0F;
             vrMatrix.m5 = -1.0F;
             vrMatrix.m6 = 0.0F;
-            vrMatrix.m7 = 0.78F; // y
+            vrMatrix.m7 = 1.5F; // y
             vrMatrix.m8 = 0F;
             vrMatrix.m9 = 0.0F;
             vrMatrix.m10 = 0.0F;
-            vrMatrix.m11 = -0.1F; // -z
+            vrMatrix.m11 = -1.0F; // -z
             return vrMatrix;
         }
 
@@ -79,6 +79,8 @@ namespace SRVTracker
             listBoxMatrices.Items.Clear();
             foreach (string matrixName in _savedMatrices.Keys)
                 listBoxMatrices.Items.Add(matrixName);
+            if (listBoxMatrices.Items.Count>0)
+                listBoxMatrices.SelectedIndex = 0;
         }
 
         private void SaveMatrices()
@@ -87,7 +89,10 @@ namespace SRVTracker
             {
                 File.WriteAllText(_matricesSaveFile, JsonSerializer.Serialize(_savedMatrices));
             }
-            catch { }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to save matrices:{Environment.NewLine}{Environment.NewLine}{ex}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void buttonClose_Click(object sender, EventArgs e)
@@ -113,14 +118,7 @@ namespace SRVTracker
 
         public void SetMatrix(ref HmdMatrix34_t hmdMatrix)
         {
-            bool autoApply = checkBoxAutoApply.Checked;
-            if (checkBoxAutoApply.Checked)
-                checkBoxAutoApply.Checked = false;
-
             _hmdMatrix = hmdMatrix;
-            DisplayMatrix();
-
-            checkBoxAutoApply.Checked = autoApply;
             ApplyMatrixToOverlay(true);
         }
 
@@ -148,9 +146,8 @@ namespace SRVTracker
             ApplyOverlayWidth();
         }
 
-        public HmdMatrix34_t GetMatrix()
+        public void GetMatrix()
         {
-
             _hmdMatrix.m0 = (float)numericUpDownm0.Value;
             _hmdMatrix.m1 = (float)numericUpDownm1.Value;
             _hmdMatrix.m2 = (float)numericUpDownm2.Value;
@@ -163,15 +160,12 @@ namespace SRVTracker
             _hmdMatrix.m9 = (float)numericUpDownm9.Value;
             _hmdMatrix.m10 = (float)numericUpDownm10.Value;
             _hmdMatrix.m11 = (float)numericUpDownm11.Value;
-            return _hmdMatrix;
         }
 
         private void ApplyOverlayWidth()
         {
             if (_overlayHandle > 0)
-            {
                 OpenVR.Overlay.SetOverlayWidthInMeters(_overlayHandle, (float)numericUpDownOverlayWidth.Value);
-            }
         }
 
         private void buttonApply_Click(object sender, EventArgs e)
@@ -191,6 +185,29 @@ namespace SRVTracker
                 GetMatrix();
                 OpenVR.Overlay.SetOverlayTransformAbsolute(_overlayHandle, Valve.VR.ETrackingUniverseOrigin.TrackingUniverseStanding, ref _hmdMatrix);
             }
+            if (!force)
+                UpdateSelectedMatrixDefinition();
+        }
+
+        private void UpdateSelectedMatrixDefinition()
+        {
+            // Called when a value in the UI is updated so that we keep our stored matrices up-to-date
+
+            if (listBoxMatrices.SelectedIndex < 0 || !_savedMatrices.ContainsKey(textBoxMatrixName.Text))
+                return;
+
+            _savedMatrices[textBoxMatrixName.Text].m0 = (float)numericUpDownm0.Value;
+            _savedMatrices[textBoxMatrixName.Text].m1 = (float)numericUpDownm1.Value;
+            _savedMatrices[textBoxMatrixName.Text].m2 = (float)numericUpDownm2.Value;
+            _savedMatrices[textBoxMatrixName.Text].m3 = (float)numericUpDownm3.Value;
+            _savedMatrices[textBoxMatrixName.Text].m4 = (float)numericUpDownm4.Value;
+            _savedMatrices[textBoxMatrixName.Text].m5 = (float)numericUpDownm5.Value;
+            _savedMatrices[textBoxMatrixName.Text].m6 = (float)numericUpDownm6.Value;
+            _savedMatrices[textBoxMatrixName.Text].m7 = (float)numericUpDownm7.Value;
+            _savedMatrices[textBoxMatrixName.Text].m8 = (float)numericUpDownm8.Value;
+            _savedMatrices[textBoxMatrixName.Text].m9 = (float)numericUpDownm9.Value;
+            _savedMatrices[textBoxMatrixName.Text].m10 = (float)numericUpDownm10.Value;
+            _savedMatrices[textBoxMatrixName.Text].m11 = (float)numericUpDownm11.Value;
         }
 
         private void buttonExport_Click(object sender, EventArgs e)
@@ -309,9 +326,9 @@ namespace SRVTracker
 
         private void buttonAdd_Click(object sender, EventArgs e)
         {
-            HmdMatrix34_t matrix = GetMatrix();
+            GetMatrix();
             string matrixName = $"Matrix {_savedMatrices.Count + 1}";
-            _savedMatrices.Add(matrixName, MatrixDefinition.FromHmdMatrix34_t(ref matrix, (float)numericUpDownOverlayWidth.Value));
+            _savedMatrices.Add(matrixName, MatrixDefinition.FromHmdMatrix34_t(ref _hmdMatrix, (float)numericUpDownOverlayWidth.Value));
             listBoxMatrices.Items.Add(matrixName);
             listBoxMatrices.SelectedIndex = listBoxMatrices.Items.Count - 1;
         }

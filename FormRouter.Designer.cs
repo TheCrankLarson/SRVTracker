@@ -31,6 +31,56 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormRouter));
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.listBoxWaypoints = new System.Windows.Forms.ListBox();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.numericUpDownRecordDistance = new System.Windows.Forms.NumericUpDown();
+            this.groupBoxWaypointInfo = new System.Windows.Forms.GroupBox();
+            this.groupBoxPolygon = new System.Windows.Forms.GroupBox();
+            this.listBoxPolygonMarkers = new System.Windows.Forms.ListBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.comboBoxPolygonTarget = new System.Windows.Forms.ComboBox();
+            this.groupBoxAltitude = new System.Windows.Forms.GroupBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.numericUpDownMinAltitude = new System.Windows.Forms.NumericUpDown();
+            this.label5 = new System.Windows.Forms.Label();
+            this.numericUpDownMaxAltitude = new System.Windows.Forms.NumericUpDown();
+            this.label7 = new System.Windows.Forms.Label();
+            this.comboBoxWaypointType = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.textBoxWaypointName = new System.Windows.Forms.TextBox();
+            this.groupBoxGate = new System.Windows.Forms.GroupBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.comboBoxGateTarget = new System.Windows.Forms.ComboBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.comboBoxGateLocation2 = new System.Windows.Forms.ComboBox();
+            this.comboBoxGateLocation1 = new System.Windows.Forms.ComboBox();
+            this.groupBoxBasic = new System.Windows.Forms.GroupBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.comboBoxBasicLocation = new System.Windows.Forms.ComboBox();
+            this.numericUpDownRadius = new System.Windows.Forms.NumericUpDown();
+            this.checkBoxAllowPassing = new System.Windows.Forms.CheckBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.textBoxRouteName = new System.Windows.Forms.TextBox();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.checkBoxPlayIncudeDirection = new System.Windows.Forms.CheckBox();
+            this.checkBoxEnableAudio = new System.Windows.Forms.CheckBox();
+            this.checkBoxTimeTrial = new System.Windows.Forms.CheckBox();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.label12 = new System.Windows.Forms.Label();
+            this.checkBoxScreenshot = new System.Windows.Forms.CheckBox();
+            this.numericUpDownTotalLaps = new System.Windows.Forms.NumericUpDown();
+            this.groupBoxAudioSettings = new System.Windows.Forms.GroupBox();
+            this.comboBoxChooseSound = new System.Windows.Forms.ComboBox();
+            this.listBoxAudioEvents = new System.Windows.Forms.ListBox();
+            this.buttonStop = new System.Windows.Forms.Button();
+            this.buttonStartRecording = new System.Windows.Forms.Button();
+            this.buttonPlay = new System.Windows.Forms.Button();
+            this.buttonGenerateCircumnavigationWaypoints = new System.Windows.Forms.Button();
             this.buttonEditLocations = new System.Windows.Forms.Button();
             this.buttonReverseWaypointOrder = new System.Windows.Forms.Button();
             this.buttonDuplicateWaypoint = new System.Windows.Forms.Button();
@@ -43,33 +93,13 @@
             this.buttonLoadRoute = new System.Windows.Forms.Button();
             this.buttonDeleteWaypoint = new System.Windows.Forms.Button();
             this.buttonAddWaypoint = new System.Windows.Forms.Button();
-            this.listBoxWaypoints = new System.Windows.Forms.ListBox();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.numericUpDownRecordDistance = new System.Windows.Forms.NumericUpDown();
-            this.groupBoxWaypointInfo = new System.Windows.Forms.GroupBox();
-            this.groupBoxAltitude = new System.Windows.Forms.GroupBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.numericUpDownMinAltitude = new System.Windows.Forms.NumericUpDown();
-            this.label5 = new System.Windows.Forms.Label();
-            this.numericUpDownMaxAltitude = new System.Windows.Forms.NumericUpDown();
-            this.label7 = new System.Windows.Forms.Label();
-            this.comboBoxWaypointType = new System.Windows.Forms.ComboBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.textBoxWaypointName = new System.Windows.Forms.TextBox();
-            this.groupBoxGate = new System.Windows.Forms.GroupBox();
-            this.groupBoxPolygon = new System.Windows.Forms.GroupBox();
             this.buttonPolygonMarkerAdd = new System.Windows.Forms.Button();
             this.buttonPolygonMarkerDelete = new System.Windows.Forms.Button();
-            this.listBoxPolygonMarkers = new System.Windows.Forms.ListBox();
             this.buttonPolygonTargetTarget = new System.Windows.Forms.Button();
             this.buttonPolygonMarkerTarget = new System.Windows.Forms.Button();
             this.buttonPolygonTargetCalculate = new System.Windows.Forms.Button();
             this.buttonPolygonTargetEdit = new System.Windows.Forms.Button();
             this.buttonPolygonTargetUseCurrentLocation = new System.Windows.Forms.Button();
-            this.label13 = new System.Windows.Forms.Label();
-            this.comboBoxPolygonTarget = new System.Windows.Forms.ComboBox();
             this.buttonPolygonMarkerEdit = new System.Windows.Forms.Button();
             this.buttonPolygonMarkerUseCurrentLocation = new System.Windows.Forms.Button();
             this.buttonTargetGateTarget = new System.Windows.Forms.Button();
@@ -78,49 +108,24 @@
             this.buttonCalculateGateTarget = new System.Windows.Forms.Button();
             this.buttonEditGateTarget = new System.Windows.Forms.Button();
             this.buttonSetGateTargetToCurrentLocation = new System.Windows.Forms.Button();
-            this.label10 = new System.Windows.Forms.Label();
-            this.comboBoxGateTarget = new System.Windows.Forms.ComboBox();
             this.buttonEditGateMarker2 = new System.Windows.Forms.Button();
             this.buttonEditGateMarker1 = new System.Windows.Forms.Button();
             this.buttonSetGateLocation2ToCurrentLocation = new System.Windows.Forms.Button();
             this.buttonSetGateLocation1ToCurrentLocation = new System.Windows.Forms.Button();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.comboBoxGateLocation2 = new System.Windows.Forms.ComboBox();
-            this.comboBoxGateLocation1 = new System.Windows.Forms.ComboBox();
-            this.groupBoxBasic = new System.Windows.Forms.GroupBox();
-            this.label11 = new System.Windows.Forms.Label();
-            this.comboBoxBasicLocation = new System.Windows.Forms.ComboBox();
             this.buttonEditBasicLocation = new System.Windows.Forms.Button();
-            this.numericUpDownRadius = new System.Windows.Forms.NumericUpDown();
-            this.checkBoxAllowPassing = new System.Windows.Forms.CheckBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.textBoxRouteName = new System.Windows.Forms.TextBox();
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.checkBoxPlayIncudeDirection = new System.Windows.Forms.CheckBox();
-            this.checkBoxEnableAudio = new System.Windows.Forms.CheckBox();
-            this.checkBoxTimeTrial = new System.Windows.Forms.CheckBox();
-            this.buttonStop = new System.Windows.Forms.Button();
-            this.buttonStartRecording = new System.Windows.Forms.Button();
-            this.buttonPlay = new System.Windows.Forms.Button();
-            this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.label12 = new System.Windows.Forms.Label();
-            this.checkBoxScreenshot = new System.Windows.Forms.CheckBox();
-            this.numericUpDownTotalLaps = new System.Windows.Forms.NumericUpDown();
-            this.groupBoxAudioSettings = new System.Windows.Forms.GroupBox();
-            this.comboBoxChooseSound = new System.Windows.Forms.ComboBox();
-            this.listBoxAudioEvents = new System.Windows.Forms.ListBox();
+            this.circumnavigationContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.addNorthPoleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addSouthPoleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.generateRouteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox2.SuspendLayout();
             this.groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRecordDistance)).BeginInit();
             this.groupBoxWaypointInfo.SuspendLayout();
+            this.groupBoxPolygon.SuspendLayout();
             this.groupBoxAltitude.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMinAltitude)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMaxAltitude)).BeginInit();
             this.groupBoxGate.SuspendLayout();
-            this.groupBoxPolygon.SuspendLayout();
             this.groupBoxBasic.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRadius)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -128,10 +133,12 @@
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTotalLaps)).BeginInit();
             this.groupBoxAudioSettings.SuspendLayout();
+            this.circumnavigationContextMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.buttonGenerateCircumnavigationWaypoints);
             this.groupBox2.Controls.Add(this.buttonEditLocations);
             this.groupBox2.Controls.Add(this.buttonReverseWaypointOrder);
             this.groupBox2.Controls.Add(this.buttonDuplicateWaypoint);
@@ -151,137 +158,6 @@
             this.groupBox2.TabIndex = 2;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Waypoints";
-            // 
-            // buttonEditLocations
-            // 
-            this.buttonEditLocations.Image = global::SRVTracker.Properties.Resources.AddressEditor_16x;
-            this.buttonEditLocations.Location = new System.Drawing.Point(233, 169);
-            this.buttonEditLocations.Name = "buttonEditLocations";
-            this.buttonEditLocations.Size = new System.Drawing.Size(34, 23);
-            this.buttonEditLocations.TabIndex = 21;
-            this.buttonEditLocations.UseVisualStyleBackColor = true;
-            this.buttonEditLocations.Click += new System.EventHandler(this.buttonEditLocations_Click);
-            // 
-            // buttonReverseWaypointOrder
-            // 
-            this.buttonReverseWaypointOrder.Image = global::SRVTracker.Properties.Resources.ReversePath_16x;
-            this.buttonReverseWaypointOrder.Location = new System.Drawing.Point(201, 198);
-            this.buttonReverseWaypointOrder.Name = "buttonReverseWaypointOrder";
-            this.buttonReverseWaypointOrder.Size = new System.Drawing.Size(26, 23);
-            this.buttonReverseWaypointOrder.TabIndex = 20;
-            this.toolTip1.SetToolTip(this.buttonReverseWaypointOrder, "Reverse the entire route");
-            this.buttonReverseWaypointOrder.UseVisualStyleBackColor = true;
-            this.buttonReverseWaypointOrder.Click += new System.EventHandler(this.buttonReverseWaypointOrder_Click);
-            // 
-            // buttonDuplicateWaypoint
-            // 
-            this.buttonDuplicateWaypoint.Image = global::SRVTracker.Properties.Resources.CopyItem_16x;
-            this.buttonDuplicateWaypoint.Location = new System.Drawing.Point(41, 198);
-            this.buttonDuplicateWaypoint.Name = "buttonDuplicateWaypoint";
-            this.buttonDuplicateWaypoint.Size = new System.Drawing.Size(26, 23);
-            this.buttonDuplicateWaypoint.TabIndex = 19;
-            this.toolTip1.SetToolTip(this.buttonDuplicateWaypoint, "Duplicate selected waypoint\r\n(duplicate added to end of list)");
-            this.buttonDuplicateWaypoint.UseVisualStyleBackColor = true;
-            this.buttonDuplicateWaypoint.Click += new System.EventHandler(this.buttonDuplicateWaypoint_Click);
-            // 
-            // buttonMoveDown
-            // 
-            this.buttonMoveDown.Image = global::SRVTracker.Properties.Resources.ExpandDown_lg_16x;
-            this.buttonMoveDown.Location = new System.Drawing.Point(169, 198);
-            this.buttonMoveDown.Name = "buttonMoveDown";
-            this.buttonMoveDown.Size = new System.Drawing.Size(26, 23);
-            this.buttonMoveDown.TabIndex = 18;
-            this.buttonMoveDown.UseVisualStyleBackColor = true;
-            this.buttonMoveDown.Click += new System.EventHandler(this.buttonMoveDown_Click);
-            // 
-            // buttonAddCurrentLocation
-            // 
-            this.buttonAddCurrentLocation.Image = global::SRVTracker.Properties.Resources.AddIndexer_16x;
-            this.buttonAddCurrentLocation.Location = new System.Drawing.Point(9, 198);
-            this.buttonAddCurrentLocation.Name = "buttonAddCurrentLocation";
-            this.buttonAddCurrentLocation.Size = new System.Drawing.Size(26, 23);
-            this.buttonAddCurrentLocation.TabIndex = 16;
-            this.toolTip1.SetToolTip(this.buttonAddCurrentLocation, "Add current location");
-            this.buttonAddCurrentLocation.UseVisualStyleBackColor = true;
-            this.buttonAddCurrentLocation.Click += new System.EventHandler(this.buttonAddCurrentLocation_Click);
-            // 
-            // buttonSaveRoute
-            // 
-            this.buttonSaveRoute.Enabled = false;
-            this.buttonSaveRoute.Image = global::SRVTracker.Properties.Resources.Save_16x;
-            this.buttonSaveRoute.Location = new System.Drawing.Point(233, 77);
-            this.buttonSaveRoute.Name = "buttonSaveRoute";
-            this.buttonSaveRoute.Size = new System.Drawing.Size(34, 23);
-            this.buttonSaveRoute.TabIndex = 15;
-            this.toolTip1.SetToolTip(this.buttonSaveRoute, "Save");
-            this.buttonSaveRoute.UseVisualStyleBackColor = true;
-            this.buttonSaveRoute.Click += new System.EventHandler(this.buttonSaveRoute_Click);
-            // 
-            // buttonMoveUp
-            // 
-            this.buttonMoveUp.Image = global::SRVTracker.Properties.Resources.CollapseUp_lg_16x;
-            this.buttonMoveUp.Location = new System.Drawing.Point(137, 198);
-            this.buttonMoveUp.Name = "buttonMoveUp";
-            this.buttonMoveUp.Size = new System.Drawing.Size(26, 23);
-            this.buttonMoveUp.TabIndex = 17;
-            this.buttonMoveUp.UseVisualStyleBackColor = true;
-            this.buttonMoveUp.Click += new System.EventHandler(this.buttonMoveUp_Click);
-            // 
-            // buttonSetAsTarget
-            // 
-            this.buttonSetAsTarget.Image = global::SRVTracker.Properties.Resources.Target_16x;
-            this.buttonSetAsTarget.Location = new System.Drawing.Point(233, 123);
-            this.buttonSetAsTarget.Name = "buttonSetAsTarget";
-            this.buttonSetAsTarget.Size = new System.Drawing.Size(34, 23);
-            this.buttonSetAsTarget.TabIndex = 5;
-            this.toolTip1.SetToolTip(this.buttonSetAsTarget, "Target currently selected location");
-            this.buttonSetAsTarget.UseVisualStyleBackColor = true;
-            this.buttonSetAsTarget.Click += new System.EventHandler(this.buttonSetAsTarget_Click);
-            // 
-            // buttonSaveRouteAs
-            // 
-            this.buttonSaveRouteAs.Image = global::SRVTracker.Properties.Resources.SaveAs_16x;
-            this.buttonSaveRouteAs.Location = new System.Drawing.Point(233, 48);
-            this.buttonSaveRouteAs.Name = "buttonSaveRouteAs";
-            this.buttonSaveRouteAs.Size = new System.Drawing.Size(34, 23);
-            this.buttonSaveRouteAs.TabIndex = 13;
-            this.toolTip1.SetToolTip(this.buttonSaveRouteAs, "Save as...");
-            this.buttonSaveRouteAs.UseVisualStyleBackColor = true;
-            this.buttonSaveRouteAs.Click += new System.EventHandler(this.buttonSaveRouteAs_Click);
-            // 
-            // buttonLoadRoute
-            // 
-            this.buttonLoadRoute.Image = global::SRVTracker.Properties.Resources.OpenFile_16x;
-            this.buttonLoadRoute.Location = new System.Drawing.Point(233, 19);
-            this.buttonLoadRoute.Name = "buttonLoadRoute";
-            this.buttonLoadRoute.Size = new System.Drawing.Size(34, 23);
-            this.buttonLoadRoute.TabIndex = 14;
-            this.buttonLoadRoute.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.toolTip1.SetToolTip(this.buttonLoadRoute, "Load from file");
-            this.buttonLoadRoute.UseVisualStyleBackColor = true;
-            this.buttonLoadRoute.Click += new System.EventHandler(this.buttonLoadRoute_Click);
-            // 
-            // buttonDeleteWaypoint
-            // 
-            this.buttonDeleteWaypoint.Image = global::SRVTracker.Properties.Resources.Remove_color_16x;
-            this.buttonDeleteWaypoint.Location = new System.Drawing.Point(105, 198);
-            this.buttonDeleteWaypoint.Name = "buttonDeleteWaypoint";
-            this.buttonDeleteWaypoint.Size = new System.Drawing.Size(26, 23);
-            this.buttonDeleteWaypoint.TabIndex = 2;
-            this.toolTip1.SetToolTip(this.buttonDeleteWaypoint, "Remove selected location");
-            this.buttonDeleteWaypoint.UseVisualStyleBackColor = true;
-            this.buttonDeleteWaypoint.Click += new System.EventHandler(this.buttonDeleteWaypoint_Click);
-            // 
-            // buttonAddWaypoint
-            // 
-            this.buttonAddWaypoint.Image = global::SRVTracker.Properties.Resources.Add_16x;
-            this.buttonAddWaypoint.Location = new System.Drawing.Point(73, 198);
-            this.buttonAddWaypoint.Name = "buttonAddWaypoint";
-            this.buttonAddWaypoint.Size = new System.Drawing.Size(26, 23);
-            this.buttonAddWaypoint.TabIndex = 1;
-            this.toolTip1.SetToolTip(this.buttonAddWaypoint, "Add saved location");
-            this.buttonAddWaypoint.UseVisualStyleBackColor = true;
-            this.buttonAddWaypoint.Click += new System.EventHandler(this.buttonAddWaypoint_Click);
             // 
             // listBoxWaypoints
             // 
@@ -363,6 +239,54 @@
             this.groupBoxWaypointInfo.TabIndex = 6;
             this.groupBoxWaypointInfo.TabStop = false;
             this.groupBoxWaypointInfo.Text = "Waypoint Information";
+            // 
+            // groupBoxPolygon
+            // 
+            this.groupBoxPolygon.Controls.Add(this.buttonPolygonMarkerAdd);
+            this.groupBoxPolygon.Controls.Add(this.buttonPolygonMarkerDelete);
+            this.groupBoxPolygon.Controls.Add(this.listBoxPolygonMarkers);
+            this.groupBoxPolygon.Controls.Add(this.buttonPolygonTargetTarget);
+            this.groupBoxPolygon.Controls.Add(this.buttonPolygonMarkerTarget);
+            this.groupBoxPolygon.Controls.Add(this.buttonPolygonTargetCalculate);
+            this.groupBoxPolygon.Controls.Add(this.buttonPolygonTargetEdit);
+            this.groupBoxPolygon.Controls.Add(this.buttonPolygonTargetUseCurrentLocation);
+            this.groupBoxPolygon.Controls.Add(this.label13);
+            this.groupBoxPolygon.Controls.Add(this.comboBoxPolygonTarget);
+            this.groupBoxPolygon.Controls.Add(this.buttonPolygonMarkerEdit);
+            this.groupBoxPolygon.Controls.Add(this.buttonPolygonMarkerUseCurrentLocation);
+            this.groupBoxPolygon.Location = new System.Drawing.Point(32, 72);
+            this.groupBoxPolygon.Name = "groupBoxPolygon";
+            this.groupBoxPolygon.Size = new System.Drawing.Size(270, 97);
+            this.groupBoxPolygon.TabIndex = 19;
+            this.groupBoxPolygon.TabStop = false;
+            this.groupBoxPolygon.Visible = false;
+            // 
+            // listBoxPolygonMarkers
+            // 
+            this.listBoxPolygonMarkers.FormattingEnabled = true;
+            this.listBoxPolygonMarkers.Location = new System.Drawing.Point(6, 13);
+            this.listBoxPolygonMarkers.Name = "listBoxPolygonMarkers";
+            this.listBoxPolygonMarkers.Size = new System.Drawing.Size(188, 43);
+            this.listBoxPolygonMarkers.TabIndex = 21;
+            this.listBoxPolygonMarkers.SelectedIndexChanged += new System.EventHandler(this.listBoxPolygonMarkers_SelectedIndexChanged);
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(6, 71);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(41, 13);
+            this.label13.TabIndex = 10;
+            this.label13.Text = "Target:";
+            // 
+            // comboBoxPolygonTarget
+            // 
+            this.comboBoxPolygonTarget.Enabled = false;
+            this.comboBoxPolygonTarget.FormattingEnabled = true;
+            this.comboBoxPolygonTarget.Location = new System.Drawing.Point(53, 68);
+            this.comboBoxPolygonTarget.Name = "comboBoxPolygonTarget";
+            this.comboBoxPolygonTarget.Size = new System.Drawing.Size(120, 21);
+            this.comboBoxPolygonTarget.TabIndex = 9;
             // 
             // groupBoxAltitude
             // 
@@ -479,204 +403,6 @@
             this.groupBoxGate.TabStop = false;
             this.groupBoxGate.Visible = false;
             // 
-            // groupBoxPolygon
-            // 
-            this.groupBoxPolygon.Controls.Add(this.buttonPolygonMarkerAdd);
-            this.groupBoxPolygon.Controls.Add(this.buttonPolygonMarkerDelete);
-            this.groupBoxPolygon.Controls.Add(this.listBoxPolygonMarkers);
-            this.groupBoxPolygon.Controls.Add(this.buttonPolygonTargetTarget);
-            this.groupBoxPolygon.Controls.Add(this.buttonPolygonMarkerTarget);
-            this.groupBoxPolygon.Controls.Add(this.buttonPolygonTargetCalculate);
-            this.groupBoxPolygon.Controls.Add(this.buttonPolygonTargetEdit);
-            this.groupBoxPolygon.Controls.Add(this.buttonPolygonTargetUseCurrentLocation);
-            this.groupBoxPolygon.Controls.Add(this.label13);
-            this.groupBoxPolygon.Controls.Add(this.comboBoxPolygonTarget);
-            this.groupBoxPolygon.Controls.Add(this.buttonPolygonMarkerEdit);
-            this.groupBoxPolygon.Controls.Add(this.buttonPolygonMarkerUseCurrentLocation);
-            this.groupBoxPolygon.Location = new System.Drawing.Point(32, 72);
-            this.groupBoxPolygon.Name = "groupBoxPolygon";
-            this.groupBoxPolygon.Size = new System.Drawing.Size(270, 97);
-            this.groupBoxPolygon.TabIndex = 19;
-            this.groupBoxPolygon.TabStop = false;
-            this.groupBoxPolygon.Visible = false;
-            // 
-            // buttonPolygonMarkerAdd
-            // 
-            this.buttonPolygonMarkerAdd.Image = global::SRVTracker.Properties.Resources.Add_16x;
-            this.buttonPolygonMarkerAdd.Location = new System.Drawing.Point(221, 34);
-            this.buttonPolygonMarkerAdd.Name = "buttonPolygonMarkerAdd";
-            this.buttonPolygonMarkerAdd.Size = new System.Drawing.Size(22, 22);
-            this.buttonPolygonMarkerAdd.TabIndex = 23;
-            this.buttonPolygonMarkerAdd.UseVisualStyleBackColor = true;
-            // 
-            // buttonPolygonMarkerDelete
-            // 
-            this.buttonPolygonMarkerDelete.Image = global::SRVTracker.Properties.Resources.Remove_color_16x;
-            this.buttonPolygonMarkerDelete.Location = new System.Drawing.Point(242, 34);
-            this.buttonPolygonMarkerDelete.Name = "buttonPolygonMarkerDelete";
-            this.buttonPolygonMarkerDelete.Size = new System.Drawing.Size(22, 22);
-            this.buttonPolygonMarkerDelete.TabIndex = 22;
-            this.toolTip1.SetToolTip(this.buttonPolygonMarkerDelete, "Add current location as gate marker 1");
-            this.buttonPolygonMarkerDelete.UseVisualStyleBackColor = true;
-            // 
-            // listBoxPolygonMarkers
-            // 
-            this.listBoxPolygonMarkers.FormattingEnabled = true;
-            this.listBoxPolygonMarkers.Location = new System.Drawing.Point(6, 13);
-            this.listBoxPolygonMarkers.Name = "listBoxPolygonMarkers";
-            this.listBoxPolygonMarkers.Size = new System.Drawing.Size(188, 43);
-            this.listBoxPolygonMarkers.TabIndex = 21;
-            this.listBoxPolygonMarkers.SelectedIndexChanged += new System.EventHandler(this.listBoxPolygonMarkers_SelectedIndexChanged);
-            // 
-            // buttonPolygonTargetTarget
-            // 
-            this.buttonPolygonTargetTarget.Image = global::SRVTracker.Properties.Resources.Target_16x;
-            this.buttonPolygonTargetTarget.Location = new System.Drawing.Point(200, 67);
-            this.buttonPolygonTargetTarget.Name = "buttonPolygonTargetTarget";
-            this.buttonPolygonTargetTarget.Size = new System.Drawing.Size(22, 22);
-            this.buttonPolygonTargetTarget.TabIndex = 20;
-            this.toolTip1.SetToolTip(this.buttonPolygonTargetTarget, "Target currently selected location");
-            this.buttonPolygonTargetTarget.UseVisualStyleBackColor = true;
-            // 
-            // buttonPolygonMarkerTarget
-            // 
-            this.buttonPolygonMarkerTarget.Image = global::SRVTracker.Properties.Resources.Target_16x;
-            this.buttonPolygonMarkerTarget.Location = new System.Drawing.Point(200, 13);
-            this.buttonPolygonMarkerTarget.Name = "buttonPolygonMarkerTarget";
-            this.buttonPolygonMarkerTarget.Size = new System.Drawing.Size(22, 22);
-            this.buttonPolygonMarkerTarget.TabIndex = 18;
-            this.toolTip1.SetToolTip(this.buttonPolygonMarkerTarget, "Target currently selected location");
-            this.buttonPolygonMarkerTarget.UseVisualStyleBackColor = true;
-            // 
-            // buttonPolygonTargetCalculate
-            // 
-            this.buttonPolygonTargetCalculate.Image = global::SRVTracker.Properties.Resources.Calculator_16x;
-            this.buttonPolygonTargetCalculate.Location = new System.Drawing.Point(179, 67);
-            this.buttonPolygonTargetCalculate.Name = "buttonPolygonTargetCalculate";
-            this.buttonPolygonTargetCalculate.Size = new System.Drawing.Size(22, 22);
-            this.buttonPolygonTargetCalculate.TabIndex = 13;
-            this.buttonPolygonTargetCalculate.UseVisualStyleBackColor = true;
-            // 
-            // buttonPolygonTargetEdit
-            // 
-            this.buttonPolygonTargetEdit.Image = global::SRVTracker.Properties.Resources.Edit_16x;
-            this.buttonPolygonTargetEdit.Location = new System.Drawing.Point(221, 67);
-            this.buttonPolygonTargetEdit.Name = "buttonPolygonTargetEdit";
-            this.buttonPolygonTargetEdit.Size = new System.Drawing.Size(22, 22);
-            this.buttonPolygonTargetEdit.TabIndex = 12;
-            this.buttonPolygonTargetEdit.UseVisualStyleBackColor = true;
-            // 
-            // buttonPolygonTargetUseCurrentLocation
-            // 
-            this.buttonPolygonTargetUseCurrentLocation.Image = global::SRVTracker.Properties.Resources.AddIndexer_16x;
-            this.buttonPolygonTargetUseCurrentLocation.Location = new System.Drawing.Point(242, 67);
-            this.buttonPolygonTargetUseCurrentLocation.Name = "buttonPolygonTargetUseCurrentLocation";
-            this.buttonPolygonTargetUseCurrentLocation.Size = new System.Drawing.Size(22, 22);
-            this.buttonPolygonTargetUseCurrentLocation.TabIndex = 11;
-            this.toolTip1.SetToolTip(this.buttonPolygonTargetUseCurrentLocation, "Add current location as gate marker 2");
-            this.buttonPolygonTargetUseCurrentLocation.UseVisualStyleBackColor = true;
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(6, 71);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(41, 13);
-            this.label13.TabIndex = 10;
-            this.label13.Text = "Target:";
-            // 
-            // comboBoxPolygonTarget
-            // 
-            this.comboBoxPolygonTarget.Enabled = false;
-            this.comboBoxPolygonTarget.FormattingEnabled = true;
-            this.comboBoxPolygonTarget.Location = new System.Drawing.Point(53, 68);
-            this.comboBoxPolygonTarget.Name = "comboBoxPolygonTarget";
-            this.comboBoxPolygonTarget.Size = new System.Drawing.Size(120, 21);
-            this.comboBoxPolygonTarget.TabIndex = 9;
-            // 
-            // buttonPolygonMarkerEdit
-            // 
-            this.buttonPolygonMarkerEdit.Image = global::SRVTracker.Properties.Resources.Edit_16x;
-            this.buttonPolygonMarkerEdit.Location = new System.Drawing.Point(221, 13);
-            this.buttonPolygonMarkerEdit.Name = "buttonPolygonMarkerEdit";
-            this.buttonPolygonMarkerEdit.Size = new System.Drawing.Size(22, 22);
-            this.buttonPolygonMarkerEdit.TabIndex = 6;
-            this.buttonPolygonMarkerEdit.UseVisualStyleBackColor = true;
-            // 
-            // buttonPolygonMarkerUseCurrentLocation
-            // 
-            this.buttonPolygonMarkerUseCurrentLocation.Image = global::SRVTracker.Properties.Resources.AddIndexer_16x;
-            this.buttonPolygonMarkerUseCurrentLocation.Location = new System.Drawing.Point(242, 13);
-            this.buttonPolygonMarkerUseCurrentLocation.Name = "buttonPolygonMarkerUseCurrentLocation";
-            this.buttonPolygonMarkerUseCurrentLocation.Size = new System.Drawing.Size(22, 22);
-            this.buttonPolygonMarkerUseCurrentLocation.TabIndex = 4;
-            this.toolTip1.SetToolTip(this.buttonPolygonMarkerUseCurrentLocation, "Add current location as gate marker 1");
-            this.buttonPolygonMarkerUseCurrentLocation.UseVisualStyleBackColor = true;
-            // 
-            // buttonTargetGateTarget
-            // 
-            this.buttonTargetGateTarget.Image = global::SRVTracker.Properties.Resources.Target_16x;
-            this.buttonTargetGateTarget.Location = new System.Drawing.Point(200, 67);
-            this.buttonTargetGateTarget.Name = "buttonTargetGateTarget";
-            this.buttonTargetGateTarget.Size = new System.Drawing.Size(22, 22);
-            this.buttonTargetGateTarget.TabIndex = 20;
-            this.toolTip1.SetToolTip(this.buttonTargetGateTarget, "Target currently selected location");
-            this.buttonTargetGateTarget.UseVisualStyleBackColor = true;
-            this.buttonTargetGateTarget.Click += new System.EventHandler(this.buttonTargetGateTarget_Click);
-            // 
-            // buttonTargetGateMarker2
-            // 
-            this.buttonTargetGateMarker2.Image = global::SRVTracker.Properties.Resources.Target_16x;
-            this.buttonTargetGateMarker2.Location = new System.Drawing.Point(200, 41);
-            this.buttonTargetGateMarker2.Name = "buttonTargetGateMarker2";
-            this.buttonTargetGateMarker2.Size = new System.Drawing.Size(22, 22);
-            this.buttonTargetGateMarker2.TabIndex = 19;
-            this.toolTip1.SetToolTip(this.buttonTargetGateMarker2, "Target currently selected location");
-            this.buttonTargetGateMarker2.UseVisualStyleBackColor = true;
-            this.buttonTargetGateMarker2.Click += new System.EventHandler(this.buttonTargetGateMarker2_Click);
-            // 
-            // buttonTargetGateMarker1
-            // 
-            this.buttonTargetGateMarker1.Image = global::SRVTracker.Properties.Resources.Target_16x;
-            this.buttonTargetGateMarker1.Location = new System.Drawing.Point(200, 13);
-            this.buttonTargetGateMarker1.Name = "buttonTargetGateMarker1";
-            this.buttonTargetGateMarker1.Size = new System.Drawing.Size(22, 22);
-            this.buttonTargetGateMarker1.TabIndex = 18;
-            this.toolTip1.SetToolTip(this.buttonTargetGateMarker1, "Target currently selected location");
-            this.buttonTargetGateMarker1.UseVisualStyleBackColor = true;
-            this.buttonTargetGateMarker1.Click += new System.EventHandler(this.buttonTargetGateMarker1_Click);
-            // 
-            // buttonCalculateGateTarget
-            // 
-            this.buttonCalculateGateTarget.Image = global::SRVTracker.Properties.Resources.Calculator_16x;
-            this.buttonCalculateGateTarget.Location = new System.Drawing.Point(179, 67);
-            this.buttonCalculateGateTarget.Name = "buttonCalculateGateTarget";
-            this.buttonCalculateGateTarget.Size = new System.Drawing.Size(22, 22);
-            this.buttonCalculateGateTarget.TabIndex = 13;
-            this.buttonCalculateGateTarget.UseVisualStyleBackColor = true;
-            this.buttonCalculateGateTarget.Click += new System.EventHandler(this.buttonCalculateGateTarget_Click);
-            // 
-            // buttonEditGateTarget
-            // 
-            this.buttonEditGateTarget.Image = global::SRVTracker.Properties.Resources.Edit_16x;
-            this.buttonEditGateTarget.Location = new System.Drawing.Point(221, 67);
-            this.buttonEditGateTarget.Name = "buttonEditGateTarget";
-            this.buttonEditGateTarget.Size = new System.Drawing.Size(22, 22);
-            this.buttonEditGateTarget.TabIndex = 12;
-            this.buttonEditGateTarget.UseVisualStyleBackColor = true;
-            this.buttonEditGateTarget.Click += new System.EventHandler(this.buttonEditGateTarget_Click);
-            // 
-            // buttonSetGateTargetToCurrentLocation
-            // 
-            this.buttonSetGateTargetToCurrentLocation.Image = global::SRVTracker.Properties.Resources.AddIndexer_16x;
-            this.buttonSetGateTargetToCurrentLocation.Location = new System.Drawing.Point(242, 67);
-            this.buttonSetGateTargetToCurrentLocation.Name = "buttonSetGateTargetToCurrentLocation";
-            this.buttonSetGateTargetToCurrentLocation.Size = new System.Drawing.Size(22, 22);
-            this.buttonSetGateTargetToCurrentLocation.TabIndex = 11;
-            this.toolTip1.SetToolTip(this.buttonSetGateTargetToCurrentLocation, "Add current location as gate marker 2");
-            this.buttonSetGateTargetToCurrentLocation.UseVisualStyleBackColor = true;
-            this.buttonSetGateTargetToCurrentLocation.Click += new System.EventHandler(this.buttonSetGateTargetToCurrentLocation_Click);
-            // 
             // label10
             // 
             this.label10.AutoSize = true;
@@ -694,48 +420,6 @@
             this.comboBoxGateTarget.Name = "comboBoxGateTarget";
             this.comboBoxGateTarget.Size = new System.Drawing.Size(109, 21);
             this.comboBoxGateTarget.TabIndex = 9;
-            // 
-            // buttonEditGateMarker2
-            // 
-            this.buttonEditGateMarker2.Image = global::SRVTracker.Properties.Resources.Edit_16x;
-            this.buttonEditGateMarker2.Location = new System.Drawing.Point(221, 41);
-            this.buttonEditGateMarker2.Name = "buttonEditGateMarker2";
-            this.buttonEditGateMarker2.Size = new System.Drawing.Size(22, 22);
-            this.buttonEditGateMarker2.TabIndex = 7;
-            this.buttonEditGateMarker2.UseVisualStyleBackColor = true;
-            this.buttonEditGateMarker2.Click += new System.EventHandler(this.buttonEditGateMarker2_Click);
-            // 
-            // buttonEditGateMarker1
-            // 
-            this.buttonEditGateMarker1.Image = global::SRVTracker.Properties.Resources.Edit_16x;
-            this.buttonEditGateMarker1.Location = new System.Drawing.Point(221, 13);
-            this.buttonEditGateMarker1.Name = "buttonEditGateMarker1";
-            this.buttonEditGateMarker1.Size = new System.Drawing.Size(22, 22);
-            this.buttonEditGateMarker1.TabIndex = 6;
-            this.buttonEditGateMarker1.UseVisualStyleBackColor = true;
-            this.buttonEditGateMarker1.Click += new System.EventHandler(this.buttonEditGateMarker1_Click);
-            // 
-            // buttonSetGateLocation2ToCurrentLocation
-            // 
-            this.buttonSetGateLocation2ToCurrentLocation.Image = global::SRVTracker.Properties.Resources.AddIndexer_16x;
-            this.buttonSetGateLocation2ToCurrentLocation.Location = new System.Drawing.Point(242, 41);
-            this.buttonSetGateLocation2ToCurrentLocation.Name = "buttonSetGateLocation2ToCurrentLocation";
-            this.buttonSetGateLocation2ToCurrentLocation.Size = new System.Drawing.Size(22, 22);
-            this.buttonSetGateLocation2ToCurrentLocation.TabIndex = 5;
-            this.toolTip1.SetToolTip(this.buttonSetGateLocation2ToCurrentLocation, "Add current location as gate marker 2");
-            this.buttonSetGateLocation2ToCurrentLocation.UseVisualStyleBackColor = true;
-            this.buttonSetGateLocation2ToCurrentLocation.Click += new System.EventHandler(this.buttonSetGateLocation2ToCurrentLocation_Click);
-            // 
-            // buttonSetGateLocation1ToCurrentLocation
-            // 
-            this.buttonSetGateLocation1ToCurrentLocation.Image = global::SRVTracker.Properties.Resources.AddIndexer_16x;
-            this.buttonSetGateLocation1ToCurrentLocation.Location = new System.Drawing.Point(242, 13);
-            this.buttonSetGateLocation1ToCurrentLocation.Name = "buttonSetGateLocation1ToCurrentLocation";
-            this.buttonSetGateLocation1ToCurrentLocation.Size = new System.Drawing.Size(22, 22);
-            this.buttonSetGateLocation1ToCurrentLocation.TabIndex = 4;
-            this.toolTip1.SetToolTip(this.buttonSetGateLocation1ToCurrentLocation, "Add current location as gate marker 1");
-            this.buttonSetGateLocation1ToCurrentLocation.UseVisualStyleBackColor = true;
-            this.buttonSetGateLocation1ToCurrentLocation.Click += new System.EventHandler(this.buttonSetGateLocation1ToCurrentLocation_Click);
             // 
             // label9
             // 
@@ -805,16 +489,6 @@
             this.comboBoxBasicLocation.Name = "comboBoxBasicLocation";
             this.comboBoxBasicLocation.Size = new System.Drawing.Size(150, 21);
             this.comboBoxBasicLocation.TabIndex = 14;
-            // 
-            // buttonEditBasicLocation
-            // 
-            this.buttonEditBasicLocation.Image = global::SRVTracker.Properties.Resources.Edit_16x;
-            this.buttonEditBasicLocation.Location = new System.Drawing.Point(230, 19);
-            this.buttonEditBasicLocation.Name = "buttonEditBasicLocation";
-            this.buttonEditBasicLocation.Size = new System.Drawing.Size(22, 22);
-            this.buttonEditBasicLocation.TabIndex = 13;
-            this.buttonEditBasicLocation.UseVisualStyleBackColor = true;
-            this.buttonEditBasicLocation.Click += new System.EventHandler(this.buttonEditBasicLocation_Click);
             // 
             // numericUpDownRadius
             // 
@@ -915,39 +589,6 @@
             this.checkBoxTimeTrial.UseVisualStyleBackColor = true;
             this.checkBoxTimeTrial.CheckedChanged += new System.EventHandler(this.checkBoxTimeTrial_CheckedChanged);
             // 
-            // buttonStop
-            // 
-            this.buttonStop.Image = global::SRVTracker.Properties.Resources.Stop_16x;
-            this.buttonStop.Location = new System.Drawing.Point(106, 16);
-            this.buttonStop.Name = "buttonStop";
-            this.buttonStop.Size = new System.Drawing.Size(34, 23);
-            this.buttonStop.TabIndex = 10;
-            this.toolTip1.SetToolTip(this.buttonStop, "Stop (recording or playing)");
-            this.buttonStop.UseVisualStyleBackColor = true;
-            this.buttonStop.Click += new System.EventHandler(this.buttonStopRecording_Click);
-            // 
-            // buttonStartRecording
-            // 
-            this.buttonStartRecording.Image = global::SRVTracker.Properties.Resources.RecordDot_16x;
-            this.buttonStartRecording.Location = new System.Drawing.Point(26, 16);
-            this.buttonStartRecording.Name = "buttonStartRecording";
-            this.buttonStartRecording.Size = new System.Drawing.Size(34, 23);
-            this.buttonStartRecording.TabIndex = 7;
-            this.toolTip1.SetToolTip(this.buttonStartRecording, "Start recording route");
-            this.buttonStartRecording.UseVisualStyleBackColor = true;
-            this.buttonStartRecording.Click += new System.EventHandler(this.buttonStartRecording_Click);
-            // 
-            // buttonPlay
-            // 
-            this.buttonPlay.Image = global::SRVTracker.Properties.Resources.Run_16x1;
-            this.buttonPlay.Location = new System.Drawing.Point(66, 16);
-            this.buttonPlay.Name = "buttonPlay";
-            this.buttonPlay.Size = new System.Drawing.Size(34, 23);
-            this.buttonPlay.TabIndex = 11;
-            this.toolTip1.SetToolTip(this.buttonPlay, "Play route");
-            this.buttonPlay.UseVisualStyleBackColor = true;
-            this.buttonPlay.Click += new System.EventHandler(this.buttonPlay_Click);
-            // 
             // groupBox5
             // 
             this.groupBox5.Controls.Add(this.buttonStop);
@@ -1041,6 +682,415 @@
             this.listBoxAudioEvents.TabIndex = 2;
             this.listBoxAudioEvents.SelectedIndexChanged += new System.EventHandler(this.listBoxAudioEvents_SelectedIndexChanged);
             // 
+            // buttonStop
+            // 
+            this.buttonStop.Image = global::SRVTracker.Properties.Resources.Stop_16x;
+            this.buttonStop.Location = new System.Drawing.Point(106, 16);
+            this.buttonStop.Name = "buttonStop";
+            this.buttonStop.Size = new System.Drawing.Size(34, 23);
+            this.buttonStop.TabIndex = 10;
+            this.toolTip1.SetToolTip(this.buttonStop, "Stop (recording or playing)");
+            this.buttonStop.UseVisualStyleBackColor = true;
+            this.buttonStop.Click += new System.EventHandler(this.buttonStopRecording_Click);
+            // 
+            // buttonStartRecording
+            // 
+            this.buttonStartRecording.Image = global::SRVTracker.Properties.Resources.RecordDot_16x;
+            this.buttonStartRecording.Location = new System.Drawing.Point(26, 16);
+            this.buttonStartRecording.Name = "buttonStartRecording";
+            this.buttonStartRecording.Size = new System.Drawing.Size(34, 23);
+            this.buttonStartRecording.TabIndex = 7;
+            this.toolTip1.SetToolTip(this.buttonStartRecording, "Start recording route");
+            this.buttonStartRecording.UseVisualStyleBackColor = true;
+            this.buttonStartRecording.Click += new System.EventHandler(this.buttonStartRecording_Click);
+            // 
+            // buttonPlay
+            // 
+            this.buttonPlay.Image = global::SRVTracker.Properties.Resources.Run_16x1;
+            this.buttonPlay.Location = new System.Drawing.Point(66, 16);
+            this.buttonPlay.Name = "buttonPlay";
+            this.buttonPlay.Size = new System.Drawing.Size(34, 23);
+            this.buttonPlay.TabIndex = 11;
+            this.toolTip1.SetToolTip(this.buttonPlay, "Play route");
+            this.buttonPlay.UseVisualStyleBackColor = true;
+            this.buttonPlay.Click += new System.EventHandler(this.buttonPlay_Click);
+            // 
+            // buttonGenerateCircumnavigationWaypoints
+            // 
+            this.buttonGenerateCircumnavigationWaypoints.Image = global::SRVTracker.Properties.Resources.SpherePreview_16x;
+            this.buttonGenerateCircumnavigationWaypoints.Location = new System.Drawing.Point(198, 198);
+            this.buttonGenerateCircumnavigationWaypoints.Name = "buttonGenerateCircumnavigationWaypoints";
+            this.buttonGenerateCircumnavigationWaypoints.Size = new System.Drawing.Size(26, 23);
+            this.buttonGenerateCircumnavigationWaypoints.TabIndex = 22;
+            this.toolTip1.SetToolTip(this.buttonGenerateCircumnavigationWaypoints, "Circumnavigation features\r\n(e.g. North and South Pole)");
+            this.buttonGenerateCircumnavigationWaypoints.UseVisualStyleBackColor = true;
+            this.buttonGenerateCircumnavigationWaypoints.Click += new System.EventHandler(this.buttonGenerateCircumnavigationWaypoints_Click);
+            // 
+            // buttonEditLocations
+            // 
+            this.buttonEditLocations.Image = global::SRVTracker.Properties.Resources.AddressEditor_16x;
+            this.buttonEditLocations.Location = new System.Drawing.Point(233, 169);
+            this.buttonEditLocations.Name = "buttonEditLocations";
+            this.buttonEditLocations.Size = new System.Drawing.Size(34, 23);
+            this.buttonEditLocations.TabIndex = 21;
+            this.toolTip1.SetToolTip(this.buttonEditLocations, "Edit locations");
+            this.buttonEditLocations.UseVisualStyleBackColor = true;
+            this.buttonEditLocations.Click += new System.EventHandler(this.buttonEditLocations_Click);
+            // 
+            // buttonReverseWaypointOrder
+            // 
+            this.buttonReverseWaypointOrder.Image = global::SRVTracker.Properties.Resources.ReversePath_16x;
+            this.buttonReverseWaypointOrder.Location = new System.Drawing.Point(171, 198);
+            this.buttonReverseWaypointOrder.Name = "buttonReverseWaypointOrder";
+            this.buttonReverseWaypointOrder.Size = new System.Drawing.Size(26, 23);
+            this.buttonReverseWaypointOrder.TabIndex = 20;
+            this.toolTip1.SetToolTip(this.buttonReverseWaypointOrder, "Reverse the entire route");
+            this.buttonReverseWaypointOrder.UseVisualStyleBackColor = true;
+            this.buttonReverseWaypointOrder.Click += new System.EventHandler(this.buttonReverseWaypointOrder_Click);
+            // 
+            // buttonDuplicateWaypoint
+            // 
+            this.buttonDuplicateWaypoint.Image = global::SRVTracker.Properties.Resources.CopyItem_16x;
+            this.buttonDuplicateWaypoint.Location = new System.Drawing.Point(36, 198);
+            this.buttonDuplicateWaypoint.Name = "buttonDuplicateWaypoint";
+            this.buttonDuplicateWaypoint.Size = new System.Drawing.Size(26, 23);
+            this.buttonDuplicateWaypoint.TabIndex = 19;
+            this.toolTip1.SetToolTip(this.buttonDuplicateWaypoint, "Duplicate selected waypoint\r\n(duplicate added to end of list)");
+            this.buttonDuplicateWaypoint.UseVisualStyleBackColor = true;
+            this.buttonDuplicateWaypoint.Click += new System.EventHandler(this.buttonDuplicateWaypoint_Click);
+            // 
+            // buttonMoveDown
+            // 
+            this.buttonMoveDown.Image = global::SRVTracker.Properties.Resources.ExpandDown_lg_16x;
+            this.buttonMoveDown.Location = new System.Drawing.Point(144, 198);
+            this.buttonMoveDown.Name = "buttonMoveDown";
+            this.buttonMoveDown.Size = new System.Drawing.Size(26, 23);
+            this.buttonMoveDown.TabIndex = 18;
+            this.buttonMoveDown.UseVisualStyleBackColor = true;
+            this.buttonMoveDown.Click += new System.EventHandler(this.buttonMoveDown_Click);
+            // 
+            // buttonAddCurrentLocation
+            // 
+            this.buttonAddCurrentLocation.Image = global::SRVTracker.Properties.Resources.AddIndexer_16x;
+            this.buttonAddCurrentLocation.Location = new System.Drawing.Point(9, 198);
+            this.buttonAddCurrentLocation.Name = "buttonAddCurrentLocation";
+            this.buttonAddCurrentLocation.Size = new System.Drawing.Size(26, 23);
+            this.buttonAddCurrentLocation.TabIndex = 16;
+            this.toolTip1.SetToolTip(this.buttonAddCurrentLocation, "Add current location");
+            this.buttonAddCurrentLocation.UseVisualStyleBackColor = true;
+            this.buttonAddCurrentLocation.Click += new System.EventHandler(this.buttonAddCurrentLocation_Click);
+            // 
+            // buttonSaveRoute
+            // 
+            this.buttonSaveRoute.Enabled = false;
+            this.buttonSaveRoute.Image = global::SRVTracker.Properties.Resources.Save_16x;
+            this.buttonSaveRoute.Location = new System.Drawing.Point(233, 77);
+            this.buttonSaveRoute.Name = "buttonSaveRoute";
+            this.buttonSaveRoute.Size = new System.Drawing.Size(34, 23);
+            this.buttonSaveRoute.TabIndex = 15;
+            this.toolTip1.SetToolTip(this.buttonSaveRoute, "Save");
+            this.buttonSaveRoute.UseVisualStyleBackColor = true;
+            this.buttonSaveRoute.Click += new System.EventHandler(this.buttonSaveRoute_Click);
+            // 
+            // buttonMoveUp
+            // 
+            this.buttonMoveUp.Image = global::SRVTracker.Properties.Resources.CollapseUp_lg_16x;
+            this.buttonMoveUp.Location = new System.Drawing.Point(117, 198);
+            this.buttonMoveUp.Name = "buttonMoveUp";
+            this.buttonMoveUp.Size = new System.Drawing.Size(26, 23);
+            this.buttonMoveUp.TabIndex = 17;
+            this.buttonMoveUp.UseVisualStyleBackColor = true;
+            this.buttonMoveUp.Click += new System.EventHandler(this.buttonMoveUp_Click);
+            // 
+            // buttonSetAsTarget
+            // 
+            this.buttonSetAsTarget.Image = global::SRVTracker.Properties.Resources.Target_16x;
+            this.buttonSetAsTarget.Location = new System.Drawing.Point(233, 123);
+            this.buttonSetAsTarget.Name = "buttonSetAsTarget";
+            this.buttonSetAsTarget.Size = new System.Drawing.Size(34, 23);
+            this.buttonSetAsTarget.TabIndex = 5;
+            this.toolTip1.SetToolTip(this.buttonSetAsTarget, "Target currently selected location");
+            this.buttonSetAsTarget.UseVisualStyleBackColor = true;
+            this.buttonSetAsTarget.Click += new System.EventHandler(this.buttonSetAsTarget_Click);
+            // 
+            // buttonSaveRouteAs
+            // 
+            this.buttonSaveRouteAs.Image = global::SRVTracker.Properties.Resources.SaveAs_16x;
+            this.buttonSaveRouteAs.Location = new System.Drawing.Point(233, 48);
+            this.buttonSaveRouteAs.Name = "buttonSaveRouteAs";
+            this.buttonSaveRouteAs.Size = new System.Drawing.Size(34, 23);
+            this.buttonSaveRouteAs.TabIndex = 13;
+            this.toolTip1.SetToolTip(this.buttonSaveRouteAs, "Save as...");
+            this.buttonSaveRouteAs.UseVisualStyleBackColor = true;
+            this.buttonSaveRouteAs.Click += new System.EventHandler(this.buttonSaveRouteAs_Click);
+            // 
+            // buttonLoadRoute
+            // 
+            this.buttonLoadRoute.Image = global::SRVTracker.Properties.Resources.OpenFile_16x;
+            this.buttonLoadRoute.Location = new System.Drawing.Point(233, 19);
+            this.buttonLoadRoute.Name = "buttonLoadRoute";
+            this.buttonLoadRoute.Size = new System.Drawing.Size(34, 23);
+            this.buttonLoadRoute.TabIndex = 14;
+            this.buttonLoadRoute.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.toolTip1.SetToolTip(this.buttonLoadRoute, "Load from file");
+            this.buttonLoadRoute.UseVisualStyleBackColor = true;
+            this.buttonLoadRoute.Click += new System.EventHandler(this.buttonLoadRoute_Click);
+            // 
+            // buttonDeleteWaypoint
+            // 
+            this.buttonDeleteWaypoint.Image = global::SRVTracker.Properties.Resources.Remove_color_16x;
+            this.buttonDeleteWaypoint.Location = new System.Drawing.Point(90, 198);
+            this.buttonDeleteWaypoint.Name = "buttonDeleteWaypoint";
+            this.buttonDeleteWaypoint.Size = new System.Drawing.Size(26, 23);
+            this.buttonDeleteWaypoint.TabIndex = 2;
+            this.toolTip1.SetToolTip(this.buttonDeleteWaypoint, "Remove selected location");
+            this.buttonDeleteWaypoint.UseVisualStyleBackColor = true;
+            this.buttonDeleteWaypoint.Click += new System.EventHandler(this.buttonDeleteWaypoint_Click);
+            // 
+            // buttonAddWaypoint
+            // 
+            this.buttonAddWaypoint.Image = global::SRVTracker.Properties.Resources.Add_16x;
+            this.buttonAddWaypoint.Location = new System.Drawing.Point(63, 198);
+            this.buttonAddWaypoint.Name = "buttonAddWaypoint";
+            this.buttonAddWaypoint.Size = new System.Drawing.Size(26, 23);
+            this.buttonAddWaypoint.TabIndex = 1;
+            this.toolTip1.SetToolTip(this.buttonAddWaypoint, "Add saved location");
+            this.buttonAddWaypoint.UseVisualStyleBackColor = true;
+            this.buttonAddWaypoint.Click += new System.EventHandler(this.buttonAddWaypoint_Click);
+            // 
+            // buttonPolygonMarkerAdd
+            // 
+            this.buttonPolygonMarkerAdd.Image = global::SRVTracker.Properties.Resources.Add_16x;
+            this.buttonPolygonMarkerAdd.Location = new System.Drawing.Point(221, 34);
+            this.buttonPolygonMarkerAdd.Name = "buttonPolygonMarkerAdd";
+            this.buttonPolygonMarkerAdd.Size = new System.Drawing.Size(22, 22);
+            this.buttonPolygonMarkerAdd.TabIndex = 23;
+            this.buttonPolygonMarkerAdd.UseVisualStyleBackColor = true;
+            // 
+            // buttonPolygonMarkerDelete
+            // 
+            this.buttonPolygonMarkerDelete.Image = global::SRVTracker.Properties.Resources.Remove_color_16x;
+            this.buttonPolygonMarkerDelete.Location = new System.Drawing.Point(242, 34);
+            this.buttonPolygonMarkerDelete.Name = "buttonPolygonMarkerDelete";
+            this.buttonPolygonMarkerDelete.Size = new System.Drawing.Size(22, 22);
+            this.buttonPolygonMarkerDelete.TabIndex = 22;
+            this.toolTip1.SetToolTip(this.buttonPolygonMarkerDelete, "Add current location as gate marker 1");
+            this.buttonPolygonMarkerDelete.UseVisualStyleBackColor = true;
+            // 
+            // buttonPolygonTargetTarget
+            // 
+            this.buttonPolygonTargetTarget.Image = global::SRVTracker.Properties.Resources.Target_16x;
+            this.buttonPolygonTargetTarget.Location = new System.Drawing.Point(200, 67);
+            this.buttonPolygonTargetTarget.Name = "buttonPolygonTargetTarget";
+            this.buttonPolygonTargetTarget.Size = new System.Drawing.Size(22, 22);
+            this.buttonPolygonTargetTarget.TabIndex = 20;
+            this.toolTip1.SetToolTip(this.buttonPolygonTargetTarget, "Target currently selected location");
+            this.buttonPolygonTargetTarget.UseVisualStyleBackColor = true;
+            // 
+            // buttonPolygonMarkerTarget
+            // 
+            this.buttonPolygonMarkerTarget.Image = global::SRVTracker.Properties.Resources.Target_16x;
+            this.buttonPolygonMarkerTarget.Location = new System.Drawing.Point(200, 13);
+            this.buttonPolygonMarkerTarget.Name = "buttonPolygonMarkerTarget";
+            this.buttonPolygonMarkerTarget.Size = new System.Drawing.Size(22, 22);
+            this.buttonPolygonMarkerTarget.TabIndex = 18;
+            this.toolTip1.SetToolTip(this.buttonPolygonMarkerTarget, "Target currently selected location");
+            this.buttonPolygonMarkerTarget.UseVisualStyleBackColor = true;
+            // 
+            // buttonPolygonTargetCalculate
+            // 
+            this.buttonPolygonTargetCalculate.Image = global::SRVTracker.Properties.Resources.Calculator_16x;
+            this.buttonPolygonTargetCalculate.Location = new System.Drawing.Point(179, 67);
+            this.buttonPolygonTargetCalculate.Name = "buttonPolygonTargetCalculate";
+            this.buttonPolygonTargetCalculate.Size = new System.Drawing.Size(22, 22);
+            this.buttonPolygonTargetCalculate.TabIndex = 13;
+            this.buttonPolygonTargetCalculate.UseVisualStyleBackColor = true;
+            // 
+            // buttonPolygonTargetEdit
+            // 
+            this.buttonPolygonTargetEdit.Image = global::SRVTracker.Properties.Resources.Edit_16x;
+            this.buttonPolygonTargetEdit.Location = new System.Drawing.Point(221, 67);
+            this.buttonPolygonTargetEdit.Name = "buttonPolygonTargetEdit";
+            this.buttonPolygonTargetEdit.Size = new System.Drawing.Size(22, 22);
+            this.buttonPolygonTargetEdit.TabIndex = 12;
+            this.buttonPolygonTargetEdit.UseVisualStyleBackColor = true;
+            // 
+            // buttonPolygonTargetUseCurrentLocation
+            // 
+            this.buttonPolygonTargetUseCurrentLocation.Image = global::SRVTracker.Properties.Resources.AddIndexer_16x;
+            this.buttonPolygonTargetUseCurrentLocation.Location = new System.Drawing.Point(242, 67);
+            this.buttonPolygonTargetUseCurrentLocation.Name = "buttonPolygonTargetUseCurrentLocation";
+            this.buttonPolygonTargetUseCurrentLocation.Size = new System.Drawing.Size(22, 22);
+            this.buttonPolygonTargetUseCurrentLocation.TabIndex = 11;
+            this.toolTip1.SetToolTip(this.buttonPolygonTargetUseCurrentLocation, "Add current location as gate marker 2");
+            this.buttonPolygonTargetUseCurrentLocation.UseVisualStyleBackColor = true;
+            // 
+            // buttonPolygonMarkerEdit
+            // 
+            this.buttonPolygonMarkerEdit.Image = global::SRVTracker.Properties.Resources.Edit_16x;
+            this.buttonPolygonMarkerEdit.Location = new System.Drawing.Point(221, 13);
+            this.buttonPolygonMarkerEdit.Name = "buttonPolygonMarkerEdit";
+            this.buttonPolygonMarkerEdit.Size = new System.Drawing.Size(22, 22);
+            this.buttonPolygonMarkerEdit.TabIndex = 6;
+            this.buttonPolygonMarkerEdit.UseVisualStyleBackColor = true;
+            // 
+            // buttonPolygonMarkerUseCurrentLocation
+            // 
+            this.buttonPolygonMarkerUseCurrentLocation.Image = global::SRVTracker.Properties.Resources.AddIndexer_16x;
+            this.buttonPolygonMarkerUseCurrentLocation.Location = new System.Drawing.Point(242, 13);
+            this.buttonPolygonMarkerUseCurrentLocation.Name = "buttonPolygonMarkerUseCurrentLocation";
+            this.buttonPolygonMarkerUseCurrentLocation.Size = new System.Drawing.Size(22, 22);
+            this.buttonPolygonMarkerUseCurrentLocation.TabIndex = 4;
+            this.toolTip1.SetToolTip(this.buttonPolygonMarkerUseCurrentLocation, "Add current location as gate marker 1");
+            this.buttonPolygonMarkerUseCurrentLocation.UseVisualStyleBackColor = true;
+            // 
+            // buttonTargetGateTarget
+            // 
+            this.buttonTargetGateTarget.Image = global::SRVTracker.Properties.Resources.Target_16x;
+            this.buttonTargetGateTarget.Location = new System.Drawing.Point(200, 67);
+            this.buttonTargetGateTarget.Name = "buttonTargetGateTarget";
+            this.buttonTargetGateTarget.Size = new System.Drawing.Size(22, 22);
+            this.buttonTargetGateTarget.TabIndex = 20;
+            this.toolTip1.SetToolTip(this.buttonTargetGateTarget, "Target currently selected location");
+            this.buttonTargetGateTarget.UseVisualStyleBackColor = true;
+            this.buttonTargetGateTarget.Click += new System.EventHandler(this.buttonTargetGateTarget_Click);
+            // 
+            // buttonTargetGateMarker2
+            // 
+            this.buttonTargetGateMarker2.Image = global::SRVTracker.Properties.Resources.Target_16x;
+            this.buttonTargetGateMarker2.Location = new System.Drawing.Point(200, 41);
+            this.buttonTargetGateMarker2.Name = "buttonTargetGateMarker2";
+            this.buttonTargetGateMarker2.Size = new System.Drawing.Size(22, 22);
+            this.buttonTargetGateMarker2.TabIndex = 19;
+            this.toolTip1.SetToolTip(this.buttonTargetGateMarker2, "Target currently selected location");
+            this.buttonTargetGateMarker2.UseVisualStyleBackColor = true;
+            this.buttonTargetGateMarker2.Click += new System.EventHandler(this.buttonTargetGateMarker2_Click);
+            // 
+            // buttonTargetGateMarker1
+            // 
+            this.buttonTargetGateMarker1.Image = global::SRVTracker.Properties.Resources.Target_16x;
+            this.buttonTargetGateMarker1.Location = new System.Drawing.Point(200, 13);
+            this.buttonTargetGateMarker1.Name = "buttonTargetGateMarker1";
+            this.buttonTargetGateMarker1.Size = new System.Drawing.Size(22, 22);
+            this.buttonTargetGateMarker1.TabIndex = 18;
+            this.toolTip1.SetToolTip(this.buttonTargetGateMarker1, "Target currently selected location");
+            this.buttonTargetGateMarker1.UseVisualStyleBackColor = true;
+            this.buttonTargetGateMarker1.Click += new System.EventHandler(this.buttonTargetGateMarker1_Click);
+            // 
+            // buttonCalculateGateTarget
+            // 
+            this.buttonCalculateGateTarget.Image = global::SRVTracker.Properties.Resources.Calculator_16x;
+            this.buttonCalculateGateTarget.Location = new System.Drawing.Point(179, 67);
+            this.buttonCalculateGateTarget.Name = "buttonCalculateGateTarget";
+            this.buttonCalculateGateTarget.Size = new System.Drawing.Size(22, 22);
+            this.buttonCalculateGateTarget.TabIndex = 13;
+            this.buttonCalculateGateTarget.UseVisualStyleBackColor = true;
+            this.buttonCalculateGateTarget.Click += new System.EventHandler(this.buttonCalculateGateTarget_Click);
+            // 
+            // buttonEditGateTarget
+            // 
+            this.buttonEditGateTarget.Image = global::SRVTracker.Properties.Resources.Edit_16x;
+            this.buttonEditGateTarget.Location = new System.Drawing.Point(221, 67);
+            this.buttonEditGateTarget.Name = "buttonEditGateTarget";
+            this.buttonEditGateTarget.Size = new System.Drawing.Size(22, 22);
+            this.buttonEditGateTarget.TabIndex = 12;
+            this.buttonEditGateTarget.UseVisualStyleBackColor = true;
+            this.buttonEditGateTarget.Click += new System.EventHandler(this.buttonEditGateTarget_Click);
+            // 
+            // buttonSetGateTargetToCurrentLocation
+            // 
+            this.buttonSetGateTargetToCurrentLocation.Image = global::SRVTracker.Properties.Resources.AddIndexer_16x;
+            this.buttonSetGateTargetToCurrentLocation.Location = new System.Drawing.Point(242, 67);
+            this.buttonSetGateTargetToCurrentLocation.Name = "buttonSetGateTargetToCurrentLocation";
+            this.buttonSetGateTargetToCurrentLocation.Size = new System.Drawing.Size(22, 22);
+            this.buttonSetGateTargetToCurrentLocation.TabIndex = 11;
+            this.toolTip1.SetToolTip(this.buttonSetGateTargetToCurrentLocation, "Add current location as gate marker 2");
+            this.buttonSetGateTargetToCurrentLocation.UseVisualStyleBackColor = true;
+            this.buttonSetGateTargetToCurrentLocation.Click += new System.EventHandler(this.buttonSetGateTargetToCurrentLocation_Click);
+            // 
+            // buttonEditGateMarker2
+            // 
+            this.buttonEditGateMarker2.Image = global::SRVTracker.Properties.Resources.Edit_16x;
+            this.buttonEditGateMarker2.Location = new System.Drawing.Point(221, 41);
+            this.buttonEditGateMarker2.Name = "buttonEditGateMarker2";
+            this.buttonEditGateMarker2.Size = new System.Drawing.Size(22, 22);
+            this.buttonEditGateMarker2.TabIndex = 7;
+            this.buttonEditGateMarker2.UseVisualStyleBackColor = true;
+            this.buttonEditGateMarker2.Click += new System.EventHandler(this.buttonEditGateMarker2_Click);
+            // 
+            // buttonEditGateMarker1
+            // 
+            this.buttonEditGateMarker1.Image = global::SRVTracker.Properties.Resources.Edit_16x;
+            this.buttonEditGateMarker1.Location = new System.Drawing.Point(221, 13);
+            this.buttonEditGateMarker1.Name = "buttonEditGateMarker1";
+            this.buttonEditGateMarker1.Size = new System.Drawing.Size(22, 22);
+            this.buttonEditGateMarker1.TabIndex = 6;
+            this.buttonEditGateMarker1.UseVisualStyleBackColor = true;
+            this.buttonEditGateMarker1.Click += new System.EventHandler(this.buttonEditGateMarker1_Click);
+            // 
+            // buttonSetGateLocation2ToCurrentLocation
+            // 
+            this.buttonSetGateLocation2ToCurrentLocation.Image = global::SRVTracker.Properties.Resources.AddIndexer_16x;
+            this.buttonSetGateLocation2ToCurrentLocation.Location = new System.Drawing.Point(242, 41);
+            this.buttonSetGateLocation2ToCurrentLocation.Name = "buttonSetGateLocation2ToCurrentLocation";
+            this.buttonSetGateLocation2ToCurrentLocation.Size = new System.Drawing.Size(22, 22);
+            this.buttonSetGateLocation2ToCurrentLocation.TabIndex = 5;
+            this.toolTip1.SetToolTip(this.buttonSetGateLocation2ToCurrentLocation, "Add current location as gate marker 2");
+            this.buttonSetGateLocation2ToCurrentLocation.UseVisualStyleBackColor = true;
+            this.buttonSetGateLocation2ToCurrentLocation.Click += new System.EventHandler(this.buttonSetGateLocation2ToCurrentLocation_Click);
+            // 
+            // buttonSetGateLocation1ToCurrentLocation
+            // 
+            this.buttonSetGateLocation1ToCurrentLocation.Image = global::SRVTracker.Properties.Resources.AddIndexer_16x;
+            this.buttonSetGateLocation1ToCurrentLocation.Location = new System.Drawing.Point(242, 13);
+            this.buttonSetGateLocation1ToCurrentLocation.Name = "buttonSetGateLocation1ToCurrentLocation";
+            this.buttonSetGateLocation1ToCurrentLocation.Size = new System.Drawing.Size(22, 22);
+            this.buttonSetGateLocation1ToCurrentLocation.TabIndex = 4;
+            this.toolTip1.SetToolTip(this.buttonSetGateLocation1ToCurrentLocation, "Add current location as gate marker 1");
+            this.buttonSetGateLocation1ToCurrentLocation.UseVisualStyleBackColor = true;
+            this.buttonSetGateLocation1ToCurrentLocation.Click += new System.EventHandler(this.buttonSetGateLocation1ToCurrentLocation_Click);
+            // 
+            // buttonEditBasicLocation
+            // 
+            this.buttonEditBasicLocation.Image = global::SRVTracker.Properties.Resources.Edit_16x;
+            this.buttonEditBasicLocation.Location = new System.Drawing.Point(230, 19);
+            this.buttonEditBasicLocation.Name = "buttonEditBasicLocation";
+            this.buttonEditBasicLocation.Size = new System.Drawing.Size(22, 22);
+            this.buttonEditBasicLocation.TabIndex = 13;
+            this.buttonEditBasicLocation.UseVisualStyleBackColor = true;
+            this.buttonEditBasicLocation.Click += new System.EventHandler(this.buttonEditBasicLocation_Click);
+            // 
+            // circumnavigationContextMenuStrip
+            // 
+            this.circumnavigationContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.addNorthPoleToolStripMenuItem,
+            this.addSouthPoleToolStripMenuItem,
+            this.generateRouteToolStripMenuItem});
+            this.circumnavigationContextMenuStrip.Name = "circumnavigationContextMenuStrip";
+            this.circumnavigationContextMenuStrip.Size = new System.Drawing.Size(165, 70);
+            this.circumnavigationContextMenuStrip.Text = "Circumnavigation";
+            // 
+            // addNorthPoleToolStripMenuItem
+            // 
+            this.addNorthPoleToolStripMenuItem.Name = "addNorthPoleToolStripMenuItem";
+            this.addNorthPoleToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.addNorthPoleToolStripMenuItem.Text = "Add North Pole";
+            this.addNorthPoleToolStripMenuItem.Click += new System.EventHandler(this.addNorthPoleToolStripMenuItem_Click);
+            // 
+            // addSouthPoleToolStripMenuItem
+            // 
+            this.addSouthPoleToolStripMenuItem.Name = "addSouthPoleToolStripMenuItem";
+            this.addSouthPoleToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.addSouthPoleToolStripMenuItem.Text = "Add South Pole";
+            this.addSouthPoleToolStripMenuItem.Click += new System.EventHandler(this.addSouthPoleToolStripMenuItem_Click);
+            // 
+            // generateRouteToolStripMenuItem
+            // 
+            this.generateRouteToolStripMenuItem.Enabled = false;
+            this.generateRouteToolStripMenuItem.Name = "generateRouteToolStripMenuItem";
+            this.generateRouteToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.generateRouteToolStripMenuItem.Text = "Generate Route...";
+            // 
             // FormRouter
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1065,14 +1115,14 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRecordDistance)).EndInit();
             this.groupBoxWaypointInfo.ResumeLayout(false);
             this.groupBoxWaypointInfo.PerformLayout();
+            this.groupBoxPolygon.ResumeLayout(false);
+            this.groupBoxPolygon.PerformLayout();
             this.groupBoxAltitude.ResumeLayout(false);
             this.groupBoxAltitude.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMinAltitude)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMaxAltitude)).EndInit();
             this.groupBoxGate.ResumeLayout(false);
             this.groupBoxGate.PerformLayout();
-            this.groupBoxPolygon.ResumeLayout(false);
-            this.groupBoxPolygon.PerformLayout();
             this.groupBoxBasic.ResumeLayout(false);
             this.groupBoxBasic.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRadius)).EndInit();
@@ -1084,6 +1134,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTotalLaps)).EndInit();
             this.groupBoxAudioSettings.ResumeLayout(false);
             this.groupBoxAudioSettings.PerformLayout();
+            this.circumnavigationContextMenuStrip.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -1172,5 +1223,10 @@
         private System.Windows.Forms.ComboBox comboBoxPolygonTarget;
         private System.Windows.Forms.Button buttonPolygonMarkerEdit;
         private System.Windows.Forms.Button buttonPolygonMarkerUseCurrentLocation;
+        private System.Windows.Forms.Button buttonGenerateCircumnavigationWaypoints;
+        private System.Windows.Forms.ContextMenuStrip circumnavigationContextMenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem addNorthPoleToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem addSouthPoleToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem generateRouteToolStripMenuItem;
     }
 }

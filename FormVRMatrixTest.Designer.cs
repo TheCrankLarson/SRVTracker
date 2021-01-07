@@ -53,10 +53,10 @@
             this.label2 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.textBoxMatrixName = new System.Windows.Forms.TextBox();
-            this.listBoxMatrices = new System.Windows.Forms.ListBox();
             this.buttonSave = new System.Windows.Forms.Button();
             this.buttonDelete = new System.Windows.Forms.Button();
             this.buttonAdd = new System.Windows.Forms.Button();
+            this.listBoxMatrices = new System.Windows.Forms.ListBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownm11)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownm10)).BeginInit();
@@ -105,12 +105,12 @@
             131072});
             this.numericUpDownm11.Location = new System.Drawing.Point(195, 71);
             this.numericUpDownm11.Maximum = new decimal(new int[] {
-            2,
+            10,
             0,
             0,
             0});
             this.numericUpDownm11.Minimum = new decimal(new int[] {
-            2,
+            10,
             0,
             0,
             -2147483648});
@@ -131,12 +131,12 @@
             131072});
             this.numericUpDownm10.Location = new System.Drawing.Point(6, 71);
             this.numericUpDownm10.Maximum = new decimal(new int[] {
-            2,
+            10,
             0,
             0,
             0});
             this.numericUpDownm10.Minimum = new decimal(new int[] {
-            2,
+            10,
             0,
             0,
             -2147483648});
@@ -156,12 +156,12 @@
             131072});
             this.numericUpDownm9.Location = new System.Drawing.Point(132, 19);
             this.numericUpDownm9.Maximum = new decimal(new int[] {
-            2,
+            10,
             0,
             0,
             0});
             this.numericUpDownm9.Minimum = new decimal(new int[] {
-            2,
+            10,
             0,
             0,
             -2147483648});
@@ -181,12 +181,12 @@
             131072});
             this.numericUpDownm8.Location = new System.Drawing.Point(132, 45);
             this.numericUpDownm8.Maximum = new decimal(new int[] {
-            2,
+            10,
             0,
             0,
             0});
             this.numericUpDownm8.Minimum = new decimal(new int[] {
-            2,
+            10,
             0,
             0,
             -2147483648});
@@ -206,12 +206,12 @@
             131072});
             this.numericUpDownm7.Location = new System.Drawing.Point(195, 45);
             this.numericUpDownm7.Maximum = new decimal(new int[] {
-            2,
+            10,
             0,
             0,
             0});
             this.numericUpDownm7.Minimum = new decimal(new int[] {
-            2,
+            10,
             0,
             0,
             -2147483648});
@@ -232,12 +232,12 @@
             131072});
             this.numericUpDownm6.Location = new System.Drawing.Point(69, 19);
             this.numericUpDownm6.Maximum = new decimal(new int[] {
-            2,
+            10,
             0,
             0,
             0});
             this.numericUpDownm6.Minimum = new decimal(new int[] {
-            2,
+            10,
             0,
             0,
             -2147483648});
@@ -257,12 +257,12 @@
             131072});
             this.numericUpDownm5.Location = new System.Drawing.Point(6, 45);
             this.numericUpDownm5.Maximum = new decimal(new int[] {
-            2,
+            10,
             0,
             0,
             0});
             this.numericUpDownm5.Minimum = new decimal(new int[] {
-            2,
+            10,
             0,
             0,
             -2147483648});
@@ -282,12 +282,12 @@
             131072});
             this.numericUpDownm4.Location = new System.Drawing.Point(132, 71);
             this.numericUpDownm4.Maximum = new decimal(new int[] {
-            2,
+            10,
             0,
             0,
             0});
             this.numericUpDownm4.Minimum = new decimal(new int[] {
-            2,
+            10,
             0,
             0,
             -2147483648});
@@ -307,12 +307,12 @@
             131072});
             this.numericUpDownm3.Location = new System.Drawing.Point(195, 19);
             this.numericUpDownm3.Maximum = new decimal(new int[] {
-            2,
+            10,
             0,
             0,
             0});
             this.numericUpDownm3.Minimum = new decimal(new int[] {
-            2,
+            10,
             0,
             0,
             -2147483648});
@@ -333,12 +333,12 @@
             131072});
             this.numericUpDownm2.Location = new System.Drawing.Point(69, 45);
             this.numericUpDownm2.Maximum = new decimal(new int[] {
-            2,
+            10,
             0,
             0,
             0});
             this.numericUpDownm2.Minimum = new decimal(new int[] {
-            2,
+            10,
             0,
             0,
             -2147483648});
@@ -358,12 +358,12 @@
             131072});
             this.numericUpDownm1.Location = new System.Drawing.Point(69, 71);
             this.numericUpDownm1.Maximum = new decimal(new int[] {
-            2,
+            10,
             0,
             0,
             0});
             this.numericUpDownm1.Minimum = new decimal(new int[] {
-            2,
+            10,
             0,
             0,
             -2147483648});
@@ -383,12 +383,12 @@
             131072});
             this.numericUpDownm0.Location = new System.Drawing.Point(6, 19);
             this.numericUpDownm0.Maximum = new decimal(new int[] {
-            2,
+            10,
             0,
             0,
             0});
             this.numericUpDownm0.Minimum = new decimal(new int[] {
-            2,
+            10,
             0,
             0,
             -2147483648});
@@ -517,15 +517,6 @@
             this.textBoxMatrixName.TextChanged += new System.EventHandler(this.textBoxMatrixName_TextChanged);
             this.textBoxMatrixName.Validating += new System.ComponentModel.CancelEventHandler(this.textBoxMatrixName_Validating);
             // 
-            // listBoxMatrices
-            // 
-            this.listBoxMatrices.FormattingEnabled = true;
-            this.listBoxMatrices.Location = new System.Drawing.Point(6, 19);
-            this.listBoxMatrices.Name = "listBoxMatrices";
-            this.listBoxMatrices.Size = new System.Drawing.Size(188, 108);
-            this.listBoxMatrices.TabIndex = 0;
-            this.listBoxMatrices.SelectedIndexChanged += new System.EventHandler(this.listBoxMatrices_SelectedIndexChanged);
-            // 
             // buttonSave
             // 
             this.buttonSave.Image = global::SRVTracker.Properties.Resources.Save_16x;
@@ -555,6 +546,15 @@
             this.buttonAdd.TabIndex = 1;
             this.buttonAdd.UseVisualStyleBackColor = true;
             this.buttonAdd.Click += new System.EventHandler(this.buttonAdd_Click);
+            // 
+            // listBoxMatrices
+            // 
+            this.listBoxMatrices.FormattingEnabled = true;
+            this.listBoxMatrices.Location = new System.Drawing.Point(6, 19);
+            this.listBoxMatrices.Name = "listBoxMatrices";
+            this.listBoxMatrices.Size = new System.Drawing.Size(188, 108);
+            this.listBoxMatrices.TabIndex = 0;
+            this.listBoxMatrices.SelectedIndexChanged += new System.EventHandler(this.listBoxMatrices_SelectedIndexChanged);
             // 
             // FormVRMatrixTest
             // 

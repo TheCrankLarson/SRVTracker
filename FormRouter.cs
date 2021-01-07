@@ -1161,5 +1161,37 @@ namespace SRVTracker
         {
             UpdatePolygonButtons();
         }
+
+        private void buttonGenerateCircumnavigationWaypoints_Click(object sender, EventArgs e)
+        {
+            bool haveValidLocation = (FormTracker.CurrentLocation != null) && (FormTracker.CurrentLocation.PlanetaryRadius>0);
+            addNorthPoleToolStripMenuItem.Enabled = haveValidLocation;
+            addSouthPoleToolStripMenuItem.Enabled = haveValidLocation;
+            circumnavigationContextMenuStrip.Show(buttonGenerateCircumnavigationWaypoints, new Point(buttonGenerateCircumnavigationWaypoints.Width, 0));
+        }
+
+        private void addNorthPoleToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (FormTracker.CurrentLocation == null)
+                return;
+
+            EDLocation northPole = FormTracker.CurrentLocation.Copy();  // So that we get radius and planet information
+            northPole.Latitude = 90;
+            northPole.Longitude = 0;
+            northPole.Name = "North Pole";
+            AddLocationToRoute(northPole);
+        }
+
+        private void addSouthPoleToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (FormTracker.CurrentLocation == null)
+                return;
+
+            EDLocation southPole = FormTracker.CurrentLocation.Copy();  // So that we get radius and planet information
+            southPole.Latitude = -90;
+            southPole.Longitude = 0;
+            southPole.Name = "South Pole";
+            AddLocationToRoute(southPole);
+        }
     }
 }

@@ -15,6 +15,7 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Drawing.Text;
 using System.Runtime.InteropServices;
+using d3d = Microsoft.DirectX.Direct3D;
 
 namespace SRVTracker
 {
@@ -27,7 +28,7 @@ namespace SRVTracker
         private static int _commanderListHiddenWidth = 344;
         private static ulong _vrOverlayHandle = 0;
         private static HmdMatrix34_t _vrMatrix;
-        private static IntPtr? _intPtrOverlayImage = null;
+        //private static IntPtr? _intPtrOverlayImage = null;
         private static Bitmap _vrbitmap = null;
         private static Graphics _vrgraphics = null;
         private double _trackedTargetDistance = double.MaxValue;
@@ -382,7 +383,7 @@ namespace SRVTracker
                 this.Hide();
             }
 
-            if (_intPtrOverlayImage != null)
+            if (checkBoxEnableVRLocator.Checked)
                 HideVRLocator();
         }
 
@@ -548,11 +549,15 @@ namespace SRVTracker
         {
             UpdateLocatorBitmap();
             byte[] imgBytes = BitmapToByte(_vrbitmap);
-            if (_intPtrOverlayImage == null)
-                _intPtrOverlayImage = Marshal.AllocHGlobal(imgBytes.Length);
-            Marshal.Copy(imgBytes, 0, _intPtrOverlayImage.Value, imgBytes.Length);
+            IntPtr intPtrOverlayImage = Marshal.AllocHGlobal(imgBytes.Length);
+            Marshal.Copy(imgBytes, 0, intPtrOverlayImage, imgBytes.Length);
 
-            OpenVR.Overlay.SetOverlayRaw(_vrOverlayHandle, _intPtrOverlayImage.Value, (uint)_vrbitmap.Width, (uint)_vrbitmap.Height, 4);
+            OpenVR.Overlay.SetOverlayRaw(_vrOverlayHandle, intPtrOverlayImage, (uint)_vrbitmap.Width, (uint)_vrbitmap.Height, 4);
+            //d3d.Texture texture = d3d.TextureLoader.FromStream(null, null, 0);
+            //OpenVR.Overlay.SetOverlayTexture()
+            
+            Marshal.FreeHGlobal(intPtrOverlayImage);
+
         }
 
         private static void InitVRMatrix()
@@ -561,15 +566,15 @@ namespace SRVTracker
             _vrMatrix.m0 = 0.7F;
             _vrMatrix.m1 = 0.0F;
             _vrMatrix.m2 = 0.0F;
-            _vrMatrix.m3 = 0.42F; // x
+            _vrMatrix.m3 = 0.5F; // x
             _vrMatrix.m4 = 0.0F;
             _vrMatrix.m5 = -1.0F;
             _vrMatrix.m6 = 0.0F;
-            _vrMatrix.m7 = 0.78F; // y
+            _vrMatrix.m7 = 1.5F; // y
             _vrMatrix.m8 = 0F;
             _vrMatrix.m9 = 0.0F;
             _vrMatrix.m10 = 0.0F;
-            _vrMatrix.m11 = -0.1F; // -z
+            _vrMatrix.m11 = -1.5F; // -z
         }
 
         private bool ShowVRLocator(ref string info)
@@ -621,8 +626,6 @@ namespace SRVTracker
             }
             catch { }
             _vrOverlayHandle = 0;
-            if (_intPtrOverlayImage != null)
-                Marshal.FreeHGlobal((IntPtr)_intPtrOverlayImage);
             if (_vrgraphics != null)
             {
                 _vrgraphics.Dispose();
@@ -633,7 +636,6 @@ namespace SRVTracker
                 _vrbitmap.Dispose();
                 _vrbitmap = null;
             }
-            _intPtrOverlayImage = null;
         }
 
         private void comboBoxLocation_SelectedIndexChanged(object sender, EventArgs e)
