@@ -35,6 +35,7 @@ namespace SRVTracker
             _overlayHandle = overlayHandle;
             _hmdMatrix = new HmdMatrix34_t();
             buttonApply.Enabled = !checkBoxAutoApply.Checked;
+            ApplyOverlayWidth();
         }
 
         private static MatrixDefinition DefaultVRMatrix()
@@ -122,6 +123,12 @@ namespace SRVTracker
             ApplyMatrixToOverlay(true);
         }
 
+        public void ReapplyMatrix(ref HmdMatrix34_t hmdMatrix)
+        {
+            hmdMatrix = _hmdMatrix;
+            OpenVR.Overlay.SetOverlayTransformAbsolute(_overlayHandle, Valve.VR.ETrackingUniverseOrigin.TrackingUniverseStanding, ref _hmdMatrix);
+        }
+
         private void ApplyMatrixDefinition(MatrixDefinition hmdMatrix)
         {
             // Apply the given matrix to our VR referenced matrix
@@ -146,7 +153,7 @@ namespace SRVTracker
             ApplyOverlayWidth();
         }
 
-        public void GetMatrix()
+        public HmdMatrix34_t GetMatrix()
         {
             _hmdMatrix.m0 = (float)numericUpDownm0.Value;
             _hmdMatrix.m1 = (float)numericUpDownm1.Value;
@@ -160,6 +167,7 @@ namespace SRVTracker
             _hmdMatrix.m9 = (float)numericUpDownm9.Value;
             _hmdMatrix.m10 = (float)numericUpDownm10.Value;
             _hmdMatrix.m11 = (float)numericUpDownm11.Value;
+            return _hmdMatrix;
         }
 
         private void ApplyOverlayWidth()

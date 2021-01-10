@@ -203,6 +203,9 @@ namespace EDTracking
                     {
                         // All other positions are based on waypoint and distance from it (i.e. lowest waypoint number
                         int i = finishedIndex + 1;
+                        if (Laps > 0)
+                            while ((i < positions.Count) && Statuses[positions[i]].Lap > Statuses[racer].Lap && !Statuses[positions[i]].Eliminated)
+                                i++;
                         // We check total distance left to work out the position
                         while ((i < positions.Count) && Statuses[positions[i]].TotalDistanceLeft < Statuses[racer].TotalDistanceLeft && !Statuses[positions[i]].Eliminated)
                             i++;
@@ -490,10 +493,11 @@ namespace EDTracking
             double distanceLeft = 0;
             if (LapStartWaypoint == 0)
             {
+                if (Lap < 1)
+                    return _lapLength * Laps;
                 distanceLeft = _lapLength * (Laps - Lap);
-                if (WaypointIndex < Route.Waypoints.Count)
-                    distanceLeft += Route.TotalDistanceLeftAtWaypoint(WaypointIndex);
-                distanceLeft += _distanceFromLastLapWPToFirst;
+                if (WaypointIndex > 0)
+                    distanceLeft += Route.TotalDistanceLeftAtWaypoint(WaypointIndex) + _distanceFromLastLapWPToFirst;
                 return distanceLeft;
             }
 

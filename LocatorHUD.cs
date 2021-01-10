@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Linq.Expressions;
-
+using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
+using System.Drawing.Text;
 
 
 namespace SRVTracker
@@ -20,6 +21,11 @@ namespace SRVTracker
         private static Bitmap[] _arrowAtAngle = new Bitmap[359];
         int _lastTurnDirection = -1;
         string _lastSpeed = "";
+
+        private Bitmap _panelBitmap = null;
+        private Graphics _panelBitmapGraphics = null;
+        private bool _panelBitmapStale = true;
+        private int _panelRequests = 0;
 
         public LocatorHUD()
         {
@@ -54,6 +60,8 @@ namespace SRVTracker
                 updated = true;
             }
 
+            if (!_panelBitmapStale)
+                _panelBitmapStale = updated;
             if (directionToTurn == _lastTurnDirection)
                 return updated;
 
@@ -98,6 +106,7 @@ namespace SRVTracker
             if (labelDistance.Text.Equals(distanceText))
                 return distanceText;
 
+            _panelBitmapStale = true;
             Action action = new Action(() => { labelDistance.Text = distanceText; });
             if (labelDistance.InvokeRequired)
                 labelDistance.Invoke(action);
@@ -111,6 +120,7 @@ namespace SRVTracker
             if (labelTarget.Text.Equals(target))
                 return;
 
+            _panelBitmapStale = true;
             Action action = new Action(() => { labelTarget.Text = target; });
             if (labelTarget.InvokeRequired)
                 labelTarget.Invoke(action);
@@ -125,6 +135,7 @@ namespace SRVTracker
             if (labelAdditionalInfo.Text.Equals(additionalInfo))
                 return;
 
+            _panelBitmapStale = true;
             Action action = new Action(() => { labelAdditionalInfo.Text = additionalInfo; });
             if (labelAdditionalInfo.InvokeRequired)
                 labelAdditionalInfo.Invoke(action);
@@ -138,6 +149,7 @@ namespace SRVTracker
             if (speed.Equals(_lastSpeed))
                 return;
 
+            _panelBitmapStale = true;
             Action action = new Action(() => { labelSpeedInMS.Text = speed; });
             if (labelSpeedInMS.InvokeRequired)
                 labelSpeedInMS.Invoke(action);
@@ -196,6 +208,75 @@ namespace SRVTracker
 
             //return the image
             return bmp;
+        }
+
+        public bool PanelRequiresReset()
+        {
+            // For some reason, OpenVR needs resetting once 200 updates have been written to the overlay... No idea why
+            return _panelRequests >= 200;
+        }
+
+        public void ResetPanel()
+        {
+            _panelRequests = 0;
+        }
+
+        public Bitmap GetLocatorPanelBitmap()
+        {
+            // Generate and return a bitmap to be used as overlay
+            _panelRequests++;
+            if (!_panelBitmapStale)
+                return _panelBitmap;
+
+            if (_panelBitmap == null)
+                _panelBitmap = new Bitmap(800, 320);
+
+            if (_panelBitmapGraphics == null)
+            {
+                _panelBitmapGraphics = Graphics.FromImage(_panelBitmap);
+                _panelBitmapGraphics.CompositingQuality = CompositingQuality.HighQuality;
+                _panelBitmapGraphics.InterpolationMode = InterpolationMode.HighQualityBilinear;
+                _panelBitmapGraphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
+                _panelBitmapGraphics.SmoothingMode = SmoothingMode.HighQuality;
+                _panelBitmapGraphics.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
+            }
+
+            // Black background
+            _panelBitmapGraphics.FillRectangle(new SolidBrush(Color.Black), _panelBitmapGraphics.ClipBounds);
+
+            // Tracking target
+            Brush directionBrush = new SolidBrush(Color.White);
+            Brush targetBrush = new SolidBrush(Color.Green);
+            Brush additionalInfoBrush = new SolidBrush(Color.LightGray);
+            Font font = new Font("Arial", 24);
+            _panelBitmapGraphics.DrawString(labelTarget.Text, font, targetBrush, new PointF(0, 40));
+
+            // Additional info
+            if (!String.IsNullOrEmpty(labelAdditionalInfo.Text))
+                _panelBitmapGraphics.DrawString(labelAdditionalInfo.Text, font, additionalInfoBrush, new PointF(0, 80));
+
+            // Bearing
+            font.Dispose();
+            font = new Font("Arial", 56);
+            //SizeF textSize = graphics.MeasureString(labelHeading.Text, font);
+            _panelBitmapGraphics.DrawString(labelBearing.Text, font, directionBrush, new PointF(80, 120));
+
+            // Distance
+            _panelBitmapGraphics.DrawString(labelDistance.Text, font, directionBrush, new PointF(320, 120));
+            font.Dispose();
+
+            // Bearing arrow
+            _panelBitmapGraphics.DrawImage(GetBearingImage(), new Point(0, 130));
+
+            // Count of generations (for debugging)
+            //font = new Font("Arial", 12);
+            //_panelBitmapGraphics.DrawString(_panelRequests.ToString(), font, additionalInfoBrush, new PointF(0, 0));
+            //font.Dispose();
+
+            directionBrush.Dispose();
+            targetBrush.Dispose();
+            additionalInfoBrush.Dispose();
+            return _panelBitmap;
         }
     }
 }

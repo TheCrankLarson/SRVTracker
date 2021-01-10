@@ -1,4 +1,4 @@
-﻿namespace SRVTracker
+﻿namespace Race_Manager
 {
     partial class FormRaceHistory
     {

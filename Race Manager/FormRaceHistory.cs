@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Net;
 
-namespace SRVTracker
+namespace Race_Manager
 {
     public partial class FormRaceHistory : Form
     {
@@ -33,13 +33,28 @@ namespace SRVTracker
 
         public FormRaceHistory(Dictionary<String, EDRaceStatus> raceStatuses)
         {
+            InitializeComponent();
             _raceStatuses = raceStatuses;
             buttonExport.Enabled = false;
+            InitComboFromStatuses();
+        }
+
+        public FormRaceHistory(EDRace race)
+        {
+            InitializeComponent();
+            _raceStatuses = race.Statuses;
+            InitComboFromStatuses();
+        }
+
+        private void InitComboFromStatuses()
+        {
             comboBoxCommander.Items.Clear();
+            if (_raceStatuses.Count == 0)
+                return;
+
             foreach (string commander in _raceStatuses.Keys)
                 comboBoxCommander.Items.Add(commander);
         }
-
 
         private void buttonClose_Click(object sender, EventArgs e)
         {

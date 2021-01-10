@@ -26,7 +26,6 @@ namespace SRVTracker
         private DateTime _lastStatusSend = DateTime.MinValue;
         private Size _configShowing = new Size(738, 392);
         private Size _configHidden = new Size(298, 222);
-        public static CVRSystem VRSystem = null;
         private static FormFlagsWatcher _formFlagsWatcher = null;
         private static string _clientId = null;
         private JournalReader _journalReader = null;
@@ -308,60 +307,15 @@ namespace SRVTracker
             //return;
             //if (_formFlagsWatcher != null)
             //    return;
-            _formFlagsWatcher = new FormFlagsWatcher();
-            _formFlagsWatcher.Show();
-            FormVRMatrixTest formVRMatrixTest = new FormVRMatrixTest(0);
-            formVRMatrixTest.SetOverlayWidth(0.8f);
-            formVRMatrixTest.Show();
+            //_formFlagsWatcher = new FormFlagsWatcher();
+            //_formFlagsWatcher.Show();
+            //FormVRMatrixTest formVRMatrixTest = new FormVRMatrixTest(0);
+            //formVRMatrixTest.SetOverlayWidth(0.8f);
+            //formVRMatrixTest.Show();
             //formVRMatrixTest.SetMatrix(ref _vrMatrix);
         }
 
-        public static bool InitVR()
-        {
-            if (VRSystem == null)
-            {
-                var initError = EVRInitError.None;
-                try
-                {
-                    VRSystem = OpenVR.Init(ref initError, EVRApplicationType.VRApplication_Overlay);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(null, $"Failed to initialise VR: {ex.Message}\r\nInit error: {initError}", "VR Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return false;
-                }
-            }
-            return true;
-        }
 
-        private void TestVROverlay()
-        {
-            if (!InitVR()) return;
-
-            var overlay = OpenVR.Overlay;
-            ulong overlayHandle = 0;
-
-            overlay.CreateOverlay("overlaySRVTracker", "SRV Tracking", ref overlayHandle);
-            overlay.SetOverlayWidthInMeters(overlayHandle, 2.5f);
-            overlay.SetOverlayFromFile(overlayHandle, "c:\\temp\\Crank VR.png");
-            //overlay.SetOverlayRaw()
-            var error = overlay.ShowOverlay(overlayHandle);
-            Valve.VR.HmdMatrix34_t hmdMatrix = new HmdMatrix34_t();
-            hmdMatrix.m0 = 1.0F;
-            hmdMatrix.m1 = 0.0F;
-            hmdMatrix.m2 = 0.0F;
-            hmdMatrix.m3 = 0.0F;
-            hmdMatrix.m4 = 0.0F;
-            hmdMatrix.m5 = 1.0F;
-            hmdMatrix.m6 = 0.0F;
-            hmdMatrix.m7 = 1.0F;
-            hmdMatrix.m8 = 0.0F;
-            hmdMatrix.m9 = 0.0F;
-            hmdMatrix.m10 = 1.0F;
-            hmdMatrix.m11 = -2.0F;
-
-            overlay.SetOverlayTransformAbsolute(overlayHandle, Valve.VR.ETrackingUniverseOrigin.TrackingUniverseStanding, ref hmdMatrix);
-        }
 
         private void SendTestEvents()
         {

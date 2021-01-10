@@ -389,6 +389,7 @@ namespace Race_Manager
             numericUpDownLapCount.Enabled = checkBoxLappedRace.Checked;
             numericUpDownLapStartWaypoint.Enabled = checkBoxLapCustomWaypoints.Checked;
             numericUpDownLapEndWaypoint.Enabled = checkBoxLapCustomWaypoints.Checked;
+            buttonRaceHistory.Enabled = !String.IsNullOrEmpty(_serverRaceGuid) || (_race != null && _race.Statuses != null && _race.Statuses.Count > 0);
         }
 
         private void Resurrect(string commander)
@@ -422,7 +423,7 @@ namespace Race_Manager
             }
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
-                openFileDialog.Filter = "edrace files (*.edrace)|*.edrace|Race.Start files|Race.Start|All files (*.*)|*.*";
+                openFileDialog.Filter = "edrace files (*.edrace)|*.edrace|Race.Start files|Race.Start|Race.Summary files|Race.Summary|All files (*.*)|*.*";
                 openFileDialog.FilterIndex = 1;
                 openFileDialog.RestoreDirectory = true;
                 openFileDialog.FileName = _saveFileName;
@@ -1136,6 +1137,25 @@ namespace Race_Manager
         {
             if (_raceTimer != null && !_raceTimer.IsDisposed)
                 _raceTimer.Pause();
+        }
+
+        private void buttonRaceHistory_Click(object sender, EventArgs e)
+        {
+            if (_race.Statuses == null || _race.Statuses.Count < 1)
+                return;
+
+            FormRaceHistory formRaceHistory = null;
+            if (!String.IsNullOrEmpty(_serverRaceGuid))
+            {
+                // Race running on server, so connect to that
+                formRaceHistory = new FormRaceHistory(_race.Contestants, _serverRaceGuid);
+            }
+            else
+            {
+                // Looking at history from local race data (e.g. past race that has been loaded)
+                formRaceHistory = new FormRaceHistory(_race);
+            }
+            formRaceHistory.Show(this);
         }
     }
 }

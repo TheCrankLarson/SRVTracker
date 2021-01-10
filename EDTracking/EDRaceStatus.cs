@@ -552,7 +552,7 @@ namespace EDTracking
 
                 WaypointIndex++;
 
-                if ( (_race.Laps>0) && (WaypointIndex > _race.LapEndWaypoint - 1) && (Lap<_race.Laps) )
+                if ( (_race.Laps>0) && (WaypointIndex > _race.LapEndWaypoint) && (Lap<=_race.Laps) )
                 {
                     WaypointIndex = lapStartWaypoint;
                 }
