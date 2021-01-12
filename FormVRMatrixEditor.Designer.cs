@@ -1,6 +1,6 @@
 ﻿namespace SRVTracker
 {
-    partial class FormVRMatrixTest
+    partial class FormVRMatrixEditor
     {
         /// <summary>
         /// Required designer variable.
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormVRMatrixTest));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormVRMatrixEditor));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.numericUpDownm11 = new System.Windows.Forms.NumericUpDown();
             this.numericUpDownm10 = new System.Windows.Forms.NumericUpDown();

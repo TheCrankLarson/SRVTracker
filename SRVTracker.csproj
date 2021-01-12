@@ -80,6 +80,7 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>bin\x86\Release\</OutputPath>
@@ -214,11 +215,11 @@
     <Compile Include="FormTracker.Designer.cs">
       <DependentUpon>FormTracker.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormVRMatrixTest.cs">
+    <Compile Include="FormVRMatrixEditor.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormVRMatrixTest.Designer.cs">
-      <DependentUpon>FormVRMatrixTest.cs</DependentUpon>
+    <Compile Include="FormVRMatrixEditor.Designer.cs">
+      <DependentUpon>FormVRMatrixEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="LocationManager.cs">
       <SubType>UserControl</SubType>
@@ -253,7 +254,7 @@
       <DependentUpon>UpdaterForm.cs</DependentUpon>
     </Compile>
     <Compile Include="VRLocator.cs" />
-    <Compile Include="VRMatrixCollection.cs" />
+    <Compile Include="VRPanelCollection.cs" />
     <EmbeddedResource Include="FormAddLocation.resx">
       <DependentUpon>FormAddLocation.cs</DependentUpon>
     </EmbeddedResource>
@@ -281,8 +282,8 @@
     <EmbeddedResource Include="FormTracker.resx">
       <DependentUpon>FormTracker.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormVRMatrixTest.resx">
-      <DependentUpon>FormVRMatrixTest.cs</DependentUpon>
+    <EmbeddedResource Include="FormVRMatrixEditor.resx">
+      <DependentUpon>FormVRMatrixEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="LocationManager.resx">
       <DependentUpon>LocationManager.cs</DependentUpon>

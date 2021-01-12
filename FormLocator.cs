@@ -34,7 +34,7 @@ namespace SRVTracker
         private static double _closestCommanderDistance = double.MaxValue;
         private static FormLocator _activeLocator = null;
         private ConfigSaverClass _formConfig = null;
-        private FormVRMatrixTest _formVRMatrixTest = null;
+        private FormVRMatrixEditor _formVRMatrixTest = null;
         private byte[] _vrPanelImageBytes = null;
         private IntPtr _intPtrVROverlayImage;
 
@@ -504,7 +504,9 @@ namespace SRVTracker
 
         private void UpdateVRLocatorImage()
         {
-            Bitmap locatorPanel = locatorHUD1.GetLocatorPanelBitmap();
+            //Bitmap locatorPanel = locatorHUD1.GetLocatorPanelBitmap();
+            Bitmap locatorPanel = new Bitmap(locatorHUD1.Width, locatorHUD1.Height);
+            locatorHUD1.DrawToBitmap(locatorPanel, new Rectangle(0,0,locatorHUD1.Width, locatorHUD1.Height));
             if (locatorHUD1.PanelRequiresReset())
             {
                 // For some reason, after 200 updates the OpenVR layer locks up
@@ -569,7 +571,7 @@ namespace SRVTracker
 
             if (!SuppressMatrixWindow)
             {
-                _formVRMatrixTest = new FormVRMatrixTest(_vrOverlayHandle);
+                _formVRMatrixTest = new FormVRMatrixEditor(_vrOverlayHandle);
                 _formVRMatrixTest.SetMatrix(ref _vrMatrix);
                 _formVRMatrixTest.SetOverlayWidth(0.6f);
                 _formVRMatrixTest.Show();

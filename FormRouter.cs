@@ -1167,6 +1167,9 @@ namespace SRVTracker
             bool haveValidLocation = (FormTracker.CurrentLocation != null) && (FormTracker.CurrentLocation.PlanetaryRadius>0);
             addNorthPoleToolStripMenuItem.Enabled = haveValidLocation;
             addSouthPoleToolStripMenuItem.Enabled = haveValidLocation;
+            addEquatorToolStripMenuItem.Enabled = haveValidLocation;
+            addPrimeMeridianToolStripMenuItem.Enabled = haveValidLocation;
+            addOriginToolStripMenuItem.Enabled = haveValidLocation;
             circumnavigationContextMenuStrip.Show(buttonGenerateCircumnavigationWaypoints, new Point(buttonGenerateCircumnavigationWaypoints.Width, 0));
         }
 
@@ -1192,6 +1195,40 @@ namespace SRVTracker
             southPole.Longitude = 0;
             southPole.Name = "South Pole";
             AddLocationToRoute(southPole);
+        }
+
+        private void addEquatorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (FormTracker.CurrentLocation == null)
+                return;
+
+            EDLocation equatorClosest = FormTracker.CurrentLocation.Copy();  // So that we get radius and planet information
+            equatorClosest.Latitude = 0;
+            equatorClosest.Name = "Equator";
+            AddLocationToRoute(equatorClosest);
+        }
+
+        private void addPrimeMeridianToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (FormTracker.CurrentLocation == null)
+                return;
+
+            EDLocation primeMeridian = FormTracker.CurrentLocation.Copy();  // So that we get radius and planet information
+            primeMeridian.Longitude = 0;
+            primeMeridian.Name = "Prime Meridian";
+            AddLocationToRoute(primeMeridian);
+        }
+
+        private void addOriginToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (FormTracker.CurrentLocation == null)
+                return;
+
+            EDLocation origin = FormTracker.CurrentLocation.Copy();  // So that we get radius and planet information
+            origin.Latitude = 0;
+            origin.Longitude = 0;
+            origin.Name = "Origin";
+            AddLocationToRoute(origin);
         }
     }
 }

@@ -14,7 +14,7 @@ using EDTracking;
 
 namespace SRVTracker
 {
-    public partial class FormVRMatrixTest : Form
+    public partial class FormVRMatrixEditor : Form
     {
         private ulong _overlayHandle = 0;
         private HmdMatrix34_t _hmdMatrix;
@@ -22,7 +22,7 @@ namespace SRVTracker
         private string _matricesSaveFile = "hmd_matrices.json";
         private ConfigSaverClass _formConfig = null;
 
-        public FormVRMatrixTest(ulong overlayHandle)
+        public FormVRMatrixEditor(ulong overlayHandle)
         {
             InitializeComponent();
             // Attach our form configuration saver
@@ -367,52 +367,6 @@ namespace SRVTracker
             _savedMatrices.Remove((string)listBoxMatrices.SelectedItem);
             _savedMatrices.Add(textBoxMatrixName.Text, matrixDefinition);
             listBoxMatrices.Items[listBoxMatrices.SelectedIndex] = textBoxMatrixName.Text;
-        }
-    }
-
-    public class MatrixDefinition
-    {
-        public float m0 { get; set; } = 0;
-        public float m1 { get; set; } = 0;
-        public float m2 { get; set; } = 0;
-        public float m3 { get; set; } = 0;
-        public float m4 { get; set; } = 0;
-        public float m5 { get; set; } = 0;
-        public float m6 { get; set; } = 0;
-        public float m7 { get; set; } = 0;
-        public float m8 { get; set; } = 0;
-        public float m9 { get; set; } = 0;
-        public float m10 { get; set; } = 0;
-        public float m11 { get; set; } = 0;
-        public float PanelWidth { get; set; } = 0.8f;
-
-        public MatrixDefinition()
-        {
-
-        }
-
-        public MatrixDefinition(float m0, float m1, float m2, float m3, float m4, float m5, float m6, float m7, float m8, float m9, float m10, float m11, float PanelWidth)
-        {
-            this.m0 = m0;
-            this.m1 = m1;
-            this.m2 = m2;
-            this.m3 = m3;
-            this.m4 = m4;
-            this.m5 = m5;
-            this.m6 = m6;
-            this.m7 = m7;
-            this.m8 = m8;
-            this.m9 = m9;
-            this.m10 = m10;
-            this.m11 = m11;
-            this.PanelWidth = PanelWidth;
-        }
-
-        public static MatrixDefinition FromHmdMatrix34_t(ref HmdMatrix34_t hmdMatrix, float PanelWidth)
-        {
-            // Create a new matrix defintion from the provided matrix
-            return new MatrixDefinition(hmdMatrix.m0, hmdMatrix.m1, hmdMatrix.m2, hmdMatrix.m3, hmdMatrix.m4, hmdMatrix.m5,
-                hmdMatrix.m6, hmdMatrix.m7, hmdMatrix.m8, hmdMatrix.m9, hmdMatrix.m10, hmdMatrix.m11, PanelWidth);
         }
     }
 }
