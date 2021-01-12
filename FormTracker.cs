@@ -8,12 +8,10 @@ using System.Net.Sockets;
 using System.IO;
 using System.Runtime.InteropServices;
 using EDTracking;
-using OpenVR = Valve.VR.OpenVR;
-using Valve.VR;
+
 
 namespace SRVTracker
 {
-
     public partial class FormTracker : Form
     {
         UdpClient _udpClient = null;
