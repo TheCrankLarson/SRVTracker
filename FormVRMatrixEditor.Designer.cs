@@ -57,6 +57,7 @@
             this.buttonDelete = new System.Windows.Forms.Button();
             this.buttonAdd = new System.Windows.Forms.Button();
             this.listBoxMatrices = new System.Windows.Forms.ListBox();
+            this.trackBarEditMatrixValue = new System.Windows.Forms.TrackBar();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownm11)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownm10)).BeginInit();
@@ -72,10 +73,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownm0)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownOverlayWidth)).BeginInit();
             this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarEditMatrixValue)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.trackBarEditMatrixValue);
             this.groupBox1.Controls.Add(this.numericUpDownm11);
             this.groupBox1.Controls.Add(this.numericUpDownm10);
             this.groupBox1.Controls.Add(this.numericUpDownm9);
@@ -90,7 +93,7 @@
             this.groupBox1.Controls.Add(this.numericUpDownm0);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(260, 101);
+            this.groupBox1.Size = new System.Drawing.Size(260, 150);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Transform matrix";
@@ -120,6 +123,7 @@
             this.numericUpDownm11.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.toolTip1.SetToolTip(this.numericUpDownm11, "-z offset");
             this.numericUpDownm11.ValueChanged += new System.EventHandler(this.numericUpDownm11_ValueChanged);
+            this.numericUpDownm11.Enter += new System.EventHandler(this.numericUpDownm11_Enter);
             // 
             // numericUpDownm10
             // 
@@ -221,6 +225,7 @@
             this.numericUpDownm7.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.toolTip1.SetToolTip(this.numericUpDownm7, "y offset");
             this.numericUpDownm7.ValueChanged += new System.EventHandler(this.numericUpDownm7_ValueChanged);
+            this.numericUpDownm7.Enter += new System.EventHandler(this.numericUpDownm7_Enter);
             // 
             // numericUpDownm6
             // 
@@ -322,6 +327,7 @@
             this.numericUpDownm3.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.toolTip1.SetToolTip(this.numericUpDownm3, "x offset");
             this.numericUpDownm3.ValueChanged += new System.EventHandler(this.numericUpDownm3_ValueChanged);
+            this.numericUpDownm3.Enter += new System.EventHandler(this.numericUpDownm3_Enter);
             // 
             // numericUpDownm2
             // 
@@ -400,7 +406,7 @@
             // 
             // buttonApply
             // 
-            this.buttonApply.Location = new System.Drawing.Point(197, 145);
+            this.buttonApply.Location = new System.Drawing.Point(197, 195);
             this.buttonApply.Name = "buttonApply";
             this.buttonApply.Size = new System.Drawing.Size(75, 23);
             this.buttonApply.TabIndex = 1;
@@ -411,7 +417,7 @@
             // 
             // buttonClose
             // 
-            this.buttonClose.Location = new System.Drawing.Point(12, 145);
+            this.buttonClose.Location = new System.Drawing.Point(12, 195);
             this.buttonClose.Name = "buttonClose";
             this.buttonClose.Size = new System.Drawing.Size(52, 23);
             this.buttonClose.TabIndex = 2;
@@ -422,7 +428,7 @@
             // buttonExport
             // 
             this.buttonExport.Enabled = false;
-            this.buttonExport.Location = new System.Drawing.Point(70, 145);
+            this.buttonExport.Location = new System.Drawing.Point(70, 195);
             this.buttonExport.Name = "buttonExport";
             this.buttonExport.Size = new System.Drawing.Size(53, 23);
             this.buttonExport.TabIndex = 3;
@@ -435,7 +441,7 @@
             this.checkBoxAutoApply.AutoSize = true;
             this.checkBoxAutoApply.Checked = true;
             this.checkBoxAutoApply.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxAutoApply.Location = new System.Drawing.Point(147, 149);
+            this.checkBoxAutoApply.Location = new System.Drawing.Point(147, 199);
             this.checkBoxAutoApply.Name = "checkBoxAutoApply";
             this.checkBoxAutoApply.Size = new System.Drawing.Size(48, 17);
             this.checkBoxAutoApply.TabIndex = 4;
@@ -452,7 +458,7 @@
             0,
             0,
             65536});
-            this.numericUpDownOverlayWidth.Location = new System.Drawing.Point(144, 119);
+            this.numericUpDownOverlayWidth.Location = new System.Drawing.Point(144, 169);
             this.numericUpDownOverlayWidth.Maximum = new decimal(new int[] {
             10,
             0,
@@ -478,7 +484,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(43, 121);
+            this.label1.Location = new System.Drawing.Point(43, 171);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(95, 13);
             this.label1.TabIndex = 6;
@@ -487,7 +493,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(207, 121);
+            this.label2.Location = new System.Drawing.Point(207, 171);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(15, 13);
             this.label2.TabIndex = 7;
@@ -502,7 +508,7 @@
             this.groupBox2.Controls.Add(this.listBoxMatrices);
             this.groupBox2.Location = new System.Drawing.Point(278, 12);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(200, 157);
+            this.groupBox2.Size = new System.Drawing.Size(200, 206);
             this.groupBox2.TabIndex = 8;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Saved Matrices";
@@ -510,7 +516,7 @@
             // textBoxMatrixName
             // 
             this.textBoxMatrixName.Enabled = false;
-            this.textBoxMatrixName.Location = new System.Drawing.Point(90, 130);
+            this.textBoxMatrixName.Location = new System.Drawing.Point(90, 180);
             this.textBoxMatrixName.Name = "textBoxMatrixName";
             this.textBoxMatrixName.Size = new System.Drawing.Size(104, 20);
             this.textBoxMatrixName.TabIndex = 4;
@@ -520,7 +526,7 @@
             // buttonSave
             // 
             this.buttonSave.Image = global::SRVTracker.Properties.Resources.Save_16x;
-            this.buttonSave.Location = new System.Drawing.Point(58, 128);
+            this.buttonSave.Location = new System.Drawing.Point(58, 178);
             this.buttonSave.Name = "buttonSave";
             this.buttonSave.Size = new System.Drawing.Size(26, 23);
             this.buttonSave.TabIndex = 3;
@@ -530,7 +536,7 @@
             // buttonDelete
             // 
             this.buttonDelete.Image = global::SRVTracker.Properties.Resources.Remove_color_16x;
-            this.buttonDelete.Location = new System.Drawing.Point(32, 128);
+            this.buttonDelete.Location = new System.Drawing.Point(32, 178);
             this.buttonDelete.Name = "buttonDelete";
             this.buttonDelete.Size = new System.Drawing.Size(26, 23);
             this.buttonDelete.TabIndex = 2;
@@ -540,7 +546,7 @@
             // buttonAdd
             // 
             this.buttonAdd.Image = global::SRVTracker.Properties.Resources.Add_16x;
-            this.buttonAdd.Location = new System.Drawing.Point(6, 128);
+            this.buttonAdd.Location = new System.Drawing.Point(6, 178);
             this.buttonAdd.Name = "buttonAdd";
             this.buttonAdd.Size = new System.Drawing.Size(26, 23);
             this.buttonAdd.TabIndex = 1;
@@ -552,15 +558,29 @@
             this.listBoxMatrices.FormattingEnabled = true;
             this.listBoxMatrices.Location = new System.Drawing.Point(6, 19);
             this.listBoxMatrices.Name = "listBoxMatrices";
-            this.listBoxMatrices.Size = new System.Drawing.Size(188, 108);
+            this.listBoxMatrices.Size = new System.Drawing.Size(188, 147);
             this.listBoxMatrices.TabIndex = 0;
             this.listBoxMatrices.SelectedIndexChanged += new System.EventHandler(this.listBoxMatrices_SelectedIndexChanged);
             // 
-            // FormVRMatrixTest
+            // trackBarEditMatrixValue
+            // 
+            this.trackBarEditMatrixValue.LargeChange = 100;
+            this.trackBarEditMatrixValue.Location = new System.Drawing.Point(7, 97);
+            this.trackBarEditMatrixValue.Maximum = 1000;
+            this.trackBarEditMatrixValue.Minimum = -1000;
+            this.trackBarEditMatrixValue.Name = "trackBarEditMatrixValue";
+            this.trackBarEditMatrixValue.Size = new System.Drawing.Size(245, 45);
+            this.trackBarEditMatrixValue.SmallChange = 10;
+            this.trackBarEditMatrixValue.TabIndex = 12;
+            this.trackBarEditMatrixValue.TickFrequency = 100;
+            this.toolTip1.SetToolTip(this.trackBarEditMatrixValue, "Use the slider to adjust the currently selected matrix value");
+            this.trackBarEditMatrixValue.Scroll += new System.EventHandler(this.trackBarEditMatrixValue_Scroll);
+            // 
+            // FormVRMatrixEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(487, 181);
+            this.ClientSize = new System.Drawing.Size(487, 227);
             this.ControlBox = false;
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.label2);
@@ -573,10 +593,11 @@
             this.Controls.Add(this.groupBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "FormVRMatrixTest";
+            this.Name = "FormVRMatrixEditor";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Matrix Editor";
             this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownm11)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownm10)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownm9)).EndInit();
@@ -592,6 +613,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownOverlayWidth)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarEditMatrixValue)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -626,5 +648,6 @@
         private System.Windows.Forms.Button buttonDelete;
         private System.Windows.Forms.Button buttonAdd;
         private System.Windows.Forms.ListBox listBoxMatrices;
+        private System.Windows.Forms.TrackBar trackBarEditMatrixValue;
     }
 }

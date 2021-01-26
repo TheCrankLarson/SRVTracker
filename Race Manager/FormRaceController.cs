@@ -505,8 +505,8 @@ namespace Race_Manager
             textBoxServerRaceGuid.Text = "";
             _race.Statuses = new Dictionary<string, EDRaceStatus>();
             _race.Start = DateTime.MinValue;
-            _race.Contestants = new List<String>();
-            listBoxParticipants.Items.Clear();
+            //_race.Contestants = new List<String>();
+            //listBoxParticipants.Items.Clear();
             listBoxWaypoints.Refresh();
             buttonStartRace.Enabled = true;
             buttonReset.Enabled = false;
@@ -1142,7 +1142,10 @@ namespace Race_Manager
         private void buttonRaceHistory_Click(object sender, EventArgs e)
         {
             if (_race.Statuses == null || _race.Statuses.Count < 1)
+            {
+                buttonRaceHistory.Enabled = false;
                 return;
+            }
 
             FormRaceHistory formRaceHistory = null;
             if (!String.IsNullOrEmpty(_serverRaceGuid))

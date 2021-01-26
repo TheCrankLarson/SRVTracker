@@ -21,6 +21,7 @@ namespace SRVTracker
         private Dictionary<string, MatrixDefinition> _savedMatrices = null;
         private string _matricesSaveFile = "hmd_matrices.json";
         private ConfigSaverClass _formConfig = null;
+        private Control _sliderTargetControl = null;
 
         public FormVRMatrixEditor(ulong overlayHandle)
         {
@@ -367,6 +368,31 @@ namespace SRVTracker
             _savedMatrices.Remove((string)listBoxMatrices.SelectedItem);
             _savedMatrices.Add(textBoxMatrixName.Text, matrixDefinition);
             listBoxMatrices.Items[listBoxMatrices.SelectedIndex] = textBoxMatrixName.Text;
+        }
+
+        private void trackBarEditMatrixValue_Scroll(object sender, EventArgs e)
+        {
+            if (_sliderTargetControl == null)
+                return;
+            ((NumericUpDown)_sliderTargetControl).Value = ((decimal)trackBarEditMatrixValue.Value / 1000);
+        }
+
+        private void numericUpDownm3_Enter(object sender, EventArgs e)
+        {
+            _sliderTargetControl = numericUpDownm3;
+            trackBarEditMatrixValue.Value = (int)(numericUpDownm3.Value * 1000);
+        }
+
+        private void numericUpDownm7_Enter(object sender, EventArgs e)
+        {
+            _sliderTargetControl = numericUpDownm7;
+            trackBarEditMatrixValue.Value = (int)(numericUpDownm7.Value * 1000);
+        }
+
+        private void numericUpDownm11_Enter(object sender, EventArgs e)
+        {
+            _sliderTargetControl = numericUpDownm11;
+            trackBarEditMatrixValue.Value = (int)(numericUpDownm11.Value * 1000);
         }
     }
 }

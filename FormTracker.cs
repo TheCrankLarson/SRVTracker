@@ -77,23 +77,24 @@ namespace SRVTracker
             this.Size = _configHidden;
             this.Text = Application.ProductName + " v" + Application.ProductVersion;
             groupBoxSRVTracker.Text = this.Text;
-            trackerHUD1.AutoTrack();  // Tracker HUD listens for events that we generate when location changes
             if (!File.Exists("Race Manager.exe"))
                 buttonRaceTracker.Enabled = false;
             radioButtonUseTimer.Checked = true;
+            if (checkBoxAutoUpdate.Checked)
+                CheckForUpdate();
         }
 
         private void CalculateWindowSizes()
         {
             // Calculate size with setting hidden
-            int leftBound = buttonExit.Location.X + buttonExit.Width - 1;
-            _configHidden.Width = (this.Width-this.ClientRectangle.Width) + leftBound + ((groupBoxStatusLocation.Left - leftBound) / 2);
-            int bottomBound = buttonExit.Location.Y + buttonExit.Height;
-            _configHidden.Height = (this.Height - this.ClientRectangle.Height) + bottomBound + 2;
+            int leftBound = groupBoxSRVTracker.Location.X + groupBoxSRVTracker.Width + 10;
+            _configHidden.Width = (this.Width-this.ClientRectangle.Width) + leftBound;
+            int bottomBound = buttonShowConfig.Location.Y + buttonShowConfig.Height;
+            _configHidden.Height = (this.Height - this.ClientRectangle.Height) + bottomBound + 6;
 
             // Calculate size with config displayed
-            _configShowing.Width = listBoxLog.Location.X + listBoxLog.Width + (this.Width - this.ClientRectangle.Width) + 6;
-            _configShowing.Height = listBoxLog.Location.Y + listBoxLog.Height + (this.Height - this.ClientRectangle.Height) + 6;
+            _configShowing.Width = tabControlSettings.Location.X + tabControlSettings.Width + (this.Width - this.ClientRectangle.Width) + 10;
+            _configShowing.Height = tabControlSettings.Location.Y + tabControlSettings.Height + (this.Height - this.ClientRectangle.Height) + 10;
         }
 
         private void _journalReader_InterestingEventOccurred(object sender, string eventJson)
@@ -114,7 +115,7 @@ namespace SRVTracker
                 _lastFileWrite = lastWriteTime;
             }
             else if ( DateTime.Now.Subtract(_lastStatusSend).TotalSeconds > 5 )
-                ProcessStatusFileUpdate(_statusFile); // This is the five second ping when we are watching for file updates
+                ProcessStatusFileUpdate(_statusFile, true); // This is the five second ping when we are watching for file updates
 
             _statusTimer.Start();
         }
@@ -134,18 +135,16 @@ namespace SRVTracker
                         _clientId = ReadCommanderNameFromJournal();
                         if (String.IsNullOrEmpty(_clientId))
                         {
-                            AddLog("New client Id generated");
                             _clientId = Guid.NewGuid().ToString();
                         }
                     }
                     try
                     {
                         File.WriteAllText(ClientIdFile, _clientId);
-                        AddLog($"Saved client Id to file: {ClientIdFile}");
                     }
                     catch (Exception ex)
                     {
-                        AddLog($"Error saving client Id to file: {ex.Message}");
+                        MessageBox.Show(this, $"Error saving client Id to file: {Environment.NewLine}{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
             }
@@ -155,7 +154,6 @@ namespace SRVTracker
                 {
                     // Read the file
                     _clientId = File.ReadAllText(ClientIdFile);
-                    AddLog("Restored client Id");
                 }
                 catch { }
             }
@@ -209,35 +207,7 @@ namespace SRVTracker
             }
         }
 
-        private void AddLog(string log)
-        {
-            log = $"{DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")}  {log}";
-            Action addLogAction = new Action(() => {
-                listBoxLog.BeginUpdate();
-                listBoxLog.Items.Add(log);                
-                if (listBoxLog.Items.Count > 200)
-                {
-                    int topOffset = listBoxLog.Items.Count - listBoxLog.TopIndex;
-                    listBoxLog.Items.RemoveAt(0);
-
-                    if ( !checkBoxAutoScroll.Checked && (listBoxLog.Items.Count - topOffset >= 0) )
-                        listBoxLog.TopIndex = listBoxLog.Items.Count - topOffset;
-                }
-                if (checkBoxAutoScroll.Checked)
-                {
-                    listBoxLog.TopIndex = listBoxLog.Items.Count-1;
-                }
-                listBoxLog.EndUpdate();
-            });
-            if (listBoxLog.InvokeRequired)
-            {
-                listBoxLog.Invoke(addLogAction);
-            }
-            else
-                addLogAction();
-        }
-
-        private void ProcessStatusFileUpdate(string statusFile)
+        private void ProcessStatusFileUpdate(string statusFile, bool updateTimeStamp = false)
         {
             // Read the status from the file and update the UI
             if (String.IsNullOrEmpty(statusFile))
@@ -273,7 +243,12 @@ namespace SRVTracker
                 // This also gives us polling every five seconds in case the commander stops moving (as soon as they move, the new status should be picked up)
                 // Turns out milliseconds is pointless as E: D is very unlikely to generate a new status file more than once a second (and/or we won't detect it), but
                 // we'll keep them in case this changes in future.
-                EDEvent updateEvent = new EDEvent(status, textBoxClientId.Text, DateTime.Now);
+                EDEvent updateEvent;
+                if (updateTimeStamp)
+                    updateEvent = new EDEvent(status, textBoxClientId.Text, DateTime.Now);
+                else
+                    updateEvent = new EDEvent(status, textBoxClientId.Text);
+
                 if (updateEvent.Flags != 0)
                     UpdateUI(updateEvent);
             }
@@ -286,7 +261,6 @@ namespace SRVTracker
             }
             catch (Exception ex)
             {
-                AddLog($"Failed to save to local log file: {ex.Message}");
                 Action action = new Action(() => { checkBoxSaveToFile.Checked = false; });
                 if (checkBoxSaveToFile.InvokeRequired)
                     checkBoxSaveToFile.Invoke(action);
@@ -459,7 +433,6 @@ namespace SRVTracker
             }
             catch (Exception ex)
             {
-                AddLog($"Error saving to tracking log: {ex.Message}");
                 checkBoxSaveToFile.Checked = false;
             }
         }
@@ -476,17 +449,13 @@ namespace SRVTracker
                 {
                     _udpClient.Send(sendBytes, sendBytes.Length);
                     _lastStatusSend = DateTime.Now;
-                    if (checkBoxShowLive.Checked)
-                        AddLog($"Send {eventData}");
                 }
                 catch (Exception e)
                 {
-                    AddLog($"Failed to send UDP update: {e.Message}");
                 }
             }
             catch (Exception ex)
             {
-                AddLog($"Error uploading to server: {ex.Message}");
                 checkBoxUpload.Checked = false;
             }
         }
@@ -524,7 +493,6 @@ namespace SRVTracker
                 }
                 catch (Exception ex)
                 {
-                    AddLog($"Error saving client Id to file: {ex.Message}");
                 }
             }
         }
@@ -569,7 +537,6 @@ namespace SRVTracker
             }
             catch (Exception ex)
             {
-                AddLog($"Error creating UDP client: {ex.Message}");
                 checkBoxUpload.Checked = false;
             }
         }
@@ -636,14 +603,12 @@ namespace SRVTracker
                     }
                     catch (Exception ex)
                     {
-                        AddLog($"Error initiating file watcher: {ex.Message}");
                         return;
                     }
                 }
                 // File events enabled, but we also add a 5 second timer ping also
                 _statusTimer.Interval = 5000;
                 _statusTimer.Start();
-                AddLog("Status tracking started (file event method)");
             }
             else
             {
@@ -656,12 +621,10 @@ namespace SRVTracker
                     }
                     else
                     {
-                        AddLog($"Unable to find status file: {_statusFile}");
                         _statusFile = "";
                         checkBoxTrack.Checked = false;
                         return;
                     }
-                    AddLog("Status tracking started (timer method)");
                 }
             }
             if (!checkBoxTrack.Checked)
@@ -681,7 +644,6 @@ namespace SRVTracker
             catch { }
             _udpClient = null;
             _journalReader.StopMonitoring();
-            AddLog("Status tracking stopped");
         }
 
         private void checkBoxTrack_CheckedChanged(object sender, EventArgs e)
@@ -692,11 +654,9 @@ namespace SRVTracker
                 {
                     if (String.IsNullOrEmpty(textBoxClientId.Text))
                         {
-                            AddLog($"Client Id cannot be empty for server upload");
                             checkBoxUpload.Checked = false;
                             return;
                         }
-
                 }
                 StartTracking();
                 return;
@@ -714,37 +674,6 @@ namespace SRVTracker
                 return;
             }
             buttonRaceTracker.Enabled = false; // Manager doesn't exist
-        }
-
-        private void checkBoxAutoUpdate_CheckedChanged(object sender, EventArgs e)
-        {
-            // Note that this gets called when the ConfigSaver restores values (if auto-update is enabled), so we check each time the form loads
-
-            if (checkBoxAutoUpdate.Checked)
-            {
-                Action action = new Action(() =>
-                {
-                    Updater updater = new Updater();
-                    updater.ClearUpdateFiles();
-
-                    if (updater.RunningVersionIsBeta)
-                    {
-                        // If we're already running a beta version we always check for beta updates
-                        Action updateBetaAction = new Action(() =>
-                        {
-                            checkBoxIncludeBetaUpdates.Checked = true;
-                        });
-                        if (checkBoxIncludeBetaUpdates.InvokeRequired)
-                            checkBoxIncludeBetaUpdates.Invoke(updateBetaAction);
-                        else
-                            updateBetaAction();
-                    }
-
-                    if (updater.DownloadUpdate(checkBoxIncludeBetaUpdates.Checked))
-                        Close();
-                });
-                Task.Run(action);
-            }
         }
 
         private void radioButtonWatchStatusFile_CheckedChanged(object sender, EventArgs e)
@@ -767,34 +696,41 @@ namespace SRVTracker
             }
         }
 
-        private void buttonAlwaysOnTop_Click(object sender, EventArgs e)
+        private void CheckForUpdate(bool ShowIfCurrent = false)
         {
-            if (this.TopMost)
+            Action action = new Action(() =>
             {
-                this.TopMost = false;
-                buttonAlwaysOnTop.Image = Properties.Resources.PinnedItem_16x;
-            }
-            else
-            {
-                this.TopMost = true;
-                buttonAlwaysOnTop.Image = Properties.Resources.Pushpin_16x;
-            }
+                Updater updater = new Updater();
+                updater.ClearUpdateFiles();
+
+                if (updater.RunningVersionIsBeta)
+                {
+                    // If we're already running a beta version we always check for beta updates
+                    Action updateBetaAction = new Action(() =>
+                    {
+                        checkBoxIncludeBetaUpdates.Checked = true;
+                    });
+                    if (checkBoxIncludeBetaUpdates.InvokeRequired)
+                        checkBoxIncludeBetaUpdates.Invoke(updateBetaAction);
+                    else
+                        updateBetaAction();
+                }
+
+                if (ShowIfCurrent && !updater.UpdateAvailable(checkBoxIncludeBetaUpdates.Checked))
+                {
+                    MessageBox.Show($"{Application.ProductName} is up to date.", "Update Result", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+
+                if (updater.DownloadUpdate(checkBoxIncludeBetaUpdates.Checked))
+                    Close();
+            });
+            Task.Run(action);
         }
 
-        private void buttonToggleMiniView_Click(object sender, EventArgs e)
+        private void buttonUpdate_Click(object sender, EventArgs e)
         {
-            if (this.Height > trackerHUD1.Height)
-            {
-                // We are expanded, so shrink
-                this.Height = trackerHUD1.Height;
-                this.Width = trackerHUD1.Width;
-            }
-            else
-            {
-                //this.FormBorderStyle = FormBorderStyle.FixedToolWindow;
-                this.Height = _configHidden.Height;
-                this.Width = _configHidden.Width;
-            }
+            CheckForUpdate(true);
         }
     }
 }

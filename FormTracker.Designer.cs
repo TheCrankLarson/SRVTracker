@@ -34,11 +34,8 @@
             this.buttonBrowseStatusFile = new System.Windows.Forms.Button();
             this.textBoxStatusFile = new System.Windows.Forms.TextBox();
             this.statusFileWatcher = new System.IO.FileSystemWatcher();
-            this.listBoxLog = new System.Windows.Forms.ListBox();
             this.buttonTest = new System.Windows.Forms.Button();
             this.labelLastUpdateTime = new System.Windows.Forms.Label();
-            this.checkBoxAutoScroll = new System.Windows.Forms.CheckBox();
-            this.checkBoxShowLive = new System.Windows.Forms.CheckBox();
             this.textBoxClientId = new System.Windows.Forms.TextBox();
             this.textBoxSaveFile = new System.Windows.Forms.TextBox();
             this.checkBoxSaveToFile = new System.Windows.Forms.CheckBox();
@@ -46,7 +43,6 @@
             this.checkBoxUpload = new System.Windows.Forms.CheckBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.radioButtonUseCustomServer = new System.Windows.Forms.RadioButton();
             this.radioButtonUseDefaultServer = new System.Windows.Forms.RadioButton();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
@@ -59,43 +55,50 @@
             this.checkBoxUseDirectionOfTravelAsHeading = new System.Windows.Forms.CheckBox();
             this.buttonShowConfig = new System.Windows.Forms.Button();
             this.buttonRaceTracker = new System.Windows.Forms.Button();
-            this.buttonExit = new System.Windows.Forms.Button();
             this.buttonRoutePlanner = new System.Windows.Forms.Button();
             this.buttonLocator = new System.Windows.Forms.Button();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.buttonToggleMiniView = new System.Windows.Forms.Button();
-            this.buttonAlwaysOnTop = new System.Windows.Forms.Button();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBoxSRVTracker = new System.Windows.Forms.GroupBox();
-            this.trackerHUD1 = new SRVTracker.TrackerHUD();
+            this.tabControlSettings = new System.Windows.Forms.TabControl();
+            this.tabPageCommander = new System.Windows.Forms.TabPage();
+            this.tabPageMonitoring = new System.Windows.Forms.TabPage();
+            this.tabPageServer = new System.Windows.Forms.TabPage();
+            this.tabPageLogging = new System.Windows.Forms.TabPage();
+            this.tabPageUpdate = new System.Windows.Forms.TabPage();
+            this.buttonUpdate = new System.Windows.Forms.Button();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBoxStatusLocation.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.statusFileWatcher)).BeginInit();
             this.groupBox5.SuspendLayout();
             this.groupBox6.SuspendLayout();
-            this.groupBox7.SuspendLayout();
             this.groupBox8.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            this.groupBox2.SuspendLayout();
             this.groupBoxSRVTracker.SuspendLayout();
+            this.tabControlSettings.SuspendLayout();
+            this.tabPageCommander.SuspendLayout();
+            this.tabPageMonitoring.SuspendLayout();
+            this.tabPageServer.SuspendLayout();
+            this.tabPageLogging.SuspendLayout();
+            this.tabPageUpdate.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBoxStatusLocation
             // 
             this.groupBoxStatusLocation.Controls.Add(this.buttonBrowseStatusFile);
             this.groupBoxStatusLocation.Controls.Add(this.textBoxStatusFile);
-            this.groupBoxStatusLocation.ForeColor = System.Drawing.Color.White;
-            this.groupBoxStatusLocation.Location = new System.Drawing.Point(264, 0);
+            this.groupBoxStatusLocation.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.groupBoxStatusLocation.Location = new System.Drawing.Point(6, 6);
             this.groupBoxStatusLocation.Name = "groupBoxStatusLocation";
-            this.groupBoxStatusLocation.Size = new System.Drawing.Size(303, 48);
+            this.groupBoxStatusLocation.Size = new System.Drawing.Size(306, 48);
             this.groupBoxStatusLocation.TabIndex = 0;
             this.groupBoxStatusLocation.TabStop = false;
             this.groupBoxStatusLocation.Text = "Status.json location";
             // 
             // buttonBrowseStatusFile
             // 
+            this.buttonBrowseStatusFile.ForeColor = System.Drawing.SystemColors.ControlText;
             this.buttonBrowseStatusFile.Image = global::SRVTracker.Properties.Resources.FolderOpened_16x;
-            this.buttonBrowseStatusFile.Location = new System.Drawing.Point(270, 17);
+            this.buttonBrowseStatusFile.Location = new System.Drawing.Point(273, 17);
             this.buttonBrowseStatusFile.Name = "buttonBrowseStatusFile";
             this.buttonBrowseStatusFile.Size = new System.Drawing.Size(27, 23);
             this.buttonBrowseStatusFile.TabIndex = 1;
@@ -104,11 +107,11 @@
             // 
             // textBoxStatusFile
             // 
-            this.textBoxStatusFile.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.textBoxStatusFile.ForeColor = System.Drawing.Color.White;
+            this.textBoxStatusFile.BackColor = System.Drawing.SystemColors.Window;
+            this.textBoxStatusFile.ForeColor = System.Drawing.SystemColors.ControlText;
             this.textBoxStatusFile.Location = new System.Drawing.Point(6, 19);
             this.textBoxStatusFile.Name = "textBoxStatusFile";
-            this.textBoxStatusFile.Size = new System.Drawing.Size(258, 20);
+            this.textBoxStatusFile.Size = new System.Drawing.Size(261, 20);
             this.textBoxStatusFile.TabIndex = 0;
             this.toolTip1.SetToolTip(this.textBoxStatusFile, "Location of the Status.json file of Elite: Dangerous.\r\nThis should be automatical" +
         "ly located.");
@@ -119,24 +122,15 @@
             this.statusFileWatcher.SynchronizingObject = this;
             this.statusFileWatcher.Changed += new System.IO.FileSystemEventHandler(this.statusFileWatcher_Changed);
             // 
-            // listBoxLog
-            // 
-            this.listBoxLog.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.listBoxLog.ForeColor = System.Drawing.Color.White;
-            this.listBoxLog.FormattingEnabled = true;
-            this.listBoxLog.Location = new System.Drawing.Point(6, 183);
-            this.listBoxLog.Name = "listBoxLog";
-            this.listBoxLog.Size = new System.Drawing.Size(689, 147);
-            this.listBoxLog.TabIndex = 4;
-            // 
             // buttonTest
             // 
-            this.buttonTest.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.buttonTest.BackColor = System.Drawing.SystemColors.Control;
             this.buttonTest.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonTest.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.buttonTest.Location = new System.Drawing.Point(206, 100);
+            this.buttonTest.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.buttonTest.Location = new System.Drawing.Point(79, 73);
             this.buttonTest.Name = "buttonTest";
-            this.buttonTest.Size = new System.Drawing.Size(52, 23);
+            this.buttonTest.Size = new System.Drawing.Size(136, 23);
             this.buttonTest.TabIndex = 5;
             this.buttonTest.Text = "Test";
             this.buttonTest.UseVisualStyleBackColor = false;
@@ -145,61 +139,35 @@
             // labelLastUpdateTime
             // 
             this.labelLastUpdateTime.AutoSize = true;
-            this.labelLastUpdateTime.ForeColor = System.Drawing.Color.White;
-            this.labelLastUpdateTime.Location = new System.Drawing.Point(164, 24);
+            this.labelLastUpdateTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelLastUpdateTime.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.labelLastUpdateTime.Location = new System.Drawing.Point(152, 24);
             this.labelLastUpdateTime.Name = "labelLastUpdateTime";
             this.labelLastUpdateTime.Size = new System.Drawing.Size(49, 13);
             this.labelLastUpdateTime.TabIndex = 7;
             this.labelLastUpdateTime.Text = "00:00:00";
             this.toolTip1.SetToolTip(this.labelLastUpdateTime, "Time last status update was received");
             // 
-            // checkBoxAutoScroll
-            // 
-            this.checkBoxAutoScroll.AutoSize = true;
-            this.checkBoxAutoScroll.Checked = true;
-            this.checkBoxAutoScroll.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxAutoScroll.ForeColor = System.Drawing.Color.White;
-            this.checkBoxAutoScroll.Location = new System.Drawing.Point(525, 160);
-            this.checkBoxAutoScroll.Name = "checkBoxAutoScroll";
-            this.checkBoxAutoScroll.Size = new System.Drawing.Size(75, 17);
-            this.checkBoxAutoScroll.TabIndex = 8;
-            this.checkBoxAutoScroll.Text = "Auto-scroll";
-            this.toolTip1.SetToolTip(this.checkBoxAutoScroll, "Automatically scroll to the most recent event");
-            this.checkBoxAutoScroll.UseVisualStyleBackColor = true;
-            // 
-            // checkBoxShowLive
-            // 
-            this.checkBoxShowLive.AutoSize = true;
-            this.checkBoxShowLive.ForeColor = System.Drawing.Color.White;
-            this.checkBoxShowLive.Location = new System.Drawing.Point(606, 160);
-            this.checkBoxShowLive.Name = "checkBoxShowLive";
-            this.checkBoxShowLive.Size = new System.Drawing.Size(89, 17);
-            this.checkBoxShowLive.TabIndex = 6;
-            this.checkBoxShowLive.Text = "Show live log";
-            this.toolTip1.SetToolTip(this.checkBoxShowLive, "Show data being tracked. Primarily for toubleshooting purposes.\r\nNot recommended " +
-        "to enable during general use.");
-            this.checkBoxShowLive.UseVisualStyleBackColor = true;
-            // 
             // textBoxClientId
             // 
-            this.textBoxClientId.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.textBoxClientId.ForeColor = System.Drawing.Color.White;
+            this.textBoxClientId.BackColor = System.Drawing.SystemColors.Window;
+            this.textBoxClientId.ForeColor = System.Drawing.SystemColors.ControlText;
             this.textBoxClientId.Location = new System.Drawing.Point(6, 19);
             this.textBoxClientId.MaxLength = 25;
             this.textBoxClientId.Name = "textBoxClientId";
-            this.textBoxClientId.Size = new System.Drawing.Size(171, 20);
+            this.textBoxClientId.Size = new System.Drawing.Size(294, 20);
             this.textBoxClientId.TabIndex = 4;
             this.toolTip1.SetToolTip(this.textBoxClientId, "Client Id (usually commander name) sent with status updates");
             this.textBoxClientId.TextChanged += new System.EventHandler(this.textBoxClientId_TextChanged);
             // 
             // textBoxSaveFile
             // 
-            this.textBoxSaveFile.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.textBoxSaveFile.BackColor = System.Drawing.SystemColors.Window;
             this.textBoxSaveFile.Enabled = false;
-            this.textBoxSaveFile.ForeColor = System.Drawing.Color.White;
+            this.textBoxSaveFile.ForeColor = System.Drawing.SystemColors.ControlText;
             this.textBoxSaveFile.Location = new System.Drawing.Point(94, 19);
             this.textBoxSaveFile.Name = "textBoxSaveFile";
-            this.textBoxSaveFile.Size = new System.Drawing.Size(142, 20);
+            this.textBoxSaveFile.Size = new System.Drawing.Size(206, 20);
             this.textBoxSaveFile.TabIndex = 3;
             this.textBoxSaveFile.Text = "tracking.log";
             this.toolTip1.SetToolTip(this.textBoxSaveFile, "The file to which status updates will be saved");
@@ -207,7 +175,7 @@
             // checkBoxSaveToFile
             // 
             this.checkBoxSaveToFile.AutoSize = true;
-            this.checkBoxSaveToFile.ForeColor = System.Drawing.Color.White;
+            this.checkBoxSaveToFile.ForeColor = System.Drawing.SystemColors.ControlText;
             this.checkBoxSaveToFile.Location = new System.Drawing.Point(6, 21);
             this.checkBoxSaveToFile.Name = "checkBoxSaveToFile";
             this.checkBoxSaveToFile.Size = new System.Drawing.Size(82, 17);
@@ -219,13 +187,13 @@
             // 
             // textBoxUploadServer
             // 
-            this.textBoxUploadServer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.textBoxUploadServer.BackColor = System.Drawing.SystemColors.Window;
             this.textBoxUploadServer.Enabled = false;
-            this.textBoxUploadServer.ForeColor = System.Drawing.Color.White;
-            this.textBoxUploadServer.Location = new System.Drawing.Point(140, 17);
+            this.textBoxUploadServer.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.textBoxUploadServer.Location = new System.Drawing.Point(75, 41);
             this.textBoxUploadServer.MaxLength = 100;
             this.textBoxUploadServer.Name = "textBoxUploadServer";
-            this.textBoxUploadServer.Size = new System.Drawing.Size(109, 20);
+            this.textBoxUploadServer.Size = new System.Drawing.Size(228, 20);
             this.textBoxUploadServer.TabIndex = 1;
             this.toolTip1.SetToolTip(this.textBoxUploadServer, "The server to send the status updates to");
             this.textBoxUploadServer.TextChanged += new System.EventHandler(this.textBoxUploadServer_TextChanged);
@@ -233,8 +201,8 @@
             // checkBoxUpload
             // 
             this.checkBoxUpload.AutoSize = true;
-            this.checkBoxUpload.ForeColor = System.Drawing.Color.White;
-            this.checkBoxUpload.Location = new System.Drawing.Point(65, 77);
+            this.checkBoxUpload.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.checkBoxUpload.Location = new System.Drawing.Point(217, 87);
             this.checkBoxUpload.Name = "checkBoxUpload";
             this.checkBoxUpload.Size = new System.Drawing.Size(60, 17);
             this.checkBoxUpload.TabIndex = 0;
@@ -248,44 +216,31 @@
             // groupBox5
             // 
             this.groupBox5.Controls.Add(this.textBoxClientId);
-            this.groupBox5.ForeColor = System.Drawing.Color.White;
-            this.groupBox5.Location = new System.Drawing.Point(264, 54);
+            this.groupBox5.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.groupBox5.Location = new System.Drawing.Point(6, 6);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(183, 50);
+            this.groupBox5.Size = new System.Drawing.Size(306, 50);
             this.groupBox5.TabIndex = 13;
             this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "Commander Name";
+            this.groupBox5.Text = "Name";
             // 
             // groupBox6
             // 
             this.groupBox6.Controls.Add(this.checkBoxSaveToFile);
             this.groupBox6.Controls.Add(this.textBoxSaveFile);
-            this.groupBox6.ForeColor = System.Drawing.Color.White;
-            this.groupBox6.Location = new System.Drawing.Point(453, 54);
+            this.groupBox6.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.groupBox6.Location = new System.Drawing.Point(6, 6);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(242, 50);
+            this.groupBox6.Size = new System.Drawing.Size(306, 50);
             this.groupBox6.TabIndex = 14;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Local Log";
             // 
-            // groupBox7
-            // 
-            this.groupBox7.Controls.Add(this.radioButtonUseCustomServer);
-            this.groupBox7.Controls.Add(this.radioButtonUseDefaultServer);
-            this.groupBox7.Controls.Add(this.textBoxUploadServer);
-            this.groupBox7.ForeColor = System.Drawing.Color.White;
-            this.groupBox7.Location = new System.Drawing.Point(264, 110);
-            this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(255, 44);
-            this.groupBox7.TabIndex = 15;
-            this.groupBox7.TabStop = false;
-            this.groupBox7.Text = "Server";
-            // 
             // radioButtonUseCustomServer
             // 
             this.radioButtonUseCustomServer.AutoSize = true;
-            this.radioButtonUseCustomServer.ForeColor = System.Drawing.Color.White;
-            this.radioButtonUseCustomServer.Location = new System.Drawing.Point(71, 18);
+            this.radioButtonUseCustomServer.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.radioButtonUseCustomServer.Location = new System.Drawing.Point(6, 42);
             this.radioButtonUseCustomServer.Name = "radioButtonUseCustomServer";
             this.radioButtonUseCustomServer.Size = new System.Drawing.Size(63, 17);
             this.radioButtonUseCustomServer.TabIndex = 3;
@@ -298,8 +253,8 @@
             // 
             this.radioButtonUseDefaultServer.AutoSize = true;
             this.radioButtonUseDefaultServer.Checked = true;
-            this.radioButtonUseDefaultServer.ForeColor = System.Drawing.Color.White;
-            this.radioButtonUseDefaultServer.Location = new System.Drawing.Point(6, 18);
+            this.radioButtonUseDefaultServer.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.radioButtonUseDefaultServer.Location = new System.Drawing.Point(6, 19);
             this.radioButtonUseDefaultServer.Name = "radioButtonUseDefaultServer";
             this.radioButtonUseDefaultServer.Size = new System.Drawing.Size(59, 17);
             this.radioButtonUseDefaultServer.TabIndex = 2;
@@ -314,10 +269,10 @@
             // 
             this.groupBox8.Controls.Add(this.radioButtonWatchStatusFile);
             this.groupBox8.Controls.Add(this.radioButtonUseTimer);
-            this.groupBox8.ForeColor = System.Drawing.Color.White;
-            this.groupBox8.Location = new System.Drawing.Point(573, 0);
+            this.groupBox8.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.groupBox8.Location = new System.Drawing.Point(467, 13);
             this.groupBox8.Name = "groupBox8";
-            this.groupBox8.Size = new System.Drawing.Size(122, 48);
+            this.groupBox8.Size = new System.Drawing.Size(303, 80);
             this.groupBox8.TabIndex = 16;
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "Monitor method";
@@ -326,12 +281,12 @@
             // 
             this.radioButtonWatchStatusFile.AutoSize = true;
             this.radioButtonWatchStatusFile.Enabled = false;
-            this.radioButtonWatchStatusFile.ForeColor = System.Drawing.Color.White;
+            this.radioButtonWatchStatusFile.ForeColor = System.Drawing.SystemColors.ControlText;
             this.radioButtonWatchStatusFile.Location = new System.Drawing.Point(6, 20);
             this.radioButtonWatchStatusFile.Name = "radioButtonWatchStatusFile";
-            this.radioButtonWatchStatusFile.Size = new System.Drawing.Size(53, 17);
+            this.radioButtonWatchStatusFile.Size = new System.Drawing.Size(297, 17);
             this.radioButtonWatchStatusFile.TabIndex = 9;
-            this.radioButtonWatchStatusFile.Text = "Event";
+            this.radioButtonWatchStatusFile.Text = "Register for folder update notifications (not recommended)";
             this.toolTip1.SetToolTip(this.radioButtonWatchStatusFile, resources.GetString("radioButtonWatchStatusFile.ToolTip"));
             this.radioButtonWatchStatusFile.UseVisualStyleBackColor = true;
             this.radioButtonWatchStatusFile.CheckedChanged += new System.EventHandler(this.radioButtonWatchStatusFile_CheckedChanged);
@@ -340,8 +295,8 @@
             // 
             this.radioButtonUseTimer.AutoSize = true;
             this.radioButtonUseTimer.Checked = true;
-            this.radioButtonUseTimer.ForeColor = System.Drawing.Color.White;
-            this.radioButtonUseTimer.Location = new System.Drawing.Point(65, 20);
+            this.radioButtonUseTimer.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.radioButtonUseTimer.Location = new System.Drawing.Point(6, 43);
             this.radioButtonUseTimer.Name = "radioButtonUseTimer";
             this.radioButtonUseTimer.Size = new System.Drawing.Size(51, 17);
             this.radioButtonUseTimer.TabIndex = 8;
@@ -355,8 +310,8 @@
             // checkBoxTrack
             // 
             this.checkBoxTrack.AutoSize = true;
-            this.checkBoxTrack.ForeColor = System.Drawing.Color.White;
-            this.checkBoxTrack.Location = new System.Drawing.Point(5, 77);
+            this.checkBoxTrack.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.checkBoxTrack.Location = new System.Drawing.Point(146, 87);
             this.checkBoxTrack.Name = "checkBoxTrack";
             this.checkBoxTrack.Size = new System.Drawing.Size(54, 17);
             this.checkBoxTrack.TabIndex = 18;
@@ -375,20 +330,20 @@
             // checkBoxAutoUpdate
             // 
             this.checkBoxAutoUpdate.AutoSize = true;
-            this.checkBoxAutoUpdate.ForeColor = System.Drawing.Color.White;
-            this.checkBoxAutoUpdate.Location = new System.Drawing.Point(9, 20);
+            this.checkBoxAutoUpdate.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.checkBoxAutoUpdate.Location = new System.Drawing.Point(13, 83);
             this.checkBoxAutoUpdate.Name = "checkBoxAutoUpdate";
-            this.checkBoxAutoUpdate.Size = new System.Drawing.Size(15, 14);
+            this.checkBoxAutoUpdate.Size = new System.Drawing.Size(181, 17);
             this.checkBoxAutoUpdate.TabIndex = 21;
+            this.checkBoxAutoUpdate.Text = "Enable update check on start-up";
             this.toolTip1.SetToolTip(this.checkBoxAutoUpdate, "If enabled, will automatically check for update on start-up.");
             this.checkBoxAutoUpdate.UseVisualStyleBackColor = true;
-            this.checkBoxAutoUpdate.CheckedChanged += new System.EventHandler(this.checkBoxAutoUpdate_CheckedChanged);
             // 
             // checkBoxIncludeBetaUpdates
             // 
             this.checkBoxIncludeBetaUpdates.AutoSize = true;
-            this.checkBoxIncludeBetaUpdates.ForeColor = System.Drawing.Color.White;
-            this.checkBoxIncludeBetaUpdates.Location = new System.Drawing.Point(37, 19);
+            this.checkBoxIncludeBetaUpdates.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.checkBoxIncludeBetaUpdates.Location = new System.Drawing.Point(13, 106);
             this.checkBoxIncludeBetaUpdates.Name = "checkBoxIncludeBetaUpdates";
             this.checkBoxIncludeBetaUpdates.Size = new System.Drawing.Size(127, 17);
             this.checkBoxIncludeBetaUpdates.TabIndex = 22;
@@ -403,8 +358,8 @@
             this.checkBoxUseDirectionOfTravelAsHeading.AutoSize = true;
             this.checkBoxUseDirectionOfTravelAsHeading.Checked = true;
             this.checkBoxUseDirectionOfTravelAsHeading.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxUseDirectionOfTravelAsHeading.ForeColor = System.Drawing.Color.White;
-            this.checkBoxUseDirectionOfTravelAsHeading.Location = new System.Drawing.Point(5, 100);
+            this.checkBoxUseDirectionOfTravelAsHeading.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.checkBoxUseDirectionOfTravelAsHeading.Location = new System.Drawing.Point(12, 60);
             this.checkBoxUseDirectionOfTravelAsHeading.Name = "checkBoxUseDirectionOfTravelAsHeading";
             this.checkBoxUseDirectionOfTravelAsHeading.Size = new System.Drawing.Size(184, 17);
             this.checkBoxUseDirectionOfTravelAsHeading.TabIndex = 24;
@@ -415,128 +370,78 @@
             // 
             // buttonShowConfig
             // 
-            this.buttonShowConfig.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.buttonShowConfig.BackColor = System.Drawing.SystemColors.Control;
             this.buttonShowConfig.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonShowConfig.ForeColor = System.Drawing.SystemColors.ControlText;
             this.buttonShowConfig.Image = global::SRVTracker.Properties.Resources.Settings_16x;
-            this.buttonShowConfig.Location = new System.Drawing.Point(182, 44);
+            this.buttonShowConfig.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.buttonShowConfig.Location = new System.Drawing.Point(12, 99);
             this.buttonShowConfig.Name = "buttonShowConfig";
-            this.buttonShowConfig.Size = new System.Drawing.Size(38, 23);
+            this.buttonShowConfig.Size = new System.Drawing.Size(78, 23);
             this.buttonShowConfig.TabIndex = 12;
+            this.buttonShowConfig.Text = "Settings";
+            this.buttonShowConfig.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.toolTip1.SetToolTip(this.buttonShowConfig, "Show Settings");
             this.buttonShowConfig.UseVisualStyleBackColor = false;
             this.buttonShowConfig.Click += new System.EventHandler(this.buttonShowConfig_Click);
             // 
             // buttonRaceTracker
             // 
-            this.buttonRaceTracker.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.buttonRaceTracker.BackColor = System.Drawing.SystemColors.Control;
             this.buttonRaceTracker.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonRaceTracker.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.buttonRaceTracker.Image = global::SRVTracker.Properties.Resources.race_flag_white_16x16;
-            this.buttonRaceTracker.Location = new System.Drawing.Point(121, 44);
+            this.buttonRaceTracker.Image = global::SRVTracker.Properties.Resources.race_flag16x16;
+            this.buttonRaceTracker.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.buttonRaceTracker.Location = new System.Drawing.Point(12, 70);
             this.buttonRaceTracker.Name = "buttonRaceTracker";
-            this.buttonRaceTracker.Size = new System.Drawing.Size(55, 23);
+            this.buttonRaceTracker.Size = new System.Drawing.Size(78, 23);
             this.buttonRaceTracker.TabIndex = 17;
+            this.buttonRaceTracker.Text = "Racing";
+            this.buttonRaceTracker.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.toolTip1.SetToolTip(this.buttonRaceTracker, "Open the Race Manager\r\nCreate, manage and track SRV races");
             this.buttonRaceTracker.UseVisualStyleBackColor = false;
             this.buttonRaceTracker.Click += new System.EventHandler(this.buttonRaceTracker_Click);
             // 
-            // buttonExit
-            // 
-            this.buttonExit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.buttonExit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonExit.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.buttonExit.Image = global::SRVTracker.Properties.Resources.Close_red_16x;
-            this.buttonExit.Location = new System.Drawing.Point(220, 71);
-            this.buttonExit.Name = "buttonExit";
-            this.buttonExit.Size = new System.Drawing.Size(38, 23);
-            this.buttonExit.TabIndex = 11;
-            this.toolTip1.SetToolTip(this.buttonExit, "Close the program");
-            this.buttonExit.UseVisualStyleBackColor = false;
-            this.buttonExit.Click += new System.EventHandler(this.buttonExit_Click);
-            // 
             // buttonRoutePlanner
             // 
-            this.buttonRoutePlanner.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.buttonRoutePlanner.BackColor = System.Drawing.SystemColors.Control;
             this.buttonRoutePlanner.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonRoutePlanner.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.buttonRoutePlanner.Image = global::SRVTracker.Properties.Resources.Route_planner_16x16wb;
-            this.buttonRoutePlanner.Location = new System.Drawing.Point(62, 44);
+            this.buttonRoutePlanner.Image = global::SRVTracker.Properties.Resources.Route_planner_16x16bw;
+            this.buttonRoutePlanner.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.buttonRoutePlanner.Location = new System.Drawing.Point(12, 41);
             this.buttonRoutePlanner.Name = "buttonRoutePlanner";
-            this.buttonRoutePlanner.Size = new System.Drawing.Size(55, 23);
+            this.buttonRoutePlanner.Size = new System.Drawing.Size(78, 23);
             this.buttonRoutePlanner.TabIndex = 10;
+            this.buttonRoutePlanner.Text = "Router";
+            this.buttonRoutePlanner.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.toolTip1.SetToolTip(this.buttonRoutePlanner, "Open the Route Planner\r\nCreate/edit and replay routes (integrates with Locator)");
             this.buttonRoutePlanner.UseVisualStyleBackColor = false;
             this.buttonRoutePlanner.Click += new System.EventHandler(this.buttonRoutePlanner_Click);
             // 
             // buttonLocator
             // 
-            this.buttonLocator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.buttonLocator.BackColor = System.Drawing.SystemColors.Control;
             this.buttonLocator.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonLocator.ForeColor = System.Drawing.SystemColors.ControlText;
             this.buttonLocator.Image = global::SRVTracker.Properties.Resources.Target_16x;
-            this.buttonLocator.Location = new System.Drawing.Point(3, 44);
+            this.buttonLocator.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.buttonLocator.Location = new System.Drawing.Point(12, 12);
             this.buttonLocator.Name = "buttonLocator";
-            this.buttonLocator.Size = new System.Drawing.Size(55, 23);
+            this.buttonLocator.Size = new System.Drawing.Size(78, 23);
             this.buttonLocator.TabIndex = 9;
+            this.buttonLocator.Text = "Locator";
+            this.buttonLocator.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.toolTip1.SetToolTip(this.buttonLocator, "Open the Locator\r\nProvides directions to locations and other commanders.");
             this.buttonLocator.UseVisualStyleBackColor = false;
             this.buttonLocator.Click += new System.EventHandler(this.buttonLocator_Click);
             // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Cursor = System.Windows.Forms.Cursors.SizeAll;
-            this.pictureBox1.Image = global::SRVTracker.Properties.Resources.Move__wb_;
-            this.pictureBox1.Location = new System.Drawing.Point(161, 74);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(16, 16);
-            this.pictureBox1.TabIndex = 27;
-            this.pictureBox1.TabStop = false;
-            this.toolTip1.SetToolTip(this.pictureBox1, "Click and drag here to move the form");
-            this.pictureBox1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseDown);
-            // 
-            // buttonToggleMiniView
-            // 
-            this.buttonToggleMiniView.BackColor = System.Drawing.Color.DimGray;
-            this.buttonToggleMiniView.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonToggleMiniView.ForeColor = System.Drawing.Color.Black;
-            this.buttonToggleMiniView.Location = new System.Drawing.Point(247, 0);
-            this.buttonToggleMiniView.Name = "buttonToggleMiniView";
-            this.buttonToggleMiniView.Size = new System.Drawing.Size(13, 13);
-            this.buttonToggleMiniView.TabIndex = 28;
-            this.toolTip1.SetToolTip(this.buttonToggleMiniView, "Shrink/expand the window");
-            this.buttonToggleMiniView.UseVisualStyleBackColor = false;
-            this.buttonToggleMiniView.Click += new System.EventHandler(this.buttonToggleMiniView_Click);
-            // 
-            // buttonAlwaysOnTop
-            // 
-            this.buttonAlwaysOnTop.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonAlwaysOnTop.Image = global::SRVTracker.Properties.Resources.PinnedItem_16x;
-            this.buttonAlwaysOnTop.Location = new System.Drawing.Point(230, 44);
-            this.buttonAlwaysOnTop.Name = "buttonAlwaysOnTop";
-            this.buttonAlwaysOnTop.Size = new System.Drawing.Size(28, 23);
-            this.buttonAlwaysOnTop.TabIndex = 29;
-            this.toolTip1.SetToolTip(this.buttonAlwaysOnTop, "Pin window topmost");
-            this.buttonAlwaysOnTop.UseVisualStyleBackColor = true;
-            this.buttonAlwaysOnTop.Click += new System.EventHandler(this.buttonAlwaysOnTop_Click);
-            // 
-            // groupBox2
-            // 
-            this.groupBox2.Controls.Add(this.checkBoxIncludeBetaUpdates);
-            this.groupBox2.Controls.Add(this.checkBoxAutoUpdate);
-            this.groupBox2.ForeColor = System.Drawing.Color.White;
-            this.groupBox2.Location = new System.Drawing.Point(525, 110);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(170, 44);
-            this.groupBox2.TabIndex = 23;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Auto-update";
-            // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(40, 24);
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.label1.Location = new System.Drawing.Point(28, 24);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(118, 13);
             this.label1.TabIndex = 25;
@@ -546,52 +451,123 @@
             // 
             this.groupBoxSRVTracker.Controls.Add(this.label1);
             this.groupBoxSRVTracker.Controls.Add(this.labelLastUpdateTime);
-            this.groupBoxSRVTracker.ForeColor = System.Drawing.Color.White;
-            this.groupBoxSRVTracker.Location = new System.Drawing.Point(6, 123);
+            this.groupBoxSRVTracker.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBoxSRVTracker.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.groupBoxSRVTracker.Location = new System.Drawing.Point(106, 10);
             this.groupBoxSRVTracker.Name = "groupBoxSRVTracker";
-            this.groupBoxSRVTracker.Size = new System.Drawing.Size(252, 54);
+            this.groupBoxSRVTracker.Size = new System.Drawing.Size(232, 54);
             this.groupBoxSRVTracker.TabIndex = 30;
             this.groupBoxSRVTracker.TabStop = false;
             this.groupBoxSRVTracker.Text = "SRVTracker";
             // 
-            // trackerHUD1
+            // tabControlSettings
             // 
-            this.trackerHUD1.BackColor = System.Drawing.Color.Black;
-            this.trackerHUD1.Location = new System.Drawing.Point(0, 0);
-            this.trackerHUD1.Name = "trackerHUD1";
-            this.trackerHUD1.Size = new System.Drawing.Size(260, 40);
-            this.trackerHUD1.TabIndex = 20;
+            this.tabControlSettings.Controls.Add(this.tabPageCommander);
+            this.tabControlSettings.Controls.Add(this.tabPageMonitoring);
+            this.tabControlSettings.Controls.Add(this.tabPageServer);
+            this.tabControlSettings.Controls.Add(this.tabPageLogging);
+            this.tabControlSettings.Controls.Add(this.tabPageUpdate);
+            this.tabControlSettings.Location = new System.Drawing.Point(12, 128);
+            this.tabControlSettings.Name = "tabControlSettings";
+            this.tabControlSettings.SelectedIndex = 0;
+            this.tabControlSettings.Size = new System.Drawing.Size(326, 172);
+            this.tabControlSettings.TabIndex = 31;
+            // 
+            // tabPageCommander
+            // 
+            this.tabPageCommander.Controls.Add(this.groupBox5);
+            this.tabPageCommander.Controls.Add(this.buttonTest);
+            this.tabPageCommander.Location = new System.Drawing.Point(4, 22);
+            this.tabPageCommander.Name = "tabPageCommander";
+            this.tabPageCommander.Size = new System.Drawing.Size(318, 146);
+            this.tabPageCommander.TabIndex = 3;
+            this.tabPageCommander.Text = "Commander";
+            this.tabPageCommander.UseVisualStyleBackColor = true;
+            // 
+            // tabPageMonitoring
+            // 
+            this.tabPageMonitoring.Controls.Add(this.groupBoxStatusLocation);
+            this.tabPageMonitoring.Controls.Add(this.checkBoxUseDirectionOfTravelAsHeading);
+            this.tabPageMonitoring.Location = new System.Drawing.Point(4, 22);
+            this.tabPageMonitoring.Name = "tabPageMonitoring";
+            this.tabPageMonitoring.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageMonitoring.Size = new System.Drawing.Size(318, 146);
+            this.tabPageMonitoring.TabIndex = 0;
+            this.tabPageMonitoring.Text = "Monitoring";
+            this.tabPageMonitoring.UseVisualStyleBackColor = true;
+            // 
+            // tabPageServer
+            // 
+            this.tabPageServer.Controls.Add(this.groupBox1);
+            this.tabPageServer.Location = new System.Drawing.Point(4, 22);
+            this.tabPageServer.Name = "tabPageServer";
+            this.tabPageServer.Size = new System.Drawing.Size(318, 146);
+            this.tabPageServer.TabIndex = 4;
+            this.tabPageServer.Text = "Server";
+            this.tabPageServer.UseVisualStyleBackColor = true;
+            // 
+            // tabPageLogging
+            // 
+            this.tabPageLogging.Controls.Add(this.groupBox6);
+            this.tabPageLogging.Location = new System.Drawing.Point(4, 22);
+            this.tabPageLogging.Name = "tabPageLogging";
+            this.tabPageLogging.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageLogging.Size = new System.Drawing.Size(318, 146);
+            this.tabPageLogging.TabIndex = 1;
+            this.tabPageLogging.Text = "Logging";
+            this.tabPageLogging.UseVisualStyleBackColor = true;
+            // 
+            // tabPageUpdate
+            // 
+            this.tabPageUpdate.Controls.Add(this.buttonUpdate);
+            this.tabPageUpdate.Controls.Add(this.checkBoxIncludeBetaUpdates);
+            this.tabPageUpdate.Controls.Add(this.checkBoxAutoUpdate);
+            this.tabPageUpdate.Location = new System.Drawing.Point(4, 22);
+            this.tabPageUpdate.Name = "tabPageUpdate";
+            this.tabPageUpdate.Size = new System.Drawing.Size(318, 146);
+            this.tabPageUpdate.TabIndex = 2;
+            this.tabPageUpdate.Text = "Update";
+            this.tabPageUpdate.UseVisualStyleBackColor = true;
+            // 
+            // buttonUpdate
+            // 
+            this.buttonUpdate.Location = new System.Drawing.Point(92, 32);
+            this.buttonUpdate.Name = "buttonUpdate";
+            this.buttonUpdate.Size = new System.Drawing.Size(114, 23);
+            this.buttonUpdate.TabIndex = 23;
+            this.buttonUpdate.Text = "Check for update";
+            this.buttonUpdate.UseVisualStyleBackColor = true;
+            this.buttonUpdate.Click += new System.EventHandler(this.buttonUpdate_Click);
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.radioButtonUseDefaultServer);
+            this.groupBox1.Controls.Add(this.textBoxUploadServer);
+            this.groupBox1.Controls.Add(this.radioButtonUseCustomServer);
+            this.groupBox1.Location = new System.Drawing.Point(6, 6);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(306, 69);
+            this.groupBox1.TabIndex = 4;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Race Server";
             // 
             // FormTracker
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.ClientSize = new System.Drawing.Size(925, 481);
+            this.BackColor = System.Drawing.SystemColors.Control;
+            this.ClientSize = new System.Drawing.Size(353, 310);
+            this.Controls.Add(this.tabControlSettings);
+            this.Controls.Add(this.groupBox8);
             this.Controls.Add(this.groupBoxSRVTracker);
-            this.Controls.Add(this.buttonAlwaysOnTop);
-            this.Controls.Add(this.buttonToggleMiniView);
-            this.Controls.Add(this.pictureBox1);
-            this.Controls.Add(this.checkBoxUseDirectionOfTravelAsHeading);
-            this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.trackerHUD1);
             this.Controls.Add(this.checkBoxTrack);
             this.Controls.Add(this.checkBoxUpload);
             this.Controls.Add(this.buttonShowConfig);
             this.Controls.Add(this.buttonRaceTracker);
-            this.Controls.Add(this.checkBoxAutoScroll);
-            this.Controls.Add(this.groupBox8);
-            this.Controls.Add(this.checkBoxShowLive);
-            this.Controls.Add(this.groupBox7);
-            this.Controls.Add(this.groupBox6);
-            this.Controls.Add(this.groupBox5);
-            this.Controls.Add(this.buttonExit);
             this.Controls.Add(this.buttonRoutePlanner);
             this.Controls.Add(this.buttonLocator);
-            this.Controls.Add(this.buttonTest);
-            this.Controls.Add(this.listBoxLog);
-            this.Controls.Add(this.groupBoxStatusLocation);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "FormTracker";
@@ -604,15 +580,20 @@
             this.groupBox5.PerformLayout();
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
-            this.groupBox7.ResumeLayout(false);
-            this.groupBox7.PerformLayout();
             this.groupBox8.ResumeLayout(false);
             this.groupBox8.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
             this.groupBoxSRVTracker.ResumeLayout(false);
             this.groupBoxSRVTracker.PerformLayout();
+            this.tabControlSettings.ResumeLayout(false);
+            this.tabPageCommander.ResumeLayout(false);
+            this.tabPageMonitoring.ResumeLayout(false);
+            this.tabPageMonitoring.PerformLayout();
+            this.tabPageServer.ResumeLayout(false);
+            this.tabPageLogging.ResumeLayout(false);
+            this.tabPageUpdate.ResumeLayout(false);
+            this.tabPageUpdate.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -624,7 +605,6 @@
         private System.Windows.Forms.Button buttonBrowseStatusFile;
         private System.Windows.Forms.TextBox textBoxStatusFile;
         private System.IO.FileSystemWatcher statusFileWatcher;
-        private System.Windows.Forms.ListBox listBoxLog;
         private System.Windows.Forms.Button buttonTest;
         private System.Windows.Forms.Label labelLastUpdateTime;
         private System.Windows.Forms.TextBox textBoxSaveFile;
@@ -632,14 +612,10 @@
         private System.Windows.Forms.TextBox textBoxUploadServer;
         private System.Windows.Forms.CheckBox checkBoxUpload;
         private System.Windows.Forms.TextBox textBoxClientId;
-        private System.Windows.Forms.CheckBox checkBoxShowLive;
-        private System.Windows.Forms.CheckBox checkBoxAutoScroll;
         private System.Windows.Forms.GroupBox groupBox8;
-        private System.Windows.Forms.GroupBox groupBox7;
         private System.Windows.Forms.GroupBox groupBox6;
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.Button buttonShowConfig;
-        private System.Windows.Forms.Button buttonExit;
         private System.Windows.Forms.Button buttonRoutePlanner;
         private System.Windows.Forms.Button buttonLocator;
         private System.Windows.Forms.RadioButton radioButtonUseCustomServer;
@@ -649,16 +625,19 @@
         private System.Windows.Forms.RadioButton radioButtonWatchStatusFile;
         private System.Windows.Forms.RadioButton radioButtonUseTimer;
         private System.Windows.Forms.ToolTip toolTip1;
-        private TrackerHUD trackerHUD1;
         private System.Windows.Forms.CheckBox checkBoxAutoUpdate;
         private System.Windows.Forms.CheckBox checkBoxIncludeBetaUpdates;
-        private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.CheckBox checkBoxUseDirectionOfTravelAsHeading;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.Button buttonToggleMiniView;
-        private System.Windows.Forms.Button buttonAlwaysOnTop;
         private System.Windows.Forms.GroupBox groupBoxSRVTracker;
+        private System.Windows.Forms.TabControl tabControlSettings;
+        private System.Windows.Forms.TabPage tabPageMonitoring;
+        private System.Windows.Forms.TabPage tabPageLogging;
+        private System.Windows.Forms.TabPage tabPageUpdate;
+        private System.Windows.Forms.TabPage tabPageCommander;
+        private System.Windows.Forms.TabPage tabPageServer;
+        private System.Windows.Forms.Button buttonUpdate;
+        private System.Windows.Forms.GroupBox groupBox1;
     }
 }
 

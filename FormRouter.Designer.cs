@@ -105,7 +105,6 @@
             this.buttonStop = new System.Windows.Forms.Button();
             this.buttonStartRecording = new System.Windows.Forms.Button();
             this.buttonPlay = new System.Windows.Forms.Button();
-            this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.label12 = new System.Windows.Forms.Label();
             this.checkBoxScreenshot = new System.Windows.Forms.CheckBox();
@@ -116,10 +115,20 @@
             this.circumnavigationContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.addNorthPoleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addSouthPoleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addOriginToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addPrimeMeridianToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addEquatorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.generateRouteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.addOriginToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.checkBoxShowSRVTelemetry = new System.Windows.Forms.CheckBox();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPageRoute = new System.Windows.Forms.TabPage();
+            this.tabPageWaypoints = new System.Windows.Forms.TabPage();
+            this.tabPageAudio = new System.Windows.Forms.TabPage();
+            this.tabPageTelemetry = new System.Windows.Forms.TabPage();
+            this.buttonClose = new System.Windows.Forms.Button();
+            this.buttonSRVTelemetryExportSettings = new System.Windows.Forms.Button();
+            this.checkBoxExportSRVTelemetry = new System.Windows.Forms.CheckBox();
             this.groupBox2.SuspendLayout();
             this.groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRecordDistance)).BeginInit();
@@ -132,11 +141,16 @@
             this.groupBoxBasic.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRadius)).BeginInit();
             this.groupBox1.SuspendLayout();
-            this.groupBox5.SuspendLayout();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTotalLaps)).BeginInit();
             this.groupBoxAudioSettings.SuspendLayout();
             this.circumnavigationContextMenuStrip.SuspendLayout();
+            this.groupBox6.SuspendLayout();
+            this.tabControl1.SuspendLayout();
+            this.tabPageRoute.SuspendLayout();
+            this.tabPageWaypoints.SuspendLayout();
+            this.tabPageAudio.SuspendLayout();
+            this.tabPageTelemetry.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox2
@@ -155,7 +169,7 @@
             this.groupBox2.Controls.Add(this.buttonDeleteWaypoint);
             this.groupBox2.Controls.Add(this.buttonAddWaypoint);
             this.groupBox2.Controls.Add(this.listBoxWaypoints);
-            this.groupBox2.Location = new System.Drawing.Point(6, 61);
+            this.groupBox2.Location = new System.Drawing.Point(372, 3);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(280, 232);
             this.groupBox2.TabIndex = 2;
@@ -321,7 +335,7 @@
             this.groupBox4.Controls.Add(this.label1);
             this.groupBox4.Controls.Add(this.label2);
             this.groupBox4.Controls.Add(this.numericUpDownRecordDistance);
-            this.groupBox4.Location = new System.Drawing.Point(461, 6);
+            this.groupBox4.Location = new System.Drawing.Point(6, 61);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(163, 49);
             this.groupBox4.TabIndex = 8;
@@ -379,7 +393,7 @@
             this.groupBoxWaypointInfo.Controls.Add(this.textBoxWaypointName);
             this.groupBoxWaypointInfo.Controls.Add(this.groupBoxGate);
             this.groupBoxWaypointInfo.Controls.Add(this.groupBoxBasic);
-            this.groupBoxWaypointInfo.Location = new System.Drawing.Point(292, 61);
+            this.groupBoxWaypointInfo.Location = new System.Drawing.Point(6, 6);
             this.groupBoxWaypointInfo.Name = "groupBoxWaypointInfo";
             this.groupBoxWaypointInfo.Size = new System.Drawing.Size(332, 231);
             this.groupBoxWaypointInfo.TabIndex = 6;
@@ -887,7 +901,7 @@
             this.groupBox1.Controls.Add(this.textBoxRouteName);
             this.groupBox1.Location = new System.Drawing.Point(6, 6);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(280, 49);
+            this.groupBox1.Size = new System.Drawing.Size(343, 49);
             this.groupBox1.TabIndex = 13;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Route name";
@@ -896,7 +910,7 @@
             // 
             this.textBoxRouteName.Location = new System.Drawing.Point(6, 19);
             this.textBoxRouteName.Name = "textBoxRouteName";
-            this.textBoxRouteName.Size = new System.Drawing.Size(268, 20);
+            this.textBoxRouteName.Size = new System.Drawing.Size(331, 20);
             this.textBoxRouteName.TabIndex = 0;
             this.textBoxRouteName.TextChanged += new System.EventHandler(this.textBoxRouteName_TextChanged);
             // 
@@ -940,7 +954,7 @@
             // buttonStop
             // 
             this.buttonStop.Image = global::SRVTracker.Properties.Resources.Stop_16x;
-            this.buttonStop.Location = new System.Drawing.Point(106, 16);
+            this.buttonStop.Location = new System.Drawing.Point(453, 241);
             this.buttonStop.Name = "buttonStop";
             this.buttonStop.Size = new System.Drawing.Size(34, 23);
             this.buttonStop.TabIndex = 10;
@@ -951,7 +965,7 @@
             // buttonStartRecording
             // 
             this.buttonStartRecording.Image = global::SRVTracker.Properties.Resources.RecordDot_16x;
-            this.buttonStartRecording.Location = new System.Drawing.Point(26, 16);
+            this.buttonStartRecording.Location = new System.Drawing.Point(413, 241);
             this.buttonStartRecording.Name = "buttonStartRecording";
             this.buttonStartRecording.Size = new System.Drawing.Size(34, 23);
             this.buttonStartRecording.TabIndex = 7;
@@ -962,24 +976,13 @@
             // buttonPlay
             // 
             this.buttonPlay.Image = global::SRVTracker.Properties.Resources.Run_16x1;
-            this.buttonPlay.Location = new System.Drawing.Point(66, 16);
+            this.buttonPlay.Location = new System.Drawing.Point(373, 241);
             this.buttonPlay.Name = "buttonPlay";
             this.buttonPlay.Size = new System.Drawing.Size(34, 23);
             this.buttonPlay.TabIndex = 11;
             this.toolTip1.SetToolTip(this.buttonPlay, "Play route");
             this.buttonPlay.UseVisualStyleBackColor = true;
             this.buttonPlay.Click += new System.EventHandler(this.buttonPlay_Click);
-            // 
-            // groupBox5
-            // 
-            this.groupBox5.Controls.Add(this.buttonStop);
-            this.groupBox5.Controls.Add(this.buttonStartRecording);
-            this.groupBox5.Controls.Add(this.buttonPlay);
-            this.groupBox5.Location = new System.Drawing.Point(292, 6);
-            this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(163, 49);
-            this.groupBox5.TabIndex = 15;
-            this.groupBox5.TabStop = false;
             // 
             // groupBox3
             // 
@@ -988,12 +991,12 @@
             this.groupBox3.Controls.Add(this.checkBoxTimeTrial);
             this.groupBox3.Controls.Add(this.numericUpDownTotalLaps);
             this.groupBox3.Controls.Add(this.checkBoxPlayIncudeDirection);
-            this.groupBox3.Location = new System.Drawing.Point(630, 6);
+            this.groupBox3.Location = new System.Drawing.Point(186, 61);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(163, 90);
             this.groupBox3.TabIndex = 16;
             this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Play options";
+            this.groupBox3.Text = "Tracking options";
             // 
             // label12
             // 
@@ -1012,6 +1015,7 @@
             this.checkBoxScreenshot.Size = new System.Drawing.Size(152, 17);
             this.checkBoxScreenshot.TabIndex = 3;
             this.checkBoxScreenshot.Text = "Screenshot each waypoint";
+            this.toolTip1.SetToolTip(this.checkBoxScreenshot, "Take a screenshot at each waypoint.");
             this.checkBoxScreenshot.UseVisualStyleBackColor = true;
             // 
             // numericUpDownTotalLaps
@@ -1025,6 +1029,8 @@
             this.numericUpDownTotalLaps.Name = "numericUpDownTotalLaps";
             this.numericUpDownTotalLaps.Size = new System.Drawing.Size(44, 20);
             this.numericUpDownTotalLaps.TabIndex = 4;
+            this.toolTip1.SetToolTip(this.numericUpDownTotalLaps, "If set to a value higher than 1, course will repeat for the given number of times" +
+        "");
             this.numericUpDownTotalLaps.Value = new decimal(new int[] {
             1,
             0,
@@ -1036,9 +1042,9 @@
             this.groupBoxAudioSettings.Controls.Add(this.comboBoxChooseSound);
             this.groupBoxAudioSettings.Controls.Add(this.listBoxAudioEvents);
             this.groupBoxAudioSettings.Controls.Add(this.checkBoxEnableAudio);
-            this.groupBoxAudioSettings.Location = new System.Drawing.Point(630, 108);
+            this.groupBoxAudioSettings.Location = new System.Drawing.Point(3, 3);
             this.groupBoxAudioSettings.Name = "groupBoxAudioSettings";
-            this.groupBoxAudioSettings.Size = new System.Drawing.Size(163, 185);
+            this.groupBoxAudioSettings.Size = new System.Drawing.Size(348, 253);
             this.groupBoxAudioSettings.TabIndex = 17;
             this.groupBoxAudioSettings.TabStop = false;
             this.groupBoxAudioSettings.Text = "Audio Settings";
@@ -1048,9 +1054,9 @@
             this.comboBoxChooseSound.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxChooseSound.Enabled = false;
             this.comboBoxChooseSound.FormattingEnabled = true;
-            this.comboBoxChooseSound.Location = new System.Drawing.Point(6, 156);
+            this.comboBoxChooseSound.Location = new System.Drawing.Point(6, 226);
             this.comboBoxChooseSound.Name = "comboBoxChooseSound";
-            this.comboBoxChooseSound.Size = new System.Drawing.Size(151, 21);
+            this.comboBoxChooseSound.Size = new System.Drawing.Size(336, 21);
             this.comboBoxChooseSound.TabIndex = 3;
             this.comboBoxChooseSound.SelectedIndexChanged += new System.EventHandler(this.comboBoxChooseSound_SelectedIndexChanged);
             // 
@@ -1059,7 +1065,7 @@
             this.listBoxAudioEvents.FormattingEnabled = true;
             this.listBoxAudioEvents.Location = new System.Drawing.Point(6, 42);
             this.listBoxAudioEvents.Name = "listBoxAudioEvents";
-            this.listBoxAudioEvents.Size = new System.Drawing.Size(151, 108);
+            this.listBoxAudioEvents.Size = new System.Drawing.Size(336, 173);
             this.listBoxAudioEvents.TabIndex = 2;
             this.listBoxAudioEvents.SelectedIndexChanged += new System.EventHandler(this.listBoxAudioEvents_SelectedIndexChanged);
             // 
@@ -1090,6 +1096,13 @@
             this.addSouthPoleToolStripMenuItem.Text = "Add South Pole (-90°, 0°)";
             this.addSouthPoleToolStripMenuItem.Click += new System.EventHandler(this.addSouthPoleToolStripMenuItem_Click);
             // 
+            // addOriginToolStripMenuItem
+            // 
+            this.addOriginToolStripMenuItem.Name = "addOriginToolStripMenuItem";
+            this.addOriginToolStripMenuItem.Size = new System.Drawing.Size(258, 22);
+            this.addOriginToolStripMenuItem.Text = "Add Origin (0°, 0°)";
+            this.addOriginToolStripMenuItem.Click += new System.EventHandler(this.addOriginToolStripMenuItem_Click);
+            // 
             // addPrimeMeridianToolStripMenuItem
             // 
             this.addPrimeMeridianToolStripMenuItem.Name = "addPrimeMeridianToolStripMenuItem";
@@ -1111,25 +1124,125 @@
             this.generateRouteToolStripMenuItem.Size = new System.Drawing.Size(258, 22);
             this.generateRouteToolStripMenuItem.Text = "Generate Route...";
             // 
-            // addOriginToolStripMenuItem
+            // checkBoxShowSRVTelemetry
             // 
-            this.addOriginToolStripMenuItem.Name = "addOriginToolStripMenuItem";
-            this.addOriginToolStripMenuItem.Size = new System.Drawing.Size(258, 22);
-            this.addOriginToolStripMenuItem.Text = "Add Origin (0°, 0°)";
-            this.addOriginToolStripMenuItem.Click += new System.EventHandler(this.addOriginToolStripMenuItem_Click);
+            this.checkBoxShowSRVTelemetry.AutoSize = true;
+            this.checkBoxShowSRVTelemetry.Location = new System.Drawing.Point(96, 23);
+            this.checkBoxShowSRVTelemetry.Name = "checkBoxShowSRVTelemetry";
+            this.checkBoxShowSRVTelemetry.Size = new System.Drawing.Size(60, 17);
+            this.checkBoxShowSRVTelemetry.TabIndex = 11;
+            this.checkBoxShowSRVTelemetry.Text = "Display";
+            this.checkBoxShowSRVTelemetry.UseVisualStyleBackColor = true;
+            // 
+            // groupBox6
+            // 
+            this.groupBox6.Controls.Add(this.checkBoxExportSRVTelemetry);
+            this.groupBox6.Controls.Add(this.buttonSRVTelemetryExportSettings);
+            this.groupBox6.Controls.Add(this.checkBoxShowSRVTelemetry);
+            this.groupBox6.Location = new System.Drawing.Point(3, 3);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(284, 100);
+            this.groupBox6.TabIndex = 18;
+            this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "SRV Telemetry";
+            // 
+            // tabControl1
+            // 
+            this.tabControl1.Controls.Add(this.tabPageRoute);
+            this.tabControl1.Controls.Add(this.tabPageWaypoints);
+            this.tabControl1.Controls.Add(this.tabPageTelemetry);
+            this.tabControl1.Controls.Add(this.tabPageAudio);
+            this.tabControl1.Location = new System.Drawing.Point(3, 3);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(363, 285);
+            this.tabControl1.TabIndex = 19;
+            // 
+            // tabPageRoute
+            // 
+            this.tabPageRoute.Controls.Add(this.groupBox3);
+            this.tabPageRoute.Controls.Add(this.groupBox4);
+            this.tabPageRoute.Controls.Add(this.groupBox1);
+            this.tabPageRoute.Location = new System.Drawing.Point(4, 22);
+            this.tabPageRoute.Name = "tabPageRoute";
+            this.tabPageRoute.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageRoute.Size = new System.Drawing.Size(355, 259);
+            this.tabPageRoute.TabIndex = 0;
+            this.tabPageRoute.Text = "Route";
+            this.tabPageRoute.UseVisualStyleBackColor = true;
+            // 
+            // tabPageWaypoints
+            // 
+            this.tabPageWaypoints.Controls.Add(this.groupBoxWaypointInfo);
+            this.tabPageWaypoints.Location = new System.Drawing.Point(4, 22);
+            this.tabPageWaypoints.Name = "tabPageWaypoints";
+            this.tabPageWaypoints.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageWaypoints.Size = new System.Drawing.Size(355, 259);
+            this.tabPageWaypoints.TabIndex = 1;
+            this.tabPageWaypoints.Text = "Waypoint Editor";
+            this.tabPageWaypoints.UseVisualStyleBackColor = true;
+            // 
+            // tabPageAudio
+            // 
+            this.tabPageAudio.Controls.Add(this.groupBoxAudioSettings);
+            this.tabPageAudio.Location = new System.Drawing.Point(4, 22);
+            this.tabPageAudio.Name = "tabPageAudio";
+            this.tabPageAudio.Size = new System.Drawing.Size(355, 259);
+            this.tabPageAudio.TabIndex = 4;
+            this.tabPageAudio.Text = "Audio";
+            this.tabPageAudio.UseVisualStyleBackColor = true;
+            // 
+            // tabPageTelemetry
+            // 
+            this.tabPageTelemetry.Controls.Add(this.groupBox6);
+            this.tabPageTelemetry.Location = new System.Drawing.Point(4, 22);
+            this.tabPageTelemetry.Name = "tabPageTelemetry";
+            this.tabPageTelemetry.Size = new System.Drawing.Size(355, 259);
+            this.tabPageTelemetry.TabIndex = 5;
+            this.tabPageTelemetry.Text = "Telemetry";
+            this.tabPageTelemetry.UseVisualStyleBackColor = true;
+            // 
+            // buttonClose
+            // 
+            this.buttonClose.Location = new System.Drawing.Point(571, 259);
+            this.buttonClose.Name = "buttonClose";
+            this.buttonClose.Size = new System.Drawing.Size(75, 23);
+            this.buttonClose.TabIndex = 20;
+            this.buttonClose.Text = "Close";
+            this.buttonClose.UseVisualStyleBackColor = true;
+            this.buttonClose.Click += new System.EventHandler(this.buttonClose_Click);
+            // 
+            // buttonSRVTelemetryExportSettings
+            // 
+            this.buttonSRVTelemetryExportSettings.Image = global::SRVTracker.Properties.Resources.Settings_16x;
+            this.buttonSRVTelemetryExportSettings.Location = new System.Drawing.Point(6, 19);
+            this.buttonSRVTelemetryExportSettings.Name = "buttonSRVTelemetryExportSettings";
+            this.buttonSRVTelemetryExportSettings.Size = new System.Drawing.Size(22, 22);
+            this.buttonSRVTelemetryExportSettings.TabIndex = 12;
+            this.toolTip1.SetToolTip(this.buttonSRVTelemetryExportSettings, "Edit race telemetry collection settings");
+            this.buttonSRVTelemetryExportSettings.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxExportSRVTelemetry
+            // 
+            this.checkBoxExportSRVTelemetry.AutoSize = true;
+            this.checkBoxExportSRVTelemetry.Location = new System.Drawing.Point(34, 23);
+            this.checkBoxExportSRVTelemetry.Name = "checkBoxExportSRVTelemetry";
+            this.checkBoxExportSRVTelemetry.Size = new System.Drawing.Size(56, 17);
+            this.checkBoxExportSRVTelemetry.TabIndex = 13;
+            this.checkBoxExportSRVTelemetry.Text = "Export";
+            this.checkBoxExportSRVTelemetry.UseVisualStyleBackColor = true;
             // 
             // FormRouter
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1115, 510);
-            this.Controls.Add(this.groupBoxAudioSettings);
-            this.Controls.Add(this.groupBox3);
-            this.Controls.Add(this.groupBox5);
+            this.ClientSize = new System.Drawing.Size(1088, 509);
+            this.Controls.Add(this.buttonClose);
+            this.Controls.Add(this.buttonStop);
+            this.Controls.Add(this.buttonPlay);
             this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.groupBox4);
-            this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.groupBoxWaypointInfo);
+            this.Controls.Add(this.buttonStartRecording);
+            this.Controls.Add(this.tabControl1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
@@ -1155,13 +1268,19 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRadius)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            this.groupBox5.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTotalLaps)).EndInit();
             this.groupBoxAudioSettings.ResumeLayout(false);
             this.groupBoxAudioSettings.PerformLayout();
             this.circumnavigationContextMenuStrip.ResumeLayout(false);
+            this.groupBox6.ResumeLayout(false);
+            this.groupBox6.PerformLayout();
+            this.tabControl1.ResumeLayout(false);
+            this.tabPageRoute.ResumeLayout(false);
+            this.tabPageWaypoints.ResumeLayout(false);
+            this.tabPageAudio.ResumeLayout(false);
+            this.tabPageTelemetry.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -1198,7 +1317,6 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Button buttonMoveDown;
         private System.Windows.Forms.Button buttonMoveUp;
-        private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.Button buttonDuplicateWaypoint;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.CheckBox checkBoxPlayIncudeDirection;
@@ -1258,5 +1376,15 @@
         private System.Windows.Forms.ToolStripMenuItem addEquatorToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addPrimeMeridianToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addOriginToolStripMenuItem;
+        private System.Windows.Forms.CheckBox checkBoxShowSRVTelemetry;
+        private System.Windows.Forms.GroupBox groupBox6;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage tabPageRoute;
+        private System.Windows.Forms.TabPage tabPageWaypoints;
+        private System.Windows.Forms.TabPage tabPageTelemetry;
+        private System.Windows.Forms.TabPage tabPageAudio;
+        private System.Windows.Forms.Button buttonClose;
+        private System.Windows.Forms.CheckBox checkBoxExportSRVTelemetry;
+        private System.Windows.Forms.Button buttonSRVTelemetryExportSettings;
     }
 }

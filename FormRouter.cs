@@ -47,7 +47,14 @@ namespace SRVTracker
             _formConfig = new ConfigSaverClass(this, true);
             _formConfig.ExcludedControls.Add(textBoxWaypointName);
             _formConfig.ExcludedControls.Add(textBoxRouteName);
+            _formConfig.ExcludedControls.Add(comboBoxBasicLocation);
+            _formConfig.ExcludedControls.Add(comboBoxGateLocation1);
+            _formConfig.ExcludedControls.Add(comboBoxGateLocation2);
+            _formConfig.ExcludedControls.Add(comboBoxGateTarget);
+            _formConfig.ExcludedControls.Add(comboBoxPolygonTarget);
+            _formConfig.ExcludedControls.Add(comboBoxWaypointType);
             _formConfig.SaveEnabled = true;
+            _formConfig.RestorePreviousSize = false;
             _formConfig.RestoreFormValues();
 
             _route = new EDRoute();
@@ -62,11 +69,10 @@ namespace SRVTracker
         private void CalculateWindowSizes()
         {
             // Calculate size with locations hidden
-            int leftBound = groupBoxAudioSettings.Location.X + groupBoxAudioSettings.Width;
+            int leftBound = buttonClose.Location.X + buttonClose.Width;
             _fullSize.Width = (this.Width - this.ClientRectangle.Width) + leftBound + 6;
-            int bottomBound = groupBoxAudioSettings.Location.Y + groupBoxAudioSettings.Height;
+            int bottomBound = buttonClose.Location.Y + buttonClose.Height;
             _fullSize.Height = (this.Height - this.ClientRectangle.Height) + bottomBound + 6;
-
         }
 
         private void DisplayRoute()
@@ -1229,6 +1235,11 @@ namespace SRVTracker
             origin.Longitude = 0;
             origin.Name = "Origin";
             AddLocationToRoute(origin);
+        }
+
+        private void buttonClose_Click(object sender, EventArgs e)
+        {
+            Close();
         }
     }
 }
