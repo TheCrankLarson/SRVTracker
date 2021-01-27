@@ -143,9 +143,8 @@ namespace SRVTracker
                 action();
         }
 
-        public void SetSpeed(double speedInMs)
+        private void UpdateSpeed(string speed)
         {
-            string speed = speedInMs.ToString("F1");
             if (speed.Equals(_lastSpeed))
                 return;
 
@@ -168,6 +167,17 @@ namespace SRVTracker
                 labelSpeedInMS.Invoke(action);
             else
                 action();
+        }
+
+        public void SetSpeed(int speedInMs)
+        {
+            UpdateSpeed(speedInMs.ToString());
+        }
+
+        public void SetSpeed(double speedInMs)
+        {
+            UpdateSpeed(speedInMs.ToString("F1"));
+
         }
 
         /// <summary>

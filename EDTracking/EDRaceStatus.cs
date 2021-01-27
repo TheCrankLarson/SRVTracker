@@ -61,10 +61,11 @@ namespace EDTracking
         public NotableEvents notableEvents = null;
         private double[] _lastThreeSpeedReadings = new double[] { 0, 0, 0 };
         private int _oldestSpeedReading = 0;
-        private string _status = "NA";
-        private EDRace _race = null;
         private int _numberOfSpeedReadings = 0;
         private double _totalOfSpeedReadings = 0;
+        private string _status = "NA";
+        private EDRace _race = null;
+
 
         public EDRaceStatus()
         {

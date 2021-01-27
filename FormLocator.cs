@@ -228,7 +228,7 @@ namespace SRVTracker
                     action();
             }
 
-            locatorHUD1.SetSpeed(FormTracker.SpeedInMS);
+            //locatorHUD1.SetSpeed(FormTracker.SpeedInMS);
 
             if (_targetPosition == null)
                 return;

@@ -1160,5 +1160,10 @@ namespace Race_Manager
             }
             formRaceHistory.Show(this);
         }
+
+        private void checkBoxExportRaceTelemetry_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

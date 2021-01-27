@@ -119,16 +119,11 @@
             this.addPrimeMeridianToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addEquatorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.generateRouteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.checkBoxShowSRVTelemetry = new System.Windows.Forms.CheckBox();
-            this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPageRoute = new System.Windows.Forms.TabPage();
             this.tabPageWaypoints = new System.Windows.Forms.TabPage();
             this.tabPageAudio = new System.Windows.Forms.TabPage();
-            this.tabPageTelemetry = new System.Windows.Forms.TabPage();
             this.buttonClose = new System.Windows.Forms.Button();
-            this.buttonSRVTelemetryExportSettings = new System.Windows.Forms.Button();
-            this.checkBoxExportSRVTelemetry = new System.Windows.Forms.CheckBox();
             this.groupBox2.SuspendLayout();
             this.groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRecordDistance)).BeginInit();
@@ -145,12 +140,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTotalLaps)).BeginInit();
             this.groupBoxAudioSettings.SuspendLayout();
             this.circumnavigationContextMenuStrip.SuspendLayout();
-            this.groupBox6.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPageRoute.SuspendLayout();
             this.tabPageWaypoints.SuspendLayout();
             this.tabPageAudio.SuspendLayout();
-            this.tabPageTelemetry.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox2
@@ -1124,33 +1117,10 @@
             this.generateRouteToolStripMenuItem.Size = new System.Drawing.Size(258, 22);
             this.generateRouteToolStripMenuItem.Text = "Generate Route...";
             // 
-            // checkBoxShowSRVTelemetry
-            // 
-            this.checkBoxShowSRVTelemetry.AutoSize = true;
-            this.checkBoxShowSRVTelemetry.Location = new System.Drawing.Point(96, 23);
-            this.checkBoxShowSRVTelemetry.Name = "checkBoxShowSRVTelemetry";
-            this.checkBoxShowSRVTelemetry.Size = new System.Drawing.Size(60, 17);
-            this.checkBoxShowSRVTelemetry.TabIndex = 11;
-            this.checkBoxShowSRVTelemetry.Text = "Display";
-            this.checkBoxShowSRVTelemetry.UseVisualStyleBackColor = true;
-            // 
-            // groupBox6
-            // 
-            this.groupBox6.Controls.Add(this.checkBoxExportSRVTelemetry);
-            this.groupBox6.Controls.Add(this.buttonSRVTelemetryExportSettings);
-            this.groupBox6.Controls.Add(this.checkBoxShowSRVTelemetry);
-            this.groupBox6.Location = new System.Drawing.Point(3, 3);
-            this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(284, 100);
-            this.groupBox6.TabIndex = 18;
-            this.groupBox6.TabStop = false;
-            this.groupBox6.Text = "SRV Telemetry";
-            // 
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tabPageRoute);
             this.tabControl1.Controls.Add(this.tabPageWaypoints);
-            this.tabControl1.Controls.Add(this.tabPageTelemetry);
             this.tabControl1.Controls.Add(this.tabPageAudio);
             this.tabControl1.Location = new System.Drawing.Point(3, 3);
             this.tabControl1.Name = "tabControl1";
@@ -1192,16 +1162,6 @@
             this.tabPageAudio.Text = "Audio";
             this.tabPageAudio.UseVisualStyleBackColor = true;
             // 
-            // tabPageTelemetry
-            // 
-            this.tabPageTelemetry.Controls.Add(this.groupBox6);
-            this.tabPageTelemetry.Location = new System.Drawing.Point(4, 22);
-            this.tabPageTelemetry.Name = "tabPageTelemetry";
-            this.tabPageTelemetry.Size = new System.Drawing.Size(355, 259);
-            this.tabPageTelemetry.TabIndex = 5;
-            this.tabPageTelemetry.Text = "Telemetry";
-            this.tabPageTelemetry.UseVisualStyleBackColor = true;
-            // 
             // buttonClose
             // 
             this.buttonClose.Location = new System.Drawing.Point(571, 259);
@@ -1211,26 +1171,6 @@
             this.buttonClose.Text = "Close";
             this.buttonClose.UseVisualStyleBackColor = true;
             this.buttonClose.Click += new System.EventHandler(this.buttonClose_Click);
-            // 
-            // buttonSRVTelemetryExportSettings
-            // 
-            this.buttonSRVTelemetryExportSettings.Image = global::SRVTracker.Properties.Resources.Settings_16x;
-            this.buttonSRVTelemetryExportSettings.Location = new System.Drawing.Point(6, 19);
-            this.buttonSRVTelemetryExportSettings.Name = "buttonSRVTelemetryExportSettings";
-            this.buttonSRVTelemetryExportSettings.Size = new System.Drawing.Size(22, 22);
-            this.buttonSRVTelemetryExportSettings.TabIndex = 12;
-            this.toolTip1.SetToolTip(this.buttonSRVTelemetryExportSettings, "Edit race telemetry collection settings");
-            this.buttonSRVTelemetryExportSettings.UseVisualStyleBackColor = true;
-            // 
-            // checkBoxExportSRVTelemetry
-            // 
-            this.checkBoxExportSRVTelemetry.AutoSize = true;
-            this.checkBoxExportSRVTelemetry.Location = new System.Drawing.Point(34, 23);
-            this.checkBoxExportSRVTelemetry.Name = "checkBoxExportSRVTelemetry";
-            this.checkBoxExportSRVTelemetry.Size = new System.Drawing.Size(56, 17);
-            this.checkBoxExportSRVTelemetry.TabIndex = 13;
-            this.checkBoxExportSRVTelemetry.Text = "Export";
-            this.checkBoxExportSRVTelemetry.UseVisualStyleBackColor = true;
             // 
             // FormRouter
             // 
@@ -1274,13 +1214,10 @@
             this.groupBoxAudioSettings.ResumeLayout(false);
             this.groupBoxAudioSettings.PerformLayout();
             this.circumnavigationContextMenuStrip.ResumeLayout(false);
-            this.groupBox6.ResumeLayout(false);
-            this.groupBox6.PerformLayout();
             this.tabControl1.ResumeLayout(false);
             this.tabPageRoute.ResumeLayout(false);
             this.tabPageWaypoints.ResumeLayout(false);
             this.tabPageAudio.ResumeLayout(false);
-            this.tabPageTelemetry.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -1376,15 +1313,10 @@
         private System.Windows.Forms.ToolStripMenuItem addEquatorToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addPrimeMeridianToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addOriginToolStripMenuItem;
-        private System.Windows.Forms.CheckBox checkBoxShowSRVTelemetry;
-        private System.Windows.Forms.GroupBox groupBox6;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPageRoute;
         private System.Windows.Forms.TabPage tabPageWaypoints;
-        private System.Windows.Forms.TabPage tabPageTelemetry;
         private System.Windows.Forms.TabPage tabPageAudio;
         private System.Windows.Forms.Button buttonClose;
-        private System.Windows.Forms.CheckBox checkBoxExportSRVTelemetry;
-        private System.Windows.Forms.Button buttonSRVTelemetryExportSettings;
     }
 }

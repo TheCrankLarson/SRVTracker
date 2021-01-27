@@ -28,19 +28,14 @@ namespace SRVTracker
         private static string _clientId = null;
         private JournalReader _journalReader = null;
         public static event EventHandler CommanderLocationChanged;
+
         public static EDLocation CurrentLocation { get; private set; } = new EDLocation();
         public static EDLocation PreviousLocation { get; private set; } = new EDLocation();
         public static int CurrentHeading { get; private set; } = -1;
-        public static double SpeedInMS { get; internal set; } = 0;
-        public static double AverageSpeedInMS { get; internal set; } = 0;
 
-        // Keep track of ground speed (E: D shows speed you are travelling in the direction you are facing, which is not ground speed)
-        private EDLocation _speedCalculationLocation = null;
-        private DateTime _speedCalculationTimeStamp = DateTime.UtcNow;
-        private double _lastSpeedInMs = 0;
+        private SRVTelemetry _srvTelemetry = null;
+
         private ConfigSaverClass _formConfig = null;
-        private static int _numberOfSpeedReadings = 0;
-        private static double _totalOfSpeedReadings = 0;
         const double STATUS_JSON_CHECK_INTERVAL = 700;
 
         public const int WM_NCLBUTTONDOWN = 0xA1;
@@ -82,6 +77,11 @@ namespace SRVTracker
             radioButtonUseTimer.Checked = true;
             if (checkBoxAutoUpdate.Checked)
                 CheckForUpdate();
+
+            if (checkBoxCaptureSRVTelemetry.Tag != null)
+                _srvTelemetry = new SRVTelemetry((string)checkBoxCaptureSRVTelemetry.Tag, _clientId);
+            else
+                _srvTelemetry = new SRVTelemetry();
         }
 
         private void CalculateWindowSizes()
@@ -256,14 +256,14 @@ namespace SRVTracker
 
             try
             {
-                if (checkBoxSaveToFile.Checked)
-                    File.AppendAllText(textBoxSaveFile.Text, status);
+                if (checkBoxSaveTelemetryFolder.Checked)
+                    File.AppendAllText(textBoxTelemetryFolder.Text, status);
             }
             catch (Exception ex)
             {
-                Action action = new Action(() => { checkBoxSaveToFile.Checked = false; });
-                if (checkBoxSaveToFile.InvokeRequired)
-                    checkBoxSaveToFile.Invoke(action);
+                Action action = new Action(() => { checkBoxSaveTelemetryFolder.Checked = false; });
+                if (checkBoxSaveTelemetryFolder.InvokeRequired)
+                    checkBoxSaveTelemetryFolder.Invoke(action);
                 else
                     action();
             }
@@ -334,14 +334,13 @@ namespace SRVTracker
 
         private void UpdateUI(EDEvent edEvent)
         {
-            if (checkBoxSaveToFile.Checked)
-                SaveToFile(edEvent);
+            //if (checkBoxSaveTelemetryFolder.Checked)
+            //    SaveToFile(edEvent);
 
             if (checkBoxUpload.Checked)
                 UploadToServer(edEvent);
 
-            if (_formFlagsWatcher != null)
-                _formFlagsWatcher.UpdateFlags(edEvent.Flags);
+            _formFlagsWatcher?.UpdateFlags(edEvent.Flags);
 
             if ( (edEvent.PlanetRadius > 0) && (FormLocator.PlanetaryRadius != edEvent.PlanetRadius) )
                 FormLocator.PlanetaryRadius = edEvent.PlanetRadius;
@@ -358,43 +357,20 @@ namespace SRVTracker
                     action();
             }
 
+            _srvTelemetry?.ProcessEvent(edEvent);
+
             if (edEvent.HasCoordinates())
             {
-                TimeSpan timeBetweenLocations = edEvent.TimeStamp.Subtract(_speedCalculationTimeStamp);
-                if (timeBetweenLocations.TotalMilliseconds > 750)
+                if (checkBoxUseDirectionOfTravelAsHeading.Checked)
                 {
-                    // We take a speed calculation once every 750 milliseconds
-                    _speedCalculationTimeStamp = edEvent.TimeStamp;
-                    if (_speedCalculationLocation != null)
-                    {
-                        double distanceBetweenLocations = EDLocation.DistanceBetween(_speedCalculationLocation, edEvent.Location());
-                        SpeedInMS = distanceBetweenLocations * (1000 / (double)timeBetweenLocations.TotalMilliseconds);
-                        if (checkBoxUseDirectionOfTravelAsHeading.Checked)
-                        {
-                            // We ignore the heading given by E: D, as that is direction we are facing, not travelling
-                            // We calculate our direction based on previous location
-                            if (distanceBetweenLocations>1)
-                                CurrentHeading = (int)EDLocation.BearingToLocation(_speedCalculationLocation, edEvent.Location());
-                        }
-                        else
-                            CurrentHeading = edEvent.Heading;
-                    }
-                    _speedCalculationLocation = edEvent.Location();
-                    if ((SpeedInMS - _lastSpeedInMs) > 20)
-                    {
-                        // If the speed increases by more than 20m/s in a short time (i.e. less than a second!), this is impossible and due to respawn
-                        SpeedInMS = 0;
-                        _speedCalculationLocation = null;
-                    }
-                    else
-                    {
-                        // Update our average speed
-                        _totalOfSpeedReadings += SpeedInMS;
-                        _numberOfSpeedReadings++;
-                        AverageSpeedInMS = _totalOfSpeedReadings / _numberOfSpeedReadings;
-                    }
+                    // We ignore the heading given by E: D, as that is direction we are facing, not travelling
+                    // We calculate our direction based on previous location
+                    double distanceBetweenLocations = EDLocation.DistanceBetween(PreviousLocation, edEvent.Location());
+                    if (distanceBetweenLocations > 1)
+                        CurrentHeading = (int)EDLocation.BearingToLocation(PreviousLocation, edEvent.Location());
                 }
-                _lastSpeedInMs = SpeedInMS;
+                else
+                    CurrentHeading = edEvent.Heading;
 
                 PreviousLocation = CurrentLocation.Copy();
                 CurrentLocation.Latitude = edEvent.Latitude;
@@ -415,11 +391,9 @@ namespace SRVTracker
                 action();
         }
 
-        public void ResetAverageSpeed()
+        public int SpeedInMS
         {
-            _totalOfSpeedReadings = 0;
-            _numberOfSpeedReadings = 0;
-            AverageSpeedInMS = 0;
+            get { return _srvTelemetry.CurrentGroundSpeed; }
         }
 
         private void SaveToFile(EDEvent edEvent)
@@ -429,11 +403,11 @@ namespace SRVTracker
                 // This is very inefficient, save to file should only be enabled for debugging
                 // I may revisit this at some point if more features are added for local tracking
                 string eventData = eventData = edEvent.ToJson();
-                System.IO.File.AppendAllText(textBoxSaveFile.Text, eventData);
+                System.IO.File.AppendAllText(textBoxTelemetryFolder.Text, eventData);
             }
             catch (Exception ex)
             {
-                checkBoxSaveToFile.Checked = false;
+                checkBoxSaveTelemetryFolder.Checked = false;
             }
         }
 
@@ -567,7 +541,7 @@ namespace SRVTracker
 
         private void checkBoxSaveToFile_CheckedChanged(object sender, EventArgs e)
         {
-            textBoxSaveFile.Enabled = checkBoxSaveToFile.Checked;
+            textBoxTelemetryFolder.Enabled = checkBoxSaveTelemetryFolder.Checked;
         }
 
         private void radioButtonUseDefaultServer_CheckedChanged(object sender, EventArgs e)
@@ -731,6 +705,34 @@ namespace SRVTracker
         private void buttonUpdate_Click(object sender, EventArgs e)
         {
             CheckForUpdate(true);
+        }
+
+        private void checkBoxCaptureSRVTelemetry_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void buttonSRVTelemetryExportSettings_Click(object sender, EventArgs e)
+        {
+            _srvTelemetry.EditSettings(checkBoxCaptureSRVTelemetry, this);
+        }
+
+        private void checkBoxShowSRVTelemetry_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBoxShowSRVTelemetry.Checked)
+                _srvTelemetry?.DisplayTelemetry();
+            else
+                _srvTelemetry?.HideTelemetry();
+        }
+
+        private void checkBoxExportSRVTelemetry_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void buttonNewSession_Click(object sender, EventArgs e)
+        {
+            _srvTelemetry?.NewSession();
         }
     }
 }

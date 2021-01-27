@@ -54,7 +54,7 @@ namespace SRVTracker
         private void UpdateStatus(string status)
         {
             StringBuilder statusDisplay = new StringBuilder();
-            statusDisplay.Append(FormTracker.SpeedInMS);
+            //statusDisplay.Append(FormTracker.SpeedInMS);
             statusDisplay.Append("m/s ");
             statusDisplay.Append(status);
             if (textBoxStatus.Text.Equals(statusDisplay.ToString()))
@@ -72,6 +72,7 @@ namespace SRVTracker
 
         private void CheckSpeedAdjustment()
         {
+            /*
             if ((int)FormTracker.SpeedInMS < numericUpDownTargetSpeed.Value)
             {
                 _activeKey = Keyboard.DirectXKeyStrokes.DIK_W;
@@ -88,6 +89,7 @@ namespace SRVTracker
                 _activeKey = null;
                 UpdateStatus("Inactive");
             }
+            */
         }
       
         private void _timer_Elapsed(object sender, ElapsedEventArgs e)

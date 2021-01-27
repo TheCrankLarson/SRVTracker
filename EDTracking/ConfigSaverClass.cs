@@ -389,17 +389,23 @@ namespace EDTracking
             return formsConfigurationData;
         }
 
+        private bool ControlIsExcluded(Control control)
+        {
+            if (control is TabPage) return true;
+            if ((control is Label) && !StoreLabelInfo) return true;
+            if ((control is Button) && !StoreButtonInfo) return true;
+            if ((control is GroupBox) && !StoreGroupboxInfo) return true;
+            if (ExcludedControls.Contains(control)) return true;
+            return false;
+        }
 
         private void SaveControlProperties(Control control, ref StringBuilder appSettings)
         {
             // Write the control's properties to our config file
 
-            if ((control is Label) && !StoreLabelInfo) return;
-            if ((control is Button) && !StoreButtonInfo) return;
-            if ((control is GroupBox) && !StoreGroupboxInfo) return;
-            if (ExcludedControls.Contains(control)) return;
+            if (ControlIsExcluded(control)) return;
 
-            if (!(control is CheckBox) && !(control is RadioButton))
+            if (!(control is CheckBox) && !(control is RadioButton) && !(control is TabPage))
                 appSettings.AppendLine(control.Name + ":Text:" + Encode(control.Text));
 
             if (!String.IsNullOrEmpty((string)control.Tag))
@@ -582,21 +588,7 @@ namespace EDTracking
                         }
                         if (control != null)
                         {
-                            bool bRestore = true;
-                            if (ExcludedControls.Contains(control))
-                            {
-                                bRestore = false;
-                            }
-                            else
-                            {
-                                if (!StoreGroupboxInfo && (control is GroupBox))
-                                    bRestore = false;
-                                else if (!StoreLabelInfo && (control is Label))
-                                    bRestore = false;
-                                else if (!StoreButtonInfo && (control is Button))
-                                    bRestore = false;
-                            }
-                            if (bRestore)
+                            if (!ControlIsExcluded(control))
                             {
                                 PropertyInfo prop = control.GetType().GetProperty(controlSetting[1].Trim(), BindingFlags.Public | BindingFlags.Instance);
                                 if (controlSetting[1].Trim().Equals("Text") || controlSetting[1].Trim().Equals("Tag"))
