@@ -53,6 +53,15 @@ namespace EDTracking
             return new EDLocation(Name, SystemName, PlanetName, Latitude, Longitude, Altitude, PlanetaryRadius);
         }
 
+        public static string DistanceToString(double distance)
+        {
+            if (distance < 1000)
+                return $"{distance.ToString("F1")} m";
+            else if (distance<1000000)
+                return $"{(distance / 1000).ToString("F1")} km";
+            return $"{(distance / 1000000).ToString("F1")} Mm";
+        }
+
         public override string ToString()
         {
             return JsonSerializer.Serialize(this);// $"{Name}║{SystemName}║{PlanetName}║{Latitude.ToString(_enGB)}║{Longitude.ToString(_enGB)}║{Altitude.ToString(_enGB)}║{PlanetaryRadius.ToString(_enGB)}";

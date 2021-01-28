@@ -16,15 +16,17 @@ namespace EDTracking
         public int TotalSynthRepairs { get; set; } = 0;
         public static string SessionSaveFolder { get; set; } = "Session Telemetry";
         public DateTime SessionStartTime { get; set; } = DateTime.MinValue;
+        public EDLocation SessionStartLocation { get; set; } = null;
         private DateTime _lastEventTime = DateTime.MinValue;
         private EDLocation _lastLocation = null;
         private List<EDEvent> _sessionHistory = new List<EDEvent>();
         private EDLocation _speedCalculationPreviousLocation = null;
         private DateTime _speedCalculationTimeStamp = DateTime.UtcNow;
         private double[] _lastThreeSpeedReadings = new double[] { 0, 0, 0 };
-        private int _oldestSpeedReading = 0;
+        private double _lastDistanceMeasurement = 0;
         private int _numberOfSpeedReadings = 0;
         private double _totalOfSpeedReadings = 0;
+        private bool _playerIsInSRV = false;
 
         private TelemetryWriter _srvTelemetryWriter = null;
         private FormTelemetryDisplay _srvTelemetryDisplay = null;
@@ -59,11 +61,13 @@ namespace EDTracking
             TotalShipRepairs = 0;
             TotalSynthRepairs = 0;
             SessionStartTime = DateTime.Now;
+            SessionStartLocation = null;
 
             _telemetry = new Dictionary<string, string>();
             _telemetry.Add("CurrentGroundSpeed", CurrentGroundSpeed.ToString());
             _telemetry.Add("AverageGroundSpeed", AverageGroundSpeed.ToString());
             _telemetry.Add("MaximumGroundSpeed", MaximumGroundSpeed.ToString());
+            _telemetry.Add("DistanceFromStart", "0m");
             _telemetry.Add("TotalDistanceTravelled", TotalDistanceTravelled.ToString("F1"));
             _telemetry.Add("TotalShipRepairs", TotalShipRepairs.ToString());
             _telemetry.Add("TotalSynthRepairs", TotalSynthRepairs.ToString());
@@ -82,22 +86,19 @@ namespace EDTracking
                     { "CurrentGroundSpeed", "Current ground speed in m/s" },
                     { "AverageGroundSpeed", "Average ground speed in m/s" },
                     { "MaximumGroundSpeed", "Maximum ground speed in m/s" },
+                    { "DistanceFromStart", "Distance from session start location" },
                     { "TotalDistanceTravelled", "Total distance travelled" },
-                    { "TotalShipRepairs", "Total number of ship repairs" },
-                    { "TotalSynthRepairs", "Total number of synthesized repairs" },
+                    { "TotalSRVShipRepairs", "Total number of SRV repairs via ship" },
+                    { "TotalSRVSynthRepairs", "Total number of synthesized repairs of the SRV" },
                     { "SessionStartTime", "Session start time" },
                     { "SessionTime", "Session total time" }
                 };
         }
 
         public Dictionary<string,string> Telemetry()
-        {
-            _telemetry["CurrentGroundSpeed"] = CurrentGroundSpeed.ToString();
-            _telemetry["AverageGroundSpeed"] = AverageGroundSpeed.ToString();
-            _telemetry["MaximumGroundSpeed"] = MaximumGroundSpeed.ToString();
+        {            
             if (SessionStartTime>DateTime.MinValue)
-                _telemetry["SessionTime"] = DateTime.Now.Subtract(SessionStartTime);
-            _telemetry["TotalDistanceTravelled"] = TotalDistanceTravelled.ToString("F1");
+                _telemetry["SessionTime"] = DateTime.Now.Subtract(SessionStartTime).ToString(@"mm\:ss\:ff");
 
             return _telemetry;
         }
@@ -122,24 +123,32 @@ namespace EDTracking
                 _telemetry["SessionStartTime"] = SessionStartTime.ToString();
             }
 
-            bool statsUpdated = ProcessLocationUpdate(edEvent);
-            if (ProcessFlags(edEvent))
-                statsUpdated = true;
-
+            bool statsUpdated = ProcessFlags(edEvent);
             switch (edEvent.EventName)
             {
                 case "DockSRV":
                     TotalShipRepairs++;
-                    _telemetry["TotalShipRepairs"] = TotalShipRepairs.ToString();
+                    _telemetry["TotalSRVShipRepairs"] = TotalShipRepairs.ToString();
                     statsUpdated = true;
+                    _playerIsInSRV = false;
+                    break;
+
+                case "LaunchSRV":
+                    _playerIsInSRV = true;
                     break;
 
                 case "Synthesis":
                     TotalSynthRepairs++;
-                    _telemetry["TotalSynthRepairs"] = TotalSynthRepairs.ToString();
+                    _telemetry["TotalSRVSynthRepairs"] = TotalSynthRepairs.ToString();
                     statsUpdated = true;
                     break;
+
+                default:
+                    if (_playerIsInSRV && ProcessLocationUpdate(edEvent))
+                        statsUpdated = true;
+                    break;
             }
+
             _lastEventTime = edEvent.TimeStamp;
             if (statsUpdated)
             {
@@ -153,6 +162,12 @@ namespace EDTracking
             if (edEvent.Flags<1)
                 return false;
 
+            if (((edEvent.Flags & (long)StatusFlags.In_MainShip) == (long)StatusFlags.In_MainShip) ||
+                ((edEvent.Flags & (long)StatusFlags.In_Fighter) == (long)StatusFlags.In_Fighter))
+                _playerIsInSRV = false;
+
+            if (((edEvent.Flags & (long)StatusFlags.In_SRV) == (long)StatusFlags.In_SRV))
+                _playerIsInSRV = true;
             return false;
         }
 
@@ -162,6 +177,8 @@ namespace EDTracking
             if (currentLocation == null)
                 return false;
 
+            if (SessionStartLocation == null)
+                SessionStartLocation = currentLocation.Copy();
             if (_lastLocation==null)
             {
                 _lastLocation = currentLocation;
@@ -172,55 +189,66 @@ namespace EDTracking
                 return false;
 
             // Update distance/speed statistics
-            CalculateDistances(currentLocation);
-            CalculateSpeed(currentLocation, edEvent.TimeStamp);
-            return true;
+            if (CalculateDistances(currentLocation))
+            {
+                CalculateSpeed(currentLocation, edEvent.TimeStamp);
+                return true;
+            }
+            return false;
         }
 
         private bool CalculateSpeed(EDLocation CurrentLocation, DateTime TimeStamp)
         {
-            TimeSpan timeBetweenLocations = TimeStamp.Subtract(_speedCalculationTimeStamp);
-            if (timeBetweenLocations.TotalMilliseconds < 750)
-                return false;
-            // We take a speed calculation once every 750 milliseconds
-
-            double speedInMS = 0;
-            if (_speedCalculationPreviousLocation != null)
-            {
-                double distanceBetweenLocations = EDLocation.DistanceBetween(_speedCalculationPreviousLocation, CurrentLocation);
-                speedInMS = distanceBetweenLocations * 1000 / (double)timeBetweenLocations.TotalMilliseconds;
-            }
-            else
+            if (_speedCalculationPreviousLocation == null)
             {
                 _speedCalculationPreviousLocation = CurrentLocation.Copy();
                 _speedCalculationTimeStamp = TimeStamp;
                 return false;
             }
 
+            TimeSpan timeBetweenLocations = TimeStamp.Subtract(_speedCalculationTimeStamp);
+            if (timeBetweenLocations.TotalMilliseconds < 750)
+                return false;
+            // We take a speed calculation once every 750 milliseconds
+
+            double distanceBetweenLocations = EDLocation.DistanceBetween(_speedCalculationPreviousLocation, CurrentLocation);//EDLocation.DistanceBetweenIncludingAltitude(_speedCalculationPreviousLocation, CurrentLocation);
+            double speedInMS = (distanceBetweenLocations * 1000) / (double)timeBetweenLocations.TotalMilliseconds;
+            _speedCalculationPreviousLocation = CurrentLocation.Copy();
+            _speedCalculationTimeStamp = TimeStamp;
+
             // Update the total average speed
             _totalOfSpeedReadings += speedInMS;
             _numberOfSpeedReadings++;
             AverageGroundSpeed = (int)(_totalOfSpeedReadings / _numberOfSpeedReadings);
+            _telemetry["AverageGroundSpeed"] = $"{AverageGroundSpeed} m/s";
 
-            /*
-            _lastThreeSpeedReadings[_oldestSpeedReading] = speedInMS;
-            _oldestSpeedReading++;
-            if (_oldestSpeedReading > 2)
-                _oldestSpeedReading = 0;
-            CurrentGroundSpeed = (int)((_lastThreeSpeedReadings[0] + _lastThreeSpeedReadings[1] + _lastThreeSpeedReadings[2]) / 3); // Returning an average of the last three readings should prevent blips
-            */
-
-            CurrentGroundSpeed = CurrentGroundSpeed;
+            CurrentGroundSpeed = (int)speedInMS;
+            _telemetry["CurrentGroundSpeed"] = $"{CurrentGroundSpeed} m/s";
             if (CurrentGroundSpeed > MaximumGroundSpeed)
+            {
                 MaximumGroundSpeed = CurrentGroundSpeed;
+                _telemetry["MaximumGroundSpeed"] = $"{MaximumGroundSpeed} m/s";
+            }
             return true;
         }
 
-        private void CalculateDistances(EDLocation CurrentLocation)
+        private bool CalculateDistances(EDLocation CurrentLocation)
         {
             double distanceTravelled = EDLocation.DistanceBetween(_lastLocation, CurrentLocation);
             _lastLocation = CurrentLocation.Copy();
+
+            // Sanity check to avoid silly readings
+            if (_lastDistanceMeasurement < 40 && distanceTravelled > 100)
+                return false;
+            if (_lastDistanceMeasurement > 40) 
+                if (distanceTravelled > (_lastDistanceMeasurement * 2))
+                    return false;
+
+            _lastDistanceMeasurement = distanceTravelled;
             TotalDistanceTravelled += distanceTravelled;
+            _telemetry["TotalDistanceTravelled"] = EDLocation.DistanceToString(TotalDistanceTravelled);
+            _telemetry["DistanceFromStart"] = EDLocation.DistanceToString(EDLocation.DistanceBetween(SessionStartLocation, CurrentLocation));
+            return true;
         }
 
         public void EditSettings(System.Windows.Forms.Control SettingsControl, System.Windows.Forms.IWin32Window owner = null)
