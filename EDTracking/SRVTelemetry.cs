@@ -11,6 +11,7 @@ namespace EDTracking
         public int CurrentGroundSpeed { get; set; } = 0;
         public int AverageGroundSpeed { get; set; } = 0;
         public int MaximumGroundSpeed { get; set; } = 0;
+        public int MaximumAltitude { get; set; } = 0;
         public double TotalDistanceTravelled { get; set; } = 0;
         public int TotalShipRepairs { get; set; } = 0;
         public int TotalSynthRepairs { get; set; } = 0;
@@ -57,6 +58,7 @@ namespace EDTracking
             _totalOfSpeedReadings = 0;
             AverageGroundSpeed = 0;
             MaximumGroundSpeed = 0;
+            MaximumAltitude = 0;
             TotalDistanceTravelled = 0;
             TotalShipRepairs = 0;
             TotalSynthRepairs = 0;
@@ -73,6 +75,8 @@ namespace EDTracking
             _telemetry.Add("TotalSynthRepairs", TotalSynthRepairs.ToString());
             _telemetry.Add("SessionStartTime", "NA");
             _telemetry.Add("SessionTime", "00:00:00");
+            _telemetry.Add("CurrentAltitude", "0");
+            _telemetry.Add("MaximumAltitude", "0");
 
             _sessionHistory = new List<EDEvent>();
 
@@ -86,6 +90,8 @@ namespace EDTracking
                     { "CurrentGroundSpeed", "Current ground speed in m/s" },
                     { "AverageGroundSpeed", "Average ground speed in m/s" },
                     { "MaximumGroundSpeed", "Maximum ground speed in m/s" },
+                    { "CurrentAltitude", "Current altitude" },
+                    { "MaximumAltitude", "Maximum altitude" },
                     { "DistanceFromStart", "Distance from session start location" },
                     { "TotalDistanceTravelled", "Total distance travelled" },
                     { "TotalSRVShipRepairs", "Total number of SRV repairs via ship" },
@@ -179,6 +185,14 @@ namespace EDTracking
 
             if (SessionStartLocation == null)
                 SessionStartLocation = currentLocation.Copy();
+
+            _telemetry["CurrentAltitude"] = EDLocation.DistanceToString(currentLocation.Altitude);
+            if (currentLocation.Altitude>MaximumAltitude)
+            {
+                MaximumAltitude = (int)currentLocation.Altitude;
+                _telemetry["CurrentAltitude"] = EDLocation.DistanceToString(MaximumAltitude);
+            }
+
             if (_lastLocation==null)
             {
                 _lastLocation = currentLocation;
