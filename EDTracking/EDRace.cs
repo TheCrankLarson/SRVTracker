@@ -251,6 +251,7 @@ namespace EDTracking
             StringBuilder commandersExport = new StringBuilder();
             StringBuilder positionsExport = new StringBuilder();
             StringBuilder speeds = new StringBuilder();
+            StringBuilder altitudes = new StringBuilder();
             StringBuilder maxSpeeds = new StringBuilder();
             StringBuilder averageSpeeds = new StringBuilder();
             StringBuilder distanceToWaypoint = new StringBuilder();
@@ -278,16 +279,19 @@ namespace EDTracking
                     {
                         averageSpeeds.AppendLine($"{Statuses[leaderBoard[i]].AverageSpeedInMS:F0}");
                         speeds.AppendLine($"{Statuses[leaderBoard[i]].SpeedInMS:F0}");
+                        altitudes.AppendLine($"{Statuses[leaderBoard[i]].Location.Altitude:F0}");
                     }
                     else
                     {
                         speeds.AppendLine();
+                        altitudes.AppendLine();
                         averageSpeeds.AppendLine();
                     }
                 }
                 else
                 {
                     speeds.AppendLine();
+                    altitudes.AppendLine();
                     averageSpeeds.AppendLine();
                 }
 
@@ -353,6 +357,7 @@ namespace EDTracking
             statsTable.Add("Positions", positionsExport.ToString());
             statsTable.Add("Commanders", commandersExport.ToString());
             statsTable.Add("Speeds", speeds.ToString());
+            statsTable.Add("Altitudes", altitudes.ToString());
             statsTable.Add("MaxSpeeds", maxSpeeds.ToString());
             statsTable.Add("AverageSpeeds", averageSpeeds.ToString());
             statsTable.Add("Status", status.ToString());
@@ -394,6 +399,7 @@ namespace EDTracking
                     { "Positions", "Positions of contestants" },
                     { "Commanders", "Names of contestants" },
                     { "Speeds", "Current speeds" },
+                    { "Altitudes", "Current altitudes" },
                     { "MaxSpeeds", "Maximum speeds" },
                     { "AverageSpeeds", "Average speeds" },
                     { "Status", "Statuses" },

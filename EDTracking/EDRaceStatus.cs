@@ -98,6 +98,7 @@ namespace EDTracking
                     { "Commander", "Commander name" },
                     { "Position", "Current position" },
                     { "Speed", "Current speed" },
+                    { "Altitude", "Altitude" },
                     { "MaxSpeed", "Maximum speed" },
                     { "AverageSpeed", "Average speed" },
                     { "Status", "Status" },
@@ -117,6 +118,8 @@ namespace EDTracking
             telemetry.Add("Commander", Commander);
             telemetry.Add("Position", RacePosition.ToString());
             telemetry.Add("Speed", SpeedInMS.ToString("F1"));
+            if (Location != null)
+                telemetry.Add("Altitude", Location.Altitude.ToString("F0"));
             telemetry.Add("MaxSpeed", MaxSpeedInMS.ToString("F1"));
             telemetry.Add("AverageSpeed", AverageSpeedInMS.ToString("F1"));
             telemetry.Add("Status", _status);
