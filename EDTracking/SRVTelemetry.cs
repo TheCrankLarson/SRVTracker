@@ -26,7 +26,7 @@ namespace EDTracking
         public EDLocation SessionStartLocation { get; set; } = null;
         private DateTime _lastEventTime = DateTime.MinValue;
         private EDLocation _lastLocation = null;
-        public List<EDEvent> SessionHistory = new List<EDEvent>();
+        public List<EDEvent> SessionHistory { get; set; } = new List<EDEvent>();
         private EDLocation _speedCalculationPreviousLocation = null;
         private DateTime _speedCalculationTimeStamp = DateTime.UtcNow;
         private double[] _lastThreeSpeedReadings = new double[] { 0, 0, 0 };
