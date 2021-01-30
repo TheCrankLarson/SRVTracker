@@ -106,7 +106,7 @@ namespace SRVTracker
 
         private void CommanderWatcher_UpdateReceived(object sender, EDEvent edEvent)
         {
-            if (!edEvent.HasCoordinates() || edEvent.Commander.Equals(FormTracker.ClientId))
+            if (!edEvent.HasCoordinates() || edEvent.Commander.Equals(FormTracker.CommanderName))
                 return;
 
             if (FormTracker.CurrentLocation != null)

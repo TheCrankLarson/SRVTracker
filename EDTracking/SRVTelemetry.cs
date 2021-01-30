@@ -12,6 +12,7 @@ namespace EDTracking
     {
         public double HullHealth { get; set; } = 1;
         public int CurrentGroundSpeed { get; set; } = 0;
+        public int CurrentHeading { get; set; } = 0;
         public int SpeedAltitudeAdjusted { get; set; } = 0;
         public int MaximumSpeedAltitudeAdjusted { get; set; } = 0;
         public int AverageGroundSpeed { get; set; } = 0;
@@ -90,6 +91,7 @@ namespace EDTracking
 
             _telemetry.Clear();
             _telemetry.Add("CurrentGroundSpeed", CurrentGroundSpeed.ToString());
+            _telemetry.Add("CurrentHeading", "Unknown");
             _telemetry.Add("HullStrength", $"{(HullHealth * 100).ToString("F1")}%");
             _telemetry.Add("AverageGroundSpeed", AverageGroundSpeed.ToString());
             _telemetry.Add("MaximumGroundSpeed", MaximumGroundSpeed.ToString());
@@ -117,6 +119,7 @@ namespace EDTracking
                     { "CommanderName", "Commander name" },
                     { "HullStrength", "Last known hull value" },
                     { "CurrentGroundSpeed", "Current ground speed in m/s" },
+                    { "CurrentHeading", "Current heading in degrees" },
                     { "AverageGroundSpeed", "Average ground speed in m/s" },
                     { "MaximumGroundSpeed", "Maximum ground speed in m/s" },
                     { "CurrentAltitude", "Current altitude" },
@@ -324,7 +327,9 @@ namespace EDTracking
         private bool CalculateDistances(EDLocation CurrentLocation)
         {
             double distanceTravelled = EDLocation.DistanceBetween(_lastLocation, CurrentLocation);
-            _lastLocation = CurrentLocation.Copy();
+            CurrentHeading = (int)EDLocation.BearingToLocation(_lastLocation, CurrentLocation);
+            _telemetry["CurrentHeading"] = $"{CurrentHeading}°";
+            _lastLocation = CurrentLocation;
 
             // Sanity check to avoid silly readings
             if (_lastDistanceMeasurement < 40 && distanceTravelled > 100)

@@ -25,6 +25,7 @@ namespace SRVTracker
         private Size _configShowing = new Size(738, 392);
         private Size _configHidden = new Size(298, 222);
         private static FormFlagsWatcher _formFlagsWatcher = null;
+        private static string _commanderName = null;
         private static string _clientId = null;
         private JournalReader _journalReader = null;
         public static event EventHandler CommanderLocationChanged;
@@ -57,11 +58,11 @@ namespace SRVTracker
             _journalReader.InterestingEventOccurred += _journalReader_InterestingEventOccurred;
             FormLocator.ServerAddress = (string)radioButtonUseDefaultServer.Tag;
             InitStatusLocation();
-            InitClientId();
+            InitCommanderName();
 
             // Attach our form configuration saver
             _formConfig = new ConfigSaverClass(this, true);
-            _formConfig.ExcludedControls.Add(textBoxClientId);
+            _formConfig.ExcludedControls.Add(textBoxCommanderName);
             _formConfig.ExcludedControls.Add(textBoxStatusFile);
             _formConfig.SaveEnabled = true;
             _formConfig.RestoreFormValues();
@@ -79,7 +80,7 @@ namespace SRVTracker
                 CheckForUpdate();
 
             if (checkBoxCaptureSRVTelemetry.Tag != null)
-                _srvTelemetry = new SRVTelemetry((string)checkBoxCaptureSRVTelemetry.Tag, _clientId);
+                _srvTelemetry = new SRVTelemetry((string)checkBoxCaptureSRVTelemetry.Tag, _commanderName);
             else
                 _srvTelemetry = new SRVTelemetry();
             if (checkBoxShowSRVTelemetry.Checked)
@@ -101,7 +102,7 @@ namespace SRVTracker
 
         private void _journalReader_InterestingEventOccurred(object sender, string eventJson)
         {
-            EDEvent updateEvent = new EDEvent(eventJson, textBoxClientId.Text);
+            EDEvent updateEvent = new EDEvent(eventJson, textBoxCommanderName.Text);
             UpdateUI(updateEvent);
         }
 
@@ -122,7 +123,7 @@ namespace SRVTracker
             _statusTimer.Start();
         }
 
-        private void InitClientId()
+        private void InitCommanderName()
         {
             // Check if we have an Id saved, and if not, generate one
             if (!File.Exists(ClientIdFile))
@@ -130,19 +131,20 @@ namespace SRVTracker
                 // First run, so show splash and prompt for commander name
                 using (FormFirstRun formFirstRun = new FormFirstRun())
                 {
+                    formFirstRun.textBoxCommanderName.Text = ReadCommanderNameFromJournal();
                     formFirstRun.ShowDialog(this);
-                    _clientId = formFirstRun.textBoxCommanderName.Text;
-                    if (String.IsNullOrEmpty(_clientId))
+                    _commanderName = formFirstRun.textBoxCommanderName.Text;
+                    if (String.IsNullOrEmpty(_commanderName))
                     {
-                        _clientId = ReadCommanderNameFromJournal();
-                        if (String.IsNullOrEmpty(_clientId))
+                        _commanderName = ReadCommanderNameFromJournal();
+                        if (String.IsNullOrEmpty(_commanderName))
                         {
-                            _clientId = Guid.NewGuid().ToString();
+                            _commanderName = Guid.NewGuid().ToString();
                         }
                     }
                     try
                     {
-                        File.WriteAllText(ClientIdFile, _clientId);
+                        File.WriteAllText(ClientIdFile, _commanderName);
                     }
                     catch (Exception ex)
                     {
@@ -155,20 +157,26 @@ namespace SRVTracker
                 try
                 {
                     // Read the file
-                    _clientId = File.ReadAllText(ClientIdFile);
+                    _commanderName = File.ReadAllText(ClientIdFile);
+                    int nl = _commanderName.IndexOf(Environment.NewLine);
+                    if (nl>0)
+                    {
+                        _clientId = _commanderName.Substring(nl + Environment.NewLine.Length);
+                        _commanderName = _commanderName.Substring(0, nl - 1);
+                    }
                 }
                 catch { }
             }
 
-            if (!String.IsNullOrEmpty(_clientId))
-                textBoxClientId.Text = _clientId;
+            if (!String.IsNullOrEmpty(_commanderName))
+                textBoxCommanderName.Text = _commanderName;
         }
 
-        public static string ClientId
+        public static string CommanderName
         {
             get
             {
-                return _clientId;
+                return _commanderName;
             }
         }
 
@@ -247,9 +255,9 @@ namespace SRVTracker
                 // we'll keep them in case this changes in future.
                 EDEvent updateEvent;
                 if (updateTimeStamp)
-                    updateEvent = new EDEvent(status, textBoxClientId.Text, DateTime.Now);
+                    updateEvent = new EDEvent(status, textBoxCommanderName.Text, DateTime.Now);
                 else
-                    updateEvent = new EDEvent(status, textBoxClientId.Text);
+                    updateEvent = new EDEvent(status, textBoxCommanderName.Text);
 
                 if (updateEvent.Flags != 0)
                     UpdateUI(updateEvent);
@@ -346,7 +354,7 @@ namespace SRVTracker
             }
 
             if (checkBoxCaptureSRVTelemetry.Checked)
-                _srvTelemetry?.ProcessEvent(edEvent);
+                _srvTelemetry.ProcessEvent(edEvent);
 
             if (edEvent.HasCoordinates())
             {
@@ -354,9 +362,7 @@ namespace SRVTracker
                 {
                     // We ignore the heading given by E: D, as that is direction we are facing, not travelling
                     // We calculate our direction based on previous location
-                    double distanceBetweenLocations = EDLocation.DistanceBetween(PreviousLocation, edEvent.Location());
-                    if (distanceBetweenLocations > 1)
-                        CurrentHeading = (int)EDLocation.BearingToLocation(PreviousLocation, edEvent.Location());
+                    CurrentHeading = _srvTelemetry.CurrentHeading;
                 }
                 else
                     CurrentHeading = edEvent.Heading;
@@ -383,21 +389,6 @@ namespace SRVTracker
         public int SpeedInMS
         {
             get { return _srvTelemetry.CurrentGroundSpeed; }
-        }
-
-        private void SaveToFile(EDEvent edEvent)
-        {
-            try
-            {
-                // This is very inefficient, save to file should only be enabled for debugging
-                // I may revisit this at some point if more features are added for local tracking
-                string eventData = eventData = edEvent.ToJson();
-                System.IO.File.AppendAllText(textBoxTelemetryFolder.Text, eventData);
-            }
-            catch (Exception ex)
-            {
-                checkBoxSaveTelemetryFolder.Checked = false;
-            }
         }
 
         private void UploadToServer(EDEvent edEvent)
@@ -445,14 +436,14 @@ namespace SRVTracker
 
         private void textBoxClientId_TextChanged(object sender, EventArgs e)
         {
-            if (textBoxClientId.Text.Contains(','))
-                textBoxClientId.Text = textBoxClientId.Text.Replace(",","");
-            if (!textBoxClientId.Text.Equals(_clientId))
+            if (textBoxCommanderName.Text.Contains(','))
+                textBoxCommanderName.Text = textBoxCommanderName.Text.Replace(",","");
+            if (!textBoxCommanderName.Text.Equals(_commanderName))
             {
-                _clientId = textBoxClientId.Text;
+                _commanderName = textBoxCommanderName.Text;
                 try
                 {
-                    File.WriteAllText(ClientIdFile, textBoxClientId.Text); // Too noisy, as it writes after every change! Too lazy to optimise this
+                    File.WriteAllText(ClientIdFile, textBoxCommanderName.Text); // Too noisy, as it writes after every change! Too lazy to optimise this
                 }
                 catch (Exception ex)
                 {
@@ -504,9 +495,20 @@ namespace SRVTracker
             }
         }
 
+        private void InitClientId()
+        {
+            // Check we have a client Id for uploading events to the server
+            // Using client Id is a simple way to avoid people being able to impersonate others
+            // Client Id is generated by the server on request, and mapped to a unique commander name
+
+            if (!String.IsNullOrEmpty(_clientId))
+                return;
+        }
+
         private void checkBoxUpload_CheckedChanged(object sender, EventArgs e)
         {
             UpdateServerSettings();
+            InitClientId();
             if (checkBoxUpload.Checked)
             {
                 // Create the UDP client for sending tracking data
@@ -620,7 +622,7 @@ namespace SRVTracker
             {
                 if (checkBoxUpload.Checked)
                 {
-                    if (String.IsNullOrEmpty(textBoxClientId.Text))
+                    if (String.IsNullOrEmpty(textBoxCommanderName.Text))
                         {
                             checkBoxUpload.Checked = false;
                             return;

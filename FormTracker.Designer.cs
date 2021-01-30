@@ -36,7 +36,7 @@
             this.statusFileWatcher = new System.IO.FileSystemWatcher();
             this.buttonTest = new System.Windows.Forms.Button();
             this.labelLastUpdateTime = new System.Windows.Forms.Label();
-            this.textBoxClientId = new System.Windows.Forms.TextBox();
+            this.textBoxCommanderName = new System.Windows.Forms.TextBox();
             this.textBoxTelemetryFolder = new System.Windows.Forms.TextBox();
             this.checkBoxSaveTelemetryFolder = new System.Windows.Forms.CheckBox();
             this.textBoxUploadServer = new System.Windows.Forms.TextBox();
@@ -73,6 +73,9 @@
             this.tabPageLogging = new System.Windows.Forms.TabPage();
             this.tabPageUpdate = new System.Windows.Forms.TabPage();
             this.buttonUpdate = new System.Windows.Forms.Button();
+            this.buttonUpdateName = new System.Windows.Forms.Button();
+            this.textBoxClientId = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.groupBoxStatusLocation.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.statusFileWatcher)).BeginInit();
             this.groupBox5.SuspendLayout();
@@ -134,7 +137,7 @@
             this.buttonTest.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonTest.ForeColor = System.Drawing.SystemColors.ControlText;
             this.buttonTest.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonTest.Location = new System.Drawing.Point(79, 73);
+            this.buttonTest.Location = new System.Drawing.Point(77, 107);
             this.buttonTest.Name = "buttonTest";
             this.buttonTest.Size = new System.Drawing.Size(136, 23);
             this.buttonTest.TabIndex = 5;
@@ -154,17 +157,17 @@
             this.labelLastUpdateTime.Text = "00:00:00";
             this.toolTip1.SetToolTip(this.labelLastUpdateTime, "Time last status update was received");
             // 
-            // textBoxClientId
+            // textBoxCommanderName
             // 
-            this.textBoxClientId.BackColor = System.Drawing.SystemColors.Window;
-            this.textBoxClientId.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.textBoxClientId.Location = new System.Drawing.Point(6, 19);
-            this.textBoxClientId.MaxLength = 25;
-            this.textBoxClientId.Name = "textBoxClientId";
-            this.textBoxClientId.Size = new System.Drawing.Size(294, 20);
-            this.textBoxClientId.TabIndex = 4;
-            this.toolTip1.SetToolTip(this.textBoxClientId, "Client Id (usually commander name) sent with status updates");
-            this.textBoxClientId.TextChanged += new System.EventHandler(this.textBoxClientId_TextChanged);
+            this.textBoxCommanderName.BackColor = System.Drawing.SystemColors.Window;
+            this.textBoxCommanderName.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.textBoxCommanderName.Location = new System.Drawing.Point(6, 19);
+            this.textBoxCommanderName.MaxLength = 25;
+            this.textBoxCommanderName.Name = "textBoxCommanderName";
+            this.textBoxCommanderName.Size = new System.Drawing.Size(229, 20);
+            this.textBoxCommanderName.TabIndex = 4;
+            this.toolTip1.SetToolTip(this.textBoxCommanderName, "Client Id (usually commander name) sent with status updates");
+            this.textBoxCommanderName.TextChanged += new System.EventHandler(this.textBoxClientId_TextChanged);
             // 
             // textBoxTelemetryFolder
             // 
@@ -223,7 +226,8 @@
             // 
             // groupBox5
             // 
-            this.groupBox5.Controls.Add(this.textBoxClientId);
+            this.groupBox5.Controls.Add(this.buttonUpdateName);
+            this.groupBox5.Controls.Add(this.textBoxCommanderName);
             this.groupBox5.ForeColor = System.Drawing.SystemColors.ControlText;
             this.groupBox5.Location = new System.Drawing.Point(6, 6);
             this.groupBox5.Name = "groupBox5";
@@ -559,6 +563,8 @@
             // 
             // tabPageCommander
             // 
+            this.tabPageCommander.Controls.Add(this.label2);
+            this.tabPageCommander.Controls.Add(this.textBoxClientId);
             this.tabPageCommander.Controls.Add(this.groupBox5);
             this.tabPageCommander.Controls.Add(this.buttonTest);
             this.tabPageCommander.Location = new System.Drawing.Point(4, 22);
@@ -635,6 +641,33 @@
             this.buttonUpdate.UseVisualStyleBackColor = true;
             this.buttonUpdate.Click += new System.EventHandler(this.buttonUpdate_Click);
             // 
+            // buttonUpdateName
+            // 
+            this.buttonUpdateName.Enabled = false;
+            this.buttonUpdateName.Location = new System.Drawing.Point(241, 17);
+            this.buttonUpdateName.Name = "buttonUpdateName";
+            this.buttonUpdateName.Size = new System.Drawing.Size(59, 23);
+            this.buttonUpdateName.TabIndex = 5;
+            this.buttonUpdateName.Text = "Update";
+            this.buttonUpdateName.UseVisualStyleBackColor = true;
+            // 
+            // textBoxClientId
+            // 
+            this.textBoxClientId.Location = new System.Drawing.Point(56, 62);
+            this.textBoxClientId.Name = "textBoxClientId";
+            this.textBoxClientId.ReadOnly = true;
+            this.textBoxClientId.Size = new System.Drawing.Size(256, 20);
+            this.textBoxClientId.TabIndex = 14;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(3, 65);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(47, 13);
+            this.label2.TabIndex = 15;
+            this.label2.Text = "Client id:";
+            // 
             // FormTracker
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -671,6 +704,7 @@
             this.groupBoxSRVTracker.PerformLayout();
             this.tabControlSettings.ResumeLayout(false);
             this.tabPageCommander.ResumeLayout(false);
+            this.tabPageCommander.PerformLayout();
             this.tabPageMonitoring.ResumeLayout(false);
             this.tabPageMonitoring.PerformLayout();
             this.tabPageServer.ResumeLayout(false);
@@ -696,7 +730,7 @@
         private System.Windows.Forms.CheckBox checkBoxSaveTelemetryFolder;
         private System.Windows.Forms.TextBox textBoxUploadServer;
         private System.Windows.Forms.CheckBox checkBoxUpload;
-        private System.Windows.Forms.TextBox textBoxClientId;
+        private System.Windows.Forms.TextBox textBoxCommanderName;
         private System.Windows.Forms.GroupBox groupBox8;
         private System.Windows.Forms.GroupBox groupBox6;
         private System.Windows.Forms.GroupBox groupBox5;
@@ -729,6 +763,9 @@
         private System.Windows.Forms.CheckBox checkBoxExportSRVTelemetry;
         private System.Windows.Forms.Button buttonSRVTelemetryExportSettings;
         private System.Windows.Forms.CheckBox checkBoxShowSRVTelemetry;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox textBoxClientId;
+        private System.Windows.Forms.Button buttonUpdateName;
     }
 }
 
