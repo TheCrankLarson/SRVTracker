@@ -732,7 +732,6 @@ namespace SRVTracker
 
         private void textBoxTelemetryFolder_Validated(object sender, EventArgs e)
         {
-            SRVTelemetry.SessionSaveFolder = textBoxTelemetryFolder.Text;
         }
 
         private void buttonBrowseTelemetryFolder_Click(object sender, EventArgs e)
@@ -749,6 +748,7 @@ namespace SRVTracker
                     try
                     {
                         textBoxTelemetryFolder.Text = new FileInfo(saveFileDialog.FileName).Directory.FullName;
+                        SRVTelemetry.SessionSaveFolder = textBoxTelemetryFolder.Text;
                     }
                     catch { }
                 }
@@ -759,5 +759,6 @@ namespace SRVTracker
         {
             _srvTelemetry?.SaveSession();
         }
+
     }
 }

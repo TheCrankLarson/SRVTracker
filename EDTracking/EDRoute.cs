@@ -11,7 +11,6 @@ namespace EDTracking
         private double _totalWaypointDistance = 0;
         private List<double> _waypointDistances = new List<double>();
         private List<double> _distanceLeftAtWaypoint = new List<double>();
-        private int _lastWaypointCount = 0;
         private string _saveFilename = "";
 
         public EDRoute()

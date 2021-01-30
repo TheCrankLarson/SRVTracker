@@ -13,6 +13,7 @@ namespace EDTracking
         public double HullHealth { get; set; } = 1;
         public int CurrentGroundSpeed { get; set; } = 0;
         public int SpeedAltitudeAdjusted { get; set; } = 0;
+        public int MaximumSpeedAltitudeAdjusted { get; set; } = 0;
         public int AverageGroundSpeed { get; set; } = 0;
         public int MaximumGroundSpeed { get; set; } = 0;
         public int MaximumAltitude { get; set; } = 0;
@@ -103,6 +104,7 @@ namespace EDTracking
             _telemetry.Add("CurrentAltitude", "0");
             _telemetry.Add("MaximumAltitude", "0");
             _telemetry.Add("SpeedAltitudeAdjusted", SpeedAltitudeAdjusted.ToString());
+            _telemetry.Add("MaximumSpeedAltitudeAdjusted", MaximumSpeedAltitudeAdjusted.ToString());
 
             SessionHistory.Clear();
             _srvTelemetryDisplay?.UpdateTargetData(Telemetry());
@@ -119,7 +121,8 @@ namespace EDTracking
                     { "MaximumGroundSpeed", "Maximum ground speed in m/s" },
                     { "CurrentAltitude", "Current altitude" },
                     { "MaximumAltitude", "Maximum altitude" },
-                    { "SpeedAltitudeAdjusted", "Current speed in m/s (includes altitude in calculation)" },
+                    { "SpeedAltitudeAdjusted", "Current speed in m/s (includes altitude adjustment)" },
+                    { "MaximumSpeedAltitudeAdjusted", "Maximum speed in m/s (includes altitude adjustment)" },
                     { "DistanceFromStart", "Distance from session start location" },
                     { "TotalDistanceTravelled", "Total distance travelled" },
                     { "TotalSRVShipRepairs", "Total number of SRV repairs via ship" },
@@ -134,7 +137,7 @@ namespace EDTracking
         public Dictionary<string,string> Telemetry()
         {            
             if (SessionStartTime>DateTime.MinValue)
-                _telemetry["SessionTime"] = DateTime.Now.Subtract(SessionStartTime).ToString(@"mm\:ss\:ff");
+                _telemetry["SessionTime"] = DateTime.Now.Subtract(SessionStartTime).ToString(@"hh\:mm\:ss");
 
             return _telemetry;
         }
@@ -167,7 +170,7 @@ namespace EDTracking
             if (SessionStartTime == DateTime.MinValue)
             {
                 SessionStartTime = edEvent.TimeStamp;
-                _telemetry["SessionStartTime"] = SessionStartTime.ToShortTimeString();
+                _telemetry["SessionStartTime"] = SessionStartTime.ToString("HH:mm:ss");
                 _telemetry["SessionDate"] = SessionStartTime.ToShortDateString();
             }
 
@@ -292,6 +295,11 @@ namespace EDTracking
                 double distanceWithAltitudeAdjustment = Math.Sqrt(Math.Pow(distanceBetweenLocations, 2) + Math.Pow(Math.Abs(_speedCalculationPreviousLocation.Altitude - CurrentLocation.Altitude), 2));
                 SpeedAltitudeAdjusted = Convert.ToInt32((distanceWithAltitudeAdjustment * 1000) / (double)timeBetweenLocations.TotalMilliseconds);
                 _telemetry["SpeedAltitudeAdjusted"] = $"{SpeedAltitudeAdjusted.ToString()} m/s";
+                if (SpeedAltitudeAdjusted > MaximumSpeedAltitudeAdjusted)
+                {
+                    MaximumSpeedAltitudeAdjusted = SpeedAltitudeAdjusted;
+                    _telemetry["MaximumSpeedAltitudeAdjusted"] = $"{MaximumSpeedAltitudeAdjusted.ToString()} m/s";
+                }
             }
             double speedInMS = (distanceBetweenLocations * 1000) / (double)timeBetweenLocations.TotalMilliseconds;
             _speedCalculationPreviousLocation = CurrentLocation;
