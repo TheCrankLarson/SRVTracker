@@ -306,11 +306,11 @@ namespace EDTracking
             {
                 double distanceWithAltitudeAdjustment = Math.Sqrt(Math.Pow(distanceBetweenLocations, 2) + Math.Pow(Math.Abs(_speedCalculationPreviousLocation.Altitude - CurrentLocation.Altitude), 2));
                 SpeedAltitudeAdjusted = Convert.ToInt32((distanceWithAltitudeAdjustment * 1000) / (double)timeBetweenLocations.TotalMilliseconds);
-                _telemetry["SpeedAltitudeAdjusted"] = $"{SpeedAltitudeAdjusted.ToString()} m/s";
+                _telemetry["SpeedAltitudeAdjusted"] = $"{SpeedAltitudeAdjusted} m/s";
                 if (SpeedAltitudeAdjusted > MaximumSpeedAltitudeAdjusted)
                 {
                     MaximumSpeedAltitudeAdjusted = SpeedAltitudeAdjusted;
-                    _telemetry["MaximumSpeedAltitudeAdjusted"] = $"{MaximumSpeedAltitudeAdjusted.ToString()} m/s";
+                    _telemetry["MaximumSpeedAltitudeAdjusted"] = $"{MaximumSpeedAltitudeAdjusted} m/s";
                 }
             }
             double speedInMS = (distanceBetweenLocations * 1000) / (double)timeBetweenLocations.TotalMilliseconds;

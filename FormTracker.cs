@@ -28,6 +28,7 @@ namespace SRVTracker
         private static string _commanderName = null;
         private static string _clientId = null;
         private JournalReader _journalReader = null;
+        private EDEvent _lastUploadedEvent = null;
         public static event EventHandler CommanderLocationChanged;
 
         public static EDLocation CurrentLocation { get; private set; } = new EDLocation();
@@ -119,8 +120,8 @@ namespace SRVTracker
                 ProcessStatusFileUpdate(_statusFile);
                 _lastFileWrite = lastWriteTime;
             }
-            else if ( DateTime.Now.Subtract(_lastStatusSend).TotalSeconds > 5 )
-                ProcessStatusFileUpdate(_statusFile, true); // This is the five second ping when we are watching for file updates
+            else if ( checkBoxUpload.Checked && (DateTime.Now.Subtract(_lastStatusSend).TotalSeconds > 5) )
+                UploadToServer(null, true); // This is the five second ping in case we are not moving (so no file updates)
 
             _statusTimer.Start();
         }
@@ -393,10 +394,16 @@ namespace SRVTracker
             get { return _vehicleTelemetry.CurrentGroundSpeed; }
         }
 
-        private void UploadToServer(EDEvent edEvent)
+        private void UploadToServer(EDEvent edEvent, bool ping = false)
         {
             if (_udpClient == null)
                 CreateUdpClient();
+            if (ping)
+            {
+                edEvent = _lastUploadedEvent;
+                edEvent.TimeStamp = DateTime.Now;
+            }
+
             try
             {
                 string eventData = edEvent.ToJson();
@@ -405,6 +412,7 @@ namespace SRVTracker
                 {
                     _udpClient.Send(sendBytes, sendBytes.Length);
                     _lastStatusSend = DateTime.Now;
+                    _lastUploadedEvent = edEvent;
                 }
                 catch (Exception e)
                 {
