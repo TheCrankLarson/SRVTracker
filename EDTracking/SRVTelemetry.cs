@@ -169,7 +169,7 @@ namespace EDTracking
         {
             if (SessionStartTime == DateTime.MinValue)
             {
-                SessionStartTime = edEvent.TimeStamp;
+                SessionStartTime = new DateTime(edEvent.TimeStamp.Year,edEvent.TimeStamp.Month, edEvent.TimeStamp.Day, edEvent.TimeStamp.Hour, edEvent.TimeStamp.Minute, edEvent.TimeStamp.Second);
                 _telemetry["SessionStartTime"] = SessionStartTime.ToString("HH:mm:ss");
                 _telemetry["SessionDate"] = SessionStartTime.ToShortDateString();
             }
