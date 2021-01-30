@@ -82,6 +82,8 @@ namespace SRVTracker
                 _srvTelemetry = new SRVTelemetry((string)checkBoxCaptureSRVTelemetry.Tag, _clientId);
             else
                 _srvTelemetry = new SRVTelemetry();
+            if (checkBoxShowSRVTelemetry.Checked)
+                _srvTelemetry.DisplayTelemetry();
         }
 
         private void CalculateWindowSizes()
@@ -253,20 +255,6 @@ namespace SRVTracker
                     UpdateUI(updateEvent);
             }
             catch { }
-
-            try
-            {
-                if (checkBoxSaveTelemetryFolder.Checked)
-                    File.AppendAllText(textBoxTelemetryFolder.Text, status);
-            }
-            catch (Exception ex)
-            {
-                Action action = new Action(() => { checkBoxSaveTelemetryFolder.Checked = false; });
-                if (checkBoxSaveTelemetryFolder.InvokeRequired)
-                    checkBoxSaveTelemetryFolder.Invoke(action);
-                else
-                    action();
-            }
         }
 
         private void buttonTest_Click(object sender, EventArgs e)
@@ -357,7 +345,8 @@ namespace SRVTracker
                     action();
             }
 
-            _srvTelemetry?.ProcessEvent(edEvent);
+            if (checkBoxCaptureSRVTelemetry.Checked)
+                _srvTelemetry?.ProcessEvent(edEvent);
 
             if (edEvent.HasCoordinates())
             {
@@ -542,6 +531,11 @@ namespace SRVTracker
         private void checkBoxSaveToFile_CheckedChanged(object sender, EventArgs e)
         {
             textBoxTelemetryFolder.Enabled = checkBoxSaveTelemetryFolder.Checked;
+            buttonBrowseTelemetryFolder.Enabled = checkBoxSaveTelemetryFolder.Checked;
+            if (!checkBoxSaveTelemetryFolder.Checked)
+                SRVTelemetry.SessionSaveFolder = "";
+            else
+                SRVTelemetry.SessionSaveFolder = textBoxTelemetryFolder.Text;
         }
 
         private void radioButtonUseDefaultServer_CheckedChanged(object sender, EventArgs e)
@@ -709,7 +703,8 @@ namespace SRVTracker
 
         private void checkBoxCaptureSRVTelemetry_CheckedChanged(object sender, EventArgs e)
         {
-
+            checkBoxExportSRVTelemetry.Enabled = checkBoxCaptureSRVTelemetry.Checked;
+            checkBoxShowSRVTelemetry.Enabled = checkBoxCaptureSRVTelemetry.Checked;
         }
 
         private void buttonSRVTelemetryExportSettings_Click(object sender, EventArgs e)
@@ -733,6 +728,36 @@ namespace SRVTracker
         private void buttonNewSession_Click(object sender, EventArgs e)
         {
             _srvTelemetry?.NewSession();
+        }
+
+        private void textBoxTelemetryFolder_Validated(object sender, EventArgs e)
+        {
+            SRVTelemetry.SessionSaveFolder = textBoxTelemetryFolder.Text;
+        }
+
+        private void buttonBrowseTelemetryFolder_Click(object sender, EventArgs e)
+        {
+            using (SaveFileDialog saveFileDialog = new SaveFileDialog())
+            {
+                saveFileDialog.InitialDirectory = textBoxTelemetryFolder.Text;
+                saveFileDialog.Filter = "json files (*.json)|*.json|All files (*.*)|*.*";
+                saveFileDialog.FilterIndex = 1;
+                saveFileDialog.RestoreDirectory = false;
+                saveFileDialog.FileName = "Session.json";
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        textBoxTelemetryFolder.Text = new FileInfo(saveFileDialog.FileName).Directory.FullName;
+                    }
+                    catch { }
+                }
+            }
+        }
+
+        private void FormTracker_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            _srvTelemetry?.SaveSession();
         }
     }
 }

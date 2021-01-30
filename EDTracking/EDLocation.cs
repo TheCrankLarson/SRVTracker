@@ -56,7 +56,7 @@ namespace EDTracking
         public static string DistanceToString(double distance)
         {
             if (distance < 1000)
-                return $"{distance.ToString("F1")} m";
+                return $"{distance.ToString("F0")} m";
             else if (distance<1000000)
                 return $"{(distance / 1000).ToString("F1")} km";
             return $"{(distance / 1000000).ToString("F1")} Mm";
@@ -111,11 +111,11 @@ namespace EDTracking
             if (R <= 0)
                 return 0;
 
-            double lat = ConvertToRadians(location2.Latitude - location1.Latitude);
-            double lng = ConvertToRadians(location2.Longitude - location1.Longitude);
-            double h1 = Math.Sin(lat / 2) * Math.Sin(lat / 2) +
+            double latDelta = ConvertToRadians(location2.Latitude - location1.Latitude);
+            double lonDelta = ConvertToRadians(location2.Longitude - location1.Longitude);
+            double h1 = Math.Sin(latDelta / 2) * Math.Sin(latDelta / 2) +
                           Math.Cos(ConvertToRadians(location1.Latitude)) * Math.Cos(ConvertToRadians(location2.Latitude)) *
-                          Math.Sin(lng / 2) * Math.Sin(lng / 2);
+                          Math.Sin(lonDelta / 2) * Math.Sin(lonDelta / 2);
             double h2 = (double)(2 * Math.Asin(Math.Min(1, Math.Sqrt(h1))));
             return Math.Abs(R * h2);
         }
@@ -125,22 +125,14 @@ namespace EDTracking
             if (location1.PlanetaryRadius != location2.PlanetaryRadius)
                 return 0;
 
+            if (location1.Altitude == location2.Altitude)
+                return DistanceBetween(location1, location2);
+
             double R = (double)location1.PlanetaryRadius;
             if (R <= 0)
                 return 0;
 
-            double R1 = R + (double)location1.Altitude;
-            double x_1 = R1 * Math.Sin((double)location1.Longitude) * Math.Cos((double)location1.Latitude);
-            double y_1 = R1 * Math.Sin((double)location1.Longitude) * Math.Sin((double)location1.Latitude);
-            double z_1 = R1 * Math.Cos((double)location1.Longitude);
-
-            double R2 = R + (double)location2.Altitude;
-            double x_2 = R2 * Math.Sin((double)location2.Longitude) * Math.Cos((double)location2.Latitude);
-            double y_2 = R2 * Math.Sin((double)location2.Longitude) * Math.Sin((double)location2.Latitude);
-            double z_2 = R2 * Math.Cos((double)location2.Longitude);
-
-            return (double)Math.Sqrt((x_2 - x_1) * (x_2 - x_1) + (y_2 - y_1) *
-                               (y_2 - y_1) + (z_2 - z_1) * (z_2 - z_1));
+            return Math.Sqrt(Math.Pow(DistanceBetween(location1, location2), 2) + Math.Pow(Math.Abs(location1.Altitude - location2.Altitude), 2));
         }
 
         public static double BearingToLocation(EDLocation sourceLocation, EDLocation targetLocation)

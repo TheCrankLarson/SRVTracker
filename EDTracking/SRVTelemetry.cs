@@ -3,24 +3,29 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.Json;
+using System.IO;
 
 namespace EDTracking
 {
     public class SRVTelemetry
     {
+        public double HullHealth { get; set; } = 1;
         public int CurrentGroundSpeed { get; set; } = 0;
+        public int SpeedAltitudeAdjusted { get; set; } = 0;
         public int AverageGroundSpeed { get; set; } = 0;
         public int MaximumGroundSpeed { get; set; } = 0;
         public int MaximumAltitude { get; set; } = 0;
         public double TotalDistanceTravelled { get; set; } = 0;
         public int TotalShipRepairs { get; set; } = 0;
         public int TotalSynthRepairs { get; set; } = 0;
+        public int TotalSRVsDestroyed { get; set; } = 0;
         public static string SessionSaveFolder { get; set; } = "Session Telemetry";
         public DateTime SessionStartTime { get; set; } = DateTime.MinValue;
         public EDLocation SessionStartLocation { get; set; } = null;
         private DateTime _lastEventTime = DateTime.MinValue;
         private EDLocation _lastLocation = null;
-        private List<EDEvent> _sessionHistory = new List<EDEvent>();
+        public List<EDEvent> SessionHistory = new List<EDEvent>();
         private EDLocation _speedCalculationPreviousLocation = null;
         private DateTime _speedCalculationTimeStamp = DateTime.UtcNow;
         private double[] _lastThreeSpeedReadings = new double[] { 0, 0, 0 };
@@ -51,6 +56,21 @@ namespace EDTracking
             _telemetry.Add("CommanderName", commanderName);
         }
 
+        public override string ToString()
+        {
+            return JsonSerializer.Serialize(this);
+        }
+
+        public static SRVTelemetry FromString(string telemetryInfo)
+        {
+            try
+            {
+                return (SRVTelemetry)JsonSerializer.Deserialize(telemetryInfo, typeof(SRVTelemetry));
+            }
+            catch { }
+            return null;
+        }
+
         private void InitSession()
         {
             CurrentGroundSpeed = 0;
@@ -59,27 +79,33 @@ namespace EDTracking
             AverageGroundSpeed = 0;
             MaximumGroundSpeed = 0;
             MaximumAltitude = 0;
+            SpeedAltitudeAdjusted = 0;
             TotalDistanceTravelled = 0;
             TotalShipRepairs = 0;
             TotalSynthRepairs = 0;
             SessionStartTime = DateTime.Now;
             SessionStartLocation = null;
+            TotalSRVsDestroyed = 0;
 
-            _telemetry = new Dictionary<string, string>();
+            _telemetry.Clear();
             _telemetry.Add("CurrentGroundSpeed", CurrentGroundSpeed.ToString());
+            _telemetry.Add("HullStrength", $"{(HullHealth * 100).ToString("F1")}%");
             _telemetry.Add("AverageGroundSpeed", AverageGroundSpeed.ToString());
             _telemetry.Add("MaximumGroundSpeed", MaximumGroundSpeed.ToString());
             _telemetry.Add("DistanceFromStart", "0m");
             _telemetry.Add("TotalDistanceTravelled", TotalDistanceTravelled.ToString("F1"));
             _telemetry.Add("TotalShipRepairs", TotalShipRepairs.ToString());
             _telemetry.Add("TotalSynthRepairs", TotalSynthRepairs.ToString());
-            _telemetry.Add("SessionStartTime", "NA");
+            _telemetry.Add("TotalSRVsDestroyed", "0");
+            _telemetry.Add("SessionStartTime", "");
+            _telemetry.Add("SessionDate", "");
             _telemetry.Add("SessionTime", "00:00:00");
             _telemetry.Add("CurrentAltitude", "0");
             _telemetry.Add("MaximumAltitude", "0");
+            _telemetry.Add("SpeedAltitudeAdjusted", SpeedAltitudeAdjusted.ToString());
 
-            _sessionHistory = new List<EDEvent>();
-
+            SessionHistory.Clear();
+            _srvTelemetryDisplay?.UpdateTargetData(Telemetry());
         }
 
         public static Dictionary<string, string> TelemetryDescriptions()
@@ -87,15 +113,19 @@ namespace EDTracking
             return new Dictionary<string, string>()
                 {
                     { "CommanderName", "Commander name" },
+                    { "HullStrength", "Last known hull value" },
                     { "CurrentGroundSpeed", "Current ground speed in m/s" },
                     { "AverageGroundSpeed", "Average ground speed in m/s" },
                     { "MaximumGroundSpeed", "Maximum ground speed in m/s" },
                     { "CurrentAltitude", "Current altitude" },
                     { "MaximumAltitude", "Maximum altitude" },
+                    { "SpeedAltitudeAdjusted", "Current speed in m/s (includes altitude in calculation)" },
                     { "DistanceFromStart", "Distance from session start location" },
                     { "TotalDistanceTravelled", "Total distance travelled" },
                     { "TotalSRVShipRepairs", "Total number of SRV repairs via ship" },
                     { "TotalSRVSynthRepairs", "Total number of synthesized repairs of the SRV" },
+                    { "TotalSRVsDestroyed", "Total number of SRVs lost" },
+                    { "SessionDate", "Session date" },
                     { "SessionStartTime", "Session start time" },
                     { "SessionTime", "Session total time" }
                 };
@@ -118,7 +148,18 @@ namespace EDTracking
 
         public void SaveSession()
         {
+            if (String.IsNullOrEmpty(SessionSaveFolder))
+                return;
 
+            string saveFile = SessionSaveFolder;
+            if (!saveFile.EndsWith("\\"))
+                saveFile = $"{saveFile}\\";
+            saveFile = $"{saveFile}{SessionStartTime.ToString("yyyyMMddhhmmss")} Session.json";
+            try
+            {
+                File.WriteAllText(saveFile, this.ToString());
+            }
+            catch { }
         }
 
         public void ProcessEvent(EDEvent edEvent)
@@ -126,7 +167,8 @@ namespace EDTracking
             if (SessionStartTime == DateTime.MinValue)
             {
                 SessionStartTime = edEvent.TimeStamp;
-                _telemetry["SessionStartTime"] = SessionStartTime.ToString();
+                _telemetry["SessionStartTime"] = SessionStartTime.ToShortTimeString();
+                _telemetry["SessionDate"] = SessionStartTime.ToShortDateString();
             }
 
             bool statsUpdated = ProcessFlags(edEvent);
@@ -134,6 +176,8 @@ namespace EDTracking
             {
                 case "DockSRV":
                     TotalShipRepairs++;
+                    HullHealth = 1;
+                    _telemetry["HullStrength"] = "100%";
                     _telemetry["TotalSRVShipRepairs"] = TotalShipRepairs.ToString();
                     statsUpdated = true;
                     _playerIsInSRV = false;
@@ -143,13 +187,30 @@ namespace EDTracking
                     _playerIsInSRV = true;
                     break;
 
+                case "Shutdown":
+                    SaveSession();
+                    break;
+
+                case "SRVDestroyed":
+                    _playerIsInSRV = false;
+                    TotalSRVsDestroyed++;
+                    _telemetry["TotalSRVsDestroyed"] = TotalSRVsDestroyed.ToString();
+                    statsUpdated = true;
+                    break;
+
+                case "HullDamage":
+                    HullHealth = edEvent.Health;
+                    _telemetry["HullStrength"] = $"{(HullHealth * 100).ToString("F1")}%";
+                    statsUpdated = true;
+                    break;
+
                 case "Synthesis":
                     TotalSynthRepairs++;
                     _telemetry["TotalSRVSynthRepairs"] = TotalSynthRepairs.ToString();
                     statsUpdated = true;
                     break;
 
-                default:
+                case "Status":
                     if (_playerIsInSRV && ProcessLocationUpdate(edEvent))
                         statsUpdated = true;
                     break;
@@ -158,8 +219,8 @@ namespace EDTracking
             _lastEventTime = edEvent.TimeStamp;
             if (statsUpdated)
             {
-                _sessionHistory.Add(edEvent);
-                _srvTelemetryDisplay.UpdateTargetData(Telemetry());
+                SessionHistory.Add(edEvent);
+                _srvTelemetryDisplay?.UpdateTargetData(Telemetry());
             }
         }
 
@@ -184,13 +245,13 @@ namespace EDTracking
                 return false;
 
             if (SessionStartLocation == null)
-                SessionStartLocation = currentLocation.Copy();
+                SessionStartLocation = currentLocation;
 
-            _telemetry["CurrentAltitude"] = EDLocation.DistanceToString(currentLocation.Altitude);
-            if (currentLocation.Altitude>MaximumAltitude)
+            _telemetry["CurrentAltitude"] = EDLocation.DistanceToString(edEvent.Altitude);
+            if ((int)edEvent.Altitude > MaximumAltitude)
             {
-                MaximumAltitude = (int)currentLocation.Altitude;
-                _telemetry["CurrentAltitude"] = EDLocation.DistanceToString(MaximumAltitude);
+                MaximumAltitude = (int)edEvent.Altitude;
+                _telemetry["MaximumAltitude"] = EDLocation.DistanceToString(MaximumAltitude);
             }
 
             if (_lastLocation==null)
@@ -215,7 +276,7 @@ namespace EDTracking
         {
             if (_speedCalculationPreviousLocation == null)
             {
-                _speedCalculationPreviousLocation = CurrentLocation.Copy();
+                _speedCalculationPreviousLocation = CurrentLocation;
                 _speedCalculationTimeStamp = TimeStamp;
                 return false;
             }
@@ -226,8 +287,14 @@ namespace EDTracking
             // We take a speed calculation once every 750 milliseconds
 
             double distanceBetweenLocations = EDLocation.DistanceBetween(_speedCalculationPreviousLocation, CurrentLocation);//EDLocation.DistanceBetweenIncludingAltitude(_speedCalculationPreviousLocation, CurrentLocation);
+            if (_speedCalculationPreviousLocation.Altitude != CurrentLocation.Altitude)
+            {
+                double distanceWithAltitudeAdjustment = Math.Sqrt(Math.Pow(distanceBetweenLocations, 2) + Math.Pow(Math.Abs(_speedCalculationPreviousLocation.Altitude - CurrentLocation.Altitude), 2));
+                SpeedAltitudeAdjusted = Convert.ToInt32((distanceWithAltitudeAdjustment * 1000) / (double)timeBetweenLocations.TotalMilliseconds);
+                _telemetry["SpeedAltitudeAdjusted"] = $"{SpeedAltitudeAdjusted.ToString()} m/s";
+            }
             double speedInMS = (distanceBetweenLocations * 1000) / (double)timeBetweenLocations.TotalMilliseconds;
-            _speedCalculationPreviousLocation = CurrentLocation.Copy();
+            _speedCalculationPreviousLocation = CurrentLocation;
             _speedCalculationTimeStamp = TimeStamp;
 
             // Update the total average speed
@@ -317,6 +384,7 @@ namespace EDTracking
                 _srvTelemetryDisplay = new FormTelemetryDisplay(_srvTelemetryWriter, "Commander Telemetry");
                 //_srvTelemetryDisplay.FormClosing += _targetTelemetryDisplay_FormClosing;
                 _srvTelemetryDisplay.InitialiseRows(TelemetryDescriptions());
+                _srvTelemetryDisplay.UpdateTargetData(Telemetry());
                 _srvTelemetryDisplay.Show(owner);
             }
             else if (!_srvTelemetryDisplay.Visible)

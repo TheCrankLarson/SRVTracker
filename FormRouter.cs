@@ -69,9 +69,9 @@ namespace SRVTracker
         private void CalculateWindowSizes()
         {
             // Calculate size with locations hidden
-            int leftBound = buttonClose.Location.X + buttonClose.Width;
+            int leftBound = tabControl1.Location.X + tabControl1.Width;
             _fullSize.Width = (this.Width - this.ClientRectangle.Width) + leftBound + 6;
-            int bottomBound = buttonClose.Location.Y + buttonClose.Height;
+            int bottomBound = tabControl1.Location.Y + tabControl1.Height;
             _fullSize.Height = (this.Height - this.ClientRectangle.Height) + bottomBound + 6;
         }
 

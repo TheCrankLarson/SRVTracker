@@ -260,11 +260,19 @@ namespace EDTracking
 
                 for (int i = 0; i < _telemetryTable.Rows.Count; i++)
                 {
-                    if (TargetData==null)
+                    if (TargetData == null)
                         _telemetryTable.Rows[i][1] = "";
-                    else if (_rowNameToReportName.ContainsKey(_telemetryTable.Rows[i][0].ToString()) &&
-                        TargetData.ContainsKey(_rowNameToReportName[_telemetryTable.Rows[i][0].ToString()]))
-                        _telemetryTable.Rows[i][1] = TargetData[_rowNameToReportName[_telemetryTable.Rows[i][0].ToString()]];
+                    else
+                    {
+                        
+                        if (_rowNameToReportName.ContainsKey(_telemetryTable.Rows[i][0].ToString()))
+                        {
+                            string fieldName = _rowNameToReportName[_telemetryTable.Rows[i][0].ToString()];
+                            if (TargetData.ContainsKey(fieldName))
+                                _telemetryTable.Rows[i][1] = TargetData[fieldName];
+                        }
+                        
+                    }
                 }
             });
         }

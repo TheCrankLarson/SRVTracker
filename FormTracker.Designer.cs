@@ -44,14 +44,11 @@
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.buttonNewSession = new System.Windows.Forms.Button();
-            this.radioButtonNewSessionOnGameStart = new System.Windows.Forms.RadioButton();
-            this.radioButtonNewSessionOnVehicleChange = new System.Windows.Forms.RadioButton();
-            this.label2 = new System.Windows.Forms.Label();
             this.buttonBrowseTelemetryFolder = new System.Windows.Forms.Button();
             this.checkBoxExportSRVTelemetry = new System.Windows.Forms.CheckBox();
             this.buttonSRVTelemetryExportSettings = new System.Windows.Forms.Button();
-            this.checkBoxShowSRVTelemetry = new System.Windows.Forms.CheckBox();
             this.checkBoxCaptureSRVTelemetry = new System.Windows.Forms.CheckBox();
+            this.checkBoxShowSRVTelemetry = new System.Windows.Forms.CheckBox();
             this.radioButtonUseCustomServer = new System.Windows.Forms.RadioButton();
             this.radioButtonUseDefaultServer = new System.Windows.Forms.RadioButton();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
@@ -174,18 +171,20 @@
             this.textBoxTelemetryFolder.BackColor = System.Drawing.SystemColors.Window;
             this.textBoxTelemetryFolder.Enabled = false;
             this.textBoxTelemetryFolder.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.textBoxTelemetryFolder.Location = new System.Drawing.Point(21, 42);
+            this.textBoxTelemetryFolder.Location = new System.Drawing.Point(45, 88);
             this.textBoxTelemetryFolder.Name = "textBoxTelemetryFolder";
-            this.textBoxTelemetryFolder.Size = new System.Drawing.Size(249, 20);
+            this.textBoxTelemetryFolder.ReadOnly = true;
+            this.textBoxTelemetryFolder.Size = new System.Drawing.Size(222, 20);
             this.textBoxTelemetryFolder.TabIndex = 3;
             this.textBoxTelemetryFolder.Text = "Session Telemetry";
             this.toolTip1.SetToolTip(this.textBoxTelemetryFolder, "The file to which status updates will be saved");
+            this.textBoxTelemetryFolder.Validated += new System.EventHandler(this.textBoxTelemetryFolder_Validated);
             // 
             // checkBoxSaveTelemetryFolder
             // 
             this.checkBoxSaveTelemetryFolder.AutoSize = true;
             this.checkBoxSaveTelemetryFolder.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.checkBoxSaveTelemetryFolder.Location = new System.Drawing.Point(158, 19);
+            this.checkBoxSaveTelemetryFolder.Location = new System.Drawing.Point(27, 65);
             this.checkBoxSaveTelemetryFolder.Name = "checkBoxSaveTelemetryFolder";
             this.checkBoxSaveTelemetryFolder.Size = new System.Drawing.Size(95, 17);
             this.checkBoxSaveTelemetryFolder.TabIndex = 2;
@@ -211,7 +210,7 @@
             // 
             this.checkBoxUpload.AutoSize = true;
             this.checkBoxUpload.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.checkBoxUpload.Location = new System.Drawing.Point(217, 87);
+            this.checkBoxUpload.Location = new System.Drawing.Point(219, 84);
             this.checkBoxUpload.Name = "checkBoxUpload";
             this.checkBoxUpload.Size = new System.Drawing.Size(60, 17);
             this.checkBoxUpload.TabIndex = 0;
@@ -236,16 +235,13 @@
             // groupBox6
             // 
             this.groupBox6.Controls.Add(this.buttonNewSession);
-            this.groupBox6.Controls.Add(this.radioButtonNewSessionOnGameStart);
-            this.groupBox6.Controls.Add(this.radioButtonNewSessionOnVehicleChange);
-            this.groupBox6.Controls.Add(this.label2);
             this.groupBox6.Controls.Add(this.buttonBrowseTelemetryFolder);
             this.groupBox6.Controls.Add(this.checkBoxExportSRVTelemetry);
             this.groupBox6.Controls.Add(this.buttonSRVTelemetryExportSettings);
-            this.groupBox6.Controls.Add(this.checkBoxShowSRVTelemetry);
             this.groupBox6.Controls.Add(this.checkBoxCaptureSRVTelemetry);
             this.groupBox6.Controls.Add(this.checkBoxSaveTelemetryFolder);
             this.groupBox6.Controls.Add(this.textBoxTelemetryFolder);
+            this.groupBox6.Controls.Add(this.checkBoxShowSRVTelemetry);
             this.groupBox6.ForeColor = System.Drawing.SystemColors.ControlText;
             this.groupBox6.Location = new System.Drawing.Point(6, 6);
             this.groupBox6.Name = "groupBox6";
@@ -256,63 +252,35 @@
             // 
             // buttonNewSession
             // 
-            this.buttonNewSession.Location = new System.Drawing.Point(6, 96);
+            this.buttonNewSession.Location = new System.Drawing.Point(246, 38);
             this.buttonNewSession.Name = "buttonNewSession";
-            this.buttonNewSession.Size = new System.Drawing.Size(82, 22);
+            this.buttonNewSession.Size = new System.Drawing.Size(54, 22);
             this.buttonNewSession.TabIndex = 21;
-            this.buttonNewSession.Text = "New session";
+            this.buttonNewSession.Text = "Reset";
             this.buttonNewSession.UseVisualStyleBackColor = true;
             this.buttonNewSession.Click += new System.EventHandler(this.buttonNewSession_Click);
             // 
-            // radioButtonNewSessionOnGameStart
-            // 
-            this.radioButtonNewSessionOnGameStart.AutoSize = true;
-            this.radioButtonNewSessionOnGameStart.Location = new System.Drawing.Point(221, 98);
-            this.radioButtonNewSessionOnGameStart.Name = "radioButtonNewSessionOnGameStart";
-            this.radioButtonNewSessionOnGameStart.Size = new System.Drawing.Size(76, 17);
-            this.radioButtonNewSessionOnGameStart.TabIndex = 20;
-            this.radioButtonNewSessionOnGameStart.Text = "Game start";
-            this.radioButtonNewSessionOnGameStart.UseVisualStyleBackColor = true;
-            // 
-            // radioButtonNewSessionOnVehicleChange
-            // 
-            this.radioButtonNewSessionOnVehicleChange.AutoSize = true;
-            this.radioButtonNewSessionOnVehicleChange.Checked = true;
-            this.radioButtonNewSessionOnVehicleChange.Location = new System.Drawing.Point(116, 99);
-            this.radioButtonNewSessionOnVehicleChange.Name = "radioButtonNewSessionOnVehicleChange";
-            this.radioButtonNewSessionOnVehicleChange.Size = new System.Drawing.Size(99, 17);
-            this.radioButtonNewSessionOnVehicleChange.TabIndex = 19;
-            this.radioButtonNewSessionOnVehicleChange.TabStop = true;
-            this.radioButtonNewSessionOnVehicleChange.Text = "Vehicle change";
-            this.radioButtonNewSessionOnVehicleChange.UseVisualStyleBackColor = true;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(88, 100);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(22, 13);
-            this.label2.TabIndex = 18;
-            this.label2.Text = "on:";
-            // 
             // buttonBrowseTelemetryFolder
             // 
+            this.buttonBrowseTelemetryFolder.Enabled = false;
             this.buttonBrowseTelemetryFolder.ForeColor = System.Drawing.SystemColors.ControlText;
             this.buttonBrowseTelemetryFolder.Image = global::SRVTracker.Properties.Resources.FolderOpened_16x;
-            this.buttonBrowseTelemetryFolder.Location = new System.Drawing.Point(273, 40);
+            this.buttonBrowseTelemetryFolder.Location = new System.Drawing.Point(273, 86);
             this.buttonBrowseTelemetryFolder.Name = "buttonBrowseTelemetryFolder";
             this.buttonBrowseTelemetryFolder.Size = new System.Drawing.Size(27, 23);
             this.buttonBrowseTelemetryFolder.TabIndex = 17;
             this.buttonBrowseTelemetryFolder.UseVisualStyleBackColor = true;
+            this.buttonBrowseTelemetryFolder.Click += new System.EventHandler(this.buttonBrowseTelemetryFolder_Click);
             // 
             // checkBoxExportSRVTelemetry
             // 
             this.checkBoxExportSRVTelemetry.AutoSize = true;
-            this.checkBoxExportSRVTelemetry.Location = new System.Drawing.Point(126, 72);
+            this.checkBoxExportSRVTelemetry.Location = new System.Drawing.Point(27, 42);
             this.checkBoxExportSRVTelemetry.Name = "checkBoxExportSRVTelemetry";
             this.checkBoxExportSRVTelemetry.Size = new System.Drawing.Size(56, 17);
             this.checkBoxExportSRVTelemetry.TabIndex = 16;
             this.checkBoxExportSRVTelemetry.Text = "Export";
+            this.toolTip1.SetToolTip(this.checkBoxExportSRVTelemetry, "If checked, any reports enabled in telemetry options will be exported");
             this.checkBoxExportSRVTelemetry.UseVisualStyleBackColor = true;
             this.checkBoxExportSRVTelemetry.CheckedChanged += new System.EventHandler(this.checkBoxExportSRVTelemetry_CheckedChanged);
             // 
@@ -320,26 +288,15 @@
             // 
             this.buttonSRVTelemetryExportSettings.Image = global::SRVTracker.Properties.Resources.Settings_16x;
             this.buttonSRVTelemetryExportSettings.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonSRVTelemetryExportSettings.Location = new System.Drawing.Point(6, 68);
+            this.buttonSRVTelemetryExportSettings.Location = new System.Drawing.Point(228, 15);
             this.buttonSRVTelemetryExportSettings.Name = "buttonSRVTelemetryExportSettings";
-            this.buttonSRVTelemetryExportSettings.Size = new System.Drawing.Size(114, 22);
+            this.buttonSRVTelemetryExportSettings.Size = new System.Drawing.Size(72, 22);
             this.buttonSRVTelemetryExportSettings.TabIndex = 15;
-            this.buttonSRVTelemetryExportSettings.Text = "Telemetry options";
+            this.buttonSRVTelemetryExportSettings.Text = "Settings";
             this.buttonSRVTelemetryExportSettings.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.toolTip1.SetToolTip(this.buttonSRVTelemetryExportSettings, "Edit race telemetry collection settings");
             this.buttonSRVTelemetryExportSettings.UseVisualStyleBackColor = true;
             this.buttonSRVTelemetryExportSettings.Click += new System.EventHandler(this.buttonSRVTelemetryExportSettings_Click);
-            // 
-            // checkBoxShowSRVTelemetry
-            // 
-            this.checkBoxShowSRVTelemetry.AutoSize = true;
-            this.checkBoxShowSRVTelemetry.Location = new System.Drawing.Point(188, 72);
-            this.checkBoxShowSRVTelemetry.Name = "checkBoxShowSRVTelemetry";
-            this.checkBoxShowSRVTelemetry.Size = new System.Drawing.Size(60, 17);
-            this.checkBoxShowSRVTelemetry.TabIndex = 14;
-            this.checkBoxShowSRVTelemetry.Text = "Display";
-            this.checkBoxShowSRVTelemetry.UseVisualStyleBackColor = true;
-            this.checkBoxShowSRVTelemetry.CheckedChanged += new System.EventHandler(this.checkBoxShowSRVTelemetry_CheckedChanged);
             // 
             // checkBoxCaptureSRVTelemetry
             // 
@@ -351,6 +308,17 @@
             this.checkBoxCaptureSRVTelemetry.Text = "Capture session telemetry";
             this.checkBoxCaptureSRVTelemetry.UseVisualStyleBackColor = true;
             this.checkBoxCaptureSRVTelemetry.CheckedChanged += new System.EventHandler(this.checkBoxCaptureSRVTelemetry_CheckedChanged);
+            // 
+            // checkBoxShowSRVTelemetry
+            // 
+            this.checkBoxShowSRVTelemetry.AutoSize = true;
+            this.checkBoxShowSRVTelemetry.Location = new System.Drawing.Point(89, 42);
+            this.checkBoxShowSRVTelemetry.Name = "checkBoxShowSRVTelemetry";
+            this.checkBoxShowSRVTelemetry.Size = new System.Drawing.Size(60, 17);
+            this.checkBoxShowSRVTelemetry.TabIndex = 14;
+            this.checkBoxShowSRVTelemetry.Text = "Display";
+            this.checkBoxShowSRVTelemetry.UseVisualStyleBackColor = true;
+            this.checkBoxShowSRVTelemetry.CheckedChanged += new System.EventHandler(this.checkBoxShowSRVTelemetry_CheckedChanged);
             // 
             // radioButtonUseCustomServer
             // 
@@ -427,7 +395,7 @@
             // 
             this.checkBoxTrack.AutoSize = true;
             this.checkBoxTrack.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.checkBoxTrack.Location = new System.Drawing.Point(146, 87);
+            this.checkBoxTrack.Location = new System.Drawing.Point(148, 84);
             this.checkBoxTrack.Name = "checkBoxTrack";
             this.checkBoxTrack.Size = new System.Drawing.Size(54, 17);
             this.checkBoxTrack.TabIndex = 18;
@@ -672,7 +640,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(353, 325);
+            this.ClientSize = new System.Drawing.Size(779, 325);
             this.Controls.Add(this.tabControlSettings);
             this.Controls.Add(this.groupBox8);
             this.Controls.Add(this.groupBoxSRVTracker);
@@ -689,6 +657,7 @@
             this.Name = "FormTracker";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Vehicle Tracker";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormTracker_FormClosing);
             this.groupBoxStatusLocation.ResumeLayout(false);
             this.groupBoxStatusLocation.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.statusFileWatcher)).EndInit();
@@ -756,9 +725,6 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.CheckBox checkBoxCaptureSRVTelemetry;
         private System.Windows.Forms.Button buttonNewSession;
-        private System.Windows.Forms.RadioButton radioButtonNewSessionOnGameStart;
-        private System.Windows.Forms.RadioButton radioButtonNewSessionOnVehicleChange;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button buttonBrowseTelemetryFolder;
         private System.Windows.Forms.CheckBox checkBoxExportSRVTelemetry;
         private System.Windows.Forms.Button buttonSRVTelemetryExportSettings;

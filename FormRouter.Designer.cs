@@ -105,10 +105,10 @@
             this.buttonStop = new System.Windows.Forms.Button();
             this.buttonStartRecording = new System.Windows.Forms.Button();
             this.buttonPlay = new System.Windows.Forms.Button();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.label12 = new System.Windows.Forms.Label();
             this.checkBoxScreenshot = new System.Windows.Forms.CheckBox();
             this.numericUpDownTotalLaps = new System.Windows.Forms.NumericUpDown();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.label12 = new System.Windows.Forms.Label();
             this.groupBoxAudioSettings = new System.Windows.Forms.GroupBox();
             this.comboBoxChooseSound = new System.Windows.Forms.ComboBox();
             this.listBoxAudioEvents = new System.Windows.Forms.ListBox();
@@ -136,8 +136,8 @@
             this.groupBoxBasic.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRadius)).BeginInit();
             this.groupBox1.SuspendLayout();
-            this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTotalLaps)).BeginInit();
+            this.groupBox3.SuspendLayout();
             this.groupBoxAudioSettings.SuspendLayout();
             this.circumnavigationContextMenuStrip.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -162,7 +162,7 @@
             this.groupBox2.Controls.Add(this.buttonDeleteWaypoint);
             this.groupBox2.Controls.Add(this.buttonAddWaypoint);
             this.groupBox2.Controls.Add(this.listBoxWaypoints);
-            this.groupBox2.Location = new System.Drawing.Point(372, 3);
+            this.groupBox2.Location = new System.Drawing.Point(3, 3);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(280, 232);
             this.groupBox2.TabIndex = 2;
@@ -947,7 +947,7 @@
             // buttonStop
             // 
             this.buttonStop.Image = global::SRVTracker.Properties.Resources.Stop_16x;
-            this.buttonStop.Location = new System.Drawing.Point(453, 241);
+            this.buttonStop.Location = new System.Drawing.Point(93, 245);
             this.buttonStop.Name = "buttonStop";
             this.buttonStop.Size = new System.Drawing.Size(34, 23);
             this.buttonStop.TabIndex = 10;
@@ -958,7 +958,7 @@
             // buttonStartRecording
             // 
             this.buttonStartRecording.Image = global::SRVTracker.Properties.Resources.RecordDot_16x;
-            this.buttonStartRecording.Location = new System.Drawing.Point(413, 241);
+            this.buttonStartRecording.Location = new System.Drawing.Point(53, 245);
             this.buttonStartRecording.Name = "buttonStartRecording";
             this.buttonStartRecording.Size = new System.Drawing.Size(34, 23);
             this.buttonStartRecording.TabIndex = 7;
@@ -969,36 +969,13 @@
             // buttonPlay
             // 
             this.buttonPlay.Image = global::SRVTracker.Properties.Resources.Run_16x1;
-            this.buttonPlay.Location = new System.Drawing.Point(373, 241);
+            this.buttonPlay.Location = new System.Drawing.Point(13, 245);
             this.buttonPlay.Name = "buttonPlay";
             this.buttonPlay.Size = new System.Drawing.Size(34, 23);
             this.buttonPlay.TabIndex = 11;
             this.toolTip1.SetToolTip(this.buttonPlay, "Play route");
             this.buttonPlay.UseVisualStyleBackColor = true;
             this.buttonPlay.Click += new System.EventHandler(this.buttonPlay_Click);
-            // 
-            // groupBox3
-            // 
-            this.groupBox3.Controls.Add(this.label12);
-            this.groupBox3.Controls.Add(this.checkBoxScreenshot);
-            this.groupBox3.Controls.Add(this.checkBoxTimeTrial);
-            this.groupBox3.Controls.Add(this.numericUpDownTotalLaps);
-            this.groupBox3.Controls.Add(this.checkBoxPlayIncudeDirection);
-            this.groupBox3.Location = new System.Drawing.Point(186, 61);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(163, 90);
-            this.groupBox3.TabIndex = 16;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Tracking options";
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(130, 43);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(26, 13);
-            this.label12.TabIndex = 5;
-            this.label12.Text = "laps";
             // 
             // checkBoxScreenshot
             // 
@@ -1029,6 +1006,29 @@
             0,
             0,
             0});
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.label12);
+            this.groupBox3.Controls.Add(this.checkBoxScreenshot);
+            this.groupBox3.Controls.Add(this.checkBoxTimeTrial);
+            this.groupBox3.Controls.Add(this.numericUpDownTotalLaps);
+            this.groupBox3.Controls.Add(this.checkBoxPlayIncudeDirection);
+            this.groupBox3.Location = new System.Drawing.Point(186, 61);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(163, 90);
+            this.groupBox3.TabIndex = 16;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Tracking options";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(130, 43);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(26, 13);
+            this.label12.TabIndex = 5;
+            this.label12.Text = "laps";
             // 
             // groupBoxAudioSettings
             // 
@@ -1119,10 +1119,10 @@
             // 
             // tabControl1
             // 
-            this.tabControl1.Controls.Add(this.tabPageRoute);
             this.tabControl1.Controls.Add(this.tabPageWaypoints);
+            this.tabControl1.Controls.Add(this.tabPageRoute);
             this.tabControl1.Controls.Add(this.tabPageAudio);
-            this.tabControl1.Location = new System.Drawing.Point(3, 3);
+            this.tabControl1.Location = new System.Drawing.Point(289, 3);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(363, 285);
@@ -1164,7 +1164,7 @@
             // 
             // buttonClose
             // 
-            this.buttonClose.Location = new System.Drawing.Point(571, 259);
+            this.buttonClose.Location = new System.Drawing.Point(208, 245);
             this.buttonClose.Name = "buttonClose";
             this.buttonClose.Size = new System.Drawing.Size(75, 23);
             this.buttonClose.TabIndex = 20;
@@ -1208,9 +1208,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRadius)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTotalLaps)).EndInit();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTotalLaps)).EndInit();
             this.groupBoxAudioSettings.ResumeLayout(false);
             this.groupBoxAudioSettings.PerformLayout();
             this.circumnavigationContextMenuStrip.ResumeLayout(false);
