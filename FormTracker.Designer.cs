@@ -42,6 +42,7 @@
             this.textBoxUploadServer = new System.Windows.Forms.TextBox();
             this.checkBoxUpload = new System.Windows.Forms.CheckBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.buttonUpdateName = new System.Windows.Forms.Button();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.buttonNewSession = new System.Windows.Forms.Button();
             this.buttonBrowseTelemetryFolder = new System.Windows.Forms.Button();
@@ -67,15 +68,16 @@
             this.groupBoxSRVTracker = new System.Windows.Forms.GroupBox();
             this.tabControlSettings = new System.Windows.Forms.TabControl();
             this.tabPageCommander = new System.Windows.Forms.TabPage();
+            this.label2 = new System.Windows.Forms.Label();
+            this.textBoxClientId = new System.Windows.Forms.TextBox();
             this.tabPageMonitoring = new System.Windows.Forms.TabPage();
             this.tabPageServer = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tabPageLogging = new System.Windows.Forms.TabPage();
             this.tabPageUpdate = new System.Windows.Forms.TabPage();
             this.buttonUpdate = new System.Windows.Forms.Button();
-            this.buttonUpdateName = new System.Windows.Forms.Button();
-            this.textBoxClientId = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
+            this.radioButtonSRVTelemetry = new System.Windows.Forms.RadioButton();
+            this.radioButtonShipTelemetry = new System.Windows.Forms.RadioButton();
             this.groupBoxStatusLocation.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.statusFileWatcher)).BeginInit();
             this.groupBox5.SuspendLayout();
@@ -236,8 +238,20 @@
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Name";
             // 
+            // buttonUpdateName
+            // 
+            this.buttonUpdateName.Enabled = false;
+            this.buttonUpdateName.Location = new System.Drawing.Point(241, 17);
+            this.buttonUpdateName.Name = "buttonUpdateName";
+            this.buttonUpdateName.Size = new System.Drawing.Size(59, 23);
+            this.buttonUpdateName.TabIndex = 5;
+            this.buttonUpdateName.Text = "Update";
+            this.buttonUpdateName.UseVisualStyleBackColor = true;
+            // 
             // groupBox6
             // 
+            this.groupBox6.Controls.Add(this.radioButtonShipTelemetry);
+            this.groupBox6.Controls.Add(this.radioButtonSRVTelemetry);
             this.groupBox6.Controls.Add(this.buttonNewSession);
             this.groupBox6.Controls.Add(this.buttonBrowseTelemetryFolder);
             this.groupBox6.Controls.Add(this.checkBoxExportSRVTelemetry);
@@ -307,9 +321,9 @@
             this.checkBoxCaptureSRVTelemetry.AutoSize = true;
             this.checkBoxCaptureSRVTelemetry.Location = new System.Drawing.Point(6, 19);
             this.checkBoxCaptureSRVTelemetry.Name = "checkBoxCaptureSRVTelemetry";
-            this.checkBoxCaptureSRVTelemetry.Size = new System.Drawing.Size(146, 17);
+            this.checkBoxCaptureSRVTelemetry.Size = new System.Drawing.Size(111, 17);
             this.checkBoxCaptureSRVTelemetry.TabIndex = 4;
-            this.checkBoxCaptureSRVTelemetry.Text = "Capture session telemetry";
+            this.checkBoxCaptureSRVTelemetry.Text = "Capture telemetry:";
             this.checkBoxCaptureSRVTelemetry.UseVisualStyleBackColor = true;
             this.checkBoxCaptureSRVTelemetry.CheckedChanged += new System.EventHandler(this.checkBoxCaptureSRVTelemetry_CheckedChanged);
             // 
@@ -574,6 +588,23 @@
             this.tabPageCommander.Text = "Commander";
             this.tabPageCommander.UseVisualStyleBackColor = true;
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(3, 65);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(47, 13);
+            this.label2.TabIndex = 15;
+            this.label2.Text = "Client id:";
+            // 
+            // textBoxClientId
+            // 
+            this.textBoxClientId.Location = new System.Drawing.Point(56, 62);
+            this.textBoxClientId.Name = "textBoxClientId";
+            this.textBoxClientId.ReadOnly = true;
+            this.textBoxClientId.Size = new System.Drawing.Size(256, 20);
+            this.textBoxClientId.TabIndex = 14;
+            // 
             // tabPageMonitoring
             // 
             this.tabPageMonitoring.Controls.Add(this.groupBoxStatusLocation);
@@ -641,32 +672,29 @@
             this.buttonUpdate.UseVisualStyleBackColor = true;
             this.buttonUpdate.Click += new System.EventHandler(this.buttonUpdate_Click);
             // 
-            // buttonUpdateName
+            // radioButtonSRVTelemetry
             // 
-            this.buttonUpdateName.Enabled = false;
-            this.buttonUpdateName.Location = new System.Drawing.Point(241, 17);
-            this.buttonUpdateName.Name = "buttonUpdateName";
-            this.buttonUpdateName.Size = new System.Drawing.Size(59, 23);
-            this.buttonUpdateName.TabIndex = 5;
-            this.buttonUpdateName.Text = "Update";
-            this.buttonUpdateName.UseVisualStyleBackColor = true;
+            this.radioButtonSRVTelemetry.AutoSize = true;
+            this.radioButtonSRVTelemetry.Checked = true;
+            this.radioButtonSRVTelemetry.Location = new System.Drawing.Point(123, 18);
+            this.radioButtonSRVTelemetry.Name = "radioButtonSRVTelemetry";
+            this.radioButtonSRVTelemetry.Size = new System.Drawing.Size(47, 17);
+            this.radioButtonSRVTelemetry.TabIndex = 22;
+            this.radioButtonSRVTelemetry.TabStop = true;
+            this.radioButtonSRVTelemetry.Text = "SRV";
+            this.radioButtonSRVTelemetry.UseVisualStyleBackColor = true;
+            this.radioButtonSRVTelemetry.CheckedChanged += new System.EventHandler(this.radioButtonSRVTelemetry_CheckedChanged);
             // 
-            // textBoxClientId
+            // radioButtonShipTelemetry
             // 
-            this.textBoxClientId.Location = new System.Drawing.Point(56, 62);
-            this.textBoxClientId.Name = "textBoxClientId";
-            this.textBoxClientId.ReadOnly = true;
-            this.textBoxClientId.Size = new System.Drawing.Size(256, 20);
-            this.textBoxClientId.TabIndex = 14;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(3, 65);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(47, 13);
-            this.label2.TabIndex = 15;
-            this.label2.Text = "Client id:";
+            this.radioButtonShipTelemetry.AutoSize = true;
+            this.radioButtonShipTelemetry.Location = new System.Drawing.Point(176, 18);
+            this.radioButtonShipTelemetry.Name = "radioButtonShipTelemetry";
+            this.radioButtonShipTelemetry.Size = new System.Drawing.Size(46, 17);
+            this.radioButtonShipTelemetry.TabIndex = 23;
+            this.radioButtonShipTelemetry.Text = "Ship";
+            this.radioButtonShipTelemetry.UseVisualStyleBackColor = true;
+            this.radioButtonShipTelemetry.CheckedChanged += new System.EventHandler(this.radioButtonShipTelemetry_CheckedChanged);
             // 
             // FormTracker
             // 
@@ -766,6 +794,8 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox textBoxClientId;
         private System.Windows.Forms.Button buttonUpdateName;
+        private System.Windows.Forms.RadioButton radioButtonShipTelemetry;
+        private System.Windows.Forms.RadioButton radioButtonSRVTelemetry;
     }
 }
 

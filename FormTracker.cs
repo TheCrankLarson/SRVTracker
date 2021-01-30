@@ -262,8 +262,7 @@ namespace SRVTracker
                 else
                     updateEvent = new EDEvent(status, textBoxCommanderName.Text);
 
-                if (updateEvent.Flags != 0)
-                    UpdateUI(updateEvent);
+                UpdateUI(updateEvent);
             }
             catch { }
         }
@@ -339,7 +338,8 @@ namespace SRVTracker
             if (checkBoxUpload.Checked)
                 UploadToServer(edEvent);
 
-            _formFlagsWatcher?.UpdateFlags(edEvent.Flags);
+            if (edEvent.Flags>0)
+                _formFlagsWatcher?.UpdateFlags(edEvent.Flags);
 
             if ( (edEvent.PlanetRadius > 0) && (FormLocator.PlanetaryRadius != edEvent.PlanetRadius) )
                 FormLocator.PlanetaryRadius = edEvent.PlanetRadius;
@@ -356,8 +356,7 @@ namespace SRVTracker
                     action();
             }
 
-            if (checkBoxCaptureSRVTelemetry.Checked)
-                _vehicleTelemetry.ProcessEvent(edEvent);
+            _vehicleTelemetry.ProcessEvent(edEvent, !checkBoxCaptureSRVTelemetry.Checked);
 
             if (edEvent.HasCoordinates())
             {
@@ -700,6 +699,8 @@ namespace SRVTracker
         {
             checkBoxExportSRVTelemetry.Enabled = checkBoxCaptureSRVTelemetry.Checked;
             checkBoxShowSRVTelemetry.Enabled = checkBoxCaptureSRVTelemetry.Checked;
+            radioButtonShipTelemetry.Enabled = checkBoxCaptureSRVTelemetry.Checked;
+            radioButtonSRVTelemetry.Enabled = checkBoxCaptureSRVTelemetry.Checked;
         }
 
         private void buttonSRVTelemetryExportSettings_Click(object sender, EventArgs e)
@@ -773,6 +774,16 @@ namespace SRVTracker
                 _commanderName = textBoxCommanderName.Text;
                 SaveClientId();
             }
+        }
+
+        private void radioButtonSRVTelemetry_CheckedChanged(object sender, EventArgs e)
+        {
+            _vehicleTelemetry.TrackSRV = radioButtonSRVTelemetry.Checked;
+        }
+
+        private void radioButtonShipTelemetry_CheckedChanged(object sender, EventArgs e)
+        {
+            _vehicleTelemetry.TrackSRV = radioButtonSRVTelemetry.Checked;
         }
     }
 }

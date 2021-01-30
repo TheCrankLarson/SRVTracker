@@ -20,6 +20,7 @@ namespace EDTracking
         public int MaximumAltitude { get; set; } = 0;
         public int MinimumAltitude { get; set; } = int.MaxValue;
         public double TotalDistanceTravelled { get; set; } = 0;
+        public bool TrackSRV { get; set; } = true;
         public int TotalShipRepairs { get; set; } = 0;
         public int TotalSynthRepairs { get; set; } = 0;
         public int TotalSRVsDestroyed { get; set; } = 0;
@@ -172,7 +173,7 @@ namespace EDTracking
             catch { }
         }
 
-        public void ProcessEvent(EDEvent edEvent)
+        public void ProcessEvent(EDEvent edEvent, bool noHistory = false)
         {
             if (SessionStartTime == DateTime.MinValue)
             {
@@ -220,8 +221,8 @@ namespace EDTracking
                     statsUpdated = true;
                     break;
 
-                case "Status":
-                    if (_playerIsInSRV && ProcessLocationUpdate(edEvent))
+                case "Status": // We only process location updates if the event is for the correct vehicle (ship or SRV)
+                    if ((_playerIsInSRV == TrackSRV) && ProcessLocationUpdate(edEvent))
                         statsUpdated = true;
                     break;
             }
@@ -229,7 +230,8 @@ namespace EDTracking
             _lastEventTime = edEvent.TimeStamp;
             if (statsUpdated)
             {
-                SessionHistory.Add(edEvent);
+                if (!noHistory)
+                    SessionHistory.Add(edEvent);
                 _srvTelemetryDisplay?.UpdateTargetData(Telemetry());
             }
         }
