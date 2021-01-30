@@ -34,7 +34,7 @@ namespace SRVTracker
         public static EDLocation PreviousLocation { get; private set; } = new EDLocation();
         public static int CurrentHeading { get; private set; } = -1;
 
-        private SRVTelemetry _srvTelemetry = null;
+        private VehicleTelemetry _vehicleTelemetry = null;
 
         private ConfigSaverClass _formConfig = null;
         const double STATUS_JSON_CHECK_INTERVAL = 700;
@@ -63,6 +63,7 @@ namespace SRVTracker
             // Attach our form configuration saver
             _formConfig = new ConfigSaverClass(this, true);
             _formConfig.ExcludedControls.Add(textBoxCommanderName);
+            _formConfig.ExcludedControls.Add(textBoxClientId);
             _formConfig.ExcludedControls.Add(textBoxStatusFile);
             _formConfig.SaveEnabled = true;
             _formConfig.RestoreFormValues();
@@ -80,11 +81,12 @@ namespace SRVTracker
                 CheckForUpdate();
 
             if (checkBoxCaptureSRVTelemetry.Tag != null)
-                _srvTelemetry = new SRVTelemetry((string)checkBoxCaptureSRVTelemetry.Tag, _commanderName);
+                _vehicleTelemetry = new VehicleTelemetry((string)checkBoxCaptureSRVTelemetry.Tag, _commanderName);
             else
-                _srvTelemetry = new SRVTelemetry();
+                _vehicleTelemetry = new VehicleTelemetry();
+            VehicleTelemetry.SessionSaveFolder = textBoxTelemetryFolder.Text;
             if (checkBoxShowSRVTelemetry.Checked)
-                _srvTelemetry.DisplayTelemetry();
+                _vehicleTelemetry.DisplayTelemetry();
         }
 
         private void CalculateWindowSizes()
@@ -162,7 +164,7 @@ namespace SRVTracker
                     if (nl>0)
                     {
                         _clientId = _commanderName.Substring(nl + Environment.NewLine.Length);
-                        _commanderName = _commanderName.Substring(0, nl - 1);
+                        _commanderName = _commanderName.Substring(0, nl);
                     }
                 }
                 catch { }
@@ -354,7 +356,7 @@ namespace SRVTracker
             }
 
             if (checkBoxCaptureSRVTelemetry.Checked)
-                _srvTelemetry.ProcessEvent(edEvent);
+                _vehicleTelemetry.ProcessEvent(edEvent);
 
             if (edEvent.HasCoordinates())
             {
@@ -362,7 +364,7 @@ namespace SRVTracker
                 {
                     // We ignore the heading given by E: D, as that is direction we are facing, not travelling
                     // We calculate our direction based on previous location
-                    CurrentHeading = _srvTelemetry.CurrentHeading;
+                    CurrentHeading = _vehicleTelemetry.CurrentHeading;
                 }
                 else
                     CurrentHeading = edEvent.Heading;
@@ -388,7 +390,7 @@ namespace SRVTracker
 
         public int SpeedInMS
         {
-            get { return _srvTelemetry.CurrentGroundSpeed; }
+            get { return _vehicleTelemetry.CurrentGroundSpeed; }
         }
 
         private void UploadToServer(EDEvent edEvent)
@@ -430,23 +432,6 @@ namespace SRVTracker
                         textBoxStatusFile.Text = new FileInfo(openFileDialog.FileName).Directory.FullName;
                     }
                     catch { }
-                }
-            }
-        }
-
-        private void textBoxClientId_TextChanged(object sender, EventArgs e)
-        {
-            if (textBoxCommanderName.Text.Contains(','))
-                textBoxCommanderName.Text = textBoxCommanderName.Text.Replace(",","");
-            if (!textBoxCommanderName.Text.Equals(_commanderName))
-            {
-                _commanderName = textBoxCommanderName.Text;
-                try
-                {
-                    File.WriteAllText(ClientIdFile, textBoxCommanderName.Text); // Too noisy, as it writes after every change! Too lazy to optimise this
-                }
-                catch (Exception ex)
-                {
                 }
             }
         }
@@ -535,9 +520,9 @@ namespace SRVTracker
             textBoxTelemetryFolder.Enabled = checkBoxSaveTelemetryFolder.Checked;
             buttonBrowseTelemetryFolder.Enabled = checkBoxSaveTelemetryFolder.Checked;
             if (!checkBoxSaveTelemetryFolder.Checked)
-                SRVTelemetry.SessionSaveFolder = "";
+                VehicleTelemetry.SessionSaveFolder = "";
             else
-                SRVTelemetry.SessionSaveFolder = textBoxTelemetryFolder.Text;
+                VehicleTelemetry.SessionSaveFolder = textBoxTelemetryFolder.Text;
         }
 
         private void radioButtonUseDefaultServer_CheckedChanged(object sender, EventArgs e)
@@ -711,15 +696,15 @@ namespace SRVTracker
 
         private void buttonSRVTelemetryExportSettings_Click(object sender, EventArgs e)
         {
-            _srvTelemetry.EditSettings(checkBoxCaptureSRVTelemetry, this);
+            _vehicleTelemetry.EditSettings(checkBoxCaptureSRVTelemetry, this);
         }
 
         private void checkBoxShowSRVTelemetry_CheckedChanged(object sender, EventArgs e)
         {
             if (checkBoxShowSRVTelemetry.Checked)
-                _srvTelemetry?.DisplayTelemetry();
+                _vehicleTelemetry?.DisplayTelemetry();
             else
-                _srvTelemetry?.HideTelemetry();
+                _vehicleTelemetry?.HideTelemetry();
         }
 
         private void checkBoxExportSRVTelemetry_CheckedChanged(object sender, EventArgs e)
@@ -729,7 +714,7 @@ namespace SRVTracker
 
         private void buttonNewSession_Click(object sender, EventArgs e)
         {
-            _srvTelemetry?.NewSession();
+            _vehicleTelemetry.NewSession();
         }
 
         private void textBoxTelemetryFolder_Validated(object sender, EventArgs e)
@@ -750,7 +735,7 @@ namespace SRVTracker
                     try
                     {
                         textBoxTelemetryFolder.Text = new FileInfo(saveFileDialog.FileName).Directory.FullName;
-                        SRVTelemetry.SessionSaveFolder = textBoxTelemetryFolder.Text;
+                        VehicleTelemetry.SessionSaveFolder = textBoxTelemetryFolder.Text;
                     }
                     catch { }
                 }
@@ -759,8 +744,27 @@ namespace SRVTracker
 
         private void FormTracker_FormClosing(object sender, FormClosingEventArgs e)
         {
-            _srvTelemetry?.SaveSession();
+            _vehicleTelemetry?.SaveSession();
         }
 
+        private void SaveClientId()
+        {
+            try
+            {
+                File.WriteAllText(ClientIdFile, $"{textBoxCommanderName.Text}{Environment.NewLine}{_clientId}");
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+
+        private void textBoxCommanderName_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (!textBoxCommanderName.Text.Equals(_commanderName))
+            {
+                _commanderName = textBoxCommanderName.Text;
+                SaveClientId();
+            }
+        }
     }
 }

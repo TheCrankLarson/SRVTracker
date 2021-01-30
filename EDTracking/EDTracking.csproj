@@ -138,7 +138,7 @@
     <Compile Include="RaceTimer.xaml.cs">
       <DependentUpon>RaceTimer.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SRVTelemetry.cs" />
+    <Compile Include="VehicleTelemetry.cs" />
     <Compile Include="TelemetryTable.xaml.cs">
       <DependentUpon>TelemetryTable.xaml</DependentUpon>
     </Compile>

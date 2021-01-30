@@ -8,7 +8,7 @@ using System.IO;
 
 namespace EDTracking
 {
-    public class SRVTelemetry
+    public class VehicleTelemetry
     {
         public double HullHealth { get; set; } = 1;
         public int CurrentGroundSpeed { get; set; } = 0;
@@ -18,6 +18,7 @@ namespace EDTracking
         public int AverageGroundSpeed { get; set; } = 0;
         public int MaximumGroundSpeed { get; set; } = 0;
         public int MaximumAltitude { get; set; } = 0;
+        public int MinimumAltitude { get; set; } = int.MaxValue;
         public double TotalDistanceTravelled { get; set; } = 0;
         public int TotalShipRepairs { get; set; } = 0;
         public int TotalSynthRepairs { get; set; } = 0;
@@ -43,13 +44,13 @@ namespace EDTracking
         private Dictionary<string, string> _telemetry = new Dictionary<string, string>();
 
 
-        public SRVTelemetry()
+        public VehicleTelemetry()
         {
             _srvTelemetryWriter = new TelemetryWriter();
             InitSession();
         }
 
-        public SRVTelemetry(string settingJson, string commanderName): base()
+        public VehicleTelemetry(string settingJson, string commanderName): base()
         {
             if (!String.IsNullOrEmpty(settingJson))
                 _srvTelemetryWriter = new TelemetryWriter(settingJson);
@@ -63,11 +64,11 @@ namespace EDTracking
             return JsonSerializer.Serialize(this);
         }
 
-        public static SRVTelemetry FromString(string telemetryInfo)
+        public static VehicleTelemetry FromString(string telemetryInfo)
         {
             try
             {
-                return (SRVTelemetry)JsonSerializer.Deserialize(telemetryInfo, typeof(SRVTelemetry));
+                return (VehicleTelemetry)JsonSerializer.Deserialize(telemetryInfo, typeof(VehicleTelemetry));
             }
             catch { }
             return null;
@@ -81,6 +82,7 @@ namespace EDTracking
             AverageGroundSpeed = 0;
             MaximumGroundSpeed = 0;
             MaximumAltitude = 0;
+            MinimumAltitude = int.MaxValue;
             SpeedAltitudeAdjusted = 0;
             TotalDistanceTravelled = 0;
             TotalShipRepairs = 0;
@@ -105,6 +107,7 @@ namespace EDTracking
             _telemetry.Add("SessionTime", "00:00:00");
             _telemetry.Add("CurrentAltitude", "0");
             _telemetry.Add("MaximumAltitude", "0");
+            _telemetry.Add("MinimumAltitude", "NA");
             _telemetry.Add("SpeedAltitudeAdjusted", SpeedAltitudeAdjusted.ToString());
             _telemetry.Add("MaximumSpeedAltitudeAdjusted", MaximumSpeedAltitudeAdjusted.ToString());
 
@@ -124,6 +127,7 @@ namespace EDTracking
                     { "MaximumGroundSpeed", "Maximum ground speed in m/s" },
                     { "CurrentAltitude", "Current altitude" },
                     { "MaximumAltitude", "Maximum altitude" },
+                    { "MinimumAltitude", "Minimum altitude" },
                     { "SpeedAltitudeAdjusted", "Current speed in m/s (includes altitude adjustment)" },
                     { "MaximumSpeedAltitudeAdjusted", "Maximum speed in m/s (includes altitude adjustment)" },
                     { "DistanceFromStart", "Distance from session start location" },
@@ -259,6 +263,11 @@ namespace EDTracking
                 MaximumAltitude = (int)edEvent.Altitude;
                 _telemetry["MaximumAltitude"] = EDLocation.DistanceToString(MaximumAltitude);
             }
+            else if ((int)edEvent.Altitude < MinimumAltitude)
+            {
+                MinimumAltitude = (int)edEvent.Altitude;
+                _telemetry["MinimumAltitude"] = EDLocation.DistanceToString(MinimumAltitude);
+            }
 
             if (_lastLocation==null)
             {
@@ -352,7 +361,7 @@ namespace EDTracking
 
             if (_srvTelemetrySettings == null)
             {
-                _srvTelemetrySettings = new FormTelemetrySettings(_srvTelemetryWriter, SRVTelemetry.TelemetryDescriptions(), "SRV-", "SRV Telemetry Settings");
+                _srvTelemetrySettings = new FormTelemetrySettings(_srvTelemetryWriter, VehicleTelemetry.TelemetryDescriptions(), "SRV-", "SRV Telemetry Settings");
                 _srvTelemetrySettings.SelectedReportsChanged += _srvTelemetrySettings_SelectedReportsChanged; ;
                 _srvTelemetrySettings.ExportToControlTag(SettingsControl);
                 if (_srvTelemetryDisplay != null && !_srvTelemetryDisplay.IsDisposed)

@@ -167,7 +167,7 @@
             this.textBoxCommanderName.Size = new System.Drawing.Size(229, 20);
             this.textBoxCommanderName.TabIndex = 4;
             this.toolTip1.SetToolTip(this.textBoxCommanderName, "Client Id (usually commander name) sent with status updates");
-            this.textBoxCommanderName.TextChanged += new System.EventHandler(this.textBoxClientId_TextChanged);
+            this.textBoxCommanderName.Validating += new System.ComponentModel.CancelEventHandler(this.textBoxCommanderName_Validating);
             // 
             // textBoxTelemetryFolder
             // 
