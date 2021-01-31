@@ -48,16 +48,29 @@ namespace EDTracking
         public VehicleTelemetry()
         {
             _srvTelemetryWriter = new TelemetryWriter();
+            DisplayAllReports();
             InitSession();
         }
 
-        public VehicleTelemetry(string settingJson, string commanderName): base()
+        public VehicleTelemetry(string settingJson, string commanderName)
         {
             if (!String.IsNullOrEmpty(settingJson))
                 _srvTelemetryWriter = new TelemetryWriter(settingJson);
             else
+            {
+                // We have no previous settings, so we want to enable all telemetry
                 _srvTelemetryWriter = new TelemetryWriter();
+                DisplayAllReports();
+            }
             _telemetry.Add("CommanderName", commanderName);
+            InitSession();
+        }
+
+        private void DisplayAllReports()
+        {
+            List<string> allReports = TelemetryDescriptions().Keys.ToList<string>();
+            foreach (string report in allReports)
+                _srvTelemetryWriter.EnableReportDisplay(report, report);
         }
 
         public override string ToString()
@@ -92,7 +105,12 @@ namespace EDTracking
             SessionStartLocation = null;
             TotalSRVsDestroyed = 0;
 
+            string commanderName = "";
+            if (_telemetry.ContainsKey("CommanderName"))
+                commanderName = _telemetry["CommanderName"];
+
             _telemetry.Clear();
+            _telemetry.Add("CommanderName", commanderName);
             _telemetry.Add("CurrentGroundSpeed", CurrentGroundSpeed.ToString());
             _telemetry.Add("CurrentHeading", "Unknown");
             _telemetry.Add("HullStrength", $"{(HullHealth * 100).ToString("F1")}%");
