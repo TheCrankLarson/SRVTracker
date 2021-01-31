@@ -53,9 +53,14 @@ namespace SRVTracker
             _formConfig.ExcludedControls.Add(comboBoxGateTarget);
             _formConfig.ExcludedControls.Add(comboBoxPolygonTarget);
             _formConfig.ExcludedControls.Add(comboBoxWaypointType);
+            _formConfig.ExcludedControls.Add(numericUpDownGenerationDistanceBetweenWaypoint);
+            _formConfig.ExcludedControls.Add(comboBoxGenerationDistanceBetweenWaypointUnit);
+            _formConfig.ExcludedControls.Add(comboBoxGenerationRouteTemplate);
             _formConfig.SaveEnabled = true;
             _formConfig.RestorePreviousSize = false;
             _formConfig.RestoreFormValues();
+
+            comboBoxGenerationDistanceBetweenWaypointUnit.SelectedIndex = 1; // Default to km
 
             _route = new EDRoute();
             _formTracker = formTracker;
@@ -1240,6 +1245,40 @@ namespace SRVTracker
         private void buttonClose_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void comboBoxRouteTemplate_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            buttonCreateWaypoints.Enabled = comboBoxGenerationRouteTemplate.SelectedIndex > -1;
+        }
+
+        private void buttonCreateWaypoints_Click(object sender, EventArgs e)
+        {
+            if (FormTracker.CurrentLocation.PlanetaryRadius < 1)
+                return;
+
+            List<EDWaypoint> routeWaypoints = null;
+            int waypointSeparationDistance = (int)numericUpDownGenerationDistanceBetweenWaypoint.Value;
+            for (int i = 0; i < comboBoxGenerationDistanceBetweenWaypointUnit.SelectedIndex; i++)
+                waypointSeparationDistance = waypointSeparationDistance * 100;
+
+            switch (comboBoxGenerationRouteTemplate.SelectedIndex)
+            {
+                case 0: // Circumnavigation: from current position via North and South Pole
+                    routeWaypoints = RouteGenerator.PoleToPole(FormTracker.CurrentLocation.PlanetaryRadius, waypointSeparationDistance, FormTracker.CurrentLocation.Latitude);
+                    break;
+
+                case 1: // Circumnavigation: around the equator
+                    routeWaypoints = RouteGenerator.Equator(FormTracker.CurrentLocation.PlanetaryRadius, waypointSeparationDistance, FormTracker.CurrentLocation.Longitude);
+                    break;
+            }
+
+            if (routeWaypoints != null)
+            {
+                // Add the waypoints to our route
+                for (int i = 0; i < routeWaypoints.Count; i++)
+                    AddWaypointToRoute(routeWaypoints[i]);
+            }
         }
     }
 }

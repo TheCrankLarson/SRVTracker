@@ -116,7 +116,7 @@ namespace EDTracking
             _telemetry.Add("HullStrength", $"{(HullHealth * 100).ToString("F1")}%");
             _telemetry.Add("AverageGroundSpeed", "0 m/s");
             _telemetry.Add("MaximumGroundSpeed", "0 m/s");
-            _telemetry.Add("DistanceFromStart", "0m");
+            _telemetry.Add("DistanceFromStart", "0");
             _telemetry.Add("TotalDistanceTravelled", "0");
             _telemetry.Add("TotalShipRepairs", "0");
             _telemetry.Add("TotalSynthRepairs", "0");
@@ -125,7 +125,7 @@ namespace EDTracking
             _telemetry.Add("SessionDate", "");
             _telemetry.Add("SessionTime", "00:00:00");
             _telemetry.Add("CurrentAltitude", "0");
-            _telemetry.Add("MaximumAltitude", "0");
+            _telemetry.Add("MaximumAltitude", "NA");
             _telemetry.Add("MinimumAltitude", "NA");
             _telemetry.Add("SpeedAltitudeAdjusted", SpeedAltitudeAdjusted.ToString());
             _telemetry.Add("MaximumSpeedAltitudeAdjusted", MaximumSpeedAltitudeAdjusted.ToString());
