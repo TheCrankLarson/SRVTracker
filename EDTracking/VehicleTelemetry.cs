@@ -101,7 +101,7 @@ namespace EDTracking
             TotalDistanceTravelled = 0;
             TotalShipRepairs = 0;
             TotalSynthRepairs = 0;
-            SessionStartTime = DateTime.Now;
+            SessionStartTime = DateTime.MinValue;
             SessionStartLocation = null;
             TotalSRVsDestroyed = 0;
 
@@ -111,15 +111,15 @@ namespace EDTracking
 
             _telemetry.Clear();
             _telemetry.Add("CommanderName", commanderName);
-            _telemetry.Add("CurrentGroundSpeed", CurrentGroundSpeed.ToString());
+            _telemetry.Add("CurrentGroundSpeed", "0 m/s");
             _telemetry.Add("CurrentHeading", "Unknown");
             _telemetry.Add("HullStrength", $"{(HullHealth * 100).ToString("F1")}%");
-            _telemetry.Add("AverageGroundSpeed", AverageGroundSpeed.ToString());
-            _telemetry.Add("MaximumGroundSpeed", MaximumGroundSpeed.ToString());
+            _telemetry.Add("AverageGroundSpeed", "0 m/s");
+            _telemetry.Add("MaximumGroundSpeed", "0 m/s");
             _telemetry.Add("DistanceFromStart", "0m");
-            _telemetry.Add("TotalDistanceTravelled", TotalDistanceTravelled.ToString("F1"));
-            _telemetry.Add("TotalShipRepairs", TotalShipRepairs.ToString());
-            _telemetry.Add("TotalSynthRepairs", TotalSynthRepairs.ToString());
+            _telemetry.Add("TotalDistanceTravelled", "0");
+            _telemetry.Add("TotalShipRepairs", "0");
+            _telemetry.Add("TotalSynthRepairs", "0");
             _telemetry.Add("TotalSRVsDestroyed", "0");
             _telemetry.Add("SessionStartTime", "");
             _telemetry.Add("SessionDate", "");
@@ -280,7 +280,7 @@ namespace EDTracking
                 MaximumAltitude = (int)edEvent.Altitude;
                 _telemetry["MaximumAltitude"] = EDLocation.DistanceToString(MaximumAltitude);
             }
-            else if ((int)edEvent.Altitude < MinimumAltitude)
+            else if (!_playerIsInSRV && (int)edEvent.Altitude < MinimumAltitude)
             {
                 MinimumAltitude = (int)edEvent.Altitude;
                 _telemetry["MinimumAltitude"] = EDLocation.DistanceToString(MinimumAltitude);
