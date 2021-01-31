@@ -36,7 +36,11 @@ namespace EDTracking
         public EDLocation Location()
         {
             if (HasCoordinates())
-                return new EDLocation(Latitude, Longitude, Altitude, PlanetRadius);
+            {
+                EDLocation eventLocation = new EDLocation(Latitude, Longitude, Altitude, PlanetRadius);
+                eventLocation.PlanetName = BodyName;
+                return eventLocation;
+            }
             return null;
         }
 
