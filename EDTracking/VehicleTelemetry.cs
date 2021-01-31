@@ -369,6 +369,7 @@ namespace EDTracking
                 if (_srvTelemetryDisplay != null && !_srvTelemetryDisplay.IsDisposed)
                 {
                     _srvTelemetryDisplay.Close();
+                    _srvTelemetryDisplay = null;
                     _showTelemetryDisplayOnSettingsClose = true;
                     _srvTelemetrySettings.FormClosed += _srvTelemetrySettings_FormClosed;
                 }
@@ -409,10 +410,18 @@ namespace EDTracking
                 //_srvTelemetryDisplay.FormClosing += _targetTelemetryDisplay_FormClosing;
                 _srvTelemetryDisplay.InitialiseRows(TelemetryDescriptions());
                 _srvTelemetryDisplay.UpdateTargetData(Telemetry());
-                _srvTelemetryDisplay.Show(owner);
+                if (owner != null)
+                    _srvTelemetryDisplay.Show(owner);
+                else
+                    _srvTelemetryDisplay.Show();
             }
             else if (!_srvTelemetryDisplay.Visible)
-                _srvTelemetryDisplay.Show(owner);
+            {
+                if (owner != null)
+                    _srvTelemetryDisplay.Show(owner);
+                else
+                    _srvTelemetryDisplay.Show();
+            }
             else
                 _srvTelemetryDisplay.Focus();
         }

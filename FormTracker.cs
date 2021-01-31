@@ -705,6 +705,7 @@ namespace SRVTracker
 
         private void buttonSRVTelemetryExportSettings_Click(object sender, EventArgs e)
         {
+            //checkBoxShowSRVTelemetry.Checked = false;
             _vehicleTelemetry.EditSettings(checkBoxCaptureSRVTelemetry, this);
         }
 

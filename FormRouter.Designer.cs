@@ -118,12 +118,15 @@
             this.addOriginToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addPrimeMeridianToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addEquatorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.generateRouteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPageRoute = new System.Windows.Forms.TabPage();
             this.tabPageWaypoints = new System.Windows.Forms.TabPage();
+            this.tabPageRoute = new System.Windows.Forms.TabPage();
             this.tabPageAudio = new System.Windows.Forms.TabPage();
             this.buttonClose = new System.Windows.Forms.Button();
+            this.tabPageGenerate = new System.Windows.Forms.TabPage();
+            this.button1 = new System.Windows.Forms.Button();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.comboBoxRouteTemplate = new System.Windows.Forms.ComboBox();
             this.groupBox2.SuspendLayout();
             this.groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRecordDistance)).BeginInit();
@@ -141,9 +144,11 @@
             this.groupBoxAudioSettings.SuspendLayout();
             this.circumnavigationContextMenuStrip.SuspendLayout();
             this.tabControl1.SuspendLayout();
-            this.tabPageRoute.SuspendLayout();
             this.tabPageWaypoints.SuspendLayout();
+            this.tabPageRoute.SuspendLayout();
             this.tabPageAudio.SuspendLayout();
+            this.tabPageGenerate.SuspendLayout();
+            this.groupBox5.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox2
@@ -1069,10 +1074,9 @@
             this.addSouthPoleToolStripMenuItem,
             this.addOriginToolStripMenuItem,
             this.addPrimeMeridianToolStripMenuItem,
-            this.addEquatorToolStripMenuItem,
-            this.generateRouteToolStripMenuItem});
+            this.addEquatorToolStripMenuItem});
             this.circumnavigationContextMenuStrip.Name = "circumnavigationContextMenuStrip";
-            this.circumnavigationContextMenuStrip.Size = new System.Drawing.Size(259, 136);
+            this.circumnavigationContextMenuStrip.Size = new System.Drawing.Size(259, 114);
             this.circumnavigationContextMenuStrip.Text = "Circumnavigation";
             // 
             // addNorthPoleToolStripMenuItem
@@ -1110,23 +1114,28 @@
             this.addEquatorToolStripMenuItem.Text = "Add Equator (closest point)";
             this.addEquatorToolStripMenuItem.Click += new System.EventHandler(this.addEquatorToolStripMenuItem_Click);
             // 
-            // generateRouteToolStripMenuItem
-            // 
-            this.generateRouteToolStripMenuItem.Enabled = false;
-            this.generateRouteToolStripMenuItem.Name = "generateRouteToolStripMenuItem";
-            this.generateRouteToolStripMenuItem.Size = new System.Drawing.Size(258, 22);
-            this.generateRouteToolStripMenuItem.Text = "Generate Route...";
-            // 
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tabPageWaypoints);
             this.tabControl1.Controls.Add(this.tabPageRoute);
+            this.tabControl1.Controls.Add(this.tabPageGenerate);
             this.tabControl1.Controls.Add(this.tabPageAudio);
             this.tabControl1.Location = new System.Drawing.Point(289, 3);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(363, 285);
             this.tabControl1.TabIndex = 19;
+            // 
+            // tabPageWaypoints
+            // 
+            this.tabPageWaypoints.Controls.Add(this.groupBoxWaypointInfo);
+            this.tabPageWaypoints.Location = new System.Drawing.Point(4, 22);
+            this.tabPageWaypoints.Name = "tabPageWaypoints";
+            this.tabPageWaypoints.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageWaypoints.Size = new System.Drawing.Size(355, 259);
+            this.tabPageWaypoints.TabIndex = 1;
+            this.tabPageWaypoints.Text = "Waypoint Editor";
+            this.tabPageWaypoints.UseVisualStyleBackColor = true;
             // 
             // tabPageRoute
             // 
@@ -1140,17 +1149,6 @@
             this.tabPageRoute.TabIndex = 0;
             this.tabPageRoute.Text = "Route";
             this.tabPageRoute.UseVisualStyleBackColor = true;
-            // 
-            // tabPageWaypoints
-            // 
-            this.tabPageWaypoints.Controls.Add(this.groupBoxWaypointInfo);
-            this.tabPageWaypoints.Location = new System.Drawing.Point(4, 22);
-            this.tabPageWaypoints.Name = "tabPageWaypoints";
-            this.tabPageWaypoints.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageWaypoints.Size = new System.Drawing.Size(355, 259);
-            this.tabPageWaypoints.TabIndex = 1;
-            this.tabPageWaypoints.Text = "Waypoint Editor";
-            this.tabPageWaypoints.UseVisualStyleBackColor = true;
             // 
             // tabPageAudio
             // 
@@ -1171,6 +1169,48 @@
             this.buttonClose.Text = "Close";
             this.buttonClose.UseVisualStyleBackColor = true;
             this.buttonClose.Click += new System.EventHandler(this.buttonClose_Click);
+            // 
+            // tabPageGenerate
+            // 
+            this.tabPageGenerate.Controls.Add(this.groupBox5);
+            this.tabPageGenerate.Controls.Add(this.button1);
+            this.tabPageGenerate.Location = new System.Drawing.Point(4, 22);
+            this.tabPageGenerate.Name = "tabPageGenerate";
+            this.tabPageGenerate.Size = new System.Drawing.Size(355, 259);
+            this.tabPageGenerate.TabIndex = 5;
+            this.tabPageGenerate.Text = "Generate";
+            this.tabPageGenerate.UseVisualStyleBackColor = true;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(242, 220);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(104, 23);
+            this.button1.TabIndex = 0;
+            this.button1.Text = "Create waypoints";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
+            // groupBox5
+            // 
+            this.groupBox5.Controls.Add(this.comboBoxRouteTemplate);
+            this.groupBox5.Location = new System.Drawing.Point(6, 6);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(346, 51);
+            this.groupBox5.TabIndex = 1;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "Route template";
+            // 
+            // comboBoxRouteTemplate
+            // 
+            this.comboBoxRouteTemplate.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxRouteTemplate.FormattingEnabled = true;
+            this.comboBoxRouteTemplate.Items.AddRange(new object[] {
+            "Circumnavigation: from current position via North and South Pole",
+            "Circumnavigation: around the equator"});
+            this.comboBoxRouteTemplate.Location = new System.Drawing.Point(6, 19);
+            this.comboBoxRouteTemplate.Name = "comboBoxRouteTemplate";
+            this.comboBoxRouteTemplate.Size = new System.Drawing.Size(334, 21);
+            this.comboBoxRouteTemplate.TabIndex = 0;
             // 
             // FormRouter
             // 
@@ -1215,9 +1255,11 @@
             this.groupBoxAudioSettings.PerformLayout();
             this.circumnavigationContextMenuStrip.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
-            this.tabPageRoute.ResumeLayout(false);
             this.tabPageWaypoints.ResumeLayout(false);
+            this.tabPageRoute.ResumeLayout(false);
             this.tabPageAudio.ResumeLayout(false);
+            this.tabPageGenerate.ResumeLayout(false);
+            this.groupBox5.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -1309,7 +1351,6 @@
         private System.Windows.Forms.ContextMenuStrip circumnavigationContextMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem addNorthPoleToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addSouthPoleToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem generateRouteToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addEquatorToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addPrimeMeridianToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addOriginToolStripMenuItem;
@@ -1318,5 +1359,9 @@
         private System.Windows.Forms.TabPage tabPageWaypoints;
         private System.Windows.Forms.TabPage tabPageAudio;
         private System.Windows.Forms.Button buttonClose;
+        private System.Windows.Forms.TabPage tabPageGenerate;
+        private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.ComboBox comboBoxRouteTemplate;
+        private System.Windows.Forms.Button button1;
     }
 }
