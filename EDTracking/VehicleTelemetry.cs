@@ -68,7 +68,7 @@ namespace EDTracking
 
         private void DisplayAllReports()
         {
-            List<string> allReports = TelemetryDescriptions().Keys.ToList<string>();
+            List<string> allReports = TelemetryDescriptions.Keys.ToList<string>();
             foreach (string report in allReports)
                 _srvTelemetryWriter.EnableReportDisplay(report, report);
         }
@@ -134,31 +134,28 @@ namespace EDTracking
             _srvTelemetryDisplay?.UpdateTargetData(Telemetry());
         }
 
-        public static Dictionary<string, string> TelemetryDescriptions()
+        public static readonly Dictionary<string, string> TelemetryDescriptions = new Dictionary<string, string>()
         {
-            return new Dictionary<string, string>()
-                {
-                    { "CommanderName", "Commander name" },
-                    { "HullStrength", "Last known hull value" },
-                    { "CurrentGroundSpeed", "Current ground speed in m/s" },
-                    { "CurrentHeading", "Current heading in degrees" },
-                    { "AverageGroundSpeed", "Average ground speed in m/s" },
-                    { "MaximumGroundSpeed", "Maximum ground speed in m/s" },
-                    { "CurrentAltitude", "Current altitude" },
-                    { "MaximumAltitude", "Maximum altitude" },
-                    { "MinimumAltitude", "Minimum altitude" },
-                    { "SpeedAltitudeAdjusted", "Current speed in m/s (includes altitude adjustment)" },
-                    { "MaximumSpeedAltitudeAdjusted", "Maximum speed in m/s (includes altitude adjustment)" },
-                    { "DistanceFromStart", "Distance from session start location" },
-                    { "TotalDistanceTravelled", "Total distance travelled" },
-                    { "TotalSRVShipRepairs", "Total number of SRV repairs via ship" },
-                    { "TotalSRVSynthRepairs", "Total number of synthesized repairs of the SRV" },
-                    { "TotalSRVsDestroyed", "Total number of SRVs lost" },
-                    { "SessionDate", "Session date" },
-                    { "SessionStartTime", "Session start time" },
-                    { "SessionTime", "Session total time" }
-                };
-        }
+            { "CommanderName", "Commander name" },
+            { "HullStrength", "Last known hull value" },
+            { "CurrentGroundSpeed", "Current ground speed in m/s" },
+            { "CurrentHeading", "Current heading in degrees" },
+            { "AverageGroundSpeed", "Average ground speed in m/s" },
+            { "MaximumGroundSpeed", "Maximum ground speed in m/s" },
+            { "CurrentAltitude", "Current altitude" },
+            { "MaximumAltitude", "Maximum altitude" },
+            { "MinimumAltitude", "Minimum altitude" },
+            { "SpeedAltitudeAdjusted", "Current speed in m/s (includes altitude adjustment)" },
+            { "MaximumSpeedAltitudeAdjusted", "Maximum speed in m/s (includes altitude adjustment)" },
+            { "DistanceFromStart", "Distance from session start location" },
+            { "TotalDistanceTravelled", "Total distance travelled" },
+            { "TotalSRVShipRepairs", "Total number of SRV repairs via ship" },
+            { "TotalSRVSynthRepairs", "Total number of synthesized repairs of the SRV" },
+            { "TotalSRVsDestroyed", "Total number of SRVs lost" },
+            { "SessionDate", "Session date" },
+            { "SessionStartTime", "Session start time" },
+            { "SessionTime", "Session total time" }
+        };        
 
         public Dictionary<string,string> Telemetry()
         {            
@@ -381,7 +378,7 @@ namespace EDTracking
 
             if (_srvTelemetrySettings == null)
             {
-                _srvTelemetrySettings = new FormTelemetrySettings(_srvTelemetryWriter, VehicleTelemetry.TelemetryDescriptions(), "SRV-", "SRV Telemetry Settings");
+                _srvTelemetrySettings = new FormTelemetrySettings(_srvTelemetryWriter, VehicleTelemetry.TelemetryDescriptions, "SRV-", "SRV Telemetry Settings");
                 _srvTelemetrySettings.SelectedReportsChanged += _srvTelemetrySettings_SelectedReportsChanged; ;
                 _srvTelemetrySettings.ExportToControlTag(SettingsControl);
                 if (_srvTelemetryDisplay != null && !_srvTelemetryDisplay.IsDisposed)
@@ -426,7 +423,7 @@ namespace EDTracking
             {
                 _srvTelemetryDisplay = new FormTelemetryDisplay(_srvTelemetryWriter, "Commander Telemetry");
                 //_srvTelemetryDisplay.FormClosing += _targetTelemetryDisplay_FormClosing;
-                _srvTelemetryDisplay.InitialiseRows(TelemetryDescriptions());
+                _srvTelemetryDisplay.InitialiseRows(TelemetryDescriptions);
                 _srvTelemetryDisplay.UpdateTargetData(Telemetry());
                 if (owner != null)
                     _srvTelemetryDisplay.Show(owner);
