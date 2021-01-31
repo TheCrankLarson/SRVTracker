@@ -93,23 +93,33 @@
             this.groupBox10 = new System.Windows.Forms.GroupBox();
             this.timerTrackTarget = new System.Windows.Forms.Timer(this.components);
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tabPageParticipants = new System.Windows.Forms.TabPage();
             this.buttonAddParticipant = new System.Windows.Forms.Button();
             this.buttonUneliminate = new System.Windows.Forms.Button();
             this.buttonRemoveParticipant = new System.Windows.Forms.Button();
             this.buttonTrackParticipant = new System.Windows.Forms.Button();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.tabPageRoute = new System.Windows.Forms.TabPage();
             this.checkBoxLapCustomWaypoints = new System.Windows.Forms.CheckBox();
             this.numericUpDownLapEndWaypoint = new System.Windows.Forms.NumericUpDown();
             this.numericUpDownLapStartWaypoint = new System.Windows.Forms.NumericUpDown();
             this.buttonLoadRoute = new System.Windows.Forms.Button();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.tabPageRaceSettings = new System.Windows.Forms.TabPage();
+            this.tabPageTelemetrySettings = new System.Windows.Forms.TabPage();
             this.checkBoxShowRaceTimer = new System.Windows.Forms.CheckBox();
             this.label10 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.tabPageServerSettings = new System.Windows.Forms.TabPage();
+            this.tabPageStartSettings = new System.Windows.Forms.TabPage();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.checkBoxEnableAudioStart = new System.Windows.Forms.CheckBox();
+            this.checkBoxAudioStartAnnouncement = new System.Windows.Forms.CheckBox();
+            this.checkBoxAudioStartPause = new System.Windows.Forms.CheckBox();
+            this.checkBoxAudioStartStart = new System.Windows.Forms.CheckBox();
+            this.numericUpDownAudioStartPause = new System.Windows.Forms.NumericUpDown();
+            this.label5 = new System.Windows.Forms.Label();
+            this.comboBoxAudioStartAnnouncement = new System.Windows.Forms.ComboBox();
+            this.comboBoxAudioStartStart = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLapCount)).BeginInit();
             this.groupBoxAddCommander.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -117,13 +127,16 @@
             this.groupBoxServerInfo.SuspendLayout();
             this.groupBox10.SuspendLayout();
             this.tabControl1.SuspendLayout();
-            this.tabPage1.SuspendLayout();
-            this.tabPage2.SuspendLayout();
+            this.tabPageParticipants.SuspendLayout();
+            this.tabPageRoute.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLapEndWaypoint)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLapStartWaypoint)).BeginInit();
-            this.tabPage3.SuspendLayout();
-            this.tabPage4.SuspendLayout();
-            this.tabPage5.SuspendLayout();
+            this.tabPageRaceSettings.SuspendLayout();
+            this.tabPageTelemetrySettings.SuspendLayout();
+            this.tabPageServerSettings.SuspendLayout();
+            this.tabPageStartSettings.SuspendLayout();
+            this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownAudioStartPause)).BeginInit();
             this.SuspendLayout();
             // 
             // radioButtonRaceTypeTimeTrial
@@ -812,34 +825,35 @@
             // 
             // tabControl1
             // 
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Controls.Add(this.tabPage3);
-            this.tabControl1.Controls.Add(this.tabPage4);
-            this.tabControl1.Controls.Add(this.tabPage5);
+            this.tabControl1.Controls.Add(this.tabPageParticipants);
+            this.tabControl1.Controls.Add(this.tabPageRoute);
+            this.tabControl1.Controls.Add(this.tabPageStartSettings);
+            this.tabControl1.Controls.Add(this.tabPageRaceSettings);
+            this.tabControl1.Controls.Add(this.tabPageTelemetrySettings);
+            this.tabControl1.Controls.Add(this.tabPageServerSettings);
             this.tabControl1.Location = new System.Drawing.Point(6, 60);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(385, 198);
             this.tabControl1.TabIndex = 21;
             // 
-            // tabPage1
+            // tabPageParticipants
             // 
-            this.tabPage1.Controls.Add(this.groupBoxAddCommander);
-            this.tabPage1.Controls.Add(this.buttonRaceHistory);
-            this.tabPage1.Controls.Add(this.listBoxParticipants);
-            this.tabPage1.Controls.Add(this.buttonAddParticipant);
-            this.tabPage1.Controls.Add(this.buttonUneliminate);
-            this.tabPage1.Controls.Add(this.buttonRemoveParticipant);
-            this.tabPage1.Controls.Add(this.checkBoxAutoAddCommanders);
-            this.tabPage1.Controls.Add(this.buttonTrackParticipant);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(377, 172);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Participants";
-            this.tabPage1.UseVisualStyleBackColor = true;
+            this.tabPageParticipants.Controls.Add(this.groupBoxAddCommander);
+            this.tabPageParticipants.Controls.Add(this.buttonRaceHistory);
+            this.tabPageParticipants.Controls.Add(this.listBoxParticipants);
+            this.tabPageParticipants.Controls.Add(this.buttonAddParticipant);
+            this.tabPageParticipants.Controls.Add(this.buttonUneliminate);
+            this.tabPageParticipants.Controls.Add(this.buttonRemoveParticipant);
+            this.tabPageParticipants.Controls.Add(this.checkBoxAutoAddCommanders);
+            this.tabPageParticipants.Controls.Add(this.buttonTrackParticipant);
+            this.tabPageParticipants.Location = new System.Drawing.Point(4, 22);
+            this.tabPageParticipants.Name = "tabPageParticipants";
+            this.tabPageParticipants.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageParticipants.Size = new System.Drawing.Size(377, 172);
+            this.tabPageParticipants.TabIndex = 0;
+            this.tabPageParticipants.Text = "Participants";
+            this.tabPageParticipants.UseVisualStyleBackColor = true;
             // 
             // buttonAddParticipant
             // 
@@ -881,27 +895,27 @@
             this.buttonTrackParticipant.UseVisualStyleBackColor = true;
             this.buttonTrackParticipant.Click += new System.EventHandler(this.buttonTrackParticipant_Click);
             // 
-            // tabPage2
+            // tabPageRoute
             // 
-            this.tabPage2.Controls.Add(this.checkBoxLapCustomWaypoints);
-            this.tabPage2.Controls.Add(this.numericUpDownLapEndWaypoint);
-            this.tabPage2.Controls.Add(this.numericUpDownLapStartWaypoint);
-            this.tabPage2.Controls.Add(this.textBoxPlanet);
-            this.tabPage2.Controls.Add(this.label3);
-            this.tabPage2.Controls.Add(this.label2);
-            this.tabPage2.Controls.Add(this.textBoxSystem);
-            this.tabPage2.Controls.Add(this.listBoxWaypoints);
-            this.tabPage2.Controls.Add(this.textBoxRouteName);
-            this.tabPage2.Controls.Add(this.checkBoxLappedRace);
-            this.tabPage2.Controls.Add(this.numericUpDownLapCount);
-            this.tabPage2.Controls.Add(this.buttonLoadRoute);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(377, 172);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Route";
-            this.tabPage2.UseVisualStyleBackColor = true;
+            this.tabPageRoute.Controls.Add(this.checkBoxLapCustomWaypoints);
+            this.tabPageRoute.Controls.Add(this.numericUpDownLapEndWaypoint);
+            this.tabPageRoute.Controls.Add(this.numericUpDownLapStartWaypoint);
+            this.tabPageRoute.Controls.Add(this.textBoxPlanet);
+            this.tabPageRoute.Controls.Add(this.label3);
+            this.tabPageRoute.Controls.Add(this.label2);
+            this.tabPageRoute.Controls.Add(this.textBoxSystem);
+            this.tabPageRoute.Controls.Add(this.listBoxWaypoints);
+            this.tabPageRoute.Controls.Add(this.textBoxRouteName);
+            this.tabPageRoute.Controls.Add(this.checkBoxLappedRace);
+            this.tabPageRoute.Controls.Add(this.numericUpDownLapCount);
+            this.tabPageRoute.Controls.Add(this.buttonLoadRoute);
+            this.tabPageRoute.Location = new System.Drawing.Point(4, 22);
+            this.tabPageRoute.Name = "tabPageRoute";
+            this.tabPageRoute.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageRoute.Size = new System.Drawing.Size(377, 172);
+            this.tabPageRoute.TabIndex = 1;
+            this.tabPageRoute.Text = "Route";
+            this.tabPageRoute.UseVisualStyleBackColor = true;
             // 
             // checkBoxLapCustomWaypoints
             // 
@@ -972,50 +986,50 @@
             this.buttonLoadRoute.UseVisualStyleBackColor = true;
             this.buttonLoadRoute.Click += new System.EventHandler(this.buttonLoadRoute_Click);
             // 
-            // tabPage3
+            // tabPageRaceSettings
             // 
-            this.tabPage3.Controls.Add(this.checkBoxStartRaceTimerAtFirstWaypoint);
-            this.tabPage3.Controls.Add(this.radioButtonRaceTypeTimeTrial);
-            this.tabPage3.Controls.Add(this.label1);
-            this.tabPage3.Controls.Add(this.radioButtonRaceTypeStandard);
-            this.tabPage3.Controls.Add(this.label4);
-            this.tabPage3.Controls.Add(this.checkBoxAllowMainShip);
-            this.tabPage3.Controls.Add(this.checkBoxAllowSRV);
-            this.tabPage3.Controls.Add(this.checkBoxCustomStatusMessages);
-            this.tabPage3.Controls.Add(this.checkBoxAllowFighter);
-            this.tabPage3.Controls.Add(this.checkBoxEliminationOnDestruction);
-            this.tabPage3.Controls.Add(this.checkBoxAllowPitstops);
-            this.tabPage3.Controls.Add(this.buttonEditStatusMessages);
-            this.tabPage3.Location = new System.Drawing.Point(4, 22);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(377, 172);
-            this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "Race Settings";
-            this.tabPage3.UseVisualStyleBackColor = true;
+            this.tabPageRaceSettings.Controls.Add(this.checkBoxStartRaceTimerAtFirstWaypoint);
+            this.tabPageRaceSettings.Controls.Add(this.radioButtonRaceTypeTimeTrial);
+            this.tabPageRaceSettings.Controls.Add(this.label1);
+            this.tabPageRaceSettings.Controls.Add(this.radioButtonRaceTypeStandard);
+            this.tabPageRaceSettings.Controls.Add(this.label4);
+            this.tabPageRaceSettings.Controls.Add(this.checkBoxAllowMainShip);
+            this.tabPageRaceSettings.Controls.Add(this.checkBoxAllowSRV);
+            this.tabPageRaceSettings.Controls.Add(this.checkBoxCustomStatusMessages);
+            this.tabPageRaceSettings.Controls.Add(this.checkBoxAllowFighter);
+            this.tabPageRaceSettings.Controls.Add(this.checkBoxEliminationOnDestruction);
+            this.tabPageRaceSettings.Controls.Add(this.checkBoxAllowPitstops);
+            this.tabPageRaceSettings.Controls.Add(this.buttonEditStatusMessages);
+            this.tabPageRaceSettings.Location = new System.Drawing.Point(4, 22);
+            this.tabPageRaceSettings.Name = "tabPageRaceSettings";
+            this.tabPageRaceSettings.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageRaceSettings.Size = new System.Drawing.Size(377, 172);
+            this.tabPageRaceSettings.TabIndex = 2;
+            this.tabPageRaceSettings.Text = "Race";
+            this.tabPageRaceSettings.UseVisualStyleBackColor = true;
             // 
-            // tabPage4
+            // tabPageTelemetrySettings
             // 
-            this.tabPage4.Controls.Add(this.checkBoxShowRaceTimer);
-            this.tabPage4.Controls.Add(this.checkBoxShowTimeTrialTelemetry);
-            this.tabPage4.Controls.Add(this.checkBoxExportTimeTrialTelemetry);
-            this.tabPage4.Controls.Add(this.label10);
-            this.tabPage4.Controls.Add(this.label9);
-            this.tabPage4.Controls.Add(this.label6);
-            this.tabPage4.Controls.Add(this.checkBoxExportRaceTelemetry);
-            this.tabPage4.Controls.Add(this.checkBoxShowTargetTelemetry);
-            this.tabPage4.Controls.Add(this.checkBoxExportTargetTelemetry);
-            this.tabPage4.Controls.Add(this.checkBoxShowRaceTelemetry);
-            this.tabPage4.Controls.Add(this.buttonTimeTrialTelemetryExportSettings);
-            this.tabPage4.Controls.Add(this.buttonCommanderTelemetryExportSettings);
-            this.tabPage4.Controls.Add(this.buttonRaceTelemetryExportSettings);
-            this.tabPage4.Location = new System.Drawing.Point(4, 22);
-            this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(377, 172);
-            this.tabPage4.TabIndex = 3;
-            this.tabPage4.Text = "Telemetry Settings";
-            this.tabPage4.UseVisualStyleBackColor = true;
+            this.tabPageTelemetrySettings.Controls.Add(this.checkBoxShowRaceTimer);
+            this.tabPageTelemetrySettings.Controls.Add(this.checkBoxShowTimeTrialTelemetry);
+            this.tabPageTelemetrySettings.Controls.Add(this.checkBoxExportTimeTrialTelemetry);
+            this.tabPageTelemetrySettings.Controls.Add(this.label10);
+            this.tabPageTelemetrySettings.Controls.Add(this.label9);
+            this.tabPageTelemetrySettings.Controls.Add(this.label6);
+            this.tabPageTelemetrySettings.Controls.Add(this.checkBoxExportRaceTelemetry);
+            this.tabPageTelemetrySettings.Controls.Add(this.checkBoxShowTargetTelemetry);
+            this.tabPageTelemetrySettings.Controls.Add(this.checkBoxExportTargetTelemetry);
+            this.tabPageTelemetrySettings.Controls.Add(this.checkBoxShowRaceTelemetry);
+            this.tabPageTelemetrySettings.Controls.Add(this.buttonTimeTrialTelemetryExportSettings);
+            this.tabPageTelemetrySettings.Controls.Add(this.buttonCommanderTelemetryExportSettings);
+            this.tabPageTelemetrySettings.Controls.Add(this.buttonRaceTelemetryExportSettings);
+            this.tabPageTelemetrySettings.Location = new System.Drawing.Point(4, 22);
+            this.tabPageTelemetrySettings.Name = "tabPageTelemetrySettings";
+            this.tabPageTelemetrySettings.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageTelemetrySettings.Size = new System.Drawing.Size(377, 172);
+            this.tabPageTelemetrySettings.TabIndex = 3;
+            this.tabPageTelemetrySettings.Text = "Telemetry";
+            this.tabPageTelemetrySettings.UseVisualStyleBackColor = true;
             // 
             // checkBoxShowRaceTimer
             // 
@@ -1055,18 +1069,124 @@
             this.label6.TabIndex = 4;
             this.label6.Text = "Race Telemetry:";
             // 
-            // tabPage5
+            // tabPageServerSettings
             // 
-            this.tabPage5.Controls.Add(this.textBoxUploadServer);
-            this.tabPage5.Controls.Add(this.radioButtonUseCustomServer);
-            this.tabPage5.Controls.Add(this.radioButtonUseDefaultServer);
-            this.tabPage5.Location = new System.Drawing.Point(4, 22);
-            this.tabPage5.Name = "tabPage5";
-            this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage5.Size = new System.Drawing.Size(377, 172);
-            this.tabPage5.TabIndex = 4;
-            this.tabPage5.Text = "Server Settings";
-            this.tabPage5.UseVisualStyleBackColor = true;
+            this.tabPageServerSettings.Controls.Add(this.textBoxUploadServer);
+            this.tabPageServerSettings.Controls.Add(this.radioButtonUseCustomServer);
+            this.tabPageServerSettings.Controls.Add(this.radioButtonUseDefaultServer);
+            this.tabPageServerSettings.Location = new System.Drawing.Point(4, 22);
+            this.tabPageServerSettings.Name = "tabPageServerSettings";
+            this.tabPageServerSettings.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageServerSettings.Size = new System.Drawing.Size(377, 172);
+            this.tabPageServerSettings.TabIndex = 4;
+            this.tabPageServerSettings.Text = "Server";
+            this.tabPageServerSettings.UseVisualStyleBackColor = true;
+            // 
+            // tabPageStartSettings
+            // 
+            this.tabPageStartSettings.Controls.Add(this.groupBox1);
+            this.tabPageStartSettings.Location = new System.Drawing.Point(4, 22);
+            this.tabPageStartSettings.Name = "tabPageStartSettings";
+            this.tabPageStartSettings.Size = new System.Drawing.Size(377, 172);
+            this.tabPageStartSettings.TabIndex = 5;
+            this.tabPageStartSettings.Text = "Start";
+            this.tabPageStartSettings.UseVisualStyleBackColor = true;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.comboBoxAudioStartStart);
+            this.groupBox1.Controls.Add(this.comboBoxAudioStartAnnouncement);
+            this.groupBox1.Controls.Add(this.label5);
+            this.groupBox1.Controls.Add(this.numericUpDownAudioStartPause);
+            this.groupBox1.Controls.Add(this.checkBoxAudioStartStart);
+            this.groupBox1.Controls.Add(this.checkBoxAudioStartPause);
+            this.groupBox1.Controls.Add(this.checkBoxAudioStartAnnouncement);
+            this.groupBox1.Controls.Add(this.checkBoxEnableAudioStart);
+            this.groupBox1.Location = new System.Drawing.Point(6, 6);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(365, 115);
+            this.groupBox1.TabIndex = 0;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Audio";
+            // 
+            // checkBoxEnableAudioStart
+            // 
+            this.checkBoxEnableAudioStart.AutoSize = true;
+            this.checkBoxEnableAudioStart.Location = new System.Drawing.Point(6, 19);
+            this.checkBoxEnableAudioStart.Name = "checkBoxEnableAudioStart";
+            this.checkBoxEnableAudioStart.Size = new System.Drawing.Size(123, 17);
+            this.checkBoxEnableAudioStart.TabIndex = 0;
+            this.checkBoxEnableAudioStart.Text = "Start race with audio";
+            this.checkBoxEnableAudioStart.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxAudioStartAnnouncement
+            // 
+            this.checkBoxAudioStartAnnouncement.AutoSize = true;
+            this.checkBoxAudioStartAnnouncement.Location = new System.Drawing.Point(21, 42);
+            this.checkBoxAudioStartAnnouncement.Name = "checkBoxAudioStartAnnouncement";
+            this.checkBoxAudioStartAnnouncement.Size = new System.Drawing.Size(101, 17);
+            this.checkBoxAudioStartAnnouncement.TabIndex = 1;
+            this.checkBoxAudioStartAnnouncement.Text = "Announcement:";
+            this.checkBoxAudioStartAnnouncement.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxAudioStartPause
+            // 
+            this.checkBoxAudioStartPause.AutoSize = true;
+            this.checkBoxAudioStartPause.Location = new System.Drawing.Point(21, 65);
+            this.checkBoxAudioStartPause.Name = "checkBoxAudioStartPause";
+            this.checkBoxAudioStartPause.Size = new System.Drawing.Size(161, 17);
+            this.checkBoxAudioStartPause.TabIndex = 2;
+            this.checkBoxAudioStartPause.Text = "Maximum pause before start:";
+            this.checkBoxAudioStartPause.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxAudioStartStart
+            // 
+            this.checkBoxAudioStartStart.AutoSize = true;
+            this.checkBoxAudioStartStart.Location = new System.Drawing.Point(21, 88);
+            this.checkBoxAudioStartStart.Name = "checkBoxAudioStartStart";
+            this.checkBoxAudioStartStart.Size = new System.Drawing.Size(51, 17);
+            this.checkBoxAudioStartStart.TabIndex = 3;
+            this.checkBoxAudioStartStart.Text = "Start:";
+            this.checkBoxAudioStartStart.UseVisualStyleBackColor = true;
+            // 
+            // numericUpDownAudioStartPause
+            // 
+            this.numericUpDownAudioStartPause.Location = new System.Drawing.Point(265, 64);
+            this.numericUpDownAudioStartPause.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numericUpDownAudioStartPause.Name = "numericUpDownAudioStartPause";
+            this.numericUpDownAudioStartPause.Size = new System.Drawing.Size(41, 20);
+            this.numericUpDownAudioStartPause.TabIndex = 4;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(312, 66);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(47, 13);
+            this.label5.TabIndex = 5;
+            this.label5.Text = "seconds";
+            // 
+            // comboBoxAudioStartAnnouncement
+            // 
+            this.comboBoxAudioStartAnnouncement.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxAudioStartAnnouncement.FormattingEnabled = true;
+            this.comboBoxAudioStartAnnouncement.Location = new System.Drawing.Point(126, 40);
+            this.comboBoxAudioStartAnnouncement.Name = "comboBoxAudioStartAnnouncement";
+            this.comboBoxAudioStartAnnouncement.Size = new System.Drawing.Size(233, 21);
+            this.comboBoxAudioStartAnnouncement.TabIndex = 6;
+            // 
+            // comboBoxAudioStartStart
+            // 
+            this.comboBoxAudioStartStart.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxAudioStartStart.FormattingEnabled = true;
+            this.comboBoxAudioStartStart.Location = new System.Drawing.Point(126, 86);
+            this.comboBoxAudioStartStart.Name = "comboBoxAudioStartStart";
+            this.comboBoxAudioStartStart.Size = new System.Drawing.Size(233, 21);
+            this.comboBoxAudioStartStart.TabIndex = 7;
             // 
             // FormRaceController
             // 
@@ -1093,18 +1213,22 @@
             this.groupBox10.ResumeLayout(false);
             this.groupBox10.PerformLayout();
             this.tabControl1.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
-            this.tabPage1.PerformLayout();
-            this.tabPage2.ResumeLayout(false);
-            this.tabPage2.PerformLayout();
+            this.tabPageParticipants.ResumeLayout(false);
+            this.tabPageParticipants.PerformLayout();
+            this.tabPageRoute.ResumeLayout(false);
+            this.tabPageRoute.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLapEndWaypoint)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLapStartWaypoint)).EndInit();
-            this.tabPage3.ResumeLayout(false);
-            this.tabPage3.PerformLayout();
-            this.tabPage4.ResumeLayout(false);
-            this.tabPage4.PerformLayout();
-            this.tabPage5.ResumeLayout(false);
-            this.tabPage5.PerformLayout();
+            this.tabPageRaceSettings.ResumeLayout(false);
+            this.tabPageRaceSettings.PerformLayout();
+            this.tabPageTelemetrySettings.ResumeLayout(false);
+            this.tabPageTelemetrySettings.PerformLayout();
+            this.tabPageServerSettings.ResumeLayout(false);
+            this.tabPageServerSettings.PerformLayout();
+            this.tabPageStartSettings.ResumeLayout(false);
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownAudioStartPause)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1173,13 +1297,13 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ComboBox comboBoxTimeTrialRacer;
         private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.TabPage tabPage2;
-        private System.Windows.Forms.TabPage tabPage3;
-        private System.Windows.Forms.TabPage tabPage4;
+        private System.Windows.Forms.TabPage tabPageParticipants;
+        private System.Windows.Forms.TabPage tabPageRoute;
+        private System.Windows.Forms.TabPage tabPageRaceSettings;
+        private System.Windows.Forms.TabPage tabPageTelemetrySettings;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.TabPage tabPage5;
+        private System.Windows.Forms.TabPage tabPageServerSettings;
         private System.Windows.Forms.CheckBox checkBoxShowTimeTrialTelemetry;
         private System.Windows.Forms.CheckBox checkBoxExportTimeTrialTelemetry;
         private System.Windows.Forms.Label label10;
@@ -1191,6 +1315,16 @@
         private System.Windows.Forms.Button buttonConnectToRace;
         private System.Windows.Forms.ComboBox comboBoxConnectToRace;
         private System.Windows.Forms.CheckBox checkBoxShowRaceTimer;
+        private System.Windows.Forms.TabPage tabPageStartSettings;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.ComboBox comboBoxAudioStartStart;
+        private System.Windows.Forms.ComboBox comboBoxAudioStartAnnouncement;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.NumericUpDown numericUpDownAudioStartPause;
+        private System.Windows.Forms.CheckBox checkBoxAudioStartStart;
+        private System.Windows.Forms.CheckBox checkBoxAudioStartPause;
+        private System.Windows.Forms.CheckBox checkBoxAudioStartAnnouncement;
+        private System.Windows.Forms.CheckBox checkBoxEnableAudioStart;
     }
 }
 
