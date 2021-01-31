@@ -231,6 +231,7 @@
             this.buttonMoveDown.Name = "buttonMoveDown";
             this.buttonMoveDown.Size = new System.Drawing.Size(26, 23);
             this.buttonMoveDown.TabIndex = 18;
+            this.toolTip1.SetToolTip(this.buttonMoveDown, "Move selected waypoint down the list");
             this.buttonMoveDown.UseVisualStyleBackColor = true;
             this.buttonMoveDown.Click += new System.EventHandler(this.buttonMoveDown_Click);
             // 
@@ -241,7 +242,7 @@
             this.buttonAddCurrentLocation.Name = "buttonAddCurrentLocation";
             this.buttonAddCurrentLocation.Size = new System.Drawing.Size(26, 23);
             this.buttonAddCurrentLocation.TabIndex = 16;
-            this.toolTip1.SetToolTip(this.buttonAddCurrentLocation, "Add current location");
+            this.toolTip1.SetToolTip(this.buttonAddCurrentLocation, "Add current location as waypoint");
             this.buttonAddCurrentLocation.UseVisualStyleBackColor = true;
             this.buttonAddCurrentLocation.Click += new System.EventHandler(this.buttonAddCurrentLocation_Click);
             // 
@@ -264,6 +265,7 @@
             this.buttonMoveUp.Name = "buttonMoveUp";
             this.buttonMoveUp.Size = new System.Drawing.Size(26, 23);
             this.buttonMoveUp.TabIndex = 17;
+            this.toolTip1.SetToolTip(this.buttonMoveUp, "Move selected waypoint up the list");
             this.buttonMoveUp.UseVisualStyleBackColor = true;
             this.buttonMoveUp.Click += new System.EventHandler(this.buttonMoveUp_Click);
             // 
@@ -285,7 +287,7 @@
             this.buttonSaveRouteAs.Name = "buttonSaveRouteAs";
             this.buttonSaveRouteAs.Size = new System.Drawing.Size(34, 23);
             this.buttonSaveRouteAs.TabIndex = 13;
-            this.toolTip1.SetToolTip(this.buttonSaveRouteAs, "Save as...");
+            this.toolTip1.SetToolTip(this.buttonSaveRouteAs, "Save route as...");
             this.buttonSaveRouteAs.UseVisualStyleBackColor = true;
             this.buttonSaveRouteAs.Click += new System.EventHandler(this.buttonSaveRouteAs_Click);
             // 
@@ -297,7 +299,7 @@
             this.buttonLoadRoute.Size = new System.Drawing.Size(34, 23);
             this.buttonLoadRoute.TabIndex = 14;
             this.buttonLoadRoute.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.toolTip1.SetToolTip(this.buttonLoadRoute, "Load from file");
+            this.toolTip1.SetToolTip(this.buttonLoadRoute, "Load route from file");
             this.buttonLoadRoute.UseVisualStyleBackColor = true;
             this.buttonLoadRoute.Click += new System.EventHandler(this.buttonLoadRoute_Click);
             // 
@@ -308,7 +310,7 @@
             this.buttonDeleteWaypoint.Name = "buttonDeleteWaypoint";
             this.buttonDeleteWaypoint.Size = new System.Drawing.Size(26, 23);
             this.buttonDeleteWaypoint.TabIndex = 2;
-            this.toolTip1.SetToolTip(this.buttonDeleteWaypoint, "Remove selected location");
+            this.toolTip1.SetToolTip(this.buttonDeleteWaypoint, "Delete selected waypoint");
             this.buttonDeleteWaypoint.UseVisualStyleBackColor = true;
             this.buttonDeleteWaypoint.Click += new System.EventHandler(this.buttonDeleteWaypoint_Click);
             // 
@@ -319,7 +321,7 @@
             this.buttonAddWaypoint.Name = "buttonAddWaypoint";
             this.buttonAddWaypoint.Size = new System.Drawing.Size(26, 23);
             this.buttonAddWaypoint.TabIndex = 1;
-            this.toolTip1.SetToolTip(this.buttonAddWaypoint, "Add saved location");
+            this.toolTip1.SetToolTip(this.buttonAddWaypoint, "Add new waypoint");
             this.buttonAddWaypoint.UseVisualStyleBackColor = true;
             this.buttonAddWaypoint.Click += new System.EventHandler(this.buttonAddWaypoint_Click);
             // 
@@ -432,6 +434,7 @@
             this.buttonPolygonMarkerAdd.Name = "buttonPolygonMarkerAdd";
             this.buttonPolygonMarkerAdd.Size = new System.Drawing.Size(22, 22);
             this.buttonPolygonMarkerAdd.TabIndex = 23;
+            this.toolTip1.SetToolTip(this.buttonPolygonMarkerAdd, "Add new location as vertex");
             this.buttonPolygonMarkerAdd.UseVisualStyleBackColor = true;
             // 
             // buttonPolygonMarkerDelete
@@ -441,7 +444,7 @@
             this.buttonPolygonMarkerDelete.Name = "buttonPolygonMarkerDelete";
             this.buttonPolygonMarkerDelete.Size = new System.Drawing.Size(22, 22);
             this.buttonPolygonMarkerDelete.TabIndex = 22;
-            this.toolTip1.SetToolTip(this.buttonPolygonMarkerDelete, "Add current location as gate marker 1");
+            this.toolTip1.SetToolTip(this.buttonPolygonMarkerDelete, "Remove currently select vertex");
             this.buttonPolygonMarkerDelete.UseVisualStyleBackColor = true;
             // 
             // listBoxPolygonMarkers
@@ -460,7 +463,7 @@
             this.buttonPolygonTargetTarget.Name = "buttonPolygonTargetTarget";
             this.buttonPolygonTargetTarget.Size = new System.Drawing.Size(22, 22);
             this.buttonPolygonTargetTarget.TabIndex = 20;
-            this.toolTip1.SetToolTip(this.buttonPolygonTargetTarget, "Target currently selected location");
+            this.toolTip1.SetToolTip(this.buttonPolygonTargetTarget, "Target currently selected waypoint target location");
             this.buttonPolygonTargetTarget.UseVisualStyleBackColor = true;
             // 
             // buttonPolygonMarkerTarget
@@ -470,7 +473,7 @@
             this.buttonPolygonMarkerTarget.Name = "buttonPolygonMarkerTarget";
             this.buttonPolygonMarkerTarget.Size = new System.Drawing.Size(22, 22);
             this.buttonPolygonMarkerTarget.TabIndex = 18;
-            this.toolTip1.SetToolTip(this.buttonPolygonMarkerTarget, "Target currently selected location");
+            this.toolTip1.SetToolTip(this.buttonPolygonMarkerTarget, "Target currently selected vertex location");
             this.buttonPolygonMarkerTarget.UseVisualStyleBackColor = true;
             // 
             // buttonPolygonTargetCalculate
@@ -480,6 +483,7 @@
             this.buttonPolygonTargetCalculate.Name = "buttonPolygonTargetCalculate";
             this.buttonPolygonTargetCalculate.Size = new System.Drawing.Size(22, 22);
             this.buttonPolygonTargetCalculate.TabIndex = 13;
+            this.toolTip1.SetToolTip(this.buttonPolygonTargetCalculate, "Calculate target location for waypoint");
             this.buttonPolygonTargetCalculate.UseVisualStyleBackColor = true;
             // 
             // buttonPolygonTargetEdit
@@ -489,6 +493,7 @@
             this.buttonPolygonTargetEdit.Name = "buttonPolygonTargetEdit";
             this.buttonPolygonTargetEdit.Size = new System.Drawing.Size(22, 22);
             this.buttonPolygonTargetEdit.TabIndex = 12;
+            this.toolTip1.SetToolTip(this.buttonPolygonTargetEdit, "Edit waypoint target location");
             this.buttonPolygonTargetEdit.UseVisualStyleBackColor = true;
             // 
             // buttonPolygonTargetUseCurrentLocation
@@ -498,7 +503,7 @@
             this.buttonPolygonTargetUseCurrentLocation.Name = "buttonPolygonTargetUseCurrentLocation";
             this.buttonPolygonTargetUseCurrentLocation.Size = new System.Drawing.Size(22, 22);
             this.buttonPolygonTargetUseCurrentLocation.TabIndex = 11;
-            this.toolTip1.SetToolTip(this.buttonPolygonTargetUseCurrentLocation, "Add current location as gate marker 2");
+            this.toolTip1.SetToolTip(this.buttonPolygonTargetUseCurrentLocation, "Add current location as waypoint target");
             this.buttonPolygonTargetUseCurrentLocation.UseVisualStyleBackColor = true;
             // 
             // label13
@@ -526,6 +531,7 @@
             this.buttonPolygonMarkerEdit.Name = "buttonPolygonMarkerEdit";
             this.buttonPolygonMarkerEdit.Size = new System.Drawing.Size(22, 22);
             this.buttonPolygonMarkerEdit.TabIndex = 6;
+            this.toolTip1.SetToolTip(this.buttonPolygonMarkerEdit, "Edit selected vertex location");
             this.buttonPolygonMarkerEdit.UseVisualStyleBackColor = true;
             // 
             // buttonPolygonMarkerUseCurrentLocation
@@ -535,7 +541,7 @@
             this.buttonPolygonMarkerUseCurrentLocation.Name = "buttonPolygonMarkerUseCurrentLocation";
             this.buttonPolygonMarkerUseCurrentLocation.Size = new System.Drawing.Size(22, 22);
             this.buttonPolygonMarkerUseCurrentLocation.TabIndex = 4;
-            this.toolTip1.SetToolTip(this.buttonPolygonMarkerUseCurrentLocation, "Add current location as gate marker 1");
+            this.toolTip1.SetToolTip(this.buttonPolygonMarkerUseCurrentLocation, "Add current location as polygon vertex");
             this.buttonPolygonMarkerUseCurrentLocation.UseVisualStyleBackColor = true;
             // 
             // groupBoxAltitude
@@ -566,6 +572,7 @@
             this.numericUpDownMinAltitude.Name = "numericUpDownMinAltitude";
             this.numericUpDownMinAltitude.Size = new System.Drawing.Size(59, 20);
             this.numericUpDownMinAltitude.TabIndex = 5;
+            this.toolTip1.SetToolTip(this.numericUpDownMinAltitude, "Minimum allowed altitude for this waypoint");
             this.numericUpDownMinAltitude.ValueChanged += new System.EventHandler(this.numericUpDownMinAltitude_ValueChanged);
             // 
             // label5
@@ -583,6 +590,7 @@
             this.numericUpDownMaxAltitude.Name = "numericUpDownMaxAltitude";
             this.numericUpDownMaxAltitude.Size = new System.Drawing.Size(59, 20);
             this.numericUpDownMaxAltitude.TabIndex = 7;
+            this.toolTip1.SetToolTip(this.numericUpDownMaxAltitude, "Maximum allowed altitude for this waypoint.\r\nIf 0, will not be checked.");
             this.numericUpDownMaxAltitude.ValueChanged += new System.EventHandler(this.numericUpDownMaxAltitude_ValueChanged);
             // 
             // label7
@@ -1220,6 +1228,7 @@
             this.comboBoxGenerationRouteTemplate.Name = "comboBoxGenerationRouteTemplate";
             this.comboBoxGenerationRouteTemplate.Size = new System.Drawing.Size(331, 21);
             this.comboBoxGenerationRouteTemplate.TabIndex = 0;
+            this.toolTip1.SetToolTip(this.comboBoxGenerationRouteTemplate, "The type of route to generate");
             this.comboBoxGenerationRouteTemplate.SelectedIndexChanged += new System.EventHandler(this.comboBoxRouteTemplate_SelectedIndexChanged);
             // 
             // groupBox6
@@ -1249,6 +1258,7 @@
             this.numericUpDownGenerationDistanceBetweenWaypoint.Name = "numericUpDownGenerationDistanceBetweenWaypoint";
             this.numericUpDownGenerationDistanceBetweenWaypoint.Size = new System.Drawing.Size(67, 20);
             this.numericUpDownGenerationDistanceBetweenWaypoint.TabIndex = 1;
+            this.toolTip1.SetToolTip(this.numericUpDownGenerationDistanceBetweenWaypoint, "Waypoints will be generated with this distance between them");
             this.numericUpDownGenerationDistanceBetweenWaypoint.Value = new decimal(new int[] {
             100,
             0,
@@ -1267,6 +1277,7 @@
             this.comboBoxGenerationDistanceBetweenWaypointUnit.Name = "comboBoxGenerationDistanceBetweenWaypointUnit";
             this.comboBoxGenerationDistanceBetweenWaypointUnit.Size = new System.Drawing.Size(48, 21);
             this.comboBoxGenerationDistanceBetweenWaypointUnit.TabIndex = 2;
+            this.toolTip1.SetToolTip(this.comboBoxGenerationDistanceBetweenWaypointUnit, "Unit of measurement for waypoint distance");
             // 
             // FormRouter
             // 

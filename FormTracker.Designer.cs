@@ -113,6 +113,7 @@
             this.buttonBrowseStatusFile.Name = "buttonBrowseStatusFile";
             this.buttonBrowseStatusFile.Size = new System.Drawing.Size(27, 23);
             this.buttonBrowseStatusFile.TabIndex = 1;
+            this.toolTip1.SetToolTip(this.buttonBrowseStatusFile, "Browse to locate Status.Json file");
             this.buttonBrowseStatusFile.UseVisualStyleBackColor = true;
             this.buttonBrowseStatusFile.Click += new System.EventHandler(this.buttonBrowseStatusFile_Click);
             // 
@@ -168,7 +169,7 @@
             this.textBoxCommanderName.Name = "textBoxCommanderName";
             this.textBoxCommanderName.Size = new System.Drawing.Size(229, 20);
             this.textBoxCommanderName.TabIndex = 4;
-            this.toolTip1.SetToolTip(this.textBoxCommanderName, "Client Id (usually commander name) sent with status updates");
+            this.toolTip1.SetToolTip(this.textBoxCommanderName, "Commander name.\r\nWill be registered to client Id on server upload.");
             this.textBoxCommanderName.Validating += new System.ComponentModel.CancelEventHandler(this.textBoxCommanderName_Validating);
             // 
             // textBoxTelemetryFolder
@@ -182,7 +183,7 @@
             this.textBoxTelemetryFolder.Size = new System.Drawing.Size(222, 20);
             this.textBoxTelemetryFolder.TabIndex = 3;
             this.textBoxTelemetryFolder.Text = "Session Telemetry";
-            this.toolTip1.SetToolTip(this.textBoxTelemetryFolder, "The file to which status updates will be saved");
+            this.toolTip1.SetToolTip(this.textBoxTelemetryFolder, "The folder to which session telemetry will be saved");
             this.textBoxTelemetryFolder.Validated += new System.EventHandler(this.textBoxTelemetryFolder_Validated);
             // 
             // checkBoxSaveTelemetryFolder
@@ -194,7 +195,8 @@
             this.checkBoxSaveTelemetryFolder.Size = new System.Drawing.Size(95, 17);
             this.checkBoxSaveTelemetryFolder.TabIndex = 2;
             this.checkBoxSaveTelemetryFolder.Text = "Save to folder:";
-            this.toolTip1.SetToolTip(this.checkBoxSaveTelemetryFolder, "If enabled, all status updates will be logged to the specified file");
+            this.toolTip1.SetToolTip(this.checkBoxSaveTelemetryFolder, "If enabled, session data will be save to the specified folder\r\nThis occurs on ses" +
+        "sion reset or when the tracker is closed.");
             this.checkBoxSaveTelemetryFolder.UseVisualStyleBackColor = true;
             this.checkBoxSaveTelemetryFolder.CheckedChanged += new System.EventHandler(this.checkBoxSaveToFile_CheckedChanged);
             // 
@@ -275,6 +277,8 @@
             this.buttonNewSession.Size = new System.Drawing.Size(54, 22);
             this.buttonNewSession.TabIndex = 21;
             this.buttonNewSession.Text = "Reset";
+            this.toolTip1.SetToolTip(this.buttonNewSession, "Reset session (all telemetry is cleared).\r\nWill save old session if save enabled." +
+        "");
             this.buttonNewSession.UseVisualStyleBackColor = true;
             this.buttonNewSession.Click += new System.EventHandler(this.buttonNewSession_Click);
             // 
@@ -287,6 +291,7 @@
             this.buttonBrowseTelemetryFolder.Name = "buttonBrowseTelemetryFolder";
             this.buttonBrowseTelemetryFolder.Size = new System.Drawing.Size(27, 23);
             this.buttonBrowseTelemetryFolder.TabIndex = 17;
+            this.toolTip1.SetToolTip(this.buttonBrowseTelemetryFolder, "Browse to select the session telemetry save folder");
             this.buttonBrowseTelemetryFolder.UseVisualStyleBackColor = true;
             this.buttonBrowseTelemetryFolder.Click += new System.EventHandler(this.buttonBrowseTelemetryFolder_Click);
             // 
@@ -312,7 +317,7 @@
             this.buttonSRVTelemetryExportSettings.TabIndex = 15;
             this.buttonSRVTelemetryExportSettings.Text = "Settings";
             this.buttonSRVTelemetryExportSettings.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.toolTip1.SetToolTip(this.buttonSRVTelemetryExportSettings, "Edit race telemetry collection settings");
+            this.toolTip1.SetToolTip(this.buttonSRVTelemetryExportSettings, "Edit telemetry display/export settings");
             this.buttonSRVTelemetryExportSettings.UseVisualStyleBackColor = true;
             this.buttonSRVTelemetryExportSettings.Click += new System.EventHandler(this.buttonSRVTelemetryExportSettings_Click);
             // 
@@ -324,6 +329,7 @@
             this.checkBoxCaptureSRVTelemetry.Size = new System.Drawing.Size(111, 17);
             this.checkBoxCaptureSRVTelemetry.TabIndex = 4;
             this.checkBoxCaptureSRVTelemetry.Text = "Capture telemetry:";
+            this.toolTip1.SetToolTip(this.checkBoxCaptureSRVTelemetry, "If selected, session telemetry will be collected");
             this.checkBoxCaptureSRVTelemetry.UseVisualStyleBackColor = true;
             this.checkBoxCaptureSRVTelemetry.CheckedChanged += new System.EventHandler(this.checkBoxCaptureSRVTelemetry_CheckedChanged);
             // 
@@ -335,6 +341,7 @@
             this.checkBoxShowSRVTelemetry.Size = new System.Drawing.Size(60, 17);
             this.checkBoxShowSRVTelemetry.TabIndex = 14;
             this.checkBoxShowSRVTelemetry.Text = "Display";
+            this.toolTip1.SetToolTip(this.checkBoxShowSRVTelemetry, "If enabled, the telemetry window is displayed");
             this.checkBoxShowSRVTelemetry.UseVisualStyleBackColor = true;
             this.checkBoxShowSRVTelemetry.CheckedChanged += new System.EventHandler(this.checkBoxShowSRVTelemetry_CheckedChanged);
             // 
@@ -604,6 +611,7 @@
             this.textBoxClientId.ReadOnly = true;
             this.textBoxClientId.Size = new System.Drawing.Size(256, 20);
             this.textBoxClientId.TabIndex = 14;
+            this.toolTip1.SetToolTip(this.textBoxClientId, "Client Id (assigned by server on upload)");
             // 
             // tabPageMonitoring
             // 
@@ -669,6 +677,7 @@
             this.buttonUpdate.Size = new System.Drawing.Size(114, 23);
             this.buttonUpdate.TabIndex = 23;
             this.buttonUpdate.Text = "Check for update";
+            this.toolTip1.SetToolTip(this.buttonUpdate, "Checks whether any program updates are availble");
             this.buttonUpdate.UseVisualStyleBackColor = true;
             this.buttonUpdate.Click += new System.EventHandler(this.buttonUpdate_Click);
             // 
@@ -682,6 +691,7 @@
             this.radioButtonSRVTelemetry.TabIndex = 22;
             this.radioButtonSRVTelemetry.TabStop = true;
             this.radioButtonSRVTelemetry.Text = "SRV";
+            this.toolTip1.SetToolTip(this.radioButtonSRVTelemetry, "Capture SRV telemetry only (ship events are ignored)");
             this.radioButtonSRVTelemetry.UseVisualStyleBackColor = true;
             this.radioButtonSRVTelemetry.CheckedChanged += new System.EventHandler(this.radioButtonSRVTelemetry_CheckedChanged);
             // 
@@ -693,6 +703,7 @@
             this.radioButtonShipTelemetry.Size = new System.Drawing.Size(46, 17);
             this.radioButtonShipTelemetry.TabIndex = 23;
             this.radioButtonShipTelemetry.Text = "Ship";
+            this.toolTip1.SetToolTip(this.radioButtonShipTelemetry, "Capture ship telemetry only (SRV events are ignored)");
             this.radioButtonShipTelemetry.UseVisualStyleBackColor = true;
             this.radioButtonShipTelemetry.CheckedChanged += new System.EventHandler(this.radioButtonShipTelemetry_CheckedChanged);
             // 
