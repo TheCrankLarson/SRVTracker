@@ -91,26 +91,24 @@ namespace EDTracking
                 StartRace();
         }
 
-        public static Dictionary<string, string> RaceReportDescriptions()
+        public static readonly Dictionary<string, string> RaceReportDescriptions = new Dictionary<string, string>()
         {
-            return new Dictionary<string, string>()
-                {
-                    { "Commander", "Commander name" },
-                    { "Position", "Current position" },
-                    { "Speed", "Current speed" },
-                    { "Altitude", "Altitude" },
-                    { "MaxSpeed", "Maximum speed" },
-                    { "AverageSpeed", "Average speed" },
-                    { "Status", "Status" },
-                    { "DistanceToWaypoint", "Distance to the next waypoint" },
-                    { "TotalDistanceLeft", "Total distance left" },
-                    { "Hull", "Hull strength left" },
-                    { "Lap", "Current lap" },
-                    { "LastLapTime", "Time taken for last complete lap" },
-                    { "FastestLap", "Fastest lap" },
-                    { "FastestLapTime", "Fastest lap time" }
-                };
-        }
+            { "Commander", "Commander name" },
+            { "Position", "Current position" },
+            { "Speed", "Current speed" },
+            { "Altitude", "Altitude" },
+            { "MaxSpeed", "Maximum speed" },
+            { "AverageSpeed", "Average speed" },
+            { "Status", "Status" },
+            { "DistanceToWaypoint", "Distance to the next waypoint" },
+            { "TotalDistanceLeft", "Total distance left" },
+            { "Hull", "Hull strength left" },
+            { "Lap", "Current lap" },
+            { "LastLapTime", "Time taken for last complete lap" },
+            { "FastestLap", "Fastest lap" },
+            { "FastestLapTime", "Fastest lap time" }
+        };
+        
 
         public Dictionary<string,string> Telemetry()
         {

@@ -225,14 +225,24 @@ namespace Race_Manager
                 _raceTelemetryWriter = new TelemetryWriter((string)checkBoxExportRaceTelemetry.Tag);
             }
             else
+            {
                 _raceTelemetryWriter = new TelemetryWriter();
+                List<string> allReports = EDRace.RaceReportDescriptions.Keys.ToList<string>();
+                foreach (string report in allReports)
+                    _raceTelemetryWriter.EnableReportDisplay(report, report);
+            }
 
             if (!String.IsNullOrEmpty((string)checkBoxExportTargetTelemetry.Tag))
             {
                 _trackedTelemetryWriter = new TelemetryWriter((string)checkBoxExportTargetTelemetry.Tag);
             }
             else
+            {
                 _trackedTelemetryWriter = new TelemetryWriter();
+                List<string> allReports = EDRaceStatus.RaceReportDescriptions.Keys.ToList<string>();
+                foreach (string report in allReports)
+                    _trackedTelemetryWriter.EnableReportDisplay(report, report);
+            }
             checkBoxShowRaceTelemetry_CheckedChanged(null, null);
             checkBoxShowTargetTelemetry_CheckedChanged(null, null);
         }
@@ -267,7 +277,7 @@ namespace Race_Manager
             else
                 action();
             if (_raceTelemetryDisplay != null && !_raceTelemetryDisplay.IsDisposed)
-                _raceTelemetryDisplay.InitialiseColumns(EDRace.RaceReportDescriptions(), _race.Contestants.Count);
+                _raceTelemetryDisplay.InitialiseColumns(EDRace.RaceReportDescriptions, _race.Contestants.Count);
             GeneratePreraceExports();
         }
 
@@ -449,7 +459,7 @@ namespace Race_Manager
                             foreach (string contestant in _race.Contestants)
                                 listBoxParticipants.Items.Add(contestant);
                             if (_raceTelemetryDisplay != null && !_raceTelemetryDisplay.IsDisposed)
-                                _raceTelemetryDisplay.InitialiseColumns(EDRace.RaceReportDescriptions(), _race.Contestants.Count);
+                                _raceTelemetryDisplay.InitialiseColumns(EDRace.RaceReportDescriptions, _race.Contestants.Count);
                         }
                         else
                             _race.Contestants = new List<string>();
@@ -515,7 +525,7 @@ namespace Race_Manager
             _trackedTelemetryWriter.ClearFiles();
             _skipAutoAdd = new List<string>();
             if (_raceTelemetryDisplay != null && !_raceTelemetryDisplay.IsDisposed)
-                _raceTelemetryDisplay.InitialiseColumns(EDRace.RaceReportDescriptions(), _race.Contestants.Count);
+                _raceTelemetryDisplay.InitialiseColumns(EDRace.RaceReportDescriptions, _race.Contestants.Count);
             GeneratePreraceExports();
         }
 
@@ -718,7 +728,7 @@ namespace Race_Manager
             {
                 _race.Contestants.Remove(commanderToRemove);
                 if (_raceTelemetryDisplay != null && !_raceTelemetryDisplay.IsDisposed)
-                    _raceTelemetryDisplay.InitialiseColumns(EDRace.RaceReportDescriptions(), _race.Contestants.Count);
+                    _raceTelemetryDisplay.InitialiseColumns(EDRace.RaceReportDescriptions, _race.Contestants.Count);
             }
             listBoxParticipants.Items.RemoveAt(listBoxParticipants.SelectedIndex);
             _skipAutoAdd.Add(commanderToRemove);
@@ -741,7 +751,7 @@ namespace Race_Manager
 
             if (_raceTelemetrySettings == null)
             {
-                _raceTelemetrySettings = new FormTelemetrySettings(_raceTelemetryWriter,EDRace.RaceReportDescriptions(),"Race-", "Race Telemetry Settings");
+                _raceTelemetrySettings = new FormTelemetrySettings(_raceTelemetryWriter,EDRace.RaceReportDescriptions,"Race-", "Race Telemetry Settings");
                 _raceTelemetrySettings.SelectedReportsChanged += _raceTelemetrySettings_SelectionChanged;
                 _raceTelemetrySettings.ExportToControlTag(checkBoxExportRaceTelemetry);
                 if (_raceTelemetryDisplay != null && !_raceTelemetryDisplay.IsDisposed)
@@ -785,7 +795,7 @@ namespace Race_Manager
 
             if (_targetTelemetrySettings == null)
             {
-                _targetTelemetrySettings = new FormTelemetrySettings(_trackedTelemetryWriter, EDRaceStatus.RaceReportDescriptions(), "Target-", "Target Telemetry Settings");
+                _targetTelemetrySettings = new FormTelemetrySettings(_trackedTelemetryWriter, EDRaceStatus.RaceReportDescriptions, "Target-", "Target Telemetry Settings");
                 _targetTelemetrySettings.ExportToControlTag(checkBoxExportTargetTelemetry);
             }
             if (!_targetTelemetrySettings.Visible)
@@ -817,7 +827,7 @@ namespace Race_Manager
                     int rows = 0;
                     if (_race != null)
                         rows = _race.Contestants.Count;
-                    _raceTelemetryDisplay.InitialiseColumns(EDRace.RaceReportDescriptions(), rows);
+                    _raceTelemetryDisplay.InitialiseColumns(EDRace.RaceReportDescriptions, rows);
                 }
                 else if (!_raceTelemetryDisplay.Visible)
                     _raceTelemetryDisplay.Show(this);
@@ -846,7 +856,7 @@ namespace Race_Manager
                 {
                     _targetTelemetryDisplay = new FormTelemetryDisplay(_trackedTelemetryWriter, "Commander Telemetry");
                     _targetTelemetryDisplay.FormClosing += _targetTelemetryDisplay_FormClosing;
-                    _targetTelemetryDisplay.InitialiseRows(EDRaceStatus.RaceReportDescriptions());
+                    _targetTelemetryDisplay.InitialiseRows(EDRaceStatus.RaceReportDescriptions);
                     _targetTelemetryDisplay.Show(this);
                 }
                 else if (!_targetTelemetryDisplay.Visible)

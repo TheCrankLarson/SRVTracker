@@ -391,30 +391,28 @@ namespace EDTracking
             return statsTable;
         }
 
-        public static Dictionary<string,string> RaceReportDescriptions()
+        public static readonly Dictionary<string,string> RaceReportDescriptions = new Dictionary<string, string>()
         {
-            return new Dictionary<string, string>()
-                {
-                    { "RaceName", "Race name" },
-                    { "Positions", "Positions of contestants" },
-                    { "Commanders", "Names of contestants" },
-                    { "Speeds", "Current speeds" },
-                    { "Altitudes", "Current altitudes" },
-                    { "MaxSpeeds", "Maximum speeds" },
-                    { "AverageSpeeds", "Average speeds" },
-                    { "Status", "Statuses" },
-                    { "DistanceToWaypoint", "Distances to the next waypoint" },
-                    { "TotalDistanceLeft", "Total distances left" },
-                    { "Hull", "Hull strengths left" },
-                    { "Lap", "Current laps" },
-                    { "LastLapTime", "Last lap time" },
-                    { "FastestLapTime", "Fastest lap time" },
-                    { "LapCounter", "Current laps/total laps" },
-                    { "LeaderWaypoint", "Waypoint the current leader is heading towards" },
-                    { "LeaderLap", "Lap number of the current leader" },
-                    { "LeaderLapCount", "Lap number of the current leader in format Lap 1/2" }
-                };
-        }
+            { "RaceName", "Race name" },
+            { "Positions", "Positions of contestants" },
+            { "Commanders", "Names of contestants" },
+            { "Speeds", "Current speeds" },
+            { "Altitudes", "Current altitudes" },
+            { "MaxSpeeds", "Maximum speeds" },
+            { "AverageSpeeds", "Average speeds" },
+            { "Status", "Statuses" },
+            { "DistanceToWaypoint", "Distances to the next waypoint" },
+            { "TotalDistanceLeft", "Total distances left" },
+            { "Hull", "Hull strengths left" },
+            { "Lap", "Current laps" },
+            { "LastLapTime", "Last lap time" },
+            { "FastestLapTime", "Fastest lap time" },
+            { "LapCounter", "Current laps/total laps" },
+            { "LeaderWaypoint", "Waypoint the current leader is heading towards" },
+            { "LeaderLap", "Lap number of the current leader" },
+            { "LeaderLapCount", "Lap number of the current leader in format Lap 1/2" }
+        };
+        
 
         public string ExportRaceStatistics(int maxStatusLength = 40)
         {
