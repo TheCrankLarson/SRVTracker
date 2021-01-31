@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using EDTracking;
 using System.Net;
 using System.Text.Json;
+using NAudio;
 
 namespace Race_Manager
 {

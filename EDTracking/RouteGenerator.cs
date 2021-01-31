@@ -38,7 +38,7 @@ namespace EDTracking
         public static double Circumference(double radius)
         {
             // Returns the circumference of the circle
-            return (radius * radius) * Math.PI;
+            return 2 * radius * Math.PI;
         }
     }
 }
