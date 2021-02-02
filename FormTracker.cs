@@ -357,7 +357,6 @@ namespace SRVTracker
             }
 
             _vehicleTelemetry.ProcessEvent(edEvent, !checkBoxCaptureSRVTelemetry.Checked);
-
             if (edEvent.HasCoordinates())
             {
                 if (checkBoxUseDirectionOfTravelAsHeading.Checked)

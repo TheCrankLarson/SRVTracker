@@ -306,7 +306,7 @@ namespace SRVTracker
           
             try
             {
-                _targetPosition = FormTracker.CurrentLocation;
+                _targetPosition = FormTracker.CurrentLocation.Copy();
                 UpdateTrackingTarget($"{_targetPosition.Longitude.ToString()} , {_targetPosition.Latitude.ToString()}");
                 DisplayTarget();
             }
