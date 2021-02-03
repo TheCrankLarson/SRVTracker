@@ -10,7 +10,7 @@ using System.Windows.Forms;
 using EDTracking;
 using System.Net;
 using System.Text.Json;
-using NAudio;
+using NAudio.Wave;
 
 namespace Race_Manager
 {
@@ -35,6 +35,10 @@ namespace Race_Manager
         private bool _raceTelemetrySettingsClosing = false;
         private Dictionary<string, string> _activeServerRaces = null;
 
+        private WaveOutEvent _audioOutputDevice = null;
+        private AudioFileReader _audioFile;
+        private bool _audioAnnounced = false;
+
         public FormRaceController()
         {
             InitializeComponent();
@@ -50,6 +54,10 @@ namespace Race_Manager
             _formConfig.RestorePreviousSize = false;
             _formConfig.RestoreFormValues();
             groupBoxAddCommander.Visible = false;
+            if (!String.IsNullOrEmpty((string)comboBoxAudioStartAnnouncement.Tag))
+                comboBoxAudioStartAnnouncement.Items.Insert(0, comboBoxAudioStartAnnouncement.Tag);
+            if (!String.IsNullOrEmpty((string)comboBoxAudioStartStart.Tag))
+                comboBoxAudioStartStart.Items.Insert(0, comboBoxAudioStartStart.Tag);
 
             this.Text = Application.ProductName + " v" + Application.ProductVersion;
             StartWatching();
@@ -550,6 +558,15 @@ namespace Race_Manager
             else
                 _race.Laps = 0;
 
+            if (checkBoxEnableAudioStart.Checked)
+                PlayStartAudio();
+            else
+                StartRace();
+
+        }
+
+        private void StartRace()
+        {
             if (!StartServerMonitoredRace())
                 return;
 
@@ -560,6 +577,73 @@ namespace Race_Manager
             buttonRemoveParticipant.Enabled = false;
             buttonRaceHistory.Enabled = true;
             checkBoxShowRaceTelemetry_CheckedChanged(null, null);
+        }
+
+        private void PlayStartAudio()
+        {
+            if (_audioOutputDevice==null)
+            {
+                _audioOutputDevice = new WaveOutEvent();
+                _audioOutputDevice.PlaybackStopped += _audioOutputDevice_PlaybackStopped;
+            }
+            buttonStartRace.Enabled = false;
+
+            _audioAnnounced = false;
+            if (checkBoxAudioStartAnnouncement.Checked)
+            {
+                _audioFile = new AudioFileReader(comboBoxAudioStartAnnouncement.Text);
+                _audioOutputDevice.Init(_audioFile);
+                _audioOutputDevice.Play();
+            }
+            else
+                _audioOutputDevice_PlaybackStopped(null, null);
+        }
+
+        private void _audioOutputDevice_PlaybackStopped(object sender, StoppedEventArgs e)
+        {
+            // This event occurs once the audio announcement has completed
+            if (_audioFile != null)
+                _audioFile.Dispose();
+            if (_audioAnnounced)
+            {
+                // We just need to dispose of the audio resources
+                _audioOutputDevice.Dispose();
+                _audioOutputDevice = null;
+                return;
+            }
+            if (checkBoxAudioStartPause.Checked)
+            {
+                int delay = (int)numericUpDownAudioStartPause.Value;
+                if (checkBoxAudioRandomiseStartPause.Checked)
+                {
+                    Random r = new Random();
+                    delay = r.Next(0, (int)numericUpDownAudioStartPause.Value);
+                }
+                System.Threading.Thread.Sleep(delay * 1000);
+            }
+            if (checkBoxAudioStartStart.Checked)
+            {
+                _audioFile = new AudioFileReader(comboBoxAudioStartStart.Text);
+                _audioOutputDevice.Init(_audioFile);
+                _audioAnnounced = true;
+                _audioOutputDevice.Play();
+            }
+            StartRace();
+        }
+
+        private string OpenSoundFile(string currentFile = "")
+        {
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.InitialDirectory = currentFile;
+                openFileDialog.Filter = "MP3 files (*.mp3)|Wave files (*.wav)|*.wav|*.mp3|All files (*.*)|*.*";
+                openFileDialog.FilterIndex = 1;
+                openFileDialog.RestoreDirectory = true;
+                openFileDialog.FileName = currentFile;
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                    return openFileDialog.FileName;
+                return "";
+            }
         }
 
         private void buttonLoadRoute_Click(object sender, EventArgs e)
@@ -1175,6 +1259,46 @@ namespace Race_Manager
         private void checkBoxExportRaceTelemetry_CheckedChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void comboBoxAudioStartAnnouncement_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (comboBoxAudioStartAnnouncement.SelectedIndex < 0)
+                return;
+
+            string selectedSound = (string)comboBoxAudioStartAnnouncement.SelectedItem;
+            if (selectedSound.Equals("Load audio file..."))
+            {
+                // Add custom sound
+                string currentFile = "";
+                selectedSound = OpenSoundFile(currentFile);
+                if (!String.IsNullOrEmpty(selectedSound))
+                {
+                    comboBoxAudioStartAnnouncement.Items.Insert(0, selectedSound);
+                    comboBoxAudioStartAnnouncement.Tag = selectedSound;
+                    comboBoxAudioStartAnnouncement.SelectedIndex = 0;
+                }
+            }
+        }
+
+        private void comboBoxAudioStartStart_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (comboBoxAudioStartStart.SelectedIndex < 0)
+                return;
+
+            string selectedSound = (string)comboBoxAudioStartStart.SelectedItem;
+            if (selectedSound.Equals("Load audio file..."))
+            {
+                // Add custom sound
+                string currentFile = "";
+                selectedSound = OpenSoundFile(currentFile);
+                if (!String.IsNullOrEmpty(selectedSound))
+                {
+                    comboBoxAudioStartStart.Items.Insert(0, selectedSound);
+                    comboBoxAudioStartStart.Tag = selectedSound;
+                    comboBoxAudioStartStart.SelectedIndex = 0;
+                }
+            }
         }
     }
 }

@@ -29,6 +29,9 @@ namespace EDTracking
         public bool StoreControlInfo { get; set; } = true;
         public bool RestorePreviousLocation { get; set; } = true;
         public bool RestorePreviousSize { get; set; } = true;
+        public bool StoreButtonInfo { get; set; } = false;
+        public bool StoreLabelInfo { get; set; } = false;
+        public bool StoreGroupboxInfo { get; set; } = false;
 
         public ConfigSaverClass(System.Windows.Forms.Form form, bool DoNotApply)
         {
@@ -138,11 +141,7 @@ namespace EDTracking
             set { _doNotStoreConfig = !value; }
         }
 
-        public bool StoreButtonInfo { get; set; } = false;
 
-        public bool StoreLabelInfo { get; set; } = false;
-
-        public bool StoreGroupboxInfo { get; set; } = false;
 
         public bool SaveConfiguration()
         {

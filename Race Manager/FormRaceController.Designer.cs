@@ -120,6 +120,7 @@
             this.label5 = new System.Windows.Forms.Label();
             this.comboBoxAudioStartAnnouncement = new System.Windows.Forms.ComboBox();
             this.comboBoxAudioStartStart = new System.Windows.Forms.ComboBox();
+            this.checkBoxAudioRandomiseStartPause = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLapCount)).BeginInit();
             this.groupBoxAddCommander.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -1094,6 +1095,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.checkBoxAudioRandomiseStartPause);
             this.groupBox1.Controls.Add(this.comboBoxAudioStartStart);
             this.groupBox1.Controls.Add(this.comboBoxAudioStartAnnouncement);
             this.groupBox1.Controls.Add(this.label5);
@@ -1134,9 +1136,9 @@
             this.checkBoxAudioStartPause.AutoSize = true;
             this.checkBoxAudioStartPause.Location = new System.Drawing.Point(21, 65);
             this.checkBoxAudioStartPause.Name = "checkBoxAudioStartPause";
-            this.checkBoxAudioStartPause.Size = new System.Drawing.Size(161, 17);
+            this.checkBoxAudioStartPause.Size = new System.Drawing.Size(115, 17);
             this.checkBoxAudioStartPause.TabIndex = 2;
-            this.checkBoxAudioStartPause.Text = "Maximum pause before start:";
+            this.checkBoxAudioStartPause.Text = "Pause before start:";
             this.checkBoxAudioStartPause.UseVisualStyleBackColor = true;
             // 
             // checkBoxAudioStartStart
@@ -1151,7 +1153,7 @@
             // 
             // numericUpDownAudioStartPause
             // 
-            this.numericUpDownAudioStartPause.Location = new System.Drawing.Point(265, 64);
+            this.numericUpDownAudioStartPause.Location = new System.Drawing.Point(185, 64);
             this.numericUpDownAudioStartPause.Maximum = new decimal(new int[] {
             10,
             0,
@@ -1160,11 +1162,16 @@
             this.numericUpDownAudioStartPause.Name = "numericUpDownAudioStartPause";
             this.numericUpDownAudioStartPause.Size = new System.Drawing.Size(41, 20);
             this.numericUpDownAudioStartPause.TabIndex = 4;
+            this.numericUpDownAudioStartPause.Value = new decimal(new int[] {
+            4,
+            0,
+            0,
+            0});
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(312, 66);
+            this.label5.Location = new System.Drawing.Point(232, 66);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(47, 13);
             this.label5.TabIndex = 5;
@@ -1174,19 +1181,35 @@
             // 
             this.comboBoxAudioStartAnnouncement.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxAudioStartAnnouncement.FormattingEnabled = true;
+            this.comboBoxAudioStartAnnouncement.Items.AddRange(new object[] {
+            "Load audio file..."});
             this.comboBoxAudioStartAnnouncement.Location = new System.Drawing.Point(126, 40);
             this.comboBoxAudioStartAnnouncement.Name = "comboBoxAudioStartAnnouncement";
             this.comboBoxAudioStartAnnouncement.Size = new System.Drawing.Size(233, 21);
             this.comboBoxAudioStartAnnouncement.TabIndex = 6;
+            this.comboBoxAudioStartAnnouncement.SelectedIndexChanged += new System.EventHandler(this.comboBoxAudioStartAnnouncement_SelectedIndexChanged);
             // 
             // comboBoxAudioStartStart
             // 
             this.comboBoxAudioStartStart.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxAudioStartStart.FormattingEnabled = true;
+            this.comboBoxAudioStartStart.Items.AddRange(new object[] {
+            "Load audio file..."});
             this.comboBoxAudioStartStart.Location = new System.Drawing.Point(126, 86);
             this.comboBoxAudioStartStart.Name = "comboBoxAudioStartStart";
             this.comboBoxAudioStartStart.Size = new System.Drawing.Size(233, 21);
             this.comboBoxAudioStartStart.TabIndex = 7;
+            this.comboBoxAudioStartStart.SelectedIndexChanged += new System.EventHandler(this.comboBoxAudioStartStart_SelectedIndexChanged);
+            // 
+            // checkBoxAudioRandomiseStartPause
+            // 
+            this.checkBoxAudioRandomiseStartPause.AutoSize = true;
+            this.checkBoxAudioRandomiseStartPause.Location = new System.Drawing.Point(285, 65);
+            this.checkBoxAudioRandomiseStartPause.Name = "checkBoxAudioRandomiseStartPause";
+            this.checkBoxAudioRandomiseStartPause.Size = new System.Drawing.Size(74, 17);
+            this.checkBoxAudioRandomiseStartPause.TabIndex = 8;
+            this.checkBoxAudioRandomiseStartPause.Text = "randomize";
+            this.checkBoxAudioRandomiseStartPause.UseVisualStyleBackColor = true;
             // 
             // FormRaceController
             // 
@@ -1325,6 +1348,7 @@
         private System.Windows.Forms.CheckBox checkBoxAudioStartPause;
         private System.Windows.Forms.CheckBox checkBoxAudioStartAnnouncement;
         private System.Windows.Forms.CheckBox checkBoxEnableAudioStart;
+        private System.Windows.Forms.CheckBox checkBoxAudioRandomiseStartPause;
     }
 }
 
