@@ -518,7 +518,6 @@
             this.checkBoxExportRaceTelemetry.Text = "Export";
             this.toolTip1.SetToolTip(this.checkBoxExportRaceTelemetry, "If selected, any enabled race telemetry will be exported to text files.");
             this.checkBoxExportRaceTelemetry.UseVisualStyleBackColor = true;
-            this.checkBoxExportRaceTelemetry.CheckedChanged += new System.EventHandler(this.checkBoxExportRaceTelemetry_CheckedChanged);
             // 
             // groupBox7
             // 

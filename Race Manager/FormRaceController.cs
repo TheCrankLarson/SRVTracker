@@ -636,7 +636,7 @@ namespace Race_Manager
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
                 openFileDialog.InitialDirectory = currentFile;
-                openFileDialog.Filter = "MP3 files (*.mp3)|Wave files (*.wav)|*.wav|*.mp3|All files (*.*)|*.*";
+                openFileDialog.Filter = "MP3 files (*.mp3)|*.mp3|Wave files (*.wav)|*.wav|All files (*.*)|*.*";
                 openFileDialog.FilterIndex = 1;
                 openFileDialog.RestoreDirectory = true;
                 openFileDialog.FileName = currentFile;
@@ -1256,11 +1256,6 @@ namespace Race_Manager
             formRaceHistory.Show(this);
         }
 
-        private void checkBoxExportRaceTelemetry_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void comboBoxAudioStartAnnouncement_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (comboBoxAudioStartAnnouncement.SelectedIndex < 0)
@@ -1278,6 +1273,8 @@ namespace Race_Manager
                     comboBoxAudioStartAnnouncement.Tag = selectedSound;
                     comboBoxAudioStartAnnouncement.SelectedIndex = 0;
                 }
+                else
+                    comboBoxAudioStartAnnouncement.SelectedIndex = -1;
             }
         }
 
@@ -1298,6 +1295,8 @@ namespace Race_Manager
                     comboBoxAudioStartStart.Tag = selectedSound;
                     comboBoxAudioStartStart.SelectedIndex = 0;
                 }
+                else
+                    comboBoxAudioStartStart.SelectedIndex = -1;
             }
         }
     }
