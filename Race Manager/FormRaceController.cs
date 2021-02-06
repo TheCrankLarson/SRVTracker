@@ -38,6 +38,7 @@ namespace Race_Manager
         private WaveOutEvent _audioOutputDevice = null;
         private AudioFileReader _audioFile;
         private bool _audioAnnounced = false;
+        private bool _falseStart = false;
 
         public FormRaceController()
         {
@@ -54,10 +55,7 @@ namespace Race_Manager
             _formConfig.RestorePreviousSize = false;
             _formConfig.RestoreFormValues();
             groupBoxAddCommander.Visible = false;
-            if (!String.IsNullOrEmpty((string)comboBoxAudioStartAnnouncement.Tag))
-                comboBoxAudioStartAnnouncement.Items.Insert(0, comboBoxAudioStartAnnouncement.Tag);
-            if (!String.IsNullOrEmpty((string)comboBoxAudioStartStart.Tag))
-                comboBoxAudioStartStart.Items.Insert(0, comboBoxAudioStartStart.Tag);
+            InitSoundOptions();
 
             this.Text = Application.ProductName + " v" + Application.ProductVersion;
             StartWatching();
@@ -71,6 +69,20 @@ namespace Race_Manager
             using (FormStatusMessages formStatusMessages = new FormStatusMessages())
             {
                 EDRace.StatusMessages = formStatusMessages.StatusMessages();
+            }
+        }
+
+        private void InitSoundOptions()
+        {
+            if (!String.IsNullOrEmpty((string)comboBoxAudioStartAnnouncement.Tag))
+            {
+                comboBoxAudioStartAnnouncement.Items.Insert(0, comboBoxAudioStartAnnouncement.Tag);
+                comboBoxAudioStartAnnouncement.SelectedIndex = 0;
+            }
+            if (!String.IsNullOrEmpty((string)comboBoxAudioStartStart.Tag))
+            {
+                comboBoxAudioStartStart.Items.Insert(0, comboBoxAudioStartStart.Tag);
+                comboBoxAudioStartStart.SelectedIndex = 0;
             }
         }
 
@@ -497,6 +509,13 @@ namespace Race_Manager
 
         private void buttonStopRace_Click(object sender, EventArgs e)
         {
+            if (_audioOutputDevice != null && _audioOutputDevice.PlaybackState != PlaybackState.Stopped)
+            {
+                // We want to stop any playing sound
+                _falseStart = true;
+                _audioOutputDevice.Stop();
+            }
+
             if (!String.IsNullOrEmpty(_serverRaceGuid))
             {
                 timerTrackTarget.Stop();
@@ -558,6 +577,7 @@ namespace Race_Manager
             else
                 _race.Laps = 0;
 
+            _falseStart = false;
             if (checkBoxEnableAudioStart.Checked)
                 PlayStartAudio();
             else
@@ -581,22 +601,50 @@ namespace Race_Manager
 
         private void PlayStartAudio()
         {
+            buttonStopRace.Enabled = true;
             if (_audioOutputDevice==null)
             {
                 _audioOutputDevice = new WaveOutEvent();
                 _audioOutputDevice.PlaybackStopped += _audioOutputDevice_PlaybackStopped;
             }
+            else
+            {
+                // Check device is clear, if not, reset it
+                if (_audioOutputDevice.PlaybackState != PlaybackState.Stopped)
+                    _audioOutputDevice.Stop();
+            }
             buttonStartRace.Enabled = false;
 
             _audioAnnounced = false;
             if (checkBoxAudioStartAnnouncement.Checked)
-            {
-                _audioFile = new AudioFileReader(comboBoxAudioStartAnnouncement.Text);
-                _audioOutputDevice.Init(_audioFile);
-                _audioOutputDevice.Play();
-            }
+                PlayAudioFile(comboBoxAudioStartAnnouncement.Text);
             else
                 _audioOutputDevice_PlaybackStopped(null, null);
+        }
+
+        private bool LoadAudioFile(string filePath)
+        {
+            if (!System.IO.File.Exists(filePath))
+                return false;
+
+            if (_audioOutputDevice.PlaybackState != PlaybackState.Stopped)
+                _audioOutputDevice.Stop();
+
+            try
+            {
+                _audioFile = new AudioFileReader(filePath);
+                _audioOutputDevice.Init(_audioFile);
+                return true;
+            }
+            catch { }
+            return false;
+        }
+
+        private void PlayAudioFile(string filePath)
+        {
+            if (!LoadAudioFile(filePath))
+                return;
+            _audioOutputDevice.Play();
         }
 
         private void _audioOutputDevice_PlaybackStopped(object sender, StoppedEventArgs e)
@@ -604,7 +652,7 @@ namespace Race_Manager
             // This event occurs once the audio announcement has completed
             if (_audioFile != null)
                 _audioFile.Dispose();
-            if (_audioAnnounced)
+            if (_audioAnnounced || _falseStart)
             {
                 // We just need to dispose of the audio resources
                 _audioOutputDevice.Dispose();
@@ -619,14 +667,13 @@ namespace Race_Manager
                     Random r = new Random();
                     delay = r.Next(0, (int)numericUpDownAudioStartPause.Value);
                 }
+                buttonStopRace.Enabled = false;
                 System.Threading.Thread.Sleep(delay * 1000);
             }
             if (checkBoxAudioStartStart.Checked)
             {
-                _audioFile = new AudioFileReader(comboBoxAudioStartStart.Text);
-                _audioOutputDevice.Init(_audioFile);
+                PlayAudioFile(comboBoxAudioStartStart.Text);
                 _audioAnnounced = true;
-                _audioOutputDevice.Play();
             }
             StartRace();
         }
