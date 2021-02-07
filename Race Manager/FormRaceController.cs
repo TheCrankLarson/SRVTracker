@@ -38,6 +38,7 @@ namespace Race_Manager
         private WaveOutEvent _audioOutputDevice = null;
         private AudioFileReader _audioFile;
         private bool _audioAnnounced = false;
+        private bool _audioTest = false;
         private bool _falseStart = false;
 
         public FormRaceController()
@@ -63,6 +64,7 @@ namespace Race_Manager
             CommanderWatcher.OnlineCountChanged += CommanderWatcher_OnlineCountChanged;
             InitTelemetryWriters();
             UpdateUI();
+            UpdateAudioUI();
             UpdateAvailableTargets();
             timerDownloadRaceTelemetry.Start();
 
@@ -579,7 +581,10 @@ namespace Race_Manager
 
             _falseStart = false;
             if (checkBoxEnableAudioStart.Checked)
+            {
+                _audioTest = false;
                 PlayStartAudio();
+            }
             else
                 StartRace();
 
@@ -601,7 +606,8 @@ namespace Race_Manager
 
         private void PlayStartAudio()
         {
-            buttonStopRace.Enabled = true;
+            if (!_audioTest)
+                buttonStopRace.Enabled = true;
             if (_audioOutputDevice==null)
             {
                 _audioOutputDevice = new WaveOutEvent();
@@ -613,7 +619,8 @@ namespace Race_Manager
                 if (_audioOutputDevice.PlaybackState != PlaybackState.Stopped)
                     _audioOutputDevice.Stop();
             }
-            buttonStartRace.Enabled = false;
+            if (!_audioTest)
+                buttonStartRace.Enabled = false;
 
             _audioAnnounced = false;
             if (checkBoxAudioStartAnnouncement.Checked)
@@ -657,6 +664,7 @@ namespace Race_Manager
                 // We just need to dispose of the audio resources
                 _audioOutputDevice.Dispose();
                 _audioOutputDevice = null;
+                buttonAudioTest.Enabled = true;
                 return;
             }
             if (checkBoxAudioStartPause.Checked)
@@ -667,7 +675,8 @@ namespace Race_Manager
                     Random r = new Random();
                     delay = r.Next(0, (int)numericUpDownAudioStartPause.Value);
                 }
-                buttonStopRace.Enabled = false;
+                if (!_audioTest)
+                    buttonStopRace.Enabled = false;
                 System.Threading.Thread.Sleep(delay * 1000);
             }
             if (checkBoxAudioStartStart.Checked)
@@ -675,7 +684,10 @@ namespace Race_Manager
                 PlayAudioFile(comboBoxAudioStartStart.Text);
                 _audioAnnounced = true;
             }
-            StartRace();
+            if (!_audioTest)
+                StartRace();
+            _audioTest = false;
+            buttonAudioTest.Enabled = true;
         }
 
         private string OpenSoundFile(string currentFile = "")
@@ -1345,6 +1357,45 @@ namespace Race_Manager
                 else
                     comboBoxAudioStartStart.SelectedIndex = -1;
             }
+        }
+
+        private void buttonAudioTest_Click(object sender, EventArgs e)
+        {
+            _audioTest = true;
+            buttonAudioTest.Enabled = false;
+            PlayStartAudio();
+        }
+
+        private void UpdateAudioUI()
+        {
+            buttonAudioTest.Enabled = checkBoxEnableAudioStart.Checked;
+            checkBoxAudioStartAnnouncement.Enabled = checkBoxEnableAudioStart.Checked;
+            checkBoxAudioStartPause.Enabled = checkBoxEnableAudioStart.Checked;
+            checkBoxAudioStartStart.Enabled = checkBoxEnableAudioStart.Checked;
+            comboBoxAudioStartAnnouncement.Enabled = checkBoxAudioStartAnnouncement.Enabled && checkBoxAudioStartAnnouncement.Checked;
+            numericUpDownAudioStartPause.Enabled = checkBoxAudioStartPause.Enabled && checkBoxAudioStartPause.Checked;
+            checkBoxAudioRandomiseStartPause.Enabled = checkBoxAudioStartPause.Enabled && checkBoxAudioStartPause.Checked;
+            comboBoxAudioStartStart.Enabled = checkBoxAudioStartStart.Enabled && checkBoxAudioStartStart.Checked;
+        }
+
+        private void checkBoxEnableAudioStart_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateAudioUI();   
+        }
+
+        private void checkBoxAudioStartAnnouncement_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateAudioUI();
+        }
+
+        private void checkBoxAudioStartPause_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateAudioUI();
+        }
+
+        private void checkBoxAudioStartStart_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateAudioUI();
         }
     }
 }
