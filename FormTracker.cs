@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Net.Sockets;
 using System.IO;
+using System.Net;
 using System.Runtime.InteropServices;
 using EDTracking;
 
@@ -142,7 +143,7 @@ namespace SRVTracker
                         _commanderName = ReadCommanderNameFromJournal();
                         if (String.IsNullOrEmpty(_commanderName))
                         {
-                            _commanderName = Guid.NewGuid().ToString();
+                            _commanderName = "Anonymous Commander";
                         }
                     }
                     try
@@ -165,6 +166,7 @@ namespace SRVTracker
                     if (nl>0)
                     {
                         _clientId = _commanderName.Substring(nl + Environment.NewLine.Length);
+                        textBoxClientId.Text = _clientId;
                         _commanderName = _commanderName.Substring(0, nl);
                     }
                 }
@@ -356,7 +358,7 @@ namespace SRVTracker
                     action();
             }
 
-            _vehicleTelemetry.ProcessEvent(edEvent, !checkBoxCaptureSRVTelemetry.Checked);
+            _vehicleTelemetry?.ProcessEvent(edEvent, !checkBoxCaptureSRVTelemetry.Checked);
             if (edEvent.HasCoordinates())
             {
                 if (checkBoxUseDirectionOfTravelAsHeading.Checked)
@@ -404,7 +406,9 @@ namespace SRVTracker
 
             try
             {
+                edEvent.Commander = _clientId;
                 string eventData = edEvent.ToJson();
+                edEvent.Commander = _commanderName;
                 Byte[] sendBytes = Encoding.UTF8.GetBytes(eventData);
                 try
                 {
@@ -470,15 +474,20 @@ namespace SRVTracker
             FormLocator.ServerAddress = textBoxUploadServer.Text;
         }
 
+        public string ServerUrl()
+        {
+            string serverUrl = (string)radioButtonUseDefaultServer.Tag;
+            if (radioButtonUseCustomServer.Checked)
+                serverUrl = textBoxUploadServer.Text;
+            return serverUrl;
+        }
+
         private void CreateUdpClient()
         {
             // Create the UDP client for sending tracking data
             try
             {
-                string serverUrl = (string)radioButtonUseDefaultServer.Tag;
-                if (radioButtonUseCustomServer.Checked)
-                    serverUrl = textBoxUploadServer.Text;
-                _udpClient = new UdpClient(serverUrl, 11938);
+                _udpClient = new UdpClient(ServerUrl(), 11938);
             }
             catch (Exception ex)
             {
@@ -494,15 +503,37 @@ namespace SRVTracker
 
             if (!String.IsNullOrEmpty(_clientId))
                 return;
+
+            try
+            {
+                WebClient webClient = new WebClient();
+                string registerUrl = $"http://{ServerUrl()}:11938/DataCollator/registercommander";
+                string registerResult = webClient.UploadString(registerUrl, _commanderName);
+                if (!String.IsNullOrEmpty(registerResult))
+                {
+                    if (registerResult.StartsWith("ERROR"))
+                    {
+                        MessageBox.Show($"Registration failed.{Environment.NewLine}{Environment.NewLine}{registerResult}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+                    _clientId = registerResult;
+                    textBoxClientId.Text = _clientId;
+                    SaveClientId();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Registration failed.{Environment.NewLine}{Environment.NewLine}{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void checkBoxUpload_CheckedChanged(object sender, EventArgs e)
         {
             UpdateServerSettings();
-            InitClientId();
             if (checkBoxUpload.Checked)
             {
                 // Create the UDP client for sending tracking data
+                InitClientId();
                 CreateUdpClient();
             }
             else  if (_udpClient != null)

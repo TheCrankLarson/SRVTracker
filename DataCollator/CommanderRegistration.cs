@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 using System.Text.Json;
 
 namespace DataCollator
@@ -44,6 +45,7 @@ namespace DataCollator
             {
                 Guid commanderGuid = Guid.NewGuid();
                 _commanderGuids.Add(commanderGuid, CommanderName);
+                SaveRegisteredCommanders();
                 return commanderGuid.ToString();
             }
             catch (Exception ex)
@@ -61,33 +63,74 @@ namespace DataCollator
 
         public string CommanderName(string commanderGuid)
         {
+            if (String.IsNullOrEmpty(commanderGuid))
+                return null;
+
             try
             {
                 return CommanderName(Guid.Parse(commanderGuid));
             }
-            catch (Exception ex)
+            catch
             {
-                return $"ERROR: {ex.Message}";
+                return null;
             }
         }
+
         public string UpdateCommanderName(Guid commanderGuid, string commanderName)
         {
             if (!_commanderGuids.ContainsKey(commanderGuid))
-                return "ERROR: Commander not found";
+                return "ERROR: Client Id not found";
+
+            if (_commanderGuids.Values.ToList<string>().Contains(commanderName))
+                return "ERROR: Commander name already in use";
 
             _commanderGuids[commanderGuid] = commanderName;
             SaveRegisteredCommanders();
             return "SUCCESS";
         }
 
+        public string UpdateCommanderName(string commanderGuid, string commanderName)
+        {
+            try
+            {
+                Guid g = Guid.Parse(commanderGuid);
+                return UpdateCommanderName(g, commanderName);
+            }
+            catch (Exception ex)
+            {
+                return $"ERROR: Invalid Guid. {ex.Message}";
+            }
+        }
+
         private void SaveRegisteredCommanders()
         {
-
+            string registeredCommanders = JsonSerializer.Serialize(_commanderGuids);
+            try
+            {
+                File.WriteAllText(_saveFile, registeredCommanders);
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show($"Failed to save commander registrations.{Environment.NewLine}{Environment.NewLine}{ex.Message}", "Catastrophic Error",
+                    System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+            }
         }
 
         private void LoadRegisteredCommanders()
         {
+            if (!File.Exists(_saveFile))
+                return;
 
+            try
+            {
+                string registeredCommanders = File.ReadAllText(_saveFile);
+                _commanderGuids = JsonSerializer.Deserialize<Dictionary<Guid, String>>(registeredCommanders);
+            }
+            catch (Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show($"Failed to load commander registrations.{Environment.NewLine}{Environment.NewLine}{ex.Message}", "Error",
+                    System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+            }
         }
     }
 }

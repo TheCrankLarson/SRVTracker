@@ -138,11 +138,13 @@ namespace DataCollator
             try
             {
                 updateEvent = EDEvent.FromJson(status);
-                if (String.IsNullOrEmpty(updateEvent.Commander))
+                string commanderName = _commanderRegistration.CommanderName(updateEvent.Commander);
+                if (String.IsNullOrEmpty(commanderName))
                 {
-                    Log($"Updated received with blank commander: {status}", true);
+                    Log($"Unregistered commander ignored: {updateEvent.Commander}", true);
                     return;
                 }
+                updateEvent.Commander = commanderName;
             }
             catch (Exception ex)
             {
@@ -392,6 +394,11 @@ namespace DataCollator
                 else if (requestUri.StartsWith("registercommander"))
                 {
                     action = (() => { WriteResponse(context, _commanderRegistration.RegisterCommander(sRequest)); });
+                }
+                else if (requestUri.StartsWith("renamecommander"))
+                {
+                    string[] renameArgs = sRequest.Split(new string[] { System.Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+                    action = (() => { WriteResponse(context, _commanderRegistration.UpdateCommanderName(renameArgs[0], renameArgs[1])); });
                 }
                 else
                     action = (() => { WriteResponse(context, $"{Application.ProductName} v{Application.ProductVersion}"); });
