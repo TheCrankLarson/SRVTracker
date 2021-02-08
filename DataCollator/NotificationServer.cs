@@ -398,12 +398,15 @@ namespace DataCollator
                 else if (requestUri.StartsWith("renamecommander"))
                 {
                     string[] renameArgs = sRequest.Split(new string[] { System.Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
-                    action = (() => { WriteResponse(context, _commanderRegistration.UpdateCommanderName(renameArgs[0], renameArgs[1])); });
+                    if (renameArgs.Length == 2)
+                        action = (() => { WriteResponse(context, _commanderRegistration.UpdateCommanderName(renameArgs[0], renameArgs[1])); });
+                    else
+                        action = (() => { WriteErrorResponse(context.Response, HttpStatusCode.BadRequest); });
                 }
                 else
                     action = (() => { WriteResponse(context, $"{Application.ProductName} v{Application.ProductVersion}"); });
 
-                Task.Run(action);
+                action();
             }
             catch { }
            
