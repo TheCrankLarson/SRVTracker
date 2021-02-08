@@ -506,9 +506,12 @@ namespace SRVTracker
 
             try
             {
-                WebClient webClient = new WebClient();
-                string registerUrl = $"http://{ServerUrl()}:11938/DataCollator/registercommander";
-                string registerResult = webClient.UploadString(registerUrl, _commanderName);
+                string registerResult;
+                using (WebClient webClient = new WebClient())
+                {
+                    string registerUrl = $"http://{ServerUrl()}:11938/DataCollator/registercommander";
+                    registerResult = webClient.UploadString(registerUrl, _commanderName);
+                }
                 if (!String.IsNullOrEmpty(registerResult))
                 {
                     if (registerResult.StartsWith("ERROR"))
@@ -795,6 +798,7 @@ namespace SRVTracker
             }
             catch (Exception ex)
             {
+                MessageBox.Show($"Failed to save client Id.{Environment.NewLine}{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -802,8 +806,7 @@ namespace SRVTracker
         {
             if (!textBoxCommanderName.Text.Equals(_commanderName))
             {
-                _commanderName = textBoxCommanderName.Text;
-                SaveClientId();
+                buttonUpdate.Enabled = true;
             }
         }
 
@@ -815,6 +818,37 @@ namespace SRVTracker
         private void radioButtonShipTelemetry_CheckedChanged(object sender, EventArgs e)
         {
             _vehicleTelemetry.TrackSRV = radioButtonSRVTelemetry.Checked;
+        }
+
+        private void buttonUpdateName_Click(object sender, EventArgs e)
+        {
+            if (String.IsNullOrEmpty(_clientId))
+                InitClientId();
+
+            try
+            {
+                string renameResult;
+                using (WebClient webClient = new WebClient())
+                {
+                    string renameUrl = $"http://{ServerUrl()}:11938/DataCollator/renamecommander";
+                    renameResult = webClient.UploadString(renameUrl, $"{_clientId}{Environment.NewLine}{_commanderName}");
+                }
+                if (!String.IsNullOrEmpty(renameResult))
+                {
+                    if (renameResult.StartsWith("ERROR"))
+                    {
+                        MessageBox.Show($"Rename failed.{Environment.NewLine}{Environment.NewLine}{renameResult}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+                    _commanderName = textBoxCommanderName.Text;
+                    SaveClientId();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Registration failed.{Environment.NewLine}{Environment.NewLine}{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            buttonUpdate.Enabled = false;
         }
     }
 }

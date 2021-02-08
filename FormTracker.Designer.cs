@@ -248,7 +248,11 @@
             this.buttonUpdateName.Size = new System.Drawing.Size(59, 23);
             this.buttonUpdateName.TabIndex = 5;
             this.buttonUpdateName.Text = "Update";
+            this.toolTip1.SetToolTip(this.buttonUpdateName, "If you have registered on a server (e.g. for a race),\r\nyou can use this to update" +
+        " the commander name\r\non the server.  Only works if the commander name\r\nis not re" +
+        "gistered to anyone else.");
             this.buttonUpdateName.UseVisualStyleBackColor = true;
+            this.buttonUpdateName.Click += new System.EventHandler(this.buttonUpdateName_Click);
             // 
             // groupBox6
             // 
@@ -611,7 +615,7 @@
             this.textBoxClientId.ReadOnly = true;
             this.textBoxClientId.Size = new System.Drawing.Size(256, 20);
             this.textBoxClientId.TabIndex = 14;
-            this.toolTip1.SetToolTip(this.textBoxClientId, "Client Id (assigned by server on upload)");
+            this.toolTip1.SetToolTip(this.textBoxClientId, resources.GetString("textBoxClientId.ToolTip"));
             // 
             // tabPageMonitoring
             // 
