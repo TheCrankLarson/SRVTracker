@@ -1265,7 +1265,8 @@ namespace SRVTracker
             switch (comboBoxGenerationRouteTemplate.SelectedIndex)
             {
                 case 0: // Circumnavigation: from current position via North and South Pole
-                    routeWaypoints = RouteGenerator.PoleToPole(FormTracker.CurrentLocation.PlanetaryRadius, waypointSeparationDistance, FormTracker.CurrentLocation.Latitude);
+                    routeWaypoints = RouteGenerator.PoleToPole(FormTracker.CurrentLocation.PlanetaryRadius, waypointSeparationDistance,
+                        FormTracker.CurrentLocation.Latitude, FormTracker.CurrentLocation.Longitude);
                     break;
 
                 case 1: // Circumnavigation: around the equator

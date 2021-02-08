@@ -29,9 +29,28 @@ namespace EDTracking
             return waypoints;
         }
 
-        public static List<EDWaypoint> PoleToPole(double PlanetaryRadius, int WaypointSeparationDistance, double StartLatitude = 0)
+        public static List<EDWaypoint> PoleToPole(double PlanetaryRadius, int WaypointSeparationDistance, double StartLatitude = 0, double StartLongitude = 0)
         {
             List<EDWaypoint> waypoints = new List<EDWaypoint>();
+            int numberOfWaypoints = Convert.ToInt32(Circumference(PlanetaryRadius) / Convert.ToDouble(WaypointSeparationDistance));
+            if (numberOfWaypoints > 500)
+                return null;
+
+            double anglePerWaypoint = 360 / (double)numberOfWaypoints;
+            int waypointRadius = WaypointSeparationDistance / 2;
+            if (waypointRadius > 1000)
+                waypointRadius = 1000;
+
+            for (int i = 0; i < numberOfWaypoints; i++)
+            {
+                double thisLatitude = StartLatitude + (anglePerWaypoint * i);
+                if (thisLatitude > 180)
+                    thisLatitude -= 360;
+                else if (thisLatitude < -180)
+                    thisLatitude += 360;
+                EDLocation thisLocation = new EDLocation(thisLatitude, StartLongitude, 0, PlanetaryRadius);
+                waypoints.Add(new EDWaypoint(thisLocation, DateTime.Now, waypointRadius));
+            }
             return waypoints;
         }
 
