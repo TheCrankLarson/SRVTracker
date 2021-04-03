@@ -71,7 +71,7 @@ namespace EDTracking
 
         private static void _updateTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            System.Diagnostics.Debug.WriteLine($"CommanderWatcher_Elapsed {DateTime.Now:HH:mm:ss}");
+            System.Diagnostics.Debug.WriteLine($"CommanderWatcher_Elapsed {DateTime.UtcNow:HH:mm:ss}");
             if (_outstandingRequests > 5)
             {
                 System.Diagnostics.Debug.WriteLine($"{_outstandingRequests} requests already active");
@@ -85,7 +85,7 @@ namespace EDTracking
             if (_lastStatus.Equals(commanderStatus))
                 return;
 
-            System.Diagnostics.Debug.WriteLine($"CommanderWatcher Update Detected {DateTime.Now:HH:mm:ss}");
+            System.Diagnostics.Debug.WriteLine($"CommanderWatcher Update Detected {DateTime.UtcNow:HH:mm:ss}");
 
             _lastStatus = commanderStatus;
             bool countChanged = false;
@@ -123,7 +123,7 @@ namespace EDTracking
                         }
                     }
 
-                    if (DateTime.Now.Subtract(_lastCheckForStaleData).TotalMinutes > 1)
+                    if (DateTime.UtcNow.Subtract(_lastCheckForStaleData).TotalMinutes > 1)
                     {
                         List<string> missingCommanders = new List<string>();
                         foreach (string storedCommander in _commanderStatuses.Keys)
@@ -154,7 +154,7 @@ namespace EDTracking
 
             try
             {
-                System.Diagnostics.Debug.WriteLine($"Requesting Commander Status {DateTime.Now:HH:mm:ss}");
+                System.Diagnostics.Debug.WriteLine($"Requesting Commander Status {DateTime.UtcNow:HH:mm:ss}");
                 WebClient webClient = new WebClient();
                 webClient.DownloadStringCompleted += WebClient_DownloadStringCompleted;
                 webClient.DownloadStringAsync(new Uri(_serverUrl),webClient);
@@ -170,7 +170,7 @@ namespace EDTracking
         private static void WebClient_DownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e)
         {
             _outstandingRequests--;
-            System.Diagnostics.Debug.WriteLine($"Received Commander Status {DateTime.Now:HH:mm:ss}");
+            System.Diagnostics.Debug.WriteLine($"Received Commander Status {DateTime.UtcNow:HH:mm:ss}");
             try
             {
                 if (!e.Cancelled)

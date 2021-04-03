@@ -104,7 +104,7 @@ namespace EDTracking
             if (_raceStarted)
                 return;
 
-            Start = DateTime.Now;
+            Start = DateTime.UtcNow;
             Statuses = new Dictionary<string, EDRaceStatus>();
             if (notableEvents != null)
                 _notableEvents = notableEvents;
@@ -419,12 +419,12 @@ namespace EDTracking
             // Export the current leaderboard
 
             // We only rebuild the statistics after a short time
-            if ( (Finished || DateTime.Now.Subtract(_statsLastGenerated).TotalMilliseconds<750) && !String.IsNullOrEmpty(_lastStatsTable) )
+            if ( (Finished || DateTime.UtcNow.Subtract(_statsLastGenerated).TotalMilliseconds<750) && !String.IsNullOrEmpty(_lastStatsTable) )
                 return _lastStatsTable;
 
             Dictionary<string, string> statsTable = ExportRaceStatisticsDict(maxStatusLength);
             _lastStatsTable = JsonSerializer.Serialize(statsTable);
-            _statsLastGenerated = DateTime.Now;
+            _statsLastGenerated = DateTime.UtcNow;
 
             return _lastStatsTable;
         }

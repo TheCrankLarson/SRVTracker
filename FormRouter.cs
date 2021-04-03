@@ -198,7 +198,7 @@ namespace SRVTracker
             if (checkBoxTimeTrial.Checked && _timeTrialStart == DateTime.MinValue)
                 if (!_lastLoggedLocation.Equals(FormTracker.CurrentLocation))
                 {
-                    _timeTrialStart = DateTime.Now;
+                    _timeTrialStart = DateTime.UtcNow;
                     _timeTrialWaypointTimes = new List<DateTime>();
                     _timeTrialWaypointTimes.Add(_timeTrialStart);
                     if (numericUpDownTotalLaps.Value>1)
@@ -222,7 +222,7 @@ namespace SRVTracker
                 if (moveToNextWaypoint)
                 {
                     // Arrived at the waypoint
-                    _timeTrialWaypointTimes?.Add(DateTime.Now);
+                    _timeTrialWaypointTimes?.Add(DateTime.UtcNow);
                     if (_nextWaypoint == 0 && (numericUpDownTotalLaps.Value > 1))
                     {
                         // We've arrived back at start, so have completed a lap
@@ -248,7 +248,7 @@ namespace SRVTracker
                         buttonStop.Enabled = false;
                         buttonStartRecording.Enabled = true;
                         PlayEventSound("Route completed");
-                        _timeTrialWaypointTimes?.Add(DateTime.Now);
+                        _timeTrialWaypointTimes?.Add(DateTime.UtcNow);
                         _timeTrialTelemetryDisplay?.AddRow("Finished",
                             _timeTrialWaypointTimes[_timeTrialWaypointTimes.Count - 1].Subtract(_timeTrialWaypointTimes[0]).ToString(@"hh\:mm\:ss\.ff"));
                         FormLocator.GetLocator().SetTarget("");
@@ -284,7 +284,7 @@ namespace SRVTracker
 
         private void AddLocationToRoute(EDLocation location)
         {
-            EDWaypoint waypoint = new EDWaypoint(location, DateTime.Now, (double)numericUpDownRadius.Value);
+            EDWaypoint waypoint = new EDWaypoint(location, DateTime.UtcNow, (double)numericUpDownRadius.Value);
             waypoint.Radius = (double)numericUpDownRadius.Value;
             waypoint.MinimumAltitude = (double)numericUpDownMinAltitude.Value;
             waypoint.MaximumAltitude = (double)numericUpDownMaxAltitude.Value;

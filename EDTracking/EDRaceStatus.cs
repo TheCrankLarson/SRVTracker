@@ -291,7 +291,7 @@ namespace EDTracking
 
         public void StartRace()
         {
-            TimeStamp = DateTime.Now;
+            TimeStamp = DateTime.UtcNow;
             Started = true;
             AddRaceHistory("Race started");
             WaypointIndex = 1;
@@ -302,7 +302,7 @@ namespace EDTracking
         {
             if (Eliminated)
             {
-                TimeStamp = DateTime.Now;
+                TimeStamp = DateTime.UtcNow;
                 Eliminated = false;
                 DistanceToWaypoint = double.MaxValue;
                 _speedCalculationPreviousLocation = null;
@@ -359,7 +359,7 @@ namespace EDTracking
         private void ProcessTouchdownEvent(EDEvent updateEvent)
         {
             _lastTouchDown = updateEvent.TimeStamp;
-            if (DateTime.Now.Subtract(_pitStopStartTime).TotalSeconds > 120)
+            if (DateTime.UtcNow.Subtract(_pitStopStartTime).TotalSeconds > 120)
                 _pitStopStartTime = _lastTouchDown;
         }
 
@@ -428,7 +428,7 @@ namespace EDTracking
             if (!Finished && AllowPitStops())
             {
                 if (_pitStopStartTime > DateTime.MinValue)
-                    AddRaceHistory($"Pitstop {PitStopCount} took {DateTime.Now.Subtract(_pitStopStartTime):mm\\:ss}");
+                    AddRaceHistory($"Pitstop {PitStopCount} took {DateTime.UtcNow.Subtract(_pitStopStartTime):mm\\:ss}");
                 else if (PitStopCount > 0)
                     AddRaceHistory($"Pitstop {PitStopCount} completed (time unknown)");
 
@@ -533,7 +533,7 @@ namespace EDTracking
                         if (Lap > _race.Laps)
                         {
                             Finished = true;
-                            FinishTime = DateTime.Now;
+                            FinishTime = DateTime.UtcNow;
                             string raceTime = $"{FinishTime.Subtract(StartTime):hh\\:mm\\:ss}";
                             notableEvents?.AddStatusEvent("CompletedNotification", Commander, $" ({raceTime})");
                             AddRaceHistory($"Completed in {raceTime}");
@@ -542,7 +542,7 @@ namespace EDTracking
                         }
                         else
                         {
-                            LapTimes.Add(DateTime.Now.Subtract(LapStartTime));
+                            LapTimes.Add(DateTime.UtcNow.Subtract(LapStartTime));
                             string lapTime = $"{LapTimes[LapTimes.Count - 1]:hh\\:mm\\:ss}";
                             notableEvents?.AddStatusEvent("CompletedLap", Commander, $" ({Lap - 1}: {lapTime})");
                             AddRaceHistory($"Completed lap {Lap - 1} in {lapTime}");
@@ -561,7 +561,7 @@ namespace EDTracking
                 else if (WaypointIndex >= _race.Route.Waypoints.Count)
                 {
                     Finished = true;
-                    FinishTime = DateTime.Now;
+                    FinishTime = DateTime.UtcNow;
                     string raceTime = $"{FinishTime.Subtract(StartTime):hh\\:mm\\:ss}";
                     notableEvents?.AddStatusEvent("CompletedNotification", Commander, $" ({raceTime})");
                     AddRaceHistory($"Completed in {raceTime}");

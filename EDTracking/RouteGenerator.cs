@@ -24,7 +24,7 @@ namespace EDTracking
             {
                 double thisLongitude = StartLongitude + (anglePerWaypoint * i);
                 EDLocation thisLocation = new EDLocation(0, thisLongitude, 0, PlanetaryRadius);
-                waypoints.Add(new EDWaypoint(thisLocation, DateTime.Now, waypointRadius));
+                waypoints.Add(new EDWaypoint(thisLocation, DateTime.UtcNow, waypointRadius));
             }
             return waypoints;
         }
@@ -33,7 +33,7 @@ namespace EDTracking
         {
             List<EDWaypoint> waypoints = new List<EDWaypoint>();
             int numberOfWaypoints = Convert.ToInt32(Circumference(PlanetaryRadius) / Convert.ToDouble(WaypointSeparationDistance));
-            if (numberOfWaypoints > 500)
+            if (numberOfWaypoints > 1000)
                 return null;
 
             double anglePerWaypoint = 360 / (double)numberOfWaypoints;
@@ -49,7 +49,7 @@ namespace EDTracking
                 else if (thisLatitude < -180)
                     thisLatitude += 360;
                 EDLocation thisLocation = new EDLocation(thisLatitude, StartLongitude, 0, PlanetaryRadius);
-                waypoints.Add(new EDWaypoint(thisLocation, DateTime.Now, waypointRadius));
+                waypoints.Add(new EDWaypoint(thisLocation, DateTime.UtcNow, waypointRadius));
             }
             return waypoints;
         }

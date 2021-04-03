@@ -14,7 +14,7 @@ namespace Race_Manager
     public partial class FormTimer : Form
     {
         private TimeSpan _pauseCorrection = new TimeSpan(0);
-        private DateTime _startTime = DateTime.Now;
+        private DateTime _startTime = DateTime.UtcNow;
         private bool _paused = false;
         private DateTime _pauseStartTime = DateTime.MinValue;
         private FormTimerControls _timerControls = null;
@@ -38,14 +38,14 @@ namespace Race_Manager
 
         public void Play()
         {
-            _startTime = DateTime.Now;
+            _startTime = DateTime.UtcNow;
             _paused = false;              
             timer1.Start();
         }
 
         public void Pause()
         {
-            _pauseStartTime = DateTime.Now;
+            _pauseStartTime = DateTime.UtcNow;
             _pauseCorrection += _pauseStartTime.Subtract(_startTime);
             _paused = true;
             timer1.Stop();
@@ -67,7 +67,7 @@ namespace Race_Manager
 
         public TimeSpan TimerValue()
         {
-            return DateTime.Now.Subtract(_startTime).Add(_pauseCorrection);
+            return DateTime.UtcNow.Subtract(_startTime).Add(_pauseCorrection);
         }
     }
 }

@@ -29,8 +29,8 @@ namespace DataCollator
         private readonly object _logWriteLock = new object();
         private FileStream _logStream = null;
         private Dictionary<Guid, EDRace> _races;
-        private DateTime _lastStaleDataCheck = DateTime.Now;
-        private DateTime _lastFinishedRaceCheck = DateTime.Now;
+        private DateTime _lastStaleDataCheck = DateTime.UtcNow;
+        private DateTime _lastFinishedRaceCheck = DateTime.UtcNow;
         private DateTime _lastCommanderStatusBuilt = DateTime.MinValue;
         private string _lastCommanderStatus = "";
         private CommanderRegistration _commanderRegistration = new CommanderRegistration();
@@ -165,7 +165,7 @@ namespace DataCollator
                         else
                             Log($"{raceGuid}: not updated, race finished", true);
                     }
-                    if (DateTime.Now.Subtract(_lastFinishedRaceCheck).TotalMinutes >= 5)
+                    if (DateTime.UtcNow.Subtract(_lastFinishedRaceCheck).TotalMinutes >= 5)
                     {
                         foreach (Guid raceGuid in _races.Keys)
                         {
@@ -173,7 +173,7 @@ namespace DataCollator
                                 if (_races[raceGuid].CheckIfFinished())
                                     SaveRaceToDisk(raceGuid);
                         }
-                        _lastFinishedRaceCheck = DateTime.Now;
+                        _lastFinishedRaceCheck = DateTime.UtcNow;
                     }
                 }));
 
@@ -619,14 +619,14 @@ namespace DataCollator
                 Log($"Race statistics for unknown race requested: {raceGuid}");
             }
             
-            //if (DateTime.Now.Subtract(_lastStaleDataCheck).TotalMinutes > 120)
+            //if (DateTime.UtcNow.Subtract(_lastStaleDataCheck).TotalMinutes > 120)
             //    Task.Run(new Action(()=> { ClearStaleData(); }));
         }
 
         private void SendStatus(HttpListenerContext Context)
         {
             // Send Commander status
-            if (DateTime.Now.Subtract(_lastStaleDataCheck).TotalSeconds > 60)
+            if (DateTime.UtcNow.Subtract(_lastStaleDataCheck).TotalSeconds > 60)
                 ClearStaleData();
 
             // Check if a client Id was specified
@@ -646,7 +646,7 @@ namespace DataCollator
                 return;
             }
 
-            if (DateTime.Now.Subtract(_lastCommanderStatusBuilt).TotalMilliseconds > 750)
+            if (DateTime.UtcNow.Subtract(_lastCommanderStatusBuilt).TotalMilliseconds > 750)
             {
                 StringBuilder status = new StringBuilder();
                 lock (_notificationLock)
@@ -656,7 +656,7 @@ namespace DataCollator
                 }
                 Log("All player status generated");
                 _lastCommanderStatus = status.ToString();
-                _lastCommanderStatusBuilt = DateTime.Now;
+                _lastCommanderStatusBuilt = DateTime.UtcNow;
             }
             else
                 Log("All player status returned from cache");
@@ -672,7 +672,7 @@ namespace DataCollator
             if (_playerStatus != null)
             {
                 foreach (string commander in _playerStatus.Keys)
-                    if (DateTime.Now.Subtract(_playerStatus[commander].TimeStamp).TotalSeconds > 60)
+                    if (DateTime.UtcNow.Subtract(_playerStatus[commander].TimeStamp).TotalSeconds > 60)
                         playersToRemove.Add(commander);
                 if (playersToRemove.Count > 0)
                 {
@@ -691,7 +691,7 @@ namespace DataCollator
             if (_commanderStatus != null)
             {
                 foreach (string commander in _commanderStatus.Keys)
-                    if (DateTime.Now.Subtract(_commanderStatus[commander].TimeStamp).TotalMinutes > 30)
+                    if (DateTime.UtcNow.Subtract(_commanderStatus[commander].TimeStamp).TotalMinutes > 30)
                         playersToRemove.Add(commander);
 
                 if (playersToRemove.Count > 0)
@@ -712,7 +712,7 @@ namespace DataCollator
                 List<Guid> racesToRemove = new List<Guid>();
                 foreach (Guid raceGuid in _races.Keys)
                 {
-                    TimeSpan timeSinceStart = DateTime.Now.Subtract(_races[raceGuid].Start);
+                    TimeSpan timeSinceStart = DateTime.UtcNow.Subtract(_races[raceGuid].Start);
                     if (timeSinceStart.TotalDays > 3)
                     {
                         racesToRemove.Add(raceGuid);
@@ -751,7 +751,7 @@ namespace DataCollator
                         _races.Remove(raceToRemove);
             }
 
-            _lastStaleDataCheck = DateTime.Now;
+            _lastStaleDataCheck = DateTime.UtcNow;
         }
 
         private string GetRaceSaveFolder(Guid raceGuid)
@@ -804,7 +804,7 @@ namespace DataCollator
             {
                 try
                 {
-                    byte[] buffer = System.Text.Encoding.UTF8.GetBytes($"{DateTime.Now:HH:mm:ss} {log}{Environment.NewLine}");
+                    byte[] buffer = System.Text.Encoding.UTF8.GetBytes($"{DateTime.UtcNow:HH:mm:ss} {log}{Environment.NewLine}");
                     _logStream.Write(buffer, 0, buffer.Length);
                     _flushCount++;
                     if (_flushCount > 50)

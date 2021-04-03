@@ -116,12 +116,12 @@ namespace SRVTracker
 
             // If the file has been written, then process it
             DateTime lastWriteTime = File.GetLastWriteTime(_statusFile);
-            if ((lastWriteTime != _lastFileWrite) || (DateTime.Now.Subtract(_lastStatusSend).TotalSeconds > 5))
+            if ((lastWriteTime != _lastFileWrite) || (DateTime.UtcNow.Subtract(_lastStatusSend).TotalSeconds > 5))
             {
                 ProcessStatusFileUpdate(_statusFile);
                 _lastFileWrite = lastWriteTime;
             }
-            else if ( checkBoxUpload.Checked && (DateTime.Now.Subtract(_lastStatusSend).TotalSeconds > 5) )
+            else if ( checkBoxUpload.Checked && (DateTime.UtcNow.Subtract(_lastStatusSend).TotalSeconds > 5) )
                 UploadToServer(null, true); // This is the five second ping in case we are not moving (so no file updates)
 
             _statusTimer.Start();
@@ -260,7 +260,7 @@ namespace SRVTracker
                 // we'll keep them in case this changes in future.
                 EDEvent updateEvent;
                 if (updateTimeStamp)
-                    updateEvent = new EDEvent(status, textBoxCommanderName.Text, DateTime.Now);
+                    updateEvent = new EDEvent(status, textBoxCommanderName.Text, DateTime.UtcNow);
                 else
                     updateEvent = new EDEvent(status, textBoxCommanderName.Text);
 
@@ -311,7 +311,7 @@ namespace SRVTracker
                     double longitude = -133.180405;
                     for (int j = 0; j < 20; j++)
                     {
-                        edEvent = new EDEvent($"{{\"timestamp\":\"{String.Format("{0:s}", DateTime.Now)}\", \"event\":\"Status\", \"Flags\":69206272, \"Pips\":[4,8,0], \"FireGroup\":0, \"GuiFocus\":0, \"Fuel\":{{\"FuelMain\":0.000000, \"FuelReservoir\":0.444637 }}, \"Cargo\":0.000000, \"LegalState\":\"Clean\", \"Latitude\":{latitude}, \"Longitude\":{longitude}, \"Heading\":24, \"Altitude\":0, \"BodyName\":\"Djambe ABC1\", \"PlanetRadius\":1311227.875000}}", commanderName);
+                        edEvent = new EDEvent($"{{\"timestamp\":\"{String.Format("{0:s}", DateTime.UtcNow)}\", \"event\":\"Status\", \"Flags\":69206272, \"Pips\":[4,8,0], \"FireGroup\":0, \"GuiFocus\":0, \"Fuel\":{{\"FuelMain\":0.000000, \"FuelReservoir\":0.444637 }}, \"Cargo\":0.000000, \"LegalState\":\"Clean\", \"Latitude\":{latitude}, \"Longitude\":{longitude}, \"Heading\":24, \"Altitude\":0, \"BodyName\":\"Djambe ABC1\", \"PlanetRadius\":1311227.875000}}", commanderName);
                         UpdateUI(edEvent);
                         if (j==0)
                             System.Threading.Thread.Sleep(500);
@@ -382,7 +382,7 @@ namespace SRVTracker
                 CommanderLocationChanged?.Invoke(null, null);
             }
 
-            action = new Action(() => { labelLastUpdateTime.Text = DateTime.Now.ToString("HH:mm:ss"); });
+            action = new Action(() => { labelLastUpdateTime.Text = DateTime.UtcNow.ToString("HH:mm:ss"); });
             if (labelLastUpdateTime.InvokeRequired)
                 labelLastUpdateTime.Invoke(action);
             else
@@ -401,7 +401,7 @@ namespace SRVTracker
             if (ping)
             {
                 edEvent = _lastUploadedEvent;
-                edEvent.TimeStamp = DateTime.Now;
+                edEvent.TimeStamp = DateTime.UtcNow;
             }
 
             try
@@ -413,7 +413,7 @@ namespace SRVTracker
                 try
                 {
                     _udpClient.Send(sendBytes, sendBytes.Length);
-                    _lastStatusSend = DateTime.Now;
+                    _lastStatusSend = DateTime.UtcNow;
                     _lastUploadedEvent = edEvent;
                 }
                 catch (Exception e)

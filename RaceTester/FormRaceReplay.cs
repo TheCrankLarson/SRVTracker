@@ -171,7 +171,7 @@ namespace RaceTester
             buttonPlay.Enabled = false;
             buttonPause.Enabled = true;
             buttonStop.Enabled = true;
-            _playbackStartTime = DateTime.Now;
+            _playbackStartTime = DateTime.UtcNow;
             _raceTimeOffset = _playbackStartTime.Subtract(_orderedRaceTracking[0].TimeStamp);
             timerPlaybackEvents.Start();
         }
@@ -184,7 +184,7 @@ namespace RaceTester
                 buttonStop_Click(null, null);
                 return;
             }
-            TimeSpan elapsedTime = DateTime.Now - _playbackStartTime;
+            TimeSpan elapsedTime = DateTime.UtcNow - _playbackStartTime;
             elapsedTime = new TimeSpan(elapsedTime.Ticks * (long)numericUpDownPlaybackSpeed.Value);
             DateTime projectedNow = _playbackStartTime.Add(elapsedTime);
 

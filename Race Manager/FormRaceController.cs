@@ -218,19 +218,19 @@ namespace Race_Manager
                 }
                 catch //(Exception ex)
                 {
-                    /*if (false)//DateTime.Now.Subtract(_errorLastShown).TotalSeconds > 60)
+                    /*if (false)//DateTime.UtcNow.Subtract(_errorLastShown).TotalSeconds > 60)
                     {
                         MessageBox.Show($"Error retrieving tracked target:{Environment.NewLine}{ex.Message}{Environment.NewLine}{statusUrl}", "Tracking Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        _errorLastShown = DateTime.Now;
+                        _errorLastShown = DateTime.UtcNow;
                     }*/
                 }
             }
             else
             {
-                if (DateTime.Now.Subtract(_errorLastShown).TotalSeconds > 60)
+                if (DateTime.UtcNow.Subtract(_errorLastShown).TotalSeconds > 60)
                 {
                     MessageBox.Show($"Race Guid not set - cannot query server", "Tracking Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    _errorLastShown = DateTime.Now;
+                    _errorLastShown = DateTime.UtcNow;
                 }
             }
 
@@ -789,7 +789,7 @@ namespace Race_Manager
             if (_refreshFromServerTask != null)
             {
                 // We haven't finished previous refresh.  If more than five seconds, we ignore this task and start a new one
-                if (_refreshFromServerTask.IsFaulted || DateTime.Now.Subtract(_refreshFromServerTaskStart).TotalSeconds > 5)
+                if (_refreshFromServerTask.IsFaulted || DateTime.UtcNow.Subtract(_refreshFromServerTaskStart).TotalSeconds > 5)
                 {
                     try
                     {
@@ -821,7 +821,7 @@ namespace Race_Manager
                 //ExportTrackingInfo();
                 _refreshFromServerTask = null;
             }));
-            _refreshFromServerTaskStart = DateTime.Now;
+            _refreshFromServerTaskStart = DateTime.UtcNow;
         }
 
         private void buttonAddCommander_Click(object sender, EventArgs e)

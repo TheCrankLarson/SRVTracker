@@ -70,11 +70,11 @@ namespace EDTracking
                     else if (root.TryGetProperty("timestamp", out property))
                         TimeStamp = property.GetDateTime();
                     else
-                        TimeStamp = DateTime.Now;
+                        TimeStamp = DateTime.UtcNow;
                 }
                 catch
                 {
-                    TimeStamp = DateTime.Now;
+                    TimeStamp = DateTime.UtcNow;
                 }
 
                 if (root.TryGetProperty("event", out property))
@@ -120,7 +120,7 @@ namespace EDTracking
             edEvent.PlanetRadius = PlanetRadius;
             edEvent.PlayerControlled = PlayerControlled;
             edEvent.TargetedShipName = TargetedShipName;
-            edEvent.TimeStamp = DateTime.Now;
+            edEvent.TimeStamp = DateTime.UtcNow;
             return edEvent;
         }
 

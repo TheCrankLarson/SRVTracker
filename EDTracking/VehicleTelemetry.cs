@@ -160,7 +160,7 @@ namespace EDTracking
         public Dictionary<string,string> Telemetry()
         {            
             if (SessionStartTime>DateTime.MinValue)
-                _telemetry["SessionTime"] = DateTime.Now.Subtract(SessionStartTime).ToString(@"hh\:mm\:ss");
+                _telemetry["SessionTime"] = DateTime.UtcNow.Subtract(SessionStartTime).ToString(@"hh\:mm\:ss");
 
             return _telemetry;
         }
