@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Text.Json;
 using System.IO;
 
@@ -32,7 +30,6 @@ namespace EDTracking
         public List<EDEvent> SessionHistory { get; set; } = new List<EDEvent>();
         private EDLocation _speedCalculationPreviousLocation = null;
         private DateTime _speedCalculationTimeStamp = DateTime.UtcNow;
-        private double[] _lastThreeSpeedReadings = new double[] { 0, 0, 0 };
         private double _lastDistanceMeasurement = 0;
         private int _numberOfSpeedReadings = 0;
         private double _totalOfSpeedReadings = 0;
@@ -192,7 +189,6 @@ namespace EDTracking
         {
             _speedCalculationPreviousLocation = null;
             _speedCalculationTimeStamp = DateTime.UtcNow;
-            _lastThreeSpeedReadings = new double[] { 0, 0, 0 };
         }
 
         public void ProcessEvent(EDEvent edEvent, bool noHistory = false)
