@@ -188,6 +188,13 @@ namespace EDTracking
             catch { }
         }
 
+        private void ResetSpeedCalc()
+        {
+            _speedCalculationPreviousLocation = null;
+            _speedCalculationTimeStamp = DateTime.UtcNow;
+            _lastThreeSpeedReadings = new double[] { 0, 0, 0 };
+        }
+
         public void ProcessEvent(EDEvent edEvent, bool noHistory = false)
         {
             if (SessionStartTime == DateTime.MinValue)
@@ -207,10 +214,12 @@ namespace EDTracking
                     _telemetry["TotalSRVShipRepairs"] = TotalShipRepairs.ToString();
                     statsUpdated = true;
                     _playerIsInSRV = false;
+                    ResetSpeedCalc();
                     break;
 
                 case "LaunchSRV":
                     _playerIsInSRV = true;
+                    ResetSpeedCalc();
                     break;
 
                 case "Shutdown":
@@ -221,6 +230,7 @@ namespace EDTracking
                     _playerIsInSRV = false;
                     TotalSRVsDestroyed++;
                     _telemetry["TotalSRVsDestroyed"] = TotalSRVsDestroyed.ToString();
+                    ResetSpeedCalc();
                     statsUpdated = true;
                     break;
 
