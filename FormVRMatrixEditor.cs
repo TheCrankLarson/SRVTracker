@@ -377,22 +377,75 @@ namespace SRVTracker
             ((NumericUpDown)_sliderTargetControl).Value = ((decimal)trackBarEditMatrixValue.Value / 1000);
         }
 
+        private void AttachSliderToNumericUpDown(NumericUpDown attachedControl)
+        {
+            int sliderValue = (int)(attachedControl.Value * 1000);
+            _sliderTargetControl = attachedControl;
+            if (sliderValue > trackBarEditMatrixValue.Maximum)
+                trackBarEditMatrixValue.Maximum = sliderValue;
+            if (sliderValue < trackBarEditMatrixValue.Minimum)
+                trackBarEditMatrixValue.Minimum = sliderValue;
+            trackBarEditMatrixValue.Value = sliderValue;
+        }
+
         private void numericUpDownm3_Enter(object sender, EventArgs e)
         {
-            _sliderTargetControl = numericUpDownm3;
-            trackBarEditMatrixValue.Value = (int)(numericUpDownm3.Value * 1000);
+            AttachSliderToNumericUpDown(numericUpDownm3);
         }
 
         private void numericUpDownm7_Enter(object sender, EventArgs e)
         {
-            _sliderTargetControl = numericUpDownm7;
-            trackBarEditMatrixValue.Value = (int)(numericUpDownm7.Value * 1000);
+            AttachSliderToNumericUpDown(numericUpDownm7);
         }
 
         private void numericUpDownm11_Enter(object sender, EventArgs e)
         {
-            _sliderTargetControl = numericUpDownm11;
-            trackBarEditMatrixValue.Value = (int)(numericUpDownm11.Value * 1000);
+            AttachSliderToNumericUpDown(numericUpDownm11);
+        }
+
+        private void numericUpDownm0_Enter(object sender, EventArgs e)
+        {
+            AttachSliderToNumericUpDown(numericUpDownm0);
+        }
+
+        private void numericUpDownm5_Enter(object sender, EventArgs e)
+        {
+            AttachSliderToNumericUpDown(numericUpDownm5);
+        }
+
+        private void numericUpDownm10_Enter(object sender, EventArgs e)
+        {
+            AttachSliderToNumericUpDown(numericUpDownm10);
+        }
+
+        private void numericUpDownm6_Enter(object sender, EventArgs e)
+        {
+            AttachSliderToNumericUpDown(numericUpDownm6);
+        }
+
+        private void numericUpDownm2_Enter(object sender, EventArgs e)
+        {
+            AttachSliderToNumericUpDown(numericUpDownm2);
+        }
+
+        private void numericUpDownm1_Enter(object sender, EventArgs e)
+        {
+            AttachSliderToNumericUpDown(numericUpDownm1);
+        }
+
+        private void numericUpDownm9_Enter(object sender, EventArgs e)
+        {
+            AttachSliderToNumericUpDown(numericUpDownm9);
+        }
+
+        private void numericUpDownm8_Enter(object sender, EventArgs e)
+        {
+            AttachSliderToNumericUpDown(numericUpDownm8);
+        }
+
+        private void numericUpDownm4_Enter(object sender, EventArgs e)
+        {
+            AttachSliderToNumericUpDown(numericUpDownm4);
         }
     }
 }

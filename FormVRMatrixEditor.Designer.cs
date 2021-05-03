@@ -31,6 +31,7 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormVRMatrixEditor));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.trackBarEditMatrixValue = new System.Windows.Forms.TrackBar();
             this.numericUpDownm11 = new System.Windows.Forms.NumericUpDown();
             this.numericUpDownm10 = new System.Windows.Forms.NumericUpDown();
             this.numericUpDownm9 = new System.Windows.Forms.NumericUpDown();
@@ -57,8 +58,8 @@
             this.buttonDelete = new System.Windows.Forms.Button();
             this.buttonAdd = new System.Windows.Forms.Button();
             this.listBoxMatrices = new System.Windows.Forms.ListBox();
-            this.trackBarEditMatrixValue = new System.Windows.Forms.TrackBar();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarEditMatrixValue)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownm11)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownm10)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownm9)).BeginInit();
@@ -73,7 +74,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownm0)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownOverlayWidth)).BeginInit();
             this.groupBox2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBarEditMatrixValue)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -97,6 +97,20 @@
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Transform matrix";
+            // 
+            // trackBarEditMatrixValue
+            // 
+            this.trackBarEditMatrixValue.LargeChange = 1000;
+            this.trackBarEditMatrixValue.Location = new System.Drawing.Point(7, 97);
+            this.trackBarEditMatrixValue.Maximum = 10000;
+            this.trackBarEditMatrixValue.Minimum = -10000;
+            this.trackBarEditMatrixValue.Name = "trackBarEditMatrixValue";
+            this.trackBarEditMatrixValue.Size = new System.Drawing.Size(245, 45);
+            this.trackBarEditMatrixValue.SmallChange = 100;
+            this.trackBarEditMatrixValue.TabIndex = 12;
+            this.trackBarEditMatrixValue.TickFrequency = 100;
+            this.toolTip1.SetToolTip(this.trackBarEditMatrixValue, "Use the slider to adjust the currently selected matrix value");
+            this.trackBarEditMatrixValue.Scroll += new System.EventHandler(this.trackBarEditMatrixValue_Scroll);
             // 
             // numericUpDownm11
             // 
@@ -149,6 +163,7 @@
             this.numericUpDownm10.TabIndex = 10;
             this.numericUpDownm10.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.numericUpDownm10.ValueChanged += new System.EventHandler(this.numericUpDownm10_ValueChanged);
+            this.numericUpDownm10.Enter += new System.EventHandler(this.numericUpDownm10_Enter);
             // 
             // numericUpDownm9
             // 
@@ -174,6 +189,7 @@
             this.numericUpDownm9.TabIndex = 9;
             this.numericUpDownm9.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.numericUpDownm9.ValueChanged += new System.EventHandler(this.numericUpDownm9_ValueChanged);
+            this.numericUpDownm9.Enter += new System.EventHandler(this.numericUpDownm9_Enter);
             // 
             // numericUpDownm8
             // 
@@ -199,6 +215,7 @@
             this.numericUpDownm8.TabIndex = 8;
             this.numericUpDownm8.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.numericUpDownm8.ValueChanged += new System.EventHandler(this.numericUpDownm8_ValueChanged);
+            this.numericUpDownm8.Enter += new System.EventHandler(this.numericUpDownm8_Enter);
             // 
             // numericUpDownm7
             // 
@@ -251,6 +268,7 @@
             this.numericUpDownm6.TabIndex = 6;
             this.numericUpDownm6.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.numericUpDownm6.ValueChanged += new System.EventHandler(this.numericUpDownm6_ValueChanged);
+            this.numericUpDownm6.Enter += new System.EventHandler(this.numericUpDownm6_Enter);
             // 
             // numericUpDownm5
             // 
@@ -276,6 +294,7 @@
             this.numericUpDownm5.TabIndex = 5;
             this.numericUpDownm5.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.numericUpDownm5.ValueChanged += new System.EventHandler(this.numericUpDownm5_ValueChanged);
+            this.numericUpDownm5.Enter += new System.EventHandler(this.numericUpDownm5_Enter);
             // 
             // numericUpDownm4
             // 
@@ -301,6 +320,7 @@
             this.numericUpDownm4.TabIndex = 4;
             this.numericUpDownm4.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.numericUpDownm4.ValueChanged += new System.EventHandler(this.numericUpDownm4_ValueChanged);
+            this.numericUpDownm4.Enter += new System.EventHandler(this.numericUpDownm4_Enter);
             // 
             // numericUpDownm3
             // 
@@ -353,6 +373,7 @@
             this.numericUpDownm2.TabIndex = 2;
             this.numericUpDownm2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.numericUpDownm2.ValueChanged += new System.EventHandler(this.numericUpDownm2_ValueChanged);
+            this.numericUpDownm2.Enter += new System.EventHandler(this.numericUpDownm2_Enter);
             // 
             // numericUpDownm1
             // 
@@ -378,6 +399,7 @@
             this.numericUpDownm1.TabIndex = 1;
             this.numericUpDownm1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.numericUpDownm1.ValueChanged += new System.EventHandler(this.numericUpDownm1_ValueChanged);
+            this.numericUpDownm1.Enter += new System.EventHandler(this.numericUpDownm1_Enter);
             // 
             // numericUpDownm0
             // 
@@ -403,6 +425,7 @@
             this.numericUpDownm0.TabIndex = 0;
             this.numericUpDownm0.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.numericUpDownm0.ValueChanged += new System.EventHandler(this.numericUpDownm0_ValueChanged);
+            this.numericUpDownm0.Enter += new System.EventHandler(this.numericUpDownm0_Enter);
             // 
             // buttonApply
             // 
@@ -562,20 +585,6 @@
             this.listBoxMatrices.TabIndex = 0;
             this.listBoxMatrices.SelectedIndexChanged += new System.EventHandler(this.listBoxMatrices_SelectedIndexChanged);
             // 
-            // trackBarEditMatrixValue
-            // 
-            this.trackBarEditMatrixValue.LargeChange = 100;
-            this.trackBarEditMatrixValue.Location = new System.Drawing.Point(7, 97);
-            this.trackBarEditMatrixValue.Maximum = 1000;
-            this.trackBarEditMatrixValue.Minimum = -1000;
-            this.trackBarEditMatrixValue.Name = "trackBarEditMatrixValue";
-            this.trackBarEditMatrixValue.Size = new System.Drawing.Size(245, 45);
-            this.trackBarEditMatrixValue.SmallChange = 10;
-            this.trackBarEditMatrixValue.TabIndex = 12;
-            this.trackBarEditMatrixValue.TickFrequency = 100;
-            this.toolTip1.SetToolTip(this.trackBarEditMatrixValue, "Use the slider to adjust the currently selected matrix value");
-            this.trackBarEditMatrixValue.Scroll += new System.EventHandler(this.trackBarEditMatrixValue_Scroll);
-            // 
             // FormVRMatrixEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -598,6 +607,7 @@
             this.Text = "Matrix Editor";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarEditMatrixValue)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownm11)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownm10)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownm9)).EndInit();
@@ -613,7 +623,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownOverlayWidth)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBarEditMatrixValue)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
