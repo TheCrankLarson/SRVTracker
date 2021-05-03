@@ -57,6 +57,8 @@ namespace SRVTracker
             return vrMatrix;
         }
 
+        #region Load and save matrices functions
+
         private void InitMatrices()
         {          
             try
@@ -96,11 +98,8 @@ namespace SRVTracker
                 MessageBox.Show($"Failed to save matrices:{Environment.NewLine}{Environment.NewLine}{ex}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+        #endregion
 
-        private void buttonClose_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
 
         private void DisplayMatrix()
         {
@@ -177,14 +176,6 @@ namespace SRVTracker
                 OpenVR.Overlay.SetOverlayWidthInMeters(_overlayHandle, (float)numericUpDownOverlayWidth.Value);
         }
 
-        private void buttonApply_Click(object sender, EventArgs e)
-        {
-            ApplyMatrixToOverlay(true);
-            ApplyOverlayWidth();
-            if (checkBoxAutoApply.Checked)
-                buttonApply.Enabled = false;
-        }
-
         private void ApplyMatrixToOverlay(bool force = false)
         {
             if (!force && !checkBoxAutoApply.Checked)
@@ -219,6 +210,21 @@ namespace SRVTracker
             _savedMatrices[textBoxMatrixName.Text].m11 = (float)numericUpDownm11.Value;
         }
 
+        #region Control Events
+
+        private void buttonClose_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void buttonApply_Click(object sender, EventArgs e)
+        {
+            ApplyMatrixToOverlay(true);
+            ApplyOverlayWidth();
+            if (checkBoxAutoApply.Checked)
+                buttonApply.Enabled = false;
+        }
+
         private void buttonExport_Click(object sender, EventArgs e)
         {
             StringBuilder matrixCode = new StringBuilder();
@@ -241,6 +247,72 @@ namespace SRVTracker
             File.AppendAllText("matrices.txt", matrixCode.ToString());
         }
 
+
+        private void checkBoxAutoApply_CheckedChanged(object sender, EventArgs e)
+        {
+            buttonApply.Enabled = !checkBoxAutoApply.Checked;
+        }
+
+        private void numericUpDownOverlayWidth_ValueChanged(object sender, EventArgs e)
+        {
+            buttonApply.Enabled = true;
+        }
+
+        private void buttonSave_Click(object sender, EventArgs e)
+        {
+            SaveMatrices();
+        }
+
+        private void listBoxMatrices_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            bool itemSelected = listBoxMatrices.SelectedIndex >= 0;
+            textBoxMatrixName.Enabled = itemSelected;
+            buttonDelete.Enabled = itemSelected;
+            if (itemSelected)
+            {
+                textBoxMatrixName.Text = (string)listBoxMatrices.SelectedItem;
+                if (_savedMatrices.ContainsKey(textBoxMatrixName.Text))
+                {
+                    ApplyMatrixDefinition(_savedMatrices[textBoxMatrixName.Text]);
+                    ApplyMatrixToOverlay();
+                }
+            }
+        }
+
+        private void buttonAdd_Click(object sender, EventArgs e)
+        {
+            GetMatrix();
+            string matrixName = $"Matrix {_savedMatrices.Count + 1}";
+            _savedMatrices.Add(matrixName, MatrixDefinition.FromHmdMatrix34_t(ref _hmdMatrix, (float)numericUpDownOverlayWidth.Value));
+            listBoxMatrices.Items.Add(matrixName);
+            listBoxMatrices.SelectedIndex = listBoxMatrices.Items.Count - 1;
+        }
+
+        private void buttonDelete_Click(object sender, EventArgs e)
+        {
+            if (listBoxMatrices.SelectedIndex < 0)
+                return;
+
+            string matrixToDelete = (string)listBoxMatrices.SelectedItem;
+            textBoxMatrixName.Text = "";
+            listBoxMatrices.Items.RemoveAt(listBoxMatrices.SelectedIndex);
+            if (_savedMatrices.ContainsKey(matrixToDelete))
+                _savedMatrices.Remove(matrixToDelete);
+        }
+
+        private void textBoxMatrixName_Validating(object sender, CancelEventArgs e)
+        {
+            if (listBoxMatrices.SelectedIndex < 0)
+                return;
+
+            MatrixDefinition matrixDefinition = _savedMatrices[(string)listBoxMatrices.SelectedItem];
+            _savedMatrices.Remove((string)listBoxMatrices.SelectedItem);
+            _savedMatrices.Add(textBoxMatrixName.Text, matrixDefinition);
+            listBoxMatrices.Items[listBoxMatrices.SelectedIndex] = textBoxMatrixName.Text;
+        }
+        #endregion
+
+        #region Matrix Value Updating
 
         private void numericUpDownm3_ValueChanged(object sender, EventArgs e)
         {
@@ -301,74 +373,9 @@ namespace SRVTracker
         {
             ApplyMatrixToOverlay();
         }
+        #endregion
 
-        private void checkBoxAutoApply_CheckedChanged(object sender, EventArgs e)
-        {
-            buttonApply.Enabled = !checkBoxAutoApply.Checked;
-        }
-
-        private void numericUpDownOverlayWidth_ValueChanged(object sender, EventArgs e)
-        {
-            buttonApply.Enabled = true;
-        }
-
-        private void buttonSave_Click(object sender, EventArgs e)
-        {
-            SaveMatrices();
-        }
-
-        private void listBoxMatrices_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            bool itemSelected = listBoxMatrices.SelectedIndex >= 0;
-            textBoxMatrixName.Enabled = itemSelected;
-            buttonDelete.Enabled = itemSelected;
-            if (itemSelected)
-            {
-                textBoxMatrixName.Text = (string)listBoxMatrices.SelectedItem;
-                if (_savedMatrices.ContainsKey(textBoxMatrixName.Text))
-                {
-                    ApplyMatrixDefinition(_savedMatrices[textBoxMatrixName.Text]);
-                    ApplyMatrixToOverlay();
-                }
-            }
-        }
-
-        private void buttonAdd_Click(object sender, EventArgs e)
-        {
-            GetMatrix();
-            string matrixName = $"Matrix {_savedMatrices.Count + 1}";
-            _savedMatrices.Add(matrixName, MatrixDefinition.FromHmdMatrix34_t(ref _hmdMatrix, (float)numericUpDownOverlayWidth.Value));
-            listBoxMatrices.Items.Add(matrixName);
-            listBoxMatrices.SelectedIndex = listBoxMatrices.Items.Count - 1;
-        }
-
-        private void buttonDelete_Click(object sender, EventArgs e)
-        {
-            if (listBoxMatrices.SelectedIndex < 0)
-                return;
-
-            string matrixToDelete = (string)listBoxMatrices.SelectedItem;
-            textBoxMatrixName.Text = "";
-            listBoxMatrices.Items.RemoveAt(listBoxMatrices.SelectedIndex);
-            if (_savedMatrices.ContainsKey(matrixToDelete))
-                _savedMatrices.Remove(matrixToDelete);
-        }
-
-        private void textBoxMatrixName_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBoxMatrixName_Validating(object sender, CancelEventArgs e)
-        {
-            if (listBoxMatrices.SelectedIndex < 0)
-                return;
-
-            MatrixDefinition matrixDefinition = _savedMatrices[(string)listBoxMatrices.SelectedItem];
-            _savedMatrices.Remove((string)listBoxMatrices.SelectedItem);
-            _savedMatrices.Add(textBoxMatrixName.Text, matrixDefinition);
-            listBoxMatrices.Items[listBoxMatrices.SelectedIndex] = textBoxMatrixName.Text;
-        }
+        #region Slider Functionality
 
         private void trackBarEditMatrixValue_Scroll(object sender, EventArgs e)
         {
@@ -447,5 +454,6 @@ namespace SRVTracker
         {
             AttachSliderToNumericUpDown(numericUpDownm4);
         }
+        #endregion
     }
 }
