@@ -89,7 +89,11 @@ namespace SRVTracker
                 _vehicleTelemetry = new VehicleTelemetry();
             VehicleTelemetry.SessionSaveFolder = textBoxTelemetryFolder.Text;
             if (checkBoxShowSRVTelemetry.Checked)
+            {
                 _vehicleTelemetry.DisplayTelemetry();
+                this.Size = _configShowing;
+                tabControlSettings.SelectedIndex = 3;
+            }
         }
 
         private void CalculateWindowSizes()
@@ -124,7 +128,7 @@ namespace SRVTracker
                 _lastFileWrite = lastWriteTime;
             }
             else if ( checkBoxUpload.Checked && (DateTime.UtcNow.Subtract(_lastStatusSend).TotalSeconds > 5) )
-                UploadToServer(null, true); // This is the five second ping in case we are not moving (so no file updates)
+                UploadToServer(null, true); // This is the five second ping in case we are not moving (otherwise server will lose tracking)
 
             _statusTimer.Start();
         }
@@ -289,51 +293,7 @@ namespace SRVTracker
             //formVRMatrixTest.SetMatrix(ref _vrMatrix);
         }
 
-
-
-        private void SendTestEvents()
-        {
-            EDEvent edEvent;
-            //"{ \"timestamp\":\"2020 - 07 - 28T17: 46:47Z\", \"event\":\"Status\", \"Flags\":16777229, \"Pips\":[4,8,0], \"FireGroup\":0, \"GuiFocus\":0, \"Fuel\":{ \"FuelMain\":16.000000, \"FuelReservoir\":0.430376 }, \"Cargo\":4.000000, \"LegalState\":\"Clean\" }");
-
-            if (_udpClient == null)
-                _udpClient = new UdpClient(textBoxUploadServer.Text, 11938);
-
-            buttonTest.Enabled = false;
-
-            Action action = new Action(() =>
-            {
-                Random rnd = new Random();
-                
-
-                for (int i = 0; i < 20; i++)
-                {
-                    string commanderName = $"Commander {i + 1}";
-                    double latitude = -47.312565;
-                    double longitude = -133.180405;
-                    for (int j = 0; j < 20; j++)
-                    {
-                        edEvent = new EDEvent($"{{\"timestamp\":\"{String.Format("{0:s}", DateTime.UtcNow)}\", \"event\":\"Status\", \"Flags\":69206272, \"Pips\":[4,8,0], \"FireGroup\":0, \"GuiFocus\":0, \"Fuel\":{{\"FuelMain\":0.000000, \"FuelReservoir\":0.444637 }}, \"Cargo\":0.000000, \"LegalState\":\"Clean\", \"Latitude\":{latitude}, \"Longitude\":{longitude}, \"Heading\":24, \"Altitude\":0, \"BodyName\":\"Djambe ABC1\", \"PlanetRadius\":1311227.875000}}", commanderName);
-                        UpdateUI(edEvent);
-                        if (j==0)
-                            System.Threading.Thread.Sleep(500);
-                        else
-                            System.Threading.Thread.Sleep(10);
-                        if (rnd.Next(2) == 1)
-                            latitude += rnd.NextDouble() / 100;
-                        if (rnd.Next(2) == 1)
-                            longitude += rnd.NextDouble() / 100;
-                    }
-                }
-                Action enableTest = new Action(() => { buttonTest.Enabled = true; });
-                if (buttonTest.InvokeRequired)
-                    buttonTest.Invoke(enableTest);
-                else
-                    enableTest();
-            });
-            Task.Run(action);
-        }
-
+ 
         private void UpdateUI(EDEvent edEvent)
         {
             //if (checkBoxSaveTelemetryFolder.Checked)
@@ -750,11 +710,6 @@ namespace SRVTracker
                 _vehicleTelemetry?.DisplayTelemetry();
             else
                 _vehicleTelemetry?.HideTelemetry();
-        }
-
-        private void checkBoxExportSRVTelemetry_CheckedChanged(object sender, EventArgs e)
-        {
-
         }
 
         private void buttonNewSession_Click(object sender, EventArgs e)
