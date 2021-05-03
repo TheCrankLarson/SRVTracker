@@ -23,6 +23,7 @@ namespace SRVTracker
         private string _statusFile = "";
         private DateTime _lastFileWrite = DateTime.MinValue;
         private DateTime _lastStatusSend = DateTime.MinValue;
+        private DateTime _lastStatusUpdate = DateTime.MinValue;
         private Size _configShowing = new Size(738, 392);
         private Size _configHidden = new Size(298, 222);
         private static FormFlagsWatcher _formFlagsWatcher = null;
@@ -116,9 +117,10 @@ namespace SRVTracker
 
             // If the file has been written, then process it
             DateTime lastWriteTime = File.GetLastWriteTime(_statusFile);
-            if ((lastWriteTime != _lastFileWrite) || (DateTime.UtcNow.Subtract(_lastStatusSend).TotalSeconds > 5))
+            if ((lastWriteTime != _lastFileWrite) || (DateTime.UtcNow.Subtract(_lastStatusUpdate).TotalSeconds > 5))
             {
                 ProcessStatusFileUpdate(_statusFile);
+                _lastStatusUpdate = DateTime.UtcNow;
                 _lastFileWrite = lastWriteTime;
             }
             else if ( checkBoxUpload.Checked && (DateTime.UtcNow.Subtract(_lastStatusSend).TotalSeconds > 5) )
