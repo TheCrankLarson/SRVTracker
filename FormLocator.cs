@@ -26,15 +26,16 @@ namespace SRVTracker
         private static Size _normalView = new Size(558, 174);
         private static Size _miniView = new Size(260, 60);
         private static int _commanderListHiddenWidth = 344;
-        private static ulong _vrOverlayHandle = 0;
-        private static HmdMatrix34_t _vrMatrix;
+        //private static ulong _vrOverlayHandle = 0;
+        //private static HmdMatrix34_t _vrMatrix;
         //private static IntPtr? _intPtrOverlayImage = null;
         private double _trackedTargetDistance = double.MaxValue;
         private static EDEvent _closestCommander = null;
         private static double _closestCommanderDistance = double.MaxValue;
         private static FormLocator _activeLocator = null;
         private ConfigSaverClass _formConfig = null;
-        private FormVRMatrixEditor _formVRMatrixTest = null;
+        private VRLocator _vrLocator = null;
+        //private FormVRMatrixEditor _formVRMatrixTest = null;
         private byte[] _vrPanelImageBytes = null;
         private IntPtr _intPtrVROverlayImage;
 
@@ -64,7 +65,6 @@ namespace SRVTracker
             buttonUseCurrentLocation.Enabled = false;  // We'll enable it when we have a location
             CommanderWatcher.UpdateReceived += CommanderWatcher_UpdateReceived;
             FormTracker.CommanderLocationChanged += FormTracker_CommanderLocationChanged;
-            InitVRMatrix();
             InitLocationCombo();
             locatorHUD1.SetAdditionalInfo("");
         }
@@ -520,29 +520,12 @@ namespace SRVTracker
             if (needToAllocateMemory)
                 _intPtrVROverlayImage = Marshal.AllocHGlobal(_vrPanelImageBytes.Length);
             Marshal.Copy(_vrPanelImageBytes, 0, _intPtrVROverlayImage, _vrPanelImageBytes.Length);
-            OpenVR.Overlay.SetOverlayRaw(_vrOverlayHandle, _intPtrVROverlayImage, (uint)locatorPanel.Width, (uint)locatorPanel.Height, 4);
-        }
-
-        private static void InitVRMatrix()
-        {
-            _vrMatrix = new HmdMatrix34_t();
-            _vrMatrix.m0 = 0.7F;
-            _vrMatrix.m1 = 0.0F;
-            _vrMatrix.m2 = 0.0F;
-            _vrMatrix.m3 = 0.5F; // x
-            _vrMatrix.m4 = 0.0F;
-            _vrMatrix.m5 = -1.0F;
-            _vrMatrix.m6 = 0.0F;
-            _vrMatrix.m7 = 1.5F; // y
-            _vrMatrix.m8 = 0F;
-            _vrMatrix.m9 = 0.0F;
-            _vrMatrix.m10 = 0.0F;
-            _vrMatrix.m11 = -1.5F; // -z
+            OpenVR.Overlay.SetOverlayRaw(_vrLocator.OverlayHandle, _intPtrVROverlayImage, (uint)locatorPanel.Width, (uint)locatorPanel.Height, 4);
         }
 
         private bool ShowVRLocator(ref string info, bool SuppressMatrixWindow = false)
         {
-            if (_vrOverlayHandle > 0)
+            if ((_vrLocator != null) && _vrLocator.OverlayHandle > 0)
                 return true;
             try
             {
@@ -558,58 +541,30 @@ namespace SRVTracker
                 return false;
             }
 
-            try
-            {
-                OpenVR.Overlay.CreateOverlay(Guid.NewGuid().ToString(), "SRV Tracking", ref _vrOverlayHandle);
-                locatorHUD1.ResetPanel();
-            }
-            catch (Exception ex)
-            {
-                info =$"CreateOverlay: {Environment.NewLine}{ex}";
-                return false;
-            }
+            if (_vrLocator == null)
+                _vrLocator = new VRLocator();
 
-            if (!SuppressMatrixWindow)
-            {
-                _formVRMatrixTest = new FormVRMatrixEditor(_vrOverlayHandle);
-                _formVRMatrixTest.SetMatrix(ref _vrMatrix);
-                _formVRMatrixTest.SetOverlayWidth(0.6f);
-                _formVRMatrixTest.Show();
-                _vrMatrix = _formVRMatrixTest.GetMatrix();
-            }
-            else
-            {
-                OpenVR.Overlay.SetOverlayTransformAbsolute(_vrOverlayHandle, Valve.VR.ETrackingUniverseOrigin.TrackingUniverseStanding, ref _vrMatrix);
-                OpenVR.Overlay.SetOverlayWidthInMeters(_vrOverlayHandle, 0.6f);  // Need to change to keep track of width
-            }
+            if (!_vrLocator.CreateOverlay(ref info))
+                return false;
             
             UpdateVRLocatorImage();
-            _ = OpenVR.Overlay.ShowOverlay(_vrOverlayHandle);           
+            _vrLocator.Show();
+
+            if (!SuppressMatrixWindow)
+                _vrLocator.ShowMatrixEditor();
             
             return true;
         }
 
         private void HideVRLocator(bool CloseMatrixWindow = true)
         {
-            try
-            {
-                OpenVR.Overlay.DestroyOverlay(_vrOverlayHandle);
-            }
-            catch { }
+
             if (_vrPanelImageBytes != null)
             {
                 Marshal.FreeHGlobal(_intPtrVROverlayImage);
                 _vrPanelImageBytes = null;
             }
-            _vrOverlayHandle = 0;
-            if (_formVRMatrixTest != null && !_formVRMatrixTest.IsDisposed)
-                _vrMatrix = _formVRMatrixTest.GetMatrix();
-            if (CloseMatrixWindow)
-            {
-                if (_formVRMatrixTest != null && !_formVRMatrixTest.IsDisposed && _formVRMatrixTest.Visible)
-                    _formVRMatrixTest.Close();
-                _formVRMatrixTest = null;
-            }
+            _vrLocator.Hide(CloseMatrixWindow);
             VRLocator.ShutdownVr();
         }
 

@@ -18,16 +18,77 @@ namespace SRVTracker
     class VRLocator
     {
         private ulong _vrOverlayHandle = 0;
+        private HmdMatrix34_t _vrMatrix;
         private Bitmap _vrbitmap = null;
         private d3d.Device _d3DDevice = null;
         private d3d.Texture _locatorTexture = null;
         private bool _locatorVRAsTexture = false; // Whether to create texture for locator VR HUD, or just use raw image
         private Texture_t _panelTexture = new Texture_t();
         public static CVRSystem VRSystem = null;
+        private FormVRMatrixEditor _formVRMatrixTest = null;
 
         public VRLocator()
         {
             _panelTexture.eType = ETextureType.DirectX;
+            InitVRMatrix();
+        }
+
+        public ulong OverlayHandle
+        {
+            get { return _vrOverlayHandle; }
+        }
+
+        public bool CreateOverlay(ref string errorInfo)
+        {
+            try
+            {
+                OpenVR.Overlay.CreateOverlay(Guid.NewGuid().ToString(), "SRV Tracking", ref _vrOverlayHandle);
+                InitOverlay();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                errorInfo = $"CreateOverlay: {Environment.NewLine}{ex}";
+                return false;
+            }
+        }
+
+        public void InitOverlay()
+        {
+            if (_formVRMatrixTest==null || _formVRMatrixTest.IsDisposed)
+                _formVRMatrixTest = new FormVRMatrixEditor(_vrOverlayHandle);
+            _formVRMatrixTest.SetMatrix(ref _vrMatrix);
+            _formVRMatrixTest.SetOverlayWidth(0.6f);
+            _vrMatrix = _formVRMatrixTest.GetMatrix();
+
+            OpenVR.Overlay.SetOverlayTransformAbsolute(_vrOverlayHandle, Valve.VR.ETrackingUniverseOrigin.TrackingUniverseStanding, ref _vrMatrix);
+            OpenVR.Overlay.SetOverlayWidthInMeters(_vrOverlayHandle, 0.6f);  // Need to change to keep track of width
+        }
+
+        public void Show()
+        {
+            _ = OpenVR.Overlay.ShowOverlay(_vrOverlayHandle);
+        }
+
+        public void Hide(bool CloseMatrixWindow = true)
+        {
+            try
+            {
+                OpenVR.Overlay.DestroyOverlay(_vrOverlayHandle);
+            }
+            catch { }
+
+            _vrOverlayHandle = 0;
+            if (_formVRMatrixTest != null && !_formVRMatrixTest.IsDisposed)
+                _vrMatrix = _formVRMatrixTest.GetMatrix();
+
+            if (CloseMatrixWindow)
+            {
+                if (_formVRMatrixTest != null && !_formVRMatrixTest.IsDisposed && _formVRMatrixTest.Visible)
+                    _formVRMatrixTest.Close();
+                _formVRMatrixTest = null;
+            }
+            VRLocator.ShutdownVr();
         }
 
         public static bool InitVR()
@@ -48,10 +109,34 @@ namespace SRVTracker
             return true;
         }
 
+        public void ShowMatrixEditor()
+        {
+            if (_formVRMatrixTest == null || _formVRMatrixTest.Visible)
+                return;
+            _formVRMatrixTest.Show();
+        }
+
         public static void ShutdownVr()
         {
             OpenVR.Shutdown();
             VRSystem = null;
+        }
+
+        private void InitVRMatrix()
+        {
+            _vrMatrix = new HmdMatrix34_t();
+            _vrMatrix.m0 = 0.7F;
+            _vrMatrix.m1 = 0.0F;
+            _vrMatrix.m2 = 0.0F;
+            _vrMatrix.m3 = 0.5F; // x
+            _vrMatrix.m4 = 0.0F;
+            _vrMatrix.m5 = -1.0F;
+            _vrMatrix.m6 = 0.0F;
+            _vrMatrix.m7 = 1.5F; // y
+            _vrMatrix.m8 = 0F;
+            _vrMatrix.m9 = 0.0F;
+            _vrMatrix.m10 = 0.0F;
+            _vrMatrix.m11 = -1.5F; // -z
         }
 
         public bool InitializeGraphics(ref string InitError)
