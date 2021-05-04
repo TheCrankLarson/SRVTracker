@@ -1,12 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Valve.VR;
 using System.Text.Json;
@@ -28,9 +23,9 @@ namespace SRVTracker
             InitializeComponent();
             // Attach our form configuration saver
             _formConfig = new ConfigSaverClass(this, true);
+            _formConfig.RestorePreviousSize = false;
             _formConfig.ExcludedControls.Add(textBoxMatrixName);
             _formConfig.SaveEnabled = true;
-            _formConfig.RestorePreviousSize = false;
             _formConfig.RestoreFormValues();
 
             InitMatrices();
