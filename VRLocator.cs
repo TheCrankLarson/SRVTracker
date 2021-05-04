@@ -15,7 +15,7 @@ using System.IO;
 
 namespace SRVTracker
 {
-    class VRLocator
+    public class VRLocator
     {
         private ulong _vrOverlayHandle = 0;
         private HmdMatrix34_t _vrMatrix;
@@ -61,13 +61,13 @@ namespace SRVTracker
         public void InitOverlay()
         {
             if (_formVRMatrixTest==null || _formVRMatrixTest.IsDisposed)
-                _formVRMatrixTest = new FormVRMatrixEditor(_vrOverlayHandle);
+                _formVRMatrixTest = new FormVRMatrixEditor(this);
             _formVRMatrixTest.SetMatrix(ref _vrMatrix);
             _formVRMatrixTest.SetOverlayWidth(0.6f);
             _vrMatrix = _formVRMatrixTest.GetMatrix();
 
             OpenVR.Overlay.SetOverlayTransformAbsolute(_vrOverlayHandle, ETrackingUniverseOrigin.TrackingUniverseStanding, ref _vrMatrix);
-            _formVRMatrixTest.ApplyOverlayWidth();
+            //_formVRMatrixTest.ApplyOverlayWidth();
             //OpenVR.Overlay.SetOverlayWidthInMeters(_vrOverlayHandle, 0.6f);  // Need to change to keep track of width
             OpenVR.Overlay.SetOverlayInputMethod(_vrOverlayHandle, VROverlayInputMethod.None);
         }

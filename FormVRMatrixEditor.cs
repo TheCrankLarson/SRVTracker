@@ -16,14 +16,14 @@ namespace SRVTracker
 {
     public partial class FormVRMatrixEditor : Form
     {
-        private ulong _overlayHandle = 0;
+        private VRLocator _vrLocator = null;
         private HmdMatrix34_t _hmdMatrix;
         private Dictionary<string, MatrixDefinition> _savedMatrices = null;
         private string _matricesSaveFile = "hmd_matrices.json";
         private ConfigSaverClass _formConfig = null;
         private Control _sliderTargetControl = null;
 
-        public FormVRMatrixEditor(ulong overlayHandle)
+        public FormVRMatrixEditor(VRLocator vrLocator)
         {
             InitializeComponent();
             // Attach our form configuration saver
@@ -33,7 +33,7 @@ namespace SRVTracker
             _formConfig.RestoreFormValues();
 
             InitMatrices();
-            _overlayHandle = overlayHandle;
+            _vrLocator = vrLocator;
             _hmdMatrix = new HmdMatrix34_t();
             buttonApply.Enabled = !checkBoxAutoApply.Checked;
             ApplyOverlayWidth();
@@ -126,7 +126,7 @@ namespace SRVTracker
         public void ReapplyMatrix(ref HmdMatrix34_t hmdMatrix)
         {
             hmdMatrix = _hmdMatrix;
-            OpenVR.Overlay.SetOverlayTransformAbsolute(_overlayHandle, Valve.VR.ETrackingUniverseOrigin.TrackingUniverseStanding, ref _hmdMatrix);
+            OpenVR.Overlay.SetOverlayTransformAbsolute(_vrLocator.OverlayHandle, Valve.VR.ETrackingUniverseOrigin.TrackingUniverseStanding, ref _hmdMatrix);
         }
 
         private void ApplyMatrixDefinition(MatrixDefinition hmdMatrix)
@@ -172,18 +172,18 @@ namespace SRVTracker
 
         public void ApplyOverlayWidth()
         {
-            if (_overlayHandle > 0)
-                OpenVR.Overlay.SetOverlayWidthInMeters(_overlayHandle, (float)numericUpDownOverlayWidth.Value);
+            if (_vrLocator.OverlayHandle > 0)
+                OpenVR.Overlay.SetOverlayWidthInMeters(_vrLocator.OverlayHandle, (float)numericUpDownOverlayWidth.Value);
         }
 
         private void ApplyMatrixToOverlay(bool force = false)
         {
             if (!force && !checkBoxAutoApply.Checked)
                 return;
-            if (_overlayHandle > 0)
+            if (_vrLocator?.OverlayHandle > 0)
             {
                 GetMatrix();
-                OpenVR.Overlay.SetOverlayTransformAbsolute(_overlayHandle, Valve.VR.ETrackingUniverseOrigin.TrackingUniverseStanding, ref _hmdMatrix);
+                OpenVR.Overlay.SetOverlayTransformAbsolute(_vrLocator.OverlayHandle, Valve.VR.ETrackingUniverseOrigin.TrackingUniverseStanding, ref _hmdMatrix);
             }
             if (!force)
                 UpdateSelectedMatrixDefinition();
