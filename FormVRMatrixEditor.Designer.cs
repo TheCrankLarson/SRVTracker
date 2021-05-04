@@ -46,7 +46,6 @@
             this.numericUpDownm0 = new System.Windows.Forms.NumericUpDown();
             this.buttonApply = new System.Windows.Forms.Button();
             this.buttonClose = new System.Windows.Forms.Button();
-            this.buttonExport = new System.Windows.Forms.Button();
             this.checkBoxAutoApply = new System.Windows.Forms.CheckBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.numericUpDownOverlayWidth = new System.Windows.Forms.NumericUpDown();
@@ -58,6 +57,7 @@
             this.buttonDelete = new System.Windows.Forms.Button();
             this.buttonAdd = new System.Windows.Forms.Button();
             this.listBoxMatrices = new System.Windows.Forms.ListBox();
+            this.checkBoxMatrixIsRelative = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarEditMatrixValue)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownm11)).BeginInit();
@@ -429,7 +429,7 @@
             // 
             // buttonApply
             // 
-            this.buttonApply.Location = new System.Drawing.Point(197, 195);
+            this.buttonApply.Location = new System.Drawing.Point(197, 217);
             this.buttonApply.Name = "buttonApply";
             this.buttonApply.Size = new System.Drawing.Size(75, 23);
             this.buttonApply.TabIndex = 1;
@@ -440,7 +440,7 @@
             // 
             // buttonClose
             // 
-            this.buttonClose.Location = new System.Drawing.Point(12, 195);
+            this.buttonClose.Location = new System.Drawing.Point(426, 224);
             this.buttonClose.Name = "buttonClose";
             this.buttonClose.Size = new System.Drawing.Size(52, 23);
             this.buttonClose.TabIndex = 2;
@@ -448,23 +448,12 @@
             this.buttonClose.UseVisualStyleBackColor = true;
             this.buttonClose.Click += new System.EventHandler(this.buttonClose_Click);
             // 
-            // buttonExport
-            // 
-            this.buttonExport.Enabled = false;
-            this.buttonExport.Location = new System.Drawing.Point(70, 195);
-            this.buttonExport.Name = "buttonExport";
-            this.buttonExport.Size = new System.Drawing.Size(53, 23);
-            this.buttonExport.TabIndex = 3;
-            this.buttonExport.Text = "Export";
-            this.buttonExport.UseVisualStyleBackColor = true;
-            this.buttonExport.Click += new System.EventHandler(this.buttonExport_Click);
-            // 
             // checkBoxAutoApply
             // 
             this.checkBoxAutoApply.AutoSize = true;
             this.checkBoxAutoApply.Checked = true;
             this.checkBoxAutoApply.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxAutoApply.Location = new System.Drawing.Point(147, 199);
+            this.checkBoxAutoApply.Location = new System.Drawing.Point(147, 221);
             this.checkBoxAutoApply.Name = "checkBoxAutoApply";
             this.checkBoxAutoApply.Size = new System.Drawing.Size(48, 17);
             this.checkBoxAutoApply.TabIndex = 4;
@@ -481,7 +470,7 @@
             0,
             0,
             65536});
-            this.numericUpDownOverlayWidth.Location = new System.Drawing.Point(144, 169);
+            this.numericUpDownOverlayWidth.Location = new System.Drawing.Point(144, 191);
             this.numericUpDownOverlayWidth.Maximum = new decimal(new int[] {
             10,
             0,
@@ -507,7 +496,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(43, 171);
+            this.label1.Location = new System.Drawing.Point(43, 193);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(95, 13);
             this.label1.TabIndex = 6;
@@ -516,7 +505,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(207, 171);
+            this.label2.Location = new System.Drawing.Point(207, 193);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(15, 13);
             this.label2.TabIndex = 7;
@@ -584,18 +573,28 @@
             this.listBoxMatrices.TabIndex = 0;
             this.listBoxMatrices.SelectedIndexChanged += new System.EventHandler(this.listBoxMatrices_SelectedIndexChanged);
             // 
+            // checkBoxMatrixIsRelative
+            // 
+            this.checkBoxMatrixIsRelative.AutoSize = true;
+            this.checkBoxMatrixIsRelative.Location = new System.Drawing.Point(12, 168);
+            this.checkBoxMatrixIsRelative.Name = "checkBoxMatrixIsRelative";
+            this.checkBoxMatrixIsRelative.Size = new System.Drawing.Size(251, 17);
+            this.checkBoxMatrixIsRelative.TabIndex = 9;
+            this.checkBoxMatrixIsRelative.Text = "Matrix is relative to HMD (otherwise, is absolute)";
+            this.checkBoxMatrixIsRelative.UseVisualStyleBackColor = true;
+            // 
             // FormVRMatrixEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(487, 227);
+            this.ClientSize = new System.Drawing.Size(487, 254);
             this.ControlBox = false;
+            this.Controls.Add(this.checkBoxMatrixIsRelative);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.numericUpDownOverlayWidth);
             this.Controls.Add(this.checkBoxAutoApply);
-            this.Controls.Add(this.buttonExport);
             this.Controls.Add(this.buttonClose);
             this.Controls.Add(this.buttonApply);
             this.Controls.Add(this.groupBox1);
@@ -644,7 +643,6 @@
         private System.Windows.Forms.NumericUpDown numericUpDownm0;
         private System.Windows.Forms.Button buttonApply;
         private System.Windows.Forms.Button buttonClose;
-        private System.Windows.Forms.Button buttonExport;
         private System.Windows.Forms.CheckBox checkBoxAutoApply;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.NumericUpDown numericUpDownOverlayWidth;
@@ -657,5 +655,6 @@
         private System.Windows.Forms.Button buttonAdd;
         private System.Windows.Forms.ListBox listBoxMatrices;
         private System.Windows.Forms.TrackBar trackBarEditMatrixValue;
+        private System.Windows.Forms.CheckBox checkBoxMatrixIsRelative;
     }
 }

@@ -39,21 +39,41 @@ namespace SRVTracker
             ApplyOverlayWidth();
         }
 
-        private static MatrixDefinition DefaultVRMatrix()
+        private MatrixDefinition DefaultVRMatrix()
         {
             MatrixDefinition vrMatrix = new MatrixDefinition();
-            vrMatrix.m0 = 0.7F;
-            vrMatrix.m1 = 0.0F;
-            vrMatrix.m2 = 0.0F;
-            vrMatrix.m3 = 1.0F; // x
-            vrMatrix.m4 = 0.0F;
-            vrMatrix.m5 = -1.0F;
-            vrMatrix.m6 = 0.0F;
-            vrMatrix.m7 = 1.5F; // y
-            vrMatrix.m8 = 0F;
-            vrMatrix.m9 = 0.0F;
-            vrMatrix.m10 = 0.0F;
-            vrMatrix.m11 = -1.0F; // -z
+
+            if (checkBoxMatrixIsRelative.Checked)
+            {
+                // This matrix should be directly in front of the user when set to relative to HMD device
+                vrMatrix.m0 = 1.0F;
+                vrMatrix.m1 = 0.0F;
+                vrMatrix.m2 = 0.0F;
+                vrMatrix.m3 = 0.12F;
+                vrMatrix.m4 = 0.0F;
+                vrMatrix.m5 = 1.0F;
+                vrMatrix.m6 = 0.0F;
+                vrMatrix.m7 = 0.08F;
+                vrMatrix.m8 = 0F;
+                vrMatrix.m9 = 0.0F;
+                vrMatrix.m10 = 1.0F;
+                vrMatrix.m11 = -0.3F;
+            }
+            else
+            {
+                vrMatrix.m0 = 0.7F;
+                vrMatrix.m1 = 0.0F;
+                vrMatrix.m2 = 0.0F;
+                vrMatrix.m3 = 1.0F;
+                vrMatrix.m4 = 0.0F;
+                vrMatrix.m5 = -1.0F;
+                vrMatrix.m6 = 0.0F;
+                vrMatrix.m7 = 1.5F;
+                vrMatrix.m8 = 0F;
+                vrMatrix.m9 = 0.0F;
+                vrMatrix.m10 = 0.0F;
+                vrMatrix.m11 = -1.0F;
+            }
             return vrMatrix;
         }
 
@@ -176,14 +196,17 @@ namespace SRVTracker
                 OpenVR.Overlay.SetOverlayWidthInMeters(_vrLocator.OverlayHandle, (float)numericUpDownOverlayWidth.Value);
         }
 
-        private void ApplyMatrixToOverlay(bool force = false)
+        public void ApplyMatrixToOverlay(bool force = false)
         {
             if (!force && !checkBoxAutoApply.Checked)
                 return;
             if (_vrLocator?.OverlayHandle > 0)
             {
                 GetMatrix();
-                OpenVR.Overlay.SetOverlayTransformAbsolute(_vrLocator.OverlayHandle, Valve.VR.ETrackingUniverseOrigin.TrackingUniverseStanding, ref _hmdMatrix);
+                if (checkBoxMatrixIsRelative.Checked)
+                    OpenVR.Overlay.SetOverlayTransformTrackedDeviceRelative(_vrLocator.OverlayHandle, OpenVR.k_unTrackedDeviceIndex_Hmd, ref _hmdMatrix);
+                else
+                    OpenVR.Overlay.SetOverlayTransformAbsolute(_vrLocator.OverlayHandle, Valve.VR.ETrackingUniverseOrigin.TrackingUniverseStanding, ref _hmdMatrix);
             }
             if (!force)
                 UpdateSelectedMatrixDefinition();

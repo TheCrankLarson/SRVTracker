@@ -18,7 +18,6 @@ namespace SRVTracker
     public class VRLocator
     {
         private ulong _vrOverlayHandle = 0;
-        private HmdMatrix34_t _vrMatrix;
         private Bitmap _vrbitmap = null;
         private d3d.Device _d3DDevice = null;
         private d3d.Texture _locatorTexture = null;
@@ -35,7 +34,6 @@ namespace SRVTracker
             string initError="";
             if (_locatorVRAsTexture)
                 InitializeGraphics(ref initError);
-            InitVRMatrix();
         }
 
         public ulong OverlayHandle
@@ -62,13 +60,8 @@ namespace SRVTracker
         {
             if (_formVRMatrixTest==null || _formVRMatrixTest.IsDisposed)
                 _formVRMatrixTest = new FormVRMatrixEditor(this);
-            _formVRMatrixTest.SetMatrix(ref _vrMatrix);
-            _formVRMatrixTest.SetOverlayWidth(0.6f);
-            _vrMatrix = _formVRMatrixTest.GetMatrix();
 
-            OpenVR.Overlay.SetOverlayTransformAbsolute(_vrOverlayHandle, ETrackingUniverseOrigin.TrackingUniverseStanding, ref _vrMatrix);
-            //_formVRMatrixTest.ApplyOverlayWidth();
-            //OpenVR.Overlay.SetOverlayWidthInMeters(_vrOverlayHandle, 0.6f);  // Need to change to keep track of width
+            _formVRMatrixTest.ApplyMatrixToOverlay(true);
             OpenVR.Overlay.SetOverlayInputMethod(_vrOverlayHandle, VROverlayInputMethod.None);
         }
 
@@ -92,8 +85,6 @@ namespace SRVTracker
             }
 
             _vrOverlayHandle = 0;
-            if (_formVRMatrixTest != null && !_formVRMatrixTest.IsDisposed)
-                _vrMatrix = _formVRMatrixTest.GetMatrix();
 
             if (CloseMatrixWindow)
             {
@@ -135,6 +126,7 @@ namespace SRVTracker
             VRSystem = null;
         }
 
+        /*
         private void InitVRMatrix()
         {
             _vrMatrix = new HmdMatrix34_t();
@@ -152,7 +144,7 @@ namespace SRVTracker
             _vrMatrix.m9 = 0.0F;
             _vrMatrix.m10 = 0.0F;
             _vrMatrix.m11 = -1.5F; // -z
-            */
+            
 
             _vrMatrix.m0 = 1.0F;
             _vrMatrix.m1 = 0.0F;
@@ -166,7 +158,7 @@ namespace SRVTracker
             _vrMatrix.m9 = 0.0F;
             _vrMatrix.m10 = 1.0F;
             _vrMatrix.m11 = -0.3F; // -z
-        }
+        }*/
 
         public bool InitializeGraphics(ref string InitError)
         {
