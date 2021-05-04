@@ -22,7 +22,7 @@ namespace SRVTracker
         private Bitmap _vrbitmap = null;
         private d3d.Device _d3DDevice = null;
         private d3d.Texture _locatorTexture = null;
-        private bool _locatorVRAsTexture = false; // Whether to create texture for locator VR HUD, or just use raw image
+        private bool _locatorVRAsTexture = true; // Whether to create texture for locator VR HUD, or just use raw image
         private Texture_t _panelTexture = new Texture_t();
         public static CVRSystem VRSystem = null;
         private FormVRMatrixEditor _formVRMatrixTest = null;
@@ -30,6 +30,8 @@ namespace SRVTracker
         public VRLocator()
         {
             _panelTexture.eType = ETextureType.DirectX;
+            string initError="";
+            InitializeGraphics(ref initError);
             InitVRMatrix();
         }
 
@@ -61,8 +63,10 @@ namespace SRVTracker
             _formVRMatrixTest.SetOverlayWidth(0.6f);
             _vrMatrix = _formVRMatrixTest.GetMatrix();
 
-            OpenVR.Overlay.SetOverlayTransformAbsolute(_vrOverlayHandle, Valve.VR.ETrackingUniverseOrigin.TrackingUniverseStanding, ref _vrMatrix);
-            OpenVR.Overlay.SetOverlayWidthInMeters(_vrOverlayHandle, 0.6f);  // Need to change to keep track of width
+            OpenVR.Overlay.SetOverlayTransformAbsolute(_vrOverlayHandle, ETrackingUniverseOrigin.TrackingUniverseStanding, ref _vrMatrix);
+            _formVRMatrixTest.ApplyOverlayWidth();
+            //OpenVR.Overlay.SetOverlayWidthInMeters(_vrOverlayHandle, 0.6f);  // Need to change to keep track of width
+            OpenVR.Overlay.SetOverlayInputMethod(_vrOverlayHandle, VROverlayInputMethod.None);
         }
 
         public void Show()
@@ -125,6 +129,8 @@ namespace SRVTracker
         private void InitVRMatrix()
         {
             _vrMatrix = new HmdMatrix34_t();
+
+            /*
             _vrMatrix.m0 = 0.7F;
             _vrMatrix.m1 = 0.0F;
             _vrMatrix.m2 = 0.0F;
@@ -137,6 +143,20 @@ namespace SRVTracker
             _vrMatrix.m9 = 0.0F;
             _vrMatrix.m10 = 0.0F;
             _vrMatrix.m11 = -1.5F; // -z
+            */
+
+            _vrMatrix.m0 = 1.0F;
+            _vrMatrix.m1 = 0.0F;
+            _vrMatrix.m2 = 0.0F;
+            _vrMatrix.m3 = 0.12F; // x
+            _vrMatrix.m4 = 0.0F;
+            _vrMatrix.m5 = 1.0F;
+            _vrMatrix.m6 = 0.0F;
+            _vrMatrix.m7 = 0.08F; // y
+            _vrMatrix.m8 = 0F;
+            _vrMatrix.m9 = 0.0F;
+            _vrMatrix.m10 = 1.0F;
+            _vrMatrix.m11 = -0.3F; // -z
         }
 
         public bool InitializeGraphics(ref string InitError)

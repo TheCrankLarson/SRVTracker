@@ -505,6 +505,8 @@ namespace SRVTracker
         private void UpdateVRLocatorImage()
         {
             Bitmap locatorPanel = locatorHUD1.GetLocatorPanelBitmap();
+            _vrLocator.UpdateVRLocatorImage(locatorPanel);
+            return;
             //Bitmap locatorPanel = new Bitmap(locatorHUD1.Width, locatorHUD1.Height);
             //locatorHUD1.DrawToBitmap(locatorPanel, new Rectangle(0,0,locatorHUD1.Width, locatorHUD1.Height));
             if (locatorHUD1.PanelRequiresReset())
@@ -515,6 +517,8 @@ namespace SRVTracker
                 HideVRLocator(false);
                 ShowVRLocator(ref info, true);
             }
+
+
             bool needToAllocateMemory = _vrPanelImageBytes == null;
             _vrPanelImageBytes = BitmapToByte(locatorPanel);
             if (needToAllocateMemory)

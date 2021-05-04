@@ -170,7 +170,7 @@ namespace SRVTracker
             return _hmdMatrix;
         }
 
-        private void ApplyOverlayWidth()
+        public void ApplyOverlayWidth()
         {
             if (_overlayHandle > 0)
                 OpenVR.Overlay.SetOverlayWidthInMeters(_overlayHandle, (float)numericUpDownOverlayWidth.Value);

@@ -666,7 +666,7 @@ namespace DataCollator
 
         private void ClearStaleData()
         {
-            // We want to remove tracking information if we haven't received an update from the client for 120 minutes
+            // We want to remove tracking information if we haven't received an update from the client for 60 seconds
             Log("Checking for stale data to purge", true);
             List<string> playersToRemove = new List<string>();
             if (_playerStatus != null)
