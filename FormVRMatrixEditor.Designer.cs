@@ -582,6 +582,7 @@
             this.checkBoxMatrixIsRelative.TabIndex = 9;
             this.checkBoxMatrixIsRelative.Text = "Matrix is relative to HMD (otherwise, is absolute)";
             this.checkBoxMatrixIsRelative.UseVisualStyleBackColor = true;
+            this.checkBoxMatrixIsRelative.CheckedChanged += new System.EventHandler(this.checkBoxMatrixIsRelative_CheckedChanged);
             // 
             // FormVRMatrixEditor
             // 

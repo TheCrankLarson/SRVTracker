@@ -410,13 +410,13 @@ namespace EDTracking
             if (!String.IsNullOrEmpty((string)control.Tag))
                 appSettings.AppendLine(control.Name + ":Tag:" + Encode((string)control.Tag));
 
-            //PropertyInfo prop = control.GetType().GetProperty("SelectedIndex", BindingFlags.Public | BindingFlags.Instance);
-            //if (prop != null && prop.CanWrite)
-            //    appSettings.AppendLine(control.Name + ":SelectedIndex:" + prop.GetValue(control));
+            PropertyInfo propSelectedIndex = control.GetType().GetProperty("SelectedIndex", BindingFlags.Public | BindingFlags.Instance);
+            if (propSelectedIndex != null && propSelectedIndex.CanWrite)
+                appSettings.AppendLine(control.Name + ":SelectedIndex:" + propSelectedIndex.GetValue(control));
 
-            PropertyInfo prop = control.GetType().GetProperty("Checked", BindingFlags.Public | BindingFlags.Instance);
-            if (prop != null && prop.CanWrite)
-                appSettings.AppendLine(control.Name + ":Checked:" + prop.GetValue(control));
+            PropertyInfo propChecked = control.GetType().GetProperty("Checked", BindingFlags.Public | BindingFlags.Instance);
+            if (propChecked != null && propChecked.CanWrite)
+                appSettings.AppendLine(control.Name + ":Checked:" + propChecked.GetValue(control));
         }
 
         private void RecurseControls(Control ParentControl, ref StringBuilder appSettings)

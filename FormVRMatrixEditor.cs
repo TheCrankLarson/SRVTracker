@@ -28,8 +28,9 @@ namespace SRVTracker
             InitializeComponent();
             // Attach our form configuration saver
             _formConfig = new ConfigSaverClass(this, true);
-            _formConfig.StoreControlInfo = false;
+            _formConfig.ExcludedControls.Add(textBoxMatrixName);
             _formConfig.SaveEnabled = true;
+            _formConfig.RestorePreviousSize = false;
             _formConfig.RestoreFormValues();
 
             InitMatrices();
@@ -248,29 +249,6 @@ namespace SRVTracker
                 buttonApply.Enabled = false;
         }
 
-        private void buttonExport_Click(object sender, EventArgs e)
-        {
-            StringBuilder matrixCode = new StringBuilder();
-
-            matrixCode.AppendLine("_vrMatrix = new HmdMatrix34_t();");
-            matrixCode.AppendLine($"_vrMatrix.m0 = {numericUpDownm0.Value}F;");
-            matrixCode.AppendLine($"_vrMatrix.m1 = {numericUpDownm1.Value}F;");
-            matrixCode.AppendLine($"_vrMatrix.m2 = {numericUpDownm2.Value}F;");
-            matrixCode.AppendLine($"_vrMatrix.m3 = {numericUpDownm3.Value}F;");
-            matrixCode.AppendLine($"_vrMatrix.m4 = {numericUpDownm4.Value}F;");
-            matrixCode.AppendLine($"_vrMatrix.m5 = {numericUpDownm5.Value}F;");
-            matrixCode.AppendLine($"_vrMatrix.m6 = {numericUpDownm6.Value}F;");
-            matrixCode.AppendLine($"_vrMatrix.m7 = {numericUpDownm7.Value}F;");
-            matrixCode.AppendLine($"_vrMatrix.m8 = {numericUpDownm8.Value}F;");
-            matrixCode.AppendLine($"_vrMatrix.m9 = {numericUpDownm9.Value}F;");
-            matrixCode.AppendLine($"_vrMatrix.m10 = {numericUpDownm10.Value}F;");
-            matrixCode.AppendLine($"_vrMatrix.m11 = {numericUpDownm11.Value}F;");
-            matrixCode.AppendLine();
-
-            File.AppendAllText("matrices.txt", matrixCode.ToString());
-        }
-
-
         private void checkBoxAutoApply_CheckedChanged(object sender, EventArgs e)
         {
             buttonApply.Enabled = !checkBoxAutoApply.Checked;
@@ -332,6 +310,11 @@ namespace SRVTracker
             _savedMatrices.Remove((string)listBoxMatrices.SelectedItem);
             _savedMatrices.Add(textBoxMatrixName.Text, matrixDefinition);
             listBoxMatrices.Items[listBoxMatrices.SelectedIndex] = textBoxMatrixName.Text;
+        }
+
+        private void checkBoxMatrixIsRelative_CheckedChanged(object sender, EventArgs e)
+        {
+            ApplyMatrixToOverlay(true);
         }
         #endregion
 
@@ -478,5 +461,7 @@ namespace SRVTracker
             AttachSliderToNumericUpDown(numericUpDownm4);
         }
         #endregion
+
+
     }
 }
