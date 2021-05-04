@@ -22,7 +22,9 @@ namespace SRVTracker
         private Bitmap _vrbitmap = null;
         private d3d.Device _d3DDevice = null;
         private d3d.Texture _locatorTexture = null;
-        private bool _locatorVRAsTexture = true; // Whether to create texture for locator VR HUD, or just use raw image
+        private byte[] _vrPanelImageBytes = null;
+        private IntPtr _intPtrVROverlayImage;
+        private bool _locatorVRAsTexture = false; // Whether to create texture for locator VR HUD, or just use raw image
         private Texture_t _panelTexture = new Texture_t();
         public static CVRSystem VRSystem = null;
         private FormVRMatrixEditor _formVRMatrixTest = null;
@@ -31,7 +33,8 @@ namespace SRVTracker
         {
             _panelTexture.eType = ETextureType.DirectX;
             string initError="";
-            InitializeGraphics(ref initError);
+            if (_locatorVRAsTexture)
+                InitializeGraphics(ref initError);
             InitVRMatrix();
         }
 
@@ -81,6 +84,12 @@ namespace SRVTracker
                 OpenVR.Overlay.DestroyOverlay(_vrOverlayHandle);
             }
             catch { }
+
+            if (_vrPanelImageBytes != null)
+            {
+                Marshal.FreeHGlobal(_intPtrVROverlayImage);
+                _vrPanelImageBytes = null;
+            }
 
             _vrOverlayHandle = 0;
             if (_formVRMatrixTest != null && !_formVRMatrixTest.IsDisposed)
@@ -169,8 +178,9 @@ namespace SRVTracker
                 d3d.PresentParameters presentParams = new d3d.PresentParameters();
                 presentParams.Windowed = true;
                 presentParams.SwapEffect = d3d.SwapEffect.Discard;
+                //presentParams.DeviceWindow =;
                 _d3DDevice = new d3d.Device(0, d3d.DeviceType.Hardware, null,
-                        d3d.CreateFlags.SoftwareVertexProcessing, presentParams);
+                        d3d.CreateFlags.HardwareVertexProcessing, presentParams);
                 return true;
             }
             catch (DirectXException ex)
@@ -209,15 +219,41 @@ namespace SRVTracker
             */
         }
 
-        public unsafe void UpdateVRLocatorImage(Bitmap PanelImage)
+        public static byte[] BitmapToByte(Bitmap bitmap)
         {
-            _vrbitmap = PanelImage;
+            using (MemoryStream ms = new MemoryStream())
+            {
+                bitmap.Save(ms, ImageFormat.Bmp);
+                return ms.ToArray();
+            }
+        }
+
+        private unsafe void UpdateVRLocatorTexture()
+        {
             GetVRLocatorTexture();
-            
+
             if (_locatorTexture == null)
                 return;
             _panelTexture.handle = (IntPtr)_locatorTexture.UnmanagedComPointer;
             OpenVR.Overlay.SetOverlayTexture(_vrOverlayHandle, ref _panelTexture);
+            return;
+        }
+
+        public void UpdateVRLocatorImage(Bitmap PanelImage)
+        {
+            _vrbitmap = PanelImage;
+            if (_locatorVRAsTexture)
+            {
+                UpdateVRLocatorTexture();
+                return;
+            }
+
+            bool needToAllocateMemory = _vrPanelImageBytes == null;
+            _vrPanelImageBytes = BitmapToByte(_vrbitmap);
+            if (needToAllocateMemory)
+                _intPtrVROverlayImage = Marshal.AllocHGlobal(_vrPanelImageBytes.Length);
+            Marshal.Copy(_vrPanelImageBytes, 0, _intPtrVROverlayImage, _vrPanelImageBytes.Length);
+            OpenVR.Overlay.SetOverlayRaw(OverlayHandle, _intPtrVROverlayImage, (uint)_vrbitmap.Width, (uint)_vrbitmap.Height, 4);
         }
     }
 }

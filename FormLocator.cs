@@ -36,8 +36,8 @@ namespace SRVTracker
         private ConfigSaverClass _formConfig = null;
         private VRLocator _vrLocator = null;
         //private FormVRMatrixEditor _formVRMatrixTest = null;
-        private byte[] _vrPanelImageBytes = null;
-        private IntPtr _intPtrVROverlayImage;
+        //private byte[] _vrPanelImageBytes = null;
+        //private IntPtr _intPtrVROverlayImage;
 
         public const int WM_NCLBUTTONDOWN = 0xA1;
         public const int HT_CAPTION = 0x2;
@@ -493,44 +493,35 @@ namespace SRVTracker
             HideVRLocator();
         }
 
-        public static byte[] BitmapToByte(Bitmap bitmap)
-        {
-            using (MemoryStream ms = new MemoryStream())
-            {
-                bitmap.Save(ms, ImageFormat.Bmp);
-                return ms.ToArray();
-            }
-        }
-
         private void UpdateVRLocatorImage()
         {
+            if (locatorHUD1.PanelRequiresReset())
+            {
+                // For some reason, after 200 updates the OpenVR layer locks up
+                // No idea why, so this horrible hack resets it
+                string info = "";
+                HideVRLocator(false);
+                locatorHUD1.ResetPanel();
+                ShowVRLocator(ref info, true);
+                return;
+            }
+
             Bitmap locatorPanel = locatorHUD1.GetLocatorPanelBitmap();
             _vrLocator.UpdateVRLocatorImage(locatorPanel);
             return;
             //Bitmap locatorPanel = new Bitmap(locatorHUD1.Width, locatorHUD1.Height);
             //locatorHUD1.DrawToBitmap(locatorPanel, new Rectangle(0,0,locatorHUD1.Width, locatorHUD1.Height));
-            if (locatorHUD1.PanelRequiresReset())
-            {
-                // For some reason, after 200 updates the OpenVR layer locks up
-                // No idea why, so this horrible hack resets it
-                string info="";
-                HideVRLocator(false);
-                ShowVRLocator(ref info, true);
-            }
 
-
-            bool needToAllocateMemory = _vrPanelImageBytes == null;
-            _vrPanelImageBytes = BitmapToByte(locatorPanel);
-            if (needToAllocateMemory)
-                _intPtrVROverlayImage = Marshal.AllocHGlobal(_vrPanelImageBytes.Length);
-            Marshal.Copy(_vrPanelImageBytes, 0, _intPtrVROverlayImage, _vrPanelImageBytes.Length);
-            OpenVR.Overlay.SetOverlayRaw(_vrLocator.OverlayHandle, _intPtrVROverlayImage, (uint)locatorPanel.Width, (uint)locatorPanel.Height, 4);
         }
 
         private bool ShowVRLocator(ref string info, bool SuppressMatrixWindow = false)
         {
             if ((_vrLocator != null) && _vrLocator.OverlayHandle > 0)
                 return true;
+
+            if (_vrLocator == null)
+                _vrLocator = new VRLocator();
+
             try
             {
                 if (!VRLocator.InitVR())
@@ -544,9 +535,6 @@ namespace SRVTracker
                 info = $"InitVR: {Environment.NewLine}{ex}";
                 return false;
             }
-
-            if (_vrLocator == null)
-                _vrLocator = new VRLocator();
 
             if (!_vrLocator.CreateOverlay(ref info))
                 return false;
@@ -562,14 +550,7 @@ namespace SRVTracker
 
         private void HideVRLocator(bool CloseMatrixWindow = true)
         {
-
-            if (_vrPanelImageBytes != null)
-            {
-                Marshal.FreeHGlobal(_intPtrVROverlayImage);
-                _vrPanelImageBytes = null;
-            }
             _vrLocator.Hide(CloseMatrixWindow);
-            VRLocator.ShutdownVr();
         }
 
         private void comboBoxLocation_SelectedIndexChanged(object sender, EventArgs e)
