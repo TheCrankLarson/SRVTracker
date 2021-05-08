@@ -429,9 +429,9 @@
             // 
             // buttonApply
             // 
-            this.buttonApply.Location = new System.Drawing.Point(197, 217);
+            this.buttonApply.Location = new System.Drawing.Point(284, 224);
             this.buttonApply.Name = "buttonApply";
-            this.buttonApply.Size = new System.Drawing.Size(75, 23);
+            this.buttonApply.Size = new System.Drawing.Size(78, 23);
             this.buttonApply.TabIndex = 1;
             this.buttonApply.Text = "Apply";
             this.toolTip1.SetToolTip(this.buttonApply, "Apply changes");
@@ -440,9 +440,9 @@
             // 
             // buttonClose
             // 
-            this.buttonClose.Location = new System.Drawing.Point(426, 224);
+            this.buttonClose.Location = new System.Drawing.Point(421, 224);
             this.buttonClose.Name = "buttonClose";
-            this.buttonClose.Size = new System.Drawing.Size(52, 23);
+            this.buttonClose.Size = new System.Drawing.Size(57, 23);
             this.buttonClose.TabIndex = 2;
             this.buttonClose.Text = "Close";
             this.buttonClose.UseVisualStyleBackColor = true;
@@ -453,7 +453,7 @@
             this.checkBoxAutoApply.AutoSize = true;
             this.checkBoxAutoApply.Checked = true;
             this.checkBoxAutoApply.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxAutoApply.Location = new System.Drawing.Point(147, 221);
+            this.checkBoxAutoApply.Location = new System.Drawing.Point(230, 228);
             this.checkBoxAutoApply.Name = "checkBoxAutoApply";
             this.checkBoxAutoApply.Size = new System.Drawing.Size(48, 17);
             this.checkBoxAutoApply.TabIndex = 4;
@@ -470,7 +470,7 @@
             0,
             0,
             65536});
-            this.numericUpDownOverlayWidth.Location = new System.Drawing.Point(144, 191);
+            this.numericUpDownOverlayWidth.Location = new System.Drawing.Point(113, 191);
             this.numericUpDownOverlayWidth.Maximum = new decimal(new int[] {
             10,
             0,
@@ -496,7 +496,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(43, 193);
+            this.label1.Location = new System.Drawing.Point(12, 193);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(95, 13);
             this.label1.TabIndex = 6;
@@ -505,7 +505,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(207, 193);
+            this.label2.Location = new System.Drawing.Point(176, 193);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(15, 13);
             this.label2.TabIndex = 7;
