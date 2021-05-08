@@ -98,6 +98,7 @@ namespace EDTracking
             TotalDistanceTravelled = 0;
             TotalShipRepairs = 0;
             TotalSynthRepairs = 0;
+            _lastLocation = null;
             SessionStartTime = DateTime.MinValue;
             SessionStartLocation = null;
             TotalSRVsDestroyed = 0;
@@ -193,13 +194,6 @@ namespace EDTracking
 
         public void ProcessEvent(EDEvent edEvent, bool noHistory = false)
         {
-            if (SessionStartTime == DateTime.MinValue)
-            {
-                SessionStartTime = new DateTime(edEvent.TimeStamp.Year,edEvent.TimeStamp.Month, edEvent.TimeStamp.Day, edEvent.TimeStamp.Hour, edEvent.TimeStamp.Minute, edEvent.TimeStamp.Second);
-                _telemetry["SessionStartTime"] = SessionStartTime.ToString("HH:mm:ss");
-                _telemetry["SessionDate"] = SessionStartTime.ToShortDateString();
-            }
-
             bool statsUpdated = ProcessFlags(edEvent);
             switch (edEvent.EventName)
             {
@@ -295,11 +289,18 @@ namespace EDTracking
             if (_lastLocation==null)
             {
                 _lastLocation = currentLocation;
-                SessionStartTime = edEvent.TimeStamp;
                 return false;
             }
             if (_lastLocation.Latitude.Equals(currentLocation.Latitude) && _lastLocation.Longitude.Equals(currentLocation.Longitude))
                 return false;
+
+            if (SessionStartTime == DateTime.MinValue)
+            {
+                // We set session start time on first detected movement
+                SessionStartTime = new DateTime(edEvent.TimeStamp.Year, edEvent.TimeStamp.Month, edEvent.TimeStamp.Day, edEvent.TimeStamp.Hour, edEvent.TimeStamp.Minute, edEvent.TimeStamp.Second);
+                _telemetry["SessionStartTime"] = SessionStartTime.ToString("HH:mm:ss");
+                _telemetry["SessionDate"] = SessionStartTime.ToShortDateString();
+            }
 
             // Update distance/speed statistics
             if (CalculateDistances(currentLocation))

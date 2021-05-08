@@ -34,7 +34,8 @@
             // 
             // elementHost1
             // 
-            this.elementHost1.BackColor = System.Drawing.Color.Black;
+            this.elementHost1.BackColor = System.Drawing.Color.Transparent;
+            this.elementHost1.BackColorTransparent = true;
             this.elementHost1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.elementHost1.ForeColor = System.Drawing.Color.White;
             this.elementHost1.Location = new System.Drawing.Point(0, 0);
@@ -53,10 +54,10 @@
             this.ClientSize = new System.Drawing.Size(843, 191);
             this.Controls.Add(this.elementHost1);
             this.ForeColor = System.Drawing.Color.White;
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "FormTelemetryDisplay";
+            this.Opacity = 0.8D;
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Race Telemetry";
             this.ResumeLayout(false);
