@@ -294,18 +294,17 @@ namespace EDTracking
             if (_lastLocation.Latitude.Equals(currentLocation.Latitude) && _lastLocation.Longitude.Equals(currentLocation.Longitude))
                 return false;
 
-            if (SessionStartTime == DateTime.MinValue)
-            {
-                // We set session start time on first detected movement
-                SessionStartTime = new DateTime(edEvent.TimeStamp.Year, edEvent.TimeStamp.Month, edEvent.TimeStamp.Day, edEvent.TimeStamp.Hour, edEvent.TimeStamp.Minute, edEvent.TimeStamp.Second);
-                _telemetry["SessionStartTime"] = SessionStartTime.ToString("HH:mm:ss");
-                _telemetry["SessionDate"] = SessionStartTime.ToShortDateString();
-            }
-
             // Update distance/speed statistics
             if (CalculateDistances(currentLocation))
             {
                 CalculateSpeed(currentLocation, edEvent.TimeStamp);
+                if (SessionStartTime == DateTime.MinValue)
+                {
+                    // We set session start time on first detected movement
+                    SessionStartTime = DateTime.UtcNow;
+                    _telemetry["SessionStartTime"] = SessionStartTime.ToString("HH:mm:ss");
+                    _telemetry["SessionDate"] = SessionStartTime.ToShortDateString();
+                }
                 return true;
             }
             return false;
