@@ -105,6 +105,7 @@
             this.buttonLoadRoute = new System.Windows.Forms.Button();
             this.tabPageStartSettings = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.buttonAudioTest = new System.Windows.Forms.Button();
             this.checkBoxAudioRandomiseStartPause = new System.Windows.Forms.CheckBox();
             this.comboBoxAudioStartStart = new System.Windows.Forms.ComboBox();
             this.comboBoxAudioStartAnnouncement = new System.Windows.Forms.ComboBox();
@@ -121,7 +122,8 @@
             this.label9 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.tabPageServerSettings = new System.Windows.Forms.TabPage();
-            this.buttonAudioTest = new System.Windows.Forms.Button();
+            this.checkBoxAllowAnyLocomotion = new System.Windows.Forms.CheckBox();
+            this.checkBoxAllowFeet = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLapCount)).BeginInit();
             this.groupBoxAddCommander.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -188,7 +190,7 @@
             // checkBoxAllowMainShip
             // 
             this.checkBoxAllowMainShip.AutoSize = true;
-            this.checkBoxAllowMainShip.Location = new System.Drawing.Point(99, 41);
+            this.checkBoxAllowMainShip.Location = new System.Drawing.Point(57, 42);
             this.checkBoxAllowMainShip.Name = "checkBoxAllowMainShip";
             this.checkBoxAllowMainShip.Size = new System.Drawing.Size(71, 17);
             this.checkBoxAllowMainShip.TabIndex = 10;
@@ -200,7 +202,7 @@
             // checkBoxAllowFighter
             // 
             this.checkBoxAllowFighter.AutoSize = true;
-            this.checkBoxAllowFighter.Location = new System.Drawing.Point(176, 41);
+            this.checkBoxAllowFighter.Location = new System.Drawing.Point(134, 42);
             this.checkBoxAllowFighter.Name = "checkBoxAllowFighter";
             this.checkBoxAllowFighter.Size = new System.Drawing.Size(58, 17);
             this.checkBoxAllowFighter.TabIndex = 9;
@@ -214,9 +216,9 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(4, 42);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(89, 13);
+            this.label1.Size = new System.Drawing.Size(47, 13);
             this.label1.TabIndex = 8;
-            this.label1.Text = "Allowed vehicles:";
+            this.label1.Text = "Allowed:";
             // 
             // checkBoxAllowPitstops
             // 
@@ -238,7 +240,7 @@
             this.checkBoxAllowSRV.AutoSize = true;
             this.checkBoxAllowSRV.Checked = true;
             this.checkBoxAllowSRV.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxAllowSRV.Location = new System.Drawing.Point(240, 42);
+            this.checkBoxAllowSRV.Location = new System.Drawing.Point(198, 42);
             this.checkBoxAllowSRV.Name = "checkBoxAllowSRV";
             this.checkBoxAllowSRV.Size = new System.Drawing.Size(48, 17);
             this.checkBoxAllowSRV.TabIndex = 1;
@@ -1016,6 +1018,17 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Audio";
             // 
+            // buttonAudioTest
+            // 
+            this.buttonAudioTest.Enabled = false;
+            this.buttonAudioTest.Location = new System.Drawing.Point(322, 11);
+            this.buttonAudioTest.Name = "buttonAudioTest";
+            this.buttonAudioTest.Size = new System.Drawing.Size(37, 23);
+            this.buttonAudioTest.TabIndex = 1;
+            this.buttonAudioTest.Text = "Test";
+            this.buttonAudioTest.UseVisualStyleBackColor = true;
+            this.buttonAudioTest.Click += new System.EventHandler(this.buttonAudioTest_Click);
+            // 
             // checkBoxAudioRandomiseStartPause
             // 
             this.checkBoxAudioRandomiseStartPause.AutoSize = true;
@@ -1122,6 +1135,8 @@
             // 
             // tabPageRaceSettings
             // 
+            this.tabPageRaceSettings.Controls.Add(this.checkBoxAllowFeet);
+            this.tabPageRaceSettings.Controls.Add(this.checkBoxAllowAnyLocomotion);
             this.tabPageRaceSettings.Controls.Add(this.checkBoxStartRaceTimerAtFirstWaypoint);
             this.tabPageRaceSettings.Controls.Add(this.radioButtonRaceTypeTimeTrial);
             this.tabPageRaceSettings.Controls.Add(this.label1);
@@ -1216,16 +1231,27 @@
             this.tabPageServerSettings.Text = "Server";
             this.tabPageServerSettings.UseVisualStyleBackColor = true;
             // 
-            // buttonAudioTest
+            // checkBoxAllowAnyLocomotion
             // 
-            this.buttonAudioTest.Enabled = false;
-            this.buttonAudioTest.Location = new System.Drawing.Point(322, 11);
-            this.buttonAudioTest.Name = "buttonAudioTest";
-            this.buttonAudioTest.Size = new System.Drawing.Size(37, 23);
-            this.buttonAudioTest.TabIndex = 1;
-            this.buttonAudioTest.Text = "Test";
-            this.buttonAudioTest.UseVisualStyleBackColor = true;
-            this.buttonAudioTest.Click += new System.EventHandler(this.buttonAudioTest_Click);
+            this.checkBoxAllowAnyLocomotion.AutoSize = true;
+            this.checkBoxAllowAnyLocomotion.Location = new System.Drawing.Point(305, 41);
+            this.checkBoxAllowAnyLocomotion.Name = "checkBoxAllowAnyLocomotion";
+            this.checkBoxAllowAnyLocomotion.Size = new System.Drawing.Size(44, 17);
+            this.checkBoxAllowAnyLocomotion.TabIndex = 16;
+            this.checkBoxAllowAnyLocomotion.Text = "Any";
+            this.checkBoxAllowAnyLocomotion.UseVisualStyleBackColor = true;
+            this.checkBoxAllowAnyLocomotion.CheckedChanged += new System.EventHandler(this.checkBoxAllowAnyLocomotion_CheckedChanged);
+            // 
+            // checkBoxAllowFeet
+            // 
+            this.checkBoxAllowFeet.AutoSize = true;
+            this.checkBoxAllowFeet.Enabled = false;
+            this.checkBoxAllowFeet.Location = new System.Drawing.Point(252, 42);
+            this.checkBoxAllowFeet.Name = "checkBoxAllowFeet";
+            this.checkBoxAllowFeet.Size = new System.Drawing.Size(47, 17);
+            this.checkBoxAllowFeet.TabIndex = 17;
+            this.checkBoxAllowFeet.Text = "Feet";
+            this.checkBoxAllowFeet.UseVisualStyleBackColor = true;
             // 
             // FormRaceController
             // 
@@ -1366,6 +1392,8 @@
         private System.Windows.Forms.CheckBox checkBoxEnableAudioStart;
         private System.Windows.Forms.CheckBox checkBoxAudioRandomiseStartPause;
         private System.Windows.Forms.Button buttonAudioTest;
+        private System.Windows.Forms.CheckBox checkBoxAllowFeet;
+        private System.Windows.Forms.CheckBox checkBoxAllowAnyLocomotion;
     }
 }
 

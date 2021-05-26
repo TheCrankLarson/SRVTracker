@@ -29,6 +29,7 @@ namespace EDTracking
         public int LapStartWaypoint { get; set; } = 0;
         public int LapEndWaypoint { get; set; } = 0;
         public bool EliminateOnVehicleDestruction { get; set; } = true;
+        public bool FeetAllowed { get; set; } = true;
         public bool SRVAllowed { get; set; } = true;
         public bool FighterAllowed { get; set; } = false;
         public bool ShipAllowed { get; set; } = false;

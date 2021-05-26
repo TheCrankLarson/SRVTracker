@@ -435,12 +435,18 @@ namespace Race_Manager
 
         private void UpdateAllowedVehicles()
         {
+            bool allEnabled = checkBoxAllowAnyLocomotion.Checked;
+            checkBoxAllowMainShip.Enabled = !allEnabled;
+            checkBoxAllowSRV.Enabled = !allEnabled;
+            checkBoxAllowFighter.Enabled = !allEnabled;
+
             if (_race == null)
                 return;
-            _race.SRVAllowed = checkBoxAllowSRV.Checked;
+
+            _race.SRVAllowed = checkBoxAllowSRV.Checked || allEnabled;
             checkBoxAllowPitstops.Enabled = _race.SRVAllowed;
-            _race.FighterAllowed = checkBoxAllowFighter.Checked;
-            _race.ShipAllowed = checkBoxAllowMainShip.Checked;
+            _race.FighterAllowed = checkBoxAllowFighter.Checked || allEnabled;
+            _race.ShipAllowed = checkBoxAllowMainShip.Checked || allEnabled;
             checkBoxEliminationOnDestruction.Enabled = _race.SRVAllowed || _race.FighterAllowed || _race.ShipAllowed;
             _race.EliminateOnVehicleDestruction = checkBoxEliminationOnDestruction.Checked;
         }
@@ -1321,7 +1327,7 @@ namespace Race_Manager
                 return;
 
             string selectedSound = (string)comboBoxAudioStartAnnouncement.SelectedItem;
-            if (selectedSound.Equals("Load audio file..."))
+            if (selectedSound.Equals("Load audio file...") && this.Visible)
             {
                 // Add custom sound
                 string currentFile = "";
@@ -1343,7 +1349,7 @@ namespace Race_Manager
                 return;
 
             string selectedSound = (string)comboBoxAudioStartStart.SelectedItem;
-            if (selectedSound.Equals("Load audio file..."))
+            if (selectedSound.Equals("Load audio file...") && this.Visible)
             {
                 // Add custom sound
                 string currentFile = "";
@@ -1396,6 +1402,12 @@ namespace Race_Manager
         private void checkBoxAudioStartStart_CheckedChanged(object sender, EventArgs e)
         {
             UpdateAudioUI();
+        }
+
+
+        private void checkBoxAllowAnyLocomotion_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateAllowedVehicles();
         }
     }
 }

@@ -443,8 +443,9 @@ namespace EDTracking
             if (Flags < 1)
                 return;
 
-            if (_race != null)
+            if (_race != null && !(_race.SRVAllowed && _race.FighterAllowed && _race.ShipAllowed && _race.FeetAllowed))
             {
+                // Not all locomotion is allowed, so check that the current one is valid
                 if (isFlagSet(StatusFlags.In_SRV) || isFlagSet(StatusFlags.In_MainShip) || isFlagSet(StatusFlags.In_Fighter))
                 {
                     // We have a valid vehicle flag, so check the vehicle is allowed
