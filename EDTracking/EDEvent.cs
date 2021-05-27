@@ -30,6 +30,7 @@ namespace EDTracking
         public double Health { get; set; } = -1;
         public bool PlayerControlled { get; set; } = true;
         public string TargetedShipName { get; set; } = "";
+        public byte[] Pips { get; set; } = new byte[3] { 4, 4, 4 };
 
         public EDEvent() { }
 
@@ -101,6 +102,12 @@ namespace EDTracking
                     Heading = property.GetInt16();
                 if (root.TryGetProperty("PlayerControlled", out property))
                     PlayerControlled = property.GetBoolean();
+                if (root.TryGetProperty("Pips", out property))
+                {
+                    Pips[0] = property[0].GetByte();
+                    Pips[1] = property[1].GetByte();
+                    Pips[2] = property[2].GetByte();
+                }
             }
             Commander = commander;
         }
@@ -120,6 +127,7 @@ namespace EDTracking
             edEvent.PlanetRadius = PlanetRadius;
             edEvent.PlayerControlled = PlayerControlled;
             edEvent.TargetedShipName = TargetedShipName;
+            edEvent.Pips = (byte[])Pips.Clone();
             edEvent.TimeStamp = DateTime.UtcNow;
             return edEvent;
         }

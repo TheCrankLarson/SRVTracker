@@ -9,6 +9,7 @@ namespace EDTracking
     public class VehicleTelemetry
     {
         public double HullHealth { get; set; } = 1;
+        public byte[] Pips { get; set; } = new byte[3] { 4, 4, 4 };
         public int CurrentGroundSpeed { get; set; } = 0;
         public int CurrentHeading { get; set; } = 0;
         public int SpeedAltitudeAdjusted { get; set; } = 0;
@@ -112,6 +113,7 @@ namespace EDTracking
             _telemetry.Add("CurrentGroundSpeed", "0 m/s");
             _telemetry.Add("CurrentHeading", "Unknown");
             _telemetry.Add("HullStrength", $"{(HullHealth * 100).ToString("F1")}%");
+            _telemetry.Add("Pips", String.Join(",", Pips));
             _telemetry.Add("AverageGroundSpeed", "0 m/s");
             _telemetry.Add("MaximumGroundSpeed", "0 m/s");
             _telemetry.Add("DistanceFromStart", "0");
@@ -136,6 +138,7 @@ namespace EDTracking
         {
             { "CommanderName", "Commander name" },
             { "HullStrength", "Last known hull value" },
+            { "Pips", "Power Distributor setting" },
             { "CurrentGroundSpeed", "Current ground speed in m/s" },
             { "CurrentHeading", "Current heading in degrees" },
             { "AverageGroundSpeed", "Average ground speed in m/s" },
@@ -236,7 +239,14 @@ namespace EDTracking
                     statsUpdated = true;
                     break;
 
-                case "Status": // We only process location updates if the event is for the correct vehicle (ship or SRV)
+                case "Status":
+                    if (Pips[0] != edEvent.Pips[0] || Pips[1] != edEvent.Pips[1] || Pips[2] != edEvent.Pips[2])
+                    {
+                        statsUpdated = true;
+                        Pips = (byte[])edEvent.Pips.Clone();
+                        _telemetry["Pips"] = String.Join(",", Pips);
+                    }
+                    // We only process location updates if the event is for the correct vehicle (ship or SRV)
                     if ((_playerIsInSRV == TrackSRV) && ProcessLocationUpdate(edEvent))
                         statsUpdated = true;
                     break;

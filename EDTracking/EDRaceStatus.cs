@@ -19,6 +19,7 @@ namespace EDTracking
         public double MaxSpeedInMS { get; set; } = 0;
         public double AverageSpeedInMS { get; set; } = 0;
         public long Flags { get; set; } = -1;
+        public byte[] Pips { get; set; } = new byte[3] { 4, 4, 4 };
         public double Hull { get; set; } = 1;
         public DateTime TimeStamp { get; set; } = DateTime.MinValue;
         public bool Eliminated { get; set; } = false;
@@ -103,6 +104,7 @@ namespace EDTracking
             { "DistanceToWaypoint", "Distance to the next waypoint" },
             { "TotalDistanceLeft", "Total distance left" },
             { "Hull", "Hull strength left" },
+            { "Pips", "Power Distributor settings" },
             { "Lap", "Current lap" },
             { "LastLapTime", "Time taken for last complete lap" },
             { "FastestLap", "Fastest lap" },
@@ -124,6 +126,7 @@ namespace EDTracking
             telemetry.Add("DistanceToWaypoint", DistanceToWaypointInKmDisplay);
             telemetry.Add("TotalDistanceLeft", TotalDistanceLeftInKmDisplay);
             telemetry.Add("Hull", HullDisplay);
+            telemetry.Add("Pips", String.Join(",", Pips));
             if (_race?.Laps > 0)
             {
                 if (Lap>0)
@@ -648,6 +651,8 @@ namespace EDTracking
                 _lastFlags = Flags;
                 Flags = updateEvent.Flags;
             }
+
+            Pips = (byte[])updateEvent.Pips.Clone();
 
             if (updateEvent.Health >= 0)
             {

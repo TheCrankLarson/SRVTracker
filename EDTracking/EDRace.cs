@@ -258,6 +258,7 @@ namespace EDTracking
             StringBuilder distanceToWaypoint = new StringBuilder();
             StringBuilder totalDistanceLeft = new StringBuilder();
             StringBuilder hullStrengths = new StringBuilder();
+            StringBuilder pips = new StringBuilder();
             StringBuilder currentLaps = new StringBuilder();
             StringBuilder lapCounter = new StringBuilder();
             StringBuilder lastLapTime = new StringBuilder();
@@ -339,9 +340,15 @@ namespace EDTracking
                     }
 
                     if (!Statuses[leaderBoard[i]].Eliminated)
+                    {
                         hullStrengths.AppendLine(Statuses[leaderBoard[i]].HullDisplay);
+                        pips.AppendLine(String.Join(",", Statuses[leaderBoard[i]].Pips));
+                    }
                     else
+                    {
                         hullStrengths.AppendLine(" ");
+                        pips.AppendLine(" ");
+                    }
                 }
                 else
                 {
@@ -365,6 +372,7 @@ namespace EDTracking
             statsTable.Add("DistanceToWaypoint", distanceToWaypoint.ToString());
             statsTable.Add("TotalDistanceLeft", totalDistanceLeft.ToString());
             statsTable.Add("Hull", hullStrengths.ToString());
+            statsTable.Add("Pips", pips.ToString());
 
             if (NotableEvents != null)
                 statsTable.Add("NotableEvents", String.Join(Environment.NewLine, NotableEvents.EventQueue));
@@ -405,6 +413,7 @@ namespace EDTracking
             { "DistanceToWaypoint", "Distances to the next waypoint" },
             { "TotalDistanceLeft", "Total distances left" },
             { "Hull", "Hull strengths left" },
+            { "Pips", "Power Distributor settings" },
             { "Lap", "Current laps" },
             { "LastLapTime", "Last lap time" },
             { "FastestLapTime", "Fastest lap time" },
