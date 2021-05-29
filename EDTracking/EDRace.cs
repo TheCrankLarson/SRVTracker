@@ -259,6 +259,8 @@ namespace EDTracking
             StringBuilder totalDistanceLeft = new StringBuilder();
             StringBuilder hullStrengths = new StringBuilder();
             StringBuilder pips = new StringBuilder();
+            StringBuilder shields = new StringBuilder();
+            StringBuilder cargoScoops = new StringBuilder();
             StringBuilder currentLaps = new StringBuilder();
             StringBuilder lapCounter = new StringBuilder();
             StringBuilder lastLapTime = new StringBuilder();
@@ -343,11 +345,15 @@ namespace EDTracking
                     {
                         hullStrengths.AppendLine(Statuses[leaderBoard[i]].HullDisplay);
                         pips.AppendLine(String.Join(",", Statuses[leaderBoard[i]].Pips));
+                        shields.AppendLine(Statuses[leaderBoard[i]].ShieldStatus());
+                        cargoScoops.AppendLine(Statuses[leaderBoard[i]].CargoScoopStatus());
                     }
                     else
                     {
                         hullStrengths.AppendLine(" ");
                         pips.AppendLine(" ");
+                        shields.AppendLine(" ");
+                        cargoScoops.AppendLine(" ");
                     }
                 }
                 else
@@ -373,6 +379,8 @@ namespace EDTracking
             statsTable.Add("TotalDistanceLeft", totalDistanceLeft.ToString());
             statsTable.Add("Hull", hullStrengths.ToString());
             statsTable.Add("Pips", pips.ToString());
+            statsTable.Add("Shields", shields.ToString());
+            statsTable.Add("CargoScoops", cargoScoops.ToString());
 
             if (NotableEvents != null)
                 statsTable.Add("NotableEvents", String.Join(Environment.NewLine, NotableEvents.EventQueue));
@@ -414,6 +422,8 @@ namespace EDTracking
             { "TotalDistanceLeft", "Total distances left" },
             { "Hull", "Hull strengths left" },
             { "Pips", "Power Distributor settings" },
+            { "Shields", "Shield status (up or down)" },
+            { "CargoScoops", "Cargo scoop status (up or down)" },
             { "Lap", "Current laps" },
             { "LastLapTime", "Last lap time" },
             { "FastestLapTime", "Fastest lap time" },

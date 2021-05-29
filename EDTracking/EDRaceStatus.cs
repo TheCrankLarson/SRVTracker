@@ -19,6 +19,7 @@ namespace EDTracking
         public double MaxSpeedInMS { get; set; } = 0;
         public double AverageSpeedInMS { get; set; } = 0;
         public long Flags { get; set; } = -1;
+        public long Flags2 { get; set; } = -1;
         public byte[] Pips { get; set; } = new byte[3] { 4, 4, 4 };
         public double Hull { get; set; } = 1;
         public DateTime TimeStamp { get; set; } = DateTime.MinValue;
@@ -104,6 +105,8 @@ namespace EDTracking
             { "DistanceToWaypoint", "Distance to the next waypoint" },
             { "TotalDistanceLeft", "Total distance left" },
             { "Hull", "Hull strength left" },
+            { "Shield", "Shield status (up or down)" },
+            { "CargoScoop", "Cargo scoop status (up or down)" },
             { "Pips", "Power Distributor settings" },
             { "Lap", "Current lap" },
             { "LastLapTime", "Time taken for last complete lap" },
@@ -126,6 +129,8 @@ namespace EDTracking
             telemetry.Add("DistanceToWaypoint", DistanceToWaypointInKmDisplay);
             telemetry.Add("TotalDistanceLeft", TotalDistanceLeftInKmDisplay);
             telemetry.Add("Hull", HullDisplay);
+            telemetry.Add("Shield", ShieldStatus());
+            telemetry.Add("CargoScoop", CargoScoopStatus());
             telemetry.Add("Pips", String.Join(",", Pips));
             if (_race?.Laps > 0)
             {
@@ -141,6 +146,20 @@ namespace EDTracking
                 }
             }
             return telemetry;
+        }
+
+        public string ShieldStatus()
+        {
+            if (isFlagSet(StatusFlags.Shields_Up))
+                return "Up";
+            return "Down";
+        }
+
+        public string CargoScoopStatus()
+        {
+            if (isFlagSet(StatusFlags.Cargo_Scoop_Deployed))
+                return "Down";
+            return "Up";
         }
 
         public void SetRace(EDRace race)
@@ -323,7 +342,7 @@ namespace EDTracking
         private bool AllowPitStops()
         {
             if (_race == null)
-                return true;
+                return false;
             return _race.AllowPitstops;
         }
 
@@ -424,6 +443,9 @@ namespace EDTracking
 
         private void ProcessSynthesisEvent(EDEvent updateEvent)
         {
+            if (!AllowPitStops() || _inPits) return;
+
+            // We need to check what the synthesis is - if it is repair, this is disqualification
         }
 
         private void ProcessLaunchSRVEvent()
@@ -651,6 +673,7 @@ namespace EDTracking
                 _lastFlags = Flags;
                 Flags = updateEvent.Flags;
             }
+            Flags2 = updateEvent.Flags2;
 
             Pips = (byte[])updateEvent.Pips.Clone();
 

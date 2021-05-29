@@ -42,4 +42,25 @@ namespace EDTracking
         fsdJump = 1073741824,
         srvHighBeam = 2147483648
     }
+
+    public enum StatusFlags2 : long
+    {
+        OnFoot = 1,
+        InTaxi = 2, // Or dropship/shuttle
+        InMulticrew = 4, // In someone else's vehicle
+        OnFootInStation = 8,
+        OnFootOnPlanet = 16,
+        AimDownSight = 32,
+        LowOxygen = 64,
+        LowHealth = 128,
+        Cold = 256,
+        Hot = 512,
+        VeryCold = 1024,
+        VeryHot = 2048,
+        Glide_Mode = 4096,
+        OnFootInHangar = 8192,
+        OnFootSocialSpace = 16384,
+        OnFootExterior = 32768,
+        BreathableAtmosphere = 65536
+    }
 }

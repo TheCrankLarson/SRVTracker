@@ -21,6 +21,7 @@ namespace EDTracking
         public double Longitude { get; set; } = 0;
         public int Heading { get; set; } = -1;
         public long Flags { get; set; } = 0;
+        public long Flags2 { get; set; } = 0;
         public DateTime TimeStamp { get; set; } = DateTime.MinValue;
         public string BodyName { get; set; } = "";
         public double PlanetRadius { get;  set; } = 0;
@@ -86,6 +87,8 @@ namespace EDTracking
 
                 if (root.TryGetProperty("Flags", out property))
                     Flags = property.GetInt64();
+                if (root.TryGetProperty("Flags2", out property))
+                    Flags2 = property.GetInt64();
                 if (root.TryGetProperty("Latitude", out property))
                     Latitude = property.GetDouble();
                 if (root.TryGetProperty("Longitude", out property))
@@ -132,9 +135,29 @@ namespace EDTracking
             return edEvent;
         }
 
+        public bool CargoScoopIsDeployed()
+        {
+            return (this.Flags & (long)StatusFlags.Cargo_Scoop_Deployed) == (long)StatusFlags.Cargo_Scoop_Deployed;
+        }
+
+        public bool shieldsAreUp()
+        {
+            return (this.Flags & (long)StatusFlags.Shields_Up) == (long)StatusFlags.Shields_Up;
+        }
+
+        public bool flightAssistIsOff()
+        {
+            return (this.Flags & (long)StatusFlags.FlightAssist_Off) == (long)StatusFlags.FlightAssist_Off;
+        }
+
         public bool isInSRV()
         {
             return (this.Flags & (long)StatusFlags.In_SRV) == (long)StatusFlags.In_SRV;
+        }
+
+        public bool isOnFoot()
+        {
+            return (this.Flags2 & (long)StatusFlags2.OnFoot) == (long)StatusFlags2.OnFoot;
         }
 
         public bool srvIsUnderShip()
@@ -162,6 +185,7 @@ namespace EDTracking
             if (this.isInSRV()) return "SRV";
             if (this.isInMainShip()) return "Ship";
             if (this.isInFighter()) return "SLF";
+            if (this.isOnFoot()) return "On foot";
             return "Unknown";
         }
 

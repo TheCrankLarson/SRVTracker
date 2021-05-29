@@ -10,6 +10,8 @@ namespace EDTracking
     {
         public double HullHealth { get; set; } = 1;
         public byte[] Pips { get; set; } = new byte[3] { 4, 4, 4 };
+        public bool ShieldsUp { get; set; } = true;
+        public bool CargoScoopUp { get; set; } = true;
         public int CurrentGroundSpeed { get; set; } = 0;
         public int CurrentHeading { get; set; } = 0;
         public int SpeedAltitudeAdjusted { get; set; } = 0;
@@ -114,6 +116,8 @@ namespace EDTracking
             _telemetry.Add("CurrentHeading", "Unknown");
             _telemetry.Add("HullStrength", $"{(HullHealth * 100).ToString("F1")}%");
             _telemetry.Add("Pips", String.Join(",", Pips));
+            _telemetry.Add("Shield", "Unknown");
+            _telemetry.Add("CargoScoop", "Unknown");
             _telemetry.Add("AverageGroundSpeed", "0 m/s");
             _telemetry.Add("MaximumGroundSpeed", "0 m/s");
             _telemetry.Add("DistanceFromStart", "0");
@@ -138,6 +142,8 @@ namespace EDTracking
         {
             { "CommanderName", "Commander name" },
             { "HullStrength", "Last known hull value" },
+            { "Shield", "Shield status (up or down)" },
+            { "CargoScoop", "Cargo scoop status (up or down)" },
             { "Pips", "Power Distributor setting" },
             { "CurrentGroundSpeed", "Current ground speed in m/s" },
             { "CurrentHeading", "Current heading in degrees" },
@@ -266,13 +272,35 @@ namespace EDTracking
             if (edEvent.Flags<1)
                 return false;
 
+            bool statsChanged = false;
+
+            if (edEvent.shieldsAreUp() != ShieldsUp)
+            {
+                ShieldsUp = edEvent.shieldsAreUp();
+                if (ShieldsUp)
+                    _telemetry["Shield"] = "Up";
+                else
+                    _telemetry["Shield"] = "Down";
+                statsChanged = true;
+            }
+
+            if (edEvent.CargoScoopIsDeployed() == CargoScoopUp)
+            {
+                CargoScoopUp = !edEvent.CargoScoopIsDeployed();
+                if (CargoScoopUp)
+                    _telemetry["CargoScoop"] = "Up";
+                else
+                    _telemetry["CargoScoop"] = "Down";
+                statsChanged = true;
+            }
+
             if (((edEvent.Flags & (long)StatusFlags.In_MainShip) == (long)StatusFlags.In_MainShip) ||
                 ((edEvent.Flags & (long)StatusFlags.In_Fighter) == (long)StatusFlags.In_Fighter))
                 _playerIsInSRV = false;
 
             if (((edEvent.Flags & (long)StatusFlags.In_SRV) == (long)StatusFlags.In_SRV))
                 _playerIsInSRV = true;
-            return false;
+            return statsChanged;
         }
 
         private bool ProcessLocationUpdate(EDEvent edEvent)
