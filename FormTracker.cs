@@ -358,8 +358,9 @@ namespace SRVTracker
 
         private void UploadToServer(EDEvent edEvent, bool ping = false)
         {
-            if (_udpClient == null)
-                CreateUdpClient();
+            if (_udpClient == null && !CreateUdpClient())
+                return;
+
             if (ping)
             {
                 edEvent = _lastUploadedEvent;
@@ -374,18 +375,24 @@ namespace SRVTracker
                 Byte[] sendBytes = Encoding.UTF8.GetBytes(eventData);
                 try
                 {
-                    _udpClient.Send(sendBytes, sendBytes.Length);
-                    _lastStatusSend = DateTime.UtcNow;
-                    _lastUploadedEvent = edEvent;
+                    if (_udpClient.Send(sendBytes, sendBytes.Length) > 0)
+                    {
+                        _lastStatusSend = DateTime.UtcNow;
+                        _lastUploadedEvent = edEvent;
+                    }
                 }
                 catch (Exception e)
                 {
+                    // If we have an error on send, we destroy the UDP client so that it is recreated on next send
+                    try
+                    {
+                        _udpClient.Dispose();
+                    }
+                    catch { }
+                    _udpClient = null;
                 }
             }
-            catch (Exception ex)
-            {
-                checkBoxUpload.Checked = false;
-            }
+            catch { }
         }
 
         private void buttonBrowseStatusFile_Click(object sender, EventArgs e)
@@ -444,17 +451,19 @@ namespace SRVTracker
             return serverUrl;
         }
 
-        private void CreateUdpClient()
+        private bool CreateUdpClient()
         {
             // Create the UDP client for sending tracking data
             try
             {
                 _udpClient = new UdpClient(ServerUrl(), 11938);
+                return true;
             }
             catch (Exception ex)
             {
                 checkBoxUpload.Checked = false;
             }
+            return false;
         }
 
         private void InitClientId()

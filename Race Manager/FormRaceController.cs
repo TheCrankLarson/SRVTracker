@@ -328,13 +328,13 @@ namespace Race_Manager
         {
             // We send the race info to the server with StartRace command - this starts the monitoring on the server
             // We then just need to download results, and not keep track of status updates
-
-            _race.CustomStatusMessages = EDRace.StatusMessages;
+          
             try
             {
                 using (WebClient wc = new WebClient())
                 {
                     wc.Headers[HttpRequestHeader.ContentType] = "application/json";
+                    _race.CustomStatusMessages = EDRace.StatusMessages;
                     string response = wc.UploadString($"http://{ServerAddress()}:11938/DataCollator/startrace", JsonSerializer.Serialize(_race));
                     Guid raceGuid = Guid.Empty;
                     if (Guid.TryParse(response, out raceGuid))
@@ -363,10 +363,8 @@ namespace Race_Manager
                         MessageBox.Show($"Unexpected server response:{Environment.NewLine}{response}", "Failed to start race", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return false;
                     }
-
-                    _serverNotableEventsIndex = 0;
-                    timerTrackTarget.Start();
                 }
+                _serverNotableEventsIndex = 0;
                 return true;
             }
             catch { }
@@ -596,10 +594,11 @@ namespace Race_Manager
 
         }
 
-        private void StartRace()
+        private void StartRace(bool AlreadyRunningOnServer = false)
         {
-            if (!StartServerMonitoredRace())
-                return;
+            if (!AlreadyRunningOnServer)
+                if (!StartServerMonitoredRace())
+                    return;
 
             if (_raceTimer != null && !_raceTimer.IsDisposed)
                 _raceTimer.Play();
@@ -608,6 +607,7 @@ namespace Race_Manager
             buttonRemoveParticipant.Enabled = false;
             buttonRaceHistory.Enabled = true;
             checkBoxShowRaceTelemetry_CheckedChanged(null, null);
+            timerTrackTarget.Start();
         }
 
         private void PlayStartAudio()
@@ -1255,7 +1255,7 @@ namespace Race_Manager
                 int commaPos = activeRace.IndexOf(',');
                 if (commaPos>0)
                 {
-                    string activeRaceGuid = activeRace.Substring(0, commaPos - 1);
+                    string activeRaceGuid = activeRace.Substring(0, commaPos);
                     string activeRaceName = activeRace.Substring(commaPos + 1);
                     _activeServerRaces.Add(activeRaceName, activeRaceGuid);
                     comboBoxConnectToRace.Items.Add(activeRaceName);
@@ -1271,6 +1271,38 @@ namespace Race_Manager
                 return;
 
             string selectedRaceGuid = _activeServerRaces[(string)comboBoxConnectToRace.SelectedItem];
+            try
+            {
+                using (WebClient webClient = new WebClient())
+                {
+                    string raceData = webClient.DownloadString($"http://{ServerAddress()}:11938/DataCollator/getrace/{selectedRaceGuid}");
+                    _race = EDRace.FromString(raceData);
+                    _serverRaceGuid = selectedRaceGuid;
+                    DisplayRoute();
+                    DisplayRaceSettings();
+                    listBoxParticipants.Items.Clear();
+                    foreach (string contestant in _race.Contestants)
+                        listBoxParticipants.Items.Add(contestant);
+                    UpdateUI();
+
+                    // The Race Telemetry form doesn't update unless we reset it
+                    bool raceTelemetryEnabled = checkBoxShowRaceTelemetry.Checked;
+                    if (raceTelemetryEnabled)
+                    {
+                        checkBoxShowRaceTelemetry.Checked = false;
+                        _raceTelemetryDisplay?.Close();
+                        _raceTelemetryDisplay = null;
+                    }
+                    StartRace(true);
+                    if (raceTelemetryEnabled)
+                        checkBoxShowRaceTelemetry.Checked = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine();
+            }
+            comboBoxConnectToRace.Visible = false;
         }
 
         private void comboBoxConnectToRace_Leave(object sender, EventArgs e)
