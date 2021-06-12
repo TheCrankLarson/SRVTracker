@@ -768,14 +768,6 @@ namespace SRVTracker
             }
         }
 
-        private void textBoxCommanderName_Validating(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            if (!textBoxCommanderName.Text.Equals(_commanderName))
-            {
-                buttonUpdate.Enabled = true;
-            }
-        }
-
         private void radioButtonSRVTelemetry_CheckedChanged(object sender, EventArgs e)
         {
             _vehicleTelemetry.TrackSRV = radioButtonSRVTelemetry.Checked;
@@ -789,7 +781,10 @@ namespace SRVTracker
         private void buttonUpdateName_Click(object sender, EventArgs e)
         {
             if (String.IsNullOrEmpty(_clientId))
+            {
                 InitClientId();
+                return;
+            }
 
             try
             {
@@ -797,7 +792,7 @@ namespace SRVTracker
                 using (WebClient webClient = new WebClient())
                 {
                     string renameUrl = $"http://{ServerUrl()}:11938/DataCollator/renamecommander";
-                    renameResult = webClient.UploadString(renameUrl, $"{_clientId}{Environment.NewLine}{_commanderName}");
+                    renameResult = webClient.UploadString(renameUrl, $"{_clientId}{Environment.NewLine}{textBoxCommanderName.Text}");
                 }
                 if (!String.IsNullOrEmpty(renameResult))
                 {
@@ -808,6 +803,7 @@ namespace SRVTracker
                     }
                     _commanderName = textBoxCommanderName.Text;
                     SaveClientId();
+                    buttonUpdateName.Enabled = false;
                 }
             }
             catch (Exception ex)
@@ -815,6 +811,13 @@ namespace SRVTracker
                 MessageBox.Show($"Registration failed.{Environment.NewLine}{Environment.NewLine}{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             buttonUpdate.Enabled = false;
+        }
+
+        private void textBoxCommanderName_TextChanged(object sender, EventArgs e)
+        {
+            if (!buttonUpdateName.Enabled)
+                if (!textBoxCommanderName.Text.Equals(_commanderName))
+                    buttonUpdateName.Enabled = true;
         }
     }
 }

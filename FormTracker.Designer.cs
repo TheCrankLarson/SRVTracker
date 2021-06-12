@@ -170,7 +170,7 @@
             this.textBoxCommanderName.Size = new System.Drawing.Size(229, 20);
             this.textBoxCommanderName.TabIndex = 4;
             this.toolTip1.SetToolTip(this.textBoxCommanderName, "Commander name.\r\nWill be registered to client Id on server upload.");
-            this.textBoxCommanderName.Validating += new System.ComponentModel.CancelEventHandler(this.textBoxCommanderName_Validating);
+            this.textBoxCommanderName.TextChanged += new System.EventHandler(this.textBoxCommanderName_TextChanged);
             // 
             // textBoxTelemetryFolder
             // 

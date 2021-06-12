@@ -123,18 +123,14 @@
   <metadata name="statusFileWatcher.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
+  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>165, 17</value>
+  </metadata>
   <data name="textBoxClientId.ToolTip" xml:space="preserve">
     <value>Client Id (assigned by server on upload).
 This is registered to your commander name on the server,
 and used when updates are sent.  It is used to ensure that
 only you can send updates for your registered commander.</value>
-  </data>
-  <data name="radioButtonWatchStatusFile.ToolTip" xml:space="preserve">
-    <value>This method of monitoring the status.json file registers for
-notifications of changes to the file, and when it receives
-such a notification will read the updated file.
-This method is NOT recommended, as Windows does not
-fire the event quick enough to keep up.</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
@@ -690,5 +686,12 @@ fire the event quick enough to keep up.</value>
         AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
         AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 </value>
+  </data>
+  <data name="radioButtonWatchStatusFile.ToolTip" xml:space="preserve">
+    <value>This method of monitoring the status.json file registers for
+notifications of changes to the file, and when it receives
+such a notification will read the updated file.
+This method is NOT recommended, as Windows does not
+fire the event quick enough to keep up.</value>
   </data>
 </root>
