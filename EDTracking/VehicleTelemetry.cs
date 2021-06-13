@@ -9,7 +9,7 @@ namespace EDTracking
     public class VehicleTelemetry
     {
         public double HullHealth { get; set; } = 1;
-        public byte[] Pips { get; set; } = new byte[3] { 4, 4, 4 };
+        public byte[] Pips { get; set; } = new byte[3] { 0, 0, 0 };
         public bool ShieldsUp { get; set; } = true;
         public bool CargoScoopUp { get; set; } = true;
         public int CurrentGroundSpeed { get; set; } = 0;
@@ -246,12 +246,6 @@ namespace EDTracking
                     break;
 
                 case "Status":
-                    if (Pips[0] != edEvent.Pips[0] || Pips[1] != edEvent.Pips[1] || Pips[2] != edEvent.Pips[2])
-                    {
-                        statsUpdated = true;
-                        Pips = (byte[])edEvent.Pips.Clone();
-                        _telemetry["Pips"] = String.Join(",", Pips);
-                    }
                     // We only process location updates if the event is for the correct vehicle (ship or SRV)
                     if ((_playerIsInSRV == TrackSRV) && ProcessLocationUpdate(edEvent))
                         statsUpdated = true;
@@ -273,6 +267,13 @@ namespace EDTracking
                 return false;
 
             bool statsChanged = false;
+
+            if ( (Pips[0] != edEvent.Pips[0]) || (Pips[1] != edEvent.Pips[1]) || (Pips[2] != edEvent.Pips[2]) )
+            {
+                Pips = (byte[])edEvent.Pips.Clone();
+                _telemetry["Pips"] = String.Join(",", Pips);
+                statsChanged = true;
+            }
 
             if (edEvent.shieldsAreUp() != ShieldsUp)
             {

@@ -31,7 +31,7 @@ namespace EDTracking
         public double Health { get; set; } = -1;
         public bool PlayerControlled { get; set; } = true;
         public string TargetedShipName { get; set; } = "";
-        public byte[] Pips { get; set; } = new byte[3] { 4, 4, 4 };
+        public byte[] Pips { get; set; } = new byte[3] { 0, 0, 0 };
 
         public EDEvent() { }
 
