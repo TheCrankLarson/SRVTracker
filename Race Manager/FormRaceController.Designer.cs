@@ -116,14 +116,15 @@
             this.checkBoxAudioStartAnnouncement = new System.Windows.Forms.CheckBox();
             this.checkBoxEnableAudioStart = new System.Windows.Forms.CheckBox();
             this.tabPageRaceSettings = new System.Windows.Forms.TabPage();
+            this.checkBoxAllowFeet = new System.Windows.Forms.CheckBox();
+            this.checkBoxAllowAnyLocomotion = new System.Windows.Forms.CheckBox();
             this.tabPageTelemetrySettings = new System.Windows.Forms.TabPage();
             this.checkBoxShowRaceTimer = new System.Windows.Forms.CheckBox();
             this.label10 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.tabPageServerSettings = new System.Windows.Forms.TabPage();
-            this.checkBoxAllowAnyLocomotion = new System.Windows.Forms.CheckBox();
-            this.checkBoxAllowFeet = new System.Windows.Forms.CheckBox();
+            this.checkBoxAnyWaypointOrder = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLapCount)).BeginInit();
             this.groupBoxAddCommander.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -265,7 +266,7 @@
             // checkBoxLappedRace
             // 
             this.checkBoxLappedRace.AutoSize = true;
-            this.checkBoxLappedRace.Location = new System.Drawing.Point(6, 97);
+            this.checkBoxLappedRace.Location = new System.Drawing.Point(213, 91);
             this.checkBoxLappedRace.Name = "checkBoxLappedRace";
             this.checkBoxLappedRace.Size = new System.Drawing.Size(52, 17);
             this.checkBoxLappedRace.TabIndex = 6;
@@ -277,7 +278,7 @@
             // 
             // numericUpDownLapCount
             // 
-            this.numericUpDownLapCount.Location = new System.Drawing.Point(110, 94);
+            this.numericUpDownLapCount.Location = new System.Drawing.Point(317, 88);
             this.numericUpDownLapCount.Minimum = new decimal(new int[] {
             1,
             0,
@@ -297,7 +298,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 13);
+            this.label2.Location = new System.Drawing.Point(210, 39);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(44, 13);
             this.label2.TabIndex = 4;
@@ -306,7 +307,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 52);
+            this.label3.Location = new System.Drawing.Point(210, 65);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(40, 13);
             this.label3.TabIndex = 5;
@@ -314,18 +315,18 @@
             // 
             // textBoxSystem
             // 
-            this.textBoxSystem.Location = new System.Drawing.Point(6, 29);
+            this.textBoxSystem.Location = new System.Drawing.Point(260, 36);
             this.textBoxSystem.Name = "textBoxSystem";
             this.textBoxSystem.ReadOnly = true;
-            this.textBoxSystem.Size = new System.Drawing.Size(158, 20);
+            this.textBoxSystem.Size = new System.Drawing.Size(111, 20);
             this.textBoxSystem.TabIndex = 0;
             // 
             // textBoxPlanet
             // 
-            this.textBoxPlanet.Location = new System.Drawing.Point(6, 68);
+            this.textBoxPlanet.Location = new System.Drawing.Point(259, 62);
             this.textBoxPlanet.Name = "textBoxPlanet";
             this.textBoxPlanet.ReadOnly = true;
-            this.textBoxPlanet.Size = new System.Drawing.Size(158, 20);
+            this.textBoxPlanet.Size = new System.Drawing.Size(112, 20);
             this.textBoxPlanet.TabIndex = 1;
             // 
             // checkBoxAutoAddCommanders
@@ -461,17 +462,17 @@
             // listBoxWaypoints
             // 
             this.listBoxWaypoints.FormattingEnabled = true;
-            this.listBoxWaypoints.Location = new System.Drawing.Point(170, 36);
+            this.listBoxWaypoints.Location = new System.Drawing.Point(3, 6);
             this.listBoxWaypoints.Name = "listBoxWaypoints";
             this.listBoxWaypoints.Size = new System.Drawing.Size(201, 134);
             this.listBoxWaypoints.TabIndex = 2;
             // 
             // textBoxRouteName
             // 
-            this.textBoxRouteName.Location = new System.Drawing.Point(170, 10);
+            this.textBoxRouteName.Location = new System.Drawing.Point(210, 10);
             this.textBoxRouteName.Name = "textBoxRouteName";
             this.textBoxRouteName.ReadOnly = true;
-            this.textBoxRouteName.Size = new System.Drawing.Size(157, 20);
+            this.textBoxRouteName.Size = new System.Drawing.Size(117, 20);
             this.textBoxRouteName.TabIndex = 0;
             // 
             // checkBoxShowTargetTelemetry
@@ -900,18 +901,19 @@
             // 
             // tabPageRoute
             // 
+            this.tabPageRoute.Controls.Add(this.checkBoxAnyWaypointOrder);
             this.tabPageRoute.Controls.Add(this.checkBoxLapCustomWaypoints);
-            this.tabPageRoute.Controls.Add(this.numericUpDownLapEndWaypoint);
-            this.tabPageRoute.Controls.Add(this.numericUpDownLapStartWaypoint);
             this.tabPageRoute.Controls.Add(this.textBoxPlanet);
             this.tabPageRoute.Controls.Add(this.label3);
-            this.tabPageRoute.Controls.Add(this.label2);
-            this.tabPageRoute.Controls.Add(this.textBoxSystem);
+            this.tabPageRoute.Controls.Add(this.numericUpDownLapEndWaypoint);
             this.tabPageRoute.Controls.Add(this.listBoxWaypoints);
             this.tabPageRoute.Controls.Add(this.textBoxRouteName);
-            this.tabPageRoute.Controls.Add(this.checkBoxLappedRace);
-            this.tabPageRoute.Controls.Add(this.numericUpDownLapCount);
+            this.tabPageRoute.Controls.Add(this.numericUpDownLapStartWaypoint);
+            this.tabPageRoute.Controls.Add(this.label2);
             this.tabPageRoute.Controls.Add(this.buttonLoadRoute);
+            this.tabPageRoute.Controls.Add(this.textBoxSystem);
+            this.tabPageRoute.Controls.Add(this.numericUpDownLapCount);
+            this.tabPageRoute.Controls.Add(this.checkBoxLappedRace);
             this.tabPageRoute.Location = new System.Drawing.Point(4, 22);
             this.tabPageRoute.Name = "tabPageRoute";
             this.tabPageRoute.Padding = new System.Windows.Forms.Padding(3);
@@ -923,7 +925,7 @@
             // checkBoxLapCustomWaypoints
             // 
             this.checkBoxLapCustomWaypoints.AutoSize = true;
-            this.checkBoxLapCustomWaypoints.Location = new System.Drawing.Point(6, 120);
+            this.checkBoxLapCustomWaypoints.Location = new System.Drawing.Point(213, 114);
             this.checkBoxLapCustomWaypoints.Name = "checkBoxLapCustomWaypoints";
             this.checkBoxLapCustomWaypoints.Size = new System.Drawing.Size(153, 17);
             this.checkBoxLapCustomWaypoints.TabIndex = 9;
@@ -933,7 +935,7 @@
             // 
             // numericUpDownLapEndWaypoint
             // 
-            this.numericUpDownLapEndWaypoint.Location = new System.Drawing.Point(112, 143);
+            this.numericUpDownLapEndWaypoint.Location = new System.Drawing.Point(319, 137);
             this.numericUpDownLapEndWaypoint.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -957,7 +959,7 @@
             // 
             // numericUpDownLapStartWaypoint
             // 
-            this.numericUpDownLapStartWaypoint.Location = new System.Drawing.Point(54, 143);
+            this.numericUpDownLapStartWaypoint.Location = new System.Drawing.Point(261, 137);
             this.numericUpDownLapStartWaypoint.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -1157,6 +1159,28 @@
             this.tabPageRaceSettings.Text = "Race";
             this.tabPageRaceSettings.UseVisualStyleBackColor = true;
             // 
+            // checkBoxAllowFeet
+            // 
+            this.checkBoxAllowFeet.AutoSize = true;
+            this.checkBoxAllowFeet.Enabled = false;
+            this.checkBoxAllowFeet.Location = new System.Drawing.Point(252, 42);
+            this.checkBoxAllowFeet.Name = "checkBoxAllowFeet";
+            this.checkBoxAllowFeet.Size = new System.Drawing.Size(47, 17);
+            this.checkBoxAllowFeet.TabIndex = 17;
+            this.checkBoxAllowFeet.Text = "Feet";
+            this.checkBoxAllowFeet.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxAllowAnyLocomotion
+            // 
+            this.checkBoxAllowAnyLocomotion.AutoSize = true;
+            this.checkBoxAllowAnyLocomotion.Location = new System.Drawing.Point(305, 41);
+            this.checkBoxAllowAnyLocomotion.Name = "checkBoxAllowAnyLocomotion";
+            this.checkBoxAllowAnyLocomotion.Size = new System.Drawing.Size(44, 17);
+            this.checkBoxAllowAnyLocomotion.TabIndex = 16;
+            this.checkBoxAllowAnyLocomotion.Text = "Any";
+            this.checkBoxAllowAnyLocomotion.UseVisualStyleBackColor = true;
+            this.checkBoxAllowAnyLocomotion.CheckedChanged += new System.EventHandler(this.checkBoxAllowAnyLocomotion_CheckedChanged);
+            // 
             // tabPageTelemetrySettings
             // 
             this.tabPageTelemetrySettings.Controls.Add(this.checkBoxShowRaceTimer);
@@ -1231,33 +1255,21 @@
             this.tabPageServerSettings.Text = "Server";
             this.tabPageServerSettings.UseVisualStyleBackColor = true;
             // 
-            // checkBoxAllowAnyLocomotion
+            // checkBoxAnyWaypointOrder
             // 
-            this.checkBoxAllowAnyLocomotion.AutoSize = true;
-            this.checkBoxAllowAnyLocomotion.Location = new System.Drawing.Point(305, 41);
-            this.checkBoxAllowAnyLocomotion.Name = "checkBoxAllowAnyLocomotion";
-            this.checkBoxAllowAnyLocomotion.Size = new System.Drawing.Size(44, 17);
-            this.checkBoxAllowAnyLocomotion.TabIndex = 16;
-            this.checkBoxAllowAnyLocomotion.Text = "Any";
-            this.checkBoxAllowAnyLocomotion.UseVisualStyleBackColor = true;
-            this.checkBoxAllowAnyLocomotion.CheckedChanged += new System.EventHandler(this.checkBoxAllowAnyLocomotion_CheckedChanged);
-            // 
-            // checkBoxAllowFeet
-            // 
-            this.checkBoxAllowFeet.AutoSize = true;
-            this.checkBoxAllowFeet.Enabled = false;
-            this.checkBoxAllowFeet.Location = new System.Drawing.Point(252, 42);
-            this.checkBoxAllowFeet.Name = "checkBoxAllowFeet";
-            this.checkBoxAllowFeet.Size = new System.Drawing.Size(47, 17);
-            this.checkBoxAllowFeet.TabIndex = 17;
-            this.checkBoxAllowFeet.Text = "Feet";
-            this.checkBoxAllowFeet.UseVisualStyleBackColor = true;
+            this.checkBoxAnyWaypointOrder.AutoSize = true;
+            this.checkBoxAnyWaypointOrder.Location = new System.Drawing.Point(3, 146);
+            this.checkBoxAnyWaypointOrder.Name = "checkBoxAnyWaypointOrder";
+            this.checkBoxAnyWaypointOrder.Size = new System.Drawing.Size(203, 17);
+            this.checkBoxAnyWaypointOrder.TabIndex = 10;
+            this.checkBoxAnyWaypointOrder.Text = "Waypoints can be visited in any order";
+            this.checkBoxAnyWaypointOrder.UseVisualStyleBackColor = true;
             // 
             // FormRaceController
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(591, 264);
+            this.ClientSize = new System.Drawing.Size(588, 264);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.groupBox10);
             this.Controls.Add(this.buttonTest);
@@ -1394,6 +1406,7 @@
         private System.Windows.Forms.Button buttonAudioTest;
         private System.Windows.Forms.CheckBox checkBoxAllowFeet;
         private System.Windows.Forms.CheckBox checkBoxAllowAnyLocomotion;
+        private System.Windows.Forms.CheckBox checkBoxAnyWaypointOrder;
     }
 }
 

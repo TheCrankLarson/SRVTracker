@@ -14,6 +14,7 @@ namespace EDTracking
         private string _saveFilename = "";
         public string Name { get; set; } = null;
         public EDRoute Route { get; set; } = null;
+        public List<bool> WaypointVisited { get; set; } = new List<bool>();
         public EDRaceStatus Leader { get; set; } = null;
         public List<string> Contestants { get; set; } = new List<string>();
         public Dictionary<string, EDRaceStatus> Statuses { get; set; } = new Dictionary<string, EDRaceStatus>();
