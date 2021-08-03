@@ -107,6 +107,9 @@
             this.buttonPlay = new System.Windows.Forms.Button();
             this.checkBoxScreenshot = new System.Windows.Forms.CheckBox();
             this.numericUpDownTotalLaps = new System.Windows.Forms.NumericUpDown();
+            this.comboBoxGenerationRouteTemplate = new System.Windows.Forms.ComboBox();
+            this.numericUpDownGenerationDistanceBetweenWaypoint = new System.Windows.Forms.NumericUpDown();
+            this.comboBoxGenerationDistanceBetweenWaypointUnit = new System.Windows.Forms.ComboBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.label12 = new System.Windows.Forms.Label();
             this.groupBoxAudioSettings = new System.Windows.Forms.GroupBox();
@@ -121,16 +124,13 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPageWaypoints = new System.Windows.Forms.TabPage();
             this.tabPageRoute = new System.Windows.Forms.TabPage();
-            this.tabPageAudio = new System.Windows.Forms.TabPage();
-            this.buttonClose = new System.Windows.Forms.Button();
             this.tabPageGenerate = new System.Windows.Forms.TabPage();
-            this.buttonCreateWaypoints = new System.Windows.Forms.Button();
-            this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.comboBoxGenerationRouteTemplate = new System.Windows.Forms.ComboBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.label14 = new System.Windows.Forms.Label();
-            this.numericUpDownGenerationDistanceBetweenWaypoint = new System.Windows.Forms.NumericUpDown();
-            this.comboBoxGenerationDistanceBetweenWaypointUnit = new System.Windows.Forms.ComboBox();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.buttonCreateWaypoints = new System.Windows.Forms.Button();
+            this.tabPageAudio = new System.Windows.Forms.TabPage();
+            this.buttonClose = new System.Windows.Forms.Button();
             this.groupBox2.SuspendLayout();
             this.groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRecordDistance)).BeginInit();
@@ -144,17 +144,17 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRadius)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTotalLaps)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownGenerationDistanceBetweenWaypoint)).BeginInit();
             this.groupBox3.SuspendLayout();
             this.groupBoxAudioSettings.SuspendLayout();
             this.circumnavigationContextMenuStrip.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPageWaypoints.SuspendLayout();
             this.tabPageRoute.SuspendLayout();
-            this.tabPageAudio.SuspendLayout();
             this.tabPageGenerate.SuspendLayout();
-            this.groupBox5.SuspendLayout();
             this.groupBox6.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownGenerationDistanceBetweenWaypoint)).BeginInit();
+            this.groupBox5.SuspendLayout();
+            this.tabPageAudio.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox2
@@ -568,7 +568,17 @@
             // 
             // numericUpDownMinAltitude
             // 
+            this.numericUpDownMinAltitude.Increment = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
             this.numericUpDownMinAltitude.Location = new System.Drawing.Point(63, 19);
+            this.numericUpDownMinAltitude.Maximum = new decimal(new int[] {
+            100000,
+            0,
+            0,
+            0});
             this.numericUpDownMinAltitude.Name = "numericUpDownMinAltitude";
             this.numericUpDownMinAltitude.Size = new System.Drawing.Size(59, 20);
             this.numericUpDownMinAltitude.TabIndex = 5;
@@ -586,7 +596,17 @@
             // 
             // numericUpDownMaxAltitude
             // 
+            this.numericUpDownMaxAltitude.Increment = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
             this.numericUpDownMaxAltitude.Location = new System.Drawing.Point(186, 19);
+            this.numericUpDownMaxAltitude.Maximum = new decimal(new int[] {
+            100000,
+            0,
+            0,
+            0});
             this.numericUpDownMaxAltitude.Name = "numericUpDownMaxAltitude";
             this.numericUpDownMaxAltitude.Size = new System.Drawing.Size(59, 20);
             this.numericUpDownMaxAltitude.TabIndex = 7;
@@ -1026,6 +1046,47 @@
             0,
             0});
             // 
+            // comboBoxGenerationRouteTemplate
+            // 
+            this.comboBoxGenerationRouteTemplate.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxGenerationRouteTemplate.FormattingEnabled = true;
+            this.comboBoxGenerationRouteTemplate.Items.AddRange(new object[] {
+            "Circumnavigation: from current position via North and South Pole",
+            "Circumnavigation: around the equator"});
+            this.comboBoxGenerationRouteTemplate.Location = new System.Drawing.Point(6, 19);
+            this.comboBoxGenerationRouteTemplate.Name = "comboBoxGenerationRouteTemplate";
+            this.comboBoxGenerationRouteTemplate.Size = new System.Drawing.Size(331, 21);
+            this.comboBoxGenerationRouteTemplate.TabIndex = 0;
+            this.toolTip1.SetToolTip(this.comboBoxGenerationRouteTemplate, "The type of route to generate");
+            this.comboBoxGenerationRouteTemplate.SelectedIndexChanged += new System.EventHandler(this.comboBoxRouteTemplate_SelectedIndexChanged);
+            // 
+            // numericUpDownGenerationDistanceBetweenWaypoint
+            // 
+            this.numericUpDownGenerationDistanceBetweenWaypoint.Location = new System.Drawing.Point(216, 19);
+            this.numericUpDownGenerationDistanceBetweenWaypoint.Name = "numericUpDownGenerationDistanceBetweenWaypoint";
+            this.numericUpDownGenerationDistanceBetweenWaypoint.Size = new System.Drawing.Size(67, 20);
+            this.numericUpDownGenerationDistanceBetweenWaypoint.TabIndex = 1;
+            this.toolTip1.SetToolTip(this.numericUpDownGenerationDistanceBetweenWaypoint, "Waypoints will be generated with this distance between them");
+            this.numericUpDownGenerationDistanceBetweenWaypoint.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            // 
+            // comboBoxGenerationDistanceBetweenWaypointUnit
+            // 
+            this.comboBoxGenerationDistanceBetweenWaypointUnit.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxGenerationDistanceBetweenWaypointUnit.FormattingEnabled = true;
+            this.comboBoxGenerationDistanceBetweenWaypointUnit.Items.AddRange(new object[] {
+            "m",
+            "km",
+            "Mm"});
+            this.comboBoxGenerationDistanceBetweenWaypointUnit.Location = new System.Drawing.Point(289, 18);
+            this.comboBoxGenerationDistanceBetweenWaypointUnit.Name = "comboBoxGenerationDistanceBetweenWaypointUnit";
+            this.comboBoxGenerationDistanceBetweenWaypointUnit.Size = new System.Drawing.Size(48, 21);
+            this.comboBoxGenerationDistanceBetweenWaypointUnit.TabIndex = 2;
+            this.toolTip1.SetToolTip(this.comboBoxGenerationDistanceBetweenWaypointUnit, "Unit of measurement for waypoint distance");
+            // 
             // groupBox3
             // 
             this.groupBox3.Controls.Add(this.label12);
@@ -1164,26 +1225,6 @@
             this.tabPageRoute.Text = "Route";
             this.tabPageRoute.UseVisualStyleBackColor = true;
             // 
-            // tabPageAudio
-            // 
-            this.tabPageAudio.Controls.Add(this.groupBoxAudioSettings);
-            this.tabPageAudio.Location = new System.Drawing.Point(4, 22);
-            this.tabPageAudio.Name = "tabPageAudio";
-            this.tabPageAudio.Size = new System.Drawing.Size(355, 247);
-            this.tabPageAudio.TabIndex = 4;
-            this.tabPageAudio.Text = "Audio";
-            this.tabPageAudio.UseVisualStyleBackColor = true;
-            // 
-            // buttonClose
-            // 
-            this.buttonClose.Location = new System.Drawing.Point(208, 245);
-            this.buttonClose.Name = "buttonClose";
-            this.buttonClose.Size = new System.Drawing.Size(75, 23);
-            this.buttonClose.TabIndex = 20;
-            this.buttonClose.Text = "Close";
-            this.buttonClose.UseVisualStyleBackColor = true;
-            this.buttonClose.Click += new System.EventHandler(this.buttonClose_Click);
-            // 
             // tabPageGenerate
             // 
             this.tabPageGenerate.Controls.Add(this.groupBox6);
@@ -1195,41 +1236,6 @@
             this.tabPageGenerate.TabIndex = 5;
             this.tabPageGenerate.Text = "Generate";
             this.tabPageGenerate.UseVisualStyleBackColor = true;
-            // 
-            // buttonCreateWaypoints
-            // 
-            this.buttonCreateWaypoints.Enabled = false;
-            this.buttonCreateWaypoints.Location = new System.Drawing.Point(245, 118);
-            this.buttonCreateWaypoints.Name = "buttonCreateWaypoints";
-            this.buttonCreateWaypoints.Size = new System.Drawing.Size(104, 23);
-            this.buttonCreateWaypoints.TabIndex = 0;
-            this.buttonCreateWaypoints.Text = "Create waypoints";
-            this.buttonCreateWaypoints.UseVisualStyleBackColor = true;
-            this.buttonCreateWaypoints.Click += new System.EventHandler(this.buttonCreateWaypoints_Click);
-            // 
-            // groupBox5
-            // 
-            this.groupBox5.Controls.Add(this.comboBoxGenerationRouteTemplate);
-            this.groupBox5.Location = new System.Drawing.Point(6, 6);
-            this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(343, 51);
-            this.groupBox5.TabIndex = 1;
-            this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "Route template";
-            // 
-            // comboBoxGenerationRouteTemplate
-            // 
-            this.comboBoxGenerationRouteTemplate.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxGenerationRouteTemplate.FormattingEnabled = true;
-            this.comboBoxGenerationRouteTemplate.Items.AddRange(new object[] {
-            "Circumnavigation: from current position via North and South Pole",
-            "Circumnavigation: around the equator"});
-            this.comboBoxGenerationRouteTemplate.Location = new System.Drawing.Point(6, 19);
-            this.comboBoxGenerationRouteTemplate.Name = "comboBoxGenerationRouteTemplate";
-            this.comboBoxGenerationRouteTemplate.Size = new System.Drawing.Size(331, 21);
-            this.comboBoxGenerationRouteTemplate.TabIndex = 0;
-            this.toolTip1.SetToolTip(this.comboBoxGenerationRouteTemplate, "The type of route to generate");
-            this.comboBoxGenerationRouteTemplate.SelectedIndexChanged += new System.EventHandler(this.comboBoxRouteTemplate_SelectedIndexChanged);
             // 
             // groupBox6
             // 
@@ -1252,32 +1258,46 @@
             this.label14.TabIndex = 0;
             this.label14.Text = "Distance between each waypoint:";
             // 
-            // numericUpDownGenerationDistanceBetweenWaypoint
+            // groupBox5
             // 
-            this.numericUpDownGenerationDistanceBetweenWaypoint.Location = new System.Drawing.Point(216, 19);
-            this.numericUpDownGenerationDistanceBetweenWaypoint.Name = "numericUpDownGenerationDistanceBetweenWaypoint";
-            this.numericUpDownGenerationDistanceBetweenWaypoint.Size = new System.Drawing.Size(67, 20);
-            this.numericUpDownGenerationDistanceBetweenWaypoint.TabIndex = 1;
-            this.toolTip1.SetToolTip(this.numericUpDownGenerationDistanceBetweenWaypoint, "Waypoints will be generated with this distance between them");
-            this.numericUpDownGenerationDistanceBetweenWaypoint.Value = new decimal(new int[] {
-            100,
-            0,
-            0,
-            0});
+            this.groupBox5.Controls.Add(this.comboBoxGenerationRouteTemplate);
+            this.groupBox5.Location = new System.Drawing.Point(6, 6);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(343, 51);
+            this.groupBox5.TabIndex = 1;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "Route template";
             // 
-            // comboBoxGenerationDistanceBetweenWaypointUnit
+            // buttonCreateWaypoints
             // 
-            this.comboBoxGenerationDistanceBetweenWaypointUnit.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxGenerationDistanceBetweenWaypointUnit.FormattingEnabled = true;
-            this.comboBoxGenerationDistanceBetweenWaypointUnit.Items.AddRange(new object[] {
-            "m",
-            "km",
-            "Mm"});
-            this.comboBoxGenerationDistanceBetweenWaypointUnit.Location = new System.Drawing.Point(289, 18);
-            this.comboBoxGenerationDistanceBetweenWaypointUnit.Name = "comboBoxGenerationDistanceBetweenWaypointUnit";
-            this.comboBoxGenerationDistanceBetweenWaypointUnit.Size = new System.Drawing.Size(48, 21);
-            this.comboBoxGenerationDistanceBetweenWaypointUnit.TabIndex = 2;
-            this.toolTip1.SetToolTip(this.comboBoxGenerationDistanceBetweenWaypointUnit, "Unit of measurement for waypoint distance");
+            this.buttonCreateWaypoints.Enabled = false;
+            this.buttonCreateWaypoints.Location = new System.Drawing.Point(245, 118);
+            this.buttonCreateWaypoints.Name = "buttonCreateWaypoints";
+            this.buttonCreateWaypoints.Size = new System.Drawing.Size(104, 23);
+            this.buttonCreateWaypoints.TabIndex = 0;
+            this.buttonCreateWaypoints.Text = "Create waypoints";
+            this.buttonCreateWaypoints.UseVisualStyleBackColor = true;
+            this.buttonCreateWaypoints.Click += new System.EventHandler(this.buttonCreateWaypoints_Click);
+            // 
+            // tabPageAudio
+            // 
+            this.tabPageAudio.Controls.Add(this.groupBoxAudioSettings);
+            this.tabPageAudio.Location = new System.Drawing.Point(4, 22);
+            this.tabPageAudio.Name = "tabPageAudio";
+            this.tabPageAudio.Size = new System.Drawing.Size(355, 247);
+            this.tabPageAudio.TabIndex = 4;
+            this.tabPageAudio.Text = "Audio";
+            this.tabPageAudio.UseVisualStyleBackColor = true;
+            // 
+            // buttonClose
+            // 
+            this.buttonClose.Location = new System.Drawing.Point(208, 245);
+            this.buttonClose.Name = "buttonClose";
+            this.buttonClose.Size = new System.Drawing.Size(75, 23);
+            this.buttonClose.TabIndex = 20;
+            this.buttonClose.Text = "Close";
+            this.buttonClose.UseVisualStyleBackColor = true;
+            this.buttonClose.Click += new System.EventHandler(this.buttonClose_Click);
             // 
             // FormRouter
             // 
@@ -1316,6 +1336,7 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTotalLaps)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownGenerationDistanceBetweenWaypoint)).EndInit();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             this.groupBoxAudioSettings.ResumeLayout(false);
@@ -1324,12 +1345,11 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPageWaypoints.ResumeLayout(false);
             this.tabPageRoute.ResumeLayout(false);
-            this.tabPageAudio.ResumeLayout(false);
             this.tabPageGenerate.ResumeLayout(false);
-            this.groupBox5.ResumeLayout(false);
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownGenerationDistanceBetweenWaypoint)).EndInit();
+            this.groupBox5.ResumeLayout(false);
+            this.tabPageAudio.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
