@@ -1225,18 +1225,12 @@ namespace Race_Manager
                 _race.StartTimeFromFirstWaypoint = checkBoxStartRaceTimerAtFirstWaypoint.Checked;
         }
 
-        private void buttonConnectToRace_Click(object sender, EventArgs e)
+        private void GetActiveServerRaces()
         {
-            if (comboBoxConnectToRace.Visible)
-            {
-                comboBoxConnectToRace.Visible = false;
-                return;
-            }
-
             // Retrieve list of races on server and show them in the list
             string response = "";
             comboBoxConnectToRace.Items.Clear();
-            comboBoxConnectToRace.Items.Add("Select race:");
+
             _activeServerRaces = new Dictionary<string, string>();
             try
             {
@@ -1248,12 +1242,13 @@ namespace Race_Manager
             if (String.IsNullOrEmpty(response))
                 return;
 
+            comboBoxConnectToRace.Items.Add("Select race:");
             // Races are returned in format guid,Name
             using (System.IO.StringReader reader = new System.IO.StringReader(response))
             {
                 string activeRace = reader.ReadLine();
                 int commaPos = activeRace.IndexOf(',');
-                if (commaPos>0)
+                if (commaPos > 0)
                 {
                     string activeRaceGuid = activeRace.Substring(0, commaPos);
                     string activeRaceName = activeRace.Substring(commaPos + 1);
@@ -1263,7 +1258,19 @@ namespace Race_Manager
             }
             if (_activeServerRaces.Count > 0)
                 comboBoxConnectToRace.Visible = true;
+
         }
+
+        private void buttonConnectToRace_Click(object sender, EventArgs e)
+        {
+            if (comboBoxConnectToRace.Visible)
+            {
+                comboBoxConnectToRace.Visible = false;
+                return;
+            }
+
+            GetActiveServerRaces();
+          }
 
         private void comboBoxConnectToRace_SelectedIndexChanged(object sender, EventArgs e)
         {

@@ -616,7 +616,9 @@ namespace EDTracking
                         }
                         else
                         {
-                            LapTimes.Add(DateTime.UtcNow.Subtract(LapStartTime));
+                            DateTime lapEndTime = DateTime.UtcNow;
+                            LapTimes.Add(lapEndTime.Subtract(LapStartTime));
+                            LapStartTime = lapEndTime;
                             string lapTime = $"{LapTimes[LapTimes.Count - 1]:hh\\:mm\\:ss}";
                             notableEvents?.AddStatusEvent("CompletedLap", Commander, $" ({Lap - 1}: {lapTime})");
                             AddRaceHistory($"Completed lap {Lap - 1} in {lapTime}");
