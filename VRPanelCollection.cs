@@ -3,16 +3,18 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
-using Valve.VR;
+//using Valve.VR;
 using System.Text.Json;
 using EDTracking;
+using System.Numerics;
+using OVRSharp.Math;
 
 namespace SRVTracker
 {
     public class VRPanelCollection
     {
         //private List<VRPanelSetting> _vrPanelSettings;
-        private Dictionary<string, MatrixDefinition> _vrPanelSettings = null;
+        private Dictionary<string, TransformDefinition> _vrPanelSettings = null;
         private string _vrPanelSettingsSaveFile = "hmd_matrices.json";
         public string ActivePanelName { get; internal set; } = "";
 
@@ -21,7 +23,7 @@ namespace SRVTracker
             LoadPanels();
         }
 
-        public void ApplyPanelSettings(ulong VROverlayHandle, string PanelName = "")
+        public void ApplyPanelSettings(VRLocatorOverlay VROverlay, string PanelName = "")
         {
             // Apply the transform to the given Overlay (we set the matrix and panel size)
             if (String.IsNullOrEmpty(PanelName))
@@ -29,9 +31,8 @@ namespace SRVTracker
             if (!_vrPanelSettings.ContainsKey(PanelName))
                 return;
 
-            OpenVR.Overlay.SetOverlayWidthInMeters(VROverlayHandle, _vrPanelSettings[PanelName].PanelWidth);
-            HmdMatrix34_t matrix = _vrPanelSettings[PanelName].ToHmdMatrix34_t();
-            OpenVR.Overlay.SetOverlayTransformAbsolute(VROverlayHandle, Valve.VR.ETrackingUniverseOrigin.TrackingUniverseStanding, ref matrix);
+            VROverlay.WidthInMeters = _vrPanelSettings[PanelName].Width;
+            VROverlay.Transform = _vrPanelSettings[PanelName].ToHmdMatrix34_t();
         }
 
         public List<String> PanelNames
@@ -42,7 +43,7 @@ namespace SRVTracker
             }
         }
 
-        public bool UpdatePanel(MatrixDefinition NewDefinition, string PanelName = "")
+        public bool UpdatePanel(TransformDefinition NewDefinition, string PanelName = "")
         {
             if (String.IsNullOrEmpty(PanelName))
                 PanelName = ActivePanelName;
@@ -62,13 +63,13 @@ namespace SRVTracker
             if (!_vrPanelSettings.ContainsKey(ExistingPanelName))
                 return false;
 
-            MatrixDefinition m = _vrPanelSettings[ExistingPanelName];
+            TransformDefinition m = _vrPanelSettings[ExistingPanelName];
             _vrPanelSettings.Remove(ExistingPanelName);
             _vrPanelSettings.Add(NewPanelName, m);
             return true;
         }
 
-        public MatrixDefinition GetPanel(string PanelName = "")
+        public TransformDefinition GetPanel(string PanelName = "")
         {
             if (String.IsNullOrEmpty(PanelName))
                 PanelName = ActivePanelName;
@@ -95,7 +96,7 @@ namespace SRVTracker
                 if (File.Exists(_vrPanelSettingsSaveFile))
                 {
                     string json = File.ReadAllText(_vrPanelSettingsSaveFile);
-                    _vrPanelSettings = (Dictionary<string, MatrixDefinition>)JsonSerializer.Deserialize(json, typeof(Dictionary<string, MatrixDefinition>));
+                    _vrPanelSettings = (Dictionary<string, TransformDefinition>)JsonSerializer.Deserialize(json, typeof(Dictionary<string, TransformDefinition>));
                     ActivePanelName = "";
                     if (_vrPanelSettings.Count>0)
                         if (_vrPanelSettings.ContainsKey("Default"))
@@ -104,7 +105,7 @@ namespace SRVTracker
                 }
             }
             catch { }
-            _vrPanelSettings = new Dictionary<string, MatrixDefinition>();
+            _vrPanelSettings = new Dictionary<string, TransformDefinition>();
             _vrPanelSettings.Add("Default", VRPanelSetting.DefaultVRMatrix().HMDPanelMatrix);
             SavePanels();
         }
@@ -125,7 +126,7 @@ namespace SRVTracker
 
     public class VRPanelSetting
     {
-        public MatrixDefinition HMDPanelMatrix;
+        public TransformDefinition HMDPanelMatrix;
         public string PanelName = "Panel definition";
 
         public VRPanelSetting()
@@ -133,7 +134,7 @@ namespace SRVTracker
             // Required for JSON serialisation
         }
 
-        public VRPanelSetting(string Name, MatrixDefinition Matrix)
+        public VRPanelSetting(string Name, TransformDefinition Matrix)
         {
             HMDPanelMatrix = Matrix;
             PanelName = Name;
@@ -141,86 +142,58 @@ namespace SRVTracker
 
         public static VRPanelSetting DefaultVRMatrix()
         {
-            MatrixDefinition defaultMatrix = new MatrixDefinition();
-            defaultMatrix.m0 = 0.7F;
-            defaultMatrix.m1 = 0.0F;
-            defaultMatrix.m2 = 0.0F;
-            defaultMatrix.m3 = 1.0F; // x
-            defaultMatrix.m4 = 0.0F;
-            defaultMatrix.m5 = -1.0F;
-            defaultMatrix.m6 = 0.0F;
-            defaultMatrix.m7 = 1.5F; // y
-            defaultMatrix.m8 = 0F;
-            defaultMatrix.m9 = 0.0F;
-            defaultMatrix.m10 = 0.0F;
-            defaultMatrix.m11 = -1.0F; // -z
-            defaultMatrix.PanelWidth = 0.6f;
+            TransformDefinition defaultMatrix = new TransformDefinition();
             return new VRPanelSetting("Default", defaultMatrix);
         }
     }
 
-    public class MatrixDefinition
+    public class TransformDefinition
     {
-        public float m0 { get; set; } = 0;
-        public float m1 { get; set; } = 0;
-        public float m2 { get; set; } = 0;
-        public float m3 { get; set; } = 0;
-        public float m4 { get; set; } = 0;
-        public float m5 { get; set; } = 0;
-        public float m6 { get; set; } = 0;
-        public float m7 { get; set; } = 0;
-        public float m8 { get; set; } = 0;
-        public float m9 { get; set; } = 0;
-        public float m10 { get; set; } = 0;
-        public float m11 { get; set; } = 0;
-        public float PanelWidth { get; set; } = 0.8f;
+        public float PositionX { get; set; } = 0;
+        public float PositionY { get; set; } = 0;
+        public float PositionZ { get; set; } = 0;
+        public float RotationX { get; set; } = 0;
+        public float RotationY { get; set; } = 0;
+        public float RotationZ { get; set; } = 0;
+        public float Width { get; set; } = 0.8f;
 
-        public MatrixDefinition()
+        public TransformDefinition()
         {
             // Required for JSON serialisation to work
         }
 
-        public MatrixDefinition(float m0, float m1, float m2, float m3, float m4, float m5, float m6, float m7, float m8, float m9, float m10, float m11, float PanelWidth)
+        public TransformDefinition(float PositionX, 
+                                   float PositionY, 
+                                   float PositionZ, 
+                                   float RotationX, 
+                                   float RotationY,
+                                   float RotationZ, 
+                                   float Width)
         {
-            this.m0 = m0;
-            this.m1 = m1;
-            this.m2 = m2;
-            this.m3 = m3;
-            this.m4 = m4;
-            this.m5 = m5;
-            this.m6 = m6;
-            this.m7 = m7;
-            this.m8 = m8;
-            this.m9 = m9;
-            this.m10 = m10;
-            this.m11 = m11;
-            this.PanelWidth = PanelWidth;
+            this.PositionX = PositionX;
+            this.PositionY = PositionY;
+            this.PositionZ = PositionZ;
+            this.RotationX = RotationX;
+            this.RotationY = RotationY;
+            this.RotationZ = RotationZ;
+            this.Width = Width;
         }
 
-        public static MatrixDefinition FromHmdMatrix34_t(ref HmdMatrix34_t hmdMatrix, float PanelWidth)
+        private float DegreesToRadians(float degrees)
         {
-            // Create a new matrix defintion from the provided matrix
-            return new MatrixDefinition(hmdMatrix.m0, hmdMatrix.m1, hmdMatrix.m2, hmdMatrix.m3, hmdMatrix.m4, hmdMatrix.m5,
-                hmdMatrix.m6, hmdMatrix.m7, hmdMatrix.m8, hmdMatrix.m9, hmdMatrix.m10, hmdMatrix.m11, PanelWidth);
+            if (degrees < 0)
+                degrees = 360 + degrees;
+            return (float)((Math.PI / 180) * degrees); // degrees to radians
         }
 
-        public HmdMatrix34_t ToHmdMatrix34_t()
+        public Valve.VR.HmdMatrix34_t ToHmdMatrix34_t()
         {
-            // Return this matrix as HmdMatrix34_t
-            HmdMatrix34_t hmdMatrix = new HmdMatrix34_t();
-            hmdMatrix.m0 = m0;
-            hmdMatrix.m1 = m1;
-            hmdMatrix.m2 = m2;
-            hmdMatrix.m3 = m3;
-            hmdMatrix.m4 = m4;
-            hmdMatrix.m5 = m5;
-            hmdMatrix.m6 = m6;
-            hmdMatrix.m7 = m7;
-            hmdMatrix.m8 = m8;
-            hmdMatrix.m9 = m9;
-            hmdMatrix.m10 = m10;
-            hmdMatrix.m11 = m11;
-            return hmdMatrix;
+            // Return this transform as HmdMatrix34_t
+
+            Matrix4x4 rotation = Matrix4x4.CreateFromYawPitchRoll(DegreesToRadians(RotationY), DegreesToRadians(RotationX), DegreesToRadians(RotationZ));
+            Matrix4x4 translation = Matrix4x4.CreateTranslation(PositionX, PositionY, PositionZ);
+            
+            return Matrix4x4.Multiply(rotation, translation).ToHmdMatrix34_t();
         }
     }
 }

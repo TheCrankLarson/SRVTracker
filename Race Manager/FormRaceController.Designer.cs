@@ -99,6 +99,7 @@
             this.buttonRemoveParticipant = new System.Windows.Forms.Button();
             this.buttonTrackParticipant = new System.Windows.Forms.Button();
             this.tabPageRoute = new System.Windows.Forms.TabPage();
+            this.checkBoxAnyWaypointOrder = new System.Windows.Forms.CheckBox();
             this.checkBoxLapCustomWaypoints = new System.Windows.Forms.CheckBox();
             this.numericUpDownLapEndWaypoint = new System.Windows.Forms.NumericUpDown();
             this.numericUpDownLapStartWaypoint = new System.Windows.Forms.NumericUpDown();
@@ -124,7 +125,6 @@
             this.label9 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.tabPageServerSettings = new System.Windows.Forms.TabPage();
-            this.checkBoxAnyWaypointOrder = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLapCount)).BeginInit();
             this.groupBoxAddCommander.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -922,6 +922,17 @@
             this.tabPageRoute.Text = "Route";
             this.tabPageRoute.UseVisualStyleBackColor = true;
             // 
+            // checkBoxAnyWaypointOrder
+            // 
+            this.checkBoxAnyWaypointOrder.AutoSize = true;
+            this.checkBoxAnyWaypointOrder.Location = new System.Drawing.Point(3, 146);
+            this.checkBoxAnyWaypointOrder.Name = "checkBoxAnyWaypointOrder";
+            this.checkBoxAnyWaypointOrder.Size = new System.Drawing.Size(203, 17);
+            this.checkBoxAnyWaypointOrder.TabIndex = 10;
+            this.checkBoxAnyWaypointOrder.Text = "Waypoints can be visited in any order";
+            this.checkBoxAnyWaypointOrder.UseVisualStyleBackColor = true;
+            this.checkBoxAnyWaypointOrder.CheckedChanged += new System.EventHandler(this.checkBoxAnyWaypointOrder_CheckedChanged);
+            // 
             // checkBoxLapCustomWaypoints
             // 
             this.checkBoxLapCustomWaypoints.AutoSize = true;
@@ -1254,16 +1265,6 @@
             this.tabPageServerSettings.TabIndex = 4;
             this.tabPageServerSettings.Text = "Server";
             this.tabPageServerSettings.UseVisualStyleBackColor = true;
-            // 
-            // checkBoxAnyWaypointOrder
-            // 
-            this.checkBoxAnyWaypointOrder.AutoSize = true;
-            this.checkBoxAnyWaypointOrder.Location = new System.Drawing.Point(3, 146);
-            this.checkBoxAnyWaypointOrder.Name = "checkBoxAnyWaypointOrder";
-            this.checkBoxAnyWaypointOrder.Size = new System.Drawing.Size(203, 17);
-            this.checkBoxAnyWaypointOrder.TabIndex = 10;
-            this.checkBoxAnyWaypointOrder.Text = "Waypoints can be visited in any order";
-            this.checkBoxAnyWaypointOrder.UseVisualStyleBackColor = true;
             // 
             // FormRaceController
             // 

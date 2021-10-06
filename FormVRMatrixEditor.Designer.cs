@@ -30,20 +30,6 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormVRMatrixEditor));
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.trackBarEditMatrixValue = new System.Windows.Forms.TrackBar();
-            this.numericUpDownm11 = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDownm10 = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDownm9 = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDownm8 = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDownm7 = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDownm6 = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDownm5 = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDownm4 = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDownm3 = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDownm2 = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDownm1 = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDownm0 = new System.Windows.Forms.NumericUpDown();
             this.buttonApply = new System.Windows.Forms.Button();
             this.buttonClose = new System.Windows.Forms.Button();
             this.checkBoxAutoApply = new System.Windows.Forms.CheckBox();
@@ -58,378 +44,41 @@
             this.buttonAdd = new System.Windows.Forms.Button();
             this.listBoxMatrices = new System.Windows.Forms.ListBox();
             this.checkBoxMatrixIsRelative = new System.Windows.Forms.CheckBox();
-            this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBarEditMatrixValue)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownm11)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownm10)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownm9)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownm8)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownm7)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownm6)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownm5)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownm4)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownm3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownm2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownm1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownm0)).BeginInit();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.trackBarPositionZ = new System.Windows.Forms.TrackBar();
+            this.label4 = new System.Windows.Forms.Label();
+            this.trackBarPositionY = new System.Windows.Forms.TrackBar();
+            this.label3 = new System.Windows.Forms.Label();
+            this.trackBarPositionX = new System.Windows.Forms.TrackBar();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.trackBarRotationZ = new System.Windows.Forms.TrackBar();
+            this.label7 = new System.Windows.Forms.Label();
+            this.trackBarRotationY = new System.Windows.Forms.TrackBar();
+            this.label8 = new System.Windows.Forms.Label();
+            this.trackBarRotationX = new System.Windows.Forms.TrackBar();
+            this.numericUpDownX = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDownY = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDownZ = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownOverlayWidth)).BeginInit();
             this.groupBox2.SuspendLayout();
+            this.groupBox3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarPositionZ)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarPositionY)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarPositionX)).BeginInit();
+            this.groupBox4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarRotationZ)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarRotationY)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarRotationX)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownX)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownY)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownZ)).BeginInit();
             this.SuspendLayout();
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.trackBarEditMatrixValue);
-            this.groupBox1.Controls.Add(this.numericUpDownm11);
-            this.groupBox1.Controls.Add(this.numericUpDownm10);
-            this.groupBox1.Controls.Add(this.numericUpDownm9);
-            this.groupBox1.Controls.Add(this.numericUpDownm8);
-            this.groupBox1.Controls.Add(this.numericUpDownm7);
-            this.groupBox1.Controls.Add(this.numericUpDownm6);
-            this.groupBox1.Controls.Add(this.numericUpDownm5);
-            this.groupBox1.Controls.Add(this.numericUpDownm4);
-            this.groupBox1.Controls.Add(this.numericUpDownm3);
-            this.groupBox1.Controls.Add(this.numericUpDownm2);
-            this.groupBox1.Controls.Add(this.numericUpDownm1);
-            this.groupBox1.Controls.Add(this.numericUpDownm0);
-            this.groupBox1.Location = new System.Drawing.Point(12, 12);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(260, 150);
-            this.groupBox1.TabIndex = 0;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Transform matrix";
-            // 
-            // trackBarEditMatrixValue
-            // 
-            this.trackBarEditMatrixValue.LargeChange = 1000;
-            this.trackBarEditMatrixValue.Location = new System.Drawing.Point(7, 97);
-            this.trackBarEditMatrixValue.Maximum = 10000;
-            this.trackBarEditMatrixValue.Minimum = -10000;
-            this.trackBarEditMatrixValue.Name = "trackBarEditMatrixValue";
-            this.trackBarEditMatrixValue.Size = new System.Drawing.Size(245, 45);
-            this.trackBarEditMatrixValue.SmallChange = 100;
-            this.trackBarEditMatrixValue.TabIndex = 12;
-            this.trackBarEditMatrixValue.TickFrequency = 100;
-            this.toolTip1.SetToolTip(this.trackBarEditMatrixValue, "Use the slider to adjust the currently selected matrix value");
-            this.trackBarEditMatrixValue.Scroll += new System.EventHandler(this.trackBarEditMatrixValue_Scroll);
-            // 
-            // numericUpDownm11
-            // 
-            this.numericUpDownm11.DecimalPlaces = 2;
-            this.numericUpDownm11.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            131072});
-            this.numericUpDownm11.Location = new System.Drawing.Point(195, 71);
-            this.numericUpDownm11.Maximum = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.numericUpDownm11.Minimum = new decimal(new int[] {
-            10,
-            0,
-            0,
-            -2147483648});
-            this.numericUpDownm11.Name = "numericUpDownm11";
-            this.numericUpDownm11.Size = new System.Drawing.Size(57, 20);
-            this.numericUpDownm11.TabIndex = 11;
-            this.numericUpDownm11.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.toolTip1.SetToolTip(this.numericUpDownm11, "-z offset");
-            this.numericUpDownm11.ValueChanged += new System.EventHandler(this.numericUpDownm11_ValueChanged);
-            this.numericUpDownm11.Enter += new System.EventHandler(this.numericUpDownm11_Enter);
-            // 
-            // numericUpDownm10
-            // 
-            this.numericUpDownm10.DecimalPlaces = 2;
-            this.numericUpDownm10.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            131072});
-            this.numericUpDownm10.Location = new System.Drawing.Point(6, 71);
-            this.numericUpDownm10.Maximum = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.numericUpDownm10.Minimum = new decimal(new int[] {
-            10,
-            0,
-            0,
-            -2147483648});
-            this.numericUpDownm10.Name = "numericUpDownm10";
-            this.numericUpDownm10.Size = new System.Drawing.Size(57, 20);
-            this.numericUpDownm10.TabIndex = 10;
-            this.numericUpDownm10.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.numericUpDownm10.ValueChanged += new System.EventHandler(this.numericUpDownm10_ValueChanged);
-            this.numericUpDownm10.Enter += new System.EventHandler(this.numericUpDownm10_Enter);
-            // 
-            // numericUpDownm9
-            // 
-            this.numericUpDownm9.DecimalPlaces = 2;
-            this.numericUpDownm9.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            131072});
-            this.numericUpDownm9.Location = new System.Drawing.Point(132, 19);
-            this.numericUpDownm9.Maximum = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.numericUpDownm9.Minimum = new decimal(new int[] {
-            10,
-            0,
-            0,
-            -2147483648});
-            this.numericUpDownm9.Name = "numericUpDownm9";
-            this.numericUpDownm9.Size = new System.Drawing.Size(57, 20);
-            this.numericUpDownm9.TabIndex = 9;
-            this.numericUpDownm9.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.numericUpDownm9.ValueChanged += new System.EventHandler(this.numericUpDownm9_ValueChanged);
-            this.numericUpDownm9.Enter += new System.EventHandler(this.numericUpDownm9_Enter);
-            // 
-            // numericUpDownm8
-            // 
-            this.numericUpDownm8.DecimalPlaces = 2;
-            this.numericUpDownm8.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            131072});
-            this.numericUpDownm8.Location = new System.Drawing.Point(132, 45);
-            this.numericUpDownm8.Maximum = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.numericUpDownm8.Minimum = new decimal(new int[] {
-            10,
-            0,
-            0,
-            -2147483648});
-            this.numericUpDownm8.Name = "numericUpDownm8";
-            this.numericUpDownm8.Size = new System.Drawing.Size(57, 20);
-            this.numericUpDownm8.TabIndex = 8;
-            this.numericUpDownm8.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.numericUpDownm8.ValueChanged += new System.EventHandler(this.numericUpDownm8_ValueChanged);
-            this.numericUpDownm8.Enter += new System.EventHandler(this.numericUpDownm8_Enter);
-            // 
-            // numericUpDownm7
-            // 
-            this.numericUpDownm7.DecimalPlaces = 2;
-            this.numericUpDownm7.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            131072});
-            this.numericUpDownm7.Location = new System.Drawing.Point(195, 45);
-            this.numericUpDownm7.Maximum = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.numericUpDownm7.Minimum = new decimal(new int[] {
-            10,
-            0,
-            0,
-            -2147483648});
-            this.numericUpDownm7.Name = "numericUpDownm7";
-            this.numericUpDownm7.Size = new System.Drawing.Size(57, 20);
-            this.numericUpDownm7.TabIndex = 7;
-            this.numericUpDownm7.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.toolTip1.SetToolTip(this.numericUpDownm7, "y offset");
-            this.numericUpDownm7.ValueChanged += new System.EventHandler(this.numericUpDownm7_ValueChanged);
-            this.numericUpDownm7.Enter += new System.EventHandler(this.numericUpDownm7_Enter);
-            // 
-            // numericUpDownm6
-            // 
-            this.numericUpDownm6.DecimalPlaces = 2;
-            this.numericUpDownm6.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            131072});
-            this.numericUpDownm6.Location = new System.Drawing.Point(69, 19);
-            this.numericUpDownm6.Maximum = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.numericUpDownm6.Minimum = new decimal(new int[] {
-            10,
-            0,
-            0,
-            -2147483648});
-            this.numericUpDownm6.Name = "numericUpDownm6";
-            this.numericUpDownm6.Size = new System.Drawing.Size(57, 20);
-            this.numericUpDownm6.TabIndex = 6;
-            this.numericUpDownm6.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.numericUpDownm6.ValueChanged += new System.EventHandler(this.numericUpDownm6_ValueChanged);
-            this.numericUpDownm6.Enter += new System.EventHandler(this.numericUpDownm6_Enter);
-            // 
-            // numericUpDownm5
-            // 
-            this.numericUpDownm5.DecimalPlaces = 2;
-            this.numericUpDownm5.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            131072});
-            this.numericUpDownm5.Location = new System.Drawing.Point(6, 45);
-            this.numericUpDownm5.Maximum = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.numericUpDownm5.Minimum = new decimal(new int[] {
-            10,
-            0,
-            0,
-            -2147483648});
-            this.numericUpDownm5.Name = "numericUpDownm5";
-            this.numericUpDownm5.Size = new System.Drawing.Size(57, 20);
-            this.numericUpDownm5.TabIndex = 5;
-            this.numericUpDownm5.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.numericUpDownm5.ValueChanged += new System.EventHandler(this.numericUpDownm5_ValueChanged);
-            this.numericUpDownm5.Enter += new System.EventHandler(this.numericUpDownm5_Enter);
-            // 
-            // numericUpDownm4
-            // 
-            this.numericUpDownm4.DecimalPlaces = 2;
-            this.numericUpDownm4.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            131072});
-            this.numericUpDownm4.Location = new System.Drawing.Point(132, 71);
-            this.numericUpDownm4.Maximum = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.numericUpDownm4.Minimum = new decimal(new int[] {
-            10,
-            0,
-            0,
-            -2147483648});
-            this.numericUpDownm4.Name = "numericUpDownm4";
-            this.numericUpDownm4.Size = new System.Drawing.Size(57, 20);
-            this.numericUpDownm4.TabIndex = 4;
-            this.numericUpDownm4.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.numericUpDownm4.ValueChanged += new System.EventHandler(this.numericUpDownm4_ValueChanged);
-            this.numericUpDownm4.Enter += new System.EventHandler(this.numericUpDownm4_Enter);
-            // 
-            // numericUpDownm3
-            // 
-            this.numericUpDownm3.DecimalPlaces = 2;
-            this.numericUpDownm3.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            131072});
-            this.numericUpDownm3.Location = new System.Drawing.Point(195, 19);
-            this.numericUpDownm3.Maximum = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.numericUpDownm3.Minimum = new decimal(new int[] {
-            10,
-            0,
-            0,
-            -2147483648});
-            this.numericUpDownm3.Name = "numericUpDownm3";
-            this.numericUpDownm3.Size = new System.Drawing.Size(57, 20);
-            this.numericUpDownm3.TabIndex = 3;
-            this.numericUpDownm3.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.toolTip1.SetToolTip(this.numericUpDownm3, "x offset");
-            this.numericUpDownm3.ValueChanged += new System.EventHandler(this.numericUpDownm3_ValueChanged);
-            this.numericUpDownm3.Enter += new System.EventHandler(this.numericUpDownm3_Enter);
-            // 
-            // numericUpDownm2
-            // 
-            this.numericUpDownm2.DecimalPlaces = 2;
-            this.numericUpDownm2.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            131072});
-            this.numericUpDownm2.Location = new System.Drawing.Point(69, 45);
-            this.numericUpDownm2.Maximum = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.numericUpDownm2.Minimum = new decimal(new int[] {
-            10,
-            0,
-            0,
-            -2147483648});
-            this.numericUpDownm2.Name = "numericUpDownm2";
-            this.numericUpDownm2.Size = new System.Drawing.Size(57, 20);
-            this.numericUpDownm2.TabIndex = 2;
-            this.numericUpDownm2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.numericUpDownm2.ValueChanged += new System.EventHandler(this.numericUpDownm2_ValueChanged);
-            this.numericUpDownm2.Enter += new System.EventHandler(this.numericUpDownm2_Enter);
-            // 
-            // numericUpDownm1
-            // 
-            this.numericUpDownm1.DecimalPlaces = 2;
-            this.numericUpDownm1.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            131072});
-            this.numericUpDownm1.Location = new System.Drawing.Point(69, 71);
-            this.numericUpDownm1.Maximum = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.numericUpDownm1.Minimum = new decimal(new int[] {
-            10,
-            0,
-            0,
-            -2147483648});
-            this.numericUpDownm1.Name = "numericUpDownm1";
-            this.numericUpDownm1.Size = new System.Drawing.Size(57, 20);
-            this.numericUpDownm1.TabIndex = 1;
-            this.numericUpDownm1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.numericUpDownm1.ValueChanged += new System.EventHandler(this.numericUpDownm1_ValueChanged);
-            this.numericUpDownm1.Enter += new System.EventHandler(this.numericUpDownm1_Enter);
-            // 
-            // numericUpDownm0
-            // 
-            this.numericUpDownm0.DecimalPlaces = 2;
-            this.numericUpDownm0.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            131072});
-            this.numericUpDownm0.Location = new System.Drawing.Point(6, 19);
-            this.numericUpDownm0.Maximum = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.numericUpDownm0.Minimum = new decimal(new int[] {
-            10,
-            0,
-            0,
-            -2147483648});
-            this.numericUpDownm0.Name = "numericUpDownm0";
-            this.numericUpDownm0.Size = new System.Drawing.Size(57, 20);
-            this.numericUpDownm0.TabIndex = 0;
-            this.numericUpDownm0.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.numericUpDownm0.ValueChanged += new System.EventHandler(this.numericUpDownm0_ValueChanged);
-            this.numericUpDownm0.Enter += new System.EventHandler(this.numericUpDownm0_Enter);
             // 
             // buttonApply
             // 
-            this.buttonApply.Location = new System.Drawing.Point(284, 224);
+            this.buttonApply.Location = new System.Drawing.Point(419, 331);
             this.buttonApply.Name = "buttonApply";
             this.buttonApply.Size = new System.Drawing.Size(78, 23);
             this.buttonApply.TabIndex = 1;
@@ -440,7 +89,7 @@
             // 
             // buttonClose
             // 
-            this.buttonClose.Location = new System.Drawing.Point(421, 224);
+            this.buttonClose.Location = new System.Drawing.Point(777, 53);
             this.buttonClose.Name = "buttonClose";
             this.buttonClose.Size = new System.Drawing.Size(57, 23);
             this.buttonClose.TabIndex = 2;
@@ -453,7 +102,7 @@
             this.checkBoxAutoApply.AutoSize = true;
             this.checkBoxAutoApply.Checked = true;
             this.checkBoxAutoApply.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxAutoApply.Location = new System.Drawing.Point(230, 228);
+            this.checkBoxAutoApply.Location = new System.Drawing.Point(365, 335);
             this.checkBoxAutoApply.Name = "checkBoxAutoApply";
             this.checkBoxAutoApply.Size = new System.Drawing.Size(48, 17);
             this.checkBoxAutoApply.TabIndex = 4;
@@ -470,7 +119,7 @@
             0,
             0,
             65536});
-            this.numericUpDownOverlayWidth.Location = new System.Drawing.Point(113, 191);
+            this.numericUpDownOverlayWidth.Location = new System.Drawing.Point(407, 237);
             this.numericUpDownOverlayWidth.Maximum = new decimal(new int[] {
             10,
             0,
@@ -496,7 +145,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 193);
+            this.label1.Location = new System.Drawing.Point(306, 239);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(95, 13);
             this.label1.TabIndex = 6;
@@ -505,7 +154,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(176, 193);
+            this.label2.Location = new System.Drawing.Point(470, 239);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(15, 13);
             this.label2.TabIndex = 7;
@@ -518,12 +167,12 @@
             this.groupBox2.Controls.Add(this.buttonDelete);
             this.groupBox2.Controls.Add(this.buttonAdd);
             this.groupBox2.Controls.Add(this.listBoxMatrices);
-            this.groupBox2.Location = new System.Drawing.Point(278, 12);
+            this.groupBox2.Location = new System.Drawing.Point(303, 12);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(200, 206);
             this.groupBox2.TabIndex = 8;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Saved Matrices";
+            this.groupBox2.Text = "Saved Positions";
             // 
             // textBoxMatrixName
             // 
@@ -576,7 +225,7 @@
             // checkBoxMatrixIsRelative
             // 
             this.checkBoxMatrixIsRelative.AutoSize = true;
-            this.checkBoxMatrixIsRelative.Location = new System.Drawing.Point(12, 168);
+            this.checkBoxMatrixIsRelative.Location = new System.Drawing.Point(365, 459);
             this.checkBoxMatrixIsRelative.Name = "checkBoxMatrixIsRelative";
             this.checkBoxMatrixIsRelative.Size = new System.Drawing.Size(251, 17);
             this.checkBoxMatrixIsRelative.TabIndex = 9;
@@ -584,11 +233,229 @@
             this.checkBoxMatrixIsRelative.UseVisualStyleBackColor = true;
             this.checkBoxMatrixIsRelative.CheckedChanged += new System.EventHandler(this.checkBoxMatrixIsRelative_CheckedChanged);
             // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.numericUpDownZ);
+            this.groupBox3.Controls.Add(this.numericUpDownY);
+            this.groupBox3.Controls.Add(this.numericUpDownX);
+            this.groupBox3.Controls.Add(this.label5);
+            this.groupBox3.Controls.Add(this.trackBarPositionZ);
+            this.groupBox3.Controls.Add(this.label4);
+            this.groupBox3.Controls.Add(this.trackBarPositionY);
+            this.groupBox3.Controls.Add(this.label3);
+            this.groupBox3.Controls.Add(this.trackBarPositionX);
+            this.groupBox3.Location = new System.Drawing.Point(12, 12);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(285, 170);
+            this.groupBox3.TabIndex = 10;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Panel Position";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(6, 127);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(17, 13);
+            this.label5.TabIndex = 5;
+            this.label5.Text = "Z:";
+            // 
+            // trackBarPositionZ
+            // 
+            this.trackBarPositionZ.LargeChange = 50;
+            this.trackBarPositionZ.Location = new System.Drawing.Point(90, 121);
+            this.trackBarPositionZ.Maximum = 1000;
+            this.trackBarPositionZ.Minimum = -1000;
+            this.trackBarPositionZ.Name = "trackBarPositionZ";
+            this.trackBarPositionZ.Size = new System.Drawing.Size(189, 45);
+            this.trackBarPositionZ.TabIndex = 4;
+            this.trackBarPositionZ.TickFrequency = 100;
+            this.trackBarPositionZ.Scroll += new System.EventHandler(this.trackBarPositionZ_Scroll);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(6, 76);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(17, 13);
+            this.label4.TabIndex = 3;
+            this.label4.Text = "Y:";
+            // 
+            // trackBarPositionY
+            // 
+            this.trackBarPositionY.LargeChange = 50;
+            this.trackBarPositionY.Location = new System.Drawing.Point(90, 70);
+            this.trackBarPositionY.Maximum = 1000;
+            this.trackBarPositionY.Minimum = -1000;
+            this.trackBarPositionY.Name = "trackBarPositionY";
+            this.trackBarPositionY.Size = new System.Drawing.Size(189, 45);
+            this.trackBarPositionY.TabIndex = 2;
+            this.trackBarPositionY.TickFrequency = 100;
+            this.trackBarPositionY.Scroll += new System.EventHandler(this.trackBarPositionY_Scroll);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(6, 25);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(17, 13);
+            this.label3.TabIndex = 1;
+            this.label3.Text = "X:";
+            // 
+            // trackBarPositionX
+            // 
+            this.trackBarPositionX.LargeChange = 50;
+            this.trackBarPositionX.Location = new System.Drawing.Point(90, 19);
+            this.trackBarPositionX.Maximum = 1000;
+            this.trackBarPositionX.Minimum = -1000;
+            this.trackBarPositionX.Name = "trackBarPositionX";
+            this.trackBarPositionX.Size = new System.Drawing.Size(189, 45);
+            this.trackBarPositionX.TabIndex = 0;
+            this.trackBarPositionX.TickFrequency = 100;
+            this.trackBarPositionX.Scroll += new System.EventHandler(this.trackBarPositionX_Scroll);
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.label6);
+            this.groupBox4.Controls.Add(this.trackBarRotationZ);
+            this.groupBox4.Controls.Add(this.label7);
+            this.groupBox4.Controls.Add(this.trackBarRotationY);
+            this.groupBox4.Controls.Add(this.label8);
+            this.groupBox4.Controls.Add(this.trackBarRotationX);
+            this.groupBox4.Location = new System.Drawing.Point(12, 188);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(285, 170);
+            this.groupBox4.TabIndex = 11;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Panel Rotation";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(6, 127);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(17, 13);
+            this.label6.TabIndex = 5;
+            this.label6.Text = "Z:";
+            // 
+            // trackBarRotationZ
+            // 
+            this.trackBarRotationZ.LargeChange = 45;
+            this.trackBarRotationZ.Location = new System.Drawing.Point(29, 121);
+            this.trackBarRotationZ.Maximum = 90;
+            this.trackBarRotationZ.Minimum = -90;
+            this.trackBarRotationZ.Name = "trackBarRotationZ";
+            this.trackBarRotationZ.Size = new System.Drawing.Size(250, 45);
+            this.trackBarRotationZ.TabIndex = 4;
+            this.trackBarRotationZ.TickFrequency = 45;
+            this.trackBarRotationZ.Scroll += new System.EventHandler(this.trackBarRotationZ_Scroll);
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(6, 76);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(17, 13);
+            this.label7.TabIndex = 3;
+            this.label7.Text = "Y:";
+            // 
+            // trackBarRotationY
+            // 
+            this.trackBarRotationY.LargeChange = 45;
+            this.trackBarRotationY.Location = new System.Drawing.Point(29, 70);
+            this.trackBarRotationY.Maximum = 90;
+            this.trackBarRotationY.Minimum = -90;
+            this.trackBarRotationY.Name = "trackBarRotationY";
+            this.trackBarRotationY.Size = new System.Drawing.Size(250, 45);
+            this.trackBarRotationY.TabIndex = 2;
+            this.trackBarRotationY.TickFrequency = 45;
+            this.trackBarRotationY.Scroll += new System.EventHandler(this.trackBarRotationY_Scroll);
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(6, 25);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(17, 13);
+            this.label8.TabIndex = 1;
+            this.label8.Text = "X:";
+            // 
+            // trackBarRotationX
+            // 
+            this.trackBarRotationX.LargeChange = 45;
+            this.trackBarRotationX.Location = new System.Drawing.Point(29, 19);
+            this.trackBarRotationX.Maximum = 90;
+            this.trackBarRotationX.Minimum = -90;
+            this.trackBarRotationX.Name = "trackBarRotationX";
+            this.trackBarRotationX.Size = new System.Drawing.Size(250, 45);
+            this.trackBarRotationX.TabIndex = 0;
+            this.trackBarRotationX.TickFrequency = 45;
+            this.trackBarRotationX.Scroll += new System.EventHandler(this.trackBarRotationX_Scroll);
+            // 
+            // numericUpDownX
+            // 
+            this.numericUpDownX.DecimalPlaces = 2;
+            this.numericUpDownX.Location = new System.Drawing.Point(29, 23);
+            this.numericUpDownX.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numericUpDownX.Minimum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            -2147483648});
+            this.numericUpDownX.Name = "numericUpDownX";
+            this.numericUpDownX.Size = new System.Drawing.Size(55, 20);
+            this.numericUpDownX.TabIndex = 6;
+            this.numericUpDownX.ValueChanged += new System.EventHandler(this.numericUpDownX_ValueChanged);
+            // 
+            // numericUpDownY
+            // 
+            this.numericUpDownY.DecimalPlaces = 2;
+            this.numericUpDownY.Location = new System.Drawing.Point(29, 74);
+            this.numericUpDownY.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numericUpDownY.Minimum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            -2147483648});
+            this.numericUpDownY.Name = "numericUpDownY";
+            this.numericUpDownY.Size = new System.Drawing.Size(55, 20);
+            this.numericUpDownY.TabIndex = 7;
+            this.numericUpDownY.ValueChanged += new System.EventHandler(this.numericUpDownY_ValueChanged);
+            // 
+            // numericUpDownZ
+            // 
+            this.numericUpDownZ.DecimalPlaces = 2;
+            this.numericUpDownZ.Location = new System.Drawing.Point(29, 125);
+            this.numericUpDownZ.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numericUpDownZ.Minimum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            -2147483648});
+            this.numericUpDownZ.Name = "numericUpDownZ";
+            this.numericUpDownZ.Size = new System.Drawing.Size(55, 20);
+            this.numericUpDownZ.TabIndex = 8;
+            this.numericUpDownZ.ValueChanged += new System.EventHandler(this.numericUpDownZ_ValueChanged);
+            // 
             // FormVRMatrixEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(487, 254);
+            this.ClientSize = new System.Drawing.Size(515, 369);
+            this.Controls.Add(this.groupBox4);
+            this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.checkBoxMatrixIsRelative);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.label2);
@@ -597,51 +464,34 @@
             this.Controls.Add(this.checkBoxAutoApply);
             this.Controls.Add(this.buttonClose);
             this.Controls.Add(this.buttonApply);
-            this.Controls.Add(this.groupBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(503, 293);
             this.Name = "FormVRMatrixEditor";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Matrix Editor";
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBarEditMatrixValue)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownm11)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownm10)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownm9)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownm8)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownm7)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownm6)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownm5)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownm4)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownm3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownm2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownm1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownm0)).EndInit();
+            this.Text = "Panel Position Editor";
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownOverlayWidth)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarPositionZ)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarPositionY)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarPositionX)).EndInit();
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarRotationZ)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarRotationY)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarRotationX)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownX)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownY)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownZ)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.NumericUpDown numericUpDownm11;
-        private System.Windows.Forms.NumericUpDown numericUpDownm10;
-        private System.Windows.Forms.NumericUpDown numericUpDownm9;
-        private System.Windows.Forms.NumericUpDown numericUpDownm8;
-        private System.Windows.Forms.NumericUpDown numericUpDownm7;
-        private System.Windows.Forms.NumericUpDown numericUpDownm6;
-        private System.Windows.Forms.NumericUpDown numericUpDownm5;
-        private System.Windows.Forms.NumericUpDown numericUpDownm4;
-        private System.Windows.Forms.NumericUpDown numericUpDownm3;
-        private System.Windows.Forms.NumericUpDown numericUpDownm2;
-        private System.Windows.Forms.NumericUpDown numericUpDownm1;
-        private System.Windows.Forms.NumericUpDown numericUpDownm0;
         private System.Windows.Forms.Button buttonApply;
         private System.Windows.Forms.Button buttonClose;
         private System.Windows.Forms.CheckBox checkBoxAutoApply;
@@ -655,7 +505,23 @@
         private System.Windows.Forms.Button buttonDelete;
         private System.Windows.Forms.Button buttonAdd;
         private System.Windows.Forms.ListBox listBoxMatrices;
-        private System.Windows.Forms.TrackBar trackBarEditMatrixValue;
         private System.Windows.Forms.CheckBox checkBoxMatrixIsRelative;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TrackBar trackBarPositionZ;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TrackBar trackBarPositionY;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TrackBar trackBarPositionX;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TrackBar trackBarRotationZ;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TrackBar trackBarRotationY;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.TrackBar trackBarRotationX;
+        private System.Windows.Forms.NumericUpDown numericUpDownZ;
+        private System.Windows.Forms.NumericUpDown numericUpDownY;
+        private System.Windows.Forms.NumericUpDown numericUpDownX;
     }
 }

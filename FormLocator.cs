@@ -35,6 +35,7 @@ namespace SRVTracker
         private static FormLocator _activeLocator = null;
         private ConfigSaverClass _formConfig = null;
         private VRLocator _vrLocator = null;
+        private OVRSharp.Application _openVRApplication = null;
         //private FormVRMatrixEditor _formVRMatrixTest = null;
         //private byte[] _vrPanelImageBytes = null;
         //private IntPtr _intPtrVROverlayImage;
@@ -462,19 +463,16 @@ namespace SRVTracker
 
             try
             {
-                if (!Valve.VR.OpenVR.IsHmdPresent())
-                {
-                    checkBoxEnableVRLocator.Enabled = false;
-                    checkBoxEnableVRLocator.Checked = false;
-                    initError = "No HMD present";
-                }
+                if (_openVRApplication == null)
+                    _openVRApplication = new OVRSharp.Application(OVRSharp.Application.ApplicationType.Overlay);
             }
             catch (Exception ex)
             {
-                checkBoxEnableVRLocator.Enabled = false;
-                checkBoxEnableVRLocator.Checked = false;
-                initError = $"IsHmdPresent:{Environment.NewLine}{ex}";
+                initError = ex.Message;
             }
+
+            if (_openVRApplication == null)
+                checkBoxEnableVRLocator.Checked = false;
 
             if (checkBoxEnableVRLocator.Checked)
             {
@@ -495,16 +493,16 @@ namespace SRVTracker
 
         private void UpdateVRLocatorImage()
         {
-            if (locatorHUD1.PanelRequiresReset())
-            {
-                // For some reason, after 200 updates the OpenVR layer locks up
-                // No idea why, so this horrible hack resets it
-                string info = "";
-                HideVRLocator(false);
-                locatorHUD1.ResetPanel();
-                ShowVRLocator(ref info, true);
-                return;
-            }
+            //if (locatorHUD1.PanelRequiresReset())
+            //{
+            //    // For some reason, after 200 updates the OpenVR layer locks up
+            //    // No idea why, so this horrible hack resets it
+            //    string info = "";
+            //    HideVRLocator(false);
+            //    locatorHUD1.ResetPanel();
+            //    ShowVRLocator(ref info, true);
+            //    return;
+            //}
 
             Bitmap locatorPanel = locatorHUD1.GetLocatorPanelBitmap();
             _vrLocator.UpdateVRLocatorImage(locatorPanel);
@@ -516,35 +514,33 @@ namespace SRVTracker
 
         private bool ShowVRLocator(ref string info, bool SuppressMatrixWindow = false)
         {
-            if ((_vrLocator != null) && _vrLocator.OverlayHandle > 0)
+            if (_vrLocator != null)
                 return true;
 
-            if (_vrLocator == null)
-                _vrLocator = new VRLocator();
+            _vrLocator = new VRLocator(!SuppressMatrixWindow);
 
-            try
-            {
-                if (!VRLocator.InitVR())
-                {
-                    info = "";
-                    return false;
-                }
-            }
-            catch (Exception ex)
-            {
-                info = $"InitVR: {Environment.NewLine}{ex}";
-                return false;
-            }
+            //try
+            //{
+            //    if (!VRLocator.InitVR())
+            //    {
+            //        info = "";
+            //        return false;
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    info = $"InitVR: {Environment.NewLine}{ex}";
+            //    return false;
+            //}
 
-            if (!_vrLocator.CreateOverlay(ref info))
-                return false;
+            //if (!_vrLocator.CreateOverlay(ref info))
+            //    return false;
             
             UpdateVRLocatorImage();
-            _vrLocator.Show();
-
             if (!SuppressMatrixWindow)
                 _vrLocator.ShowMatrixEditor();
-            
+
+            _vrLocator.Show();
             return true;
         }
 

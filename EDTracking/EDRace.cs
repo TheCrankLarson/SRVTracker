@@ -15,6 +15,7 @@ namespace EDTracking
         public string Name { get; set; } = null;
         public EDRoute Route { get; set; } = null;
         public List<bool> WaypointVisited { get; set; } = new List<bool>();
+        public bool WaypointsMustBeVisitedInOrder = true;
         public EDRaceStatus Leader { get; set; } = null;
         public List<string> Contestants { get; set; } = new List<string>();
         public Dictionary<string, EDRaceStatus> Statuses { get; set; } = new Dictionary<string, EDRaceStatus>();
@@ -203,20 +204,27 @@ namespace EDTracking
                     }
                     else
                     {
-                        // All other positions are based on waypoint and distance from it (i.e. lowest waypoint number
                         int i = finishedIndex + 1;
-                        if (Laps > 0)
-                            while ((i < positions.Count) && Statuses[positions[i]].Lap > Statuses[racer].Lap && !Statuses[positions[i]].Eliminated)
+                        if (WaypointsMustBeVisitedInOrder)
+                        {
+                            // All other positions are based on waypoint and distance from it (i.e. lowest waypoint number                          
+                            if (Laps > 0)
+                                while ((i < positions.Count) && Statuses[positions[i]].Lap > Statuses[racer].Lap && !Statuses[positions[i]].Eliminated)
+                                    i++;
+                            // We check total distance left to work out the position
+                            while ((i < positions.Count) && Statuses[positions[i]].TotalDistanceLeft < Statuses[racer].TotalDistanceLeft && !Statuses[positions[i]].Eliminated)
                                 i++;
-                        // We check total distance left to work out the position
-                        while ((i < positions.Count) && Statuses[positions[i]].TotalDistanceLeft < Statuses[racer].TotalDistanceLeft && !Statuses[positions[i]].Eliminated)
-                            i++;
-
+                        }
+                        else
+                        {
+                            // For a race where waypoints can be visited in any order, the number of waypoints visited is used for position
+                            while ((i < positions.Count) && Statuses[positions[i]].NumberOfWaypointsVisited > Statuses[racer].NumberOfWaypointsVisited && !Statuses[positions[i]].Eliminated)
+                                i++;
+                        }
                         if (i < positions.Count)
                             positions.Insert(i, racer);
                         else
                             positions.Add(racer);
-
                     }
                 }
             }

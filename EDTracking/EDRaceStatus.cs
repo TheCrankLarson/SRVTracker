@@ -26,9 +26,10 @@ namespace EDTracking
         public bool Eliminated { get; set; } = false;
         public EDLocation Location { get; set; } = null;
         public int WaypointIndex { get; set; } = 0;
-        public bool WaypointsMustBeVisitedInOrder = true;
+        //public bool WaypointsMustBeVisitedInOrder = true;
         public int Lap { get; set; } = 1;
         public List<DateTime> LapEndTimes { get; set; } = new List<DateTime>();
+        public int NumberOfWaypointsVisited { get; set; } = 0;
         public double DistanceToWaypoint { get; set; } = double.MaxValue;
         public double TotalDistanceLeft { get; set; } = double.MaxValue;
         public static bool Started { get; set; } = false;
@@ -103,6 +104,7 @@ namespace EDTracking
             { "MaxSpeed", "Maximum speed" },
             { "AverageSpeed", "Average speed" },
             { "Status", "Status" },
+            { "NumberOfWaypointsVisited", "Number of waypoints visited" },
             { "DistanceToWaypoint", "Distance to the next waypoint" },
             { "TotalDistanceLeft", "Total distance left" },
             { "Hull", "Hull strength left" },
@@ -127,6 +129,7 @@ namespace EDTracking
             telemetry.Add("MaxSpeed", MaxSpeedInMS.ToString("F1"));
             telemetry.Add("AverageSpeed", AverageSpeedInMS.ToString("F1"));
             telemetry.Add("Status", _status);
+            telemetry.Add("NumberOfWaypointsVisited", NumberOfWaypointsVisited.ToString());
             telemetry.Add("DistanceToWaypoint", DistanceToWaypointInKmDisplay);
             telemetry.Add("TotalDistanceLeft", TotalDistanceLeftInKmDisplay);
             telemetry.Add("Hull", HullDisplay);
@@ -527,6 +530,7 @@ namespace EDTracking
                         // We've reached a waypoint
                         WaypointIndex = i;
                         AddRaceHistory($"Arrived at {waypoint.Name}");
+                        NumberOfWaypointsVisited++;
                         _race.WaypointVisited[i] = true;
 
                         // Check if there are any waypoints left to visit (if not, race is finished)
@@ -553,7 +557,7 @@ namespace EDTracking
             if (_race == null)
                 return;
             
-            if (!WaypointsMustBeVisitedInOrder)
+            if (!_race.WaypointsMustBeVisitedInOrder)
             {
                 ProcessUnorderedRouteLocationChange();
                 return;
@@ -583,6 +587,7 @@ namespace EDTracking
             if (_race.Route.Waypoints[WaypointIndex].WaypointHit(Location, _previousLocation, previousWaypoint?.Location))
             {
                 // Commander has reached the target waypoint
+                NumberOfWaypointsVisited++;
                 if (_race.Laps > 0)
                 {
 

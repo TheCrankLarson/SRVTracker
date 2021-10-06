@@ -1,80 +1,79 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Valve.VR;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
-using System.Drawing.Text;
 using System.Runtime.InteropServices;
-using d3d = Microsoft.DirectX.Direct3D;
-using Microsoft.DirectX;
 using System.IO;
+using System.Windows.Forms;
 
 namespace SRVTracker
 {
     public class VRLocator
     {
-        private ulong _vrOverlayHandle = 0;
+        //private ulong _vrOverlayHandle = 0;
         private Bitmap _vrbitmap = null;
-        private d3d.Device _d3DDevice = null;
-        private d3d.Texture _locatorTexture = null;
+        private SlimDX.Direct3D9.Device _d3DDevice = null;
+        private SlimDX.Direct3D9.Texture _locatorTexture = null;
         private byte[] _vrPanelImageBytes = null;
         private IntPtr _intPtrVROverlayImage;
         private bool _locatorVRAsTexture = false; // Whether to create texture for locator VR HUD, or just use raw image
-        private Texture_t _panelTexture = new Texture_t();
-        public static CVRSystem VRSystem = null;
-        private FormVRMatrixEditor _formVRMatrixTest = null;
+        private Valve.VR.Texture_t _panelTexture = new Valve.VR.Texture_t();
+        //public static CVRSystem VRSystem = null;
+        private FormVRMatrixEditor _formVRMatrixEditor = null;
+        private VRLocatorOverlay _locatorOverlay = null;
+        private PictureBox _locatorPictureBox = new PictureBox();
 
-        public VRLocator()
+        public VRLocator(bool ShowMatrixEditor = true)
         {
-            _panelTexture.eType = ETextureType.DirectX;
-            string initError="";
-            if (_locatorVRAsTexture)
-                InitializeGraphics(ref initError);
+            //_panelTexture.eType = ETextureType.DirectX;
+            _locatorOverlay = new VRLocatorOverlay();
+            _locatorPictureBox.Width = 800;
+            _locatorPictureBox.Height = 320;
+
+            //if (ShowMatrixEditor)
+                InitMatrixEditor();
+            //string initError="";
+            //if (_locatorVRAsTexture)
+            //    InitializeGraphics(ref initError);
         }
 
         public ulong OverlayHandle
         {
-            get { return _vrOverlayHandle; }
+            get { return _locatorOverlay.Handle; }
         }
 
-        public bool CreateOverlay(ref string errorInfo)
-        {
-            try
-            {
-                OpenVR.Overlay.CreateOverlay(Guid.NewGuid().ToString(), "SRV Tracking", ref _vrOverlayHandle);
-                InitOverlay();
-                return true;
-            }
-            catch (Exception ex)
-            {
-                errorInfo = $"CreateOverlay: {Environment.NewLine}{ex}";
-                return false;
-            }
-        }
+        //public bool CreateOverlay(ref string errorInfo)
+        //{
+        //    try
+        //    {
+        //        OpenVR.Overlay.CreateOverlay(Guid.NewGuid().ToString(), "SRV Tracking", ref _vrOverlayHandle);
+        //        InitOverlay();
+        //        return true;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        errorInfo = $"CreateOverlay: {Environment.NewLine}{ex}";
+        //        return false;
+        //    }
+        //}
 
-        public void InitOverlay()
+        public void InitMatrixEditor()
         {
-            if (_formVRMatrixTest==null || _formVRMatrixTest.IsDisposed)
-                _formVRMatrixTest = new FormVRMatrixEditor(this);
+            if (_formVRMatrixEditor == null || _formVRMatrixEditor.IsDisposed)
+                _formVRMatrixEditor = new FormVRMatrixEditor(_locatorOverlay);
 
-            _formVRMatrixTest.ApplyMatrixToOverlay(true);
-            OpenVR.Overlay.SetOverlayInputMethod(_vrOverlayHandle, VROverlayInputMethod.None);
+            //_formVRMatrixTest.ApplyMatrixToOverlay(true);
         }
 
         public void Show()
         {
-            _ = OpenVR.Overlay.ShowOverlay(_vrOverlayHandle);
+            _locatorOverlay.Show();
         }
 
         public void Hide(bool CloseMatrixWindow = true)
         {
             try
             {
-                OpenVR.Overlay.DestroyOverlay(_vrOverlayHandle);
+                _locatorOverlay.Hide();
             }
             catch { }
 
@@ -84,47 +83,45 @@ namespace SRVTracker
                 _vrPanelImageBytes = null;
             }
 
-            _vrOverlayHandle = 0;
-
             if (CloseMatrixWindow)
             {
-                if (_formVRMatrixTest != null && !_formVRMatrixTest.IsDisposed && _formVRMatrixTest.Visible)
-                    _formVRMatrixTest.Close();
-                _formVRMatrixTest = null;
+                if (_formVRMatrixEditor != null && !_formVRMatrixEditor.IsDisposed && _formVRMatrixEditor.Visible)
+                    _formVRMatrixEditor.Close();
+                _formVRMatrixEditor = null;
             }
-            VRLocator.ShutdownVr();
+            //VRLocator.ShutdownVr();
         }
 
-        public static bool InitVR()
-        {
-            if (VRSystem == null)
-            {
-                var initError = EVRInitError.None;
-                try
-                {
-                    VRSystem = OpenVR.Init(ref initError, EVRApplicationType.VRApplication_Overlay);
-                }
-                catch (Exception ex)
-                {
-                    System.Windows.Forms.MessageBox.Show(null, $"Failed to initialise VR: {ex.Message}\r\nInit error: {initError}", "VR Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
-                    return false;
-                }
-            }
-            return true;
-        }
+        //public static bool InitVR()
+        //{
+        //    if (VRSystem == null)
+        //    {
+        //        var initError = EVRInitError.None;
+        //        try
+        //        {
+        //            VRSystem = OpenVR.Init(ref initError, EVRApplicationType.VRApplication_Overlay);
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            System.Windows.Forms.MessageBox.Show(null, $"Failed to initialise VR: {ex.Message}\r\nInit error: {initError}", "VR Error", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+        //            return false;
+        //        }
+        //    }
+        //    return true;
+        //}
 
         public void ShowMatrixEditor()
         {
-            if (_formVRMatrixTest == null || _formVRMatrixTest.Visible)
+            if (_formVRMatrixEditor == null || _formVRMatrixEditor.Visible)
                 return;
-            _formVRMatrixTest.Show();
+            _formVRMatrixEditor.Show();
         }
 
-        public static void ShutdownVr()
-        {
-            OpenVR.Shutdown();
-            VRSystem = null;
-        }
+        //public static void ShutdownVr()
+        //{
+        //    OpenVR.Shutdown();
+        //    VRSystem = null;
+        //}
 
         /*
         private void InitVRMatrix()
@@ -160,38 +157,60 @@ namespace SRVTracker
             _vrMatrix.m11 = -0.3F; // -z
         }*/
 
-        public bool InitializeGraphics(ref string InitError)
+        public bool InitializeGraphics()
         {
             if (!_locatorVRAsTexture || _d3DDevice != null)
                 return true;
             try
             {
                 // Now  setup our D3D stuff
-                d3d.PresentParameters presentParams = new d3d.PresentParameters();
-                presentParams.Windowed = true;
-                presentParams.SwapEffect = d3d.SwapEffect.Discard;
-                //presentParams.DeviceWindow =;
-                _d3DDevice = new d3d.Device(0, d3d.DeviceType.Hardware, null,
-                        d3d.CreateFlags.HardwareVertexProcessing, presentParams);
+
+
+                SlimDX.Direct3D9.PresentParameters presentParams = new SlimDX.Direct3D9.PresentParameters
+                {
+                    BackBufferWidth = _locatorPictureBox.Width,
+                    BackBufferHeight = _locatorPictureBox.Height,
+                    DeviceWindowHandle = _locatorPictureBox.Handle,
+                    PresentFlags = SlimDX.Direct3D9.PresentFlags.None,
+                    Multisample = SlimDX.Direct3D9.MultisampleType.None,
+                    BackBufferCount = 0,
+                    PresentationInterval = SlimDX.Direct3D9.PresentInterval.Immediate,
+                    SwapEffect = SlimDX.Direct3D9.SwapEffect.Flip,
+                    BackBufferFormat = SlimDX.Direct3D9.Format.X8R8G8B8,
+                    Windowed = true,
+                };
+
+                _d3DDevice = new SlimDX.Direct3D9.Device(new SlimDX.Direct3D9.Direct3D(), 0, SlimDX.Direct3D9.DeviceType.Hardware, _locatorPictureBox.Handle, SlimDX.Direct3D9.CreateFlags.HardwareVertexProcessing, presentParams);
+
+                //SlimDX.Direct3D9.PresentParameters presentParams = new SlimDX.Direct3D9.PresentParameters();
+                //presentParams.Windowed = true;
+                //presentParams.SwapEffect = SlimDX.Direct3D9.SwapEffect.Discard;
+                ////presentParams.DeviceWindow =;
+                //_d3DDevice = new SlimDX.Direct3D9.Device(null, 0, SlimDX.Direct3D9.DeviceType.Hardware, null,
+                //        SlimDX.Direct3D9.CreateFlags.HardwareVertexProcessing, presentParams);
                 return true;
             }
-            catch (DirectXException ex)
+            catch (Exception ex)
             {
-                InitError = ex.Message;
+                //InitError = ex.Message;
                 return false;
             }
         }
 
-        private d3d.Texture GetVRLocatorTexture()
+        private SlimDX.Direct3D9.Texture GetVRLocatorTexture()
         {
             // https://docs.microsoft.com/en-us/windows/win32/direct3d10/d3d10-graphics-programming-guide-resources-creating-textures#filling-textures-manually
             // https://docs.microsoft.com/en-us/windows/win32/direct3d11/overviews-direct3d-11-resources-textures-create
+
+            if (_d3DDevice == null)
+                InitializeGraphics();
 
             if (_locatorTexture == null)
                 using (MemoryStream ms = new MemoryStream())
                 {
                     _vrbitmap.Save(ms, ImageFormat.Bmp);
-                    _locatorTexture = d3d.TextureLoader.FromStream(_d3DDevice, ms);
+                    
+                    _locatorTexture = SlimDX.Direct3D9.Texture.FromStream(_d3DDevice, ms);
                 }
             return _locatorTexture;
             /*
@@ -220,20 +239,25 @@ namespace SRVTracker
             }
         }
 
-        private unsafe void UpdateVRLocatorTexture()
+        private void UpdateVRLocatorTexture()
         {
-            GetVRLocatorTexture();
+            try
+            {
+                GetVRLocatorTexture();
+            }
+            catch { }
 
             if (_locatorTexture == null)
                 return;
-            _panelTexture.handle = (IntPtr)_locatorTexture.UnmanagedComPointer;
-            OpenVR.Overlay.SetOverlayTexture(_vrOverlayHandle, ref _panelTexture);
+            _locatorOverlay.SetTexture(_panelTexture);
+
             return;
         }
 
         public void UpdateVRLocatorImage(Bitmap PanelImage)
         {
             _vrbitmap = PanelImage;
+            _vrbitmap.RotateFlip(RotateFlipType.RotateNoneFlipY);
             if (_locatorVRAsTexture)
             {
                 UpdateVRLocatorTexture();
@@ -245,7 +269,7 @@ namespace SRVTracker
             if (needToAllocateMemory)
                 _intPtrVROverlayImage = Marshal.AllocHGlobal(_vrPanelImageBytes.Length);
             Marshal.Copy(_vrPanelImageBytes, 0, _intPtrVROverlayImage, _vrPanelImageBytes.Length);
-            OpenVR.Overlay.SetOverlayRaw(OverlayHandle, _intPtrVROverlayImage, (uint)_vrbitmap.Width, (uint)_vrbitmap.Height, 4);
+            _locatorOverlay.SetTextureRaw(PanelImage, _intPtrVROverlayImage);
         }
     }
 }

@@ -1448,5 +1448,12 @@ namespace Race_Manager
         {
             UpdateAllowedVehicles();
         }
+
+        private void checkBoxAnyWaypointOrder_CheckedChanged(object sender, EventArgs e)
+        {
+            if (_race == null)
+                return;
+            _race.WaypointsMustBeVisitedInOrder = !checkBoxAnyWaypointOrder.Checked;
+        }
     }
 }

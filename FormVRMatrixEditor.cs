@@ -11,14 +11,15 @@ namespace SRVTracker
 {
     public partial class FormVRMatrixEditor : Form
     {
-        private VRLocator _vrLocator = null;
-        private HmdMatrix34_t _hmdMatrix;
-        private Dictionary<string, MatrixDefinition> _savedMatrices = null;
+        private VRLocatorOverlay _vrLocatorOverlay = null;
+        //private HmdMatrix34_t _hmdMatrix;
+        private Dictionary<string, TransformDefinition> _savedMatrices = null;
         private string _matricesSaveFile = "hmd_matrices.json";
         private ConfigSaverClass _formConfig = null;
         private Control _sliderTargetControl = null;
+        private bool _displayingMatrixData = false;
 
-        public FormVRMatrixEditor(VRLocator vrLocator)
+        public FormVRMatrixEditor(VRLocatorOverlay vrLocatorOverlay)
         {
             InitializeComponent();
             // Attach our form configuration saver
@@ -28,49 +29,18 @@ namespace SRVTracker
             _formConfig.SaveEnabled = true;
             _formConfig.RestoreFormValues();
 
+            _vrLocatorOverlay = vrLocatorOverlay;
             InitMatrices();
-            _vrLocator = vrLocator;
-            _hmdMatrix = new HmdMatrix34_t();
+            //_hmdMatrix = new HmdMatrix34_t();
             buttonApply.Enabled = !checkBoxAutoApply.Checked;
             ApplyOverlayWidth();
+            if (listBoxMatrices.SelectedIndex>-1)
+                _vrLocatorOverlay.Transform = _savedMatrices[(string)listBoxMatrices.SelectedItem].ToHmdMatrix34_t();
         }
 
-        private MatrixDefinition DefaultVRMatrix()
+        private TransformDefinition DefaultVRMatrix()
         {
-            MatrixDefinition vrMatrix = new MatrixDefinition();
-
-            if (checkBoxMatrixIsRelative.Checked)
-            {
-                // This matrix should be directly in front of the user when set to relative to HMD device
-                vrMatrix.m0 = 1.0F;
-                vrMatrix.m1 = 0.0F;
-                vrMatrix.m2 = 0.0F;
-                vrMatrix.m3 = 0.12F;
-                vrMatrix.m4 = 0.0F;
-                vrMatrix.m5 = 1.0F;
-                vrMatrix.m6 = 0.0F;
-                vrMatrix.m7 = 0.08F;
-                vrMatrix.m8 = 0F;
-                vrMatrix.m9 = 0.0F;
-                vrMatrix.m10 = 1.0F;
-                vrMatrix.m11 = -0.3F;
-            }
-            else
-            {
-                vrMatrix.m0 = 0.7F;
-                vrMatrix.m1 = 0.0F;
-                vrMatrix.m2 = 0.0F;
-                vrMatrix.m3 = 1.0F;
-                vrMatrix.m4 = 0.0F;
-                vrMatrix.m5 = -1.0F;
-                vrMatrix.m6 = 0.0F;
-                vrMatrix.m7 = 1.5F;
-                vrMatrix.m8 = 0F;
-                vrMatrix.m9 = 0.0F;
-                vrMatrix.m10 = 0.0F;
-                vrMatrix.m11 = -1.0F;
-            }
-            return vrMatrix;
+            return new TransformDefinition(1.5f,2,-1.5f,0,0,0,0.8f);
         }
 
         #region Load and save matrices functions
@@ -82,18 +52,18 @@ namespace SRVTracker
                 if (File.Exists(_matricesSaveFile))
                 {
                     string json = File.ReadAllText(_matricesSaveFile);
-                    _savedMatrices = (Dictionary<string, MatrixDefinition>)JsonSerializer.Deserialize(json, typeof(Dictionary<string, MatrixDefinition>));
+                    _savedMatrices = (Dictionary<string, TransformDefinition>)JsonSerializer.Deserialize(json, typeof(Dictionary<string, TransformDefinition>));
                 }
                 else
                 {
-                    _savedMatrices = new Dictionary<string, MatrixDefinition>();
+                    _savedMatrices = new Dictionary<string, TransformDefinition>();
                     _savedMatrices.Add("Default", DefaultVRMatrix());
                     SaveMatrices();
                 }
             }
             catch
             {
-                _savedMatrices = new Dictionary<string, MatrixDefinition>();
+                _savedMatrices = new Dictionary<string, TransformDefinition>();
             }
 
             listBoxMatrices.Items.Clear();
@@ -119,48 +89,20 @@ namespace SRVTracker
 
         private void DisplayMatrix()
         {
-            numericUpDownm0.Value = (decimal)_hmdMatrix.m0;
-            numericUpDownm1.Value = (decimal)_hmdMatrix.m1;
-            numericUpDownm2.Value = (decimal)_hmdMatrix.m2;
-            numericUpDownm3.Value = (decimal)_hmdMatrix.m3;
-            numericUpDownm4.Value = (decimal)_hmdMatrix.m4;
-            numericUpDownm5.Value = (decimal)_hmdMatrix.m5;
-            numericUpDownm6.Value = (decimal)_hmdMatrix.m6;
-            numericUpDownm7.Value = (decimal)_hmdMatrix.m7;
-            numericUpDownm8.Value = (decimal)_hmdMatrix.m8;
-            numericUpDownm9.Value = (decimal)_hmdMatrix.m9;
-            numericUpDownm10.Value = (decimal)_hmdMatrix.m10;
-            numericUpDownm11.Value = (decimal)_hmdMatrix.m11;
-        }
+            if (listBoxMatrices.SelectedIndex < 0)
+                return;
 
-        public void SetMatrix(ref HmdMatrix34_t hmdMatrix)
-        {
-            _hmdMatrix = hmdMatrix;
-            ApplyMatrixToOverlay(true);
-        }
-
-        public void ReapplyMatrix(ref HmdMatrix34_t hmdMatrix)
-        {
-            hmdMatrix = _hmdMatrix;
-            OpenVR.Overlay.SetOverlayTransformAbsolute(_vrLocator.OverlayHandle, Valve.VR.ETrackingUniverseOrigin.TrackingUniverseStanding, ref _hmdMatrix);
-        }
-
-        private void ApplyMatrixDefinition(MatrixDefinition hmdMatrix)
-        {
-            // Apply the given matrix to our VR referenced matrix
-            _hmdMatrix.m0 = hmdMatrix.m0;
-            _hmdMatrix.m1 = hmdMatrix.m1;
-            _hmdMatrix.m2 = hmdMatrix.m2;
-            _hmdMatrix.m3 = hmdMatrix.m3;
-            _hmdMatrix.m4 = hmdMatrix.m4;
-            _hmdMatrix.m5 = hmdMatrix.m5;
-            _hmdMatrix.m6 = hmdMatrix.m6;
-            _hmdMatrix.m7 = hmdMatrix.m7;
-            _hmdMatrix.m8 = hmdMatrix.m8;
-            _hmdMatrix.m9 = hmdMatrix.m9;
-            _hmdMatrix.m10 = hmdMatrix.m10;
-            _hmdMatrix.m11 = hmdMatrix.m11;
-            DisplayMatrix();
+            _displayingMatrixData = true;
+            TransformDefinition matrix = _savedMatrices[(string)listBoxMatrices.SelectedItem];
+            numericUpDownX.Value = (decimal)matrix.PositionX;
+            numericUpDownY.Value = (decimal)matrix.PositionY;
+            numericUpDownZ.Value = (decimal)matrix.PositionZ;
+            trackBarRotationX.Value = (int)(matrix.RotationX);
+            trackBarRotationY.Value = (int)(matrix.RotationY);
+            trackBarRotationZ.Value = (int)(matrix.RotationZ);
+            numericUpDownOverlayWidth.Value = (decimal)matrix.Width;
+            _displayingMatrixData = false;
+            _vrLocatorOverlay.Transform = _savedMatrices[(string)listBoxMatrices.SelectedItem].ToHmdMatrix34_t();
         }
 
         public void SetOverlayWidth(Single WidthInMetres)
@@ -169,64 +111,41 @@ namespace SRVTracker
             ApplyOverlayWidth();
         }
 
-        public HmdMatrix34_t GetMatrix()
-        {
-            _hmdMatrix.m0 = (float)numericUpDownm0.Value;
-            _hmdMatrix.m1 = (float)numericUpDownm1.Value;
-            _hmdMatrix.m2 = (float)numericUpDownm2.Value;
-            _hmdMatrix.m3 = (float)numericUpDownm3.Value;
-            _hmdMatrix.m4 = (float)numericUpDownm4.Value;
-            _hmdMatrix.m5 = (float)numericUpDownm5.Value;
-            _hmdMatrix.m6 = (float)numericUpDownm6.Value;
-            _hmdMatrix.m7 = (float)numericUpDownm7.Value;
-            _hmdMatrix.m8 = (float)numericUpDownm8.Value;
-            _hmdMatrix.m9 = (float)numericUpDownm9.Value;
-            _hmdMatrix.m10 = (float)numericUpDownm10.Value;
-            _hmdMatrix.m11 = (float)numericUpDownm11.Value;
-            return _hmdMatrix;
-        }
-
         public void ApplyOverlayWidth()
         {
-            if (_vrLocator.OverlayHandle > 0)
-                OpenVR.Overlay.SetOverlayWidthInMeters(_vrLocator.OverlayHandle, (float)numericUpDownOverlayWidth.Value);
+            _vrLocatorOverlay.WidthInMeters = (float)numericUpDownOverlayWidth.Value;
         }
 
         public void ApplyMatrixToOverlay(bool force = false)
         {
-            if (!force && !checkBoxAutoApply.Checked)
+            if (_displayingMatrixData || _vrLocatorOverlay == null || (!force && !checkBoxAutoApply.Checked) )
                 return;
-            if (_vrLocator?.OverlayHandle > 0)
-            {
-                GetMatrix();
-                if (checkBoxMatrixIsRelative.Checked)
-                    OpenVR.Overlay.SetOverlayTransformTrackedDeviceRelative(_vrLocator.OverlayHandle, OpenVR.k_unTrackedDeviceIndex_Hmd, ref _hmdMatrix);
-                else
-                    OpenVR.Overlay.SetOverlayTransformAbsolute(_vrLocator.OverlayHandle, Valve.VR.ETrackingUniverseOrigin.TrackingUniverseStanding, ref _hmdMatrix);
-            }
-            if (!force)
+
+            if (listBoxMatrices.SelectedIndex < 0)
+                return;
+
+            if (checkBoxAutoApply.Checked || force)
                 UpdateSelectedMatrixDefinition();
+
+            _vrLocatorOverlay.Transform = _savedMatrices[(string)listBoxMatrices.SelectedItem].ToHmdMatrix34_t();
         }
 
         private void UpdateSelectedMatrixDefinition()
         {
             // Called when a value in the UI is updated so that we keep our stored matrices up-to-date
 
-            if (listBoxMatrices.SelectedIndex < 0 || !_savedMatrices.ContainsKey(textBoxMatrixName.Text))
+            if (listBoxMatrices.SelectedIndex < 0 )
                 return;
 
-            _savedMatrices[textBoxMatrixName.Text].m0 = (float)numericUpDownm0.Value;
-            _savedMatrices[textBoxMatrixName.Text].m1 = (float)numericUpDownm1.Value;
-            _savedMatrices[textBoxMatrixName.Text].m2 = (float)numericUpDownm2.Value;
-            _savedMatrices[textBoxMatrixName.Text].m3 = (float)numericUpDownm3.Value;
-            _savedMatrices[textBoxMatrixName.Text].m4 = (float)numericUpDownm4.Value;
-            _savedMatrices[textBoxMatrixName.Text].m5 = (float)numericUpDownm5.Value;
-            _savedMatrices[textBoxMatrixName.Text].m6 = (float)numericUpDownm6.Value;
-            _savedMatrices[textBoxMatrixName.Text].m7 = (float)numericUpDownm7.Value;
-            _savedMatrices[textBoxMatrixName.Text].m8 = (float)numericUpDownm8.Value;
-            _savedMatrices[textBoxMatrixName.Text].m9 = (float)numericUpDownm9.Value;
-            _savedMatrices[textBoxMatrixName.Text].m10 = (float)numericUpDownm10.Value;
-            _savedMatrices[textBoxMatrixName.Text].m11 = (float)numericUpDownm11.Value;
+            _savedMatrices[(string)listBoxMatrices.SelectedItem].PositionX = (float)(trackBarPositionX.Value / 100);
+            _savedMatrices[(string)listBoxMatrices.SelectedItem].PositionY = (float)(trackBarPositionY.Value / 100);
+            _savedMatrices[(string)listBoxMatrices.SelectedItem].PositionZ = (float)(trackBarPositionZ.Value / 100);
+
+            _savedMatrices[(string)listBoxMatrices.SelectedItem].RotationX = (float)trackBarRotationX.Value;
+            _savedMatrices[(string)listBoxMatrices.SelectedItem].RotationY = (float)trackBarRotationY.Value;
+            _savedMatrices[(string)listBoxMatrices.SelectedItem].RotationZ = (float)trackBarRotationZ.Value;
+
+            _savedMatrices[(string)listBoxMatrices.SelectedItem].Width = (float)numericUpDownOverlayWidth.Value;
         }
 
         #region Control Events
@@ -269,7 +188,7 @@ namespace SRVTracker
                 textBoxMatrixName.Text = (string)listBoxMatrices.SelectedItem;
                 if (_savedMatrices.ContainsKey(textBoxMatrixName.Text))
                 {
-                    ApplyMatrixDefinition(_savedMatrices[textBoxMatrixName.Text]);
+                    DisplayMatrix();
                     ApplyMatrixToOverlay();
                 }
             }
@@ -277,9 +196,8 @@ namespace SRVTracker
 
         private void buttonAdd_Click(object sender, EventArgs e)
         {
-            GetMatrix();
             string matrixName = $"Matrix {_savedMatrices.Count + 1}";
-            _savedMatrices.Add(matrixName, MatrixDefinition.FromHmdMatrix34_t(ref _hmdMatrix, (float)numericUpDownOverlayWidth.Value));
+            _savedMatrices.Add(matrixName, new TransformDefinition());
             listBoxMatrices.Items.Add(matrixName);
             listBoxMatrices.SelectedIndex = listBoxMatrices.Items.Count - 1;
         }
@@ -301,7 +219,7 @@ namespace SRVTracker
             if (listBoxMatrices.SelectedIndex < 0)
                 return;
 
-            MatrixDefinition matrixDefinition = _savedMatrices[(string)listBoxMatrices.SelectedItem];
+            TransformDefinition matrixDefinition = _savedMatrices[(string)listBoxMatrices.SelectedItem];
             _savedMatrices.Remove((string)listBoxMatrices.SelectedItem);
             _savedMatrices.Add(textBoxMatrixName.Text, matrixDefinition);
             listBoxMatrices.Items[listBoxMatrices.SelectedIndex] = textBoxMatrixName.Text;
@@ -313,150 +231,65 @@ namespace SRVTracker
         }
         #endregion
 
-        #region Matrix Value Updating
 
-        private void numericUpDownm3_ValueChanged(object sender, EventArgs e)
+
+        private void trackBarPositionX_Scroll(object sender, EventArgs e)
+        {
+            numericUpDownX.Value = trackBarPositionX.Value/100;
+            ApplyMatrixToOverlay();
+        }
+
+        private void trackBarPositionY_Scroll(object sender, EventArgs e)
+        {
+            numericUpDownY.Value = trackBarPositionY.Value / 100;
+            ApplyMatrixToOverlay();
+        }
+
+        private void trackBarPositionZ_Scroll(object sender, EventArgs e)
         {
             ApplyMatrixToOverlay();
         }
 
-        private void numericUpDownm0_ValueChanged(object sender, EventArgs e)
+        private void trackBarRotationX_Scroll(object sender, EventArgs e)
         {
             ApplyMatrixToOverlay();
         }
 
-        private void numericUpDownm4_ValueChanged(object sender, EventArgs e)
+        private void trackBarRotationY_Scroll(object sender, EventArgs e)
         {
             ApplyMatrixToOverlay();
         }
 
-        private void numericUpDownm8_ValueChanged(object sender, EventArgs e)
+        private void trackBarRotationZ_Scroll(object sender, EventArgs e)
         {
             ApplyMatrixToOverlay();
         }
 
-        private void numericUpDownm1_ValueChanged(object sender, EventArgs e)
+        private void numericUpDownX_ValueChanged(object sender, EventArgs e)
         {
-            ApplyMatrixToOverlay();
+            if (trackBarPositionX.Value != (int)(numericUpDownX.Value * 100))
+            {
+                trackBarPositionX.Value = (int)(numericUpDownX.Value * 100);
+                ApplyMatrixToOverlay();
+            }            
         }
 
-        private void numericUpDownm5_ValueChanged(object sender, EventArgs e)
+        private void numericUpDownY_ValueChanged(object sender, EventArgs e)
         {
-            ApplyMatrixToOverlay();
+            if (trackBarPositionY.Value != (int)(numericUpDownY.Value * 100))
+            {
+                trackBarPositionY.Value = (int)(numericUpDownY.Value * 100);
+                ApplyMatrixToOverlay();
+            }
         }
 
-        private void numericUpDownm9_ValueChanged(object sender, EventArgs e)
+        private void numericUpDownZ_ValueChanged(object sender, EventArgs e)
         {
-            ApplyMatrixToOverlay();
+            if (trackBarPositionZ.Value != (int)(numericUpDownZ.Value * 100))
+            {
+                trackBarPositionZ.Value = (int)(numericUpDownZ.Value * 100);
+                ApplyMatrixToOverlay();
+            }
         }
-
-        private void numericUpDownm2_ValueChanged(object sender, EventArgs e)
-        {
-            ApplyMatrixToOverlay();
-        }
-
-        private void numericUpDownm6_ValueChanged(object sender, EventArgs e)
-        {
-            ApplyMatrixToOverlay();
-        }
-
-        private void numericUpDownm10_ValueChanged(object sender, EventArgs e)
-        {
-            ApplyMatrixToOverlay();
-        }
-
-        private void numericUpDownm7_ValueChanged(object sender, EventArgs e)
-        {
-            ApplyMatrixToOverlay();
-        }
-
-        private void numericUpDownm11_ValueChanged(object sender, EventArgs e)
-        {
-            ApplyMatrixToOverlay();
-        }
-        #endregion
-
-        #region Slider Functionality
-
-        private void trackBarEditMatrixValue_Scroll(object sender, EventArgs e)
-        {
-            if (_sliderTargetControl == null)
-                return;
-            ((NumericUpDown)_sliderTargetControl).Value = ((decimal)trackBarEditMatrixValue.Value / 1000);
-        }
-
-        private void AttachSliderToNumericUpDown(NumericUpDown attachedControl)
-        {
-            int sliderValue = (int)(attachedControl.Value * 1000);
-            _sliderTargetControl = attachedControl;
-            if (sliderValue > trackBarEditMatrixValue.Maximum)
-                trackBarEditMatrixValue.Maximum = sliderValue;
-            if (sliderValue < trackBarEditMatrixValue.Minimum)
-                trackBarEditMatrixValue.Minimum = sliderValue;
-            trackBarEditMatrixValue.Value = sliderValue;
-        }
-
-        private void numericUpDownm3_Enter(object sender, EventArgs e)
-        {
-            AttachSliderToNumericUpDown(numericUpDownm3);
-        }
-
-        private void numericUpDownm7_Enter(object sender, EventArgs e)
-        {
-            AttachSliderToNumericUpDown(numericUpDownm7);
-        }
-
-        private void numericUpDownm11_Enter(object sender, EventArgs e)
-        {
-            AttachSliderToNumericUpDown(numericUpDownm11);
-        }
-
-        private void numericUpDownm0_Enter(object sender, EventArgs e)
-        {
-            AttachSliderToNumericUpDown(numericUpDownm0);
-        }
-
-        private void numericUpDownm5_Enter(object sender, EventArgs e)
-        {
-            AttachSliderToNumericUpDown(numericUpDownm5);
-        }
-
-        private void numericUpDownm10_Enter(object sender, EventArgs e)
-        {
-            AttachSliderToNumericUpDown(numericUpDownm10);
-        }
-
-        private void numericUpDownm6_Enter(object sender, EventArgs e)
-        {
-            AttachSliderToNumericUpDown(numericUpDownm6);
-        }
-
-        private void numericUpDownm2_Enter(object sender, EventArgs e)
-        {
-            AttachSliderToNumericUpDown(numericUpDownm2);
-        }
-
-        private void numericUpDownm1_Enter(object sender, EventArgs e)
-        {
-            AttachSliderToNumericUpDown(numericUpDownm1);
-        }
-
-        private void numericUpDownm9_Enter(object sender, EventArgs e)
-        {
-            AttachSliderToNumericUpDown(numericUpDownm9);
-        }
-
-        private void numericUpDownm8_Enter(object sender, EventArgs e)
-        {
-            AttachSliderToNumericUpDown(numericUpDownm8);
-        }
-
-        private void numericUpDownm4_Enter(object sender, EventArgs e)
-        {
-            AttachSliderToNumericUpDown(numericUpDownm4);
-        }
-        #endregion
-
-
     }
 }

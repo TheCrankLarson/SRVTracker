@@ -58,7 +58,7 @@
     <LangVersion>7.3</LangVersion>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>true</Prefer32Bit>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <OutputPath>bin\x64\Release\</OutputPath>
@@ -69,8 +69,8 @@
     <LangVersion>7.3</LangVersion>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>true</Prefer32Bit>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Prefer32Bit>false</Prefer32Bit>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -96,22 +96,6 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.DirectX, Version=1.0.2902.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
-      <HintPath>..\..\..\..\..\..\Windows\Microsoft.NET\DirectX for Managed Code\1.0.2902.0\Microsoft.DirectX.dll</HintPath>
-      <SpecificVersion>False</SpecificVersion>
-    </Reference>
-    <Reference Include="Microsoft.DirectX.Direct3D, Version=1.0.2902.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Windows\Microsoft.NET\DirectX for Managed Code\1.0.2902.0\Microsoft.DirectX.Direct3D.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.DirectX.Direct3DX, Version=1.0.2902.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Windows\Microsoft.NET\DirectX for Managed Code\1.0.2911.0\Microsoft.DirectX.Direct3DX.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.DirectX.DirectDraw, Version=1.0.2902.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Windows\Microsoft.NET\DirectX for Managed Code\1.0.2902.0\Microsoft.DirectX.DirectDraw.dll</HintPath>
-    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -229,6 +213,7 @@
       <DependentUpon>UpdaterForm.cs</DependentUpon>
     </Compile>
     <Compile Include="VRLocator.cs" />
+    <Compile Include="VRLocatorOverlay.cs" />
     <Compile Include="VRPanelCollection.cs" />
     <EmbeddedResource Include="FormAddLocation.resx">
       <DependentUpon>FormAddLocation.cs</DependentUpon>
@@ -321,9 +306,9 @@
     <None Include="Resources\Refresh_16x.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\..\Development Projects\OpenVR\OpenVRApiModule\OpenVRApiModule.csproj">
-      <Project>{516e5be7-28b7-4dee-b2fe-1e0d089c21dc}</Project>
-      <Name>OpenVRApiModule</Name>
+    <ProjectReference Include="..\..\..\..\..\..\Development Projects\OVRSharp\OVRSharp\OVRSharp.csproj">
+      <Project>{82782188-2e33-45a8-9a58-e3941de1c18c}</Project>
+      <Name>OVRSharp</Name>
     </ProjectReference>
     <ProjectReference Include="EDTracking\EDTracking.csproj">
       <Project>{d36c1dc6-c1d4-4750-894c-54666389c630}</Project>
@@ -388,8 +373,8 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="OpenXR.PInvoke">
-      <Version>0.0.1</Version>
+    <PackageReference Include="SlimDX">
+      <Version>4.0.13.44</Version>
     </PackageReference>
     <PackageReference Include="System.Text.Json">
       <Version>5.0.2</Version>

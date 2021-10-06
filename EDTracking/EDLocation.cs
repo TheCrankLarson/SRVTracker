@@ -86,7 +86,7 @@ namespace EDTracking
             return null;
         }
 
-        private static double ConvertToRadians(double angle)
+        public static double ConvertToRadians(double angle)
         {
             return (Math.PI / 180) * angle;
         }
