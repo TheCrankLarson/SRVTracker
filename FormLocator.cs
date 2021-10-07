@@ -156,11 +156,13 @@ namespace SRVTracker
         public string TrackingTarget { get; private set; } = "";
 
 
-        public void SetTarget(EDLocation targetLocation, string additionalInfo = "")
+        public void SetTarget(EDLocation targetLocation, string additionalInfo = "", string targetName = "")
         {
             // Sets the tracking target
             _targetPosition = targetLocation;
-            UpdateTrackingTarget(targetLocation.Name);
+            if (String.IsNullOrEmpty(targetName))
+                targetName = targetLocation.Name;
+            UpdateTrackingTarget(targetName);
             locatorHUD1.SetAdditionalInfo(additionalInfo);
             DisplayTarget();
             UpdateTracking();

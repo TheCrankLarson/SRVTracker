@@ -256,7 +256,7 @@ namespace SRVTracker
                     else
                     {
                         PlayEventSound("Arrived at waypoint");
-                        FormLocator.GetLocator().SetTarget(_route.Waypoints[_nextWaypoint].Location, GetBearingAfterNextWaypoint());
+                        FormLocator.GetLocator().SetTarget(_route.Waypoints[_nextWaypoint].Location, GetBearingAfterNextWaypoint(), _route.Waypoints[_nextWaypoint].Name);
                         Action action = new Action(() =>
                         {
                             listBoxWaypoints.SelectedIndex = _nextWaypoint;
@@ -438,6 +438,7 @@ namespace SRVTracker
         {
             if (String.IsNullOrEmpty(textBoxRouteName.Text))
             {
+                tabControl1.SelectedTab = tabControl1.TabPages["tabPageRoute"];
                 textBoxRouteName.Focus();
                 return;
             }
@@ -512,7 +513,7 @@ namespace SRVTracker
                 return;
             try
             {
-                FormLocator.GetLocator().SetTarget(_route.Waypoints[listBoxWaypoints.SelectedIndex].Location);
+                FormLocator.GetLocator().SetTarget(_route.Waypoints[listBoxWaypoints.SelectedIndex].Location,"", _route.Waypoints[listBoxWaypoints.SelectedIndex].Name);
             }
             catch { }
         }
@@ -584,6 +585,7 @@ namespace SRVTracker
             if (listBoxWaypoints.SelectedIndex < 0 || _updatingWaypointInfo)
                 return;
             _route.Waypoints[listBoxWaypoints.SelectedIndex].Name = textBoxWaypointName.Text;
+            
             DisplayRoute();
         }
 
@@ -606,7 +608,7 @@ namespace SRVTracker
             buttonStartRecording.Enabled = false;
             buttonStop.Enabled = true;
             _formTracker.StartTracking();
-            FormLocator.GetLocator().SetTarget(_route.Waypoints[_nextWaypoint].Location, GetBearingAfterNextWaypoint());
+            FormLocator.GetLocator().SetTarget(_route.Waypoints[_nextWaypoint].Location, GetBearingAfterNextWaypoint(), _route.Waypoints[_nextWaypoint].Name);
         }
 
         private void buttonDeleteWaypoint_Click(object sender, EventArgs e)
