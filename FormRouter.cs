@@ -101,6 +101,7 @@ namespace SRVTracker
                 listBoxWaypoints.Invoke(action);
             else
                 action();
+            _timeTrialTelemetryDisplay?.UpdateCell(1, 0, _route.Name);
         }
 
         private string GetBearingAfterNextWaypoint()
@@ -251,7 +252,7 @@ namespace SRVTracker
                         _timeTrialWaypointTimes?.Add(DateTime.UtcNow);
                         _timeTrialTelemetryDisplay?.AddRow("Finished",
                             _timeTrialWaypointTimes[_timeTrialWaypointTimes.Count - 1].Subtract(_timeTrialWaypointTimes[0]).ToString(@"hh\:mm\:ss\.ff"));
-                        FormLocator.GetLocator().SetTarget("");
+                        FormLocator.GetLocator().SetTarget(_route.Waypoints[_route.Waypoints.Count-1].Location, _route.Waypoints[_route.Waypoints.Count - 1].Name, "Destination Reached");
                     }
                     else
                     {
@@ -486,7 +487,6 @@ namespace SRVTracker
                             _saveFileName = openFileDialog.FileName;
                             buttonSaveRoute.Enabled = true;
                             DisplayRoute();
-                            _timeTrialTelemetryDisplay?.UpdateCell(1, 0, _route.Name);
                         }
                     }
                     catch { }
@@ -1282,6 +1282,20 @@ namespace SRVTracker
                 for (int i = 0; i < routeWaypoints.Count; i++)
                     AddWaypointToRoute(routeWaypoints[i]);
             }
+        }
+
+        private void buttonRandomizeWaypoints_Click(object sender, EventArgs e)
+        {
+            List<EDWaypoint> randomizedList = new List<EDWaypoint>();
+            Random random = new Random();
+            while (_route.Waypoints.Count>0)
+            {
+                int j = random.Next(0, _route.Waypoints.Count - 1);
+                randomizedList.Add(_route.Waypoints[j]);
+                _route.Waypoints.RemoveAt(j);
+            }
+            _route.Waypoints = randomizedList;
+            DisplayRoute();
         }
     }
 }
