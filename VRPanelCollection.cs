@@ -193,7 +193,7 @@ namespace SRVTracker
             Matrix4x4 rotation = Matrix4x4.CreateFromYawPitchRoll(DegreesToRadians(RotationY), DegreesToRadians(RotationX), DegreesToRadians(RotationZ));
             Matrix4x4 translation = Matrix4x4.CreateTranslation(PositionX, PositionY, PositionZ);
             
-            return Matrix4x4.Multiply(rotation, translation).ToHmdMatrix34_t();
+            return Matrix4x4.Add(rotation, translation).ToHmdMatrix34_t();
         }
     }
 }

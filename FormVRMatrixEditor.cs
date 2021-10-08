@@ -40,7 +40,7 @@ namespace SRVTracker
 
         private TransformDefinition DefaultVRMatrix()
         {
-            return new TransformDefinition(1.5f,2,-1.5f,0,0,0,0.8f);
+            return new TransformDefinition(-1.5f,2,-0.8f,0,0,0,0.8f);
         }
 
         #region Load and save matrices functions
@@ -137,9 +137,9 @@ namespace SRVTracker
             if (listBoxMatrices.SelectedIndex < 0 )
                 return;
 
-            _savedMatrices[(string)listBoxMatrices.SelectedItem].PositionX = (float)(trackBarPositionX.Value / 100);
-            _savedMatrices[(string)listBoxMatrices.SelectedItem].PositionY = (float)(trackBarPositionY.Value / 100);
-            _savedMatrices[(string)listBoxMatrices.SelectedItem].PositionZ = (float)(trackBarPositionZ.Value / 100);
+            _savedMatrices[(string)listBoxMatrices.SelectedItem].PositionX = (float)trackBarPositionX.Value / 100;
+            _savedMatrices[(string)listBoxMatrices.SelectedItem].PositionY = (float)trackBarPositionY.Value / 100;
+            _savedMatrices[(string)listBoxMatrices.SelectedItem].PositionZ = (float)trackBarPositionZ.Value / 100;
 
             _savedMatrices[(string)listBoxMatrices.SelectedItem].RotationX = (float)trackBarRotationX.Value;
             _savedMatrices[(string)listBoxMatrices.SelectedItem].RotationY = (float)trackBarRotationY.Value;
@@ -235,18 +235,19 @@ namespace SRVTracker
 
         private void trackBarPositionX_Scroll(object sender, EventArgs e)
         {
-            numericUpDownX.Value = trackBarPositionX.Value/100;
+            numericUpDownX.Value = (decimal)trackBarPositionX.Value/100;
             ApplyMatrixToOverlay();
         }
 
         private void trackBarPositionY_Scroll(object sender, EventArgs e)
         {
-            numericUpDownY.Value = trackBarPositionY.Value / 100;
+            numericUpDownY.Value = (decimal)trackBarPositionY.Value / 100;
             ApplyMatrixToOverlay();
         }
 
         private void trackBarPositionZ_Scroll(object sender, EventArgs e)
         {
+            numericUpDownZ.Value = (decimal)trackBarPositionZ.Value / 100;
             ApplyMatrixToOverlay();
         }
 
@@ -290,6 +291,14 @@ namespace SRVTracker
                 trackBarPositionZ.Value = (int)(numericUpDownZ.Value * 100);
                 ApplyMatrixToOverlay();
             }
+        }
+
+        private void buttonResetRotation_Click(object sender, EventArgs e)
+        {
+            trackBarRotationX.Value = 0;
+            trackBarRotationY.Value = 0;
+            trackBarRotationZ.Value = 0;
+            ApplyMatrixToOverlay();
         }
     }
 }

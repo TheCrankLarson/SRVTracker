@@ -514,18 +514,12 @@ namespace EDTracking
         {
             // The waypoints don't need to be visited in order, so we need to check if we are at any of them
 
-            EDWaypoint previousWaypoint = null;
-            if (WaypointIndex > 0)
-                previousWaypoint = _race.Route.Waypoints[WaypointIndex - 1];
-            else if (_race.Laps > 0)
-                previousWaypoint = _race.Route.Waypoints[_race.Route.Waypoints.Count - 1];
-
             for (int i = 0; i < _race.Route.Waypoints.Count; i++)
             {
                 if (!_race.WaypointVisited[i])
                 {
                     EDWaypoint waypoint = _race.Route.Waypoints[i];
-                    if (waypoint.WaypointHit(Location, _previousLocation, previousWaypoint?.Location))
+                    if (waypoint.WaypointHit(Location, _previousLocation))
                     {
                         // We've reached a waypoint
                         WaypointIndex = i;
@@ -534,9 +528,8 @@ namespace EDTracking
                         _race.WaypointVisited[i] = true;
 
                         // Check if there are any waypoints left to visit (if not, race is finished)
-                        for (int j = 0; j < _race.WaypointVisited.Count; j++)
-                            if (!_race.WaypointVisited[i])
-                                return;
+                        if (NumberOfWaypointsVisited < _race.Route.Waypoints.Count)
+                            return;
 
                         // If we get here, then all waypoints have been visited and so the race is finished
                         Finished = true;

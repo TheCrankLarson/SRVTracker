@@ -15,7 +15,7 @@ namespace EDTracking
         public string Name { get; set; } = null;
         public EDRoute Route { get; set; } = null;
         public List<bool> WaypointVisited { get; set; } = new List<bool>();
-        public bool WaypointsMustBeVisitedInOrder = true;
+        public bool WaypointsMustBeVisitedInOrder { get; set; } = true;
         public EDRaceStatus Leader { get; set; } = null;
         public List<string> Contestants { get; set; } = new List<string>();
         public Dictionary<string, EDRaceStatus> Statuses { get; set; } = new Dictionary<string, EDRaceStatus>();
@@ -265,6 +265,7 @@ namespace EDTracking
             StringBuilder maxSpeeds = new StringBuilder();
             StringBuilder averageSpeeds = new StringBuilder();
             StringBuilder distanceToWaypoint = new StringBuilder();
+            StringBuilder totalWaypointsVisited = new StringBuilder();
             StringBuilder totalDistanceLeft = new StringBuilder();
             StringBuilder hullStrengths = new StringBuilder();
             StringBuilder pips = new StringBuilder();
@@ -312,6 +313,7 @@ namespace EDTracking
                 {
                     lastLapTime.AppendLine(Statuses[leaderBoard[i]].LastLapTime().ToString(@"hh\:mm\:ss\:ff"));
                     fastestLapTime.AppendLine(Statuses[leaderBoard[i]].FastestLapTime().ToString(@"hh\:mm\:ss\:ff"));
+                    totalWaypointsVisited.AppendLine(Statuses[leaderBoard[i]].NumberOfWaypointsVisited.ToString());
                     if (Statuses[leaderBoard[i]].Finished)
                     {
                         status.Append(CustomStatusMessages["Completed"]);
@@ -385,6 +387,7 @@ namespace EDTracking
             statsTable.Add("AverageSpeeds", averageSpeeds.ToString());
             statsTable.Add("Status", status.ToString());
             statsTable.Add("DistanceToWaypoint", distanceToWaypoint.ToString());
+            statsTable.Add("TotalWaypointsVisited", totalWaypointsVisited.ToString());
             statsTable.Add("TotalDistanceLeft", totalDistanceLeft.ToString());
             statsTable.Add("Hull", hullStrengths.ToString());
             statsTable.Add("Pips", pips.ToString());
@@ -428,6 +431,7 @@ namespace EDTracking
             { "AverageSpeeds", "Average speeds" },
             { "Status", "Statuses" },
             { "DistanceToWaypoint", "Distances to the next waypoint" },
+            { "TotalWaypointsVisited", "Total waypoints visited" },
             { "TotalDistanceLeft", "Total distances left" },
             { "Hull", "Hull strengths left" },
             { "Pips", "Power Distributor settings" },
