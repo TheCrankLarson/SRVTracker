@@ -31,7 +31,6 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormTracker));
             this.groupBoxStatusLocation = new System.Windows.Forms.GroupBox();
-            this.buttonBrowseStatusFile = new System.Windows.Forms.Button();
             this.textBoxStatusFile = new System.Windows.Forms.TextBox();
             this.statusFileWatcher = new System.IO.FileSystemWatcher();
             this.buttonTest = new System.Windows.Forms.Button();
@@ -47,9 +46,7 @@
             this.radioButtonShipTelemetry = new System.Windows.Forms.RadioButton();
             this.radioButtonSRVTelemetry = new System.Windows.Forms.RadioButton();
             this.buttonNewSession = new System.Windows.Forms.Button();
-            this.buttonBrowseTelemetryFolder = new System.Windows.Forms.Button();
             this.checkBoxExportSRVTelemetry = new System.Windows.Forms.CheckBox();
-            this.buttonSRVTelemetryExportSettings = new System.Windows.Forms.Button();
             this.checkBoxCaptureSRVTelemetry = new System.Windows.Forms.CheckBox();
             this.checkBoxShowSRVTelemetry = new System.Windows.Forms.CheckBox();
             this.radioButtonUseCustomServer = new System.Windows.Forms.RadioButton();
@@ -62,10 +59,6 @@
             this.checkBoxAutoUpdate = new System.Windows.Forms.CheckBox();
             this.checkBoxIncludeBetaUpdates = new System.Windows.Forms.CheckBox();
             this.checkBoxUseDirectionOfTravelAsHeading = new System.Windows.Forms.CheckBox();
-            this.buttonShowConfig = new System.Windows.Forms.Button();
-            this.buttonRaceTracker = new System.Windows.Forms.Button();
-            this.buttonRoutePlanner = new System.Windows.Forms.Button();
-            this.buttonLocator = new System.Windows.Forms.Button();
             this.textBoxClientId = new System.Windows.Forms.TextBox();
             this.buttonUpdate = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
@@ -78,6 +71,13 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tabPageLogging = new System.Windows.Forms.TabPage();
             this.tabPageUpdate = new System.Windows.Forms.TabPage();
+            this.buttonBrowseStatusFile = new System.Windows.Forms.Button();
+            this.buttonBrowseTelemetryFolder = new System.Windows.Forms.Button();
+            this.buttonSRVTelemetryExportSettings = new System.Windows.Forms.Button();
+            this.buttonShowConfig = new System.Windows.Forms.Button();
+            this.buttonRaceTracker = new System.Windows.Forms.Button();
+            this.buttonRoutePlanner = new System.Windows.Forms.Button();
+            this.buttonLocator = new System.Windows.Forms.Button();
             this.groupBoxStatusLocation.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.statusFileWatcher)).BeginInit();
             this.groupBox5.SuspendLayout();
@@ -104,18 +104,6 @@
             this.groupBoxStatusLocation.TabIndex = 0;
             this.groupBoxStatusLocation.TabStop = false;
             this.groupBoxStatusLocation.Text = "Status.json location";
-            // 
-            // buttonBrowseStatusFile
-            // 
-            this.buttonBrowseStatusFile.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.buttonBrowseStatusFile.Image = global::SRVTracker.Properties.Resources.FolderOpened_16x;
-            this.buttonBrowseStatusFile.Location = new System.Drawing.Point(273, 17);
-            this.buttonBrowseStatusFile.Name = "buttonBrowseStatusFile";
-            this.buttonBrowseStatusFile.Size = new System.Drawing.Size(27, 23);
-            this.buttonBrowseStatusFile.TabIndex = 1;
-            this.toolTip1.SetToolTip(this.buttonBrowseStatusFile, "Browse to locate Status.Json file");
-            this.buttonBrowseStatusFile.UseVisualStyleBackColor = true;
-            this.buttonBrowseStatusFile.Click += new System.EventHandler(this.buttonBrowseStatusFile_Click);
             // 
             // textBoxStatusFile
             // 
@@ -146,6 +134,7 @@
             this.buttonTest.TabIndex = 5;
             this.buttonTest.Text = "Test";
             this.buttonTest.UseVisualStyleBackColor = false;
+            this.buttonTest.Visible = false;
             this.buttonTest.Click += new System.EventHandler(this.buttonTest_Click);
             // 
             // labelLastUpdateTime
@@ -312,19 +301,6 @@
             this.buttonNewSession.UseVisualStyleBackColor = true;
             this.buttonNewSession.Click += new System.EventHandler(this.buttonNewSession_Click);
             // 
-            // buttonBrowseTelemetryFolder
-            // 
-            this.buttonBrowseTelemetryFolder.Enabled = false;
-            this.buttonBrowseTelemetryFolder.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.buttonBrowseTelemetryFolder.Image = global::SRVTracker.Properties.Resources.FolderOpened_16x;
-            this.buttonBrowseTelemetryFolder.Location = new System.Drawing.Point(273, 86);
-            this.buttonBrowseTelemetryFolder.Name = "buttonBrowseTelemetryFolder";
-            this.buttonBrowseTelemetryFolder.Size = new System.Drawing.Size(27, 23);
-            this.buttonBrowseTelemetryFolder.TabIndex = 17;
-            this.toolTip1.SetToolTip(this.buttonBrowseTelemetryFolder, "Browse to select the session telemetry save folder");
-            this.buttonBrowseTelemetryFolder.UseVisualStyleBackColor = true;
-            this.buttonBrowseTelemetryFolder.Click += new System.EventHandler(this.buttonBrowseTelemetryFolder_Click);
-            // 
             // checkBoxExportSRVTelemetry
             // 
             this.checkBoxExportSRVTelemetry.AutoSize = true;
@@ -335,20 +311,6 @@
             this.checkBoxExportSRVTelemetry.Text = "Export";
             this.toolTip1.SetToolTip(this.checkBoxExportSRVTelemetry, "If checked, any reports enabled in telemetry options will be exported");
             this.checkBoxExportSRVTelemetry.UseVisualStyleBackColor = true;
-            // 
-            // buttonSRVTelemetryExportSettings
-            // 
-            this.buttonSRVTelemetryExportSettings.Image = global::SRVTracker.Properties.Resources.Settings_16x;
-            this.buttonSRVTelemetryExportSettings.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonSRVTelemetryExportSettings.Location = new System.Drawing.Point(228, 15);
-            this.buttonSRVTelemetryExportSettings.Name = "buttonSRVTelemetryExportSettings";
-            this.buttonSRVTelemetryExportSettings.Size = new System.Drawing.Size(72, 22);
-            this.buttonSRVTelemetryExportSettings.TabIndex = 15;
-            this.buttonSRVTelemetryExportSettings.Text = "Settings";
-            this.buttonSRVTelemetryExportSettings.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.toolTip1.SetToolTip(this.buttonSRVTelemetryExportSettings, "Edit telemetry display/export settings");
-            this.buttonSRVTelemetryExportSettings.UseVisualStyleBackColor = true;
-            this.buttonSRVTelemetryExportSettings.Click += new System.EventHandler(this.buttonSRVTelemetryExportSettings_Click);
             // 
             // checkBoxCaptureSRVTelemetry
             // 
@@ -506,74 +468,6 @@
         "d of direction vehicle is facing\r\n(which is what E: D gives us)");
             this.checkBoxUseDirectionOfTravelAsHeading.UseVisualStyleBackColor = true;
             // 
-            // buttonShowConfig
-            // 
-            this.buttonShowConfig.BackColor = System.Drawing.SystemColors.Control;
-            this.buttonShowConfig.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonShowConfig.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.buttonShowConfig.Image = global::SRVTracker.Properties.Resources.Settings_16x;
-            this.buttonShowConfig.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonShowConfig.Location = new System.Drawing.Point(12, 99);
-            this.buttonShowConfig.Name = "buttonShowConfig";
-            this.buttonShowConfig.Size = new System.Drawing.Size(78, 23);
-            this.buttonShowConfig.TabIndex = 12;
-            this.buttonShowConfig.Text = "Settings";
-            this.buttonShowConfig.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.toolTip1.SetToolTip(this.buttonShowConfig, "Show Settings");
-            this.buttonShowConfig.UseVisualStyleBackColor = false;
-            this.buttonShowConfig.Click += new System.EventHandler(this.buttonShowConfig_Click);
-            // 
-            // buttonRaceTracker
-            // 
-            this.buttonRaceTracker.BackColor = System.Drawing.SystemColors.Control;
-            this.buttonRaceTracker.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonRaceTracker.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.buttonRaceTracker.Image = global::SRVTracker.Properties.Resources.race_flag16x16;
-            this.buttonRaceTracker.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonRaceTracker.Location = new System.Drawing.Point(12, 70);
-            this.buttonRaceTracker.Name = "buttonRaceTracker";
-            this.buttonRaceTracker.Size = new System.Drawing.Size(78, 23);
-            this.buttonRaceTracker.TabIndex = 17;
-            this.buttonRaceTracker.Text = "Racing";
-            this.buttonRaceTracker.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.toolTip1.SetToolTip(this.buttonRaceTracker, "Open the Race Manager\r\nCreate, manage and track SRV races");
-            this.buttonRaceTracker.UseVisualStyleBackColor = false;
-            this.buttonRaceTracker.Click += new System.EventHandler(this.buttonRaceTracker_Click);
-            // 
-            // buttonRoutePlanner
-            // 
-            this.buttonRoutePlanner.BackColor = System.Drawing.SystemColors.Control;
-            this.buttonRoutePlanner.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonRoutePlanner.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.buttonRoutePlanner.Image = global::SRVTracker.Properties.Resources.Route_planner_16x16bw;
-            this.buttonRoutePlanner.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonRoutePlanner.Location = new System.Drawing.Point(12, 41);
-            this.buttonRoutePlanner.Name = "buttonRoutePlanner";
-            this.buttonRoutePlanner.Size = new System.Drawing.Size(78, 23);
-            this.buttonRoutePlanner.TabIndex = 10;
-            this.buttonRoutePlanner.Text = "Router";
-            this.buttonRoutePlanner.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.toolTip1.SetToolTip(this.buttonRoutePlanner, "Open the Route Planner\r\nCreate/edit and replay routes (integrates with Locator)");
-            this.buttonRoutePlanner.UseVisualStyleBackColor = false;
-            this.buttonRoutePlanner.Click += new System.EventHandler(this.buttonRoutePlanner_Click);
-            // 
-            // buttonLocator
-            // 
-            this.buttonLocator.BackColor = System.Drawing.SystemColors.Control;
-            this.buttonLocator.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonLocator.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.buttonLocator.Image = global::SRVTracker.Properties.Resources.Target_16x;
-            this.buttonLocator.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonLocator.Location = new System.Drawing.Point(12, 12);
-            this.buttonLocator.Name = "buttonLocator";
-            this.buttonLocator.Size = new System.Drawing.Size(78, 23);
-            this.buttonLocator.TabIndex = 9;
-            this.buttonLocator.Text = "Locator";
-            this.buttonLocator.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.toolTip1.SetToolTip(this.buttonLocator, "Open the Locator\r\nProvides directions to locations and other commanders.");
-            this.buttonLocator.UseVisualStyleBackColor = false;
-            this.buttonLocator.Click += new System.EventHandler(this.buttonLocator_Click);
-            // 
             // textBoxClientId
             // 
             this.textBoxClientId.Location = new System.Drawing.Point(56, 62);
@@ -709,6 +603,113 @@
             this.tabPageUpdate.TabIndex = 2;
             this.tabPageUpdate.Text = "Update";
             this.tabPageUpdate.UseVisualStyleBackColor = true;
+            // 
+            // buttonBrowseStatusFile
+            // 
+            this.buttonBrowseStatusFile.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.buttonBrowseStatusFile.Image = global::SRVTracker.Properties.Resources.FolderOpened_16x;
+            this.buttonBrowseStatusFile.Location = new System.Drawing.Point(273, 17);
+            this.buttonBrowseStatusFile.Name = "buttonBrowseStatusFile";
+            this.buttonBrowseStatusFile.Size = new System.Drawing.Size(27, 23);
+            this.buttonBrowseStatusFile.TabIndex = 1;
+            this.toolTip1.SetToolTip(this.buttonBrowseStatusFile, "Browse to locate Status.Json file");
+            this.buttonBrowseStatusFile.UseVisualStyleBackColor = true;
+            this.buttonBrowseStatusFile.Click += new System.EventHandler(this.buttonBrowseStatusFile_Click);
+            // 
+            // buttonBrowseTelemetryFolder
+            // 
+            this.buttonBrowseTelemetryFolder.Enabled = false;
+            this.buttonBrowseTelemetryFolder.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.buttonBrowseTelemetryFolder.Image = global::SRVTracker.Properties.Resources.FolderOpened_16x;
+            this.buttonBrowseTelemetryFolder.Location = new System.Drawing.Point(273, 86);
+            this.buttonBrowseTelemetryFolder.Name = "buttonBrowseTelemetryFolder";
+            this.buttonBrowseTelemetryFolder.Size = new System.Drawing.Size(27, 23);
+            this.buttonBrowseTelemetryFolder.TabIndex = 17;
+            this.toolTip1.SetToolTip(this.buttonBrowseTelemetryFolder, "Browse to select the session telemetry save folder");
+            this.buttonBrowseTelemetryFolder.UseVisualStyleBackColor = true;
+            this.buttonBrowseTelemetryFolder.Click += new System.EventHandler(this.buttonBrowseTelemetryFolder_Click);
+            // 
+            // buttonSRVTelemetryExportSettings
+            // 
+            this.buttonSRVTelemetryExportSettings.Image = global::SRVTracker.Properties.Resources.Settings_16x;
+            this.buttonSRVTelemetryExportSettings.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.buttonSRVTelemetryExportSettings.Location = new System.Drawing.Point(228, 15);
+            this.buttonSRVTelemetryExportSettings.Name = "buttonSRVTelemetryExportSettings";
+            this.buttonSRVTelemetryExportSettings.Size = new System.Drawing.Size(72, 22);
+            this.buttonSRVTelemetryExportSettings.TabIndex = 15;
+            this.buttonSRVTelemetryExportSettings.Text = "Settings";
+            this.buttonSRVTelemetryExportSettings.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.toolTip1.SetToolTip(this.buttonSRVTelemetryExportSettings, "Edit telemetry display/export settings");
+            this.buttonSRVTelemetryExportSettings.UseVisualStyleBackColor = true;
+            this.buttonSRVTelemetryExportSettings.Click += new System.EventHandler(this.buttonSRVTelemetryExportSettings_Click);
+            // 
+            // buttonShowConfig
+            // 
+            this.buttonShowConfig.BackColor = System.Drawing.SystemColors.Control;
+            this.buttonShowConfig.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonShowConfig.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.buttonShowConfig.Image = global::SRVTracker.Properties.Resources.Settings_16x;
+            this.buttonShowConfig.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.buttonShowConfig.Location = new System.Drawing.Point(12, 99);
+            this.buttonShowConfig.Name = "buttonShowConfig";
+            this.buttonShowConfig.Size = new System.Drawing.Size(78, 23);
+            this.buttonShowConfig.TabIndex = 12;
+            this.buttonShowConfig.Text = "Settings";
+            this.buttonShowConfig.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.toolTip1.SetToolTip(this.buttonShowConfig, "Show Settings");
+            this.buttonShowConfig.UseVisualStyleBackColor = false;
+            this.buttonShowConfig.Click += new System.EventHandler(this.buttonShowConfig_Click);
+            // 
+            // buttonRaceTracker
+            // 
+            this.buttonRaceTracker.BackColor = System.Drawing.SystemColors.Control;
+            this.buttonRaceTracker.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonRaceTracker.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.buttonRaceTracker.Image = global::SRVTracker.Properties.Resources.race_flag16x16;
+            this.buttonRaceTracker.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.buttonRaceTracker.Location = new System.Drawing.Point(12, 70);
+            this.buttonRaceTracker.Name = "buttonRaceTracker";
+            this.buttonRaceTracker.Size = new System.Drawing.Size(78, 23);
+            this.buttonRaceTracker.TabIndex = 17;
+            this.buttonRaceTracker.Text = "Racing";
+            this.buttonRaceTracker.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.toolTip1.SetToolTip(this.buttonRaceTracker, "Open the Race Manager\r\nCreate, manage and track SRV races");
+            this.buttonRaceTracker.UseVisualStyleBackColor = false;
+            this.buttonRaceTracker.Click += new System.EventHandler(this.buttonRaceTracker_Click);
+            // 
+            // buttonRoutePlanner
+            // 
+            this.buttonRoutePlanner.BackColor = System.Drawing.SystemColors.Control;
+            this.buttonRoutePlanner.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonRoutePlanner.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.buttonRoutePlanner.Image = global::SRVTracker.Properties.Resources.Route_planner_16x16bw;
+            this.buttonRoutePlanner.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.buttonRoutePlanner.Location = new System.Drawing.Point(12, 41);
+            this.buttonRoutePlanner.Name = "buttonRoutePlanner";
+            this.buttonRoutePlanner.Size = new System.Drawing.Size(78, 23);
+            this.buttonRoutePlanner.TabIndex = 10;
+            this.buttonRoutePlanner.Text = "Router";
+            this.buttonRoutePlanner.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.toolTip1.SetToolTip(this.buttonRoutePlanner, "Open the Route Planner\r\nCreate/edit and replay routes (integrates with Locator)");
+            this.buttonRoutePlanner.UseVisualStyleBackColor = false;
+            this.buttonRoutePlanner.Click += new System.EventHandler(this.buttonRoutePlanner_Click);
+            // 
+            // buttonLocator
+            // 
+            this.buttonLocator.BackColor = System.Drawing.SystemColors.Control;
+            this.buttonLocator.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonLocator.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.buttonLocator.Image = global::SRVTracker.Properties.Resources.Target_16x;
+            this.buttonLocator.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.buttonLocator.Location = new System.Drawing.Point(12, 12);
+            this.buttonLocator.Name = "buttonLocator";
+            this.buttonLocator.Size = new System.Drawing.Size(78, 23);
+            this.buttonLocator.TabIndex = 9;
+            this.buttonLocator.Text = "Locator";
+            this.buttonLocator.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.toolTip1.SetToolTip(this.buttonLocator, "Open the Locator\r\nProvides directions to locations and other commanders.");
+            this.buttonLocator.UseVisualStyleBackColor = false;
+            this.buttonLocator.Click += new System.EventHandler(this.buttonLocator_Click);
             // 
             // FormTracker
             // 
