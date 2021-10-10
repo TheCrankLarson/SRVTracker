@@ -31,6 +31,9 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormRaceReplay));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.buttonOpenCommanderIds = new System.Windows.Forms.Button();
+            this.label6 = new System.Windows.Forms.Label();
+            this.textBoxCommanderIdsFile = new System.Windows.Forms.TextBox();
             this.buttonOpenRaceFolder = new System.Windows.Forms.Button();
             this.textBoxRaceDataFolder = new System.Windows.Forms.TextBox();
             this.listBoxParticipants = new System.Windows.Forms.ListBox();
@@ -65,14 +68,43 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.buttonOpenCommanderIds);
+            this.groupBox1.Controls.Add(this.label6);
+            this.groupBox1.Controls.Add(this.textBoxCommanderIdsFile);
             this.groupBox1.Controls.Add(this.buttonOpenRaceFolder);
             this.groupBox1.Controls.Add(this.textBoxRaceDataFolder);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(469, 49);
+            this.groupBox1.Size = new System.Drawing.Size(469, 87);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Race Data Location";
+            this.groupBox1.Text = "Race Data";
+            // 
+            // buttonOpenCommanderIds
+            // 
+            this.buttonOpenCommanderIds.Image = global::RaceTester.Properties.Resources.OpenFolder_16x;
+            this.buttonOpenCommanderIds.Location = new System.Drawing.Point(432, 42);
+            this.buttonOpenCommanderIds.Name = "buttonOpenCommanderIds";
+            this.buttonOpenCommanderIds.Size = new System.Drawing.Size(31, 26);
+            this.buttonOpenCommanderIds.TabIndex = 4;
+            this.buttonOpenCommanderIds.UseVisualStyleBackColor = true;
+            this.buttonOpenCommanderIds.Click += new System.EventHandler(this.buttonOpenCommanderIds_Click);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(6, 48);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(83, 13);
+            this.label6.TabIndex = 3;
+            this.label6.Text = "Commander Ids:";
+            // 
+            // textBoxCommanderIdsFile
+            // 
+            this.textBoxCommanderIdsFile.Location = new System.Drawing.Point(95, 45);
+            this.textBoxCommanderIdsFile.Name = "textBoxCommanderIdsFile";
+            this.textBoxCommanderIdsFile.Size = new System.Drawing.Size(331, 20);
+            this.textBoxCommanderIdsFile.TabIndex = 2;
             // 
             // buttonOpenRaceFolder
             // 
@@ -104,7 +136,7 @@
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.listBoxParticipants);
-            this.groupBox2.Location = new System.Drawing.Point(12, 67);
+            this.groupBox2.Location = new System.Drawing.Point(12, 149);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(221, 279);
             this.groupBox2.TabIndex = 2;
@@ -119,7 +151,7 @@
             this.groupBox3.Controls.Add(this.buttonStop);
             this.groupBox3.Controls.Add(this.buttonPause);
             this.groupBox3.Controls.Add(this.buttonPlay);
-            this.groupBox3.Location = new System.Drawing.Point(245, 263);
+            this.groupBox3.Location = new System.Drawing.Point(245, 345);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(133, 80);
             this.groupBox3.TabIndex = 3;
@@ -207,7 +239,7 @@
             this.groupBox4.Controls.Add(this.label2);
             this.groupBox4.Controls.Add(this.label1);
             this.groupBox4.Controls.Add(this.textBoxRaceName);
-            this.groupBox4.Location = new System.Drawing.Point(239, 144);
+            this.groupBox4.Location = new System.Drawing.Point(239, 226);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(242, 113);
             this.groupBox4.TabIndex = 4;
@@ -270,7 +302,7 @@
             // 
             // buttonClose
             // 
-            this.buttonClose.Location = new System.Drawing.Point(406, 320);
+            this.buttonClose.Location = new System.Drawing.Point(406, 402);
             this.buttonClose.Name = "buttonClose";
             this.buttonClose.Size = new System.Drawing.Size(75, 23);
             this.buttonClose.TabIndex = 5;
@@ -288,7 +320,7 @@
             this.groupBox8.Controls.Add(this.radioButtonUseDefaultServer);
             this.groupBox8.Controls.Add(this.textBoxUploadServer);
             this.groupBox8.ForeColor = System.Drawing.Color.Black;
-            this.groupBox8.Location = new System.Drawing.Point(239, 67);
+            this.groupBox8.Location = new System.Drawing.Point(239, 149);
             this.groupBox8.Name = "groupBox8";
             this.groupBox8.Size = new System.Drawing.Size(243, 71);
             this.groupBox8.TabIndex = 17;
@@ -337,7 +369,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(487, 356);
+            this.ClientSize = new System.Drawing.Size(487, 460);
             this.Controls.Add(this.groupBox8);
             this.Controls.Add(this.buttonClose);
             this.Controls.Add(this.groupBox4);
@@ -390,6 +422,9 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.NumericUpDown numericUpDownPlaybackSpeed;
+        private System.Windows.Forms.Button buttonOpenCommanderIds;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox textBoxCommanderIdsFile;
     }
 }
 

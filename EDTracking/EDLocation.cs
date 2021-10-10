@@ -125,9 +125,6 @@ namespace EDTracking
             if (location1.PlanetaryRadius != location2.PlanetaryRadius)
                 return 0;
 
-            if (location1.Altitude == location2.Altitude)
-                return DistanceBetween(location1, location2);
-
             double R = (double)location1.PlanetaryRadius;
             if (R <= 0)
                 return 0;

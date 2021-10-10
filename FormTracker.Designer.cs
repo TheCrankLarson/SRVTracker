@@ -78,6 +78,8 @@
             this.buttonRaceTracker = new System.Windows.Forms.Button();
             this.buttonRoutePlanner = new System.Windows.Forms.Button();
             this.buttonLocator = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
+            this.numericUpDownUdpUploadPort = new System.Windows.Forms.NumericUpDown();
             this.groupBoxStatusLocation.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.statusFileWatcher)).BeginInit();
             this.groupBox5.SuspendLayout();
@@ -91,6 +93,7 @@
             this.groupBox1.SuspendLayout();
             this.tabPageLogging.SuspendLayout();
             this.tabPageUpdate.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownUdpUploadPort)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBoxStatusLocation
@@ -561,6 +564,8 @@
             // 
             // tabPageServer
             // 
+            this.tabPageServer.Controls.Add(this.label3);
+            this.tabPageServer.Controls.Add(this.numericUpDownUdpUploadPort);
             this.tabPageServer.Controls.Add(this.groupBox1);
             this.tabPageServer.Location = new System.Drawing.Point(4, 22);
             this.tabPageServer.Name = "tabPageServer";
@@ -711,6 +716,33 @@
             this.buttonLocator.UseVisualStyleBackColor = false;
             this.buttonLocator.Click += new System.EventHandler(this.buttonLocator_Click);
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(94, 83);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(92, 13);
+            this.label3.TabIndex = 6;
+            this.label3.Text = "UDP Upload Port:";
+            // 
+            // numericUpDownUdpUploadPort
+            // 
+            this.numericUpDownUdpUploadPort.Location = new System.Drawing.Point(192, 81);
+            this.numericUpDownUdpUploadPort.Maximum = new decimal(new int[] {
+            65535,
+            0,
+            0,
+            0});
+            this.numericUpDownUdpUploadPort.Name = "numericUpDownUdpUploadPort";
+            this.numericUpDownUdpUploadPort.Size = new System.Drawing.Size(120, 20);
+            this.numericUpDownUdpUploadPort.TabIndex = 5;
+            this.numericUpDownUdpUploadPort.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.numericUpDownUdpUploadPort.Value = new decimal(new int[] {
+            11939,
+            0,
+            0,
+            0});
+            // 
             // FormTracker
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -751,11 +783,13 @@
             this.tabPageMonitoring.ResumeLayout(false);
             this.tabPageMonitoring.PerformLayout();
             this.tabPageServer.ResumeLayout(false);
+            this.tabPageServer.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.tabPageLogging.ResumeLayout(false);
             this.tabPageUpdate.ResumeLayout(false);
             this.tabPageUpdate.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownUdpUploadPort)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -811,6 +845,8 @@
         private System.Windows.Forms.Button buttonUpdateName;
         private System.Windows.Forms.RadioButton radioButtonShipTelemetry;
         private System.Windows.Forms.RadioButton radioButtonSRVTelemetry;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.NumericUpDown numericUpDownUdpUploadPort;
     }
 }
 

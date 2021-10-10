@@ -187,6 +187,17 @@
       <Name>EDTracking</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="RaceMonitoring\CrankyRacing.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="RaceMonitoring\RaceFunctions.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="RaceMonitoring\WatchLiveRace.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>powershell.exe $(SolutionDir)Deploy\Prepare-Deployment.ps1 -SolutionDir $(SolutionDir) -TargetPath $(TargetPath) -OutDir $(OutDir)

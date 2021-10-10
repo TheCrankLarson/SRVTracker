@@ -277,6 +277,10 @@ namespace DataCollator
                 {
                     action = (() => { SendRaceStatus(requestUri, context, sRequest); });
                 }
+                else if (requestUri.StartsWith("racemonitoring/"))
+                {
+                    action = (() => { ReturnWebResource(requestUri, context); });
+                }
                 else if (requestUri.StartsWith("startrace"))
                 {
                     action = (() =>{ StartRace(sRequest, context); });
@@ -439,6 +443,28 @@ namespace DataCollator
         private void WriteResponse(HttpListenerContext Context, string response, int returnStatusCode = (int)HttpStatusCode.OK)
         {
             WriteResponse(Context.Response, response, returnStatusCode);
+        }
+
+        private void WriteFileResponse(HttpListenerContext Context, string Filename)
+        {
+            if (!File.Exists(Filename))
+                WriteErrorResponse(Context.Response, HttpStatusCode.NotFound);
+            else
+            {
+                WriteResponse(Context, File.ReadAllText(Filename));
+            }
+        }
+
+        private void ReturnWebResource(string request, HttpListenerContext Context)
+        {
+            try
+            {
+                WriteFileResponse(Context, $"RaceMonitoring/{request.Substring(request.LastIndexOf("/") + 1)}");
+            }
+            catch
+            {
+                WriteErrorResponse(Context.Response, HttpStatusCode.NotFound);
+            }
         }
 
         private void StartRace(string request, HttpListenerContext Context)

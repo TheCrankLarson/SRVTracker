@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Drawing;
-using System.Linq;
+using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -31,6 +31,8 @@ namespace SRVTracker
         private static string _clientId = null;
         private JournalReader _journalReader = null;
         private EDEvent _lastUploadedEvent = null;
+        private bool _uploadValidated = false;
+        private DateTime _uploadStartTime = DateTime.MinValue;
         public static event EventHandler CommanderLocationChanged;
 
         public static EDLocation CurrentLocation { get; private set; } = new EDLocation();
@@ -363,6 +365,8 @@ namespace SRVTracker
 
             if (ping)
             {
+                if (_lastUploadedEvent == null)
+                    return;
                 edEvent = _lastUploadedEvent;
                 edEvent.TimeStamp = DateTime.UtcNow;
             }
@@ -393,6 +397,37 @@ namespace SRVTracker
                 }
             }
             catch { }
+
+            if (!_uploadValidated)
+                ValidateUploadWorking();
+        }
+
+        private void ValidateUploadWorking()
+        {
+            // Ten seconds after we start uploading we check that the events are being received by the server
+            if (DateTime.Now.Subtract(_uploadStartTime).TotalSeconds < 10)
+                return;
+
+            List<string> activeCommanders = CommanderWatcher.GetCommanders();
+            if (activeCommanders.Contains(_commanderName))
+            {
+                _uploadValidated = true;
+                return;
+            }
+
+            // We don't appear to be listed on the server
+            if (DateTime.Now.Subtract(_uploadStartTime).TotalSeconds > 15)
+            {
+                // More than 15 seconds has passed, so we disable upload and warn
+                Action action = new Action(() => {
+                    checkBoxUpload.Checked = false;
+                    MessageBox.Show(this, "Upload has been disabled as server is not receiving events.\r\nTypical causes are firewall or security software.\r\nPlease resolve issue and try again.", "Upload Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                });
+                if (checkBoxUpload.InvokeRequired)
+                    checkBoxUpload.Invoke(action);
+                else
+                    action();
+            }
         }
 
         private void buttonBrowseStatusFile_Click(object sender, EventArgs e)
@@ -456,7 +491,9 @@ namespace SRVTracker
             // Create the UDP client for sending tracking data
             try
             {
-                _udpClient = new UdpClient(ServerUrl(), 11938);
+                _uploadValidated = false;
+                _uploadStartTime = DateTime.Now;
+                _udpClient = new UdpClient(ServerUrl(), (int)numericUpDownUdpUploadPort.Value);
                 return true;
             }
             catch (Exception ex)

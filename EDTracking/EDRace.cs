@@ -452,8 +452,9 @@ namespace EDTracking
             // Export the current leaderboard
 
             // We only rebuild the statistics after a short time
-            if ( (Finished || DateTime.UtcNow.Subtract(_statsLastGenerated).TotalMilliseconds<750) && !String.IsNullOrEmpty(_lastStatsTable) )
-                return _lastStatsTable;
+            if (!String.IsNullOrEmpty(_lastStatsTable))
+                if ( Finished || DateTime.UtcNow.Subtract(_statsLastGenerated).TotalMilliseconds<750 )
+                    return _lastStatsTable;
 
             Dictionary<string, string> statsTable = ExportRaceStatisticsDict(maxStatusLength);
             _lastStatsTable = JsonSerializer.Serialize(statsTable);

@@ -583,6 +583,7 @@ namespace Race_Manager
             else
                 _race.Laps = 0;
 
+            _race.Finished = false;
             _falseStart = false;
             if (checkBoxEnableAudioStart.Checked)
             {

@@ -491,22 +491,27 @@ namespace SRVTracker
             }
 
             HideVRLocator();
+            _openVRApplication.Shutdown();
+            _openVRApplication = null;
         }
 
         private void UpdateVRLocatorImage()
         {
-            //if (locatorHUD1.PanelRequiresReset())
-            //{
-            //    // For some reason, after 200 updates the OpenVR layer locks up
-            //    // No idea why, so this horrible hack resets it
-            //    string info = "";
-            //    HideVRLocator(false);
-            //    locatorHUD1.ResetPanel();
-            //    ShowVRLocator(ref info, true);
-            //    return;
-            //}
+            if (locatorHUD1.PanelRequiresReset())
+            {
+                // For some reason, after 200 updates the OpenVR layer locks up
+                // No idea why, so this horrible hack resets it
+                string info = "";
+                HideVRLocator(false);
+                locatorHUD1.ResetPanel();
+                _openVRApplication.Shutdown();
+                _openVRApplication = new OVRSharp.Application(OVRSharp.Application.ApplicationType.Overlay);
+                ShowVRLocator(ref info, true);
+                return;
+            }
 
             Bitmap locatorPanel = locatorHUD1.GetLocatorPanelBitmap();
+
             _vrLocator.UpdateVRLocatorImage(locatorPanel);
             return;
             //Bitmap locatorPanel = new Bitmap(locatorHUD1.Width, locatorHUD1.Height);

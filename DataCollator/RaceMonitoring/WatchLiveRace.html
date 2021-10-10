@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Crank's Live Race Monitor</title>
+    <link rel="stylesheet" href="CrankyRacing.css">
+    <script src="RaceFunctions.js"></script>
+    <script>
+        // Configuration
+        var dataUrl = "http://srvtracker.darkbytes.co.uk:11938/DataCollator/";
+        var canvasWidth = 800;
+        var canvasHeight = 800;
+
+        // Global variables
+        var activeRace = null;
+        var updateTimer = null;
+    </script>
+</head>
+<body onload="InitialisePage()">
+    <div class="gridContainer">
+        <div id="header"><h1>Crank's Live Race Monitor</h1></div>
+        <div id="infoPanel">
+            <div id="selectRace" onchange="ConnectRace()">
+                <select id="activeRaces">
+                    <option>No races active.</option>
+                </select>
+            </div>
+            <div id="raceInfo">
+                <h2>Race information</h2>
+                <p>
+                    System: <span id="raceInfoSystem"></span><br />
+                    Planet: <span id="raceInfoPlanet"></span><br />
+                    Date: <span id="raceInfoDate"></span>
+                </p>
+            </div>
+            <div id="leaderBoard"><h2>Leaderboard</h2>
+            <table id="leaderBoardTable">
+                <tr>
+                    <th></th>
+                    <th>Commander</th>
+                </tr>
+                </table></div>
+        </div>
+        <div id="racePanel">
+            <div id="courseContainer">
+                <div id="courseCanvass">
+                    <div id="courseWaypoints"></div>
+                    <div id="courseParticipants"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <pre id="debugLog"></pre>
+</body>
+</html>

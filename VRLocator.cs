@@ -117,45 +117,12 @@ namespace SRVTracker
             _formVRMatrixEditor.Show();
         }
 
-        //public static void ShutdownVr()
-        //{
-        //    OpenVR.Shutdown();
-        //    VRSystem = null;
-        //}
-
-        /*
-        private void InitVRMatrix()
+        public static void ShutdownVr()
         {
-            _vrMatrix = new HmdMatrix34_t();
+            //OpenVR.Shutdown();
+        }
 
-            /*
-            _vrMatrix.m0 = 0.7F;
-            _vrMatrix.m1 = 0.0F;
-            _vrMatrix.m2 = 0.0F;
-            _vrMatrix.m3 = 0.5F; // x
-            _vrMatrix.m4 = 0.0F;
-            _vrMatrix.m5 = -1.0F;
-            _vrMatrix.m6 = 0.0F;
-            _vrMatrix.m7 = 1.5F; // y
-            _vrMatrix.m8 = 0F;
-            _vrMatrix.m9 = 0.0F;
-            _vrMatrix.m10 = 0.0F;
-            _vrMatrix.m11 = -1.5F; // -z
-            
 
-            _vrMatrix.m0 = 1.0F;
-            _vrMatrix.m1 = 0.0F;
-            _vrMatrix.m2 = 0.0F;
-            _vrMatrix.m3 = 0.12F; // x
-            _vrMatrix.m4 = 0.0F;
-            _vrMatrix.m5 = 1.0F;
-            _vrMatrix.m6 = 0.0F;
-            _vrMatrix.m7 = 0.08F; // y
-            _vrMatrix.m8 = 0F;
-            _vrMatrix.m9 = 0.0F;
-            _vrMatrix.m10 = 1.0F;
-            _vrMatrix.m11 = -0.3F; // -z
-        }*/
 
         public bool InitializeGraphics()
         {

@@ -25,17 +25,21 @@ namespace DataCollator
         public static void ReceiveCallback(IAsyncResult ar)
         {
             UdpState s = (UdpState)(ar.AsyncState);
+            byte[] receiveBytes = null;
             try
             {
-                byte[] receiveBytes = s.u.EndReceive(ar, ref s.e);
-                string receiveString = Encoding.UTF8.GetString(receiveBytes);
-                DataReceived?.Invoke(null, receiveString);
+                receiveBytes = s.u.EndReceive(ar, ref s.e);
             }
             catch { }
             s.u.BeginReceive(new AsyncCallback(ReceiveCallback), s);
+            if (receiveBytes == null)
+                return;
+
+            string receiveString = Encoding.UTF8.GetString(receiveBytes);
+            DataReceived?.Invoke(null, receiveString);
         }
 
-        public static void StartListening(int ListenPort = 11938)
+        public static void StartListening(int ListenPort)
         {
             // Receive a message and write it to the console.
             UdpState s = new UdpState();

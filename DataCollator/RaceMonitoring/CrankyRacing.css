@@ -1,0 +1,91 @@
+﻿body {
+    background-color: lightgray;
+    font-family: verdana;
+}
+
+h1 {
+    color: purple;
+    text-align: center;
+    font-size: 30px;
+}
+
+p {
+    font-size: 20px;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+table, th, td {
+    border: 1px solid black;
+}
+
+.gridContainer {
+    display: grid;
+}
+
+#header {
+    grid-row-start: 1;
+    grid-row-end: 1;
+    grid-column-start: 1;
+    grid-column-end: 3;
+}
+
+#infoPanel {
+    grid-row-start: 2;
+    grid-row-end: 3;
+    grid-column-start: 1;
+    grid-column-end: 1;
+}
+
+#racePanel {
+    grid-row-start: 2;
+    grid-row-end: 3;
+    grid-column-start: 2;
+    grid-column-end: 2;
+}
+
+#courseContainer {
+    background-color: black;
+    color: white;
+    width: 800px;
+    height: 800px;
+    display: block;
+}
+
+#courseCanvass {
+    position: absolute;
+    background-color: black;
+    color: white;
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+#courseWaypoints {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 2;
+}
+
+.waypointInfo {
+    position: absolute;
+    color: white;
+}
+
+#courseParticipants {
+    position: absolute;
+    font-size: 10px;
+    top: 0px;
+    left: 0px;
+    z-index: 1;
+}
+
+.racerInfo {
+    position: absolute;
+    color: yellow;
+    font-weight: bold;
+}

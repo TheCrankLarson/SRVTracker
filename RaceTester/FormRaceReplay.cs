@@ -23,6 +23,8 @@ namespace RaceTester
         private int _raceTrackingIndex = 0;
         private DateTime _playbackStartTime = DateTime.MinValue;
         private TimeSpan _raceTimeOffset = new TimeSpan(0);
+        private Dictionary<Guid, string> _commanderGuids = new Dictionary<Guid, string>();
+        private Dictionary<string, Guid> _commanderNames = new Dictionary<string, Guid>();
         UdpClient _udpClient = null;
 
 
@@ -116,6 +118,7 @@ namespace RaceTester
                 if (!CreateUdpClient())
                     return;
             }
+            edEvent.Commander = CommanderGuid(edEvent.Commander).ToString();
             try
             {
                 string eventData = edEvent.ToJson();
@@ -163,6 +166,9 @@ namespace RaceTester
         private void buttonPlay_Click(object sender, EventArgs e)
         {
             if (!CreateUdpClient())
+                return;
+
+            if (!LoadCommanderIds())
                 return;
 
             if (!buttonPause.Enabled)
@@ -240,6 +246,68 @@ namespace RaceTester
             _orderedRaceTracking.RemoveRange(0, _raceTrackingIndex);
             _raceTrackingIndex = 0;
             buttonPlay.Enabled = true;
+        }
+
+        private void buttonOpenCommanderIds_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.InitialDirectory = textBoxRaceDataFolder.Text;
+                openFileDialog.Filter = "Commanders.json files|Commanders.json|All files (*.*)|*.*";
+                openFileDialog.FilterIndex = 0;
+                openFileDialog.RestoreDirectory = true;
+                openFileDialog.FileName = "";
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        textBoxCommanderIdsFile.Text = openFileDialog.FileName;
+                    }
+                    catch { }
+                }
+            }
+        }
+
+        public Guid CommanderGuid(string commanderName)
+        {
+            if (String.IsNullOrEmpty(commanderName))
+                return Guid.Empty;
+
+            try
+            {
+                return _commanderNames[commanderName];
+            }
+            catch
+            {
+                return Guid.Empty;
+            }
+        }
+
+        private bool CreateCommanderNames()
+        {
+            _commanderNames = new Dictionary<string, Guid>();
+            foreach (Guid commanderGuid in _commanderGuids.Keys)
+                _commanderNames.Add(_commanderGuids[commanderGuid], commanderGuid);
+            return true;
+        }
+
+        private bool LoadCommanderIds()
+        {
+            if (String.IsNullOrEmpty(textBoxCommanderIdsFile.Text) || !File.Exists(textBoxCommanderIdsFile.Text))
+                return false;
+
+            try
+            {
+                string registeredCommanders = File.ReadAllText(textBoxCommanderIdsFile.Text);
+                _commanderGuids = JsonSerializer.Deserialize<Dictionary<Guid, String>>(registeredCommanders);
+                return CreateCommanderNames();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to load commander registrations.{Environment.NewLine}{Environment.NewLine}{ex.Message}", "Error",
+                    MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+            }
+            return false;
         }
     }
 
