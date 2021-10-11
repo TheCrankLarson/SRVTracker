@@ -24,7 +24,6 @@ namespace DataCollator
         private List<string> _registeredNotificationUrls = new List<string>();
         private static HttpClient _httpClient = new HttpClient();
         private Dictionary<string, EDEvent> _playerStatus = new Dictionary<string, EDEvent>(); //  Store last known status (with coordinates) of client
-        private Dictionary<string, EDRaceStatus> _commanderStatus = new Dictionary<string, EDRaceStatus>();
         private readonly object _notificationLock = new object();
         private readonly object _logWriteLock = new object();
         private FileStream _logStream = null;
@@ -33,10 +32,8 @@ namespace DataCollator
         private DateTime _lastFinishedRaceCheck = DateTime.UtcNow;
         private DateTime _lastCommanderStatusBuilt = DateTime.MinValue;
         private DateTime _lastAllCommanderStatusBuilt = DateTime.MinValue;
-        //private DateTime _lastCommanderPositionsBuilt = DateTime.MinValue;
         private string _lastCommanderStatus = "";
         private string _lastAllCommanderStatus = "";
-        private string _lastCommanderPositions = "";
         private CommanderRegistration _commanderRegistration = new CommanderRegistration();
 
         public NotificationServer(string ListenURL, bool StartDebug = false, bool VerboseDebug = false)
@@ -70,10 +67,7 @@ namespace DataCollator
         public void EnableDebug()
         {
             if (_logStream == null)
-            {
                 _logStream = File.Open("stream.log", FileMode.OpenOrCreate, FileAccess.Write, FileShare.Read);
-                return;
-            }
         }
 
         public void DisableDebug()
@@ -152,7 +146,7 @@ namespace DataCollator
             }
             catch (Exception ex)
             {
-                Log($"Error creating event: {ex.Message}");
+                LogError($"Error creating event: {ex.Message}");
                 return;
             }
 
@@ -163,8 +157,15 @@ namespace DataCollator
                     {
                         if (!_races[raceGuid].Finished)
                         {
-                            _races[raceGuid].UpdateStatus(updateEvent);
-                            Log($"{raceGuid}: Updated {updateEvent.Commander}", true);
+                            try
+                            {
+                                _races[raceGuid].UpdateStatus(updateEvent);
+                                Log($"{raceGuid}: Updated {updateEvent.Commander}", true);
+                            }
+                            catch (Exception ex)
+                            {
+                                LogError($"{raceGuid}: Unexpected error on update: {ex}");
+                            }
                         }
                         else
                             Log($"{raceGuid}: not updated, race finished", true);
@@ -185,57 +186,34 @@ namespace DataCollator
             {
                 lock (_notificationLock)
                 {
-                    if (!_commanderStatus.ContainsKey(updateEvent.Commander))
+                    if (_playerStatus.ContainsKey(updateEvent.Commander))
                     {
-                        _commanderStatus.Add(updateEvent.Commander, new EDRaceStatus(updateEvent));
-                        if (_playerStatus.ContainsKey(updateEvent.Commander))
-                        {
-                            _playerStatus[updateEvent.Commander] = updateEvent;
-                            Log($"Processed status update for commander: {updateEvent.Commander}", true);
-                        }
-                        else
-                        {
-                            _playerStatus.Add(updateEvent.Commander, updateEvent);
-                            Log($"Received status update for new commander: {updateEvent.Commander}", true);
-                        }
-                    }
-                    else if (_commanderStatus[updateEvent.Commander].TimeStamp > updateEvent.TimeStamp)
-                    {
-                        Log($"Event timestamp ({updateEvent.TimeStamp}) older than existing timestamp ({_commanderStatus[updateEvent.Commander].TimeStamp}): {updateEvent.Commander}", true);
+                        _playerStatus[updateEvent.Commander] = updateEvent;
+                        Log($"Processed status update for commander: {updateEvent.Commander}", true);
                     }
                     else
                     {
-                        _commanderStatus[updateEvent.Commander].UpdateStatus(updateEvent);
-                        if (_playerStatus.ContainsKey(updateEvent.Commander))
-                        {
-                            _playerStatus[updateEvent.Commander] = updateEvent;
-                            Log($"Processed status update for commander: {updateEvent.Commander}", true);
-                        }
-                        else
-                        {
-                            _playerStatus.Add(updateEvent.Commander, updateEvent);
-                            Log($"Received status update for new commander: {updateEvent.Commander}", true);
-                        }
+                        _playerStatus.Add(updateEvent.Commander, updateEvent);
+                        Log($"Received status update for new commander: {updateEvent.Commander}", true);
                     }
                 }
             }
             catch (Exception ex)
             {
-                Log($"Error processing update:{Environment.NewLine}{ex}{Environment.NewLine}{Environment.NewLine}{status}");
-                //Log($"Recreated json: {updateEvent.ToJson()}");
+                LogError($"Error processing update:{Environment.NewLine}{ex}{Environment.NewLine}{Environment.NewLine}{status}");
             }
         }
 
         public void ProcessNotification(string message)
         {
-            // Log the notification for retrieval by clients that are polling
+            // Process received event
             try
             {
                 UpdateCommanderStatus(message);
             }
             catch (Exception ex)
             {
-                Log($"Error processing message:{Environment.NewLine}{ex}{Environment.NewLine}{Environment.NewLine}{message}");
+                LogError($"Error processing message:{Environment.NewLine}{ex}{Environment.NewLine}{Environment.NewLine}{message}");
             }
 
             // Send the notification to any listening Urls
@@ -513,7 +491,7 @@ namespace DataCollator
             catch (Exception ex)
             {
                 WriteResponse(Context,$"Error while initialising race:{Environment.NewLine}{ex}", (int)HttpStatusCode.InternalServerError);
-                Log($"Failed to start new race: {ex.Message}");
+                LogError($"Failed to start new race: {ex.Message}");
             }
         }
 
@@ -700,25 +678,7 @@ namespace DataCollator
                 return;
             }
 
-            // This functionality should only be used by old SRVTracker clients and will be removed at some point
-            // SRVTracker clients later than 1.4.0.1 will use SendAllStatus (as it has been optimised on the client)
-
-            if (DateTime.UtcNow.Subtract(_lastCommanderStatusBuilt).TotalMilliseconds > 750)
-            {
-                StringBuilder status = new StringBuilder();
-                lock (_notificationLock)
-                {
-                    foreach (string id in _playerStatus.Keys)
-                        status.AppendLine(_playerStatus[id].ToJson());
-                }
-                Log("All player status generated");
-                _lastCommanderStatus = status.ToString();
-                _lastCommanderStatusBuilt = DateTime.UtcNow;
-            }
-            else
-                Log("All player status returned from cache");
-
-            WriteResponse(Context, _lastCommanderStatus);
+            WriteErrorResponse(Context.Response, HttpStatusCode.NotFound);
         }
 
         private void SendAllStatus(HttpListenerContext Context)
@@ -761,25 +721,6 @@ namespace DataCollator
                         }
                     }
                     playersToRemove = new List<string>();
-                }
-            }
-
-            if (_commanderStatus != null)
-            {
-                foreach (string commander in _commanderStatus.Keys)
-                    if (DateTime.UtcNow.Subtract(_commanderStatus[commander].TimeStamp).TotalMinutes > 30)
-                        playersToRemove.Add(commander);
-
-                if (playersToRemove.Count > 0)
-                {
-                    lock (_notificationLock)
-                    {
-                        foreach (string commander in playersToRemove)
-                        {
-                            _commanderStatus.Remove(commander);
-                            Log($"{commander}: deleted race status data as last update over 30 minutes ago", true);
-                        }
-                    }
                 }
             }
 
@@ -891,6 +832,18 @@ namespace DataCollator
                 }
                 catch { }
             }
+        }
+
+        private void LogError(string log)
+        {
+            // If we get an unexpected error, we always want to log it
+            bool loggingOn = _logStream != null;
+            if (!loggingOn)
+                EnableDebug();
+
+            Log(log);
+            if (!loggingOn)
+                DisableDebug();
         }
     }
 }

@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
@@ -27,20 +28,25 @@ namespace DataCollator
             this.Close();
         }
 
+        private void StartNotificationServer()
+        {
+            if (_notificationServer == null)
+                _notificationServer = new NotificationServer(textBoxWebhookUrl.Text, checkBoxDebug.Checked, checkBoxVerboseDebug.Checked);
+            else
+                _notificationServer.Start();
+        }
+
         private void buttonStart_Click(object sender, EventArgs e)
         {
             if (buttonStart.Text.Equals("Start"))
             {
                 UDPListener.StartListening((int)numericUpDown1.Value);
                 buttonStart.Text = "Stop";
-                if (_notificationServer == null)
-                    _notificationServer = new NotificationServer(textBoxWebhookUrl.Text, checkBoxDebug.Checked, checkBoxVerboseDebug.Checked);
-                else
-                    _notificationServer.Start();
+                Thread thread = new Thread(() => { StartNotificationServer(); });
+                thread.Start();
                 return;
             }
-
-            
+           
             _notificationServer.Stop();
             buttonStart.Text = "Start";
         }

@@ -120,14 +120,10 @@ namespace SRVTracker
             }
         }
 
-        private static float DegreesToRadians(float degrees)
-        {
-            return (float)(degrees * (Math.PI / 180f));
-        }
-
         public void SetTexture(Texture_t texture)
         {
             // Set the texture of the overlay
+            OpenVR.Overlay.SetOverlayTexture(_vrOverlayHandle, ref texture);
         }
 
         public static byte[] BitmapToByte(Bitmap bitmap)

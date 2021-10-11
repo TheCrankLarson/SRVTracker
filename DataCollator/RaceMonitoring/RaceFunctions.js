@@ -6,7 +6,14 @@ var courseWidth = -1;
 var courseHeight = -1
 var heightAdjust = 0;
 var widthAdjust = 0;
+var racerIndex = 1;
+var animationsStylesheet;
 
+var animationsStylesheetElement = document.createElement('style');
+animationsStylesheetElement.type = 'text/css';
+animationsStylesheetElement.title = "RacerAnimations";
+document.head.appendChild(animationsStylesheetElement)
+animationsStylesheet = animationsStylesheetElement.sheet
 
 function DebugLog(debugData) {
     document.getElementById('debugLog').appendChild(document.createTextNode(debugData + "\r\n"));
@@ -153,6 +160,22 @@ function CreateWaypointDiv(waypoint, canvass, waypointContainer) {
     waypointContainer.appendChild(wpDisplay);
 }
 
+function GenerateAnimation(racer, startX, startY, endX, endY, ruleIndex) {
+    // Returns an @keyframes animation style
+
+    var anim = "from { top: " + startY + "px; left: " + startX + "px; }  to { top: " + endY + "px; left: " + endX + "px; }"
+
+    if (ruleIndex > -1) {
+        // Already have a rule created, so delete it first
+        animationsStylesheet.deleteRule(ruleIndex);
+    }
+    else {
+        ruleIndex = animationsStylesheet.cssRules.length;
+    }
+    animationsStylesheet.insertRule("@keyframes " + racer + "{" + anim + "}", ruleIndex);
+    return ruleIndex;
+}
+
 function UpdateRacerStatus(racerStatus, canvass, racerContainer) {
     // Create or update the racer info and position within the given canvass
 
@@ -171,9 +194,14 @@ function UpdateRacerStatus(racerStatus, canvass, racerContainer) {
         racerInfoElement = document.createElement("div");
         racerInfoElement.classList.add("racerInfo");
         racerInfoElement.id = activeRace.Statuses[racerStatus].Commander;
+        racerInfoElement.style.left = racerX + "px";
+        racerInfoElement.style.top = racerY + "px";
         racerInfoElement.appendChild(document.createTextNode(activeRace.Statuses[racerStatus].Commander));
         racerContainer.appendChild(racerInfoElement);
     }
+
+    //var racerid = racerInfoElement.getAttribute('racerid');
+    //var racerStyleName = activeRace.Statuses[racerStatus].Commander.split(" ").join("");
 
     if (activeRace.Statuses[racerStatus].Eliminated) {
         // Eliminated, so change colour to red
@@ -185,7 +213,6 @@ function UpdateRacerStatus(racerStatus, canvass, racerContainer) {
         racerInfoElement.style.top = racerY + "px";
     }
 
-    //DebugLog(activeRace.Statuses[racerStatus].Commander + ': x=' + racerX + ', y=' + racerY);
 }
 
 function UpdateLeaderboard() {
@@ -228,6 +255,7 @@ function UpdateRace() {
     for (var racerStatus in activeRace.Statuses) {
         UpdateRacerStatus(racerStatus, canvassElement, racersContainerElement)
     };
+    //DumpAnimations()
 }
 
 
