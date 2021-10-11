@@ -223,7 +223,8 @@
             this.checkBoxTrackClosest.Size = new System.Drawing.Size(87, 17);
             this.checkBoxTrackClosest.TabIndex = 2;
             this.checkBoxTrackClosest.Text = "Track closest";
-            this.toolTip1.SetToolTip(this.checkBoxTrackClosest, "If selected, will track closest commander to current location");
+            this.toolTip1.SetToolTip(this.checkBoxTrackClosest, "If selected, will track closest commander to current location (may affect CPU usa" +
+        "ge)");
             this.checkBoxTrackClosest.UseVisualStyleBackColor = true;
             // 
             // listBoxCommanders

@@ -92,7 +92,7 @@ namespace Race_Manager
         {
             CommanderWatcher.Stop();
             if (!String.IsNullOrEmpty(ServerAddress()))
-                CommanderWatcher.Start($"http://{ServerAddress()}:11938/DataCollator/status");
+                CommanderWatcher.Start($"http://{ServerAddress()}:11938/DataCollator");
         }
 
         private void CommanderWatcher_OnlineCountChanged(object sender, EventArgs e)

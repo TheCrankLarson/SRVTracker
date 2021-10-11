@@ -306,9 +306,9 @@
     <None Include="Resources\Refresh_16x.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\..\Development Projects\OVRSharp\OVRSharp\OVRSharp.csproj">
-      <Project>{82782188-2e33-45a8-9a58-e3941de1c18c}</Project>
-      <Name>OVRSharp</Name>
+    <ProjectReference Include="..\..\..\..\..\..\Development Projects\OpenVR\OpenVRApiModule\OpenVRApiModule.csproj">
+      <Project>{516e5be7-28b7-4dee-b2fe-1e0d089c21dc}</Project>
+      <Name>OpenVRApiModule</Name>
     </ProjectReference>
     <ProjectReference Include="EDTracking\EDTracking.csproj">
       <Project>{d36c1dc6-c1d4-4750-894c-54666389c630}</Project>
@@ -374,9 +374,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="SlimDX">
-      <Version>4.0.13.44</Version>
-    </PackageReference>
     <PackageReference Include="System.Text.Json">
       <Version>5.0.2</Version>
     </PackageReference>

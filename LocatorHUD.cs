@@ -1,21 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Linq.Expressions;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
 using System.Drawing.Text;
 
 
 namespace SRVTracker
 {
-
     public partial class LocatorHUD : UserControl
     {
         private static Bitmap[] _arrowAtAngle = new Bitmap[359];

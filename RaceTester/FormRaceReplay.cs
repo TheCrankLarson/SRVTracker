@@ -102,7 +102,7 @@ namespace RaceTester
             // Create the UDP client for sending tracking data
             try
             {
-                _udpClient = new UdpClient(ServerUrl(), 11938);
+                _udpClient = new UdpClient(ServerUrl(), 11939);
                 return true;
             }
             catch

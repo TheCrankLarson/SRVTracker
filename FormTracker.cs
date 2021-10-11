@@ -408,10 +408,10 @@ namespace SRVTracker
             if (DateTime.Now.Subtract(_uploadStartTime).TotalSeconds < 10)
                 return;
 
-            List<string> activeCommanders = CommanderWatcher.GetCommanders();
-            if (activeCommanders.Contains(_commanderName))
+            if (CommanderWatcher.CommanderIsTracking(_commanderName))
             {
                 _uploadValidated = true;
+                CommanderWatcher.Stop();
                 return;
             }
 
@@ -419,9 +419,10 @@ namespace SRVTracker
             if (DateTime.Now.Subtract(_uploadStartTime).TotalSeconds > 15)
             {
                 // More than 15 seconds has passed, so we disable upload and warn
+                CommanderWatcher.Stop();
                 Action action = new Action(() => {
                     checkBoxUpload.Checked = false;
-                    MessageBox.Show(this, "Upload has been disabled as server is not receiving events.\r\nTypical causes are firewall or security software.\r\nPlease resolve issue and try again.", "Upload Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(this, "Upload has been disabled as server is not receiving your events.\r\nTypical causes are firewall or security software.\r\nPlease resolve issue and try again.", "Upload Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 });
                 if (checkBoxUpload.InvokeRequired)
                     checkBoxUpload.Invoke(action);
@@ -489,6 +490,7 @@ namespace SRVTracker
         private bool CreateUdpClient()
         {
             // Create the UDP client for sending tracking data
+            CommanderWatcher.Start($"http://{ServerUrl()}:11938/DataCollator");  // Needed to check that the upload is working
             try
             {
                 _uploadValidated = false;

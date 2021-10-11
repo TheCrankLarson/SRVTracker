@@ -286,10 +286,10 @@ function ConnectRace() {
 function GetAbsolutePosition(element) {
     const rect = element.getBoundingClientRect();
     return {
-        left: rect.left + window.scrollX,
-        top: rect.top + window.scrollY,
-        width: rect.right - rect.left,
-        height: rect.bottom - rect.top
+        left: rect.left,
+        top: rect.top,
+        width: rect.width,
+        height: rect.height
     };
 }
 

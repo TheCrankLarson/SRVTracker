@@ -32,7 +32,11 @@ namespace DataCollator
         private DateTime _lastStaleDataCheck = DateTime.UtcNow;
         private DateTime _lastFinishedRaceCheck = DateTime.UtcNow;
         private DateTime _lastCommanderStatusBuilt = DateTime.MinValue;
+        private DateTime _lastAllCommanderStatusBuilt = DateTime.MinValue;
+        //private DateTime _lastCommanderPositionsBuilt = DateTime.MinValue;
         private string _lastCommanderStatus = "";
+        private string _lastAllCommanderStatus = "";
+        private string _lastCommanderPositions = "";
         private CommanderRegistration _commanderRegistration = new CommanderRegistration();
 
         public NotificationServer(string ListenURL, bool StartDebug = false, bool VerboseDebug = false)
@@ -273,6 +277,10 @@ namespace DataCollator
                     // This is a request for all known locations/statuses of clients 
                     action = (() => { SendStatus(context); });
                 }
+                else if (requestUri.StartsWith("trackedcommanders"))
+                {
+                    action = (() => { SendAllStatus(context); });
+                }
                 else if (requestUri.StartsWith("racestatus"))
                 {
                     action = (() => { SendRaceStatus(requestUri, context, sRequest); });
@@ -428,11 +436,20 @@ namespace DataCollator
             try
             {
                 byte[] buffer = System.Text.Encoding.UTF8.GetBytes(response);
-                httpResponse.ContentLength64 = buffer.Length;
+                WriteResponse(httpResponse, buffer, returnStatusCode);
+            }
+            catch { }
+        }
+
+        private void WriteResponse(HttpListenerResponse httpResponse, byte[] response, int returnStatusCode = (int)HttpStatusCode.OK)
+        {
+            try
+            {
+                httpResponse.ContentLength64 = response.Length;
                 httpResponse.StatusCode = returnStatusCode;
 
                 using (Stream output = httpResponse.OutputStream)
-                    output.Write(buffer, 0, buffer.Length);
+                    output.Write(response, 0, response.Length);
                 httpResponse.OutputStream.Flush();
                 httpResponse.KeepAlive = true;
                 httpResponse.Close();
@@ -445,13 +462,23 @@ namespace DataCollator
             WriteResponse(Context.Response, response, returnStatusCode);
         }
 
+        private void WriteResponse(HttpListenerContext Context, byte[] response, int returnStatusCode = (int)HttpStatusCode.OK)
+        {
+            WriteResponse(Context.Response, response, returnStatusCode);
+        }
+
         private void WriteFileResponse(HttpListenerContext Context, string Filename)
         {
             if (!File.Exists(Filename))
                 WriteErrorResponse(Context.Response, HttpStatusCode.NotFound);
             else
             {
-                WriteResponse(Context, File.ReadAllText(Filename));
+                if (Filename.EndsWith(".png") || Filename.EndsWith(".jpg"))
+                {
+                    WriteResponse(Context, File.ReadAllBytes(Filename));
+                }
+                else
+                    WriteResponse(Context, File.ReadAllText(Filename));
             }
         }
 
@@ -459,7 +486,8 @@ namespace DataCollator
         {
             try
             {
-                WriteFileResponse(Context, $"RaceMonitoring/{request.Substring(request.LastIndexOf("/") + 1)}");
+                string requestedFile = request.Substring(request.LastIndexOf("racemonitoring/") + 15);
+                WriteFileResponse(Context, $"RaceMonitoring/{requestedFile}");
             }
             catch
             {
@@ -672,6 +700,9 @@ namespace DataCollator
                 return;
             }
 
+            // This functionality should only be used by old SRVTracker clients and will be removed at some point
+            // SRVTracker clients later than 1.4.0.1 will use SendAllStatus (as it has been optimised on the client)
+
             if (DateTime.UtcNow.Subtract(_lastCommanderStatusBuilt).TotalMilliseconds > 750)
             {
                 StringBuilder status = new StringBuilder();
@@ -688,6 +719,25 @@ namespace DataCollator
                 Log("All player status returned from cache");
 
             WriteResponse(Context, _lastCommanderStatus);
+        }
+
+        private void SendAllStatus(HttpListenerContext Context)
+        {
+            if (DateTime.UtcNow.Subtract(_lastAllCommanderStatusBuilt).TotalMilliseconds > 500)
+            {
+                String status;
+                lock (_notificationLock)
+                {
+                    status = JsonSerializer.Serialize(_playerStatus);
+                }
+                Log("All player status generated");
+                _lastAllCommanderStatus = status;
+                _lastAllCommanderStatusBuilt = DateTime.UtcNow;
+            }
+            else
+                Log("All player status returned from cache");
+
+            WriteResponse(Context, _lastAllCommanderStatus);
         }
 
         private void ClearStaleData()

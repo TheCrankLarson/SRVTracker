@@ -1,19 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Net;
-using System.IO;
 using EDTracking;
-using Valve.VR;
-using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
-using System.Drawing.Text;
 using System.Runtime.InteropServices;
 
 
@@ -35,7 +23,6 @@ namespace SRVTracker
         private static FormLocator _activeLocator = null;
         private ConfigSaverClass _formConfig = null;
         private VRLocator _vrLocator = null;
-        private OVRSharp.Application _openVRApplication = null;
         //private FormVRMatrixEditor _formVRMatrixTest = null;
         //private byte[] _vrPanelImageBytes = null;
         //private IntPtr _intPtrVROverlayImage;
@@ -105,12 +92,13 @@ namespace SRVTracker
             return EDLocation.DistanceBetween(location1, location2);
         }
 
+
         private void CommanderWatcher_UpdateReceived(object sender, EDEvent edEvent)
         {
             if (!edEvent.HasCoordinates() || edEvent.Commander.Equals(FormTracker.CommanderName))
                 return;
 
-            if (FormTracker.CurrentLocation != null)
+            if (checkBoxTrackClosest.Checked && FormTracker.CurrentLocation != null)
             {
                 // If we are tracking the closest commander to us, we need to check all updates and change our tracking target as necessary
                 // We just check if the distance from this commander is closer than our currently tracked target
@@ -125,13 +113,11 @@ namespace SRVTracker
                 }
                 else if (edEvent.Commander == _closestCommander.Commander)
                     _closestCommanderDistance = distanceToCommander;
-                if (checkBoxTrackClosest.Checked)
-                {
-                    // Switch tracking to this target
-                    _targetPosition = edEvent.Location();
-                    SetTarget(edEvent.Commander);
-                    return;
-                }
+
+                // Switch tracking to this target
+                _targetPosition = edEvent.Location();
+                SetTarget(edEvent.Commander);
+                return;
             }
 
             if (!TrackingTarget.Equals(edEvent.Commander))
@@ -322,12 +308,13 @@ namespace SRVTracker
             {
                 this.Width = _normalView.Width;
                 _commanderListShowing = true;
-                CommanderWatcher.Start($"http://{ServerAddress}:11938/DataCollator/status");
+                CommanderWatcher.Start($"http://{ServerAddress}:11938/DataCollator");
                 UpdateAvailableCommanders();;
                 CommanderWatcher.OnlineCountChanged += CommanderWatcher_OnlineCountChanged;
             }
             else
             {
+                CommanderWatcher.Stop();
                 this.Width = _commanderListHiddenWidth;
                 _commanderListShowing = false;
                 CommanderWatcher.OnlineCountChanged -= CommanderWatcher_OnlineCountChanged;
@@ -463,18 +450,16 @@ namespace SRVTracker
             if (!checkBoxEnableVRLocator.Enabled)
                 return;
 
-            try
+            if (_vrLocator == null)
             {
-                if (_openVRApplication == null)
-                    _openVRApplication = new OVRSharp.Application(OVRSharp.Application.ApplicationType.Overlay);
+                _vrLocator = new VRLocator();
+                checkBoxEnableVRLocator.Checked = _vrLocator.VRInitializedOk;
+                if (!_vrLocator.VRInitializedOk)
+                {
+                    checkBoxEnableVRLocator.Enabled = checkBoxEnableVRLocator.Checked; // If we fail to initialise, we disable the option completely
+                    initError = "Failed to initialise VR subsystem";
+                }              
             }
-            catch (Exception ex)
-            {
-                initError = ex.Message;
-            }
-
-            if (_openVRApplication == null)
-                checkBoxEnableVRLocator.Checked = false;
 
             if (checkBoxEnableVRLocator.Checked)
             {
@@ -491,32 +476,34 @@ namespace SRVTracker
             }
 
             HideVRLocator();
-            _openVRApplication.Shutdown();
-            _openVRApplication = null;
         }
 
         private void UpdateVRLocatorImage()
         {
+            string info = "";
             if (locatorHUD1.PanelRequiresReset())
             {
                 // For some reason, after 200 updates the OpenVR layer locks up
                 // No idea why, so this horrible hack resets it
-                string info = "";
                 HideVRLocator(false);
                 locatorHUD1.ResetPanel();
-                _openVRApplication.Shutdown();
-                _openVRApplication = new OVRSharp.Application(OVRSharp.Application.ApplicationType.Overlay);
                 ShowVRLocator(ref info, true);
                 return;
             }
 
             Bitmap locatorPanel = locatorHUD1.GetLocatorPanelBitmap();
+            try
+            {
+                _vrLocator.UpdateVRLocatorImage(locatorPanel);
+                return;
+            }
+            catch { }
 
-            _vrLocator.UpdateVRLocatorImage(locatorPanel);
-            return;
-            //Bitmap locatorPanel = new Bitmap(locatorHUD1.Width, locatorHUD1.Height);
-            //locatorHUD1.DrawToBitmap(locatorPanel, new Rectangle(0,0,locatorHUD1.Width, locatorHUD1.Height));
+            // If we get here the overlay update failed, so we attempt to reset Open VR
+            HideVRLocator(false);
+            locatorHUD1.ResetPanel();
 
+            ShowVRLocator(ref info, true);
         }
 
         private bool ShowVRLocator(ref string info, bool SuppressMatrixWindow = false)
@@ -524,24 +511,7 @@ namespace SRVTracker
             if (_vrLocator != null)
                 return true;
 
-            _vrLocator = new VRLocator(!SuppressMatrixWindow);
-
-            //try
-            //{
-            //    if (!VRLocator.InitVR())
-            //    {
-            //        info = "";
-            //        return false;
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    info = $"InitVR: {Environment.NewLine}{ex}";
-            //    return false;
-            //}
-
-            //if (!_vrLocator.CreateOverlay(ref info))
-            //    return false;
+            _vrLocator = new VRLocator();
             
             UpdateVRLocatorImage();
             if (!SuppressMatrixWindow)
@@ -553,7 +523,12 @@ namespace SRVTracker
 
         private void HideVRLocator(bool CloseMatrixWindow = true)
         {
-            _vrLocator.Hide(CloseMatrixWindow);
+            try
+            {
+                if (_vrLocator != null)
+                    _vrLocator.Hide(CloseMatrixWindow);
+            }
+            catch { }
         }
 
         private void comboBoxLocation_SelectedIndexChanged(object sender, EventArgs e)

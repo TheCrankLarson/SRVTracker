@@ -88,4 +88,7 @@ table, th, td {
     position: absolute;
     color: yellow;
     font-weight: bold;
+    width: 32px;
+    height: 32px;
+    background-image: url("images/SRV32.png");
 }

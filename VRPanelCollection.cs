@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
-//using Valve.VR;
 using System.Text.Json;
 using EDTracking;
+using Valve.VR;
+using OpenVRApiModule.Maths;
 using System.Numerics;
-using OVRSharp.Math;
 
 namespace SRVTracker
 {
@@ -186,7 +186,7 @@ namespace SRVTracker
             return (float)((Math.PI / 180) * degrees); // degrees to radians
         }
 
-        public Valve.VR.HmdMatrix34_t ToHmdMatrix34_t()
+        public HmdMatrix34_t ToHmdMatrix34_t()
         {
             // Return this transform as HmdMatrix34_t
 

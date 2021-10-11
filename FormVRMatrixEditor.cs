@@ -38,6 +38,13 @@ namespace SRVTracker
                 _vrLocatorOverlay.Transform = _savedMatrices[(string)listBoxMatrices.SelectedItem].ToHmdMatrix34_t();
         }
 
+        public void SetOverlay(VRLocatorOverlay vRLocatorOverlay)
+        {
+            _vrLocatorOverlay = vRLocatorOverlay;
+            ApplyOverlayWidth();
+            ApplyMatrixToOverlay(true);
+        }
+
         private TransformDefinition DefaultVRMatrix()
         {
             return new TransformDefinition(-1.5f,2,-0.8f,0,0,0,0.8f);
@@ -102,7 +109,8 @@ namespace SRVTracker
             trackBarRotationZ.Value = (int)(matrix.RotationZ);
             numericUpDownOverlayWidth.Value = (decimal)matrix.Width;
             _displayingMatrixData = false;
-            _vrLocatorOverlay.Transform = _savedMatrices[(string)listBoxMatrices.SelectedItem].ToHmdMatrix34_t();
+            if (_vrLocatorOverlay != null)
+                _vrLocatorOverlay.Transform = _savedMatrices[(string)listBoxMatrices.SelectedItem].ToHmdMatrix34_t();
         }
 
         public void SetOverlayWidth(Single WidthInMetres)
