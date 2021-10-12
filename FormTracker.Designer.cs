@@ -509,11 +509,12 @@
             this.checkBoxUseDirectionOfTravelAsHeading.ForeColor = System.Drawing.SystemColors.ControlText;
             this.checkBoxUseDirectionOfTravelAsHeading.Location = new System.Drawing.Point(12, 60);
             this.checkBoxUseDirectionOfTravelAsHeading.Name = "checkBoxUseDirectionOfTravelAsHeading";
-            this.checkBoxUseDirectionOfTravelAsHeading.Size = new System.Drawing.Size(184, 17);
+            this.checkBoxUseDirectionOfTravelAsHeading.Size = new System.Drawing.Size(244, 17);
             this.checkBoxUseDirectionOfTravelAsHeading.TabIndex = 24;
-            this.checkBoxUseDirectionOfTravelAsHeading.Text = "Use direction of travel as heading";
+            this.checkBoxUseDirectionOfTravelAsHeading.Text = "Use direction of travel as heading (Smart Alec)";
             this.toolTip1.SetToolTip(this.checkBoxUseDirectionOfTravelAsHeading, "When selected, direction of travel will be calculated and\r\nused as heading instea" +
-        "d of direction vehicle is facing\r\n(which is what E: D gives us)");
+        "d of direction vehicle is facing\r\n(which is what E: D gives us).\r\nNamed in honou" +
+        "r of Alec Turner!");
             this.checkBoxUseDirectionOfTravelAsHeading.UseVisualStyleBackColor = true;
             this.checkBoxUseDirectionOfTravelAsHeading.CheckedChanged += new System.EventHandler(this.checkBoxUseDirectionOfTravelAsHeading_CheckedChanged);
             // 

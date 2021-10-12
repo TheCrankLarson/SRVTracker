@@ -54,7 +54,7 @@ namespace SRVTracker
             if (_formVRMatrixEditor == null || _formVRMatrixEditor.IsDisposed)
                 _formVRMatrixEditor = new FormVRMatrixEditor(_locatorOverlay);
             else
-                _formVRMatrixEditor.SetOverlay(_locatorOverlay);
+                _formVRMatrixEditor.SetOverlay(_locatorOverlay);             
         }
 
         public void Show()

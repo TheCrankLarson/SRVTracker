@@ -32,6 +32,7 @@ namespace EDTracking
         public bool PlayerControlled { get; set; } = true;
         public string TargetedShipName { get; set; } = "";
         public byte[] Pips { get; set; } = new byte[3] { 0, 0, 0 };
+        public bool Mischievous { get; set; } = false;
 
         public EDEvent() { }
 

@@ -487,7 +487,7 @@ namespace SRVTracker
                 // No idea why, so this horrible hack resets it
                 HideVRLocator(false);
                 locatorHUD1.ResetPanel();
-                ShowVRLocator(ref info, true);
+                ShowVRLocator(ref info);
                 return;
             }
 
@@ -503,19 +503,16 @@ namespace SRVTracker
             HideVRLocator(false);
             locatorHUD1.ResetPanel();
 
-            ShowVRLocator(ref info, true);
+            ShowVRLocator(ref info);
         }
 
-        private bool ShowVRLocator(ref string info, bool SuppressMatrixWindow = false)
+        private bool ShowVRLocator(ref string info)
         {
-            if (_vrLocator != null)
-                return true;
+            if (_vrLocator == null)
+                _vrLocator = new VRLocator();
 
-            _vrLocator = new VRLocator();
-            
             UpdateVRLocatorImage();
-            if (!SuppressMatrixWindow)
-                _vrLocator.ShowMatrixEditor();
+            _vrLocator.ShowMatrixEditor();
 
             _vrLocator.Show();
             return true;

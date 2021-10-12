@@ -375,6 +375,7 @@ namespace SRVTracker
             try
             {
                 edEvent.Commander = _clientId;
+                edEvent.Mischievous = checkBoxAllowMischief.Checked;
                 string eventData = edEvent.ToJson();
                 edEvent.Commander = _commanderName;
                 Byte[] sendBytes = Encoding.UTF8.GetBytes(eventData);
