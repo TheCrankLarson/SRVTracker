@@ -329,7 +329,8 @@ namespace SRVTracker
                 {
                     // We ignore the heading given by E: D, as that is direction we are facing, not travelling
                     // We calculate our direction based on previous location
-                    CurrentHeading = _vehicleTelemetry.CurrentHeading;
+                    if ((!checkBoxUseSmartHeadingOnlyWhenInSRV.Checked || edEvent.isInSRV()) && (!checkBoxUseSmartHeadingOnlyWhenOver.Checked || SpeedInMS>(int)numericUpDownUseSmartHeadingOnlyWhenOver.Value))
+                        CurrentHeading = _vehicleTelemetry.CurrentHeading;
                 }
                 else
                     CurrentHeading = edEvent.Heading;
@@ -857,6 +858,13 @@ namespace SRVTracker
             if (!buttonUpdateName.Enabled)
                 if (!textBoxCommanderName.Text.Equals(_commanderName))
                     buttonUpdateName.Enabled = true;
+        }
+
+        private void checkBoxUseDirectionOfTravelAsHeading_CheckedChanged(object sender, EventArgs e)
+        {
+            checkBoxUseSmartHeadingOnlyWhenOver.Enabled = checkBoxUseDirectionOfTravelAsHeading.Checked;
+            numericUpDownUseSmartHeadingOnlyWhenOver.Enabled = checkBoxUseDirectionOfTravelAsHeading.Checked;
+            checkBoxUseSmartHeadingOnlyWhenInSRV.Enabled = checkBoxUseDirectionOfTravelAsHeading.Checked;
         }
     }
 }

@@ -31,6 +31,7 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormTracker));
             this.groupBoxStatusLocation = new System.Windows.Forms.GroupBox();
+            this.buttonBrowseStatusFile = new System.Windows.Forms.Button();
             this.textBoxStatusFile = new System.Windows.Forms.TextBox();
             this.statusFileWatcher = new System.IO.FileSystemWatcher();
             this.buttonTest = new System.Windows.Forms.Button();
@@ -46,7 +47,9 @@
             this.radioButtonShipTelemetry = new System.Windows.Forms.RadioButton();
             this.radioButtonSRVTelemetry = new System.Windows.Forms.RadioButton();
             this.buttonNewSession = new System.Windows.Forms.Button();
+            this.buttonBrowseTelemetryFolder = new System.Windows.Forms.Button();
             this.checkBoxExportSRVTelemetry = new System.Windows.Forms.CheckBox();
+            this.buttonSRVTelemetryExportSettings = new System.Windows.Forms.Button();
             this.checkBoxCaptureSRVTelemetry = new System.Windows.Forms.CheckBox();
             this.checkBoxShowSRVTelemetry = new System.Windows.Forms.CheckBox();
             this.radioButtonUseCustomServer = new System.Windows.Forms.RadioButton();
@@ -61,6 +64,10 @@
             this.checkBoxUseDirectionOfTravelAsHeading = new System.Windows.Forms.CheckBox();
             this.textBoxClientId = new System.Windows.Forms.TextBox();
             this.buttonUpdate = new System.Windows.Forms.Button();
+            this.buttonShowConfig = new System.Windows.Forms.Button();
+            this.buttonRaceTracker = new System.Windows.Forms.Button();
+            this.buttonRoutePlanner = new System.Windows.Forms.Button();
+            this.buttonLocator = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBoxSRVTracker = new System.Windows.Forms.GroupBox();
             this.tabControlSettings = new System.Windows.Forms.TabControl();
@@ -68,18 +75,16 @@
             this.label2 = new System.Windows.Forms.Label();
             this.tabPageMonitoring = new System.Windows.Forms.TabPage();
             this.tabPageServer = new System.Windows.Forms.TabPage();
+            this.label3 = new System.Windows.Forms.Label();
+            this.numericUpDownUdpUploadPort = new System.Windows.Forms.NumericUpDown();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tabPageLogging = new System.Windows.Forms.TabPage();
             this.tabPageUpdate = new System.Windows.Forms.TabPage();
-            this.buttonBrowseStatusFile = new System.Windows.Forms.Button();
-            this.buttonBrowseTelemetryFolder = new System.Windows.Forms.Button();
-            this.buttonSRVTelemetryExportSettings = new System.Windows.Forms.Button();
-            this.buttonShowConfig = new System.Windows.Forms.Button();
-            this.buttonRaceTracker = new System.Windows.Forms.Button();
-            this.buttonRoutePlanner = new System.Windows.Forms.Button();
-            this.buttonLocator = new System.Windows.Forms.Button();
-            this.label3 = new System.Windows.Forms.Label();
-            this.numericUpDownUdpUploadPort = new System.Windows.Forms.NumericUpDown();
+            this.checkBoxUseSmartHeadingOnlyWhenOver = new System.Windows.Forms.CheckBox();
+            this.numericUpDownUseSmartHeadingOnlyWhenOver = new System.Windows.Forms.NumericUpDown();
+            this.label4 = new System.Windows.Forms.Label();
+            this.checkBoxUseSmartHeadingOnlyWhenInSRV = new System.Windows.Forms.CheckBox();
+            this.checkBoxAllowMischief = new System.Windows.Forms.CheckBox();
             this.groupBoxStatusLocation.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.statusFileWatcher)).BeginInit();
             this.groupBox5.SuspendLayout();
@@ -90,10 +95,11 @@
             this.tabPageCommander.SuspendLayout();
             this.tabPageMonitoring.SuspendLayout();
             this.tabPageServer.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownUdpUploadPort)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.tabPageLogging.SuspendLayout();
             this.tabPageUpdate.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownUdpUploadPort)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownUseSmartHeadingOnlyWhenOver)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBoxStatusLocation
@@ -107,6 +113,18 @@
             this.groupBoxStatusLocation.TabIndex = 0;
             this.groupBoxStatusLocation.TabStop = false;
             this.groupBoxStatusLocation.Text = "Status.json location";
+            // 
+            // buttonBrowseStatusFile
+            // 
+            this.buttonBrowseStatusFile.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.buttonBrowseStatusFile.Image = global::SRVTracker.Properties.Resources.FolderOpened_16x;
+            this.buttonBrowseStatusFile.Location = new System.Drawing.Point(273, 17);
+            this.buttonBrowseStatusFile.Name = "buttonBrowseStatusFile";
+            this.buttonBrowseStatusFile.Size = new System.Drawing.Size(27, 23);
+            this.buttonBrowseStatusFile.TabIndex = 1;
+            this.toolTip1.SetToolTip(this.buttonBrowseStatusFile, "Browse to locate Status.Json file");
+            this.buttonBrowseStatusFile.UseVisualStyleBackColor = true;
+            this.buttonBrowseStatusFile.Click += new System.EventHandler(this.buttonBrowseStatusFile_Click);
             // 
             // textBoxStatusFile
             // 
@@ -304,6 +322,19 @@
             this.buttonNewSession.UseVisualStyleBackColor = true;
             this.buttonNewSession.Click += new System.EventHandler(this.buttonNewSession_Click);
             // 
+            // buttonBrowseTelemetryFolder
+            // 
+            this.buttonBrowseTelemetryFolder.Enabled = false;
+            this.buttonBrowseTelemetryFolder.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.buttonBrowseTelemetryFolder.Image = global::SRVTracker.Properties.Resources.FolderOpened_16x;
+            this.buttonBrowseTelemetryFolder.Location = new System.Drawing.Point(273, 86);
+            this.buttonBrowseTelemetryFolder.Name = "buttonBrowseTelemetryFolder";
+            this.buttonBrowseTelemetryFolder.Size = new System.Drawing.Size(27, 23);
+            this.buttonBrowseTelemetryFolder.TabIndex = 17;
+            this.toolTip1.SetToolTip(this.buttonBrowseTelemetryFolder, "Browse to select the session telemetry save folder");
+            this.buttonBrowseTelemetryFolder.UseVisualStyleBackColor = true;
+            this.buttonBrowseTelemetryFolder.Click += new System.EventHandler(this.buttonBrowseTelemetryFolder_Click);
+            // 
             // checkBoxExportSRVTelemetry
             // 
             this.checkBoxExportSRVTelemetry.AutoSize = true;
@@ -314,6 +345,20 @@
             this.checkBoxExportSRVTelemetry.Text = "Export";
             this.toolTip1.SetToolTip(this.checkBoxExportSRVTelemetry, "If checked, any reports enabled in telemetry options will be exported");
             this.checkBoxExportSRVTelemetry.UseVisualStyleBackColor = true;
+            // 
+            // buttonSRVTelemetryExportSettings
+            // 
+            this.buttonSRVTelemetryExportSettings.Image = global::SRVTracker.Properties.Resources.Settings_16x;
+            this.buttonSRVTelemetryExportSettings.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.buttonSRVTelemetryExportSettings.Location = new System.Drawing.Point(228, 15);
+            this.buttonSRVTelemetryExportSettings.Name = "buttonSRVTelemetryExportSettings";
+            this.buttonSRVTelemetryExportSettings.Size = new System.Drawing.Size(72, 22);
+            this.buttonSRVTelemetryExportSettings.TabIndex = 15;
+            this.buttonSRVTelemetryExportSettings.Text = "Settings";
+            this.buttonSRVTelemetryExportSettings.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.toolTip1.SetToolTip(this.buttonSRVTelemetryExportSettings, "Edit telemetry display/export settings");
+            this.buttonSRVTelemetryExportSettings.UseVisualStyleBackColor = true;
+            this.buttonSRVTelemetryExportSettings.Click += new System.EventHandler(this.buttonSRVTelemetryExportSettings_Click);
             // 
             // checkBoxCaptureSRVTelemetry
             // 
@@ -470,6 +515,7 @@
             this.toolTip1.SetToolTip(this.checkBoxUseDirectionOfTravelAsHeading, "When selected, direction of travel will be calculated and\r\nused as heading instea" +
         "d of direction vehicle is facing\r\n(which is what E: D gives us)");
             this.checkBoxUseDirectionOfTravelAsHeading.UseVisualStyleBackColor = true;
+            this.checkBoxUseDirectionOfTravelAsHeading.CheckedChanged += new System.EventHandler(this.checkBoxUseDirectionOfTravelAsHeading_CheckedChanged);
             // 
             // textBoxClientId
             // 
@@ -490,163 +536,6 @@
             this.toolTip1.SetToolTip(this.buttonUpdate, "Checks whether any program updates are availble");
             this.buttonUpdate.UseVisualStyleBackColor = true;
             this.buttonUpdate.Click += new System.EventHandler(this.buttonUpdate_Click);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label1.Location = new System.Drawing.Point(28, 24);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(118, 13);
-            this.label1.TabIndex = 25;
-            this.label1.Text = "Last update processed:";
-            // 
-            // groupBoxSRVTracker
-            // 
-            this.groupBoxSRVTracker.Controls.Add(this.label1);
-            this.groupBoxSRVTracker.Controls.Add(this.labelLastUpdateTime);
-            this.groupBoxSRVTracker.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBoxSRVTracker.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.groupBoxSRVTracker.Location = new System.Drawing.Point(106, 10);
-            this.groupBoxSRVTracker.Name = "groupBoxSRVTracker";
-            this.groupBoxSRVTracker.Size = new System.Drawing.Size(232, 54);
-            this.groupBoxSRVTracker.TabIndex = 30;
-            this.groupBoxSRVTracker.TabStop = false;
-            this.groupBoxSRVTracker.Text = "SRVTracker";
-            // 
-            // tabControlSettings
-            // 
-            this.tabControlSettings.Controls.Add(this.tabPageCommander);
-            this.tabControlSettings.Controls.Add(this.tabPageMonitoring);
-            this.tabControlSettings.Controls.Add(this.tabPageServer);
-            this.tabControlSettings.Controls.Add(this.tabPageLogging);
-            this.tabControlSettings.Controls.Add(this.tabPageUpdate);
-            this.tabControlSettings.Location = new System.Drawing.Point(12, 128);
-            this.tabControlSettings.Name = "tabControlSettings";
-            this.tabControlSettings.SelectedIndex = 0;
-            this.tabControlSettings.Size = new System.Drawing.Size(326, 171);
-            this.tabControlSettings.TabIndex = 31;
-            // 
-            // tabPageCommander
-            // 
-            this.tabPageCommander.Controls.Add(this.label2);
-            this.tabPageCommander.Controls.Add(this.textBoxClientId);
-            this.tabPageCommander.Controls.Add(this.groupBox5);
-            this.tabPageCommander.Controls.Add(this.buttonTest);
-            this.tabPageCommander.Location = new System.Drawing.Point(4, 22);
-            this.tabPageCommander.Name = "tabPageCommander";
-            this.tabPageCommander.Size = new System.Drawing.Size(318, 145);
-            this.tabPageCommander.TabIndex = 3;
-            this.tabPageCommander.Text = "Commander";
-            this.tabPageCommander.UseVisualStyleBackColor = true;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(3, 65);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(47, 13);
-            this.label2.TabIndex = 15;
-            this.label2.Text = "Client id:";
-            // 
-            // tabPageMonitoring
-            // 
-            this.tabPageMonitoring.Controls.Add(this.groupBoxStatusLocation);
-            this.tabPageMonitoring.Controls.Add(this.checkBoxUseDirectionOfTravelAsHeading);
-            this.tabPageMonitoring.Location = new System.Drawing.Point(4, 22);
-            this.tabPageMonitoring.Name = "tabPageMonitoring";
-            this.tabPageMonitoring.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageMonitoring.Size = new System.Drawing.Size(318, 145);
-            this.tabPageMonitoring.TabIndex = 0;
-            this.tabPageMonitoring.Text = "Monitoring";
-            this.tabPageMonitoring.UseVisualStyleBackColor = true;
-            // 
-            // tabPageServer
-            // 
-            this.tabPageServer.Controls.Add(this.label3);
-            this.tabPageServer.Controls.Add(this.numericUpDownUdpUploadPort);
-            this.tabPageServer.Controls.Add(this.groupBox1);
-            this.tabPageServer.Location = new System.Drawing.Point(4, 22);
-            this.tabPageServer.Name = "tabPageServer";
-            this.tabPageServer.Size = new System.Drawing.Size(318, 145);
-            this.tabPageServer.TabIndex = 4;
-            this.tabPageServer.Text = "Server";
-            this.tabPageServer.UseVisualStyleBackColor = true;
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.radioButtonUseDefaultServer);
-            this.groupBox1.Controls.Add(this.textBoxUploadServer);
-            this.groupBox1.Controls.Add(this.radioButtonUseCustomServer);
-            this.groupBox1.Location = new System.Drawing.Point(6, 6);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(306, 69);
-            this.groupBox1.TabIndex = 4;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Race Server";
-            // 
-            // tabPageLogging
-            // 
-            this.tabPageLogging.Controls.Add(this.groupBox6);
-            this.tabPageLogging.Location = new System.Drawing.Point(4, 22);
-            this.tabPageLogging.Name = "tabPageLogging";
-            this.tabPageLogging.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageLogging.Size = new System.Drawing.Size(318, 145);
-            this.tabPageLogging.TabIndex = 1;
-            this.tabPageLogging.Text = "Telemetry";
-            this.tabPageLogging.UseVisualStyleBackColor = true;
-            // 
-            // tabPageUpdate
-            // 
-            this.tabPageUpdate.Controls.Add(this.buttonUpdate);
-            this.tabPageUpdate.Controls.Add(this.checkBoxIncludeBetaUpdates);
-            this.tabPageUpdate.Controls.Add(this.checkBoxAutoUpdate);
-            this.tabPageUpdate.Location = new System.Drawing.Point(4, 22);
-            this.tabPageUpdate.Name = "tabPageUpdate";
-            this.tabPageUpdate.Size = new System.Drawing.Size(318, 145);
-            this.tabPageUpdate.TabIndex = 2;
-            this.tabPageUpdate.Text = "Update";
-            this.tabPageUpdate.UseVisualStyleBackColor = true;
-            // 
-            // buttonBrowseStatusFile
-            // 
-            this.buttonBrowseStatusFile.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.buttonBrowseStatusFile.Image = global::SRVTracker.Properties.Resources.FolderOpened_16x;
-            this.buttonBrowseStatusFile.Location = new System.Drawing.Point(273, 17);
-            this.buttonBrowseStatusFile.Name = "buttonBrowseStatusFile";
-            this.buttonBrowseStatusFile.Size = new System.Drawing.Size(27, 23);
-            this.buttonBrowseStatusFile.TabIndex = 1;
-            this.toolTip1.SetToolTip(this.buttonBrowseStatusFile, "Browse to locate Status.Json file");
-            this.buttonBrowseStatusFile.UseVisualStyleBackColor = true;
-            this.buttonBrowseStatusFile.Click += new System.EventHandler(this.buttonBrowseStatusFile_Click);
-            // 
-            // buttonBrowseTelemetryFolder
-            // 
-            this.buttonBrowseTelemetryFolder.Enabled = false;
-            this.buttonBrowseTelemetryFolder.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.buttonBrowseTelemetryFolder.Image = global::SRVTracker.Properties.Resources.FolderOpened_16x;
-            this.buttonBrowseTelemetryFolder.Location = new System.Drawing.Point(273, 86);
-            this.buttonBrowseTelemetryFolder.Name = "buttonBrowseTelemetryFolder";
-            this.buttonBrowseTelemetryFolder.Size = new System.Drawing.Size(27, 23);
-            this.buttonBrowseTelemetryFolder.TabIndex = 17;
-            this.toolTip1.SetToolTip(this.buttonBrowseTelemetryFolder, "Browse to select the session telemetry save folder");
-            this.buttonBrowseTelemetryFolder.UseVisualStyleBackColor = true;
-            this.buttonBrowseTelemetryFolder.Click += new System.EventHandler(this.buttonBrowseTelemetryFolder_Click);
-            // 
-            // buttonSRVTelemetryExportSettings
-            // 
-            this.buttonSRVTelemetryExportSettings.Image = global::SRVTracker.Properties.Resources.Settings_16x;
-            this.buttonSRVTelemetryExportSettings.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonSRVTelemetryExportSettings.Location = new System.Drawing.Point(228, 15);
-            this.buttonSRVTelemetryExportSettings.Name = "buttonSRVTelemetryExportSettings";
-            this.buttonSRVTelemetryExportSettings.Size = new System.Drawing.Size(72, 22);
-            this.buttonSRVTelemetryExportSettings.TabIndex = 15;
-            this.buttonSRVTelemetryExportSettings.Text = "Settings";
-            this.buttonSRVTelemetryExportSettings.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.toolTip1.SetToolTip(this.buttonSRVTelemetryExportSettings, "Edit telemetry display/export settings");
-            this.buttonSRVTelemetryExportSettings.UseVisualStyleBackColor = true;
-            this.buttonSRVTelemetryExportSettings.Click += new System.EventHandler(this.buttonSRVTelemetryExportSettings_Click);
             // 
             // buttonShowConfig
             // 
@@ -716,6 +605,94 @@
             this.buttonLocator.UseVisualStyleBackColor = false;
             this.buttonLocator.Click += new System.EventHandler(this.buttonLocator_Click);
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.label1.Location = new System.Drawing.Point(28, 24);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(118, 13);
+            this.label1.TabIndex = 25;
+            this.label1.Text = "Last update processed:";
+            // 
+            // groupBoxSRVTracker
+            // 
+            this.groupBoxSRVTracker.Controls.Add(this.label1);
+            this.groupBoxSRVTracker.Controls.Add(this.labelLastUpdateTime);
+            this.groupBoxSRVTracker.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBoxSRVTracker.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.groupBoxSRVTracker.Location = new System.Drawing.Point(106, 10);
+            this.groupBoxSRVTracker.Name = "groupBoxSRVTracker";
+            this.groupBoxSRVTracker.Size = new System.Drawing.Size(232, 54);
+            this.groupBoxSRVTracker.TabIndex = 30;
+            this.groupBoxSRVTracker.TabStop = false;
+            this.groupBoxSRVTracker.Text = "SRVTracker";
+            // 
+            // tabControlSettings
+            // 
+            this.tabControlSettings.Controls.Add(this.tabPageCommander);
+            this.tabControlSettings.Controls.Add(this.tabPageMonitoring);
+            this.tabControlSettings.Controls.Add(this.tabPageServer);
+            this.tabControlSettings.Controls.Add(this.tabPageLogging);
+            this.tabControlSettings.Controls.Add(this.tabPageUpdate);
+            this.tabControlSettings.Location = new System.Drawing.Point(12, 128);
+            this.tabControlSettings.Name = "tabControlSettings";
+            this.tabControlSettings.SelectedIndex = 0;
+            this.tabControlSettings.Size = new System.Drawing.Size(326, 171);
+            this.tabControlSettings.TabIndex = 31;
+            // 
+            // tabPageCommander
+            // 
+            this.tabPageCommander.Controls.Add(this.label2);
+            this.tabPageCommander.Controls.Add(this.textBoxClientId);
+            this.tabPageCommander.Controls.Add(this.groupBox5);
+            this.tabPageCommander.Controls.Add(this.buttonTest);
+            this.tabPageCommander.Location = new System.Drawing.Point(4, 22);
+            this.tabPageCommander.Name = "tabPageCommander";
+            this.tabPageCommander.Size = new System.Drawing.Size(318, 145);
+            this.tabPageCommander.TabIndex = 3;
+            this.tabPageCommander.Text = "Commander";
+            this.tabPageCommander.UseVisualStyleBackColor = true;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(3, 65);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(47, 13);
+            this.label2.TabIndex = 15;
+            this.label2.Text = "Client id:";
+            // 
+            // tabPageMonitoring
+            // 
+            this.tabPageMonitoring.Controls.Add(this.checkBoxUseSmartHeadingOnlyWhenInSRV);
+            this.tabPageMonitoring.Controls.Add(this.label4);
+            this.tabPageMonitoring.Controls.Add(this.numericUpDownUseSmartHeadingOnlyWhenOver);
+            this.tabPageMonitoring.Controls.Add(this.checkBoxUseSmartHeadingOnlyWhenOver);
+            this.tabPageMonitoring.Controls.Add(this.groupBoxStatusLocation);
+            this.tabPageMonitoring.Controls.Add(this.checkBoxUseDirectionOfTravelAsHeading);
+            this.tabPageMonitoring.Location = new System.Drawing.Point(4, 22);
+            this.tabPageMonitoring.Name = "tabPageMonitoring";
+            this.tabPageMonitoring.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageMonitoring.Size = new System.Drawing.Size(318, 145);
+            this.tabPageMonitoring.TabIndex = 0;
+            this.tabPageMonitoring.Text = "Monitoring";
+            this.tabPageMonitoring.UseVisualStyleBackColor = true;
+            // 
+            // tabPageServer
+            // 
+            this.tabPageServer.Controls.Add(this.checkBoxAllowMischief);
+            this.tabPageServer.Controls.Add(this.label3);
+            this.tabPageServer.Controls.Add(this.numericUpDownUdpUploadPort);
+            this.tabPageServer.Controls.Add(this.groupBox1);
+            this.tabPageServer.Location = new System.Drawing.Point(4, 22);
+            this.tabPageServer.Name = "tabPageServer";
+            this.tabPageServer.Size = new System.Drawing.Size(318, 145);
+            this.tabPageServer.TabIndex = 4;
+            this.tabPageServer.Text = "Server";
+            this.tabPageServer.UseVisualStyleBackColor = true;
+            // 
             // label3
             // 
             this.label3.AutoSize = true;
@@ -742,6 +719,106 @@
             0,
             0,
             0});
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.radioButtonUseDefaultServer);
+            this.groupBox1.Controls.Add(this.textBoxUploadServer);
+            this.groupBox1.Controls.Add(this.radioButtonUseCustomServer);
+            this.groupBox1.Location = new System.Drawing.Point(6, 6);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(306, 69);
+            this.groupBox1.TabIndex = 4;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Race Server";
+            // 
+            // tabPageLogging
+            // 
+            this.tabPageLogging.Controls.Add(this.groupBox6);
+            this.tabPageLogging.Location = new System.Drawing.Point(4, 22);
+            this.tabPageLogging.Name = "tabPageLogging";
+            this.tabPageLogging.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageLogging.Size = new System.Drawing.Size(318, 145);
+            this.tabPageLogging.TabIndex = 1;
+            this.tabPageLogging.Text = "Telemetry";
+            this.tabPageLogging.UseVisualStyleBackColor = true;
+            // 
+            // tabPageUpdate
+            // 
+            this.tabPageUpdate.Controls.Add(this.buttonUpdate);
+            this.tabPageUpdate.Controls.Add(this.checkBoxIncludeBetaUpdates);
+            this.tabPageUpdate.Controls.Add(this.checkBoxAutoUpdate);
+            this.tabPageUpdate.Location = new System.Drawing.Point(4, 22);
+            this.tabPageUpdate.Name = "tabPageUpdate";
+            this.tabPageUpdate.Size = new System.Drawing.Size(318, 145);
+            this.tabPageUpdate.TabIndex = 2;
+            this.tabPageUpdate.Text = "Update";
+            this.tabPageUpdate.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxUseSmartHeadingOnlyWhenOver
+            // 
+            this.checkBoxUseSmartHeadingOnlyWhenOver.AutoSize = true;
+            this.checkBoxUseSmartHeadingOnlyWhenOver.Checked = true;
+            this.checkBoxUseSmartHeadingOnlyWhenOver.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxUseSmartHeadingOnlyWhenOver.Location = new System.Drawing.Point(33, 83);
+            this.checkBoxUseSmartHeadingOnlyWhenOver.Name = "checkBoxUseSmartHeadingOnlyWhenOver";
+            this.checkBoxUseSmartHeadingOnlyWhenOver.Size = new System.Drawing.Size(157, 17);
+            this.checkBoxUseSmartHeadingOnlyWhenOver.TabIndex = 25;
+            this.checkBoxUseSmartHeadingOnlyWhenOver.Text = "Only when travelling above:";
+            this.toolTip1.SetToolTip(this.checkBoxUseSmartHeadingOnlyWhenOver, resources.GetString("checkBoxUseSmartHeadingOnlyWhenOver.ToolTip"));
+            this.checkBoxUseSmartHeadingOnlyWhenOver.UseVisualStyleBackColor = true;
+            // 
+            // numericUpDownUseSmartHeadingOnlyWhenOver
+            // 
+            this.numericUpDownUseSmartHeadingOnlyWhenOver.Location = new System.Drawing.Point(192, 82);
+            this.numericUpDownUseSmartHeadingOnlyWhenOver.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.numericUpDownUseSmartHeadingOnlyWhenOver.Name = "numericUpDownUseSmartHeadingOnlyWhenOver";
+            this.numericUpDownUseSmartHeadingOnlyWhenOver.Size = new System.Drawing.Size(44, 20);
+            this.numericUpDownUseSmartHeadingOnlyWhenOver.TabIndex = 26;
+            this.numericUpDownUseSmartHeadingOnlyWhenOver.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.toolTip1.SetToolTip(this.numericUpDownUseSmartHeadingOnlyWhenOver, resources.GetString("numericUpDownUseSmartHeadingOnlyWhenOver.ToolTip"));
+            this.numericUpDownUseSmartHeadingOnlyWhenOver.Value = new decimal(new int[] {
+            20,
+            0,
+            0,
+            0});
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(242, 84);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(25, 13);
+            this.label4.TabIndex = 27;
+            this.label4.Text = "m/s";
+            // 
+            // checkBoxUseSmartHeadingOnlyWhenInSRV
+            // 
+            this.checkBoxUseSmartHeadingOnlyWhenInSRV.AutoSize = true;
+            this.checkBoxUseSmartHeadingOnlyWhenInSRV.Checked = true;
+            this.checkBoxUseSmartHeadingOnlyWhenInSRV.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxUseSmartHeadingOnlyWhenInSRV.Location = new System.Drawing.Point(33, 106);
+            this.checkBoxUseSmartHeadingOnlyWhenInSRV.Name = "checkBoxUseSmartHeadingOnlyWhenInSRV";
+            this.checkBoxUseSmartHeadingOnlyWhenInSRV.Size = new System.Drawing.Size(112, 17);
+            this.checkBoxUseSmartHeadingOnlyWhenInSRV.TabIndex = 28;
+            this.checkBoxUseSmartHeadingOnlyWhenInSRV.Text = "Only when in SRV";
+            this.toolTip1.SetToolTip(this.checkBoxUseSmartHeadingOnlyWhenInSRV, "If enabled, direction of travel only calculated when in SRV.");
+            this.checkBoxUseSmartHeadingOnlyWhenInSRV.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxAllowMischief
+            // 
+            this.checkBoxAllowMischief.AutoSize = true;
+            this.checkBoxAllowMischief.Location = new System.Drawing.Point(97, 107);
+            this.checkBoxAllowMischief.Name = "checkBoxAllowMischief";
+            this.checkBoxAllowMischief.Size = new System.Drawing.Size(92, 17);
+            this.checkBoxAllowMischief.TabIndex = 7;
+            this.checkBoxAllowMischief.Text = "Allow mischief";
+            this.toolTip1.SetToolTip(this.checkBoxAllowMischief, "Sometimes the imps need to let off steam.");
+            this.checkBoxAllowMischief.UseVisualStyleBackColor = true;
             // 
             // FormTracker
             // 
@@ -784,12 +861,13 @@
             this.tabPageMonitoring.PerformLayout();
             this.tabPageServer.ResumeLayout(false);
             this.tabPageServer.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownUdpUploadPort)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.tabPageLogging.ResumeLayout(false);
             this.tabPageUpdate.ResumeLayout(false);
             this.tabPageUpdate.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownUdpUploadPort)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownUseSmartHeadingOnlyWhenOver)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -847,6 +925,11 @@
         private System.Windows.Forms.RadioButton radioButtonSRVTelemetry;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.NumericUpDown numericUpDownUdpUploadPort;
+        private System.Windows.Forms.CheckBox checkBoxUseSmartHeadingOnlyWhenInSRV;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.NumericUpDown numericUpDownUseSmartHeadingOnlyWhenOver;
+        private System.Windows.Forms.CheckBox checkBoxUseSmartHeadingOnlyWhenOver;
+        private System.Windows.Forms.CheckBox checkBoxAllowMischief;
     }
 }
 
