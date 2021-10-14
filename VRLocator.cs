@@ -13,32 +13,32 @@ namespace SRVTracker
         private Bitmap _vrbitmap = null;
         private FormVRMatrixEditor _formVRMatrixEditor = null;
         private VRLocatorOverlay _locatorOverlay = null;
-        private PictureBox _locatorPictureBox = new PictureBox();
-        static CVRSystem VRSystem = null;
+        //private PictureBox _locatorPictureBox = new PictureBox();
+        static CVRSystem _VRSystem = null;
         public bool VRInitializedOk { private set; get; } = false;
 
-        public VRLocator()
+        public VRLocator()//int panelWidth = 800, int panelHeight = 320)
         {
             //_panelTexture.eType = ETextureType.DirectX;
             VRInitializedOk = InitVR();
-            _locatorPictureBox.Width = 800;
-            _locatorPictureBox.Height = 320;
+            //_locatorPictureBox.Width = panelWidth;
+            //_locatorPictureBox.Height = panelHeight;
 
             if (VRInitializedOk)
             {
-                _locatorOverlay = new VRLocatorOverlay(this);
+                _locatorOverlay = new VRLocatorOverlay();
                 InitMatrixEditor();
-            }            
+            }
         }
 
         public bool InitVR()
         {
-            if (VRSystem == null)
+            if (_VRSystem == null)
             {
                 var initError = EVRInitError.None;
                 try
                 {
-                    VRSystem = OpenVR.Init(ref initError, EVRApplicationType.VRApplication_Overlay);
+                    _VRSystem = OpenVR.Init(ref initError, EVRApplicationType.VRApplication_Overlay);
                 }
                 catch (Exception ex)
                 {
@@ -46,7 +46,22 @@ namespace SRVTracker
                     return false;
                 }
             }
-            return VRSystem != null;
+            return _VRSystem != null;
+        }
+
+        public bool ResetVR()
+        {
+            if (_VRSystem != null)
+            {
+                OpenVR.Shutdown();
+                _VRSystem = null;
+            }
+            if (InitVR())
+            {
+                Show();
+                return true;
+            }
+            return false;
         }
 
         public void InitMatrixEditor()
@@ -61,7 +76,7 @@ namespace SRVTracker
         {
             if (_locatorOverlay==null)
             {
-                _locatorOverlay = new VRLocatorOverlay(this);
+                _locatorOverlay = new VRLocatorOverlay();
                 InitMatrixEditor();
             }
             _locatorOverlay.Show();
@@ -193,6 +208,10 @@ namespace SRVTracker
 
         public void UpdateVRLocatorImage(Bitmap PanelImage)
         {
+            if (_locatorOverlay == null)
+                return;
+            if (_vrbitmap != null)
+                _vrbitmap.Dispose();
             _vrbitmap = PanelImage;
             _vrbitmap.RotateFlip(RotateFlipType.RotateNoneFlipY);
             //if (_locatorVRAsTexture)

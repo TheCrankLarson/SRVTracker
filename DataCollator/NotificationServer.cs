@@ -1,19 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Net;
 using System.Net.Http;
 using System.IO;
 using System.Threading.Tasks;
-using System.Device.Location;
 using EDTracking;
 using System.Text.Json;
-using System.Diagnostics;
 
 namespace DataCollator
 {
@@ -30,11 +24,10 @@ namespace DataCollator
         private Dictionary<Guid, EDRace> _races;
         private DateTime _lastStaleDataCheck = DateTime.UtcNow;
         private DateTime _lastFinishedRaceCheck = DateTime.UtcNow;
-        private DateTime _lastCommanderStatusBuilt = DateTime.MinValue;
         private DateTime _lastAllCommanderStatusBuilt = DateTime.MinValue;
-        private string _lastCommanderStatus = "";
         private string _lastAllCommanderStatus = "";
         private CommanderRegistration _commanderRegistration = new CommanderRegistration();
+        private Mischief.ImpMaster _mischiefMaker = new Mischief.ImpMaster();
 
         public NotificationServer(string ListenURL, bool StartDebug = false, bool VerboseDebug = false)
         {

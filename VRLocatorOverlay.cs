@@ -1,13 +1,8 @@
 ﻿using System;
 using System.IO;
-using System.Collections.Generic;
 using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
-using System.Drawing.Text;
 using Valve.VR;
 using OpenVRApiModule.Maths;
 using System.Runtime.InteropServices;
@@ -23,11 +18,10 @@ namespace SRVTracker
         private byte[] _vrImageBytes = null;
         private IntPtr _intPtrVROverlayImage = IntPtr.Zero;
 
-        public VRLocatorOverlay(VRLocator vrLocator)
+        public VRLocatorOverlay()
         {
             _transform = Matrix4x4.CreateTranslation(0, 1, 0.5f).ToHmdMatrix34_t();
-            if (vrLocator.VRInitializedOk)
-                CreateOverlay();
+            CreateOverlay();
         }
 
         public HmdMatrix34_t Transform
@@ -67,6 +61,7 @@ namespace SRVTracker
 
         private void ApplyOverlayTransform()
         {
+            //Matrix4x4 m = Matrix4x4.Transpose(_transform.ToMatrix4x4());
             OpenVR.Overlay?.SetOverlayTransformAbsolute(_vrOverlayHandle, Valve.VR.ETrackingUniverseOrigin.TrackingUniverseStanding, ref _transform);
         }
 
@@ -97,11 +92,12 @@ namespace SRVTracker
             try
             {
                 OpenVR.Overlay.DestroyOverlay(_vrOverlayHandle);
+                _vrOverlayHandle = 0;
             }
             catch { }
         }
 
-        private bool CreateOverlay()
+        public bool CreateOverlay()
         {
             try
             {
@@ -149,7 +145,8 @@ namespace SRVTracker
                 _intPtrVROverlayImage = Marshal.AllocHGlobal(_vrImageBytes.Length);
             }
             Marshal.Copy(_vrImageBytes, 0, _intPtrVROverlayImage, _vrImageBytes.Length);
-            OpenVR.Overlay.SetOverlayRaw(_vrOverlayHandle, _intPtrVROverlayImage, (uint)imageBitmap.Width, (uint)imageBitmap.Height, 4);
+            uint pixelFormat = (uint)(Image.GetPixelFormatSize(imageBitmap.PixelFormat)/8);
+            OpenVR.Overlay.SetOverlayRaw(_vrOverlayHandle, _intPtrVROverlayImage, (uint)imageBitmap.Width, (uint)imageBitmap.Height, pixelFormat);
         }
     }
 }

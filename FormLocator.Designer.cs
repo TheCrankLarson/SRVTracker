@@ -257,7 +257,7 @@
             // 
             this.checkBoxEnableVRLocator.AutoSize = true;
             this.checkBoxEnableVRLocator.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.checkBoxEnableVRLocator.Location = new System.Drawing.Point(47, 140);
+            this.checkBoxEnableVRLocator.Location = new System.Drawing.Point(47, 141);
             this.checkBoxEnableVRLocator.Name = "checkBoxEnableVRLocator";
             this.checkBoxEnableVRLocator.Size = new System.Drawing.Size(38, 17);
             this.checkBoxEnableVRLocator.TabIndex = 10;

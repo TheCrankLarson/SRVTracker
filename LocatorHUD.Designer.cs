@@ -32,10 +32,10 @@
             this.labelTarget = new System.Windows.Forms.Label();
             this.labelBearing = new System.Windows.Forms.Label();
             this.labelDistance = new System.Windows.Forms.Label();
-            this.pictureBoxDirection = new System.Windows.Forms.PictureBox();
             this.labelSpeedInMS = new System.Windows.Forms.Label();
             this.labelMs = new System.Windows.Forms.Label();
             this.labelAdditionalInfo = new System.Windows.Forms.Label();
+            this.pictureBoxDirection = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxDirection)).BeginInit();
             this.SuspendLayout();
             // 
@@ -81,16 +81,6 @@
             this.labelDistance.TabIndex = 3;
             this.labelDistance.Text = "0.0km";
             // 
-            // pictureBoxDirection
-            // 
-            this.pictureBoxDirection.Image = global::SRVTracker.Properties.Resources.arrow;
-            this.pictureBoxDirection.InitialImage = null;
-            this.pictureBoxDirection.Location = new System.Drawing.Point(198, 0);
-            this.pictureBoxDirection.Name = "pictureBoxDirection";
-            this.pictureBoxDirection.Size = new System.Drawing.Size(60, 60);
-            this.pictureBoxDirection.TabIndex = 4;
-            this.pictureBoxDirection.TabStop = false;
-            // 
             // labelSpeedInMS
             // 
             this.labelSpeedInMS.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -122,6 +112,16 @@
             this.labelAdditionalInfo.Size = new System.Drawing.Size(78, 13);
             this.labelAdditionalInfo.TabIndex = 7;
             this.labelAdditionalInfo.Text = "(additional info)";
+            // 
+            // pictureBoxDirection
+            // 
+            this.pictureBoxDirection.Image = global::SRVTracker.Properties.Resources.Silver_arrow;
+            this.pictureBoxDirection.InitialImage = null;
+            this.pictureBoxDirection.Location = new System.Drawing.Point(198, 0);
+            this.pictureBoxDirection.Name = "pictureBoxDirection";
+            this.pictureBoxDirection.Size = new System.Drawing.Size(60, 60);
+            this.pictureBoxDirection.TabIndex = 4;
+            this.pictureBoxDirection.TabStop = false;
             // 
             // LocatorHUD
             // 

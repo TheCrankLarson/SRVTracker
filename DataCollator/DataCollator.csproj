@@ -182,6 +182,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Mischief\Mischief.csproj">
+      <Project>{fe8a4293-2573-4e00-a1bf-61900f5ceddf}</Project>
+      <Name>Mischief</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EDTracking\EDTracking.csproj">
       <Project>{d36c1dc6-c1d4-4750-894c-54666389c630}</Project>
       <Name>EDTracking</Name>

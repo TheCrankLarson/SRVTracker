@@ -23,6 +23,7 @@ namespace SRVTracker
         private static FormLocator _activeLocator = null;
         private ConfigSaverClass _formConfig = null;
         private VRLocator _vrLocator = null;
+        private bool _useEnhancedVRHUD = true;
         //private FormVRMatrixEditor _formVRMatrixTest = null;
         //private byte[] _vrPanelImageBytes = null;
         //private IntPtr _intPtrVROverlayImage;
@@ -217,7 +218,7 @@ namespace SRVTracker
                     action();
             }
 
-            //locatorHUD1.SetSpeed(FormTracker.SpeedInMS);
+            locatorHUD1.SetSpeed(FormTracker.Tracker.SpeedInMS);
 
             if (_targetPosition == null)
                 return;
@@ -444,6 +445,15 @@ namespace SRVTracker
             DisplayTarget();
         }
 
+        private bool CreateVRLocator()
+        {
+            //if (_useWindowClientAreaForVR)
+            //    _vrLocator = new VRLocator(locatorHUD1.Width, locatorHUD1.Height);
+            //else
+                _vrLocator = new VRLocator();
+            return true;
+        }
+
         private void checkBoxEnableVRLocator_CheckedChanged(object sender, EventArgs e)
         {
             string initError = "";
@@ -452,7 +462,7 @@ namespace SRVTracker
 
             if (_vrLocator == null)
             {
-                _vrLocator = new VRLocator();
+                CreateVRLocator();
                 checkBoxEnableVRLocator.Checked = _vrLocator.VRInitializedOk;
                 if (!_vrLocator.VRInitializedOk)
                 {
@@ -480,25 +490,41 @@ namespace SRVTracker
 
         private void UpdateVRLocatorImage()
         {
+            if (_vrLocator == null)
+                return;
+
             string info = "";
             if (locatorHUD1.PanelRequiresReset())
             {
                 // For some reason, after 200 updates the OpenVR layer locks up
                 // No idea why, so this horrible hack resets it
-                HideVRLocator(false);
+                _vrLocator.Hide(false);
+                if (!_vrLocator.ResetVR())
+                {
+                    checkBoxEnableVRLocator.Checked = false;
+                    return;
+                }
                 locatorHUD1.ResetPanel();
                 ShowVRLocator(ref info);
                 return;
             }
 
-            Bitmap locatorPanel = locatorHUD1.GetLocatorPanelBitmap();
+            Bitmap locatorPanel = null;
+            if (_useEnhancedVRHUD)
+                locatorPanel = locatorHUD1.GetVRLocatorHUD();
+            else
+                locatorPanel = locatorHUD1.GetLocatorPanelBitmap();
+
             try
             {
                 _vrLocator.UpdateVRLocatorImage(locatorPanel);
                 return;
             }
-            catch { }
-
+            catch (Exception ex)
+            {
+                MessageBox.Show($"{ex}", "Error updating VR image", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            return;
             // If we get here the overlay update failed, so we attempt to reset Open VR
             HideVRLocator(false);
             locatorHUD1.ResetPanel();
@@ -509,7 +535,7 @@ namespace SRVTracker
         private bool ShowVRLocator(ref string info)
         {
             if (_vrLocator == null)
-                _vrLocator = new VRLocator();
+                CreateVRLocator();
 
             UpdateVRLocatorImage();
             _vrLocator.ShowMatrixEditor();

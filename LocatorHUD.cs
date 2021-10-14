@@ -17,6 +17,7 @@ namespace SRVTracker
         private Graphics _panelBitmapGraphics = null;
         private bool _panelBitmapStale = true;
         private int _panelRequests = 0;
+        private VRLocatorHUD _vrLocatorHUD = null;
 
         public LocatorHUD()
         {
@@ -134,10 +135,10 @@ namespace SRVTracker
                 action();
         }
 
-        private void UpdateSpeed(string speed)
+        private bool UpdateSpeed(string speed)
         {
             if (speed.Equals(_lastSpeed))
-                return;
+                return false;
 
             _panelBitmapStale = true;
             Action action = new Action(() => { labelSpeedInMS.Text = speed; });
@@ -147,7 +148,7 @@ namespace SRVTracker
                 action();
 
             if (labelSpeedInMS.Visible)
-                return;
+                return true;
 
             action = new Action(() =>
             {
@@ -158,17 +159,17 @@ namespace SRVTracker
                 labelSpeedInMS.Invoke(action);
             else
                 action();
+            return true;
         }
 
-        public void SetSpeed(int speedInMs)
+        public bool SetSpeed(int speedInMs)
         {
-            UpdateSpeed(speedInMs.ToString());
+            return UpdateSpeed(speedInMs.ToString());
         }
 
-        public void SetSpeed(double speedInMs)
+        public bool SetSpeed(double speedInMs)
         {
-            UpdateSpeed(speedInMs.ToString("F1"));
-
+            return UpdateSpeed(speedInMs.ToString("F1"));
         }
 
         /// <summary>
@@ -220,6 +221,64 @@ namespace SRVTracker
         public void ResetPanel()
         {
             _panelRequests = 0;
+        }
+
+        public Bitmap GetWindowAsBitmap()
+        {
+            Bitmap bmp = new Bitmap(ClientRectangle.Width, ClientRectangle.Height);
+            DrawToBitmap(bmp, ClientRectangle);
+            return bmp;
+        }
+
+        private void UpdateVRLocatorHUD()
+        {
+            Action action = (() =>  { _vrLocatorHUD.labelBearing.Text = labelBearing.Text; });
+            if (_vrLocatorHUD.labelBearing.InvokeRequired)
+                _vrLocatorHUD.labelBearing.Invoke(action);
+            else
+                action();
+
+            action = (() => { _vrLocatorHUD.labelDistance.Text = labelDistance.Text; });
+            if (_vrLocatorHUD.labelDistance.InvokeRequired)
+                _vrLocatorHUD.labelDistance.Invoke(action);
+            else
+                action();
+
+            action = (() => { _vrLocatorHUD.labelSpeed.Text = labelSpeedInMS.Text; });
+            if (_vrLocatorHUD.labelSpeed.InvokeRequired)
+                _vrLocatorHUD.labelSpeed.Invoke(action);
+            else
+                action();
+
+            action = (() => { _vrLocatorHUD.labelTarget.Text = labelTarget.Text; });
+            if (_vrLocatorHUD.labelTarget.InvokeRequired)
+                _vrLocatorHUD.labelTarget.Invoke(action);
+            else
+                action();
+
+            action = (() => { _vrLocatorHUD.pictureBoxDirection.Image = pictureBoxDirection.Image; });
+            if (_vrLocatorHUD.pictureBoxDirection.InvokeRequired)
+                _vrLocatorHUD.pictureBoxDirection.Invoke(action);
+            else
+                action();
+
+            action = () => { _vrLocatorHUD.labelPanelUpdates.Text = _panelRequests.ToString(); };
+            if (_vrLocatorHUD.labelPanelUpdates.InvokeRequired)
+                _vrLocatorHUD.labelPanelUpdates.Invoke(action);
+            else
+                action();
+        }
+
+        public Bitmap GetVRLocatorHUD()
+        {
+            if (_vrLocatorHUD == null)
+                _vrLocatorHUD = new VRLocatorHUD();
+
+            UpdateVRLocatorHUD();
+            _panelRequests++;
+            Bitmap bmp = new Bitmap(_vrLocatorHUD.Width, _vrLocatorHUD.Height);
+            _vrLocatorHUD.DrawToBitmap(bmp, _vrLocatorHUD.ClientRectangle);
+            return bmp;
         }
 
         public Bitmap GetLocatorPanelBitmap()

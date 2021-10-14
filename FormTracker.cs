@@ -34,6 +34,7 @@ namespace SRVTracker
         private bool _uploadValidated = false;
         private DateTime _uploadStartTime = DateTime.MinValue;
         public static event EventHandler CommanderLocationChanged;
+        public static FormTracker Tracker = null;
 
         public static EDLocation CurrentLocation { get; private set; } = new EDLocation();
         public static EDLocation PreviousLocation { get; private set; } = new EDLocation();
@@ -54,7 +55,11 @@ namespace SRVTracker
         public static extern bool ReleaseCapture();
 
         public FormTracker()
-        {            
+        {
+            if (Tracker != null)
+                return; // Can only have one tracker
+
+            Tracker = this;
             InitializeComponent();
 
             _statusTimer = new System.Timers.Timer(STATUS_JSON_CHECK_INTERVAL);
@@ -502,6 +507,7 @@ namespace SRVTracker
             }
             catch (Exception ex)
             {
+                MessageBox.Show(this, $"Failed to create UDP upload client.\r\nTypical causes are firewall or security software.\r\nPlease resolve issue and try again.\r\n\r\nError:{ex.Message}", "Upload Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 checkBoxUpload.Checked = false;
             }
             return false;

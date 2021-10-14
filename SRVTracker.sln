@@ -22,6 +22,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RaceTester", "RaceTester\Ra
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Race Manager", "Race Manager\Race Manager.csproj", "{573FE1A8-A177-426D-8028-DD98793EF6E2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mischief", "..\Mischief\Mischief.csproj", "{FE8A4293-2573-4E00-A1BF-61900F5CEDDF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -104,6 +106,18 @@ Global
 		{573FE1A8-A177-426D-8028-DD98793EF6E2}.Release|x64.Build.0 = Release|x64
 		{573FE1A8-A177-426D-8028-DD98793EF6E2}.Release|x86.ActiveCfg = Release|Any CPU
 		{573FE1A8-A177-426D-8028-DD98793EF6E2}.Release|x86.Build.0 = Release|Any CPU
+		{FE8A4293-2573-4E00-A1BF-61900F5CEDDF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE8A4293-2573-4E00-A1BF-61900F5CEDDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE8A4293-2573-4E00-A1BF-61900F5CEDDF}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{FE8A4293-2573-4E00-A1BF-61900F5CEDDF}.Debug|x64.Build.0 = Debug|Any CPU
+		{FE8A4293-2573-4E00-A1BF-61900F5CEDDF}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{FE8A4293-2573-4E00-A1BF-61900F5CEDDF}.Debug|x86.Build.0 = Debug|Any CPU
+		{FE8A4293-2573-4E00-A1BF-61900F5CEDDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE8A4293-2573-4E00-A1BF-61900F5CEDDF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE8A4293-2573-4E00-A1BF-61900F5CEDDF}.Release|x64.ActiveCfg = Release|Any CPU
+		{FE8A4293-2573-4E00-A1BF-61900F5CEDDF}.Release|x64.Build.0 = Release|Any CPU
+		{FE8A4293-2573-4E00-A1BF-61900F5CEDDF}.Release|x86.ActiveCfg = Release|Any CPU
+		{FE8A4293-2573-4E00-A1BF-61900F5CEDDF}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

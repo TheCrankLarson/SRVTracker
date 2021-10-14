@@ -213,6 +213,12 @@
       <DependentUpon>UpdaterForm.cs</DependentUpon>
     </Compile>
     <Compile Include="VRLocator.cs" />
+    <Compile Include="VRLocatorHUD.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="VRLocatorHUD.Designer.cs">
+      <DependentUpon>VRLocatorHUD.cs</DependentUpon>
+    </Compile>
     <Compile Include="VRLocatorOverlay.cs" />
     <Compile Include="VRPanelCollection.cs" />
     <EmbeddedResource Include="FormAddLocation.resx">
@@ -261,6 +267,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UpdaterForm.resx">
       <DependentUpon>UpdaterForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VRLocatorHUD.resx">
+      <DependentUpon>VRLocatorHUD.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -329,6 +338,7 @@
     <Content Include="ReleaseNotes.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\Silver arrow.bmp" />
     <None Include="Resources\Fragment_16x.png" />
     <None Include="Resources\SpherePreview_16x.png" />
     <None Include="Resources\AddressEditor_16x.png" />
