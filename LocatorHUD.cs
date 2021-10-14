@@ -3,6 +3,9 @@ using System.Windows.Forms;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.IO;
 
 
 namespace SRVTracker
@@ -18,6 +21,8 @@ namespace SRVTracker
         private bool _panelBitmapStale = true;
         private int _panelRequests = 0;
         private VRLocatorHUD _vrLocatorHUD = null;
+        private VRLocatorHUDWPF _vrLocatorHUDWPF = null;
+        private long _lastUpdateInTicks = 0;
 
         public LocatorHUD()
         {
@@ -262,11 +267,59 @@ namespace SRVTracker
             else
                 action();
 
-            action = () => { _vrLocatorHUD.labelPanelUpdates.Text = _panelRequests.ToString(); };
+            action = () => { _vrLocatorHUD.labelPanelUpdates.Text = _lastUpdateInTicks.ToString(); };
             if (_vrLocatorHUD.labelPanelUpdates.InvokeRequired)
                 _vrLocatorHUD.labelPanelUpdates.Invoke(action);
             else
                 action();
+
+            action = () =>
+            {
+                if (String.IsNullOrEmpty(labelAdditionalInfo.Text))
+                {
+                    _vrLocatorHUD.groupBoxAdditionalInfo.Visible = false;
+                }
+                else
+                {
+                    _vrLocatorHUD.labelAdditionalInfo.Text = labelAdditionalInfo.Text;
+                    _vrLocatorHUD.groupBoxAdditionalInfo.Visible = true;
+                }
+            };
+            if (_vrLocatorHUD.labelAdditionalInfo.InvokeRequired)
+                _vrLocatorHUD.labelAdditionalInfo.Invoke(action);
+            else
+                action();
+        }
+
+        private void UpdateVRLocatorHUDWPF()
+        {
+            _vrLocatorHUDWPF.labelBearing.Content = labelBearing.Text;
+            _vrLocatorHUDWPF.labelDistance.Content = labelDistance.Text;
+            _vrLocatorHUDWPF.labelSpeed.Content = labelSpeedInMS.Text;
+            _vrLocatorHUDWPF.labelTarget.Content = labelTarget.Text;
+            _vrLocatorHUDWPF.BearingArrow.RenderTransform = new RotateTransform(_lastTurnDirection);
+        }
+
+        public Bitmap GetVRLocatorHUDWPF()
+        {
+            if (_vrLocatorHUDWPF == null)
+                _vrLocatorHUDWPF = new VRLocatorHUDWPF();
+
+            DateTime updateStart = DateTime.Now;
+            UpdateVRLocatorHUDWPF();
+            _panelRequests++;
+
+            RenderTargetBitmap rtb = new RenderTargetBitmap((int)800, (int)320, 96, 96, PixelFormats.Default);
+            rtb.Render(_vrLocatorHUDWPF);
+
+            MemoryStream stream = new MemoryStream();
+            BitmapEncoder encoder = new BmpBitmapEncoder();
+            encoder.Frames.Add(BitmapFrame.Create(rtb));
+            encoder.Save(stream);
+            Bitmap bmp = new Bitmap(stream);
+
+            _lastUpdateInTicks = DateTime.Now.Subtract(updateStart).Ticks;
+            return bmp;
         }
 
         public Bitmap GetVRLocatorHUD()
@@ -274,20 +327,24 @@ namespace SRVTracker
             if (_vrLocatorHUD == null)
                 _vrLocatorHUD = new VRLocatorHUD();
 
+            DateTime updateStart = DateTime.Now;
             UpdateVRLocatorHUD();
             _panelRequests++;
-            Bitmap bmp = new Bitmap(_vrLocatorHUD.Width, _vrLocatorHUD.Height);
+            Bitmap bmp = new Bitmap(_vrLocatorHUD.Width, _vrLocatorHUD.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
             _vrLocatorHUD.DrawToBitmap(bmp, _vrLocatorHUD.ClientRectangle);
+            _lastUpdateInTicks = DateTime.Now.Subtract(updateStart).Ticks;
             return bmp;
         }
 
         public Bitmap GetLocatorPanelBitmap()
         {
             // Generate and return a bitmap to be used as overlay
+            SetAdditionalInfo(_lastUpdateInTicks.ToString());
             _panelRequests++;
             if (!_panelBitmapStale)
                 return _panelBitmap;
 
+            DateTime updateStart = DateTime.Now;
             if (_panelBitmap == null)
                 _panelBitmap = new Bitmap(800, 320);
 
@@ -302,12 +359,12 @@ namespace SRVTracker
             }
 
             // Black background
-            _panelBitmapGraphics.FillRectangle(new SolidBrush(Color.Black), _panelBitmapGraphics.ClipBounds);
+            _panelBitmapGraphics.FillRectangle(new SolidBrush(System.Drawing.Color.Black), _panelBitmapGraphics.ClipBounds);
 
             // Tracking target
-            Brush directionBrush = new SolidBrush(Color.White);
-            Brush targetBrush = new SolidBrush(Color.Green);
-            Brush additionalInfoBrush = new SolidBrush(Color.LightGray);
+            System.Drawing.Brush directionBrush = new SolidBrush(System.Drawing.Color.White);
+            System.Drawing.Brush targetBrush = new SolidBrush(System.Drawing.Color.Green);
+            System.Drawing.Brush additionalInfoBrush = new SolidBrush(System.Drawing.Color.LightGray);
             Font font = new Font("Arial", 24);
             _panelBitmapGraphics.DrawString(labelTarget.Text, font, targetBrush, new PointF(0, 40));
 
@@ -336,6 +393,7 @@ namespace SRVTracker
             directionBrush.Dispose();
             targetBrush.Dispose();
             additionalInfoBrush.Dispose();
+            _lastUpdateInTicks = DateTime.Now.Subtract(updateStart).Ticks;
             return _panelBitmap;
         }
     }

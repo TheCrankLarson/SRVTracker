@@ -511,7 +511,7 @@ namespace SRVTracker
 
             Bitmap locatorPanel = null;
             if (_useEnhancedVRHUD)
-                locatorPanel = locatorHUD1.GetVRLocatorHUD();
+                locatorPanel = locatorHUD1.GetVRLocatorHUD();//locatorPanel = locatorHUD1.GetVRLocatorHUD();
             else
                 locatorPanel = locatorHUD1.GetLocatorPanelBitmap();
 

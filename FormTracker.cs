@@ -330,12 +330,11 @@ namespace SRVTracker
             _vehicleTelemetry?.ProcessEvent(edEvent, !checkBoxCaptureSRVTelemetry.Checked);
             if (edEvent.HasCoordinates())
             {
-                if (checkBoxUseDirectionOfTravelAsHeading.Checked)
+                if (checkBoxUseDirectionOfTravelAsHeading.Checked && (!checkBoxUseSmartHeadingOnlyWhenInSRV.Checked || edEvent.isInSRV()) && (!checkBoxUseSmartHeadingOnlyWhenOver.Checked || (SpeedInMS > (int)numericUpDownUseSmartHeadingOnlyWhenOver.Value)))
                 {
                     // We ignore the heading given by E: D, as that is direction we are facing, not travelling
                     // We calculate our direction based on previous location
-                    if ((!checkBoxUseSmartHeadingOnlyWhenInSRV.Checked || edEvent.isInSRV()) && (!checkBoxUseSmartHeadingOnlyWhenOver.Checked || SpeedInMS>(int)numericUpDownUseSmartHeadingOnlyWhenOver.Value))
-                        CurrentHeading = _vehicleTelemetry.CurrentHeading;
+                    CurrentHeading = _vehicleTelemetry.CurrentHeading;
                 }
                 else
                     CurrentHeading = edEvent.Heading;

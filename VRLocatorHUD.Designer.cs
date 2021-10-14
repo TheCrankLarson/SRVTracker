@@ -40,16 +40,20 @@ namespace SRVTracker
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.pictureBoxDirection = new System.Windows.Forms.PictureBox();
             this.labelPanelUpdates = new System.Windows.Forms.Label();
+            this.groupBoxAdditionalInfo = new System.Windows.Forms.GroupBox();
+            this.labelAdditionalInfo = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.groupBox5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxDirection)).BeginInit();
+            this.groupBoxAdditionalInfo.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
+            this.groupBox1.BackColor = System.Drawing.Color.Transparent;
             this.groupBox1.Controls.Add(this.labelTarget);
             this.groupBox1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -74,6 +78,7 @@ namespace SRVTracker
             // 
             // groupBox2
             // 
+            this.groupBox2.BackColor = System.Drawing.Color.Transparent;
             this.groupBox2.Controls.Add(this.labelSpeed);
             this.groupBox2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -98,6 +103,7 @@ namespace SRVTracker
             // 
             // groupBox3
             // 
+            this.groupBox3.BackColor = System.Drawing.Color.Transparent;
             this.groupBox3.Controls.Add(this.labelDistance);
             this.groupBox3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.groupBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -122,6 +128,7 @@ namespace SRVTracker
             // 
             // groupBox4
             // 
+            this.groupBox4.BackColor = System.Drawing.Color.Transparent;
             this.groupBox4.Controls.Add(this.labelBearing);
             this.groupBox4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.groupBox4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -146,6 +153,7 @@ namespace SRVTracker
             // 
             // groupBox5
             // 
+            this.groupBox5.BackColor = System.Drawing.Color.Transparent;
             this.groupBox5.Controls.Add(this.pictureBoxDirection);
             this.groupBox5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.groupBox5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -170,20 +178,46 @@ namespace SRVTracker
             // labelPanelUpdates
             // 
             this.labelPanelUpdates.AutoSize = true;
-            this.labelPanelUpdates.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelPanelUpdates.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelPanelUpdates.ForeColor = System.Drawing.Color.Green;
-            this.labelPanelUpdates.Location = new System.Drawing.Point(22, 69);
+            this.labelPanelUpdates.Location = new System.Drawing.Point(5, 69);
             this.labelPanelUpdates.Name = "labelPanelUpdates";
-            this.labelPanelUpdates.Size = new System.Drawing.Size(24, 25);
+            this.labelPanelUpdates.Size = new System.Drawing.Size(16, 18);
             this.labelPanelUpdates.TabIndex = 5;
             this.labelPanelUpdates.Text = "0";
-            this.labelPanelUpdates.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.labelPanelUpdates.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.labelPanelUpdates.Visible = false;
+            // 
+            // groupBoxAdditionalInfo
+            // 
+            this.groupBoxAdditionalInfo.BackColor = System.Drawing.Color.Transparent;
+            this.groupBoxAdditionalInfo.Controls.Add(this.labelAdditionalInfo);
+            this.groupBoxAdditionalInfo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.groupBoxAdditionalInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBoxAdditionalInfo.ForeColor = System.Drawing.Color.White;
+            this.groupBoxAdditionalInfo.Location = new System.Drawing.Point(3, 107);
+            this.groupBoxAdditionalInfo.Name = "groupBoxAdditionalInfo";
+            this.groupBoxAdditionalInfo.Size = new System.Drawing.Size(453, 46);
+            this.groupBoxAdditionalInfo.TabIndex = 6;
+            this.groupBoxAdditionalInfo.TabStop = false;
+            // 
+            // labelAdditionalInfo
+            // 
+            this.labelAdditionalInfo.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.labelAdditionalInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelAdditionalInfo.Location = new System.Drawing.Point(3, 18);
+            this.labelAdditionalInfo.Name = "labelAdditionalInfo";
+            this.labelAdditionalInfo.Size = new System.Drawing.Size(447, 25);
+            this.labelAdditionalInfo.TabIndex = 0;
+            this.labelAdditionalInfo.Text = "0";
+            this.labelAdditionalInfo.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // VRLocatorHUD
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
+            this.Controls.Add(this.groupBoxAdditionalInfo);
             this.Controls.Add(this.labelPanelUpdates);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox4);
@@ -198,6 +232,7 @@ namespace SRVTracker
             this.groupBox4.ResumeLayout(false);
             this.groupBox5.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxDirection)).EndInit();
+            this.groupBoxAdditionalInfo.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -216,5 +251,7 @@ namespace SRVTracker
         public System.Windows.Forms.Label labelBearing;
         public System.Windows.Forms.PictureBox pictureBoxDirection;
         public System.Windows.Forms.Label labelPanelUpdates;
+        public System.Windows.Forms.Label labelAdditionalInfo;
+        public System.Windows.Forms.GroupBox groupBoxAdditionalInfo;
     }
 }

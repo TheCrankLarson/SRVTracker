@@ -104,6 +104,8 @@ namespace SRVTracker
                 if (OpenVR.Overlay != null)
                 {
                     OpenVR.Overlay.CreateOverlay(Guid.NewGuid().ToString(), "SRV Tracking", ref _vrOverlayHandle);
+                    OpenVR.Overlay.SetOverlayColor(_vrOverlayHandle, 1f, 1f, 1f);
+                    OpenVR.Overlay.SetOverlayAlpha(_vrOverlayHandle, 1f);
                     //InitOverlay();
                     return true;
                 }
