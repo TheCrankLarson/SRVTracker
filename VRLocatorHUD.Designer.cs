@@ -42,6 +42,22 @@ namespace SRVTracker
             this.labelPanelUpdates = new System.Windows.Forms.Label();
             this.groupBoxAdditionalInfo = new System.Windows.Forms.GroupBox();
             this.labelAdditionalInfo = new System.Windows.Forms.Label();
+            this.groupBoxRaceInformation = new System.Windows.Forms.GroupBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.labelRacePosition = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.labelRaceLap = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.labelRaceAheadOf = new System.Windows.Forms.Label();
+            this.labelRaceBehind = new System.Windows.Forms.Label();
+            this.groupBoxRouteInformation = new System.Windows.Forms.GroupBox();
+            this.labelRouteTimeTaken = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.labelRouteWaypointsLeft = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.labelRouteWaypointsVisited = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -49,6 +65,8 @@ namespace SRVTracker
             this.groupBox5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxDirection)).BeginInit();
             this.groupBoxAdditionalInfo.SuspendLayout();
+            this.groupBoxRaceInformation.SuspendLayout();
+            this.groupBoxRouteInformation.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -212,11 +230,181 @@ namespace SRVTracker
             this.labelAdditionalInfo.Text = "0";
             this.labelAdditionalInfo.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
+            // groupBoxRaceInformation
+            // 
+            this.groupBoxRaceInformation.BackColor = System.Drawing.Color.Transparent;
+            this.groupBoxRaceInformation.Controls.Add(this.labelRaceBehind);
+            this.groupBoxRaceInformation.Controls.Add(this.labelRaceAheadOf);
+            this.groupBoxRaceInformation.Controls.Add(this.label4);
+            this.groupBoxRaceInformation.Controls.Add(this.label1);
+            this.groupBoxRaceInformation.Controls.Add(this.labelRaceLap);
+            this.groupBoxRaceInformation.Controls.Add(this.label3);
+            this.groupBoxRaceInformation.Controls.Add(this.label2);
+            this.groupBoxRaceInformation.Controls.Add(this.labelRacePosition);
+            this.groupBoxRaceInformation.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.groupBoxRaceInformation.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBoxRaceInformation.ForeColor = System.Drawing.Color.White;
+            this.groupBoxRaceInformation.Location = new System.Drawing.Point(3, 235);
+            this.groupBoxRaceInformation.Name = "groupBoxRaceInformation";
+            this.groupBoxRaceInformation.Size = new System.Drawing.Size(453, 70);
+            this.groupBoxRaceInformation.TabIndex = 7;
+            this.groupBoxRaceInformation.TabStop = false;
+            this.groupBoxRaceInformation.Text = "Race Information";
+            this.groupBoxRaceInformation.Visible = false;
+            // 
+            // label2
+            // 
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(6, 18);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(73, 25);
+            this.label2.TabIndex = 1;
+            this.label2.Text = "Position:";
+            // 
+            // labelRacePosition
+            // 
+            this.labelRacePosition.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelRacePosition.Location = new System.Drawing.Point(105, 18);
+            this.labelRacePosition.Name = "labelRacePosition";
+            this.labelRacePosition.Size = new System.Drawing.Size(67, 25);
+            this.labelRacePosition.TabIndex = 0;
+            this.labelRacePosition.Text = "0";
+            // 
+            // label3
+            // 
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(6, 42);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(93, 25);
+            this.label3.TabIndex = 2;
+            this.label3.Text = "Current lap:";
+            // 
+            // labelRaceLap
+            // 
+            this.labelRaceLap.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelRaceLap.Location = new System.Drawing.Point(105, 42);
+            this.labelRaceLap.Name = "labelRaceLap";
+            this.labelRaceLap.Size = new System.Drawing.Size(67, 25);
+            this.labelRaceLap.TabIndex = 3;
+            this.labelRaceLap.Text = "0";
+            // 
+            // label1
+            // 
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(202, 18);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(73, 25);
+            this.label1.TabIndex = 4;
+            this.label1.Text = "Behind:";
+            // 
+            // label4
+            // 
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(202, 42);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(83, 25);
+            this.label4.TabIndex = 5;
+            this.label4.Text = "Ahead of:";
+            // 
+            // labelRaceAheadOf
+            // 
+            this.labelRaceAheadOf.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelRaceAheadOf.Location = new System.Drawing.Point(291, 42);
+            this.labelRaceAheadOf.Name = "labelRaceAheadOf";
+            this.labelRaceAheadOf.Size = new System.Drawing.Size(73, 25);
+            this.labelRaceAheadOf.TabIndex = 6;
+            this.labelRaceAheadOf.Text = "No-one";
+            // 
+            // labelRaceBehind
+            // 
+            this.labelRaceBehind.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelRaceBehind.Location = new System.Drawing.Point(291, 18);
+            this.labelRaceBehind.Name = "labelRaceBehind";
+            this.labelRaceBehind.Size = new System.Drawing.Size(73, 25);
+            this.labelRaceBehind.TabIndex = 7;
+            this.labelRaceBehind.Text = "No-one";
+            // 
+            // groupBoxRouteInformation
+            // 
+            this.groupBoxRouteInformation.BackColor = System.Drawing.Color.Transparent;
+            this.groupBoxRouteInformation.Controls.Add(this.labelRouteTimeTaken);
+            this.groupBoxRouteInformation.Controls.Add(this.label8);
+            this.groupBoxRouteInformation.Controls.Add(this.labelRouteWaypointsLeft);
+            this.groupBoxRouteInformation.Controls.Add(this.label10);
+            this.groupBoxRouteInformation.Controls.Add(this.label11);
+            this.groupBoxRouteInformation.Controls.Add(this.labelRouteWaypointsVisited);
+            this.groupBoxRouteInformation.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.groupBoxRouteInformation.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBoxRouteInformation.ForeColor = System.Drawing.Color.White;
+            this.groupBoxRouteInformation.Location = new System.Drawing.Point(3, 159);
+            this.groupBoxRouteInformation.Name = "groupBoxRouteInformation";
+            this.groupBoxRouteInformation.Size = new System.Drawing.Size(453, 70);
+            this.groupBoxRouteInformation.TabIndex = 8;
+            this.groupBoxRouteInformation.TabStop = false;
+            this.groupBoxRouteInformation.Text = "Route Information";
+            this.groupBoxRouteInformation.Visible = false;
+            // 
+            // labelRouteTimeTaken
+            // 
+            this.labelRouteTimeTaken.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelRouteTimeTaken.Location = new System.Drawing.Point(307, 18);
+            this.labelRouteTimeTaken.Name = "labelRouteTimeTaken";
+            this.labelRouteTimeTaken.Size = new System.Drawing.Size(73, 25);
+            this.labelRouteTimeTaken.TabIndex = 7;
+            this.labelRouteTimeTaken.Text = "00:00:00";
+            // 
+            // label8
+            // 
+            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label8.Location = new System.Drawing.Point(202, 18);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(99, 25);
+            this.label8.TabIndex = 4;
+            this.label8.Text = "Time taken:";
+            // 
+            // labelRouteWaypointsLeft
+            // 
+            this.labelRouteWaypointsLeft.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelRouteWaypointsLeft.Location = new System.Drawing.Point(149, 42);
+            this.labelRouteWaypointsLeft.Name = "labelRouteWaypointsLeft";
+            this.labelRouteWaypointsLeft.Size = new System.Drawing.Size(67, 25);
+            this.labelRouteWaypointsLeft.TabIndex = 3;
+            this.labelRouteWaypointsLeft.Text = "0";
+            // 
+            // label10
+            // 
+            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label10.Location = new System.Drawing.Point(6, 42);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(121, 25);
+            this.label10.TabIndex = 2;
+            this.label10.Text = "Waypoints left:";
+            // 
+            // label11
+            // 
+            this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label11.Location = new System.Drawing.Point(6, 18);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(137, 25);
+            this.label11.TabIndex = 1;
+            this.label11.Text = "Waypoints visited:";
+            // 
+            // labelRouteWaypointsVisited
+            // 
+            this.labelRouteWaypointsVisited.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelRouteWaypointsVisited.Location = new System.Drawing.Point(149, 18);
+            this.labelRouteWaypointsVisited.Name = "labelRouteWaypointsVisited";
+            this.labelRouteWaypointsVisited.Size = new System.Drawing.Size(67, 25);
+            this.labelRouteWaypointsVisited.TabIndex = 0;
+            this.labelRouteWaypointsVisited.Text = "0";
+            // 
             // VRLocatorHUD
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
+            this.Controls.Add(this.groupBoxRouteInformation);
+            this.Controls.Add(this.groupBoxRaceInformation);
             this.Controls.Add(this.groupBoxAdditionalInfo);
             this.Controls.Add(this.labelPanelUpdates);
             this.Controls.Add(this.groupBox5);
@@ -233,6 +421,8 @@ namespace SRVTracker
             this.groupBox5.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxDirection)).EndInit();
             this.groupBoxAdditionalInfo.ResumeLayout(false);
+            this.groupBoxRaceInformation.ResumeLayout(false);
+            this.groupBoxRouteInformation.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -253,5 +443,21 @@ namespace SRVTracker
         public System.Windows.Forms.Label labelPanelUpdates;
         public System.Windows.Forms.Label labelAdditionalInfo;
         public System.Windows.Forms.GroupBox groupBoxAdditionalInfo;
+        public System.Windows.Forms.GroupBox groupBoxRaceInformation;
+        public System.Windows.Forms.Label label2;
+        public System.Windows.Forms.Label labelRacePosition;
+        public System.Windows.Forms.Label labelRaceLap;
+        public System.Windows.Forms.Label label3;
+        public System.Windows.Forms.Label labelRaceBehind;
+        public System.Windows.Forms.Label labelRaceAheadOf;
+        public System.Windows.Forms.Label label4;
+        public System.Windows.Forms.Label label1;
+        public System.Windows.Forms.GroupBox groupBoxRouteInformation;
+        public System.Windows.Forms.Label labelRouteTimeTaken;
+        public System.Windows.Forms.Label label8;
+        public System.Windows.Forms.Label labelRouteWaypointsLeft;
+        public System.Windows.Forms.Label label10;
+        public System.Windows.Forms.Label label11;
+        public System.Windows.Forms.Label labelRouteWaypointsVisited;
     }
 }

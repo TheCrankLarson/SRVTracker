@@ -197,16 +197,15 @@ namespace RaceTester
             if (_orderedRaceTracking[_raceTrackingIndex].TimeStamp.Add(_raceTimeOffset) > projectedNow)
                 return;  // Next event isn't due yet
 
-            Action action;
-            while (_raceTrackingIndex < _orderedRaceTracking.Count && _orderedRaceTracking[_raceTrackingIndex].TimeStamp.Add(_raceTimeOffset) <= projectedNow)
+            Action action = new Action(() => 
             {
-                action = new Action(() =>
+                while (_raceTrackingIndex < _orderedRaceTracking.Count && _orderedRaceTracking[_raceTrackingIndex].TimeStamp.Add(_raceTimeOffset) <= projectedNow)
                 {
                     UploadToServer(_orderedRaceTracking[_raceTrackingIndex].Replay());
-                });
-                Task.Run(action);
-                _raceTrackingIndex++;
-            }
+                    _raceTrackingIndex++;
+                }
+            });
+            Task.Run(action);                       
 
             action = new Action(() => { textBoxReplayedEvents.Text = _raceTrackingIndex.ToString(); });
             if (textBoxReplayedEvents.InvokeRequired)

@@ -68,28 +68,31 @@
             this.buttonRaceTracker = new System.Windows.Forms.Button();
             this.buttonRoutePlanner = new System.Windows.Forms.Button();
             this.buttonLocator = new System.Windows.Forms.Button();
+            this.checkBoxUseSmartHeadingOnlyWhenOver = new System.Windows.Forms.CheckBox();
+            this.numericUpDownUseSmartHeadingOnlyWhenOver = new System.Windows.Forms.NumericUpDown();
+            this.checkBoxUseSmartHeadingOnlyWhenInSRV = new System.Windows.Forms.CheckBox();
+            this.checkBoxAllowMischief = new System.Windows.Forms.CheckBox();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBoxSRVTracker = new System.Windows.Forms.GroupBox();
             this.tabControlSettings = new System.Windows.Forms.TabControl();
             this.tabPageCommander = new System.Windows.Forms.TabPage();
             this.label2 = new System.Windows.Forms.Label();
             this.tabPageMonitoring = new System.Windows.Forms.TabPage();
+            this.label4 = new System.Windows.Forms.Label();
             this.tabPageServer = new System.Windows.Forms.TabPage();
             this.label3 = new System.Windows.Forms.Label();
             this.numericUpDownUdpUploadPort = new System.Windows.Forms.NumericUpDown();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tabPageLogging = new System.Windows.Forms.TabPage();
             this.tabPageUpdate = new System.Windows.Forms.TabPage();
-            this.checkBoxUseSmartHeadingOnlyWhenOver = new System.Windows.Forms.CheckBox();
-            this.numericUpDownUseSmartHeadingOnlyWhenOver = new System.Windows.Forms.NumericUpDown();
-            this.label4 = new System.Windows.Forms.Label();
-            this.checkBoxUseSmartHeadingOnlyWhenInSRV = new System.Windows.Forms.CheckBox();
-            this.checkBoxAllowMischief = new System.Windows.Forms.CheckBox();
+            this.checkBoxShowRaceTelemetry = new System.Windows.Forms.CheckBox();
+            this.buttonRaceTelemetrySettings = new System.Windows.Forms.Button();
             this.groupBoxStatusLocation.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.statusFileWatcher)).BeginInit();
             this.groupBox5.SuspendLayout();
             this.groupBox6.SuspendLayout();
             this.groupBox8.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownUseSmartHeadingOnlyWhenOver)).BeginInit();
             this.groupBoxSRVTracker.SuspendLayout();
             this.tabControlSettings.SuspendLayout();
             this.tabPageCommander.SuspendLayout();
@@ -99,7 +102,6 @@
             this.groupBox1.SuspendLayout();
             this.tabPageLogging.SuspendLayout();
             this.tabPageUpdate.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownUseSmartHeadingOnlyWhenOver)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBoxStatusLocation
@@ -149,7 +151,7 @@
             this.buttonTest.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonTest.ForeColor = System.Drawing.SystemColors.ControlText;
             this.buttonTest.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonTest.Location = new System.Drawing.Point(77, 107);
+            this.buttonTest.Location = new System.Drawing.Point(68, 119);
             this.buttonTest.Name = "buttonTest";
             this.buttonTest.Size = new System.Drawing.Size(136, 23);
             this.buttonTest.TabIndex = 5;
@@ -606,6 +608,62 @@
             this.buttonLocator.UseVisualStyleBackColor = false;
             this.buttonLocator.Click += new System.EventHandler(this.buttonLocator_Click);
             // 
+            // checkBoxUseSmartHeadingOnlyWhenOver
+            // 
+            this.checkBoxUseSmartHeadingOnlyWhenOver.AutoSize = true;
+            this.checkBoxUseSmartHeadingOnlyWhenOver.Checked = true;
+            this.checkBoxUseSmartHeadingOnlyWhenOver.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxUseSmartHeadingOnlyWhenOver.Location = new System.Drawing.Point(33, 83);
+            this.checkBoxUseSmartHeadingOnlyWhenOver.Name = "checkBoxUseSmartHeadingOnlyWhenOver";
+            this.checkBoxUseSmartHeadingOnlyWhenOver.Size = new System.Drawing.Size(157, 17);
+            this.checkBoxUseSmartHeadingOnlyWhenOver.TabIndex = 25;
+            this.checkBoxUseSmartHeadingOnlyWhenOver.Text = "Only when travelling above:";
+            this.toolTip1.SetToolTip(this.checkBoxUseSmartHeadingOnlyWhenOver, resources.GetString("checkBoxUseSmartHeadingOnlyWhenOver.ToolTip"));
+            this.checkBoxUseSmartHeadingOnlyWhenOver.UseVisualStyleBackColor = true;
+            // 
+            // numericUpDownUseSmartHeadingOnlyWhenOver
+            // 
+            this.numericUpDownUseSmartHeadingOnlyWhenOver.Location = new System.Drawing.Point(192, 82);
+            this.numericUpDownUseSmartHeadingOnlyWhenOver.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.numericUpDownUseSmartHeadingOnlyWhenOver.Name = "numericUpDownUseSmartHeadingOnlyWhenOver";
+            this.numericUpDownUseSmartHeadingOnlyWhenOver.Size = new System.Drawing.Size(44, 20);
+            this.numericUpDownUseSmartHeadingOnlyWhenOver.TabIndex = 26;
+            this.numericUpDownUseSmartHeadingOnlyWhenOver.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.toolTip1.SetToolTip(this.numericUpDownUseSmartHeadingOnlyWhenOver, resources.GetString("numericUpDownUseSmartHeadingOnlyWhenOver.ToolTip"));
+            this.numericUpDownUseSmartHeadingOnlyWhenOver.Value = new decimal(new int[] {
+            20,
+            0,
+            0,
+            0});
+            // 
+            // checkBoxUseSmartHeadingOnlyWhenInSRV
+            // 
+            this.checkBoxUseSmartHeadingOnlyWhenInSRV.AutoSize = true;
+            this.checkBoxUseSmartHeadingOnlyWhenInSRV.Checked = true;
+            this.checkBoxUseSmartHeadingOnlyWhenInSRV.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxUseSmartHeadingOnlyWhenInSRV.Location = new System.Drawing.Point(33, 106);
+            this.checkBoxUseSmartHeadingOnlyWhenInSRV.Name = "checkBoxUseSmartHeadingOnlyWhenInSRV";
+            this.checkBoxUseSmartHeadingOnlyWhenInSRV.Size = new System.Drawing.Size(112, 17);
+            this.checkBoxUseSmartHeadingOnlyWhenInSRV.TabIndex = 28;
+            this.checkBoxUseSmartHeadingOnlyWhenInSRV.Text = "Only when in SRV";
+            this.toolTip1.SetToolTip(this.checkBoxUseSmartHeadingOnlyWhenInSRV, "If enabled, direction of travel only calculated when in SRV.");
+            this.checkBoxUseSmartHeadingOnlyWhenInSRV.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxAllowMischief
+            // 
+            this.checkBoxAllowMischief.AutoSize = true;
+            this.checkBoxAllowMischief.Location = new System.Drawing.Point(97, 107);
+            this.checkBoxAllowMischief.Name = "checkBoxAllowMischief";
+            this.checkBoxAllowMischief.Size = new System.Drawing.Size(92, 17);
+            this.checkBoxAllowMischief.TabIndex = 7;
+            this.checkBoxAllowMischief.Text = "Allow mischief";
+            this.toolTip1.SetToolTip(this.checkBoxAllowMischief, "Sometimes the imps need to let off steam.");
+            this.checkBoxAllowMischief.UseVisualStyleBackColor = true;
+            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -645,6 +703,8 @@
             // 
             // tabPageCommander
             // 
+            this.tabPageCommander.Controls.Add(this.buttonRaceTelemetrySettings);
+            this.tabPageCommander.Controls.Add(this.checkBoxShowRaceTelemetry);
             this.tabPageCommander.Controls.Add(this.label2);
             this.tabPageCommander.Controls.Add(this.textBoxClientId);
             this.tabPageCommander.Controls.Add(this.groupBox5);
@@ -680,6 +740,15 @@
             this.tabPageMonitoring.TabIndex = 0;
             this.tabPageMonitoring.Text = "Monitoring";
             this.tabPageMonitoring.UseVisualStyleBackColor = true;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(242, 84);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(25, 13);
+            this.label4.TabIndex = 27;
+            this.label4.Text = "m/s";
             // 
             // tabPageServer
             // 
@@ -756,70 +825,28 @@
             this.tabPageUpdate.Text = "Update";
             this.tabPageUpdate.UseVisualStyleBackColor = true;
             // 
-            // checkBoxUseSmartHeadingOnlyWhenOver
+            // checkBoxShowRaceTelemetry
             // 
-            this.checkBoxUseSmartHeadingOnlyWhenOver.AutoSize = true;
-            this.checkBoxUseSmartHeadingOnlyWhenOver.Checked = true;
-            this.checkBoxUseSmartHeadingOnlyWhenOver.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxUseSmartHeadingOnlyWhenOver.Location = new System.Drawing.Point(33, 83);
-            this.checkBoxUseSmartHeadingOnlyWhenOver.Name = "checkBoxUseSmartHeadingOnlyWhenOver";
-            this.checkBoxUseSmartHeadingOnlyWhenOver.Size = new System.Drawing.Size(157, 17);
-            this.checkBoxUseSmartHeadingOnlyWhenOver.TabIndex = 25;
-            this.checkBoxUseSmartHeadingOnlyWhenOver.Text = "Only when travelling above:";
-            this.toolTip1.SetToolTip(this.checkBoxUseSmartHeadingOnlyWhenOver, resources.GetString("checkBoxUseSmartHeadingOnlyWhenOver.ToolTip"));
-            this.checkBoxUseSmartHeadingOnlyWhenOver.UseVisualStyleBackColor = true;
+            this.checkBoxShowRaceTelemetry.AutoSize = true;
+            this.checkBoxShowRaceTelemetry.Location = new System.Drawing.Point(112, 92);
+            this.checkBoxShowRaceTelemetry.Name = "checkBoxShowRaceTelemetry";
+            this.checkBoxShowRaceTelemetry.Size = new System.Drawing.Size(122, 17);
+            this.checkBoxShowRaceTelemetry.TabIndex = 16;
+            this.checkBoxShowRaceTelemetry.Text = "Show race telemetry";
+            this.checkBoxShowRaceTelemetry.UseVisualStyleBackColor = true;
             // 
-            // numericUpDownUseSmartHeadingOnlyWhenOver
+            // buttonRaceTelemetrySettings
             // 
-            this.numericUpDownUseSmartHeadingOnlyWhenOver.Location = new System.Drawing.Point(192, 82);
-            this.numericUpDownUseSmartHeadingOnlyWhenOver.Maximum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this.numericUpDownUseSmartHeadingOnlyWhenOver.Name = "numericUpDownUseSmartHeadingOnlyWhenOver";
-            this.numericUpDownUseSmartHeadingOnlyWhenOver.Size = new System.Drawing.Size(44, 20);
-            this.numericUpDownUseSmartHeadingOnlyWhenOver.TabIndex = 26;
-            this.numericUpDownUseSmartHeadingOnlyWhenOver.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.toolTip1.SetToolTip(this.numericUpDownUseSmartHeadingOnlyWhenOver, resources.GetString("numericUpDownUseSmartHeadingOnlyWhenOver.ToolTip"));
-            this.numericUpDownUseSmartHeadingOnlyWhenOver.Value = new decimal(new int[] {
-            20,
-            0,
-            0,
-            0});
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(242, 84);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(25, 13);
-            this.label4.TabIndex = 27;
-            this.label4.Text = "m/s";
-            // 
-            // checkBoxUseSmartHeadingOnlyWhenInSRV
-            // 
-            this.checkBoxUseSmartHeadingOnlyWhenInSRV.AutoSize = true;
-            this.checkBoxUseSmartHeadingOnlyWhenInSRV.Checked = true;
-            this.checkBoxUseSmartHeadingOnlyWhenInSRV.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxUseSmartHeadingOnlyWhenInSRV.Location = new System.Drawing.Point(33, 106);
-            this.checkBoxUseSmartHeadingOnlyWhenInSRV.Name = "checkBoxUseSmartHeadingOnlyWhenInSRV";
-            this.checkBoxUseSmartHeadingOnlyWhenInSRV.Size = new System.Drawing.Size(112, 17);
-            this.checkBoxUseSmartHeadingOnlyWhenInSRV.TabIndex = 28;
-            this.checkBoxUseSmartHeadingOnlyWhenInSRV.Text = "Only when in SRV";
-            this.toolTip1.SetToolTip(this.checkBoxUseSmartHeadingOnlyWhenInSRV, "If enabled, direction of travel only calculated when in SRV.");
-            this.checkBoxUseSmartHeadingOnlyWhenInSRV.UseVisualStyleBackColor = true;
-            // 
-            // checkBoxAllowMischief
-            // 
-            this.checkBoxAllowMischief.AutoSize = true;
-            this.checkBoxAllowMischief.Location = new System.Drawing.Point(97, 107);
-            this.checkBoxAllowMischief.Name = "checkBoxAllowMischief";
-            this.checkBoxAllowMischief.Size = new System.Drawing.Size(92, 17);
-            this.checkBoxAllowMischief.TabIndex = 7;
-            this.checkBoxAllowMischief.Text = "Allow mischief";
-            this.toolTip1.SetToolTip(this.checkBoxAllowMischief, "Sometimes the imps need to let off steam.");
-            this.checkBoxAllowMischief.UseVisualStyleBackColor = true;
+            this.buttonRaceTelemetrySettings.Image = global::SRVTracker.Properties.Resources.Settings_16x;
+            this.buttonRaceTelemetrySettings.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.buttonRaceTelemetrySettings.Location = new System.Drawing.Point(240, 88);
+            this.buttonRaceTelemetrySettings.Name = "buttonRaceTelemetrySettings";
+            this.buttonRaceTelemetrySettings.Size = new System.Drawing.Size(72, 22);
+            this.buttonRaceTelemetrySettings.TabIndex = 17;
+            this.buttonRaceTelemetrySettings.Text = "Settings";
+            this.buttonRaceTelemetrySettings.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.toolTip1.SetToolTip(this.buttonRaceTelemetrySettings, "Edit telemetry display/export settings");
+            this.buttonRaceTelemetrySettings.UseVisualStyleBackColor = true;
             // 
             // FormTracker
             // 
@@ -853,6 +880,7 @@
             this.groupBox6.PerformLayout();
             this.groupBox8.ResumeLayout(false);
             this.groupBox8.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownUseSmartHeadingOnlyWhenOver)).EndInit();
             this.groupBoxSRVTracker.ResumeLayout(false);
             this.groupBoxSRVTracker.PerformLayout();
             this.tabControlSettings.ResumeLayout(false);
@@ -868,7 +896,6 @@
             this.tabPageLogging.ResumeLayout(false);
             this.tabPageUpdate.ResumeLayout(false);
             this.tabPageUpdate.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownUseSmartHeadingOnlyWhenOver)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -931,6 +958,8 @@
         private System.Windows.Forms.NumericUpDown numericUpDownUseSmartHeadingOnlyWhenOver;
         private System.Windows.Forms.CheckBox checkBoxUseSmartHeadingOnlyWhenOver;
         private System.Windows.Forms.CheckBox checkBoxAllowMischief;
+        private System.Windows.Forms.Button buttonRaceTelemetrySettings;
+        private System.Windows.Forms.CheckBox checkBoxShowRaceTelemetry;
     }
 }
 

@@ -392,6 +392,7 @@ namespace Race_Manager
             checkBoxLappedRace.Checked = (_race.Laps > 1);
             if (_race.Laps>0)
                 numericUpDownLapCount.Value = _race.Laps;
+            checkBoxAnyWaypointOrder.Checked = !_race.WaypointsMustBeVisitedInOrder;
         }
 
         private void UpdateUI()

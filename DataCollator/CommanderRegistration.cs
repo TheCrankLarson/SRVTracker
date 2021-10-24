@@ -22,9 +22,7 @@ namespace DataCollator
 
         private bool IsValidCommanderNameCharacter(char C)
         {
-            if (Char.IsLetterOrDigit(C) || Char.IsWhiteSpace(C))
-                return true;
-            return false;
+            return char.IsLetterOrDigit(C) || C == ' ';
         }
 
         public string RegisterCommander(string CommanderName)

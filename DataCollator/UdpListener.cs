@@ -21,6 +21,7 @@ namespace DataCollator
         //private UdpClient _udpClient = null;
         public delegate void DataReceivedEventHandler(object sender, string data);
         public static event DataReceivedEventHandler DataReceived;
+        public static List<UdpClient> _udpClients = new List<UdpClient>();
 
         public static void ReceiveCallback(IAsyncResult ar)
         {
@@ -35,13 +36,18 @@ namespace DataCollator
             if (receiveBytes == null)
                 return;
 
-            string receiveString = Encoding.UTF8.GetString(receiveBytes);
-            DataReceived?.Invoke(null, receiveString);
+            DataReceived?.Invoke(null, Encoding.UTF8.GetString(receiveBytes));
         }
 
         public static void StartListening(int ListenPort)
         {
-            // Receive a message and write it to the console.
+            // We create 10 UDP listeners
+            for (int i=0; i<10; i++)
+                CreateUdpClient(ListenPort);
+        }
+
+        private static void CreateUdpClient(int ListenPort)
+        {
             UdpState s = new UdpState();
             s.e = new IPEndPoint(IPAddress.Any, ListenPort);
             s.u = new UdpClient();
@@ -51,7 +57,21 @@ namespace DataCollator
 
             Debug.WriteLine($"Listening for messages on port {ListenPort}");
             s.u.BeginReceive(new AsyncCallback(ReceiveCallback), s);
+            _udpClients.Add(s.u);
         }
 
+        public static void StopListening()
+        {
+            while (_udpClients.Count>0)
+            {
+                try
+                {
+                    _udpClients[0].Close();
+                    _udpClients[0].Dispose();
+                }
+                catch { }
+                _udpClients.RemoveAt(0);
+            }
+        }
     }
 }

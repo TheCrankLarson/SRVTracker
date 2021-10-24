@@ -41,6 +41,7 @@ namespace SRVTracker
         public static int CurrentHeading { get; private set; } = -1;
 
         private VehicleTelemetry _vehicleTelemetry = null;
+        private TelemetryTable _raceTelemetry = null;
 
         private ConfigSaverClass _formConfig = null;
         const double STATUS_JSON_CHECK_INTERVAL = 700;

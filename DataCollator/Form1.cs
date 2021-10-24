@@ -48,12 +48,13 @@ namespace DataCollator
             }
            
             _notificationServer.Stop();
+            UDPListener.StopListening();
             buttonStart.Text = "Start";
         }
 
         private void UDPListener_DataReceived(object sender, string data)
         {
-            Task.Run(new Action(() => { _notificationServer?.ProcessNotification($"{data}"); }));
+            Task.Run(new Action(() => { _notificationServer?.ProcessNotification(data); }));
         }
 
         private void checkBoxVerboseDebug_CheckedChanged(object sender, EventArgs e)

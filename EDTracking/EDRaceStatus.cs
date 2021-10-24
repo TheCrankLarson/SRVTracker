@@ -400,34 +400,31 @@ namespace EDTracking
 
         private void ProcessSRVDestroyedEvent()
         {
-            if (!EliminateOnDestruction())
-                return;
+            // Destroyed, maybe eliminated
 
-            // Eliminated
-            Eliminated = true;
+            Eliminated = EliminateOnDestruction();
             AddRaceHistory("SRV destroyed");
-            notableEvents?.AddStatusEvent("EliminatedNotification", Commander);
-            DistanceToWaypoint = double.MaxValue;
+            if (Eliminated)
+                notableEvents?.AddStatusEvent("EliminatedNotification", Commander);
+            //DistanceToWaypoint = double.MaxValue;
             ValidateRaceLeader();
-            SpeedInMS = 0;
-            _speedCalculationPreviousLocation = null;
-            Hull = 0;
+            //SpeedInMS = 0;
+            //_speedCalculationPreviousLocation = null;
+            //Hull = 0;
         }
 
         private void ProcessFighterDestroyedEvent()
         {
-            if (!EliminateOnDestruction())
-                return;
-
-            // Eliminated
-            Eliminated = true;
+            // Fighter destroyed 
+            Eliminated = EliminateOnDestruction();
             AddRaceHistory("Fighter destroyed");
-            notableEvents?.AddStatusEvent("EliminatedNotification", Commander);
-            DistanceToWaypoint = double.MaxValue;
+            if (Eliminated)
+                notableEvents?.AddStatusEvent("EliminatedNotification", Commander);
+            //DistanceToWaypoint = double.MaxValue;
             ValidateRaceLeader();
-            SpeedInMS = 0;
-            _speedCalculationPreviousLocation = null;
-            Hull = 0;
+            //SpeedInMS = 0;
+            //_speedCalculationPreviousLocation = null;
+            //Hull = 0;
         }
 
         private void ProcessDockSRVEvent(EDEvent updateEvent)
@@ -549,7 +546,7 @@ namespace EDTracking
         {
             if (_race == null)
                 return;
-            
+
             if (!_race.WaypointsMustBeVisitedInOrder)
             {
                 ProcessUnorderedRouteLocationChange();
@@ -607,7 +604,8 @@ namespace EDTracking
                             Finished = true;
                             FinishTime = DateTime.UtcNow;
                             string raceTime = $"{FinishTime.Subtract(StartTime):hh\\:mm\\:ss}";
-                            notableEvents?.AddStatusEvent("CompletedNotification", Commander, $" ({raceTime})");
+                            if (!Eliminated)
+                                notableEvents?.AddStatusEvent("CompletedNotification", Commander, $" ({raceTime})");
                             AddRaceHistory($"Completed in {raceTime}");
                             WaypointIndex = 0;
                             DistanceToWaypoint = 0;
@@ -618,7 +616,8 @@ namespace EDTracking
                             LapTimes.Add(lapEndTime.Subtract(LapStartTime));
                             LapStartTime = lapEndTime;
                             string lapTime = $"{LapTimes[LapTimes.Count - 1]:hh\\:mm\\:ss}";
-                            notableEvents?.AddStatusEvent("CompletedLap", Commander, $" ({Lap - 1}: {lapTime})");
+                            if (!Eliminated)
+                                notableEvents?.AddStatusEvent("CompletedLap", Commander, $" {Lap - 1} ({lapTime})");
                             AddRaceHistory($"Completed lap {Lap - 1} in {lapTime}");
                         }
                     }
@@ -713,7 +712,7 @@ namespace EDTracking
             if (updateEvent.TimeStamp>DateTime.MinValue)
                 TimeStamp = updateEvent.TimeStamp;
 
-            if (Finished || Eliminated)
+            if (Finished)  // We keep tracking when eliminated in case of mistake (racers can be restored)
                 return;
 
             if ((updateEvent.Flags > 0) && (Flags != updateEvent.Flags))
@@ -724,6 +723,7 @@ namespace EDTracking
             Flags2 = updateEvent.Flags2;
 
             Pips = (byte[])updateEvent.Pips.Clone();
+            Heading = updateEvent.Heading;
 
             if (updateEvent.Health >= 0)
             {

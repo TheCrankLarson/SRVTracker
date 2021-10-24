@@ -444,7 +444,8 @@ namespace DataCollator
                 WriteErrorResponse(Context.Response, HttpStatusCode.NotFound);
             else
             {
-                if (Filename.EndsWith(".png") || Filename.EndsWith(".jpg"))
+                string ext = Filename.Substring(Filename.Length - 3).ToLower();
+                if (ext.Equals("png") || ext.Equals("jpg") || ext.Equals("ttf") )
                 {
                     WriteResponse(Context, File.ReadAllBytes(Filename));
                 }
@@ -491,7 +492,7 @@ namespace DataCollator
         private void GetRace(Guid raceGuid, HttpListenerContext Context)
         {
             if (raceGuid != Guid.Empty && _races.ContainsKey(raceGuid))
-                WriteResponse(Context, _races[raceGuid].ToString());
+                WriteResponse(Context, _races[raceGuid].CachedToString());
             else
                 WriteErrorResponse(Context.Response, HttpStatusCode.NotFound);
         }

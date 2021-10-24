@@ -68,7 +68,7 @@ namespace EDTracking
 
         private void DisplayAllReports()
         {
-            List<string> allReports = TelemetryDescriptions.Keys.ToList<string>();
+            List<string> allReports = TelemetryDescriptions.Keys.ToList();
             foreach (string report in allReports)
                 _srvTelemetryWriter.EnableReportDisplay(report, report);
         }

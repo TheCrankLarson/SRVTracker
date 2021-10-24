@@ -195,6 +195,15 @@
     <Content Include="RaceMonitoring\CrankyRacing.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="RaceMonitoring\images\64x64 1.png" />
+    <Content Include="RaceMonitoring\images\64x64 2.png" />
+    <Content Include="RaceMonitoring\images\64x64 3.png" />
+    <Content Include="RaceMonitoring\images\64x64 4.png" />
+    <Content Include="RaceMonitoring\images\64x64 5.png" />
+    <Content Include="RaceMonitoring\images\64x64 6.png" />
+    <Content Include="RaceMonitoring\images\64x64 7.png" />
+    <Content Include="RaceMonitoring\images\64x64 8.png" />
+    <Content Include="RaceMonitoring\images\64x64 9.png" />
     <Content Include="RaceMonitoring\images\SRV16.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -204,6 +213,7 @@
     <Content Include="RaceMonitoring\images\SRV64.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="RaceMonitoring\images\Waypoint.png" />
     <Content Include="RaceMonitoring\RaceFunctions.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

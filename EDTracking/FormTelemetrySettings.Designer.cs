@@ -29,16 +29,16 @@
         private void InitializeComponent()
         {
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.dataGridViewExportSettings = new System.Windows.Forms.DataGridView();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.buttonBrowseExportFolder = new System.Windows.Forms.Button();
             this.textBoxExportFolder = new System.Windows.Forms.TextBox();
             this.radioButtonExportToOtherFolder = new System.Windows.Forms.RadioButton();
             this.radioButtonExportToApplicationFolder = new System.Windows.Forms.RadioButton();
             this.buttonClose = new System.Windows.Forms.Button();
-            this.dataGridViewExportSettings = new System.Windows.Forms.DataGridView();
             this.groupBox2.SuspendLayout();
-            this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewExportSettings)).BeginInit();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox2
@@ -54,6 +54,24 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Available reports";
             // 
+            // dataGridViewExportSettings
+            // 
+            this.dataGridViewExportSettings.AllowUserToAddRows = false;
+            this.dataGridViewExportSettings.AllowUserToDeleteRows = false;
+            this.dataGridViewExportSettings.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewExportSettings.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridViewExportSettings.Location = new System.Drawing.Point(3, 16);
+            this.dataGridViewExportSettings.MultiSelect = false;
+            this.dataGridViewExportSettings.Name = "dataGridViewExportSettings";
+            this.dataGridViewExportSettings.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
+            this.dataGridViewExportSettings.ShowEditingIcon = false;
+            this.dataGridViewExportSettings.Size = new System.Drawing.Size(584, 353);
+            this.dataGridViewExportSettings.TabIndex = 12;
+            this.dataGridViewExportSettings.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewExportSettings_CellContentClick);
+            this.dataGridViewExportSettings.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewExportSettings_CellEndEdit);
+            this.dataGridViewExportSettings.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewExportSettings_CellValueChanged);
+            this.dataGridViewExportSettings.CurrentCellDirtyStateChanged += new System.EventHandler(this.dataGridViewExportSettings_CurrentCellDirtyStateChanged);
+            // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.buttonBrowseExportFolder);
@@ -65,7 +83,7 @@
             this.groupBox1.Size = new System.Drawing.Size(564, 68);
             this.groupBox1.TabIndex = 15;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Export location";
+            this.groupBox1.Text = "Export location (text files of telemetry exported here)";
             // 
             // buttonBrowseExportFolder
             // 
@@ -120,24 +138,6 @@
             this.buttonClose.UseVisualStyleBackColor = true;
             this.buttonClose.Click += new System.EventHandler(this.buttonClose_Click);
             // 
-            // dataGridViewExportSettings
-            // 
-            this.dataGridViewExportSettings.AllowUserToAddRows = false;
-            this.dataGridViewExportSettings.AllowUserToDeleteRows = false;
-            this.dataGridViewExportSettings.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewExportSettings.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridViewExportSettings.Location = new System.Drawing.Point(3, 16);
-            this.dataGridViewExportSettings.MultiSelect = false;
-            this.dataGridViewExportSettings.Name = "dataGridViewExportSettings";
-            this.dataGridViewExportSettings.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.dataGridViewExportSettings.ShowEditingIcon = false;
-            this.dataGridViewExportSettings.Size = new System.Drawing.Size(584, 353);
-            this.dataGridViewExportSettings.TabIndex = 12;
-            this.dataGridViewExportSettings.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewExportSettings_CellContentClick);
-            this.dataGridViewExportSettings.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewExportSettings_CellEndEdit);
-            this.dataGridViewExportSettings.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewExportSettings_CellValueChanged);
-            this.dataGridViewExportSettings.CurrentCellDirtyStateChanged += new System.EventHandler(this.dataGridViewExportSettings_CurrentCellDirtyStateChanged);
-            // 
             // FormTelemetrySettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -154,9 +154,9 @@
             this.Text = "Race Telemetry Export Settings";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormFileExportSettings_FormClosing);
             this.groupBox2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewExportSettings)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewExportSettings)).EndInit();
             this.ResumeLayout(false);
 
         }

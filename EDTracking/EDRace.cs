@@ -51,6 +51,8 @@ namespace EDTracking
         public Dictionary<string, string> CustomStatusMessages { get; set; } = StatusMessages;
         private string _lastStatsTable = "";
         private DateTime _statsLastGenerated = DateTime.MinValue;
+        private string _cachedToString = null;
+        private DateTime _cachedToStringGenerationTime = DateTime.MinValue;
 
         public EDRace()
         {
@@ -70,6 +72,20 @@ namespace EDTracking
         public override string ToString()
         {
             return JsonSerializer.Serialize(this);
+        }
+
+        /// <summary>
+        /// Return this EDRace object serialized to a JSON string.
+        /// This function caches the response and will only update it every 750ms.
+        /// </summary>
+        /// <returns></returns>
+        public string CachedToString()
+        {
+            if (!String.IsNullOrEmpty(_cachedToString) && DateTime.Now.Subtract(_cachedToStringGenerationTime).TotalMilliseconds < 750)
+                return _cachedToString;
+
+            _cachedToString = this.ToString();
+            return _cachedToString;
         }
 
         public static EDRace FromString(string raceInfo)
