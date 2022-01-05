@@ -95,6 +95,9 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>icon1.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -347,6 +350,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="CurrentVersion.txt" />
+    <Content Include="icon1.ico" />
     <Content Include="Silver arrow.bmp" />
     <None Include="DataCollator\RaceMonitoring\images\SRV64.png" />
     <Content Include="ReleaseNotes.txt">

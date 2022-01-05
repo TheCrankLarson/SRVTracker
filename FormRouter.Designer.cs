@@ -111,6 +111,9 @@
             this.buttonStop = new System.Windows.Forms.Button();
             this.buttonPlay = new System.Windows.Forms.Button();
             this.buttonStartRecording = new System.Windows.Forms.Button();
+            this.checkBoxAudioBearingReminder = new System.Windows.Forms.CheckBox();
+            this.checkBoxAnnounceDirectionHints = new System.Windows.Forms.CheckBox();
+            this.checkBoxEnableSpeech = new System.Windows.Forms.CheckBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.label12 = new System.Windows.Forms.Label();
             this.groupBoxAudioSettings = new System.Windows.Forms.GroupBox();
@@ -131,14 +134,13 @@
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.buttonCreateWaypoints = new System.Windows.Forms.Button();
             this.tabPageAudio = new System.Windows.Forms.TabPage();
-            this.buttonClose = new System.Windows.Forms.Button();
             this.tabPageSpeech = new System.Windows.Forms.TabPage();
+            this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.textBoxSpeechEventPhrase = new System.Windows.Forms.TextBox();
             this.listBoxSpeechEvents = new System.Windows.Forms.ListBox();
-            this.checkBoxAudioBearingReminder = new System.Windows.Forms.CheckBox();
-            this.checkBoxAnnounceDirectionHints = new System.Windows.Forms.CheckBox();
-            this.groupBox7 = new System.Windows.Forms.GroupBox();
-            this.checkBoxEnableSpeech = new System.Windows.Forms.CheckBox();
+            this.buttonClose = new System.Windows.Forms.Button();
+            this.comboBoxSelectedVoice = new System.Windows.Forms.ComboBox();
+            this.label15 = new System.Windows.Forms.Label();
             this.groupBox2.SuspendLayout();
             this.groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownRecordDistance)).BeginInit();
@@ -1109,6 +1111,42 @@
             this.buttonStartRecording.UseVisualStyleBackColor = true;
             this.buttonStartRecording.Click += new System.EventHandler(this.buttonStartRecording_Click);
             // 
+            // checkBoxAudioBearingReminder
+            // 
+            this.checkBoxAudioBearingReminder.AutoSize = true;
+            this.checkBoxAudioBearingReminder.Location = new System.Drawing.Point(194, 38);
+            this.checkBoxAudioBearingReminder.Name = "checkBoxAudioBearingReminder";
+            this.checkBoxAudioBearingReminder.Size = new System.Drawing.Size(105, 17);
+            this.checkBoxAudioBearingReminder.TabIndex = 22;
+            this.checkBoxAudioBearingReminder.Text = "Bearing reminder";
+            this.toolTip1.SetToolTip(this.checkBoxAudioBearingReminder, "If enabled, an audio reminder stating your required bearing\r\nwill be given if you" +
+        " are more than 25 degrees off course.");
+            this.checkBoxAudioBearingReminder.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxAnnounceDirectionHints
+            // 
+            this.checkBoxAnnounceDirectionHints.AutoSize = true;
+            this.checkBoxAnnounceDirectionHints.Location = new System.Drawing.Point(194, 19);
+            this.checkBoxAnnounceDirectionHints.Name = "checkBoxAnnounceDirectionHints";
+            this.checkBoxAnnounceDirectionHints.Size = new System.Drawing.Size(143, 17);
+            this.checkBoxAnnounceDirectionHints.TabIndex = 21;
+            this.checkBoxAnnounceDirectionHints.Text = "Announce direction hints";
+            this.toolTip1.SetToolTip(this.checkBoxAnnounceDirectionHints, "If enabled, the direction hints will be announced (using Windows Text to Speech) " +
+        "on arrival at a waypoint.\r\nWill only work when direction hints are also enabled " +
+        "(otherwise there is nothing to say...).");
+            this.checkBoxAnnounceDirectionHints.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxEnableSpeech
+            // 
+            this.checkBoxEnableSpeech.AutoSize = true;
+            this.checkBoxEnableSpeech.Location = new System.Drawing.Point(6, 19);
+            this.checkBoxEnableSpeech.Name = "checkBoxEnableSpeech";
+            this.checkBoxEnableSpeech.Size = new System.Drawing.Size(65, 17);
+            this.checkBoxEnableSpeech.TabIndex = 1;
+            this.checkBoxEnableSpeech.Text = "Enabled";
+            this.toolTip1.SetToolTip(this.checkBoxEnableSpeech, "Enable or disable audio feedback while traveling a route");
+            this.checkBoxEnableSpeech.UseVisualStyleBackColor = true;
+            // 
             // groupBox3
             // 
             this.groupBox3.Controls.Add(this.label12);
@@ -1312,16 +1350,6 @@
             this.tabPageAudio.Text = "Audio";
             this.tabPageAudio.UseVisualStyleBackColor = true;
             // 
-            // buttonClose
-            // 
-            this.buttonClose.Location = new System.Drawing.Point(208, 245);
-            this.buttonClose.Name = "buttonClose";
-            this.buttonClose.Size = new System.Drawing.Size(75, 23);
-            this.buttonClose.TabIndex = 20;
-            this.buttonClose.Text = "Close";
-            this.buttonClose.UseVisualStyleBackColor = true;
-            this.buttonClose.Click += new System.EventHandler(this.buttonClose_Click);
-            // 
             // tabPageSpeech
             // 
             this.tabPageSpeech.Controls.Add(this.groupBox7);
@@ -1332,6 +1360,22 @@
             this.tabPageSpeech.TabIndex = 6;
             this.tabPageSpeech.Text = "Speech";
             this.tabPageSpeech.UseVisualStyleBackColor = true;
+            // 
+            // groupBox7
+            // 
+            this.groupBox7.Controls.Add(this.label15);
+            this.groupBox7.Controls.Add(this.comboBoxSelectedVoice);
+            this.groupBox7.Controls.Add(this.checkBoxAudioBearingReminder);
+            this.groupBox7.Controls.Add(this.textBoxSpeechEventPhrase);
+            this.groupBox7.Controls.Add(this.checkBoxAnnounceDirectionHints);
+            this.groupBox7.Controls.Add(this.listBoxSpeechEvents);
+            this.groupBox7.Controls.Add(this.checkBoxEnableSpeech);
+            this.groupBox7.Location = new System.Drawing.Point(6, 5);
+            this.groupBox7.Name = "groupBox7";
+            this.groupBox7.Size = new System.Drawing.Size(343, 237);
+            this.groupBox7.TabIndex = 18;
+            this.groupBox7.TabStop = false;
+            this.groupBox7.Text = "Speech Settings";
             // 
             // textBoxSpeechEventPhrase
             // 
@@ -1351,55 +1395,34 @@
             this.listBoxSpeechEvents.TabIndex = 23;
             this.listBoxSpeechEvents.SelectedIndexChanged += new System.EventHandler(this.listBoxSpeechEvents_SelectedIndexChanged);
             // 
-            // checkBoxAudioBearingReminder
+            // buttonClose
             // 
-            this.checkBoxAudioBearingReminder.AutoSize = true;
-            this.checkBoxAudioBearingReminder.Location = new System.Drawing.Point(194, 38);
-            this.checkBoxAudioBearingReminder.Name = "checkBoxAudioBearingReminder";
-            this.checkBoxAudioBearingReminder.Size = new System.Drawing.Size(105, 17);
-            this.checkBoxAudioBearingReminder.TabIndex = 22;
-            this.checkBoxAudioBearingReminder.Text = "Bearing reminder";
-            this.toolTip1.SetToolTip(this.checkBoxAudioBearingReminder, "If enabled, an audio reminder stating your required bearing\r\nwill be given if you" +
-        " are more than 25 degrees off course.");
-            this.checkBoxAudioBearingReminder.UseVisualStyleBackColor = true;
+            this.buttonClose.Location = new System.Drawing.Point(208, 245);
+            this.buttonClose.Name = "buttonClose";
+            this.buttonClose.Size = new System.Drawing.Size(75, 23);
+            this.buttonClose.TabIndex = 20;
+            this.buttonClose.Text = "Close";
+            this.buttonClose.UseVisualStyleBackColor = true;
+            this.buttonClose.Click += new System.EventHandler(this.buttonClose_Click);
             // 
-            // checkBoxAnnounceDirectionHints
+            // comboBoxSelectedVoice
             // 
-            this.checkBoxAnnounceDirectionHints.AutoSize = true;
-            this.checkBoxAnnounceDirectionHints.Location = new System.Drawing.Point(194, 19);
-            this.checkBoxAnnounceDirectionHints.Name = "checkBoxAnnounceDirectionHints";
-            this.checkBoxAnnounceDirectionHints.Size = new System.Drawing.Size(143, 17);
-            this.checkBoxAnnounceDirectionHints.TabIndex = 21;
-            this.checkBoxAnnounceDirectionHints.Text = "Announce direction hints";
-            this.toolTip1.SetToolTip(this.checkBoxAnnounceDirectionHints, "If enabled, the direction hints will be announced (using Windows Text to Speech) " +
-        "on arrival at a waypoint.\r\nWill only work when direction hints are also enabled " +
-        "(otherwise there is nothing to say...).");
-            this.checkBoxAnnounceDirectionHints.UseVisualStyleBackColor = true;
+            this.comboBoxSelectedVoice.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxSelectedVoice.FormattingEnabled = true;
+            this.comboBoxSelectedVoice.Location = new System.Drawing.Point(49, 36);
+            this.comboBoxSelectedVoice.Name = "comboBoxSelectedVoice";
+            this.comboBoxSelectedVoice.Size = new System.Drawing.Size(116, 21);
+            this.comboBoxSelectedVoice.TabIndex = 25;
+            this.comboBoxSelectedVoice.SelectedIndexChanged += new System.EventHandler(this.comboBoxSelectedVoice_SelectedIndexChanged);
             // 
-            // groupBox7
+            // label15
             // 
-            this.groupBox7.Controls.Add(this.checkBoxAudioBearingReminder);
-            this.groupBox7.Controls.Add(this.textBoxSpeechEventPhrase);
-            this.groupBox7.Controls.Add(this.checkBoxAnnounceDirectionHints);
-            this.groupBox7.Controls.Add(this.listBoxSpeechEvents);
-            this.groupBox7.Controls.Add(this.checkBoxEnableSpeech);
-            this.groupBox7.Location = new System.Drawing.Point(6, 5);
-            this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(343, 237);
-            this.groupBox7.TabIndex = 18;
-            this.groupBox7.TabStop = false;
-            this.groupBox7.Text = "Speech Settings";
-            // 
-            // checkBoxEnableSpeech
-            // 
-            this.checkBoxEnableSpeech.AutoSize = true;
-            this.checkBoxEnableSpeech.Location = new System.Drawing.Point(6, 19);
-            this.checkBoxEnableSpeech.Name = "checkBoxEnableSpeech";
-            this.checkBoxEnableSpeech.Size = new System.Drawing.Size(65, 17);
-            this.checkBoxEnableSpeech.TabIndex = 1;
-            this.checkBoxEnableSpeech.Text = "Enabled";
-            this.toolTip1.SetToolTip(this.checkBoxEnableSpeech, "Enable or disable audio feedback while traveling a route");
-            this.checkBoxEnableSpeech.UseVisualStyleBackColor = true;
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(6, 39);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(37, 13);
+            this.label15.TabIndex = 26;
+            this.label15.Text = "Voice:";
             // 
             // FormRouter
             // 
@@ -1570,5 +1593,7 @@
         private System.Windows.Forms.CheckBox checkBoxAnnounceDirectionHints;
         private System.Windows.Forms.ListBox listBoxSpeechEvents;
         private System.Windows.Forms.CheckBox checkBoxEnableSpeech;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.ComboBox comboBoxSelectedVoice;
     }
 }

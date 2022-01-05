@@ -45,6 +45,7 @@ namespace SRVTracker
             CalculateWindowSizes();
             this.Size = _fullSize;
             _timeTrialTelemetryWriter = new TelemetryWriter();
+            InitVoiceCombo();
 
             // Attach our form configuration saver
             _formConfig = new ConfigSaverClass(this, true);
@@ -73,6 +74,9 @@ namespace SRVTracker
             comboBoxWaypointType.SelectedIndex = 0;
             InitSoundsList();
             InitSpeechList();
+
+            if (comboBoxSelectedVoice.SelectedIndex < 0 && comboBoxSelectedVoice.Items.Count > 0)
+                comboBoxSelectedVoice.SelectedIndex = 0;
         }
 
         private void CalculateWindowSizes()
@@ -962,6 +966,25 @@ namespace SRVTracker
             catch { }
         }
 
+        private void InitVoiceCombo()
+        {
+            comboBoxSelectedVoice.Items.Clear();
+            try
+            {
+                if (_speechSynthesizer == null)
+                {
+                    _speechSynthesizer = new SpeechSynthesizer();
+                    _speechSynthesizer.SetOutputToDefaultAudioDevice();
+                }
+            }
+            catch { }
+            if (_speechSynthesizer == null)
+                return;
+
+            foreach (InstalledVoice voice in _speechSynthesizer.GetInstalledVoices())
+                comboBoxSelectedVoice.Items.Add(voice.VoiceInfo.Name);
+        }
+
         private void Speak(string speech)
         {
             if (String.IsNullOrEmpty(speech) || !checkBoxEnableAudio.Checked)
@@ -1402,6 +1425,14 @@ namespace SRVTracker
                 _speechEventPhrases[selectedEvent] = textBoxSpeechEventPhrase.Text;
                 StoreSpeechSettings();
             }
+        }
+
+        private void comboBoxSelectedVoice_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (comboBoxSelectedVoice.SelectedIndex < 0 || _speechSynthesizer==null)
+                return;
+
+            _speechSynthesizer.SelectVoice(comboBoxSelectedVoice.SelectedItem as string);
         }
     }
 }
