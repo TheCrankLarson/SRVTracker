@@ -39,9 +39,15 @@
             this.label2 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.textBoxMatrixName = new System.Windows.Forms.TextBox();
+            this.buttonSave = new System.Windows.Forms.Button();
+            this.buttonDelete = new System.Windows.Forms.Button();
+            this.buttonAdd = new System.Windows.Forms.Button();
             this.listBoxMatrices = new System.Windows.Forms.ListBox();
             this.checkBoxMatrixIsRelative = new System.Windows.Forms.CheckBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.numericUpDownZ = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDownY = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDownX = new System.Windows.Forms.NumericUpDown();
             this.label5 = new System.Windows.Forms.Label();
             this.trackBarPositionZ = new System.Windows.Forms.TrackBar();
             this.label4 = new System.Windows.Forms.Label();
@@ -55,16 +61,14 @@
             this.trackBarRotationY = new System.Windows.Forms.TrackBar();
             this.label8 = new System.Windows.Forms.Label();
             this.trackBarRotationX = new System.Windows.Forms.TrackBar();
-            this.numericUpDownX = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDownY = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDownZ = new System.Windows.Forms.NumericUpDown();
-            this.buttonSave = new System.Windows.Forms.Button();
-            this.buttonDelete = new System.Windows.Forms.Button();
-            this.buttonAdd = new System.Windows.Forms.Button();
             this.buttonResetRotation = new System.Windows.Forms.Button();
+            this.buttonResetPanel = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownOverlayWidth)).BeginInit();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownZ)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownY)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownX)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarPositionZ)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarPositionY)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarPositionX)).BeginInit();
@@ -72,9 +76,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.trackBarRotationZ)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarRotationY)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarRotationX)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownX)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownY)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownZ)).BeginInit();
             this.SuspendLayout();
             // 
             // buttonApply
@@ -184,6 +185,36 @@
             this.textBoxMatrixName.TabIndex = 4;
             this.textBoxMatrixName.Validating += new System.ComponentModel.CancelEventHandler(this.textBoxMatrixName_Validating);
             // 
+            // buttonSave
+            // 
+            this.buttonSave.Image = global::SRVTracker.Properties.Resources.Save_16x;
+            this.buttonSave.Location = new System.Drawing.Point(58, 178);
+            this.buttonSave.Name = "buttonSave";
+            this.buttonSave.Size = new System.Drawing.Size(26, 23);
+            this.buttonSave.TabIndex = 3;
+            this.buttonSave.UseVisualStyleBackColor = true;
+            this.buttonSave.Click += new System.EventHandler(this.buttonSave_Click);
+            // 
+            // buttonDelete
+            // 
+            this.buttonDelete.Image = global::SRVTracker.Properties.Resources.Remove_color_16x;
+            this.buttonDelete.Location = new System.Drawing.Point(32, 178);
+            this.buttonDelete.Name = "buttonDelete";
+            this.buttonDelete.Size = new System.Drawing.Size(26, 23);
+            this.buttonDelete.TabIndex = 2;
+            this.buttonDelete.UseVisualStyleBackColor = true;
+            this.buttonDelete.Click += new System.EventHandler(this.buttonDelete_Click);
+            // 
+            // buttonAdd
+            // 
+            this.buttonAdd.Image = global::SRVTracker.Properties.Resources.Add_16x;
+            this.buttonAdd.Location = new System.Drawing.Point(6, 178);
+            this.buttonAdd.Name = "buttonAdd";
+            this.buttonAdd.Size = new System.Drawing.Size(26, 23);
+            this.buttonAdd.TabIndex = 1;
+            this.buttonAdd.UseVisualStyleBackColor = true;
+            this.buttonAdd.Click += new System.EventHandler(this.buttonAdd_Click);
+            // 
             // listBoxMatrices
             // 
             this.listBoxMatrices.FormattingEnabled = true;
@@ -221,6 +252,63 @@
             this.groupBox3.TabIndex = 10;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Panel Position";
+            // 
+            // numericUpDownZ
+            // 
+            this.numericUpDownZ.DecimalPlaces = 2;
+            this.numericUpDownZ.Location = new System.Drawing.Point(29, 125);
+            this.numericUpDownZ.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numericUpDownZ.Minimum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            -2147483648});
+            this.numericUpDownZ.Name = "numericUpDownZ";
+            this.numericUpDownZ.Size = new System.Drawing.Size(55, 20);
+            this.numericUpDownZ.TabIndex = 8;
+            this.numericUpDownZ.ValueChanged += new System.EventHandler(this.numericUpDownZ_ValueChanged);
+            // 
+            // numericUpDownY
+            // 
+            this.numericUpDownY.DecimalPlaces = 2;
+            this.numericUpDownY.Location = new System.Drawing.Point(29, 74);
+            this.numericUpDownY.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numericUpDownY.Minimum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            -2147483648});
+            this.numericUpDownY.Name = "numericUpDownY";
+            this.numericUpDownY.Size = new System.Drawing.Size(55, 20);
+            this.numericUpDownY.TabIndex = 7;
+            this.numericUpDownY.ValueChanged += new System.EventHandler(this.numericUpDownY_ValueChanged);
+            // 
+            // numericUpDownX
+            // 
+            this.numericUpDownX.DecimalPlaces = 2;
+            this.numericUpDownX.Location = new System.Drawing.Point(29, 23);
+            this.numericUpDownX.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numericUpDownX.Minimum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            -2147483648});
+            this.numericUpDownX.Name = "numericUpDownX";
+            this.numericUpDownX.Size = new System.Drawing.Size(55, 20);
+            this.numericUpDownX.TabIndex = 6;
+            this.numericUpDownX.ValueChanged += new System.EventHandler(this.numericUpDownX_ValueChanged);
             // 
             // label5
             // 
@@ -363,108 +451,32 @@
             this.trackBarRotationX.TickFrequency = 45;
             this.trackBarRotationX.Scroll += new System.EventHandler(this.trackBarRotationX_Scroll);
             // 
-            // numericUpDownX
-            // 
-            this.numericUpDownX.DecimalPlaces = 2;
-            this.numericUpDownX.Location = new System.Drawing.Point(29, 23);
-            this.numericUpDownX.Maximum = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.numericUpDownX.Minimum = new decimal(new int[] {
-            10,
-            0,
-            0,
-            -2147483648});
-            this.numericUpDownX.Name = "numericUpDownX";
-            this.numericUpDownX.Size = new System.Drawing.Size(55, 20);
-            this.numericUpDownX.TabIndex = 6;
-            this.numericUpDownX.ValueChanged += new System.EventHandler(this.numericUpDownX_ValueChanged);
-            // 
-            // numericUpDownY
-            // 
-            this.numericUpDownY.DecimalPlaces = 2;
-            this.numericUpDownY.Location = new System.Drawing.Point(29, 74);
-            this.numericUpDownY.Maximum = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.numericUpDownY.Minimum = new decimal(new int[] {
-            10,
-            0,
-            0,
-            -2147483648});
-            this.numericUpDownY.Name = "numericUpDownY";
-            this.numericUpDownY.Size = new System.Drawing.Size(55, 20);
-            this.numericUpDownY.TabIndex = 7;
-            this.numericUpDownY.ValueChanged += new System.EventHandler(this.numericUpDownY_ValueChanged);
-            // 
-            // numericUpDownZ
-            // 
-            this.numericUpDownZ.DecimalPlaces = 2;
-            this.numericUpDownZ.Location = new System.Drawing.Point(29, 125);
-            this.numericUpDownZ.Maximum = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.numericUpDownZ.Minimum = new decimal(new int[] {
-            10,
-            0,
-            0,
-            -2147483648});
-            this.numericUpDownZ.Name = "numericUpDownZ";
-            this.numericUpDownZ.Size = new System.Drawing.Size(55, 20);
-            this.numericUpDownZ.TabIndex = 8;
-            this.numericUpDownZ.ValueChanged += new System.EventHandler(this.numericUpDownZ_ValueChanged);
-            // 
-            // buttonSave
-            // 
-            this.buttonSave.Image = global::SRVTracker.Properties.Resources.Save_16x;
-            this.buttonSave.Location = new System.Drawing.Point(58, 178);
-            this.buttonSave.Name = "buttonSave";
-            this.buttonSave.Size = new System.Drawing.Size(26, 23);
-            this.buttonSave.TabIndex = 3;
-            this.buttonSave.UseVisualStyleBackColor = true;
-            this.buttonSave.Click += new System.EventHandler(this.buttonSave_Click);
-            // 
-            // buttonDelete
-            // 
-            this.buttonDelete.Image = global::SRVTracker.Properties.Resources.Remove_color_16x;
-            this.buttonDelete.Location = new System.Drawing.Point(32, 178);
-            this.buttonDelete.Name = "buttonDelete";
-            this.buttonDelete.Size = new System.Drawing.Size(26, 23);
-            this.buttonDelete.TabIndex = 2;
-            this.buttonDelete.UseVisualStyleBackColor = true;
-            this.buttonDelete.Click += new System.EventHandler(this.buttonDelete_Click);
-            // 
-            // buttonAdd
-            // 
-            this.buttonAdd.Image = global::SRVTracker.Properties.Resources.Add_16x;
-            this.buttonAdd.Location = new System.Drawing.Point(6, 178);
-            this.buttonAdd.Name = "buttonAdd";
-            this.buttonAdd.Size = new System.Drawing.Size(26, 23);
-            this.buttonAdd.TabIndex = 1;
-            this.buttonAdd.UseVisualStyleBackColor = true;
-            this.buttonAdd.Click += new System.EventHandler(this.buttonAdd_Click);
-            // 
             // buttonResetRotation
             // 
             this.buttonResetRotation.Location = new System.Drawing.Point(309, 280);
             this.buttonResetRotation.Name = "buttonResetRotation";
-            this.buttonResetRotation.Size = new System.Drawing.Size(104, 23);
+            this.buttonResetRotation.Size = new System.Drawing.Size(98, 23);
             this.buttonResetRotation.TabIndex = 12;
             this.buttonResetRotation.Text = "Reset Rotation";
             this.buttonResetRotation.UseVisualStyleBackColor = true;
             this.buttonResetRotation.Click += new System.EventHandler(this.buttonResetRotation_Click);
+            // 
+            // buttonResetPanel
+            // 
+            this.buttonResetPanel.Location = new System.Drawing.Point(413, 280);
+            this.buttonResetPanel.Name = "buttonResetPanel";
+            this.buttonResetPanel.Size = new System.Drawing.Size(84, 23);
+            this.buttonResetPanel.TabIndex = 13;
+            this.buttonResetPanel.Text = "Reset Panel";
+            this.buttonResetPanel.UseVisualStyleBackColor = true;
+            this.buttonResetPanel.Click += new System.EventHandler(this.buttonResetPanel_Click);
             // 
             // FormVRMatrixEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(515, 369);
+            this.Controls.Add(this.buttonResetPanel);
             this.Controls.Add(this.buttonResetRotation);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
@@ -487,6 +499,9 @@
             this.groupBox2.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownZ)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownY)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownX)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarPositionZ)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarPositionY)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarPositionX)).EndInit();
@@ -495,9 +510,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.trackBarRotationZ)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarRotationY)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarRotationX)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownX)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownY)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownZ)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -536,5 +548,6 @@
         private System.Windows.Forms.NumericUpDown numericUpDownY;
         private System.Windows.Forms.NumericUpDown numericUpDownX;
         private System.Windows.Forms.Button buttonResetRotation;
+        private System.Windows.Forms.Button buttonResetPanel;
     }
 }

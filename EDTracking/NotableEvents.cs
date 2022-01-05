@@ -73,7 +73,8 @@ namespace EDTracking
 
         public void AddStatusEvent(string statusEvent, string commander, string postfix = "")
         {
-            AddEvent($"{commander}{CustomStatusMessages[statusEvent]}{postfix}");
+            if (CustomStatusMessages.ContainsKey(statusEvent))
+                AddEvent($"{commander}{CustomStatusMessages[statusEvent]}{postfix}");
         }
     }
 }

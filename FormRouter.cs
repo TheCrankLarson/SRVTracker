@@ -15,6 +15,7 @@ using System.Text.Json;
 using System.IO;
 using Valve.VR;
 
+
 namespace SRVTracker
 {
     public partial class FormRouter : Form
@@ -35,6 +36,8 @@ namespace SRVTracker
         private List<DateTime> _timeTrialWaypointTimes = null;
         private FormTelemetryDisplay _timeTrialTelemetryDisplay = null;
         private TelemetryWriter _timeTrialTelemetryWriter = null;
+        private SpeechSynthesizer _speechSynthesizer = null;
+        private Dictionary<string, string> _speechEventPhrases = null;
 
         public FormRouter(FormTracker formTracker)
         {
@@ -69,6 +72,7 @@ namespace SRVTracker
             listBoxWaypoints_SelectedIndexChanged(null, null);
             comboBoxWaypointType.SelectedIndex = 0;
             InitSoundsList();
+            InitSpeechList();
         }
 
         private void CalculateWindowSizes()
@@ -142,33 +146,34 @@ namespace SRVTracker
                         double bearingFromNextWaypoint = EDLocation.BearingToLocation(_route.Waypoints[_nextWaypoint].Location, nextNextWaypoint.Location);
                         double bearingToNextWaypoint = EDLocation.BearingToLocation(FormTracker.CurrentLocation, _route.Waypoints[_nextWaypoint].Location);
                         double bearingChange = EDLocation.BearingDelta(bearingToNextWaypoint, bearingFromNextWaypoint);
-                        additionalInfo.Append("Then ");
+                        //additionalInfo.Append("Then ");
                         if (bearingChange > -5 && bearingChange < 5)
-                            additionalInfo.Append("straight on");
+                            additionalInfo.Append(_speechEventPhrases["Straight on"]);
                         else
                         {
                             if (bearingChange < 0)
                             {
                                 if (bearingChange < -140)
-                                    additionalInfo.Append("hairpin ");
+                                    additionalInfo.Append(_speechEventPhrases["Hairpin left"]);
                                 else if (bearingChange < -80)
-                                    additionalInfo.Append("sharp ");
+                                    additionalInfo.Append(_speechEventPhrases["Sharp left"]);
                                 if (bearingChange > -45)
-                                    additionalInfo.Append("bear left ");
+                                    additionalInfo.Append(_speechEventPhrases["Bear left"]);
                                 else
-                                    additionalInfo.Append("turn left ");
+                                    additionalInfo.Append(_speechEventPhrases["Turn left"]);
                             }
                             else
                             {
                                 if (bearingChange > 140)
-                                    additionalInfo.Append("hairpin ");
+                                    additionalInfo.Append(_speechEventPhrases["Hairpin right"]);
                                 else if (bearingChange > 80)
-                                    additionalInfo.Append("sharp ");
+                                    additionalInfo.Append(_speechEventPhrases["Sharp right"]);
                                 if (bearingChange < 45)
-                                    additionalInfo.Append("bear right ");
+                                    additionalInfo.Append(_speechEventPhrases["Bear right"]);
                                 else
-                                    additionalInfo.Append("turn right ");
+                                    additionalInfo.Append(_speechEventPhrases["Turn right"]);
                             }
+                            additionalInfo.Append($" {_speechEventPhrases["To Bearing"]} ");
                             additionalInfo.Append(Math.Abs(bearingChange).ToString("F1"));
                             additionalInfo.Append("°");
                         }
@@ -179,7 +184,7 @@ namespace SRVTracker
                     }
                 }
                 else
-                    additionalInfo.Append("Finish");
+                    additionalInfo.Append(_route.Waypoints[_nextWaypoint].Name);
             }
             return additionalInfo.ToString();
         }
@@ -195,22 +200,22 @@ namespace SRVTracker
                 return;
             }
 
-            // Start the time trial timer only on first movement
-            if (checkBoxTimeTrial.Checked && _timeTrialStart == DateTime.MinValue)
-                if (!_lastLoggedLocation.Equals(FormTracker.CurrentLocation))
-                {
-                    _timeTrialStart = DateTime.UtcNow;
-                    _timeTrialWaypointTimes = new List<DateTime>();
-                    _timeTrialWaypointTimes.Add(_timeTrialStart);
-                    if (numericUpDownTotalLaps.Value>1)
-                        _timeTrialTelemetryDisplay.AddRow("LAP 1 Start", "00:00:00.00");
-                    else
-                        _timeTrialTelemetryDisplay.AddRow("Start", "00:00:00.00");
-                    _lapNumber = 1;
-                }
-
             if (buttonPlay.Enabled)
             {
+                // Start the time trial timer only on first movement
+                if (checkBoxTimeTrial.Checked && _timeTrialStart == DateTime.MinValue)
+                    if (!_lastLoggedLocation.Equals(FormTracker.CurrentLocation))
+                    {
+                        _timeTrialStart = DateTime.UtcNow;
+                        _timeTrialWaypointTimes = new List<DateTime>();
+                        _timeTrialWaypointTimes.Add(_timeTrialStart);
+                        if (numericUpDownTotalLaps.Value > 1)
+                            _timeTrialTelemetryDisplay.AddRow("LAP 1 Start", "00:00:00.00");
+                        else
+                            _timeTrialTelemetryDisplay.AddRow("Start", "00:00:00.00");
+                        _lapNumber = 1;
+                    }
+
                 // We are currently replaying a route
                 EDLocation previousWaypointLocation = null;
                 if (_nextWaypoint > 0)
@@ -219,8 +224,7 @@ namespace SRVTracker
                     previousWaypointLocation = _route.Waypoints[_route.Waypoints.Count - 1].Location;
 
 
-                bool moveToNextWaypoint = _route.Waypoints[_nextWaypoint].WaypointHit(FormTracker.CurrentLocation, FormTracker.PreviousLocation, previousWaypointLocation);
-                if (moveToNextWaypoint)
+                if (_route.Waypoints[_nextWaypoint].WaypointHit(FormTracker.CurrentLocation, FormTracker.PreviousLocation, previousWaypointLocation))
                 {
                     // Arrived at the waypoint
                     _timeTrialWaypointTimes?.Add(DateTime.UtcNow);
@@ -249,6 +253,7 @@ namespace SRVTracker
                         buttonStop.Enabled = false;
                         buttonStartRecording.Enabled = true;
                         PlayEventSound("Route completed");
+                        Speak(_speechEventPhrases["Reached destination"]);
                         _timeTrialWaypointTimes?.Add(DateTime.UtcNow);
                         _timeTrialTelemetryDisplay?.AddRow("Finished",
                             _timeTrialWaypointTimes[_timeTrialWaypointTimes.Count - 1].Subtract(_timeTrialWaypointTimes[0]).ToString(@"hh\:mm\:ss\.ff"));
@@ -257,7 +262,13 @@ namespace SRVTracker
                     else
                     {
                         PlayEventSound("Arrived at waypoint");
-                        FormLocator.GetLocator().SetTarget(_route.Waypoints[_nextWaypoint].Location, GetBearingAfterNextWaypoint(), _route.Waypoints[_nextWaypoint].Name);
+                        string waypointDirections = GetBearingAfterNextWaypoint();
+                        FormLocator.GetLocator().SetTarget(_route.Waypoints[_nextWaypoint].Location, waypointDirections, _route.Waypoints[_nextWaypoint].Name);
+                        if (checkBoxAnnounceDirectionHints.Checked)
+                        {
+                            string directionNow = $"Head towards bearing {FormLocator.GetLocator().BearingToTarget:f0}, then {waypointDirections}";
+                            Speak(directionNow);
+                        }
                         Action action = new Action(() =>
                         {
                             listBoxWaypoints.SelectedIndex = _nextWaypoint;
@@ -605,6 +616,8 @@ namespace SRVTracker
             if (listBoxWaypoints.SelectedIndex > 0)
                 _nextWaypoint = listBoxWaypoints.SelectedIndex;
 
+            if (checkBoxTimeTrial.Checked)
+                Speak("Timer will start on first movement");
             buttonStartRecording.Enabled = false;
             buttonStop.Enabled = true;
             _formTracker.StartTracking();
@@ -693,6 +706,14 @@ namespace SRVTracker
             AddWaypointToRoute(newWaypoint);
         }
 
+        private string[] SpeechEvents()
+        {
+            string[] speechEvents = { "Straight on", "Turn left", "Turn right",
+                "Bear left", "Bear right", "Sharp left", "Sharp right", "Hairpin left", "Hairpin right",
+                "Destination reached", "To Bearing"};
+            return speechEvents;
+        }
+
         private string[] SoundEvents()
         {
             string[] soundEvents= { "Arrived at waypoint", "Route completed", "Waypoint added" };
@@ -718,7 +739,7 @@ namespace SRVTracker
             comboBoxChooseSound.Enabled = checkBoxEnableAudio.Checked && listBoxAudioEvents.SelectedIndex>-1;
         }
 
-        public void InitSoundsList()
+        private void InitSoundsList()
         {
             if (_soundSources==null)
             {
@@ -770,6 +791,36 @@ namespace SRVTracker
             UpdateSoundUI();
         }
 
+        private void InitSpeechList()
+        {
+            if (_speechEventPhrases == null)
+            {
+                string speechData = (string)checkBoxEnableSpeech.Tag;
+                if (!String.IsNullOrEmpty(speechData))
+                {
+                    // We restore saved data from the Tag of our checkbox (saved automatically by ConfigSaver)
+                    _speechEventPhrases = (Dictionary<string, string>)JsonSerializer.Deserialize(speechData, typeof(Dictionary<string, string>));
+                }
+                if (_speechEventPhrases == null)
+                    _speechEventPhrases = new Dictionary<string, string>();
+
+                //// Check we have all available events present
+                foreach (string speechEvent in SpeechEvents())
+                    if (!_speechEventPhrases.ContainsKey(speechEvent))
+                        _speechEventPhrases.Add(speechEvent, speechEvent);
+                //// And remove any old ones (happens if they are renamed or removed)
+                //foreach (string soundEvent in RemovedSoundEvents())
+                //    if (_eventSounds.ContainsKey(soundEvent))
+                //        _eventSounds.Remove(soundEvent);
+            }
+
+            // Add the events to our event sound list
+            listBoxSpeechEvents.Items.Clear();
+            listBoxSpeechEvents.Items.AddRange(_speechEventPhrases.Keys.ToArray<string>());
+
+            listBoxSpeechEvents_SelectedIndexChanged(null, null);
+        }
+
         private void StoreSoundSettings()
         {
             if (_eventSounds == null)
@@ -780,6 +831,14 @@ namespace SRVTracker
                 comboBoxChooseSound.Tag = null;
             else
                 comboBoxChooseSound.Tag = JsonSerializer.Serialize(_soundSources);
+        }
+
+        private void StoreSpeechSettings()
+        {
+            if (_speechEventPhrases == null)
+                checkBoxEnableSpeech.Tag = null;
+            else
+                checkBoxEnableSpeech.Tag = JsonSerializer.Serialize(_speechEventPhrases);
         }
 
         private void checkBoxEnableAudio_CheckedChanged(object sender, EventArgs e)
@@ -899,6 +958,23 @@ namespace SRVTracker
             {
                 _soundPlayer.SoundLocation = _eventSounds[eventName];
                 _soundPlayer.Play();
+            }
+            catch { }
+        }
+
+        private void Speak(string speech)
+        {
+            if (String.IsNullOrEmpty(speech) || !checkBoxEnableAudio.Checked)
+                return;
+
+            try
+            {
+                if (_speechSynthesizer == null)
+                {
+                    _speechSynthesizer = new SpeechSynthesizer();
+                    _speechSynthesizer.SetOutputToDefaultAudioDevice();
+                }
+                _speechSynthesizer.SpeakAsync(speech);
             }
             catch { }
         }
@@ -1296,6 +1372,36 @@ namespace SRVTracker
             }
             _route.Waypoints = randomizedList;
             DisplayRoute();
+        }
+
+        private void listBoxSpeechEvents_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (listBoxSpeechEvents.SelectedIndex<0)
+            {
+                textBoxSpeechEventPhrase.Text = "";
+                textBoxSpeechEventPhrase.Enabled = false;
+                return;
+            }
+
+            string selectedEvent = listBoxSpeechEvents.SelectedItem as string;
+            if (_speechEventPhrases.ContainsKey(selectedEvent))
+            {
+                textBoxSpeechEventPhrase.Text = _speechEventPhrases[selectedEvent];
+                textBoxSpeechEventPhrase.Enabled = true;
+            }
+        }
+
+        private void textBoxSpeechEventPhrase_Validated(object sender, EventArgs e)
+        {
+            if (listBoxSpeechEvents.SelectedIndex < 0)
+                return;
+
+            string selectedEvent = listBoxSpeechEvents.SelectedItem as string;
+            if (_speechEventPhrases.ContainsKey(selectedEvent))
+            {
+                _speechEventPhrases[selectedEvent] = textBoxSpeechEventPhrase.Text;
+                StoreSpeechSettings();
+            }
         }
     }
 }

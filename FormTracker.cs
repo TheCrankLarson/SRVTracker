@@ -873,5 +873,10 @@ namespace SRVTracker
             numericUpDownUseSmartHeadingOnlyWhenOver.Enabled = checkBoxUseDirectionOfTravelAsHeading.Checked;
             checkBoxUseSmartHeadingOnlyWhenInSRV.Enabled = checkBoxUseDirectionOfTravelAsHeading.Checked;
         }
+
+        private void buttonRaceTelemetrySettings_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

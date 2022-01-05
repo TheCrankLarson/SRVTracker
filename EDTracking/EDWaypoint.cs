@@ -50,7 +50,7 @@ namespace EDTracking
             return true;
         }
 
-        private bool LocationIsWithinWaypoint(EDLocation location)
+        private bool LocationIsWithinBasicWaypoint(EDLocation location)
         {
             if (location.PlanetaryRadius != Location.PlanetaryRadius)
                 return false;
@@ -93,7 +93,7 @@ namespace EDTracking
             if (!ExtendedWaypointInformation.ContainsKey("WaypointType"))
             {
                 // This is a basic waypoint
-                bool waypointHit = LocationIsWithinWaypoint(currentLocation);
+                bool waypointHit = LocationIsWithinBasicWaypoint(currentLocation);
                 if (!waypointHit && AllowPassing && previousWaypointLocation != null)
                     waypointHit = WaypointIsBehind(currentLocation, EDLocation.BearingToLocation(previousWaypointLocation, Location));
                 return waypointHit;

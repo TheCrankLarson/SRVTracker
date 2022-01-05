@@ -14,6 +14,7 @@ namespace DataCollator
     class NotificationServer
     {
         private HttpListener _Listener = null;
+        private HttpListener _webListener = null;
         private int _ListenPort = 11938;
         private List<string> _registeredNotificationUrls = new List<string>();
         private static HttpClient _httpClient = new HttpClient();
@@ -29,7 +30,9 @@ namespace DataCollator
         private CommanderRegistration _commanderRegistration = new CommanderRegistration();
         private Mischief.ImpMaster _mischiefMaker = new Mischief.ImpMaster();
 
-        public NotificationServer(string ListenURL, bool StartDebug = false, bool VerboseDebug = false)
+        public string WebURL { get; set; } = null;
+
+        public NotificationServer(string ListenURL, string WebUrl = "", bool StartDebug = false, bool VerboseDebug = false)
         {
             VerboseDebugEnabled = VerboseDebug;
             if (StartDebug)
@@ -37,6 +40,7 @@ namespace DataCollator
             URi = ListenURL;
             _races = new Dictionary<Guid, EDRace>();
             _Listener = new HttpListener();
+            WebURL = WebUrl;
 
             Start();
         }
@@ -81,10 +85,13 @@ namespace DataCollator
         {
             _Listener.Prefixes.Clear();
             _Listener.Prefixes.Add(URi);
+            if (!String.IsNullOrEmpty(WebURL))
+                _Listener.Prefixes.Add(WebURL);
             try
             {
                 _Listener.Start();
-                _Listener.BeginGetContext(new AsyncCallback(ListenerCallback), _Listener);
+                for (int i=0; i<5; i++)
+                    _Listener.BeginGetContext(new AsyncCallback(ListenerCallback), _Listener);
                 Log($"Started listening on: {URi}");
             }
             catch
@@ -207,6 +214,7 @@ namespace DataCollator
             catch (Exception ex)
             {
                 LogError($"Error processing message:{Environment.NewLine}{ex}{Environment.NewLine}{Environment.NewLine}{message}");
+                return;
             }
 
             // Send the notification to any listening Urls
@@ -228,11 +236,13 @@ namespace DataCollator
                 _Listener.BeginGetContext(new AsyncCallback(ListenerCallback), _Listener);
             }
             catch { }
+            
+            HttpListener listener = (HttpListener)result.AsyncState;
+            HttpListenerContext context = listener.EndGetContext(result);
+            
             try
             {
-                HttpListener listener = (HttpListener)result.AsyncState;
 
-                HttpListenerContext context = listener.EndGetContext(result);
                 HttpListenerRequest request = context.Request;
                 string sRequest = "";
 
@@ -275,11 +285,19 @@ namespace DataCollator
                 {
                     action = (() =>
                     {
-                        StringBuilder activeRaces = new StringBuilder();
-                        foreach (Guid guid in _races.Keys)
-                            if (!_races[guid].Finished)
-                                activeRaces.AppendLine($"{guid},{_races[guid].Name}");
-                        WriteResponse(context, activeRaces.ToString());
+                        try
+                        {
+                            StringBuilder activeRaces = new StringBuilder();
+                            foreach (Guid guid in _races.Keys)
+                                if (!_races[guid].Finished)
+                                    activeRaces.AppendLine($"{guid},{_races[guid].Name}");
+                            WriteResponse(context, activeRaces.ToString());
+                        }
+                        catch (Exception ex)
+                        {
+                            LogError($"GetActiveRaces: {ex.Message}");
+                            WriteErrorResponse(context.Response, HttpStatusCode.InternalServerError);
+                        }
                     });
                 }
                 else if (requestUri.StartsWith("getrace"))
@@ -391,7 +409,11 @@ namespace DataCollator
 
                 action();
             }
-            catch { }
+            catch (Exception ex)
+            {
+                LogError($"ListenerCallback: {ex}");
+                Log($"Requested Url: {context.Request.RawUrl}");
+            }
            
         }
 
@@ -476,6 +498,7 @@ namespace DataCollator
                 Guid raceId = Guid.NewGuid();
                 SaveRaceToDisk(raceId, "StartRequest", false, request);
                 EDRace race = EDRace.FromString(request);
+                race.Log = Log;
                 _races.Add(raceId, race);
                 SaveRaceToDisk(raceId, "Start", false);
                 race.StartRace(true);
@@ -806,7 +829,7 @@ namespace DataCollator
         }
 
         private int _flushCount = 0;
-        private void Log(string log, bool Verbose = false)
+        private void Log(string log, bool Verbose)
         {
             if ( (_logStream == null) || (Verbose && !VerboseDebugEnabled) )
                 return;
@@ -826,6 +849,11 @@ namespace DataCollator
                 }
                 catch { }
             }
+        }
+
+        public void Log(string log)
+        {
+            Log(log, false);
         }
 
         private void LogError(string log)

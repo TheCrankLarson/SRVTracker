@@ -5,11 +5,16 @@
 
 body {
     background-color: lightgray;
+    background-image: url('images/SRV-Scarab.png');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
     font-family: EUROCAPS;
 }
 
 h2 {
     font-size: 30px;
+    text-shadow: 1px 1px lightgray;
 }
 
 p {
@@ -19,12 +24,27 @@ p {
 table {
     border-collapse: collapse;
     width: 100%;
-    font-family: EUROCAPS;
+    /*font-family: EUROCAPS;*/
+    background-color: lightgray;
 }
 
 table, th, td {
     border: 1px solid black;
     text-align: left;
+}
+
+.buttonStyle {
+    border: 1px solid black;
+    background-color: darkgray;
+    display: inline;
+    padding: 0px 5px;
+    cursor: pointer;
+}
+
+#settings {
+    position: absolute;
+    background-color: lightgray;
+    border: 1px solid black;
 }
 
 .gridContainer {
@@ -35,7 +55,7 @@ table, th, td {
     grid-row-start: 1;
     grid-row-end: 1;
     grid-column-start: 1;
-    grid-column-end: 3;
+    grid-column-end: 4;
 }
 
 #infoPanel {
@@ -43,6 +63,7 @@ table, th, td {
     grid-row-end: 3;
     grid-column-start: 1;
     grid-column-end: 1;
+    padding-right: 10px;
 }
 
 #racePanel {
@@ -50,6 +71,14 @@ table, th, td {
     grid-row-end: 3;
     grid-column-start: 2;
     grid-column-end: 2;
+    width: 800px;
+}
+
+#commanderProfiles {
+    grid-row-start: 2;
+    grid-row-end: 3;
+    grid-column-start: 3;
+    grid-column-end: 3;
 }
 
 #courseContainer {
@@ -58,16 +87,23 @@ table, th, td {
     width: 800px;
     height: 800px;
     display: block;
+    resize: both;
+    opacity: 0.9;
 }
 
 #courseCanvass {
     position: absolute;
     background-color: black;
+    /*background-image: url("images/okorafor-bad-stretch.jpg");*/
+    background-repeat: no-repeat;
+    background-position: center center;
     color: white;
     width: 100%;
     height: 100%;
     display: block;
     font-family: Verdana;
+    resize: both;
+    overflow: hidden;
 }
 
 #courseWaypoints {
@@ -99,7 +135,7 @@ table, th, td {
 .waypoint p {
     font-size: 12px;
     position: absolute;
-    left: 50px;
+    left: 10px;
     top: 0px;
     text-shadow: 2px 2px black;
 }
@@ -135,16 +171,47 @@ table, th, td {
     left: 34px;
 }
 
-    .racerProfile p {
-        font-size: 10px;
-        color: gray;
-    }
+.racerProfileRaceInfo {
+    display: none;
+    font-size: 10px;
+    text-shadow: 1px 1px black;
+    color: gray;
+}
+
+.racerProfile:hover > .racerProfileRaceInfo {
+    display: block;
+}
+
+.commanderProfile {
+    border: 1px solid black;
+    font-size: 14px;
+    margin: 2px;
+    width: 440px;
+}
+
+.commanderProfileName {
+    background-color: black;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.commanderProfileBio {
+    font-size: 16px;
+}
+
+.commanderProfileStream {
+    border: 1px solid black;
+    background-color: rebeccapurple;
+    color: white;
+    text-align: center;
+    cursor: pointer;
+}
 
 .marquee {
     height: 50px;
     overflow: hidden;
     position: relative;
-    background-color: lightgray;
     color: black;
     border: 1px solid white;
     font-family: EUROCAPS;
@@ -159,48 +226,23 @@ table, th, td {
         line-height: 50px;
         text-align: center;
         font-size: 30px;
+        text-shadow: 4px 4px black;
+        color: white;
+        font-weight: bolder;
         /* Starting position */
-        /*-moz-transform: translateX(100%);
-        -webkit-transform: translateX(100%);
-        transform: translateX(100%);*/
+        /*transform: translateX(100%);*/
         /* Apply animation to this element */
-        /*-moz-animation: scroll-left 10s linear infinite;
-        -webkit-animation: scroll-left 2s linear infinite;
-        animation: scroll-left 2s linear infinite;*/
+        /* animation: scroll-left 2s linear infinite;*/
     }
 
 
 /* Move it (define the animation) */
-@-moz-keyframes scroll-left {
-    0% {
-        -moz-transform: translateX(100%);
-    }
-
-    100% {
-        -moz-transform: translateX(-100%);
-    }
-}
-
-@-webkit-keyframes scroll-left {
-    0% {
-        -webkit-transform: translateX(100%);
-    }
-
-    100% {
-        -webkit-transform: translateX(-100%);
-    }
-}
-
 @keyframes scroll-left {
     0% {
-        -moz-transform: translateX(100%); /* Browser bug fix */
-        -webkit-transform: translateX(100%); /* Browser bug fix */
         transform: translateY(100%);
     }
 
     100% {
-        -moz-transform: translateX(-100%); /* Browser bug fix */
-        -webkit-transform: translateX(-100%); /* Browser bug fix */
         transform: translateY(-100%);
     }
 }

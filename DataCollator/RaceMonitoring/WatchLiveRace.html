@@ -5,10 +5,17 @@
     <meta charset="utf-8" />
     <title>Crank's Live Race Monitor</title>
     <link rel="stylesheet" href="CrankyRacing.css">
+
     <script src="RaceFunctions.js"></script>
+    <!-- Create a Twitch.Embed object that will render within the "twitch-embed" element -->
+    <script type="text/javascript">
+        
+    </script>
+
+
     <script>
         // Configuration
-        var dataUrl = "http://srvtracker.darkbytes.co.uk:11938/DataCollator/";
+        var dataUrl = "https://srvtracker.darkbytes.co.uk/DataCollator/";
         var canvasWidth = 800;
         var canvasHeight = 800;
 
@@ -25,6 +32,12 @@
                 <select id="activeRaces">
                     <option>No races active.</option>
                 </select>
+                <div class="buttonStyle" onclick="ToggleSettings()">Settings</div>
+            </div>
+            <div id="settings">
+                Course image: <input onchange="UpdateImageFromFile('courseCanvass','courseBackgroundImage')" type="file" id="courseBackgroundImage" /><br />
+                Offset x: <input type="text" onchange="UpdateCourseImageOffset()" id="courseImageXOffset" value="0"/><br />
+                Offset y: <input type="text" onchange="UpdateCourseImageOffset()" id="courseImageYOffset" value="0"/>
             </div>
             <div id="raceInfo">
                 <h2>Race information</h2>
@@ -52,6 +65,9 @@
                     <div id="courseWaypoints"></div>
                 </div>
             </div>
+        </div>
+        <div id="commanderProfiles">
+            <h2>Commander Profiles</h2>
         </div>
     </div>
     <pre id="debugLog"></pre>

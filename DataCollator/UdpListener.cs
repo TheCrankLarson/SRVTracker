@@ -14,6 +14,7 @@ namespace DataCollator
     {
         public UdpClient u;
         public IPEndPoint e;
+        public int id;
     }
 
     public class UDPListener
@@ -32,30 +33,35 @@ namespace DataCollator
                 receiveBytes = s.u.EndReceive(ar, ref s.e);
             }
             catch { }
-            s.u.BeginReceive(new AsyncCallback(ReceiveCallback), s);
+            try
+            {
+                s.u.BeginReceive(new AsyncCallback(ReceiveCallback), s);
+            }
+            catch { }
             if (receiveBytes == null)
                 return;
 
-            DataReceived?.Invoke(null, Encoding.UTF8.GetString(receiveBytes));
+            DataReceived?.Invoke(s.id, Encoding.UTF8.GetString(receiveBytes));
         }
 
         public static void StartListening(int ListenPort)
         {
             // We create 10 UDP listeners
             for (int i=0; i<10; i++)
-                CreateUdpClient(ListenPort);
+                CreateUdpClient(ListenPort, i);
         }
 
-        private static void CreateUdpClient(int ListenPort)
+        private static void CreateUdpClient(int ListenPort, int id)
         {
             UdpState s = new UdpState();
             s.e = new IPEndPoint(IPAddress.Any, ListenPort);
             s.u = new UdpClient();
+            s.id = id;
             s.u.Client.ExclusiveAddressUse = false;
             s.u.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
             s.u.Client.Bind(new IPEndPoint(IPAddress.Any, ListenPort));
 
-            Debug.WriteLine($"Listening for messages on port {ListenPort}");
+            Debug.WriteLine($"UDP{id}: Listening for messages on port {ListenPort}");
             s.u.BeginReceive(new AsyncCallback(ReceiveCallback), s);
             _udpClients.Add(s.u);
         }

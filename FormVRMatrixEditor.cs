@@ -18,6 +18,7 @@ namespace SRVTracker
         private ConfigSaverClass _formConfig = null;
         private Control _sliderTargetControl = null;
         private bool _displayingMatrixData = false;
+        //private FormLocator _locatorForm = null;
 
         public FormVRMatrixEditor(VRLocatorOverlay vrLocatorOverlay)
         {
@@ -307,6 +308,11 @@ namespace SRVTracker
             trackBarRotationY.Value = 0;
             trackBarRotationZ.Value = 0;
             ApplyMatrixToOverlay();
+        }
+
+        private void buttonResetPanel_Click(object sender, EventArgs e)
+        {
+            FormLocator.GetLocator().ResetVR();
         }
     }
 }

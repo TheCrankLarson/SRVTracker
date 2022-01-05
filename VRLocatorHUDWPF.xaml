@@ -8,7 +8,7 @@
              d:DesignHeight="320
              " d:DesignWidth="800">
     <DockPanel LastChildFill="False">
-        <Image  x:Name="BearingArrow" DockPanel.Dock="Top" Height="100" Width="100" Source="pack://siteoforigin:,,,/Resources/Silver arrow.bmp" AutomationProperties.Name="BearingArrow"/>
+        <Image  x:Name="BearingArrow" DockPanel.Dock="Top" Height="100" Width="100" Source="/Silver arrow.bmp" AutomationProperties.Name="BearingArrow"/>
         
         <GroupBox DockPanel.Dock="Left" Header="Target" HorizontalAlignment="Left" Height="80" Margin="12,1,0,0" BorderThickness="1" VerticalAlignment="Top" Width="255" AutomationProperties.Name="Target" Foreground="White" BorderBrush="White" FontSize="20">
             <Label x:Name="labelTarget" Content="Not set" HorizontalAlignment="Center" Margin="10,0,10,6" VerticalAlignment="Center" Foreground="White" AutomationProperties.Name="labelTarget"/>

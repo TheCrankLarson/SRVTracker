@@ -107,7 +107,7 @@ namespace EDTracking
                 fileStream.Seek(fileStream.Length - 62, SeekOrigin.Begin);
 
             string lastJournalEvent = "";
-            using (StreamReader sr = new StreamReader(fileStream, Encoding.Default, true, 1000, false))
+            using (StreamReader sr = new StreamReader(fileStream, Encoding.Default, true, 63, false))
                 lastJournalEvent = sr.ReadToEnd();
 
             int jsonStart = lastJournalEvent.IndexOf('{');

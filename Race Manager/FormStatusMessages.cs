@@ -73,7 +73,14 @@ namespace Race_Manager
             {
                 try
                 {
+                    Dictionary<string, string> _existingMessages = EDRace.StatusMessages;
                     EDRace.StatusMessages = JsonSerializer.Deserialize<Dictionary<string, string>>(File.ReadAllText(file));
+
+                    // If new status messages are added in code, then they will be overwritten by the above.
+                    // We add a check to ensure any missing are added back.
+                    foreach (string statusMessage in _existingMessages.Keys)
+                        if (!EDRace.StatusMessages.ContainsKey(statusMessage))
+                            EDRace.StatusMessages.Add(statusMessage, _existingMessages[statusMessage]);
                     return true;
                 }
                 catch { }

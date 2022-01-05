@@ -72,10 +72,12 @@
             this.numericUpDownUseSmartHeadingOnlyWhenOver = new System.Windows.Forms.NumericUpDown();
             this.checkBoxUseSmartHeadingOnlyWhenInSRV = new System.Windows.Forms.CheckBox();
             this.checkBoxAllowMischief = new System.Windows.Forms.CheckBox();
+            this.buttonRaceTelemetrySettings = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBoxSRVTracker = new System.Windows.Forms.GroupBox();
             this.tabControlSettings = new System.Windows.Forms.TabControl();
             this.tabPageCommander = new System.Windows.Forms.TabPage();
+            this.checkBoxShowRaceTelemetry = new System.Windows.Forms.CheckBox();
             this.label2 = new System.Windows.Forms.Label();
             this.tabPageMonitoring = new System.Windows.Forms.TabPage();
             this.label4 = new System.Windows.Forms.Label();
@@ -85,8 +87,7 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tabPageLogging = new System.Windows.Forms.TabPage();
             this.tabPageUpdate = new System.Windows.Forms.TabPage();
-            this.checkBoxShowRaceTelemetry = new System.Windows.Forms.CheckBox();
-            this.buttonRaceTelemetrySettings = new System.Windows.Forms.Button();
+            this.buttonRacerProfile = new System.Windows.Forms.Button();
             this.groupBoxStatusLocation.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.statusFileWatcher)).BeginInit();
             this.groupBox5.SuspendLayout();
@@ -664,6 +665,20 @@
             this.toolTip1.SetToolTip(this.checkBoxAllowMischief, "Sometimes the imps need to let off steam.");
             this.checkBoxAllowMischief.UseVisualStyleBackColor = true;
             // 
+            // buttonRaceTelemetrySettings
+            // 
+            this.buttonRaceTelemetrySettings.Image = global::SRVTracker.Properties.Resources.Settings_16x;
+            this.buttonRaceTelemetrySettings.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.buttonRaceTelemetrySettings.Location = new System.Drawing.Point(240, 88);
+            this.buttonRaceTelemetrySettings.Name = "buttonRaceTelemetrySettings";
+            this.buttonRaceTelemetrySettings.Size = new System.Drawing.Size(72, 22);
+            this.buttonRaceTelemetrySettings.TabIndex = 17;
+            this.buttonRaceTelemetrySettings.Text = "Settings";
+            this.buttonRaceTelemetrySettings.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.toolTip1.SetToolTip(this.buttonRaceTelemetrySettings, "Edit telemetry display/export settings");
+            this.buttonRaceTelemetrySettings.UseVisualStyleBackColor = true;
+            this.buttonRaceTelemetrySettings.Click += new System.EventHandler(this.buttonRaceTelemetrySettings_Click);
+            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -703,6 +718,7 @@
             // 
             // tabPageCommander
             // 
+            this.tabPageCommander.Controls.Add(this.buttonRacerProfile);
             this.tabPageCommander.Controls.Add(this.buttonRaceTelemetrySettings);
             this.tabPageCommander.Controls.Add(this.checkBoxShowRaceTelemetry);
             this.tabPageCommander.Controls.Add(this.label2);
@@ -715,6 +731,16 @@
             this.tabPageCommander.TabIndex = 3;
             this.tabPageCommander.Text = "Commander";
             this.tabPageCommander.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxShowRaceTelemetry
+            // 
+            this.checkBoxShowRaceTelemetry.AutoSize = true;
+            this.checkBoxShowRaceTelemetry.Location = new System.Drawing.Point(112, 92);
+            this.checkBoxShowRaceTelemetry.Name = "checkBoxShowRaceTelemetry";
+            this.checkBoxShowRaceTelemetry.Size = new System.Drawing.Size(122, 17);
+            this.checkBoxShowRaceTelemetry.TabIndex = 16;
+            this.checkBoxShowRaceTelemetry.Text = "Show race telemetry";
+            this.checkBoxShowRaceTelemetry.UseVisualStyleBackColor = true;
             // 
             // label2
             // 
@@ -825,28 +851,14 @@
             this.tabPageUpdate.Text = "Update";
             this.tabPageUpdate.UseVisualStyleBackColor = true;
             // 
-            // checkBoxShowRaceTelemetry
+            // buttonRacerProfile
             // 
-            this.checkBoxShowRaceTelemetry.AutoSize = true;
-            this.checkBoxShowRaceTelemetry.Location = new System.Drawing.Point(112, 92);
-            this.checkBoxShowRaceTelemetry.Name = "checkBoxShowRaceTelemetry";
-            this.checkBoxShowRaceTelemetry.Size = new System.Drawing.Size(122, 17);
-            this.checkBoxShowRaceTelemetry.TabIndex = 16;
-            this.checkBoxShowRaceTelemetry.Text = "Show race telemetry";
-            this.checkBoxShowRaceTelemetry.UseVisualStyleBackColor = true;
-            // 
-            // buttonRaceTelemetrySettings
-            // 
-            this.buttonRaceTelemetrySettings.Image = global::SRVTracker.Properties.Resources.Settings_16x;
-            this.buttonRaceTelemetrySettings.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonRaceTelemetrySettings.Location = new System.Drawing.Point(240, 88);
-            this.buttonRaceTelemetrySettings.Name = "buttonRaceTelemetrySettings";
-            this.buttonRaceTelemetrySettings.Size = new System.Drawing.Size(72, 22);
-            this.buttonRaceTelemetrySettings.TabIndex = 17;
-            this.buttonRaceTelemetrySettings.Text = "Settings";
-            this.buttonRaceTelemetrySettings.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.toolTip1.SetToolTip(this.buttonRaceTelemetrySettings, "Edit telemetry display/export settings");
-            this.buttonRaceTelemetrySettings.UseVisualStyleBackColor = true;
+            this.buttonRacerProfile.Location = new System.Drawing.Point(240, 116);
+            this.buttonRacerProfile.Name = "buttonRacerProfile";
+            this.buttonRacerProfile.Size = new System.Drawing.Size(72, 23);
+            this.buttonRacerProfile.TabIndex = 18;
+            this.buttonRacerProfile.Text = "Profile...";
+            this.buttonRacerProfile.UseVisualStyleBackColor = true;
             // 
             // FormTracker
             // 
@@ -960,6 +972,7 @@
         private System.Windows.Forms.CheckBox checkBoxAllowMischief;
         private System.Windows.Forms.Button buttonRaceTelemetrySettings;
         private System.Windows.Forms.CheckBox checkBoxShowRaceTelemetry;
+        private System.Windows.Forms.Button buttonRacerProfile;
     }
 }
 

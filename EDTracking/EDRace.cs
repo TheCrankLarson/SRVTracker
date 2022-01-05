@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Dynamic;
 
 namespace EDTracking
@@ -37,12 +38,14 @@ namespace EDTracking
         public bool ShipAllowed { get; set; } = false;
         public bool AllowPitstops { get; set; } = true;
         public bool AllowNightVision { get; set; } = true;
+        [JsonIgnore]
         public static Dictionary<string, string> StatusMessages { get; set; } = new Dictionary<string, string>()
                 {
                     { "Eliminated", "Eliminated" },
                     { "Completed", "Completed" },
                     { "CompletedLap", " has completed lap" },
                     { "Pitstop", "Pitstop" },
+                    { "FastestLapNotification", " got a new fastest lap: " },
                     { "EliminatedNotification", " has been eliminated" },
                     { "CompletedNotification", " has finished the race" },
                     { "PitstopNotification", " is in the pits" },
@@ -53,6 +56,10 @@ namespace EDTracking
         private DateTime _statsLastGenerated = DateTime.MinValue;
         private string _cachedToString = null;
         private DateTime _cachedToStringGenerationTime = DateTime.MinValue;
+
+        public delegate void LogDelegate(string message);
+        [JsonIgnore]
+        public LogDelegate Log { get; set; } = null;
 
         public EDRace()
         {
@@ -71,7 +78,7 @@ namespace EDTracking
 
         public override string ToString()
         {
-            return JsonSerializer.Serialize(this);
+            return JsonSerializer.Serialize(this, typeof(EDRace),null);
         }
 
         /// <summary>
@@ -84,7 +91,9 @@ namespace EDTracking
             if (!String.IsNullOrEmpty(_cachedToString) && DateTime.Now.Subtract(_cachedToStringGenerationTime).TotalMilliseconds < 750)
                 return _cachedToString;
 
+            ExportRaceStatistics();  // We do this to ensure the leaderboard is updated
             _cachedToString = this.ToString();
+            _cachedToStringGenerationTime = DateTime.Now;
             return _cachedToString;
         }
 
@@ -118,6 +127,7 @@ namespace EDTracking
             }
             catch { }
         }
+
         public void StartRace(bool asServer, NotableEvents notableEvents = null)
         {
             if (_raceStarted)
@@ -272,7 +282,9 @@ namespace EDTracking
         {
             List<string> leaderBoard = RacePositions();
             Dictionary<string, string> statsTable = new Dictionary<string, string>();
-
+            if (leaderBoard == null || leaderBoard.Count < 1)
+                return statsTable;
+            
             StringBuilder status = new StringBuilder();
             StringBuilder commandersExport = new StringBuilder();
             StringBuilder positionsExport = new StringBuilder();
@@ -292,106 +304,118 @@ namespace EDTracking
             StringBuilder lastLapTime = new StringBuilder();
             StringBuilder fastestLapTime = new StringBuilder();
 
-            for (int i = 0; i < leaderBoard.Count; i++)
+            try
             {
-                positionsExport.AppendLine((i + 1).ToString());
-                if (leaderBoard[i] == null)
-                    leaderBoard[i] = "Unknown error";
-                if (leaderBoard[i].Length > maxStatusLength)
-                    commandersExport.AppendLine(leaderBoard[i].Substring(0, maxStatusLength));
-                else
-                    commandersExport.AppendLine(leaderBoard[i]);
-
-                if (this.Start > DateTime.MinValue && Statuses != null)
+                for (int i = 0; i < leaderBoard.Count; i++)
                 {
-                    maxSpeeds.AppendLine($"{Statuses[leaderBoard[i]].MaxSpeedInMS:F0}");
-                    if (!Statuses[leaderBoard[i]].Eliminated && !Statuses[leaderBoard[i]].Finished)
-                    {
-                        averageSpeeds.AppendLine($"{Statuses[leaderBoard[i]].AverageSpeedInMS:F0}");
-                        speeds.AppendLine($"{Statuses[leaderBoard[i]].SpeedInMS:F0}");
-                        altitudes.AppendLine($"{Statuses[leaderBoard[i]].Location.Altitude:F0}");
-                    }
+                    positionsExport.AppendLine((i + 1).ToString());
+                    if (leaderBoard[i] == null)
+                        leaderBoard[i] = "Unknown error";
+                    if (leaderBoard[i].Length > maxStatusLength)
+                        commandersExport.AppendLine(leaderBoard[i].Substring(0, maxStatusLength));
                     else
-                    {
-                        speeds.AppendLine();
-                        altitudes.AppendLine();
-                        averageSpeeds.AppendLine();
-                    }
-                }
-                else
-                {
-                    speeds.AppendLine();
-                    altitudes.AppendLine();
-                    averageSpeeds.AppendLine();
-                }
+                        commandersExport.AppendLine(leaderBoard[i]);
 
-                if (Statuses != null && (Statuses.Count > i))
-                {
-                    lastLapTime.AppendLine(Statuses[leaderBoard[i]].LastLapTime().ToString(@"hh\:mm\:ss\:ff"));
-                    fastestLapTime.AppendLine(Statuses[leaderBoard[i]].FastestLapTime().ToString(@"hh\:mm\:ss\:ff"));
-                    totalWaypointsVisited.AppendLine(Statuses[leaderBoard[i]].NumberOfWaypointsVisited.ToString());
-                    if (Statuses[leaderBoard[i]].Finished)
+                    if (Statuses != null && Statuses.ContainsKey(leaderBoard[i]))
                     {
-                        status.Append(CustomStatusMessages["Completed"]);
-                        status.AppendLine($" ({Statuses[leaderBoard[i]].FinishTime.Subtract(Start):hh\\:mm\\:ss})");
-                        totalDistanceLeft.AppendLine("0");
-                        distanceToWaypoint.AppendLine("0");
-                        currentLaps.AppendLine(CustomStatusMessages["Completed"]);
-                        lapCounter.AppendLine(CustomStatusMessages["Completed"]);                       
-                    }
-                    else
-                    {
-                        string s;
-                        if (Statuses[leaderBoard[i]].Eliminated)
+                        if (this.Start > DateTime.MinValue)
                         {
-                            distanceToWaypoint.AppendLine("-");
-                            totalDistanceLeft.AppendLine("-");
-                            s = CustomStatusMessages["Eliminated"];
-                            currentLaps.AppendLine(s);
-                            lapCounter.AppendLine(s);
+                            maxSpeeds.AppendLine($"{Statuses[leaderBoard[i]].MaxSpeedInMS:F0}");
+                            if (!Statuses[leaderBoard[i]].Eliminated && !Statuses[leaderBoard[i]].Finished)
+                            {
+                                averageSpeeds.AppendLine($"{Statuses[leaderBoard[i]].AverageSpeedInMS:F0}");
+                                speeds.AppendLine($"{Statuses[leaderBoard[i]].SpeedInMS:F0}");
+                                if (Statuses[leaderBoard[i]].Location != null)
+                                    altitudes.AppendLine($"{Statuses[leaderBoard[i]].Location.Altitude:F0}");
+                                else
+                                    altitudes.AppendLine($"0");
+                            }
+                            else
+                            {
+                                speeds.AppendLine();
+                                altitudes.AppendLine();
+                                averageSpeeds.AppendLine();
+                            }
                         }
                         else
                         {
-                            distanceToWaypoint.AppendLine(Statuses[leaderBoard[i]].DistanceToWaypointInKmDisplay);
-                            totalDistanceLeft.AppendLine(Statuses[leaderBoard[i]].TotalDistanceLeftInKmDisplay);
-                            int lapNumber = Statuses[leaderBoard[i]].Lap;
-                            if (lapNumber < 1)
-                                lapNumber = 1;
-                            currentLaps.AppendLine(lapNumber.ToString());
-                            lapCounter.AppendLine($"{lapNumber}/{Laps}");
-                            
-                            s = Statuses[leaderBoard[i]].ToString();
+                            speeds.AppendLine();
+                            altitudes.AppendLine();
+                            averageSpeeds.AppendLine();
                         }
 
-                        if (s.Length > maxStatusLength)
-                            s = s.Substring(0, maxStatusLength);
-                        status.AppendLine(s);
-                    }
+                        lastLapTime.AppendLine(Statuses[leaderBoard[i]].LastLapTime().ToString(@"hh\:mm\:ss\:ff"));
+                        fastestLapTime.AppendLine(Statuses[leaderBoard[i]].FastestLapTime().ToString(@"hh\:mm\:ss\:ff"));
+                        totalWaypointsVisited.AppendLine(Statuses[leaderBoard[i]].NumberOfWaypointsVisited.ToString());
+                        if (Statuses[leaderBoard[i]].Finished)
+                        {
+                            status.Append(CustomStatusMessages["Completed"]);
+                            status.AppendLine($" ({Statuses[leaderBoard[i]].FinishTime.Subtract(Start):hh\\:mm\\:ss})");
+                            totalDistanceLeft.AppendLine("0");
+                            distanceToWaypoint.AppendLine("0");
+                            currentLaps.AppendLine(CustomStatusMessages["Completed"]);
+                            lapCounter.AppendLine(CustomStatusMessages["Completed"]);
+                        }
+                        else
+                        {
+                            string s;
+                            if (Statuses[leaderBoard[i]].Eliminated)
+                            {
+                                distanceToWaypoint.AppendLine("-");
+                                totalDistanceLeft.AppendLine("-");
+                                s = CustomStatusMessages["Eliminated"];
+                                currentLaps.AppendLine(s);
+                                lapCounter.AppendLine(s);
+                            }
+                            else
+                            {
+                                distanceToWaypoint.AppendLine(Statuses[leaderBoard[i]].DistanceToWaypointInKmDisplay);
+                                totalDistanceLeft.AppendLine(Statuses[leaderBoard[i]].TotalDistanceLeftInKmDisplay);
+                                int lapNumber = Statuses[leaderBoard[i]].Lap;
+                                if (lapNumber < 1)
+                                    lapNumber = 1;
+                                currentLaps.AppendLine(lapNumber.ToString());
+                                lapCounter.AppendLine($"{lapNumber}/{Laps}");
 
-                    if (!Statuses[leaderBoard[i]].Eliminated)
-                    {
-                        hullStrengths.AppendLine(Statuses[leaderBoard[i]].HullDisplay);
-                        pips.AppendLine(String.Join(",", Statuses[leaderBoard[i]].Pips));
-                        shields.AppendLine(Statuses[leaderBoard[i]].ShieldStatus());
-                        cargoScoops.AppendLine(Statuses[leaderBoard[i]].CargoScoopStatus());
+                                s = Statuses[leaderBoard[i]].ToString();
+                            }
+
+                            if (s.Length > maxStatusLength)
+                                s = s.Substring(0, maxStatusLength);
+                            status.AppendLine(s);
+                        }
+
+                        if (!Statuses[leaderBoard[i]].Eliminated)
+                        {
+                            hullStrengths.AppendLine(Statuses[leaderBoard[i]].HullDisplay);
+                            pips.AppendLine(String.Join(",", Statuses[leaderBoard[i]].Pips));
+                            shields.AppendLine(Statuses[leaderBoard[i]].ShieldStatus());
+                            cargoScoops.AppendLine(Statuses[leaderBoard[i]].CargoScoopStatus());
+                        }
+                        else
+                        {
+                            hullStrengths.AppendLine(" ");
+                            pips.AppendLine(" ");
+                            shields.AppendLine(" ");
+                            cargoScoops.AppendLine(" ");
+                        }
+
                     }
                     else
                     {
-                        hullStrengths.AppendLine(" ");
-                        pips.AppendLine(" ");
-                        shields.AppendLine(" ");
-                        cargoScoops.AppendLine(" ");
+                        // We don't have any statuses, so this is pre-race
+                        status.AppendLine(CustomStatusMessages["Ready"]);
+                        distanceToWaypoint.AppendLine("-");
+                        totalDistanceLeft.AppendLine("-");
+                        hullStrengths.AppendLine("-");
+                        currentLaps.AppendLine("-");
                     }
                 }
-                else
-                {
-                    // We don't have any statuses, so this is pre-race
-                    status.AppendLine(CustomStatusMessages["Ready"]);
-                    distanceToWaypoint.AppendLine("-");
-                    totalDistanceLeft.AppendLine("-");
-                    hullStrengths.AppendLine("-");
-                    currentLaps.AppendLine("-");
-                }
+            }
+            catch (Exception ex)
+            {
+                if (Log != null)
+                    Log(ex.ToString());
             }
 
             statsTable.Add("RaceName", Name);
@@ -492,6 +516,11 @@ namespace EDTracking
                         {
                             _firstWaypointPassed = true;
                             Start = edEvent.TimeStamp;
+                            foreach (string commander in Statuses.Keys)
+                            {
+                                Statuses[commander].StartTime = Start;
+                                Statuses[commander].LapStartTime = Start;
+                            }
                         }
                     if (!_commanderEventHistory.ContainsKey(edEvent.Commander))
                         _commanderEventHistory.Add(edEvent.Commander, new List<EDEvent>());

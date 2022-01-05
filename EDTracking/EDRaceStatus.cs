@@ -182,11 +182,10 @@ namespace EDTracking
 
         public TimeSpan FastestLapTime()
         {
-            if (FastestLap < 1)
+            if (FastestLap < 1 || LapTimes.Count < 1)
                 return new TimeSpan(0);
-            else if (FastestLap == 1)
-                return LapEndTimes[0].Subtract(StartTime);
-            return LapEndTimes[FastestLap - 1].Subtract(LapEndTimes[FastestLap - 2]);
+
+            return LapTimes[FastestLap - 1];
         }
 
         private string _lastHistoryLog = "";
@@ -402,8 +401,10 @@ namespace EDTracking
         {
             // Destroyed, maybe eliminated
 
-            Eliminated = EliminateOnDestruction();
             AddRaceHistory("SRV destroyed");
+            if (Eliminated)
+                return;
+            Eliminated = EliminateOnDestruction();
             if (Eliminated)
                 notableEvents?.AddStatusEvent("EliminatedNotification", Commander);
             //DistanceToWaypoint = double.MaxValue;
@@ -416,8 +417,11 @@ namespace EDTracking
         private void ProcessFighterDestroyedEvent()
         {
             // Fighter destroyed 
-            Eliminated = EliminateOnDestruction();
             AddRaceHistory("Fighter destroyed");
+            if (Eliminated)
+                return;
+
+            Eliminated = EliminateOnDestruction();
             if (Eliminated)
                 notableEvents?.AddStatusEvent("EliminatedNotification", Commander);
             //DistanceToWaypoint = double.MaxValue;
@@ -429,7 +433,7 @@ namespace EDTracking
 
         private void ProcessDockSRVEvent(EDEvent updateEvent)
         {
-            if (!Finished && AllowPitStops())
+            if (!Finished && !Eliminated && AllowPitStops())
             {
                 // We only increase pitstop count on DockSRV
                 _lastDockSRV = updateEvent.TimeStamp;
@@ -446,7 +450,8 @@ namespace EDTracking
         {
             if (!AllowPitStops() || _inPits) return;
 
-            // We need to check what the synthesis is - if it is repair, this is disqualification
+            // We need to check what the synthesis is - if it is repair or refuel, this is disqualification
+            
         }
 
         private void ProcessLaunchSRVEvent()
@@ -488,7 +493,7 @@ namespace EDTracking
                     if (!_race.FighterAllowed && isFlagSet(StatusFlags.In_Fighter))
                         vehicleDisallowed = true;
 
-                    if (vehicleDisallowed)
+                    if (vehicleDisallowed && !Eliminated)
                     {
                         Eliminated = true;
                         notableEvents?.AddStatusEvent("EliminatedNotification", Commander);
@@ -586,15 +591,17 @@ namespace EDTracking
                     else
                     {
                         // We're at the start waypoint, so have completed a lap
-                        LapEndTimes.Add(TimeStamp);
-                        if (Lap <= 1)
+                        DateTime lapEndTime = TimeStamp;
+                        LapEndTimes.Add(lapEndTime);
+                        TimeSpan thisLapTime = lapEndTime.Subtract(LapStartTime);
+                        LapTimes.Add(thisLapTime);
+                        LapStartTime = lapEndTime;
+                        string lapTime = $"{thisLapTime:hh\\:mm\\:ss}";
+
+                        if (Lap == 1)
                             FastestLap = 1;
-                        else
-                        {
-                            TimeSpan thisLapTime = LapEndTimes[Lap - 1].Subtract(LapEndTimes[Lap - 2]);
-                            if (thisLapTime > FastestLapTime())
-                                FastestLap = Lap;
-                        }
+                        else if (thisLapTime < FastestLapTime())
+                            FastestLap = Lap;
 
                         Lap++;
 
@@ -602,24 +609,23 @@ namespace EDTracking
                         if (Lap > _race.Laps)
                         {
                             Finished = true;
-                            FinishTime = DateTime.UtcNow;
-                            string raceTime = $"{FinishTime.Subtract(StartTime):hh\\:mm\\:ss}";
                             if (!Eliminated)
+                            {
+                                FinishTime = DateTime.UtcNow;
+                                string raceTime = $"{FinishTime.Subtract(StartTime):hh\\:mm\\:ss}";
                                 notableEvents?.AddStatusEvent("CompletedNotification", Commander, $" ({raceTime})");
-                            AddRaceHistory($"Completed in {raceTime}");
+                                AddRaceHistory($"Completed in {raceTime}");
+                            }
                             WaypointIndex = 0;
                             DistanceToWaypoint = 0;
                         }
-                        else
+                        else if (!Eliminated)
                         {
-                            DateTime lapEndTime = DateTime.UtcNow;
-                            LapTimes.Add(lapEndTime.Subtract(LapStartTime));
-                            LapStartTime = lapEndTime;
-                            string lapTime = $"{LapTimes[LapTimes.Count - 1]:hh\\:mm\\:ss}";
-                            if (!Eliminated)
-                                notableEvents?.AddStatusEvent("CompletedLap", Commander, $" {Lap - 1} ({lapTime})");
+                            notableEvents?.AddStatusEvent("CompletedLap", Commander, $" {Lap - 1} ({lapTime})");
                             AddRaceHistory($"Completed lap {Lap - 1} in {lapTime}");
                         }
+                        if (Lap > 2 && FastestLap == Lap - 1)
+                            notableEvents?.AddStatusEvent("FastestLapNotification", Commander, lapTime);
                     }
                 }
                 else

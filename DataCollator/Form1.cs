@@ -19,7 +19,7 @@ namespace DataCollator
         public Form1()
         {
             InitializeComponent();
-            textBoxWebhookUrl.Text = "http://*:11938/" + Application.ProductName.ToString() + "/";
+            textBoxAPIUrl.Text = "http://*:11938/" + Application.ProductName.ToString() + "/";
             UDPListener.DataReceived += UDPListener_DataReceived;
         }
 
@@ -31,7 +31,8 @@ namespace DataCollator
         private void StartNotificationServer()
         {
             if (_notificationServer == null)
-                _notificationServer = new NotificationServer(textBoxWebhookUrl.Text, checkBoxDebug.Checked, checkBoxVerboseDebug.Checked);
+
+                _notificationServer = new NotificationServer(textBoxAPIUrl.Text, textBoxWebURL.Text, checkBoxDebug.Checked, checkBoxVerboseDebug.Checked);
             else
                 _notificationServer.Start();
         }

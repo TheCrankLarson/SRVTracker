@@ -31,6 +31,8 @@ namespace SRVTracker
             labelMs.Visible = false;
         }
 
+        public bool ShowSpeedIndicator { get; set; } = true;
+
         public bool SetBearing(int bearingToTarget, int currentHeading)
         {
             if (currentHeading < 0)
@@ -152,7 +154,7 @@ namespace SRVTracker
             else
                 action();
 
-            if (labelSpeedInMS.Visible)
+            if (!ShowSpeedIndicator || labelSpeedInMS.Visible)
                 return true;
 
             action = new Action(() =>

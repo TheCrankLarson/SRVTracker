@@ -24,6 +24,9 @@ namespace SRVTracker
         private ConfigSaverClass _formConfig = null;
         private VRLocator _vrLocator = null;
         private bool _useEnhancedVRHUD = true;
+
+        private double _bearingToTarget = 0;
+        private double _distanceToTarget = 0;
         //private FormVRMatrixEditor _formVRMatrixTest = null;
         //private byte[] _vrPanelImageBytes = null;
         //private IntPtr _intPtrVROverlayImage;
@@ -142,6 +145,15 @@ namespace SRVTracker
 
         public string TrackingTarget { get; private set; } = "";
 
+        public double BearingToTarget
+        {
+            get { return _bearingToTarget; }
+        }
+
+        public double DistanceToTarget
+        {
+            get { return _distanceToTarget; }
+        }
 
         public void SetTarget(EDLocation targetLocation, string additionalInfo = "", string targetName = "")
         {
@@ -226,12 +238,12 @@ namespace SRVTracker
             bool displayChanged = false;
             try
             {
-                double distance = DistanceBetween(FormTracker.CurrentLocation, _targetPosition);
-                string d = locatorHUD1.SetDistance(distance);
-                double bearing = EDLocation.BearingToLocation(FormTracker.CurrentLocation, _targetPosition);
-                if (locatorHUD1.SetBearing((int)bearing, FormTracker.CurrentHeading))
+                _distanceToTarget = DistanceBetween(FormTracker.CurrentLocation, _targetPosition);
+                string d = locatorHUD1.SetDistance(_distanceToTarget);
+                _bearingToTarget = EDLocation.BearingToLocation(FormTracker.CurrentLocation, _targetPosition);
+                if (locatorHUD1.SetBearing((int)_bearingToTarget, FormTracker.CurrentHeading))
                     displayChanged = true;
-                string b = $"{Convert.ToInt32(bearing).ToString()}°";
+                string b = $"{Convert.ToInt32(_bearingToTarget).ToString()}°";
                 
                 if (!labelDistance.Text.Equals(d))
                 {
@@ -253,7 +265,7 @@ namespace SRVTracker
                 }
 
                 if (checkBoxTrackClosest.Checked)
-                    _trackedTargetDistance = distance;
+                    _trackedTargetDistance = _distanceToTarget;
             }
             catch { }
             if (displayChanged && checkBoxEnableVRLocator.Checked)
@@ -488,24 +500,29 @@ namespace SRVTracker
             HideVRLocator();
         }
 
+        public void ResetVR()
+        {
+            _vrLocator.Hide(false);
+            if (!_vrLocator.ResetVR())
+            {
+                checkBoxEnableVRLocator.Checked = false;
+                return;
+            }
+            locatorHUD1.ResetPanel();
+            string info = "";
+            ShowVRLocator(ref info);
+        }
+
         private void UpdateVRLocatorImage()
         {
             if (_vrLocator == null)
                 return;
 
-            string info = "";
             if (locatorHUD1.PanelRequiresReset())
             {
                 // For some reason, after 200 updates the OpenVR layer locks up
                 // No idea why, so this horrible hack resets it
-                _vrLocator.Hide(false);
-                if (!_vrLocator.ResetVR())
-                {
-                    checkBoxEnableVRLocator.Checked = false;
-                    return;
-                }
-                locatorHUD1.ResetPanel();
-                ShowVRLocator(ref info);
+                ResetVR();
                 return;
             }
 
@@ -529,6 +546,7 @@ namespace SRVTracker
             HideVRLocator(false);
             locatorHUD1.ResetPanel();
 
+            string info = "";
             ShowVRLocator(ref info);
         }
 

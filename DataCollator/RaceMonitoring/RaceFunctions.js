@@ -73,6 +73,22 @@ function GetRace(raceId) {
     return GetJSON(dataUrl + "getrace/" + raceId);
 }
 
+function GetCommanderProfile(commander) {
+    // Retrieve the profile information for the given commander
+
+    if (commander != "Crank Larson") {
+        return {
+            "Description": "Racer bio.",
+        };
+    }
+
+    return {
+        "Description": "He loves to flyve.",
+        "TwitchChannel": "cmdr_crank_larson"
+    };
+    //return GetJSON(dataUrl + "getcommanderprofile/" + commander);
+}
+
 function LongitudeToX(longitude, scaleWidth) {
     // Return the x value for the given longitude
     return (scaleWidth / 360.0) * (180 + longitude);
@@ -162,24 +178,107 @@ function LongitudeToCanvassX(longitude, canvassWidth) {
     return Math.floor((absoluteX - minX) * (canvassWidth / courseWidth));
 }
 
+function CreateWaypointCircleMarker(targetElement) {
+    var circle = targetElement.getContext("2d");
+    circle.beginPath();
+    circle.arc(180, 100, 90, 0, 2 * Math.PI);
+    circle.stroke();
+}
+
 function CreateWaypointDiv(waypoint, canvass, waypointContainer) {
     // Create the waypoint info and position within the given canvass
 
     var wpDisplay = document.createElement("div");
     wpDisplay.classList.add("waypoint");
-    wpDisplay.id = waypoint.Name;
+    wpDisplay.id = waypoint.Name; // This will cause problems if two waypoints have the same name
 
     var wpX = LongitudeToCanvassX(waypoint.Location.Longitude, canvass.clientWidth);
     var wpY = LatitudeToCanvassY(waypoint.Location.Latitude, canvass.clientHeight);
     wpDisplay.style.left = wpX + "px";
     wpDisplay.style.top = wpY + "px";
+    waypointContainer.appendChild(wpDisplay);
 
-    // Add waypoint marker
-    var waypointImage = document.createElement("img");
-    waypointImage.classList.add("waypointImage");
-    waypointImage.src = "images/Waypoint.png";
-    waypointImage.id = waypoint.Name + "img";
-    wpDisplay.appendChild(waypointImage);
+    // Determine the waypoint type and draw it (to scale if possible)
+    var waypointRender = document.createElement("canvas");
+    waypointRender.id = waypoint.Name + "render";
+    waypointRender.style.width = "50px";
+    waypointRender.style.height = "50px";
+    waypointRender.style.left = wpX + "px";
+    waypointRender.style.top = wpY + "px";
+    waypointRender.style.display = "block";
+    wpDisplay.appendChild(waypointRender);
+    if (waypoint.ExtendedWaypointInformation.WaypointType) {
+        // This is an extended waypoint
+        if (waypoint.ExtendedWaypointInformation.WaypointType == "Gate") {
+            // Gate type, so we can create a square div and plot the gate within that
+            var corner1 = waypoint.AdditionalLocations[0];
+            var corner2 = waypoint.AdditionalLocations[1];
+            var x1 = LongitudeToCanvassX(corner1.Longitude, canvass.clientWidth);
+            var x2 = LongitudeToCanvassX(corner2.Longitude, canvass.clientWidth);
+            var y1 = LatitudeToCanvassY(corner1.Latitude, canvass.clientHeight);
+            var y2 = LatitudeToCanvassY(corner2.Latitude, canvass.clientHeight);
+            var fromX = 0;
+            var fromY = 0;
+            var toX = x2 - x1;
+            var toY = y2 - y1;
+
+            if (x1 > x2) {
+                fromX = x1;
+                x1 = x2;
+                x2 = fromX;
+                fromX = x2 - x1;
+                toX = 0;
+            }
+            if (y1 > y2) {
+                fromY = y1;
+                y1 = y2;
+                y2 = fromY;
+                fromY = y2 - y1;
+                toY = 0;
+            }
+
+            var wpW = (x2 - x1);
+            var wpH = (y2 - y1);
+            if (wpW < 5) {
+                wpW = 5;
+            }
+            if (wpH < 5) {
+                wpH = 5;
+            }
+            waypointRender.style.width = wpW + "px";
+            waypointRender.style.height = wpH + "px";
+            waypointRender.style.left = x1 + "px";
+            waypointRender.style.top = y1 + "px";
+
+            if (wpW < 10 || wpH < 10) {
+                // Waypoint too narrow so we just fill in the background
+                waypointRender.style.backgroundColor = "yellow";
+            }
+            else {
+                var context = document.getElementById(waypoint.Name + "render").getContext("2d");
+                DebugLog(waypoint.Name + "render: fromX=" + fromX + " fromY=" + fromY + " toX=" + toX + " toY=" + toY);
+
+                //context.beginPath();
+                context.moveTo(fromX, fromY);
+                context.lineTo(toX, toY);
+                context.strokeStyle = "yellow";
+                context.lineWidth = 20;
+                context.lineCap = "square";
+                context.stroke();
+            }
+        }
+    }
+    else {
+        // This is a basic waypoint
+        // Calculate the radius of the waypoint in pixels
+
+        // Add waypoint marker
+        var waypointImage = document.createElement("img");
+        waypointImage.classList.add("waypointImage");
+        waypointImage.src = "images/Waypoint.png";
+        waypointImage.id = waypoint.Name + "img";
+        wpDisplay.appendChild(waypointImage);
+    }
 
     // Add waypoint info
     var waypointInfo = document.createElement("P");
@@ -187,9 +286,7 @@ function CreateWaypointDiv(waypoint, canvass, waypointContainer) {
     waypointInfo.classList.add("waypointInfo");
     wpDisplay.appendChild(waypointInfo);
 
-    //DebugLog(waypoint.Name + ': x=' + wpX + ', y=' + wpY);
-
-    waypointContainer.appendChild(wpDisplay);
+    //DebugLog(waypoint.Name + ': x=' + wpX + ', y=' + wpY);   
 }
 
 function GenerateAnimation(racer, startX, startY, endX, endY, ruleIndex) {
@@ -208,6 +305,96 @@ function GenerateAnimation(racer, startX, startY, endX, endY, ruleIndex) {
     return ruleIndex;
 }
 
+function RotationAnimation(racer, startBearing, endBearing, ruleIndex) {
+    var rotateSteps = " 0% { transform: rotate(" + startBearing + "deg); }";
+
+    var midBearing = ((360 - startBearing) + endBearing) / 2;
+    midBearing = midBearing + startBearing;
+    if (midBearing > 360) {
+        midBearing = midBearing - 360;
+    }
+
+    rotateSteps = rotateSteps + " 50% { transform: rotate(" + midBearing + "deg); }";
+    rotateSteps = rotateSteps + " 100% { transform: rotate(" + endBearing + "deg); }";
+
+    if (ruleIndex > -1) {
+        // Already have a rule created, so delete it first
+        animationsStylesheet.deleteRule(ruleIndex);
+    }
+    else {
+        ruleIndex = animationsStylesheet.cssRules.length;
+    }
+    animationsStylesheet.insertRule("@keyframes " + racer + "{" + rotateSteps + "}", ruleIndex);
+    return ruleIndex;
+}
+
+function AddCommanderProfile(commander) {
+    // Retrieve and add the commander profile
+
+//  <div id="commanderProfiles">
+//    <div id="Crank Larsonprofile" class="commanderProfile" style="display:block;">
+//        <div class="commanderProfileName" onclick="ToggleProfile('Crank Larson');">Crank Larson</div>
+//        <div class="commanderProfileBio" id="Crank LarsonProfileBio">He just loves to flyve.</div>
+//        <div class="commanderProfileStream" id="Crank LarsonProfileStream" onclick="CreateTwitchEmbed('cmdr_crank_larson','Crank LarsonProfileStream');">Connect to Twitch</div>
+//    </div>
+
+    if (document.getElementById(commander + "profile") != null) {
+        return; // Profile already created
+    }
+
+    var profileData = GetCommanderProfile(commander);
+    if (profileData == null) {
+        return;
+    }
+
+    var commanderProfilesDiv = document.getElementById("commanderProfiles");
+
+    // Create main profile
+    var commanderProfileDiv = document.createElement("div");
+    commanderProfileDiv.classList.add("commanderProfile");
+    commanderProfileDiv.id = commander + "profile";
+    commanderProfileDiv.style.display = "block";
+    commanderProfilesDiv.appendChild(commanderProfileDiv);
+
+    // Create name div (clicking on this expands the profile)
+    var commanderProfileNameDiv = document.createElement("div");
+    commanderProfileNameDiv.classList.add("commanderProfileName");
+    commanderProfileNameDiv.id = commander + "ProfileName";
+    commanderProfileNameDiv.innerText = commander;
+    commanderProfileNameDiv.setAttribute("onclick", "ToggleProfile('" + commander + "');");
+    commanderProfileDiv.appendChild(commanderProfileNameDiv);
+
+    // Create Bio div
+    var commanderProfileBioDiv = document.createElement("div");
+    commanderProfileBioDiv.classList.add("commanderProfileBio");
+    commanderProfileBioDiv.id = commander + "ProfileBio";
+    commanderProfileBioDiv.innerText = profileData.Description;
+    commanderProfileBioDiv.style.display = "none";
+    commanderProfileDiv.appendChild(commanderProfileBioDiv);
+
+    // Create Twitch div
+    if (profileData.TwitchChannel != null) {
+        var commanderProfileStreamDiv = document.createElement("div");
+        commanderProfileStreamDiv.classList.add("commanderProfileStream");
+        commanderProfileStreamDiv.id = commander + "ProfileStream";
+        commanderProfileStreamDiv.innerText = "Connect to stream";
+        commanderProfileStreamDiv.setAttribute("onclick", "CreateTwitchEmbed('" + profileData.TwitchChannel + "', '" + commander + "');");
+        commanderProfileStreamDiv.style.display = "none";
+        commanderProfileDiv.appendChild(commanderProfileStreamDiv);
+    }
+}
+
+function ShowCommanderProfiles() {
+    if (activeRace == null) {
+        return;
+    }
+
+    for (var racerStatus in activeRace.Statuses) {
+        AddCommanderProfile(racerStatus);
+    }
+    AddCommanderProfile("Crank Larson");
+}
+
 function UpdateRacerStatus(racerStatus, canvass, racerContainer) {
     // Create or update the racer info and position within the given canvass
 
@@ -221,18 +408,21 @@ function UpdateRacerStatus(racerStatus, canvass, racerContainer) {
 
     var racerX = LongitudeToCanvassX(activeRace.Statuses[racerStatus].Location.Longitude, canvass.clientWidth);
     var racerY = LatitudeToCanvassY(activeRace.Statuses[racerStatus].Location.Latitude, canvass.clientHeight);
-    var racerHeading = activeRace.Statuses[racerStatus].Heading + 180;
-    if (racerHeading > 360)
-        racerHeading = racerHeading - 360;
-
+    var racerHeading = activeRace.Statuses[racerStatus].Heading;
 
     var racerSRV = null;
     var racerProfileElement = null;
     var racerProfileRaceInfo = null;
 
-    var racerRaceInfo = "Position: " + activeRace.Statuses[racerStatus].RacePosition;
-    if ((activeRace.Laps > 1) && (!activeRace.Statuses[racerStatus].Finished)) {
-        racerRaceInfo = racerRaceInfo + "<br/>Lap: " + activeRace.Statuses[racerStatus].Lap;
+    var racerRaceInfo;
+    if (activeRace.Statuses[racerStatus].Eliminated) {
+        racerRaceInfo = activeRace.CustomStatusMessages.Eliminated;
+    }
+    else {
+        racerRaceInfo = "Position: " + activeRace.Statuses[racerStatus].RacePosition;
+        if ((activeRace.Laps > 1) && (!activeRace.Statuses[racerStatus].Finished)) {
+            racerRaceInfo = racerRaceInfo + "<br/>Lap: " + activeRace.Statuses[racerStatus].Lap;
+        }
     }
 
     if (racerInfoElement == null) {
@@ -240,11 +430,6 @@ function UpdateRacerStatus(racerStatus, canvass, racerContainer) {
         racerInfoElement = document.createElement("div");
         racerInfoElement.classList.add("racerInfo");
         racerInfoElement.id = activeRace.Statuses[racerStatus].Commander;
-        //racerInfoElement.style.backgroundColor = racerColours[racerColourIndex];
-        //racerColourIndex++;
-        //if (racerColourIndex >= racerColours.length) {
-        //    racerColourIndex = 0;
-        //}
         racerInfoElement.style.left = racerX + "px";
         racerInfoElement.style.top = racerY - (racerInfoElement.clientHeight / 2) + "px";
 
@@ -254,15 +439,16 @@ function UpdateRacerStatus(racerStatus, canvass, racerContainer) {
         if (racerColourIndex > 9) {
             racerColourIndex = 1;
         }
+        //racerSRV.src = "images/SRV64N.png";
         racerSRV.src = "images/64x64 " + racerColourIndex + ".png";
         racerSRV.width = 32;
         racerSRV.height = 32;
         racerSRV.id = activeRace.Statuses[racerStatus].Commander + "img";
-        racerSRV.style.filter = "hue-rotate(" + racerHueRotate + "turn)";
+        //racerSRV.style.filter = "hue-rotate(" + racerHueRotate + "turn)";
 
-        racerHueRotate = racerHueRotate + 0.1;
-        if (racerHueRotate > 1)
-            racerHueRotate = 0.05;
+        //racerHueRotate = racerHueRotate + 0.1;
+        //if (racerHueRotate > 1)
+        //    racerHueRotate = 0.05;
         racerInfoElement.appendChild(racerSRV);
 
         // Add the racer profile div
@@ -273,6 +459,7 @@ function UpdateRacerStatus(racerStatus, canvass, racerContainer) {
         racerInfoElement.appendChild(racerProfileElement);
 
         racerProfileRaceInfo = document.createElement("P");
+        racerProfileRaceInfo.classList.add("racerProfileRaceInfo");
         racerProfileRaceInfo.innerHTML = racerRaceInfo;
         //racerProfileRaceInfo = document.createTextNode(racerRaceInfo);
         racerProfileRaceInfo.id = activeRace.Statuses[racerStatus].Commander + "raceinfo";
@@ -289,6 +476,8 @@ function UpdateRacerStatus(racerStatus, canvass, racerContainer) {
     racerX = racerX - (racerInfoElement.clientWidth / 2);
     racerY = racerY - (racerInfoElement.clientHeight / 2);
 
+    racerProfileRaceInfo.innerHTML = racerRaceInfo;
+
     //var racerid = racerInfoElement.getAttribute('racerid');
     //var racerStyleName = activeRace.Statuses[racerStatus].Commander.split(" ").join("");
 
@@ -300,11 +489,38 @@ function UpdateRacerStatus(racerStatus, canvass, racerContainer) {
         racerProfileElement.style.color = "green";
     }
     else {
-        // We don't update the position after a racer is eliminated
+        // Update the racer's position
         racerInfoElement.style.left = racerX + "px";
         racerInfoElement.style.top = racerY + "px";
-        racerSRV.style.transform = "rotate(" + racerHeading + "deg)";
-        racerProfileRaceInfo.innerHTML = racerRaceInfo;
+
+        var previousHeading = racerSRV.getAttribute("previousHeading");
+        var offsetAngle = racerSRV.getAttribute("offsetAngle");
+        if (offsetAngle == null) {
+            offsetAngle = -180; // The starting offset is due to the orientation of the SRV image
+        }
+        else {
+            offsetAngle = parseInt(offsetAngle);
+        }
+        var srvTransition = "transform 2s linear";
+        if (previousHeading != null) {
+            if ((previousHeading > 225) && (racerHeading < 135)) {
+                offsetAngle += 360;
+            }
+            else if ((previousHeading < 135) && (racerHeading > 225)) {
+                offsetAngle -= 360;
+            }
+        }
+        else {
+            srvTransition = null;
+        }
+        //if (activeRace.Statuses[racerStatus].Commander == "Osashes") {
+        //    DebugLog("Previous heading: " + previousHeading + "   Current heading: " + racerHeading + "   Offset: " + offsetAngle);
+        //}
+        var rotateAngle = racerHeading + offsetAngle;
+        racerSRV.style.transition = srvTransition;
+        racerSRV.style.transform = "rotate(" + rotateAngle + "deg)";
+        racerSRV.setAttribute("previousHeading", racerHeading);
+        racerSRV.setAttribute("offsetAngle", offsetAngle);       
     }
 }
 
@@ -333,6 +549,9 @@ function UpdateLeaderboard() {
         else if (activeRace.Laps > 0) {
             updateRow.cells[2].innerHTML = "Lap " + activeRace.Statuses[racerStatus].Lap + " of " + activeRace.Laps;
         }
+        else {
+            updateRow.cells[2].innerHTML = "";
+        }
         
     };
 }
@@ -340,17 +559,21 @@ function UpdateLeaderboard() {
 function UpdateRaceAnnouncement() {
     // Display the next announcement (if there is one)
 
+    if (activeRace.NotableEvents.EventQueue.length < 1) {
+        return;
+    }
     var bannerElement = document.getElementById("raceAnnouncements");
-    if (activeRace.NotableEvents.EventQueue.length > raceEventIndex) {
+    raceEventTick++;
+
+    if (activeRace.NotableEvents.EventQueue.length > raceEventIndex && raceEventTick > 1) {
         bannerElement.innerText = activeRace.NotableEvents.EventQueue[raceEventIndex];
         raceEventIndex++;
         raceEventTick = 0;
     }
     else {
-        raceEventTick++;
-        if (raceEventTick > 3) {
-            bannerElement.innerText = activeRace.Name;
-            raceEventTick = 0;
+        if (raceEventTick > 4) {
+            bannerElement.innerText = "";
+            raceEventTick = 1;
         }
     }
 }
@@ -423,7 +646,6 @@ function ConnectRace() {
     // Get references to our UI elements
     var waypointContainerElement = document.getElementById('courseWaypoints');
     var racersContainerElement = document.getElementById('courseParticipants');
-    var canvassElement = document.getElementById('courseCanvass');
 
     // Check we are not already polling a race
     if (updateTimer != null) {
@@ -471,11 +693,11 @@ function ConnectRace() {
     document.getElementById('raceInfoDate').textContent = activeRace.Start.substring(0, 10);
     document.getElementById('raceInfoName').textContent = activeRace.Name;
 
+    ShowCommanderProfiles();
+
     // Create and display the waypoints
     CalculateCourseBounds(activeRace.Route.Waypoints);
-    for (let i = 0; i < activeRace.Route.Waypoints.length; i++) {
-        CreateWaypointDiv(activeRace.Route.Waypoints[i], canvassElement, waypointContainerElement)
-    }
+    InitWaypoints();
 
     if (activeRace.NotableEvents.EventQueue.length>0)
         raceEventIndex = activeRace.NotableEvents.EventQueue.length;
@@ -486,8 +708,8 @@ function ConnectRace() {
 function GetAbsolutePosition(element) {
     const rect = element.getBoundingClientRect();
     return {
-        left: rect.left + window.scrollX,
-        top: rect.top + window.scrollY,
+        left: rect.left,
+        top: rect.top,
         width: rect.width,
         height: rect.height
     };
@@ -520,6 +742,29 @@ function UpdateActiveRaces() {
                 raceSelectElement.appendChild(raceOption);
             }
         }
+
+        if (raceSelectElement.options.length == 1) {
+            raceSelectElement.remove(0);
+            raceOption = document.createElement('option');
+            raceOption.appendChild(document.createTextNode("No active races"));
+            raceOption.setAttribute('value', "");
+            raceSelectElement.appendChild(raceOption);
+        }
+    }
+}
+
+function InitWaypoints() {
+    if (activeRace != null) {
+        // Clear all waypoints
+        var waypointContainerElement = document.getElementById('courseWaypoints');
+        var canvassElement = document.getElementById('courseCanvass');
+        while (waypointContainerElement.lastChild) {
+            waypointContainerElement.removeChild(waypointContainerElement.lastChild);
+        }
+        // Reposition the waypoints
+        for (let i = 0; i < activeRace.Route.Waypoints.length; i++) {
+            CreateWaypointDiv(activeRace.Route.Waypoints[i], canvassElement, waypointContainerElement)
+        }
     }
 }
 
@@ -550,12 +795,114 @@ function InitRaces() {
 function InitialisePage() {
     // Retrieve active races and add them to our select box
 
-    var canvassPos = GetAbsolutePosition(document.getElementById('courseContainer'));
+    var canvassPos = document.getElementById('courseContainer').getBoundingClientRect();
     var canvassElement = document.getElementById('courseCanvass');
-    canvassElement.style.left = Math.floor(canvassPos.left) + "px";
-    canvassElement.style.top = Math.floor(canvassPos.top) + "px";
     canvassElement.style.width = Math.floor(canvassPos.width) + "px";
     canvassElement.style.height = Math.floor(canvassPos.height) + "px";
+    document.getElementById("settings").hidden = true;
 
     InitRaces();
+
+    const resizeObserver = new ResizeObserver(entries => {
+        // courseCanvass size changed, so adjust courseContainer then update waypoints
+        var canvassPos = document.getElementById('courseCanvass').getBoundingClientRect();
+        var containerElement = document.getElementById('courseContainer');
+        containerElement.style.width = Math.floor(canvassPos.width) + "px";
+        containerElement.style.height = Math.floor(canvassPos.height) + "px";
+        InitWaypoints();
+    });
+
+    resizeObserver.observe(canvassElement);
 }
+
+function CreateYouTubeEmbed(channelName, commander) {
+    // We create an iFrame for the stream
+    var youTubeUrl = "https://www.youtube.com/embed/" + channelName;
+    var youTubeInfoElement = document.getElementById(commander + "ProfileStream");
+    while (youTubeInfoElement.lastChild) {
+        youTubeInfoElement.removeChild(twitchInfoElement.lastChild);
+    }
+
+    var iframe = document.createElement("iframe");
+    iframe.setAttribute("src", youTubeUrl);
+    iframe.setAttribute("allowfullscreen", "true");
+    iframe.width = youTubeInfoElement.width;
+    iframe.height = youTubeInfoElement.width * 16 / 9;
+    iframe.frameBorder = 0;
+    youTubeInfoElement.appendChild(iframe);
+    youTubeInfoElement.setAttribute("HideBio", "true");
+    youTubeInfoElement.style.cursor = "default";
+    document.getElementById(commander + "ProfileBio").style.display = "none";
+}
+
+function CreateTwitchEmbed(channelName, commander) {
+    // We create an iFrame for the stream
+    var twitchUrl = "https://player.twitch.tv/?channel=" + channelName + "&parent=" + document.domain;
+    var twitchInfoElement = document.getElementById(commander + "ProfileStream");
+    while (twitchInfoElement.lastChild) {
+        twitchInfoElement.removeChild(twitchInfoElement.lastChild);
+    }
+
+    var iframe = document.createElement("iframe");
+    iframe.setAttribute("src", twitchUrl);
+    iframe.setAttribute("allowfullscreen", "true");
+    iframe.width = twitchInfoElement.width;
+    //iframe.height = twitchInfoElement.width * 108 / 192;
+    twitchInfoElement.appendChild(iframe);
+    twitchInfoElement.setAttribute("HideBio", "true");
+    twitchInfoElement.style.cursor = "default";
+    document.getElementById(commander + "ProfileBio").style.display = "none";
+}
+
+function ToggleProfile(commander) {
+
+    var profileStream = document.getElementById(commander + 'ProfileStream');
+    if (profileStream != null) {
+        if (profileStream.style.display == "none") {
+            profileStream.style.display = "block";
+        }
+        else {
+            profileStream.style.display = "none";
+        }
+
+        if (profileStream.getAttribute("HideBio") == "true") {
+            return;  // If we are showing a stream, we don't toggle the Bio div
+        }        
+    }
+
+    var profileBio = document.getElementById(commander + 'ProfileBio');
+    if (profileBio != null) {
+        if (profileBio.style.display == "none") {
+            profileBio.style.display = "block";
+        }
+        else {
+            profileBio.style.display = "none";
+        }
+    }
+}
+
+function ToggleSettings() {
+    document.getElementById("settings").hidden = !document.getElementById("settings").hidden;
+//    if (!document.getElementById("settings").hidden) {
+//        DisplaySettings();
+//    }
+}
+
+function UpdateImageFromFile(elementName, fileElementName) {
+    // Replace the background image of the element with the contents of the given file
+    var element = document.getElementById(elementName);
+    var reader = new FileReader();
+
+    reader.onload = function () {
+        element.style.backgroundImage = 'url(' + reader.result + ')';
+        element.style.backgroundColor = "transparent";
+        document.getElementById("courseContainer").style.opacity = 1;
+        document.getElementById("courseContainer").style.backgroundColor = "transparent";
+    }
+    reader.readAsDataURL(document.getElementById(fileElementName).files[0]);
+}
+
+function UpdateCourseImageOffset() {
+    document.getElementById("courseCanvass").style.backgroundPosition = document.getElementById("courseImageXOffset").value + "px " + document.getElementById("courseImageYOffset").value + "px";
+}
+

@@ -78,6 +78,7 @@
     <Compile Include="EDEvent.cs" />
     <Compile Include="EDLocation.cs" />
     <Compile Include="EDRace.cs" />
+    <Compile Include="EDRacerProfile.cs" />
     <Compile Include="EDRoute.cs" />
     <Compile Include="EDRaceStatus.cs" />
     <Compile Include="EDWaypoint.cs" />
@@ -108,6 +109,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="RaceReplayGenerator.cs" />
     <Compile Include="RaceTimer.xaml.cs">
       <DependentUpon>RaceTimer.xaml</DependentUpon>
     </Compile>

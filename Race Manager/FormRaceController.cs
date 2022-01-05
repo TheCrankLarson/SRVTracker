@@ -824,8 +824,15 @@ namespace Race_Manager
                     return;
                 }
 
-                Dictionary<string, string> raceStats = JsonSerializer.Deserialize<Dictionary<string, string>>(response);
-                UpdateFromServerStats(raceStats);
+                try
+                {
+                    if (!String.IsNullOrEmpty(response))
+                    {
+                        Dictionary<string, string> raceStats = JsonSerializer.Deserialize<Dictionary<string, string>>(response);
+                        UpdateFromServerStats(raceStats);
+                    }
+                }
+                catch { }
                 //ExportTrackingInfo();
                 _refreshFromServerTask = null;
             }));
