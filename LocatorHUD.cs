@@ -23,6 +23,7 @@ namespace SRVTracker
         private VRLocatorHUD _vrLocatorHUD = null;
         private VRLocatorHUDWPF _vrLocatorHUDWPF = null;
         private long _lastUpdateInTicks = 0;
+        private bool _showSpeedIndicator = false;
 
         public LocatorHUD()
         {
@@ -31,7 +32,24 @@ namespace SRVTracker
             labelMs.Visible = false;
         }
 
-        public bool ShowSpeedIndicator { get; set; } = true;
+        public bool ShowSpeedIndicator {
+            get
+            {
+                return _showSpeedIndicator;
+            }
+            set {
+                _showSpeedIndicator = value;
+                Action action = new Action(() =>
+                {
+                    labelSpeedInMS.Visible = _showSpeedIndicator;
+                    labelMs.Visible = _showSpeedIndicator;
+                });
+                if (labelSpeedInMS.InvokeRequired)
+                    labelSpeedInMS.Invoke(action);
+                else
+                    action();
+            }
+        }
 
         public bool SetBearing(int bearingToTarget, int currentHeading)
         {
@@ -154,7 +172,7 @@ namespace SRVTracker
             else
                 action();
 
-            if (!ShowSpeedIndicator || labelSpeedInMS.Visible)
+            if (!_showSpeedIndicator || labelSpeedInMS.Visible)
                 return true;
 
             action = new Action(() =>

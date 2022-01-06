@@ -29,6 +29,7 @@ namespace EDTracking
         public double Altitude { get; set; } = 0;
         public string Commander { get; set; } = "";
         public string EventName { get; set; } = "";
+        public string AdditionalData { get; set; } = "";
         public double Health { get; set; } = -1;
         public bool PlayerControlled { get; set; } = true;
         public string TargetedShipName { get; set; } = "";
@@ -113,6 +114,9 @@ namespace EDTracking
                     Pips[1] = property[1].GetByte();
                     Pips[2] = property[2].GetByte();
                 }
+                if (EventName.Equals("Synthesis"))
+                    if (root.TryGetProperty("Name", out property))
+                        AdditionalData = property.GetString();
             }
             Commander = commander;
         }

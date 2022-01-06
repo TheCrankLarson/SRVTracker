@@ -17,6 +17,7 @@ namespace EDTracking
         public DateTime TimeTracked { get; internal set; }  // To store the time the location was recorded when route recording
         public Dictionary<string, string> ExtendedWaypointInformation { get; set; } = new Dictionary<string, string>();
         public List<EDLocation> AdditionalLocations { get; set; } = new List<EDLocation>();
+        public string AdditionalInfo { get; set; } = null;
 
         public EDWaypoint()
         { }

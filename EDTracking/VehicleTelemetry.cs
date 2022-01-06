@@ -131,6 +131,8 @@ namespace EDTracking
             _telemetry.Add("CurrentAltitude", "0");
             _telemetry.Add("MaximumAltitude", "NA");
             _telemetry.Add("MinimumAltitude", "NA");
+            _telemetry.Add("CurrentLatitude", "NA");
+            _telemetry.Add("CurrentLongitude", "NA");
             _telemetry.Add("SpeedAltitudeAdjusted", SpeedAltitudeAdjusted.ToString());
             _telemetry.Add("MaximumSpeedAltitudeAdjusted", MaximumSpeedAltitudeAdjusted.ToString());
 
@@ -152,6 +154,8 @@ namespace EDTracking
             { "CurrentAltitude", "Current altitude" },
             { "MaximumAltitude", "Maximum altitude" },
             { "MinimumAltitude", "Minimum altitude" },
+            { "CurrentLatitude", "Current latitude" },
+            { "CurrentLongitude", "Current longitude" },
             { "SpeedAltitudeAdjusted", "Current speed in m/s (includes altitude adjustment)" },
             { "MaximumSpeedAltitudeAdjusted", "Maximum speed in m/s (includes altitude adjustment)" },
             { "DistanceFromStart", "Distance from session start location" },
@@ -240,9 +244,12 @@ namespace EDTracking
                     break;
 
                 case "Synthesis":
-                    TotalSynthRepairs++;
-                    _telemetry["TotalSRVSynthRepairs"] = TotalSynthRepairs.ToString();
-                    statsUpdated = true;
+                    if (edEvent.AdditionalData.StartsWith("Repair"))
+                    {
+                        TotalSynthRepairs++;
+                        _telemetry["TotalSRVSynthRepairs"] = TotalSynthRepairs.ToString();
+                        statsUpdated = true;
+                    }
                     break;
 
                 case "Status":
@@ -325,6 +332,8 @@ namespace EDTracking
                 _telemetry["MinimumAltitude"] = EDLocation.DistanceToString(MinimumAltitude);
             }
 
+
+
             if (_lastLocation==null)
             {
                 _lastLocation = currentLocation;
@@ -332,6 +341,9 @@ namespace EDTracking
             }
             if (_lastLocation.Latitude.Equals(currentLocation.Latitude) && _lastLocation.Longitude.Equals(currentLocation.Longitude))
                 return false;
+
+            _telemetry["CurrentLatitude"] = currentLocation.Latitude.ToString();
+            _telemetry["CurrentLongitude"] = currentLocation.Longitude.ToString();
 
             // Update distance/speed statistics
             if (CalculateDistances(currentLocation))

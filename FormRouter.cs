@@ -38,6 +38,7 @@ namespace SRVTracker
         private TelemetryWriter _timeTrialTelemetryWriter = null;
         private SpeechSynthesizer _speechSynthesizer = null;
         private Dictionary<string, string> _speechEventPhrases = null;
+        private DateTime _lastBearingReminder = DateTime.MinValue;
 
         public FormRouter(FormTracker formTracker)
         {
@@ -77,6 +78,7 @@ namespace SRVTracker
 
             if (comboBoxSelectedVoice.SelectedIndex < 0 && comboBoxSelectedVoice.Items.Count > 0)
                 comboBoxSelectedVoice.SelectedIndex = 0;
+            groupBoxAdditionalWaypointInfo.Visible = false;
         }
 
         private void CalculateWindowSizes()
@@ -177,10 +179,10 @@ namespace SRVTracker
                                 else
                                     additionalInfo.Append(_speechEventPhrases["Turn right"]);
                             }
-                            additionalInfo.Append($" {_speechEventPhrases["To Bearing"]} ");
-                            additionalInfo.Append(Math.Abs(bearingChange).ToString("F1"));
-                            additionalInfo.Append("°");
                         }
+                        additionalInfo.Append($" {_speechEventPhrases["To Bearing"].ToLower()} ");
+                        additionalInfo.Append(Math.Abs(bearingChange).ToString("F0"));
+                        additionalInfo.Append("°");
                     }
                     catch (Exception ex)
                     {
@@ -218,6 +220,7 @@ namespace SRVTracker
                         else
                             _timeTrialTelemetryDisplay.AddRow("Start", "00:00:00.00");
                         _lapNumber = 1;
+                        Speak(_speechEventPhrases["Timer started"]);
                     }
 
                 // We are currently replaying a route
@@ -231,16 +234,18 @@ namespace SRVTracker
                 if (_route.Waypoints[_nextWaypoint].WaypointHit(FormTracker.CurrentLocation, FormTracker.PreviousLocation, previousWaypointLocation))
                 {
                     // Arrived at the waypoint
+                    if (!String.IsNullOrEmpty(_route.Waypoints[_nextWaypoint].AdditionalInfo))
+                        Speak(_route.Waypoints[_nextWaypoint].AdditionalInfo);
                     _timeTrialWaypointTimes?.Add(DateTime.UtcNow);
                     if (_nextWaypoint == 0 && (numericUpDownTotalLaps.Value > 1))
                     {
                         // We've arrived back at start, so have completed a lap
                         _lapNumber++;
-                        if (_lapNumber<=numericUpDownTotalLaps.Value)
+                        if (_lapNumber <= numericUpDownTotalLaps.Value)
                             _timeTrialTelemetryDisplay?.AddRow($"LAP {_lapNumber}: {_route.Waypoints[_nextWaypoint].Name}",
                                 _timeTrialWaypointTimes[_timeTrialWaypointTimes.Count - 1].Subtract(_timeTrialWaypointTimes[0]).ToString(@"hh\:mm\:ss\.ff"));
                     }
-                    else
+                    else if (checkBoxTimeTrial.Checked)
                         _timeTrialTelemetryDisplay?.AddRow(_route.Waypoints[_nextWaypoint].Name,
                             _timeTrialWaypointTimes[_timeTrialWaypointTimes.Count - 1].Subtract(_timeTrialWaypointTimes[0]).ToString(@"hh\:mm\:ss\.ff"));
 
@@ -251,17 +256,20 @@ namespace SRVTracker
                     if (_nextWaypoint >= _route.Waypoints.Count && numericUpDownTotalLaps.Value > 1)
                         _nextWaypoint = 0;
 
-                    if (_nextWaypoint >= _route.Waypoints.Count || (_nextWaypoint==1 && numericUpDownTotalLaps.Value<_lapNumber))
+                    if (_nextWaypoint >= _route.Waypoints.Count || (_nextWaypoint == 1 && numericUpDownTotalLaps.Value < _lapNumber))
                     {
                         // End of route
                         buttonStop.Enabled = false;
                         buttonStartRecording.Enabled = true;
                         PlayEventSound("Route completed");
-                        Speak(_speechEventPhrases["Reached destination"]);
-                        _timeTrialWaypointTimes?.Add(DateTime.UtcNow);
-                        _timeTrialTelemetryDisplay?.AddRow("Finished",
-                            _timeTrialWaypointTimes[_timeTrialWaypointTimes.Count - 1].Subtract(_timeTrialWaypointTimes[0]).ToString(@"hh\:mm\:ss\.ff"));
-                        FormLocator.GetLocator().SetTarget(_route.Waypoints[_route.Waypoints.Count-1].Location, _route.Waypoints[_route.Waypoints.Count - 1].Name, "Destination Reached");
+                        Speak(_speechEventPhrases["Destination reached"]);
+                        if (checkBoxTimeTrial.Checked)
+                        {
+                            _timeTrialWaypointTimes?.Add(DateTime.UtcNow);
+                            _timeTrialTelemetryDisplay?.AddRow("Finished",
+                                _timeTrialWaypointTimes[_timeTrialWaypointTimes.Count - 1].Subtract(_timeTrialWaypointTimes[0]).ToString(@"hh\:mm\:ss\.ff"));
+                        }
+                        FormLocator.GetLocator().SetTarget(_route.Waypoints[_route.Waypoints.Count - 1].Location, _route.Waypoints[_route.Waypoints.Count - 1].Name, "Destination Reached");
                     }
                     else
                     {
@@ -270,7 +278,7 @@ namespace SRVTracker
                         FormLocator.GetLocator().SetTarget(_route.Waypoints[_nextWaypoint].Location, waypointDirections, _route.Waypoints[_nextWaypoint].Name);
                         if (checkBoxAnnounceDirectionHints.Checked)
                         {
-                            string directionNow = $"Head towards bearing {FormLocator.GetLocator().BearingToTarget:f0}, then {waypointDirections}";
+                            string directionNow = $"{_speechEventPhrases["Head towards bearing"]} {String.Join(" ", FormLocator.GetLocator().BearingToTarget.ToString("f0").ToCharArray())}, then {waypointDirections}";
                             Speak(directionNow);
                         }
                         Action action = new Action(() =>
@@ -285,9 +293,27 @@ namespace SRVTracker
 
                     if (checkBoxScreenshot.Checked)
                         FormDrone.SendKey(Keyboard.DirectXKeyStrokes.DIK_F10, true);
+
+                    if (!String.IsNullOrEmpty(_route.Waypoints[_nextWaypoint].AdditionalInfo))
+                        FormLocator.GetLocator().SetAdditionalInfo(_route.Waypoints[_nextWaypoint].AdditionalInfo);
                 }
                 else
+                {
                     FormLocator.GetLocator().SetAdditionalInfo(GetBearingAfterNextWaypoint());
+
+                    if (checkBoxAudioBearingReminder.Checked)
+                    {
+                        // Check our bearing, and if too far off (more than 25 degrees), announce it
+                        if (Math.Abs(FormLocator.GetLocator().BearingToTarget - (double)FormTracker.CurrentHeading) > 25)
+                        {
+                            if (DateTime.Now.Subtract(_lastBearingReminder).TotalSeconds>15)
+                            {
+                                _lastBearingReminder = DateTime.Now;
+                                Speak($"{_speechEventPhrases["Head towards bearing"]} {String.Join(" ", FormLocator.GetLocator().BearingToTarget.ToString("f0").ToCharArray())}");
+                            }
+                        }
+                    }
+                }
                 return;
             }
 
@@ -544,6 +570,7 @@ namespace SRVTracker
                 buttonMoveUp.Enabled = false;
                 buttonSetAsTarget.Enabled = false;
                 textBoxWaypointName.Text = "";
+                buttonEditAdditionalInfo.Enabled = false;
                 return;
             }
 
@@ -564,6 +591,10 @@ namespace SRVTracker
                 comboBoxWaypointType.SelectedIndex = 0;
             }
             textBoxWaypointName.Text = waypoint.Name;
+            if (!String.IsNullOrEmpty(waypoint.AdditionalInfo))
+                textBoxAdditionalInfo.Text = waypoint.AdditionalInfo;
+            else
+                textBoxAdditionalInfo.Text = "";
             numericUpDownMinAltitude.Value = (decimal)waypoint.MinimumAltitude;
             numericUpDownMaxAltitude.Value = (decimal)waypoint.MaximumAltitude;
             buttonDuplicateWaypoint.Enabled = true;
@@ -571,6 +602,7 @@ namespace SRVTracker
             buttonMoveDown.Enabled = true;
             buttonMoveUp.Enabled = true;
             buttonSetAsTarget.Enabled = true;
+            buttonEditAdditionalInfo.Enabled = true;
             _updatingWaypointInfo = false;
         }
 
@@ -714,7 +746,7 @@ namespace SRVTracker
         {
             string[] speechEvents = { "Straight on", "Turn left", "Turn right",
                 "Bear left", "Bear right", "Sharp left", "Sharp right", "Hairpin left", "Hairpin right",
-                "Destination reached", "To Bearing"};
+                "Destination reached", "To Bearing", "Timer started", "Head towards bearing"};
             return speechEvents;
         }
 
@@ -987,7 +1019,7 @@ namespace SRVTracker
 
         private void Speak(string speech)
         {
-            if (String.IsNullOrEmpty(speech) || !checkBoxEnableAudio.Checked)
+            if (String.IsNullOrEmpty(speech) || !checkBoxEnableSpeech.Checked)
                 return;
 
             try
@@ -1433,6 +1465,30 @@ namespace SRVTracker
                 return;
 
             _speechSynthesizer.SelectVoice(comboBoxSelectedVoice.SelectedItem as string);
+        }
+
+        private void buttonEditAdditionalInfo_Click(object sender, EventArgs e)
+        {
+            if (groupBoxAdditionalWaypointInfo.Visible)
+            {
+                groupBoxAdditionalWaypointInfo.Visible = false;
+                return;
+            }
+            groupBoxAdditionalWaypointInfo.Visible = true;
+            textBoxAdditionalInfo.Focus();
+        }
+
+        private void textBoxAdditionalInfo_Validated(object sender, EventArgs e)
+        {
+            if (listBoxWaypoints.SelectedIndex < 0 || _updatingWaypointInfo)
+                return;
+            _route.Waypoints[listBoxWaypoints.SelectedIndex].AdditionalInfo = textBoxAdditionalInfo.Text;
+            groupBoxAdditionalWaypointInfo.Visible = false;
+        }
+
+        private void textBoxAdditionalInfo_Leave(object sender, EventArgs e)
+        {
+            groupBoxAdditionalWaypointInfo.Visible = false;
         }
     }
 }

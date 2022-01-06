@@ -467,7 +467,7 @@
             this.buttonResetPanel.Name = "buttonResetPanel";
             this.buttonResetPanel.Size = new System.Drawing.Size(84, 23);
             this.buttonResetPanel.TabIndex = 13;
-            this.buttonResetPanel.Text = "Reset Panel";
+            this.buttonResetPanel.Text = "Reset VR";
             this.buttonResetPanel.UseVisualStyleBackColor = true;
             this.buttonResetPanel.Click += new System.EventHandler(this.buttonResetPanel_Click);
             // 

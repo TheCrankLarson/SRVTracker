@@ -351,6 +351,7 @@
   <ItemGroup>
     <Content Include="CurrentVersion.txt" />
     <Content Include="icon1.ico" />
+    <None Include="Resources\Note_16x.png" />
     <Content Include="Silver arrow.bmp" />
     <None Include="DataCollator\RaceMonitoring\images\SRV64.png" />
     <Content Include="ReleaseNotes.txt">

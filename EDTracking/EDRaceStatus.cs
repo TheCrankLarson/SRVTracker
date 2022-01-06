@@ -397,38 +397,32 @@ namespace EDTracking
                 _pitStopStartTime = updateEvent.TimeStamp;
         }
 
+        private void Eliminate(string reason)
+        {
+            if (Eliminated || Finished)
+                return;
+            Eliminated = true;
+            notableEvents?.AddStatusEvent("EliminatedNotification", Commander);
+            AddRaceHistory($"Eliminated: {reason}");
+            ValidateRaceLeader();
+        }
+
         private void ProcessSRVDestroyedEvent()
         {
             // Destroyed, maybe eliminated
 
             AddRaceHistory("SRV destroyed");
-            if (Eliminated)
-                return;
-            Eliminated = EliminateOnDestruction();
-            if (Eliminated)
-                notableEvents?.AddStatusEvent("EliminatedNotification", Commander);
-            //DistanceToWaypoint = double.MaxValue;
-            ValidateRaceLeader();
-            //SpeedInMS = 0;
-            //_speedCalculationPreviousLocation = null;
-            //Hull = 0;
+            if (EliminateOnDestruction())
+                Eliminate("SRV destroyed");
         }
 
         private void ProcessFighterDestroyedEvent()
         {
             // Fighter destroyed 
             AddRaceHistory("Fighter destroyed");
-            if (Eliminated)
-                return;
 
-            Eliminated = EliminateOnDestruction();
-            if (Eliminated)
-                notableEvents?.AddStatusEvent("EliminatedNotification", Commander);
-            //DistanceToWaypoint = double.MaxValue;
-            ValidateRaceLeader();
-            //SpeedInMS = 0;
-            //_speedCalculationPreviousLocation = null;
-            //Hull = 0;
+            if (EliminateOnDestruction())
+                Eliminate("Fighter destroyed");
         }
 
         private void ProcessDockSRVEvent(EDEvent updateEvent)
@@ -448,10 +442,17 @@ namespace EDTracking
 
         private void ProcessSynthesisEvent(EDEvent updateEvent)
         {
-            if (!AllowPitStops() || _inPits) return;
 
             // We need to check what the synthesis is - if it is repair or refuel, this is disqualification
-            
+            if (updateEvent.AdditionalData.StartsWith("Repair"))
+            {
+                Hull = 1;
+                AddRaceHistory(updateEvent.AdditionalData);
+                if (!AllowPitStops() || _inPits) return;
+
+                // We aren't in pits and pit stops are required... This is elimination
+                Eliminate("Synthesis repair used outside pits");
+            }
         }
 
         private void ProcessLaunchSRVEvent()
@@ -495,9 +496,7 @@ namespace EDTracking
 
                     if (vehicleDisallowed && !Eliminated)
                     {
-                        Eliminated = true;
-                        notableEvents?.AddStatusEvent("EliminatedNotification", Commander);
-                        AddRaceHistory("Selected vehicle not allowed");
+                        Eliminate("Commander using invalid mode of transport");
                         DistanceToWaypoint = double.MaxValue;
                         SpeedInMS = 0;
                         _speedCalculationPreviousLocation = null;
