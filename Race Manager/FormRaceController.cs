@@ -401,7 +401,7 @@ namespace Race_Manager
             bool raceStarted = _race?.Start > DateTime.MinValue;
             buttonAddParticipant.Enabled = raceValid;
             buttonRemoveParticipant.Enabled = raceValid && !raceStarted;
-            buttonUneliminate.Enabled = raceValid && raceStarted;
+            buttonUneliminate.Enabled = true;// raceValid && raceStarted;
             buttonTrackParticipant.Enabled = listBoxParticipants.SelectedIndex > -1;
             checkBoxAutoAddCommanders.Enabled = raceValid && !raceStarted;
             buttonLoadRace.Enabled = !raceStarted;
@@ -539,7 +539,7 @@ namespace Race_Manager
 
             buttonStopRace.Enabled = false;
             buttonReset.Enabled = true;
-            buttonUneliminate.Enabled = false;
+            //buttonUneliminate.Enabled = false;
         }
 
         private void buttonReset_Click(object sender, EventArgs e)

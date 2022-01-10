@@ -77,6 +77,7 @@
             this.groupBoxSRVTracker = new System.Windows.Forms.GroupBox();
             this.tabControlSettings = new System.Windows.Forms.TabControl();
             this.tabPageCommander = new System.Windows.Forms.TabPage();
+            this.buttonRacerProfile = new System.Windows.Forms.Button();
             this.checkBoxShowRaceTelemetry = new System.Windows.Forms.CheckBox();
             this.label2 = new System.Windows.Forms.Label();
             this.tabPageMonitoring = new System.Windows.Forms.TabPage();
@@ -87,7 +88,6 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tabPageLogging = new System.Windows.Forms.TabPage();
             this.tabPageUpdate = new System.Windows.Forms.TabPage();
-            this.buttonRacerProfile = new System.Windows.Forms.Button();
             this.groupBoxStatusLocation.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.statusFileWatcher)).BeginInit();
             this.groupBox5.SuspendLayout();
@@ -732,6 +732,16 @@
             this.tabPageCommander.Text = "Commander";
             this.tabPageCommander.UseVisualStyleBackColor = true;
             // 
+            // buttonRacerProfile
+            // 
+            this.buttonRacerProfile.Location = new System.Drawing.Point(240, 116);
+            this.buttonRacerProfile.Name = "buttonRacerProfile";
+            this.buttonRacerProfile.Size = new System.Drawing.Size(72, 23);
+            this.buttonRacerProfile.TabIndex = 18;
+            this.buttonRacerProfile.Text = "Profile...";
+            this.buttonRacerProfile.UseVisualStyleBackColor = true;
+            this.buttonRacerProfile.Click += new System.EventHandler(this.buttonRacerProfile_Click);
+            // 
             // checkBoxShowRaceTelemetry
             // 
             this.checkBoxShowRaceTelemetry.AutoSize = true;
@@ -850,15 +860,6 @@
             this.tabPageUpdate.TabIndex = 2;
             this.tabPageUpdate.Text = "Update";
             this.tabPageUpdate.UseVisualStyleBackColor = true;
-            // 
-            // buttonRacerProfile
-            // 
-            this.buttonRacerProfile.Location = new System.Drawing.Point(240, 116);
-            this.buttonRacerProfile.Name = "buttonRacerProfile";
-            this.buttonRacerProfile.Size = new System.Drawing.Size(72, 23);
-            this.buttonRacerProfile.TabIndex = 18;
-            this.buttonRacerProfile.Text = "Profile...";
-            this.buttonRacerProfile.UseVisualStyleBackColor = true;
             // 
             // FormTracker
             // 

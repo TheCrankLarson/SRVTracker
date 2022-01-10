@@ -9,6 +9,7 @@ namespace EDTracking
 {
     public class EDRacerProfile
     {
+        public string CommanderName { get; set; } = "Anonymous";
         public string TwitchChannel { get; set; } = String.Empty;
         public string YouTubeChannel { get; set; } = String.Empty;
         public string SRVImageName { get; set; } = "SRV64.png";

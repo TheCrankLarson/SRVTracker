@@ -84,6 +84,7 @@ namespace SRVTracker
             this.radioButtonYouTubeStream.TabIndex = 3;
             this.radioButtonYouTubeStream.Text = "YouTube channel:";
             this.radioButtonYouTubeStream.UseVisualStyleBackColor = true;
+            this.radioButtonYouTubeStream.CheckedChanged += new System.EventHandler(this.radioButtonYouTubeStream_CheckedChanged);
             // 
             // textBoxYouTubeChannel
             // 
@@ -108,6 +109,7 @@ namespace SRVTracker
             this.radioButtonTwitchStream.TabStop = true;
             this.radioButtonTwitchStream.Text = "Twitch channel:";
             this.radioButtonTwitchStream.UseVisualStyleBackColor = true;
+            this.radioButtonTwitchStream.CheckedChanged += new System.EventHandler(this.radioButtonTwitchStream_CheckedChanged);
             // 
             // textBoxTwitchChannel
             // 
@@ -310,6 +312,7 @@ namespace SRVTracker
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "FormRacerProfile";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Commander Profile";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

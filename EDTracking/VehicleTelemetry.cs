@@ -248,6 +248,8 @@ namespace EDTracking
                     {
                         TotalSynthRepairs++;
                         _telemetry["TotalSRVSynthRepairs"] = TotalSynthRepairs.ToString();
+                        HullHealth = 1;
+                        _telemetry["HullStrength"] = "100%";
                         statsUpdated = true;
                     }
                     break;

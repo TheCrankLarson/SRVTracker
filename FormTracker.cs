@@ -878,5 +878,11 @@ namespace SRVTracker
         {
 
         }
+
+        private void buttonRacerProfile_Click(object sender, EventArgs e)
+        {
+            FormRacerProfile formRacerProfile = new FormRacerProfile();
+            formRacerProfile.ShowDialog(this);
+        }
     }
 }

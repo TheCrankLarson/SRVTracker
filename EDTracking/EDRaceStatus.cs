@@ -409,20 +409,20 @@ namespace EDTracking
 
         private void ProcessSRVDestroyedEvent()
         {
-            // Destroyed, maybe eliminated
-
-            AddRaceHistory("SRV destroyed");
+            // SRV destroyed
             if (EliminateOnDestruction())
                 Eliminate("SRV destroyed");
+            else
+                AddRaceHistory("SRV destroyed");
         }
 
         private void ProcessFighterDestroyedEvent()
         {
             // Fighter destroyed 
-            AddRaceHistory("Fighter destroyed");
-
             if (EliminateOnDestruction())
                 Eliminate("Fighter destroyed");
+            else
+                AddRaceHistory("Fighter destroyed");
         }
 
         private void ProcessDockSRVEvent(EDEvent updateEvent)
@@ -442,8 +442,7 @@ namespace EDTracking
 
         private void ProcessSynthesisEvent(EDEvent updateEvent)
         {
-
-            // We need to check what the synthesis is - if it is repair or refuel, this is disqualification
+            // We need to check what the synthesis is - if it is repair or refuel outside pits, this could be disqualification
             if (updateEvent.AdditionalData.StartsWith("Repair"))
             {
                 Hull = 1;
@@ -452,6 +451,14 @@ namespace EDTracking
 
                 // We aren't in pits and pit stops are required... This is elimination
                 Eliminate("Synthesis repair used outside pits");
+            }
+            else if (updateEvent.AdditionalData.StartsWith("Fuel"))
+            {
+                AddRaceHistory(updateEvent.AdditionalData);
+                if (!AllowPitStops() || _inPits) return;
+
+                // We aren't in pits and pit stops are required... This is elimination
+                Eliminate("Synthesis refuel used outside pits");
             }
         }
 
@@ -467,7 +474,7 @@ namespace EDTracking
                 _pitStopStartTime = DateTime.MinValue;
             }
             _inPits = false;
-            Hull = 1; // Hull is repaired when in ship, so ensure we have this set
+            Hull = 1; // Hull is always 1 when leaving ship
         }
 
         private void ProcessFlags()
@@ -638,13 +645,16 @@ namespace EDTracking
                 }
                 else if (WaypointIndex >= _race.Route.Waypoints.Count)
                 {
-                    Finished = true;
-                    FinishTime = DateTime.UtcNow;
-                    string raceTime = $"{FinishTime.Subtract(StartTime):hh\\:mm\\:ss}";
-                    notableEvents?.AddStatusEvent("CompletedNotification", Commander, $" ({raceTime})");
-                    AddRaceHistory($"Completed in {raceTime}");
-                    WaypointIndex = 0;
-                    DistanceToWaypoint = 0;
+                    if (!Eliminated)
+                    {
+                        Finished = true;
+                        FinishTime = DateTime.UtcNow;
+                        string raceTime = $"{FinishTime.Subtract(StartTime):hh\\:mm\\:ss}";
+                        notableEvents?.AddStatusEvent("CompletedNotification", Commander, $" ({raceTime})");
+                        AddRaceHistory($"Completed in {raceTime}");
+                        WaypointIndex = 0;
+                        DistanceToWaypoint = 0;
+                    }
                 }
             }
 

@@ -64,5 +64,30 @@ namespace SRVTracker
         {
             SaveImage(pictureBoxShip);
         }
+
+        private void UpdateStreamUI()
+        {
+            if (radioButtonTwitchStream.Checked)
+            {
+                textBoxTwitchChannel.Enabled = true;
+                textBoxYouTubeChannel.Enabled = false;
+            }
+            else
+            {
+                textBoxTwitchChannel.Enabled = false;
+                textBoxYouTubeChannel.Enabled = true;
+            }
+
+        }
+
+        private void radioButtonTwitchStream_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateStreamUI();
+        }
+
+        private void radioButtonYouTubeStream_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateStreamUI();
+        }
     }
 }
