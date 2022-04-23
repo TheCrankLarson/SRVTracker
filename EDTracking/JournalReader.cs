@@ -163,10 +163,12 @@ namespace EDTracking
             {
                 // Read the file - we open in file share mode as E: D will be constantly writing to this file
                 if (_journalFileStream == null)
+                {
                     _journalFileStream = new FileStream(journalFile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-                if (filePointer > _journalFileStream.Length)
-                    filePointer = 0;
-                _journalFileStream.Seek(filePointer, SeekOrigin.Begin);
+                    if (filePointer > _journalFileStream.Length)
+                        filePointer = 0;
+                    _journalFileStream.Seek(filePointer, SeekOrigin.Begin);
+                }
                 filePointer = _journalFileStream.Length;
 
                 using (StreamReader sr = new StreamReader(_journalFileStream, Encoding.Default, true, 1000, true))
@@ -175,15 +177,13 @@ namespace EDTracking
                 if (!_journalFileStream.CanSeek)
                 {
                     // We only close the file if we can't seek (no point in continuously reopening)
-                    _journalFileStream.Close();
-                    _journalFileStream = null;
-                }
-                else
-                {
                     if (_filePointers.ContainsKey(journalFile))
                         _filePointers[journalFile] = filePointer;
                     else
                         _filePointers.Add(journalFile, filePointer);
+
+                    _journalFileStream.Close();
+                    _journalFileStream = null;
                 }
             }
             catch { }

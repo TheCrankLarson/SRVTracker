@@ -114,33 +114,30 @@ namespace SRVTracker
             _timeTrialTelemetryDisplay?.UpdateCell(1, 0, _route.Name);
         }
 
-        private string GetBearingAfterNextWaypoint()
+        private string GetBearingToWaypoint(int WaypointIndex)
         {
-            if (!checkBoxPlayIncudeDirection.Checked)
-                return "";
-
             StringBuilder additionalInfo = new StringBuilder();
 
-            if (_route.Waypoints[_nextWaypoint] != null && FormTracker.CurrentLocation != null)
+            if (_route.Waypoints[WaypointIndex] != null && FormTracker.CurrentLocation != null)
             {
                 bool finalWaypoint = false;
                 EDWaypoint nextNextWaypoint = null;
                 if (numericUpDownTotalLaps.Value > 1)
                 {
                     // More than one lap, so start/finish is first waypoint
-                    if (_nextWaypoint == _route.Waypoints.Count - 1)
+                    if (WaypointIndex == _route.Waypoints.Count - 1)
                         nextNextWaypoint = _route.Waypoints[0];
                     else
-                        nextNextWaypoint = _route.Waypoints[_nextWaypoint + 1];
+                        nextNextWaypoint = _route.Waypoints[WaypointIndex + 1];
 
-                    if ((_nextWaypoint == 0) && (_lapNumber == numericUpDownTotalLaps.Value))
+                    if ((WaypointIndex == 0) && (_lapNumber == numericUpDownTotalLaps.Value))
                         finalWaypoint = true;
                 }
                 else
                 {
                     // One lap, finish is final waypoint
-                    if (_nextWaypoint<_route.Waypoints.Count-1)
-                        nextNextWaypoint = _route.Waypoints[_nextWaypoint + 1];
+                    if (WaypointIndex < _route.Waypoints.Count - 1)
+                        nextNextWaypoint = _route.Waypoints[WaypointIndex + 1];
                     else
                         finalWaypoint = true;
                 }
@@ -149,8 +146,8 @@ namespace SRVTracker
                 {
                     try
                     {
-                        double bearingFromNextWaypoint = EDLocation.BearingToLocation(_route.Waypoints[_nextWaypoint].Location, nextNextWaypoint.Location);
-                        double bearingToNextWaypoint = EDLocation.BearingToLocation(FormTracker.CurrentLocation, _route.Waypoints[_nextWaypoint].Location);
+                        double bearingFromNextWaypoint = EDLocation.BearingToLocation(_route.Waypoints[WaypointIndex].Location, nextNextWaypoint.Location);
+                        double bearingToNextWaypoint = EDLocation.BearingToLocation(FormTracker.CurrentLocation, _route.Waypoints[WaypointIndex].Location);
                         double bearingChange = EDLocation.BearingDelta(bearingToNextWaypoint, bearingFromNextWaypoint);
                         //additionalInfo.Append("Then ");
                         if (bearingChange > -5 && bearingChange < 5)
@@ -181,8 +178,8 @@ namespace SRVTracker
                             }
                         }
                         additionalInfo.Append($" {_speechEventPhrases["To Bearing"].ToLower()} ");
-                        additionalInfo.Append(Math.Abs(bearingChange).ToString("F0"));
-                        additionalInfo.Append("°");
+                        additionalInfo.Append(bearingFromNextWaypoint.ToString("F0"));
+                        //additionalInfo.Append("°");
                     }
                     catch (Exception ex)
                     {
@@ -190,9 +187,22 @@ namespace SRVTracker
                     }
                 }
                 else
+                {
                     additionalInfo.Append(_route.Waypoints[_nextWaypoint].Name);
+                    additionalInfo.Append(" ");
+                    additionalInfo.Append(_speechEventPhrases["Destination reached"]);
+                }
             }
             return additionalInfo.ToString();
+
+        }
+
+        private string GetBearingAfterNextWaypoint()
+        {
+            if (!checkBoxPlayIncudeDirection.Checked)
+                return "";
+
+            return GetBearingToWaypoint(_nextWaypoint);
         }
 
         private void FormTracker_CommanderLocationChanged(object sender, EventArgs e)
@@ -221,7 +231,15 @@ namespace SRVTracker
                             _timeTrialTelemetryDisplay.AddRow("Start", "00:00:00.00");
                         _lapNumber = 1;
                         Speak(_speechEventPhrases["Timer started"]);
+
+                        // Check whether we were already at the first waypoint
+                        if (_route.Waypoints[_nextWaypoint].WaypointHit(_lastLoggedLocation, null, null))
+                        {
+                            // First waypoint already hit
+                        }
                     }
+                    else
+                        return;  // No movement yet, so we don't do any further processing
 
                 // We are currently replaying a route
                 EDLocation previousWaypointLocation = null;

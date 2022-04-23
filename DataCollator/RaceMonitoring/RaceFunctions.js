@@ -533,9 +533,13 @@ function UpdateLeaderboard() {
         leaderboardTableElement.insertRow();
     }
 
+    var numCols = 3;
+    if (document.getElementById('LeaderboardShowHullStatus').checked) { numCols++; }
+    if (document.getElementById('LeaderboardShowCurrentSpeed').checked) { numCols++; }
+
     for (var racerStatus in activeRace.Statuses) {
         var updateRow = leaderboardTableElement.rows[activeRace.Statuses[racerStatus].RacePosition];
-        while (updateRow.cells.length < 3) {
+        while (updateRow.cells.length < numCols) {
             updateRow.insertCell(0);
         }
         updateRow.cells[0].innerHTML = activeRace.Statuses[racerStatus].RacePosition;
@@ -546,13 +550,22 @@ function UpdateLeaderboard() {
         else if (activeRace.Statuses[racerStatus].Finished) {
             updateRow.cells[2].innerHTML = activeRace.CustomStatusMessages.Completed;
         }
-        else if (activeRace.Laps > 0) {
-            updateRow.cells[2].innerHTML = "Lap " + activeRace.Statuses[racerStatus].Lap + " of " + activeRace.Laps;
-        }
         else {
-            updateRow.cells[2].innerHTML = "";
+            // Racer is currently active (not eliminated or finished)
+            if (activeRace.Laps > 0) {
+                updateRow.cells[2].innerHTML = "Lap " + activeRace.Statuses[racerStatus].Lap + " of " + activeRace.Laps;
+            }
+            else {
+                updateRow.cells[2].innerHTML = "";
+            }
+            var updateCol = 3;
+            if (document.getElementById('LeaderboardShowHullStatus').checked) {
+                updateRow.cells[updateCol++].innerHTML = Math.floor(activeRace.Statuses[racerStatus].Hull * 100) + "%";
+            }
+            if (document.getElementById('LeaderboardShowCurrentSpeed').checked) {
+                updateRow.cells[updateCol++].innerHTML = Math.floor(activeRace.Statuses[racerStatus].SpeedInMS) + " m/s";
+            }
         }
-        
     };
 }
 
@@ -900,6 +913,28 @@ function UpdateImageFromFile(elementName, fileElementName) {
         document.getElementById("courseContainer").style.backgroundColor = "transparent";
     }
     reader.readAsDataURL(document.getElementById(fileElementName).files[0]);
+}
+
+function UpdateImageUrl(elementName, imageUrl) {
+    // Replace the background image of the element with the contents of the given file
+    var element = document.getElementById(elementName);
+
+    element.style.backgroundImage = 'url(' + imageUrl + ')';
+    element.style.backgroundColor = "black";
+    document.getElementById("courseContainer").style.opacity = 1;
+    document.getElementById("courseContainer").style.backgroundColor = "transparent";
+}
+
+function SelectCourseImage() {
+    var courseImages = document.getElementById('courseImages');
+    var selectedCourse = courseImages.options[courseImages.selectedIndex].value;
+    if (selectedCourse == "Blank") {
+        document.getElementById("courseContainer").style.opacity = 0.9;
+        document.getElementById('courseCanvass').style.backgroundImage = "";
+    }
+    else {
+        UpdateImageUrl('courseCanvass', 'images/' + selectedCourse);
+    }
 }
 
 function UpdateCourseImageOffset() {

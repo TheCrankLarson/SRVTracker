@@ -52,7 +52,6 @@ namespace SRVTracker
 
             if (String.IsNullOrEmpty(location.Name))
             {
-                // This is grossly inefficient, and is a hopefully temporary way to ensure names are present and unique
                 int count = 1;
                 bool nameIsUnique = true;
                 string locationName;
@@ -113,10 +112,12 @@ namespace SRVTracker
             buttonCancel.Visible = show;
         }
 
-        public List<EDLocation> Locations
+        public static List<EDLocation> Locations
         {
             get
             {
+                if (_locations == null)
+                    LoadLocations();
                 return _locations;
             }
         }

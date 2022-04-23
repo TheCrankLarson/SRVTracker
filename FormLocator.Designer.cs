@@ -49,11 +49,11 @@
             this.checkBoxEnableVRLocator = new System.Windows.Forms.CheckBox();
             this.comboBoxLocation = new System.Windows.Forms.ComboBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.buttonOpenLocationEditor = new System.Windows.Forms.Button();
+            this.pictureBoxMoveForm = new System.Windows.Forms.PictureBox();
+            this.buttonClose = new System.Windows.Forms.Button();
             this.buttonAlwaysOnTop = new System.Windows.Forms.Button();
             this.buttonUseCurrentLocation = new System.Windows.Forms.Button();
-            this.buttonClose = new System.Windows.Forms.Button();
-            this.pictureBoxMoveForm = new System.Windows.Forms.PictureBox();
-            this.buttonOpenLocationEditor = new System.Windows.Forms.Button();
             this.locatorHUD1 = new SRVTracker.LocatorHUD();
             this.groupBoxDestination.SuspendLayout();
             this.groupBoxBearing.SuspendLayout();
@@ -286,6 +286,43 @@
             this.toolTip1.InitialDelay = 1000;
             this.toolTip1.ReshowDelay = 1000;
             // 
+            // buttonOpenLocationEditor
+            // 
+            this.buttonOpenLocationEditor.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonOpenLocationEditor.Image = global::SRVTracker.Properties.Resources.AddressEditor_16x;
+            this.buttonOpenLocationEditor.Location = new System.Drawing.Point(221, 137);
+            this.buttonOpenLocationEditor.Name = "buttonOpenLocationEditor";
+            this.buttonOpenLocationEditor.Size = new System.Drawing.Size(35, 23);
+            this.buttonOpenLocationEditor.TabIndex = 29;
+            this.toolTip1.SetToolTip(this.buttonOpenLocationEditor, "Open the location editor");
+            this.buttonOpenLocationEditor.UseVisualStyleBackColor = true;
+            this.buttonOpenLocationEditor.Click += new System.EventHandler(this.buttonOpenLocationEditor_Click);
+            // 
+            // pictureBoxMoveForm
+            // 
+            this.pictureBoxMoveForm.BackgroundImage = global::SRVTracker.Properties.Resources.Move__wb_;
+            this.pictureBoxMoveForm.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.pictureBoxMoveForm.Cursor = System.Windows.Forms.Cursors.SizeAll;
+            this.pictureBoxMoveForm.Location = new System.Drawing.Point(272, 30);
+            this.pictureBoxMoveForm.Name = "pictureBoxMoveForm";
+            this.pictureBoxMoveForm.Size = new System.Drawing.Size(65, 30);
+            this.pictureBoxMoveForm.TabIndex = 28;
+            this.pictureBoxMoveForm.TabStop = false;
+            this.toolTip1.SetToolTip(this.pictureBoxMoveForm, "Click and drag here to move the form");
+            this.pictureBoxMoveForm.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBoxMoveForm_MouseDown);
+            // 
+            // buttonClose
+            // 
+            this.buttonClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonClose.Image = global::SRVTracker.Properties.Resources.Close_red_16x;
+            this.buttonClose.Location = new System.Drawing.Point(306, 1);
+            this.buttonClose.Name = "buttonClose";
+            this.buttonClose.Size = new System.Drawing.Size(31, 23);
+            this.buttonClose.TabIndex = 13;
+            this.toolTip1.SetToolTip(this.buttonClose, "Close the locator");
+            this.buttonClose.UseVisualStyleBackColor = true;
+            this.buttonClose.Click += new System.EventHandler(this.buttonClose_Click);
+            // 
             // buttonAlwaysOnTop
             // 
             this.buttonAlwaysOnTop.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -310,49 +347,13 @@
             this.buttonUseCurrentLocation.UseVisualStyleBackColor = true;
             this.buttonUseCurrentLocation.Click += new System.EventHandler(this.buttonUseCurrentLocation_Click);
             // 
-            // buttonClose
-            // 
-            this.buttonClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonClose.Image = global::SRVTracker.Properties.Resources.Close_red_16x;
-            this.buttonClose.Location = new System.Drawing.Point(306, 1);
-            this.buttonClose.Name = "buttonClose";
-            this.buttonClose.Size = new System.Drawing.Size(31, 23);
-            this.buttonClose.TabIndex = 13;
-            this.toolTip1.SetToolTip(this.buttonClose, "Close the locator");
-            this.buttonClose.UseVisualStyleBackColor = true;
-            this.buttonClose.Click += new System.EventHandler(this.buttonClose_Click);
-            // 
-            // pictureBoxMoveForm
-            // 
-            this.pictureBoxMoveForm.BackgroundImage = global::SRVTracker.Properties.Resources.Move__wb_;
-            this.pictureBoxMoveForm.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.pictureBoxMoveForm.Cursor = System.Windows.Forms.Cursors.SizeAll;
-            this.pictureBoxMoveForm.Location = new System.Drawing.Point(272, 30);
-            this.pictureBoxMoveForm.Name = "pictureBoxMoveForm";
-            this.pictureBoxMoveForm.Size = new System.Drawing.Size(65, 30);
-            this.pictureBoxMoveForm.TabIndex = 28;
-            this.pictureBoxMoveForm.TabStop = false;
-            this.toolTip1.SetToolTip(this.pictureBoxMoveForm, "Click and drag here to move the form");
-            this.pictureBoxMoveForm.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBoxMoveForm_MouseDown);
-            // 
-            // buttonOpenLocationEditor
-            // 
-            this.buttonOpenLocationEditor.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonOpenLocationEditor.Image = global::SRVTracker.Properties.Resources.AddressEditor_16x;
-            this.buttonOpenLocationEditor.Location = new System.Drawing.Point(221, 137);
-            this.buttonOpenLocationEditor.Name = "buttonOpenLocationEditor";
-            this.buttonOpenLocationEditor.Size = new System.Drawing.Size(35, 23);
-            this.buttonOpenLocationEditor.TabIndex = 29;
-            this.toolTip1.SetToolTip(this.buttonOpenLocationEditor, "Set as home (track current location)");
-            this.buttonOpenLocationEditor.UseVisualStyleBackColor = true;
-            this.buttonOpenLocationEditor.Click += new System.EventHandler(this.buttonOpenLocationEditor_Click);
-            // 
             // locatorHUD1
             // 
             this.locatorHUD1.BackColor = System.Drawing.Color.Black;
             this.locatorHUD1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.locatorHUD1.Location = new System.Drawing.Point(0, 0);
             this.locatorHUD1.Name = "locatorHUD1";
+            this.locatorHUD1.ShowSpeedIndicator = true;
             this.locatorHUD1.Size = new System.Drawing.Size(260, 60);
             this.locatorHUD1.TabIndex = 3;
             // 

@@ -13,16 +13,15 @@
         <GroupBox DockPanel.Dock="Left" Header="Target" HorizontalAlignment="Left" Height="80" Margin="12,1,0,0" BorderThickness="1" VerticalAlignment="Top" Width="255" AutomationProperties.Name="Target" Foreground="White" BorderBrush="White" FontSize="20">
             <Label x:Name="labelTarget" Content="Not set" HorizontalAlignment="Center" Margin="10,0,10,6" VerticalAlignment="Center" Foreground="White" AutomationProperties.Name="labelTarget"/>
         </GroupBox>
-        <GroupBox DockPanel.Dock="Left" Header="Bearing To Target" HorizontalAlignment="Left" Height="80" Margin="12,1,0,0" BorderThickness="1" VerticalAlignment="Top" Width="175
+        <GroupBox DockPanel.Dock="Left" Header="Target Bearing" HorizontalAlignment="Left" Height="80" Margin="12,1,0,0" BorderThickness="1" VerticalAlignment="Top" Width="175
                   " AutomationProperties.Name="BearingToTarget" Foreground="White" BorderBrush="White" FontSize="20">
             <Label x:Name="labelBearing" Content="0°" HorizontalAlignment="Center" Margin="10,0,10,6" VerticalAlignment="Center" Foreground="White" AutomationProperties.Name="labelBearing"/>
         </GroupBox>
+        <GroupBox DockPanel.Dock="Left" Header="Target Distance" HorizontalAlignment="Left" Height="80" Margin="12,1,0,0" BorderThickness="1" VerticalAlignment="Top" Width="175" AutomationProperties.Name="DistanceToTarget" Foreground="White" BorderBrush="White" FontSize="20">
+            <Label x:Name="labelDistance" Content="0km" HorizontalAlignment="Center" Margin="10,0,10,6" VerticalAlignment="Center" Foreground="White" AutomationProperties.Name="labelDistance"/>
+        </GroupBox>
         <GroupBox DockPanel.Dock="Left" Header="Speed" HorizontalAlignment="Left" Height="80" Margin="12,1,0,0" BorderThickness="1" VerticalAlignment="Top" Width="100" AutomationProperties.Name="Speed" Foreground="White" BorderBrush="White" FontSize="20">
             <Label x:Name="labelSpeed" Content="0" HorizontalAlignment="Center" Margin="10,0,10,6" VerticalAlignment="Center" Foreground="White" AutomationProperties.Name="labelSpeed"/>
-        </GroupBox>
-
-        <GroupBox DockPanel.Dock="Left" Header="Distance To Target" HorizontalAlignment="Left" Height="80" Margin="12,1,0,0" BorderThickness="1" VerticalAlignment="Top" Width="175" AutomationProperties.Name="DistanceToTarget" Foreground="White" BorderBrush="White" FontSize="20">
-            <Label x:Name="labelDistance" Content="0km" HorizontalAlignment="Center" Margin="10,0,10,6" VerticalAlignment="Center" Foreground="White" AutomationProperties.Name="labelDistance"/>
         </GroupBox>
     </DockPanel>
 </UserControl>

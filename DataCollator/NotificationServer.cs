@@ -441,10 +441,9 @@ namespace DataCollator
                 httpResponse.ContentLength64 = response.Length;
                 httpResponse.StatusCode = returnStatusCode;
 
-                using (Stream output = httpResponse.OutputStream)
-                    output.Write(response, 0, response.Length);
+                //using (Stream output = httpResponse.OutputStream)
+                httpResponse.OutputStream.Write(response, 0, response.Length);
                 httpResponse.OutputStream.Flush();
-                httpResponse.KeepAlive = true;
                 httpResponse.Close();
             }
             catch { }

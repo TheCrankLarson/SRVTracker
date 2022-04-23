@@ -45,7 +45,12 @@ table, th, td {
     position: absolute;
     background-color: lightgray;
     border: 1px solid black;
+    z-index:0;
 }
+
+    #settings p {
+        font-size: 12px;
+    }
 
 .gridContainer {
     display: grid;
@@ -94,7 +99,7 @@ table, th, td {
 #courseCanvass {
     position: absolute;
     background-color: black;
-    /*background-image: url("images/okorafor-bad-stretch.jpg");*/
+    /*background-image: url("images/UnknownStructureRace.png");*/
     background-repeat: no-repeat;
     background-position: center center;
     color: white;

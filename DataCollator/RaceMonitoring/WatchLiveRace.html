@@ -15,7 +15,10 @@
 
     <script>
         // Configuration
-        var dataUrl = "https://srvtracker.darkbytes.co.uk/DataCollator/";
+        var dataUrl = location.protocol + "//srvtracker.darkbytes.co.uk/DataCollator/";
+        if (location.protocol == 'http:') {
+            dataUrl = "http://srvtracker.darkbytes.co.uk:11938/DataCollator/"
+        }
         var canvasWidth = 800;
         var canvasHeight = 800;
 
@@ -34,10 +37,26 @@
                 </select>
                 <div class="buttonStyle" onclick="ToggleSettings()">Settings</div>
             </div>
-            <div id="settings">
-                Course image: <input onchange="UpdateImageFromFile('courseCanvass','courseBackgroundImage')" type="file" id="courseBackgroundImage" /><br />
-                Offset x: <input type="text" onchange="UpdateCourseImageOffset()" id="courseImageXOffset" value="0"/><br />
-                Offset y: <input type="text" onchange="UpdateCourseImageOffset()" id="courseImageYOffset" value="0"/>
+            <div id="settings"><p>
+    Course image:<br />
+    <select id="courseImages" onchange="SelectCourseImage()">
+        <option>Blank</option>
+        <option>UnknownStructureRace.png</option>
+    </select><br />
+    <input onchange="UpdateImageFromFile('courseCanvass','courseBackgroundImage')" type="file" id="courseBackgroundImage" /><br />
+    Offset x: <input type="text" onchange="UpdateCourseImageOffset()" id="courseImageXOffset" value="0" /><br />
+    Offset y: <input type="text" onchange="UpdateCourseImageOffset()" id="courseImageYOffset" value="0" />
+</p>
+                          <p>
+                              Leaderboard:<br />
+                              <input type="checkbox" id="LeaderboardShowHullStatus" value="1" />Show hull status<br />
+                              <input type="checkbox" id="LeaderboardShowCurrentSpeed" value="1" />Show current speed<br />
+                              <input type="checkbox" id="LeaderboardShowMaxSpeed" value="1" />Show maximum speed<br />
+                              <input type="checkbox" id="LeaderboardShowTotalDistanceLeft" value="1" />Show total distance left<br />
+                              <input type="checkbox" id="LeaderboardShowCurrentLap" value="1" />Show current lap<br />
+                              <input type="checkbox" id="LeaderboardShowLastLapTime" value="1" />Show last lap time<br />
+                              <input type="checkbox" id="LeaderboardShowFastestLapTime" value="1" />Show fastest lap time<br />
+                          </p>
             </div>
             <div id="raceInfo">
                 <h2>Race information</h2>

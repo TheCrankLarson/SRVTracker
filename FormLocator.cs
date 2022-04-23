@@ -593,9 +593,8 @@ namespace SRVTracker
                 return;
             }
 
-            LocationManager locationManager = new LocationManager();
-            if (locationManager.Locations.Count>0)
-                foreach (EDLocation location in locationManager.Locations)
+            if (LocationManager.Locations.Count>0)
+                foreach (EDLocation location in LocationManager.Locations)
                     if (location.Name.Equals(comboBoxLocation.SelectedItem.ToString()))
                     {
                         _targetPosition = location;
@@ -603,18 +602,15 @@ namespace SRVTracker
                         DisplayTarget();
                         break;
                     }
-            locationManager.Dispose();
         }
 
         private void InitLocationCombo()
         {
             comboBoxLocation.Items.Clear();
             comboBoxLocation.Items.Add("Add new location...");
-            LocationManager locationManager = new LocationManager();
-            if (locationManager.Locations.Count > 0)
-                foreach (EDLocation location in locationManager.Locations)
+            if (LocationManager.Locations.Count > 0)
+                foreach (EDLocation location in LocationManager.Locations)
                     comboBoxLocation.Items.Add(location.Name);
-            locationManager.Dispose();
         }
 
         private void buttonAlwaysOnTop_Click(object sender, EventArgs e)
