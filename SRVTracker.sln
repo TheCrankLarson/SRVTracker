@@ -16,13 +16,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataCollator", "DataCollato
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EDTracking", "EDTracking\EDTracking.csproj", "{D36C1DC6-C1D4-4750-894C-54666389C630}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenVRApiModule", "..\..\..\OneDrive\Development Projects\OpenVR\OpenVRApiModule\OpenVRApiModule.csproj", "{516E5BE7-28B7-4DEE-B2FE-1E0D089C21DC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenVRApiModule", "..\..\..\..\..\..\Development Projects\OpenVR\OpenVRApiModule\OpenVRApiModule.csproj", "{516E5BE7-28B7-4DEE-B2FE-1E0D089C21DC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RaceTester", "RaceTester\RaceTester.csproj", "{5D34EEB0-27CD-482C-B4F4-717502C0272F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Race Manager", "Race Manager\Race Manager.csproj", "{573FE1A8-A177-426D-8028-DD98793EF6E2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mischief", "E:\Code\Mischief\Mischief.csproj", "{FE8A4293-2573-4E00-A1BF-61900F5CEDDF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mischief", "..\Mischief\Mischief.csproj", "{FE8A4293-2573-4E00-A1BF-61900F5CEDDF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
