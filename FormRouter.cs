@@ -1,20 +1,14 @@
 ﻿using EDTracking;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Media;
 using System.Speech.Synthesis;
-using System.Text.Json;
 using System.IO;
-using Valve.VR;
-
+using System.Text.Json;
 
 namespace SRVTracker
 {
