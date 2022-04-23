@@ -1,0 +1,1 @@
+@powershell -file Build-SRVTracker.ps1
