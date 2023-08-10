@@ -82,6 +82,7 @@
     <Compile Include="EDRoute.cs" />
     <Compile Include="EDRaceStatus.cs" />
     <Compile Include="EDWaypoint.cs" />
+    <Compile Include="EventWatcher.cs" />
     <Compile Include="Flags.cs" />
     <Compile Include="FormAppearanceEditor.cs">
       <SubType>Form</SubType>
@@ -114,6 +115,7 @@
       <DependentUpon>RaceTimer.xaml</DependentUpon>
     </Compile>
     <Compile Include="RouteGenerator.cs" />
+    <Compile Include="StatusReader.cs" />
     <Compile Include="VehicleTelemetry.cs" />
     <Compile Include="TelemetryTable.xaml.cs">
       <DependentUpon>TelemetryTable.xaml</DependentUpon>
@@ -165,7 +167,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="System.Text.Json">
-      <Version>5.0.2</Version>
+      <Version>6.0.6</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -58,7 +58,10 @@ namespace SRVTracker
         public FormTracker()
         {
             if (Tracker != null)
-                return; // Can only have one tracker
+            {
+                this.Close(); // Can only have one tracker
+                return;
+            }
 
             Tracker = this;
             InitializeComponent();

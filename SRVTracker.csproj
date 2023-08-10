@@ -286,6 +286,10 @@
     <EmbeddedResource Include="VRLocatorHUD.resx">
       <DependentUpon>VRLocatorHUD.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="Deploy\Build-SRVTracker.bat" />
+    <None Include="Deploy\Build-SRVTracker.ps1" />
+    <None Include="Deploy\Prepare-Deployment.bat" />
+    <None Include="Deploy\Prepare-Deployment.ps1" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -330,7 +334,7 @@
     <None Include="Resources\Refresh_16x.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\..\Development Projects\OpenVR\OpenVRApiModule\OpenVRApiModule.csproj">
+    <ProjectReference Include="..\..\..\OneDrive\Development Projects\OpenVR\OpenVRApiModule\OpenVRApiModule.csproj">
       <Project>{516e5be7-28b7-4dee-b2fe-1e0d089c21dc}</Project>
       <Name>OpenVRApiModule</Name>
     </ProjectReference>
@@ -404,7 +408,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="System.Text.Json">
-      <Version>5.0.2</Version>
+      <Version>6.0.6</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
@@ -413,6 +417,7 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>powershell.exe $(SolutionDir)Deploy\Prepare-Deployment.ps1 -SolutionDir $(SolutionDir) -TargetPath $(TargetPath) -OutDir $(OutDir)

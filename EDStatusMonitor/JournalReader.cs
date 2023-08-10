@@ -6,9 +6,9 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace EDTracking
+namespace EDStatusMonitor
 {
-    public class JournalReader
+    internal class JournalReader
     {
         private string _journalDirectory = null;
         private string _activeJournalFile = null;
@@ -18,19 +18,29 @@ namespace EDTracking
         private System.Timers.Timer _statusCheckTimer = null;
         private Dictionary<string, long> _filePointers;
         private DateTime _lastJournalEventTimeStamp = DateTime.MinValue;
+        public bool ReportAllEvents = true;
         public string[] ReportEvents = { "DockSRV","SRVDestroyed", "FighterDestroyed","HullDamage","LaunchSRV", "Shutdown", "Continued", "Touchdown", "Liftoff", "Died",
             "UnderAttack", "MaterialCollected", "DatalinkScan", "DataScanned", "ApproachSettlement", "ShipTargeted", "Commander", "Synthesis"};
         public delegate void InterestingEventHandler(object sender, string eventJson);
         public event InterestingEventHandler InterestingEventOccurred;
         public string CommanderName = "";
+        public int _updateIntervalInMs = 1000;
 
-        public JournalReader(string journalFolder)
+        public JournalReader()
         {
-            _journalDirectory = journalFolder;
-            _statusCheckTimer = new System.Timers.Timer(1000);
+            _journalDirectory = EDJournalPath();
+            _statusCheckTimer = new System.Timers.Timer(_updateIntervalInMs);
             _statusCheckTimer.Elapsed += _statusCheckTimer_Elapsed;
             _filePointers = new Dictionary<string, long>();
             FindActiveJournalFile();
+        }
+
+        public static string EDJournalPath()
+        {
+            string path = $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\\Saved Games\\Frontier Developments\\Elite Dangerous";
+            if (Directory.Exists(path))
+                return path;
+            return "";
         }
 
         private void _statusCheckTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
@@ -41,7 +51,7 @@ namespace EDTracking
             {
                 FindActiveJournalFile();
                 if (!String.IsNullOrEmpty(_activeJournalFile))
-                    _statusCheckTimer.Interval = 1000;
+                    _statusCheckTimer.Interval = _updateIntervalInMs;
             }
 
             if (!String.IsNullOrEmpty(_activeJournalFile))
@@ -52,6 +62,12 @@ namespace EDTracking
                 {
                     ProcessJournalFileUpdate(_activeJournalFile);
                     _lastFileWrite = lastWriteTime;
+                }
+                else if (_lastFileWrite<DateTime.Now.AddMinutes(5))
+                {
+                    // File hasn't been written for over five minutes, potentially game could have crashed
+                    // and we are now watching the wrong file
+                    DeactivateJournal(false);  // Trigger a search for the current journal
                 }
             }
             _statusCheckTimer.Start();
@@ -65,22 +81,22 @@ namespace EDTracking
             // EDO journal files are different format:
             // Journal.2023-02-25T230904.01.log
 
-            // We first check that Elite Dangerous is running, as if it isn't we could choose the wrong journal file
+            // We first check that Elite Dangerous is running, as if it isn't we don't have a journal to read
             System.Diagnostics.Process[] edClients = System.Diagnostics.Process.GetProcessesByName("EliteDangerous64");
             if (edClients.Length < 1)
                 return false;
 
             string searchFilterLegacy = $"Journal.{DateTime.Today:yyMMdd}*.log";
             string searchFilterOdyssey = $"Journal.{DateTime.Today:yyyy-MM-dd}*.log";
-            string[] cacheFiles = (string[])Directory.GetFiles(_journalDirectory, searchFilterLegacy).Concat(Directory.GetFiles(_journalDirectory, searchFilterOdyssey)).ToArray();
-            if (cacheFiles.Length==0)
+            string[] cacheFiles = (string[])Directory.GetFiles(_journalDirectory, searchFilterLegacy).Concat(Directory.GetFiles(_journalDirectory, searchFilterOdyssey));
+            if (cacheFiles.Length == 0)
                 return false;
 
             // We find the most recently created journal log with today's date
             string mostRecentFile = "";
             DateTime mostRecentFileTime = DateTime.MinValue;
             foreach (string fileName in cacheFiles)
-                if ( String.IsNullOrEmpty(mostRecentFile) || (File.GetCreationTimeUtc(fileName) > mostRecentFileTime) )
+                if (String.IsNullOrEmpty(mostRecentFile) || (File.GetCreationTimeUtc(fileName) > mostRecentFileTime))
                 {
                     if (!JournalFileIncludesShutdown(fileName))
                     {
@@ -119,7 +135,7 @@ namespace EDTracking
                 return false;
 
             string lastEventName = GetJournalEventName(lastJournalEvent.Substring(jsonStart));
-            if (!lastEventName.Equals("Shutdown") && !lastEventName.Equals("Continued") )
+            if (!lastEventName.Equals("Shutdown") && !lastEventName.Equals("Continued"))
                 return false;
 
             _oldJournals.Add(fileName);  // So that we don't bother reading this one again
@@ -141,6 +157,12 @@ namespace EDTracking
             _statusCheckTimer.Stop();
         }
 
+        public void Replay()
+        {
+            if (!String.IsNullOrEmpty(_activeJournalFile))
+                ProcessJournalFileUpdate(_activeJournalFile, true);
+        }
+
         private string GetJournalEventName(string journalEvent)
         {
             try
@@ -156,10 +178,19 @@ namespace EDTracking
             }
         }
 
-        private void ProcessJournalFileUpdate(string journalFile)
+        private void DeactivateJournal(bool archive = true)
+        {
+            if (archive)
+                _oldJournals.Add(_activeJournalFile);
+            _activeJournalFile = "";
+            _journalFileStream?.Close();
+            _journalFileStream = null;
+        }
+
+        private void ProcessJournalFileUpdate(string journalFile, bool resetFilePointer = false)
         {
             long filePointer = 0;
-            if (_filePointers.ContainsKey(journalFile))
+            if (!resetFilePointer && _filePointers.ContainsKey(journalFile))
                 filePointer = _filePointers[journalFile];
 
             string newJournalEvents = "";
@@ -173,19 +204,21 @@ namespace EDTracking
                         filePointer = 0;
                     _journalFileStream.Seek(filePointer, SeekOrigin.Begin);
                 }
-                filePointer = _journalFileStream.Length;
+                else if (resetFilePointer)
+                    _journalFileStream.Seek(0, SeekOrigin.Begin);
 
-                using (StreamReader sr = new StreamReader(_journalFileStream, Encoding.Default, true, 1000, true))
+                filePointer = _journalFileStream.Length;
+                if (_filePointers.ContainsKey(journalFile))
+                    _filePointers[journalFile] = filePointer;
+                else
+                    _filePointers.Add(journalFile, filePointer);
+
+                using (StreamReader sr = new StreamReader(_journalFileStream, Encoding.Default, true, 4096, true))
                     newJournalEvents = sr.ReadToEnd();
 
                 if (!_journalFileStream.CanSeek)
                 {
                     // We only close the file if we can't seek (no point in continuously reopening)
-                    if (_filePointers.ContainsKey(journalFile))
-                        _filePointers[journalFile] = filePointer;
-                    else
-                        _filePointers.Add(journalFile, filePointer);
-
                     _journalFileStream.Close();
                     _journalFileStream = null;
                 }
@@ -202,38 +235,32 @@ namespace EDTracking
                     using (JsonDocument jsonDoc = JsonDocument.Parse(journalEvent))
                     {
                         JsonElement timestampElement = jsonDoc.RootElement.GetProperty("timestamp");
-                        if (DateTime.UtcNow.Subtract(timestampElement.GetDateTime()).TotalSeconds < 10)
+                        _lastJournalEventTimeStamp = timestampElement.GetDateTime();
+                        JsonElement eventElement = jsonDoc.RootElement.GetProperty("event");
+                        string eventName = eventElement.GetString();
+                        if (eventName.Equals("Shutdown"))
                         {
-                            JsonElement eventElement = jsonDoc.RootElement.GetProperty("event");
-                            string eventName = eventElement.GetString();
-                            if (eventName.Equals("Shutdown"))
-                            {
-                                // We won't receive any more events into this log file
-                                // Chances are we're shutting down, but we'll go into slow ping mode in case it is a game restart
-                                _statusCheckTimer.Interval = 10000;
-                                _activeJournalFile = "";
-                                _journalFileStream?.Close();
-                                _journalFileStream = null;
-                            }
-                            else if (eventName.Equals("Continued"))
-                            {
-                                // We won't receive any more events into this log file, but a new one should be created
-                                _activeJournalFile = "";
-                                _journalFileStream?.Close();
-                                _journalFileStream = null;
-                            }
-                            else if (eventName.Equals("Commander"))
-                            {
-                                // This event gives us the Commander name
-                                JsonElement commanderNameElement = jsonDoc.RootElement.GetProperty("Name");
-                                CommanderName = commanderNameElement.GetString();
-                            }
-                            else if (ReportEvents.Contains(eventName))
-                            {
-                                // This is an event we are interested in
-                                //File.AppendAllText("journalevents.log", $"{journalEvent}{Environment.NewLine}");
-                                InterestingEventOccurred?.Invoke(this, journalEvent.Trim());
-                            }
+                            // We won't receive any more events into this log file
+                            // Chances are we're shutting down, but we'll go into slow ping mode in case it is a game restart
+                            _statusCheckTimer.Interval = 10000;
+                            DeactivateJournal();
+                        }
+                        else if (eventName.Equals("Continued"))
+                        {
+                            // We won't receive any more events into this log file, but a new one should be created
+                            DeactivateJournal();
+                        }
+                        else if (eventName.Equals("Commander"))
+                        {
+                            // This event gives us the Commander name
+                            JsonElement commanderNameElement = jsonDoc.RootElement.GetProperty("Name");
+                            CommanderName = commanderNameElement.GetString();
+                        }
+                        else if (ReportAllEvents || ReportEvents.Contains(eventName))
+                        {
+                            // This is an event we are interested in
+                            //File.AppendAllText("journalevents.log", $"{journalEvent}{Environment.NewLine}");
+                            InterestingEventOccurred?.Invoke(this, journalEvent);
                         }
                     }
                 }

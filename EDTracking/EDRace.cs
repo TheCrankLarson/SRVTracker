@@ -78,7 +78,7 @@ namespace EDTracking
 
         public override string ToString()
         {
-            return JsonSerializer.Serialize(this, typeof(EDRace),null);
+            return JsonSerializer.Serialize(this, typeof(EDRace),(JsonSerializerContext) null);
         }
 
         /// <summary>
